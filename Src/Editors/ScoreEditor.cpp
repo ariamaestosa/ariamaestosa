@@ -1065,7 +1065,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
                     if (check_note != -1)
                     {
-                        const int checkNoteLevel = m_converter->noteToLevel( m_track->getNote(check_note), NULL );
+                        const int checkNoteLevel = m_converter->noteToLevel( m_track->getNote(check_note), (PitchSign*)NULL );
                         
                         if (checkNoteLevel > middleC)  m_f_clef_analyser->addToVector(currentNote);
                         else                           m_g_clef_analyser->addToVector(currentNote);
