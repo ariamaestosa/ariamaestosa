@@ -1209,6 +1209,8 @@ void MainFrame::updateVerticalScrollbar()
                                        5 /*scroll amount*/
                                        );
 
+    m_vertical_scrollbar->Enable( total_size - editor_size > 0 );
+    
     // scrollbar needed to be reajusted to fit in bounds, meaning that internal scroll value might be wrong.
     // send a scrolling event that will fix that
     // (internal value will be calculated from scrollbar position)
