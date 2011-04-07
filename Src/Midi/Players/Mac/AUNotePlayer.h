@@ -41,6 +41,7 @@ namespace CoreAudioNotePlayer
     void au_seq_prog_change(const int instrument, const int channel);
     void au_seq_controlchange(const int controller, const int value, const int channel);
     void au_seq_pitch_bend(const int value, const int channel);
+    
     void au_reset_all_controllers();
 }
 
