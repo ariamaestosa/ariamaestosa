@@ -441,7 +441,7 @@ void MainFrame::init()
     m_tool1_bitmap.LoadFile( getResourcePrefix()  + wxT("tool1.png") , wxBITMAP_TYPE_PNG);
     m_tool2_bitmap.LoadFile( getResourcePrefix()  + wxT("tool2.png") , wxBITMAP_TYPE_PNG);
 
-#if defined(__WXOSX_COCOA__) || defined(__WXMSW__)
+#if !defined(__WXOSX_CARBON__)
     /*
     wxNotebook* test = new wxNotebook(m_toolbar, wxID_ANY);
     wxImageList* imglist = new wxImageList();
@@ -1024,8 +1024,7 @@ void MainFrame::songLengthChanged(wxSpinEvent& evt)
 
 // ----------------------------------------------------------------------------------------------------------
 
-#if defined(__WXOSX_COCOA__) || defined(__WXMSW__)
-//wxStaticBitmap* m_tools_bitmap;
+#if !defined(__WXOSX_CARBON_)
 
 void MainFrame::onToolsBitmapMousedown(wxMouseEvent& evt)
 {

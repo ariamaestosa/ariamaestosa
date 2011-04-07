@@ -177,7 +177,7 @@ namespace AriaMaestosa
         OwnerPtr<TuningPicker>        m_tuning_picker;
         OwnerPtr<KeyPicker>           m_key_picker;
         
-#if defined(__WXOSX_COCOA__) || defined(__WXMSW__)
+#if !defined(__WXOSX_CARBON__)
         wxStaticBitmap* m_tools_bitmap;
         void onToolsBitmapMousedown(wxMouseEvent& evt);
         void onToolsBitmapMouseup(wxMouseEvent& evt);
