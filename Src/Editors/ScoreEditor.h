@@ -139,7 +139,7 @@ namespace AriaMaestosa
           */
         int noteToLevel(const Note* noteObj, PitchSign* sign=NULL);
         
-        int noteToLevel(const Note* noteObj, const int noteObj, PitchSign* sign=NULL);
+        int noteToLevel(const Note* noteObj, const int note, PitchSign* sign=NULL);
         
         /** what is the name of the note played on this level? */
         int levelToNote7(const unsigned int level) const;
