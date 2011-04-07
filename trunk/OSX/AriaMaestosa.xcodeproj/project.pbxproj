@@ -223,8 +223,6 @@
 		95711A081125D8D300104BF5 /* AlsaPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119371125D8D200104BF5 /* AlsaPlayer.cpp */; };
 		95711A091125D8D300104BF5 /* AlsaPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119381125D8D200104BF5 /* AlsaPort.cpp */; };
 		95711A0A1125D8D300104BF5 /* AlsaPort.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119391125D8D200104BF5 /* AlsaPort.h */; };
-		95711A0C1125D8D300104BF5 /* AudioToolboxPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571193D1125D8D200104BF5 /* AudioToolboxPlayer.cpp */; };
-		95711A0D1125D8D300104BF5 /* AudioToolboxPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571193E1125D8D200104BF5 /* AudioToolboxPlayer.h */; };
 		95711A0E1125D8D300104BF5 /* AUNotePlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571193F1125D8D200104BF5 /* AUNotePlayer.cpp */; };
 		95711A0F1125D8D300104BF5 /* AUNotePlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119401125D8D200104BF5 /* AUNotePlayer.h */; };
 		95711A101125D8D300104BF5 /* MacPlayerInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119411125D8D200104BF5 /* MacPlayerInterface.cpp */; };
@@ -387,8 +385,6 @@
 		95711AD21125D8D300104BF5 /* AlsaPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119371125D8D200104BF5 /* AlsaPlayer.cpp */; };
 		95711AD31125D8D300104BF5 /* AlsaPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119381125D8D200104BF5 /* AlsaPort.cpp */; };
 		95711AD41125D8D300104BF5 /* AlsaPort.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119391125D8D200104BF5 /* AlsaPort.h */; };
-		95711AD61125D8D300104BF5 /* AudioToolboxPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571193D1125D8D200104BF5 /* AudioToolboxPlayer.cpp */; };
-		95711AD71125D8D300104BF5 /* AudioToolboxPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 9571193E1125D8D200104BF5 /* AudioToolboxPlayer.h */; };
 		95711AD81125D8D300104BF5 /* AUNotePlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571193F1125D8D200104BF5 /* AUNotePlayer.cpp */; };
 		95711AD91125D8D300104BF5 /* AUNotePlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119401125D8D200104BF5 /* AUNotePlayer.h */; };
 		95711ADA1125D8D300104BF5 /* MacPlayerInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119411125D8D200104BF5 /* MacPlayerInterface.cpp */; };
@@ -952,8 +948,6 @@
 		957119371125D8D200104BF5 /* AlsaPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AlsaPlayer.cpp; path = ../Src/Midi/Players/Alsa/AlsaPlayer.cpp; sourceTree = SOURCE_ROOT; };
 		957119381125D8D200104BF5 /* AlsaPort.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AlsaPort.cpp; path = ../Src/Midi/Players/Alsa/AlsaPort.cpp; sourceTree = SOURCE_ROOT; };
 		957119391125D8D200104BF5 /* AlsaPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlsaPort.h; path = ../Src/Midi/Players/Alsa/AlsaPort.h; sourceTree = SOURCE_ROOT; };
-		9571193D1125D8D200104BF5 /* AudioToolboxPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AudioToolboxPlayer.cpp; path = ../Src/Midi/Players/Mac/AudioToolboxPlayer.cpp; sourceTree = SOURCE_ROOT; };
-		9571193E1125D8D200104BF5 /* AudioToolboxPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioToolboxPlayer.h; path = ../Src/Midi/Players/Mac/AudioToolboxPlayer.h; sourceTree = SOURCE_ROOT; };
 		9571193F1125D8D200104BF5 /* AUNotePlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AUNotePlayer.cpp; path = ../Src/Midi/Players/Mac/AUNotePlayer.cpp; sourceTree = SOURCE_ROOT; };
 		957119401125D8D200104BF5 /* AUNotePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AUNotePlayer.h; path = ../Src/Midi/Players/Mac/AUNotePlayer.h; sourceTree = SOURCE_ROOT; };
 		957119411125D8D200104BF5 /* MacPlayerInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MacPlayerInterface.cpp; path = ../Src/Midi/Players/Mac/MacPlayerInterface.cpp; sourceTree = SOURCE_ROOT; };
@@ -1453,8 +1447,6 @@
 		9571193C1125D8D200104BF5 /* Mac */ = {
 			isa = PBXGroup;
 			children = (
-				9571193D1125D8D200104BF5 /* AudioToolboxPlayer.cpp */,
-				9571193E1125D8D200104BF5 /* AudioToolboxPlayer.h */,
 				9571193F1125D8D200104BF5 /* AUNotePlayer.cpp */,
 				957119401125D8D200104BF5 /* AUNotePlayer.h */,
 				957119411125D8D200104BF5 /* MacPlayerInterface.cpp */,
@@ -1903,7 +1895,6 @@
 				95711ACF1125D8D300104BF5 /* Note.h in Headers */,
 				95711AD11125D8D300104BF5 /* AlsaNotePlayer.h in Headers */,
 				95711AD41125D8D300104BF5 /* AlsaPort.h in Headers */,
-				95711AD71125D8D300104BF5 /* AudioToolboxPlayer.h in Headers */,
 				95711AD91125D8D300104BF5 /* AUNotePlayer.h in Headers */,
 				95711ADB1125D8D300104BF5 /* QTKitPlayer.h in Headers */,
 				95711ADD1125D8D300104BF5 /* PlatformMidiManager.h in Headers */,
@@ -2073,7 +2064,6 @@
 				95711A051125D8D300104BF5 /* Note.h in Headers */,
 				95711A071125D8D300104BF5 /* AlsaNotePlayer.h in Headers */,
 				95711A0A1125D8D300104BF5 /* AlsaPort.h in Headers */,
-				95711A0D1125D8D300104BF5 /* AudioToolboxPlayer.h in Headers */,
 				95711A0F1125D8D300104BF5 /* AUNotePlayer.h in Headers */,
 				95711A111125D8D300104BF5 /* QTKitPlayer.h in Headers */,
 				95711A131125D8D300104BF5 /* PlatformMidiManager.h in Headers */,
@@ -2325,7 +2315,6 @@
 				95711AD01125D8D300104BF5 /* AlsaNotePlayer.cpp in Sources */,
 				95711AD21125D8D300104BF5 /* AlsaPlayer.cpp in Sources */,
 				95711AD31125D8D300104BF5 /* AlsaPort.cpp in Sources */,
-				95711AD61125D8D300104BF5 /* AudioToolboxPlayer.cpp in Sources */,
 				95711AD81125D8D300104BF5 /* AUNotePlayer.cpp in Sources */,
 				95711ADA1125D8D300104BF5 /* MacPlayerInterface.cpp in Sources */,
 				95711ADC1125D8D300104BF5 /* QTKitPlayer.mm in Sources */,
@@ -2486,7 +2475,6 @@
 				95711A061125D8D300104BF5 /* AlsaNotePlayer.cpp in Sources */,
 				95711A081125D8D300104BF5 /* AlsaPlayer.cpp in Sources */,
 				95711A091125D8D300104BF5 /* AlsaPort.cpp in Sources */,
-				95711A0C1125D8D300104BF5 /* AudioToolboxPlayer.cpp in Sources */,
 				95711A0E1125D8D300104BF5 /* AUNotePlayer.cpp in Sources */,
 				95711A101125D8D300104BF5 /* MacPlayerInterface.cpp in Sources */,
 				95711A121125D8D300104BF5 /* QTKitPlayer.mm in Sources */,

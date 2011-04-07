@@ -529,7 +529,7 @@ namespace CoreAudioNotePlayer
             au_seq_controlchange(0x79 /*121*/ /* reset controllers */, 0, channel);
             au_seq_controlchange(7 /* reset volume */, 127, channel);
             au_seq_controlchange(10 /* reset pan */, 64, channel);
-            au_seq_pitch_bend(127, channel);
+            au_seq_pitch_bend(PITCH_BEND_CENTER, channel);
         }
     }
 }
