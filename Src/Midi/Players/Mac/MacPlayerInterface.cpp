@@ -52,6 +52,7 @@
 #include "Midi/Players/Mac/AUNotePlayer.h"
 #include "Midi/Players/Mac/AudioToolboxPlayer.h"
 #include "Midi/Players/PlatformMidiManager.h"
+#include "Midi/Players/Sequencer.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
 
@@ -91,10 +92,17 @@ namespace AriaMaestosa
         MyPThread export_audio;
     }
     
+    bool g_playing;
+    
+    int g_current_tick;
+    
+    bool g_thread_should_continue = true;
+    
+    
     // Silly way to pass parameters to the thread
     wxString export_audio_filepath;
     Sequence* g_sequence = NULL;
-
+    
     void* add_events_func( void* ptr )
     {
         ASSERT(g_sequence != NULL);
@@ -130,14 +138,89 @@ namespace AriaMaestosa
         return (void*)NULL;
     }
 
+    void cleanup_after_playback()
+    {
+        g_playing = false;
+        CoreAudioNotePlayer::au_reset_all_controllers();
+    }
+    
+    class SequencerThread : public wxThread
+    {
+        jdkmidi::MIDIMultiTrack* jdkmidiseq;
+        jdkmidi::MIDISequencer* jdksequencer;
+        int songLengthInTicks;
+        bool m_selection_only;
+        int m_start_tick;
+        
+    public:
+        
+        SequencerThread(const bool selectionOnly)
+        {
+            jdkmidiseq = NULL;
+            jdksequencer = NULL;
+            m_selection_only = selectionOnly;
+        }
+        ~SequencerThread()
+        {
+            if (jdksequencer != NULL) delete jdksequencer;
+            if (jdkmidiseq != NULL) delete jdkmidiseq;
+        }
+        
+        void prepareSequencer()
+        {
+            jdkmidiseq = new jdkmidi::MIDIMultiTrack();
+            songLengthInTicks = -1;
+            int trackAmount = -1;
+            m_start_tick = 0;
+            makeJDKMidiSequence(g_sequence, *jdkmidiseq, m_selection_only, &songLengthInTicks,
+                                &m_start_tick, &trackAmount, true /* for playback */);
+            songLengthInTicks += g_sequence->ticksPerBeat();
+            
+            //std::cout << "trackAmount=" << trackAmount << " start_tick=" << m_start_tick<<
+            //        " songLengthInTicks=" << songLengthInTicks << std::endl;
+            
+            jdksequencer = new jdkmidi::MIDISequencer(jdkmidiseq);
+            
+            g_current_tick = m_start_tick;
+        }
+        
+        void go(int* startTick /* out */)
+        {
+            g_playing = true;
+            g_thread_should_continue = true;
+
+            if (Create() != wxTHREAD_NO_ERROR)
+            {
+                std::cerr << "[OSX Player] ERROR: failed to create thread" << std::endl;
+                return;
+            }
+            SetPriority(85 /* 0 = min, 100 = max */);
+            
+            prepareSequencer();
+            *startTick = m_start_tick;
+            
+            Run();
+        }
+        
+        ExitCode Entry()
+        {
+            AriaSequenceTimer timer(g_sequence);
+            timer.run(jdksequencer, songLengthInTicks);
+            
+            //must_stop = true;
+            cleanup_after_playback();
+            
+            return 0;
+        }
+    };
+    
     void playMidiBytes(char* bytes, int length);
 
     class MacMidiManager : public PlatformMidiManager
     {        
-        AudioToolboxMidiPlayer* audioToolboxMidiPlayer;
+        //AudioToolboxMidiPlayer* audioToolboxMidiPlayer;
         
-        bool playing;
-        bool use_qtkit;
+        //bool use_qtkit;
         
         int stored_songLength;
         
@@ -145,8 +228,8 @@ namespace AriaMaestosa
         
         MacMidiManager()
         {
-            playing   = false;
-            use_qtkit = true;
+            g_playing   = false;
+            //use_qtkit = true;
             stored_songLength = 0;
         }
         
@@ -164,10 +247,11 @@ namespace AriaMaestosa
         
         virtual bool playSequence(Sequence* sequence, /*out*/ int* startTick)
         {
-            if (playing) return false; //already playing
+            if (g_playing) return false; //already playing
             
             g_sequence = sequence;
             
+            /*
             char* data;
             int datalength = -1;
             
@@ -178,6 +262,10 @@ namespace AriaMaestosa
             playMidiBytes(data, datalength);
             
             free(data);
+             */
+            
+            SequencerThread* seqthread = new SequencerThread(false /* selection only */);
+            seqthread->go(startTick);
             
             return true;
         }
@@ -185,10 +273,11 @@ namespace AriaMaestosa
         virtual bool playSelected(Sequence* sequence, /*out*/ int* startTick)
         {
             
-            if (playing) return false; //already playing
+            if (g_playing) return false; //already playing
             
             g_sequence = sequence;
             
+            /*
             char* data;
             int datalength = -1;
             int songLengthInTicks = -1;
@@ -206,6 +295,10 @@ namespace AriaMaestosa
             playMidiBytes(data, datalength);
             
             free(data);
+            */
+            
+            SequencerThread* seqthread = new SequencerThread(false /* selection only */);
+            seqthread->go(startTick);
             
             return true;
         }
@@ -219,6 +312,8 @@ namespace AriaMaestosa
         
         virtual int getCurrentTick()
         {
+            return g_current_tick;
+            /*
             if (use_qtkit)
             {
                 const float time = qtkit_getCurrentTime();
@@ -231,6 +326,7 @@ namespace AriaMaestosa
             {
                 return audioToolboxMidiPlayer->getPosition() * g_sequence->ticksPerBeat();
             }
+             */
         }
         
         virtual wxArrayString getOutputChoices()
@@ -247,6 +343,8 @@ namespace AriaMaestosa
         
         virtual int trackPlaybackProgression()
         {
+            return g_current_tick;
+            /*
             int currentTick = getCurrentTick();
             
             // song ends
@@ -260,9 +358,10 @@ namespace AriaMaestosa
             
             
             return currentTick;
-            
+            */
         }
         
+        /*
         virtual void playMidiBytes(char* bytes, int length)
         {
             CoreAudioNotePlayer::stopNote();
@@ -285,16 +384,17 @@ namespace AriaMaestosa
             
             playing = true;
         }
+        */
         
         virtual void playNote(int noteNum, int volume, int duration, int channel, int instrument)
         {
-            if (playing) return;
+            if (g_playing) return;
             CoreAudioNotePlayer::playNote( noteNum, volume, duration, channel, instrument );
         }
         
         virtual bool isPlaying()
         {
-            return playing;
+            return g_playing;
         }
         
         virtual void stopNote()
@@ -304,42 +404,71 @@ namespace AriaMaestosa
         
         virtual void stop()
         {
-            if ( use_qtkit ) qtkit_stop();
-            else audioToolboxMidiPlayer->stop();
+            //if ( use_qtkit ) qtkit_stop();
+            //else audioToolboxMidiPlayer->stop();
             
-            playing = false;
+            g_thread_should_continue = false;
         }
         
         virtual void initMidiPlayer()
         {
-            qtkit_init();
+            //qtkit_init();
             CoreAudioNotePlayer::init();
-            audioToolboxMidiPlayer=new AudioToolboxMidiPlayer();
-            
-            // trigger quicktime with empty song, just to make it load
-            // FIXME - doesn't work anymore with newer QT versions
-            char bytes[8];
-            bytes[0] = 'M';
-            bytes[1] = 'T';
-            bytes[2] = 'h';
-            bytes[3] = 'd';
-            bytes[4] = 0;
-            bytes[5] = 0;
-            bytes[6] = 0;
-            bytes[7] = 0;
-            
-            playMidiBytes(bytes, 8);
-            stop();
+            //audioToolboxMidiPlayer = new AudioToolboxMidiPlayer();
         }
         
         virtual void freeMidiPlayer()
         {
-            qtkit_free();
+            //qtkit_free();
             CoreAudioNotePlayer::free();
-            delete audioToolboxMidiPlayer;
-            audioToolboxMidiPlayer=NULL;
+            //delete audioToolboxMidiPlayer;
+            //audioToolboxMidiPlayer = NULL;
         }
 
+        void seq_note_on(const int note, const int volume, const int channel)
+        {
+            CoreAudioNotePlayer::au_seq_note_on(note, volume, channel);
+        }
+        
+        void seq_note_off(const int note, const int channel)
+        {
+            CoreAudioNotePlayer::au_seq_note_off(note, channel);
+        }
+        
+        void seq_prog_change(const int instrument, const int channel)
+        {
+            CoreAudioNotePlayer::au_seq_prog_change(instrument, channel);
+        }
+        
+        void seq_controlchange(const int controller, const int value, const int channel)
+        {
+            CoreAudioNotePlayer::au_seq_controlchange(controller, value, channel);
+        }
+        
+        void seq_pitch_bend(const int value, const int channel)
+        {
+            CoreAudioNotePlayer::au_seq_pitch_bend(value, channel);
+        }
+        
+        /**
+         * @brief called repeatedly by the generic sequencer to tell the midi player what is the current
+         *        progression. the sequencer will call this with -1 as argument to indicate it exits.
+         */
+        virtual void seq_notify_current_tick(const int tick)
+        {
+            g_current_tick = tick;
+            
+            if (tick == -1) g_playing = false;
+        }
+        
+        /**
+         * @brief will be called by the generic sequencer to determine whether it should continue
+         * @return false to stop it, true to continue
+         */
+        bool seq_must_continue()
+        {
+            return g_thread_should_continue;
+        }
         
     }; // end class
     
