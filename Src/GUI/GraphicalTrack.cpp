@@ -53,6 +53,9 @@
 
 using namespace AriaMaestosa;
 
+const int THUMB_SIZE_ABOVE = 3;
+const int THUMB_SIZE_BELOW = 1;
+
 namespace AriaMaestosa
 {
     class AriaWidget
@@ -356,49 +359,50 @@ GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq, MagneticGri
     m_drum_editor         = NULL;
     m_controller_editor   = NULL;
     m_score_editor        = NULL;
-
+    m_resizing_subeditor  = NULL;
+    
     m_gsequence = seq;
     m_track = track;
     m_focused_editor = KEYBOARD;
     
     m_name_renderer.setMaxWidth(120);
     m_name_renderer.setFont( getTrackNameFont() );
-
+    
     
     track->setListener(this);
     track->setInstrumentListener(this);
     track->setDrumListener(this);
-
+    
     ASSERT(track);
-
+    
     m_grid = new MagneticGridPicker(this, magneticGrid);
-
+    
     m_last_mouse_y = 0;
-
+    
     m_collapsed       = false;
     m_dragging_resize = false;
     m_docked          = false;
-
+    
     m_height = 128;
-
+    
     // create widgets
     m_components = new WidgetLayoutManager();
-
+    
     m_collapse_button = new BitmapButton(28, 15, collapseDrawable);
     m_components->addFromLeft(m_collapse_button);
-
+    
     m_mute_button = new BitmapButton(28, 10, muteDrawable);
     m_components->addFromLeft(m_mute_button);
-
+    
     m_dock_toolbar = new ToolBar<BlankField>();
     m_dock_toolbar->addItem( new BitmapButton( 16, 14, maximizeTrackDrawable, false), 0 );
     m_dock_toolbar->addItem( new BitmapButton( 16, 14, dockTrackDrawable    , false), 0 );
     m_components->addFromLeft(m_dock_toolbar);
     m_dock_toolbar->layout();
-
+    
     m_track_name = new BlankField(140);
     m_components->addFromLeft(m_track_name);
-
+    
     m_grid_combo = new ToolBar<ComboBox>();
     m_grid_combo->addItem( new BitmapButton( 16, 14, mgrid_1, true ), 0 );
     m_grid_combo->addItem( new BitmapButton( 16, 14, mgrid_2, true ), 0 );
@@ -409,7 +413,7 @@ GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq, MagneticGri
     m_grid_combo->addItem( new BitmapButton( 16, 14, mgrid_triplet, true ), 25 );
     m_components->addFromLeft(m_grid_combo);
     m_grid_combo->layout();
-
+    
     m_score_button = new BitmapButton(32, 7, score_view);
     m_components->addFromLeft(m_score_button);
     m_piano_button = new BitmapButton(32, 7, keyboard_view);
@@ -420,17 +424,17 @@ GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq, MagneticGri
     m_components->addFromLeft(m_drum_button);
     m_ctrl_button = new BitmapButton(32, 7, controller_view);
     m_components->addFromLeft(m_ctrl_button);
-
+    
     m_sharp_flat_picker = new ToolBar<BlankField>();
     m_sharp_flat_picker->addItem( (new BitmapButton( 14, 21, sharpSign,   true ))->setImageState(AriaRender::STATE_NOTE), 6 );
     m_sharp_flat_picker->addItem( (new BitmapButton( 14, 24, flatSign,    true ))->setImageState(AriaRender::STATE_NOTE), 6 );
     m_sharp_flat_picker->addItem( (new BitmapButton( 14, 21, naturalSign, true ))->setImageState(AriaRender::STATE_NOTE), 0 );
     m_components->addFromLeft(m_sharp_flat_picker);
-
+    
     m_instrument_field = new BlankField(155);
     m_components->addFromRight(m_instrument_field);
 	m_instrument_name.setMaxWidth( m_instrument_field->getUsableWidth() );
-
+    
     m_channel_field = new BlankField(28);
     m_components->addFromRight(m_channel_field);
     
@@ -459,18 +463,23 @@ void GraphicalTrack::createEditors()
     ASSERT(m_all_editors.size() == 0); // function to be called once per object only
     
     m_keyboard_editor = new KeyboardEditor(this);
+    m_keyboard_editor->setRelativeHeight(1.0f);
     m_all_editors.push_back(m_keyboard_editor);
     
     m_guitar_editor = new GuitarEditor(this);
+    m_guitar_editor->setRelativeHeight(1.0f);
     m_all_editors.push_back(m_guitar_editor);
     
     m_drum_editor = new DrumEditor(this);
+    m_drum_editor->setRelativeHeight(1.0f);
     m_all_editors.push_back(m_drum_editor);
-
+    
     m_controller_editor = new ControllerEditor(this);
+    m_controller_editor->setRelativeHeight(1.0f);
     m_all_editors.push_back(m_controller_editor);
-
+    
     m_score_editor = new ScoreEditor(this);
+    m_score_editor->setRelativeHeight(1.0f);
     m_all_editors.push_back(m_score_editor);
 }
 
@@ -500,13 +509,13 @@ bool GraphicalTrack::mouseWheelMoved(int mx, int my, int value)
 }
 
 // ----------------------------------------------------------------------------------------------------------
-    
-bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
+
+bool GraphicalTrack::processMouseDown(RelativeXCoord mousex, int mousey)
 {
     m_dragging_resize = false;
-
+    
     m_last_mouse_y = mousey;
-
+    
     // FIXME: m_to_y should indicate the very bottom; this is not the case atm
     if (mousey > m_from_y and mousey < m_to_y + (m_collapsed ? 15 : 0))
     {
@@ -523,8 +532,22 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
             }
             
             // if track is not collapsed, let the editor handle the mouse event too
-            Editor* ed = getEditorAt(mousey);
-            if (ed != NULL) ed->mouseDown(mousex, mousey);
+            Editor* ed = getEditorAt(mousey, &m_next_to_resizing_subeditor);
+            if (ed != NULL)
+            {
+                if (mousey >= ed->getYEnd() - THUMB_SIZE_ABOVE)
+                {
+                    m_resizing_subeditor = ed;
+                }
+                //else if (mousey <= ed->getTrackYStart() + THUMB_SIZE_BELOW)
+                //{
+                //    m_resizing_subeditor = ed;
+                //}
+                else
+                {
+                    ed->mouseDown(mousex, mousey);
+                }
+            }
         }
 
         if (not ImageProvider::imagesLoaded()) return true;
@@ -773,6 +796,19 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
                 
                 m_track->setNotationType(CONTROLLER, true);
             }
+            
+            int count = 0;
+            if (m_track->isNotationTypeEnabled(SCORE))      count++;
+            if (m_track->isNotationTypeEnabled(KEYBOARD))   count++;
+            if (m_track->isNotationTypeEnabled(GUITAR))     count++;
+            if (m_track->isNotationTypeEnabled(DRUM))       count++;
+            if (m_track->isNotationTypeEnabled(CONTROLLER)) count++;
+            
+            if (m_track->isNotationTypeEnabled(SCORE))      m_score_editor->setRelativeHeight(1.0f / count);
+            if (m_track->isNotationTypeEnabled(KEYBOARD))   m_keyboard_editor->setRelativeHeight(1.0f / count);
+            if (m_track->isNotationTypeEnabled(GUITAR))     m_guitar_editor->setRelativeHeight(1.0f / count);
+            if (m_track->isNotationTypeEnabled(DRUM))       m_drum_editor->setRelativeHeight(1.0f / count);
+            if (m_track->isNotationTypeEnabled(CONTROLLER)) m_controller_editor->setRelativeHeight(1.0f / count);
         }
 
         if (m_track->isNotationTypeEnabled(SCORE) and mousey > m_from_y + 15 and mousey < m_from_y + 30)
@@ -823,6 +859,8 @@ void GraphicalTrack::processMouseRelease()
 {
     //std::cout << "mouse up GraphicalTrack" << std::endl;
 
+    m_resizing_subeditor = NULL;
+    
     if (not m_dragging_resize)
     {
         Editor* ed = getEditorAt(Display::getMouseY_initial());
@@ -844,8 +882,11 @@ void GraphicalTrack::processMouseRelease()
 
 // ----------------------------------------------------------------------------------------------------------
 
-void GraphicalTrack::processMouseExited(RelativeXCoord x_now, int y_now, RelativeXCoord x_initial, int y_initial)
+void GraphicalTrack::processMouseExited(RelativeXCoord x_now, int y_now,
+                                        RelativeXCoord x_initial, int y_initial)
 {
+    m_resizing_subeditor = NULL;
+    
     Editor* ed = getEditorAt(y_initial);
     if (ed == NULL) return;
     ed->mouseExited(x_now, y_now, x_initial, y_initial);
@@ -855,7 +896,41 @@ void GraphicalTrack::processMouseExited(RelativeXCoord x_now, int y_now, Relativ
 
 bool GraphicalTrack::processMouseDrag(RelativeXCoord x, int y)
 {
+    if (m_resizing_subeditor != NULL)
+    {
+        int editor_from_y = getEditorFromY();
 
+        float delta = (y - m_last_mouse_y)/float(m_to_y - editor_from_y);
+        
+        //printf("(y - m_last_mouse_y) = %i / out of = %i // delta = %f\n", (y - m_last_mouse_y), (m_to_y - editor_from_y), delta);
+        float newh = m_resizing_subeditor->getRelativeHeight() + delta;
+        //printf("    Top editor : %f\n", newh);
+        
+        
+        float new_next_h = -1.0f;
+        Editor* next = m_next_to_resizing_subeditor;
+        if (next != NULL)
+        {
+            new_next_h = next->getRelativeHeight() - delta;
+        }
+        
+        if (newh >= 0.1f and newh <= 0.9f and ((new_next_h >= 0.1f and new_next_h <= 0.9f) or next == NULL))
+        {
+            m_resizing_subeditor->setRelativeHeight( newh );
+            
+            if (next != NULL)
+            {
+                //printf("    Bottom editor : %f\n", next->getRelativeHeight() - delta);
+                next->setRelativeHeight(new_next_h);
+            }
+            
+            Display::render();
+        }
+        m_last_mouse_y = y;
+
+        return false;
+    }
+    
     if ((y > m_from_y and y < m_to_y) or m_dragging_resize)
     {
         // until the end of the method, mousex_current/mousey_current contain the location of the mouse last time
@@ -1094,19 +1169,21 @@ void GraphicalTrack::selectNote(const int id, const bool selected, bool ignoreMo
 
 // ----------------------------------------------------------------------------------------------------------
 
-Editor* GraphicalTrack::getEditorAt(const int y)
+Editor* GraphicalTrack::getEditorAt(const int y, Editor** next)
 {
-    if (m_track->isNotationTypeEnabled(KEYBOARD) and y >= m_keyboard_editor->getTrackYStart()and
-        y <= m_keyboard_editor->getYEnd())
-    {
-        m_focused_editor = KEYBOARD;
-        return m_keyboard_editor;
-    }
+    if (next != NULL) *next = NULL;
     
     if (m_track->isNotationTypeEnabled(SCORE) and y >= m_score_editor->getTrackYStart() and
         y <= m_score_editor->getYEnd())
     {
         m_focused_editor = SCORE;
+        if (next != NULL)
+        {
+            if      (m_track->isNotationTypeEnabled(KEYBOARD))   *next = m_keyboard_editor;
+            else if (m_track->isNotationTypeEnabled(GUITAR))     *next = m_guitar_editor;
+            else if (m_track->isNotationTypeEnabled(DRUM))       *next = m_drum_editor;
+            else if (m_track->isNotationTypeEnabled(CONTROLLER)) *next = m_controller_editor;
+        }
         return m_score_editor;
     }
     
@@ -1114,13 +1191,35 @@ Editor* GraphicalTrack::getEditorAt(const int y)
         y <= m_guitar_editor->getYEnd())
     {
         m_focused_editor = GUITAR;
+        if (next != NULL)
+        {
+            if      (m_track->isNotationTypeEnabled(KEYBOARD))   *next = m_keyboard_editor;
+            else if (m_track->isNotationTypeEnabled(DRUM))       *next = m_drum_editor;
+            else if (m_track->isNotationTypeEnabled(CONTROLLER)) *next = m_controller_editor;
+        }
         return m_guitar_editor;
+    }
+
+    if (m_track->isNotationTypeEnabled(KEYBOARD) and y >= m_keyboard_editor->getTrackYStart()and
+        y <= m_keyboard_editor->getYEnd())
+    {
+        m_focused_editor = KEYBOARD;
+        if (next != NULL)
+        {
+            if      (m_track->isNotationTypeEnabled(DRUM))       *next = m_drum_editor;
+            else if (m_track->isNotationTypeEnabled(CONTROLLER)) *next = m_controller_editor;
+        }
+        return m_keyboard_editor;
     }
     
     if (m_track->isNotationTypeEnabled(DRUM) and y >= m_drum_editor->getTrackYStart() and
         y <= m_drum_editor->getYEnd())
     {
         m_focused_editor = DRUM;
+        if (next != NULL)
+        {
+            if (m_track->isNotationTypeEnabled(CONTROLLER)) *next = m_controller_editor;
+        }
         return m_drum_editor;
     }
     
@@ -1128,6 +1227,7 @@ Editor* GraphicalTrack::getEditorAt(const int y)
         y <= m_controller_editor->getYEnd())
     {
         m_focused_editor = CONTROLLER;
+        if (next != NULL) *next = NULL;
         return m_controller_editor;
     }
     
@@ -1189,6 +1289,18 @@ Editor* GraphicalTrack::getFocusedEditor()
     // WTF??
     ASSERT(false);
     return NULL;
+}
+
+int GraphicalTrack::getEditorFromY() const
+{
+    int editor_from_y = m_from_y + BORDER_SIZE;
+    
+    if (not m_collapsed)
+    {
+        editor_from_y += EXPANDED_BAR_HEIGHT;
+    }
+    
+    return editor_from_y;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -1416,15 +1528,14 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
     
     m_from_y = y;
     
-    int editor_from_y = m_from_y + BORDER_SIZE;
-
+    int editor_from_y = getEditorFromY();
+    
     if (m_collapsed)
     {
         m_to_y = m_from_y + BORDER_SIZE + COLLAPSED_BAR_HEIGHT + BORDER_SIZE + MARGIN;
     }
     else
     {
-        editor_from_y += EXPANDED_BAR_HEIGHT;
         m_to_y = editor_from_y + m_height + BORDER_SIZE + MARGIN;
     }
     
@@ -1436,40 +1547,45 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
     if (m_track->isNotationTypeEnabled(DRUM))       count++;
     if (m_track->isNotationTypeEnabled(CONTROLLER)) count++;
     
-    const int editor_height = (m_to_y - editor_from_y - 5)/count;
-    int editor_to_y = editor_from_y + editor_height;
+    const int editor_height = (m_to_y - editor_from_y - 5);
+    int editor_to_y = editor_from_y; //editor_from_y + editor_height;
 
     const int original_editor_from_y = editor_from_y;
     
     if (m_track->isNotationTypeEnabled(SCORE))
     {
-        m_score_editor->updatePosition(editor_from_y, editor_to_y, Display::getWidth(), editor_height);
+        int h = m_score_editor->getRelativeHeight()*editor_height;
+        editor_to_y += h;
+        m_score_editor->updatePosition(editor_from_y, editor_to_y, Display::getWidth(), h);
         editor_from_y = editor_to_y + 1;
-        editor_to_y += editor_height;
     }
     if (m_track->isNotationTypeEnabled(GUITAR))
     {
-        m_guitar_editor->updatePosition(editor_from_y, editor_to_y, Display::getWidth(), editor_height);
+        int h = m_guitar_editor->getRelativeHeight()*editor_height;
+        editor_to_y += h;
+        m_guitar_editor->updatePosition(editor_from_y, editor_to_y, Display::getWidth(), h);
         editor_from_y = editor_to_y + 1;
-        editor_to_y += editor_height;
     }
     if (m_track->isNotationTypeEnabled(KEYBOARD))
     {
-        m_keyboard_editor->updatePosition(editor_from_y, editor_to_y, Display::getWidth(), editor_height);
+        int h = m_keyboard_editor->getRelativeHeight()*editor_height;
+        editor_to_y += h;
+        m_keyboard_editor->updatePosition(editor_from_y, editor_to_y, Display::getWidth(), h);
         editor_from_y = editor_to_y + 1;
-        editor_to_y += editor_height;
     }
     if (m_track->isNotationTypeEnabled(DRUM))
     {
-        m_drum_editor->updatePosition(editor_from_y, editor_to_y, Display::getWidth(), editor_height);
+        int h = m_drum_editor->getRelativeHeight()*editor_height;
+        editor_to_y += h;
+        m_drum_editor->updatePosition(editor_from_y, editor_to_y, Display::getWidth(), h);
         editor_from_y = editor_to_y + 1;
-        editor_to_y += editor_height;
     }
     if (m_track->isNotationTypeEnabled(CONTROLLER))
     {
-        m_controller_editor->updatePosition(editor_from_y, editor_to_y, Display::getWidth(), editor_height);
+        int h = m_controller_editor->getRelativeHeight()*editor_height;
+        editor_to_y += h;
+        m_controller_editor->updatePosition(editor_from_y, editor_to_y, Display::getWidth(), h);
         editor_from_y = editor_to_y + 1;
-        editor_to_y += editor_height;
     }
     
     // don't waste time drawing it if out of bounds
@@ -1499,8 +1615,8 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
             {
                 AriaRender::primitives();
                 AriaRender::color( 0.5f, 0.5f, 0.5f );
-                AriaRender::rect(10, m_score_editor->getYEnd() - 3,
-                                 m_score_editor->getXEnd(), m_score_editor->getYEnd() + 1 );
+                AriaRender::rect(10, m_score_editor->getYEnd() - THUMB_SIZE_ABOVE,
+                                 m_score_editor->getXEnd(), m_score_editor->getYEnd() + THUMB_SIZE_BELOW );
             }
         }
         if (m_track->isNotationTypeEnabled(GUITAR))
@@ -1512,8 +1628,8 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
             {
                 AriaRender::primitives();
                 AriaRender::color( 0.5f, 0.5f, 0.5f );
-                AriaRender::rect(10, m_guitar_editor->getYEnd() - 3,
-                                 m_guitar_editor->getXEnd(), m_guitar_editor->getYEnd() + 1 );
+                AriaRender::rect(10, m_guitar_editor->getYEnd() - THUMB_SIZE_ABOVE,
+                                 m_guitar_editor->getXEnd(), m_guitar_editor->getYEnd() + THUMB_SIZE_BELOW );
             }
         }
         if (m_track->isNotationTypeEnabled(KEYBOARD))
@@ -1525,8 +1641,8 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
             {
                 AriaRender::primitives();
                 AriaRender::color( 0.5f, 0.5f, 0.5f );
-                AriaRender::rect(10, m_keyboard_editor->getYEnd() - 3,
-                                 m_keyboard_editor->getXEnd(), m_keyboard_editor->getYEnd() + 1 );
+                AriaRender::rect(10, m_keyboard_editor->getYEnd() - THUMB_SIZE_ABOVE,
+                                 m_keyboard_editor->getXEnd(), m_keyboard_editor->getYEnd() + THUMB_SIZE_BELOW );
             }
         }
         if (m_track->isNotationTypeEnabled(DRUM))
@@ -1538,8 +1654,8 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
             {
                 AriaRender::primitives();
                 AriaRender::color( 0.5f, 0.5f, 0.5f );
-                AriaRender::rect(10, m_drum_editor->getYEnd() - 3,
-                                 m_drum_editor->getXEnd(), m_drum_editor->getYEnd() + 1 );
+                AriaRender::rect(10, m_drum_editor->getYEnd() - THUMB_SIZE_ABOVE,
+                                 m_drum_editor->getXEnd(), m_drum_editor->getYEnd() + THUMB_SIZE_BELOW );
             }
         }
         if (m_track->isNotationTypeEnabled(CONTROLLER))
