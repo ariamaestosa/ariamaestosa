@@ -96,6 +96,8 @@ namespace AriaMaestosa
         bool m_selecting;
         int  m_y_step;
         
+        float m_relative_height;
+        
         bool  m_mouse_is_in_editor;
         
         /** contains the ID of the latest clicked note, or -1 (FIXME: document when -1 is used) */
@@ -261,6 +263,8 @@ namespace AriaMaestosa
         
         virtual void processKeyPress(int keycode, bool commandDown, bool shiftDown);
         
+        void setRelativeHeight(float relativeHeight) { m_relative_height = relativeHeight; }
+        
         // ------------------------------------------------------------------------------------------------------
         // methods that provide general information common to all editors
         // ------------------------------------------------------------------------------------------------------
@@ -271,6 +275,8 @@ namespace AriaMaestosa
         int getEditorYStart() const { return m_from_y;                }
         int getYEnd        () const { return m_to_y;                  }
         int getWidth       () const { return m_width;                 }
+        
+        float getRelativeHeight() const { return m_relative_height;                }
 
     };
 }

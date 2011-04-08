@@ -72,6 +72,8 @@ Editor::Editor(GraphicalTrack* track)
     m_last_clicked_note  = -1;
     m_use_instant_notes = false;
 
+    m_relative_height = 1.0f;
+    
     m_default_volume = 80;
 }
 
@@ -843,6 +845,7 @@ void Editor::processKeyPress(int keycode, bool commandDown, bool shiftDown)
 
 void Editor::updatePosition(int from_y, int to_y, int width, int height)
 {
+    // FIXME: there is no guarantee that (to_y - from_y) == height!! rethink this API
     ASSERT( MAGIC_NUMBER_OK() );
     m_from_y = from_y;
     m_to_y = to_y;

@@ -119,6 +119,9 @@ namespace AriaMaestosa
 
         NotationType m_focused_editor;
         
+        Editor* m_resizing_subeditor;
+        Editor* m_next_to_resizing_subeditor;
+        
     public:
         LEAK_CHECK();
         
@@ -160,7 +163,7 @@ namespace AriaMaestosa
               ScoreEditor*    getScoreEditor   ()       { return m_score_editor;      }
         const ScoreEditor*    getScoreEditor   () const { return m_score_editor;      }
 
-        Editor* getEditorAt(const int y);
+        Editor* getEditorAt(const int y, Editor** next=NULL);
         Editor* getFocusedEditor();
         
         ControllerEditor*   getControllerEditor() { return m_controller_editor; }
@@ -181,7 +184,7 @@ namespace AriaMaestosa
          * @return true: the event does not belong to this track and so the program should continue searching to
          *         whom the event belongs. false: the event belongs to this track and was processed
          */
-        bool processMouseClick(RelativeXCoord x, int y);
+        bool processMouseDown(RelativeXCoord x, int y);
         
         bool processRightMouseClick(RelativeXCoord x, int y);
         bool processMouseDrag(RelativeXCoord x, int y);
@@ -205,6 +208,7 @@ namespace AriaMaestosa
          */
         virtual void onDrumkitChanged(const int newValue);
         
+        int getEditorFromY() const;
         
         /** Called when a track's key changes */
         void onKeyChange(const int symbolAmount, const KeyType symbol);

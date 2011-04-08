@@ -581,7 +581,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
             else
             { 
                 // otherwise ask the track to check if it has something to do with this event
-                const bool event_processed = not gtrack->processMouseClick(m_mouse_x_current, event.GetY());
+                const bool event_processed = not gtrack->processMouseDown(m_mouse_x_current, event.GetY());
                 if (event_processed)
                 {
                     m_click_in_track = gtrack->getTrack()->getId();
