@@ -676,6 +676,11 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
                     m_track->setNotationType(DRUM, false);
                     m_track->setNotationType(CONTROLLER, false);
                 }
+                else
+                {
+                    m_height += 150;
+                    DisplayFrame::updateVerticalScrollbar();
+                }
                 
                 m_track->setNotationType(SCORE, true);
             }
@@ -687,6 +692,11 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
                     m_track->setNotationType(GUITAR, false);
                     m_track->setNotationType(DRUM, false);
                     m_track->setNotationType(CONTROLLER, false);
+                }
+                else
+                {
+                    m_height += 150;
+                    DisplayFrame::updateVerticalScrollbar();
                 }
                 
                 // in midi, drums go to channel 9. So, if we exit drums, change channel so that it's not 9 anymore.
@@ -706,6 +716,11 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
                     m_track->setNotationType(KEYBOARD, false);
                     m_track->setNotationType(DRUM, false);
                     m_track->setNotationType(CONTROLLER, false);
+                }
+                else
+                {
+                    m_height += 150;
+                    DisplayFrame::updateVerticalScrollbar();
                 }
                 
                 // in midi, drums go to channel 9. So, if we exit drums, change channel so that it's not 9 anymore.
@@ -727,6 +742,11 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
                     m_track->setNotationType(GUITAR, false);
                     m_track->setNotationType(CONTROLLER, false);
                 }
+                else
+                {
+                    m_height += 150;
+                    DisplayFrame::updateVerticalScrollbar();
+                }
                 
                 // in midi, drums go to channel 9 (10 if you start from one)
                 if (m_gsequence->getModel()->getChannelManagementType() == CHANNEL_MANUAL)
@@ -744,6 +764,11 @@ bool GraphicalTrack::processMouseClick(RelativeXCoord mousex, int mousey)
                     m_track->setNotationType(KEYBOARD, false);
                     m_track->setNotationType(GUITAR, false);
                     m_track->setNotationType(DRUM, false);
+                }
+                else
+                {
+                    m_height += 150;
+                    DisplayFrame::updateVerticalScrollbar();
                 }
                 
                 m_track->setNotationType(CONTROLLER, true);
