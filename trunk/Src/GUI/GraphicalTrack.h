@@ -122,6 +122,8 @@ namespace AriaMaestosa
         Editor* m_resizing_subeditor;
         Editor* m_next_to_resizing_subeditor;
         
+        void evenlyDistributeSpace();
+        
     public:
         LEAK_CHECK();
         

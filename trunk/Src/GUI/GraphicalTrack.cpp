@@ -797,20 +797,9 @@ bool GraphicalTrack::processMouseDown(RelativeXCoord mousex, int mousey)
                 m_track->setNotationType(CONTROLLER, true);
             }
             
-            int count = 0;
-            if (m_track->isNotationTypeEnabled(SCORE))      count++;
-            if (m_track->isNotationTypeEnabled(KEYBOARD))   count++;
-            if (m_track->isNotationTypeEnabled(GUITAR))     count++;
-            if (m_track->isNotationTypeEnabled(DRUM))       count++;
-            if (m_track->isNotationTypeEnabled(CONTROLLER)) count++;
-            
-            if (m_track->isNotationTypeEnabled(SCORE))      m_score_editor->setRelativeHeight(1.0f / count);
-            if (m_track->isNotationTypeEnabled(KEYBOARD))   m_keyboard_editor->setRelativeHeight(1.0f / count);
-            if (m_track->isNotationTypeEnabled(GUITAR))     m_guitar_editor->setRelativeHeight(1.0f / count);
-            if (m_track->isNotationTypeEnabled(DRUM))       m_drum_editor->setRelativeHeight(1.0f / count);
-            if (m_track->isNotationTypeEnabled(CONTROLLER)) m_controller_editor->setRelativeHeight(1.0f / count);
+            evenlyDistributeSpace();
         }
-
+        
         if (m_track->isNotationTypeEnabled(SCORE) and mousey > m_from_y + 15 and mousey < m_from_y + 30)
         {
             // sharp/flat signs
@@ -1291,6 +1280,8 @@ Editor* GraphicalTrack::getFocusedEditor()
     return NULL;
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 int GraphicalTrack::getEditorFromY() const
 {
     int editor_from_y = m_from_y + BORDER_SIZE;
@@ -1301,6 +1292,24 @@ int GraphicalTrack::getEditorFromY() const
     }
     
     return editor_from_y;
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void GraphicalTrack::evenlyDistributeSpace()
+{
+    int count = 0;
+    if (m_track->isNotationTypeEnabled(SCORE))      count++;
+    if (m_track->isNotationTypeEnabled(KEYBOARD))   count++;
+    if (m_track->isNotationTypeEnabled(GUITAR))     count++;
+    if (m_track->isNotationTypeEnabled(DRUM))       count++;
+    if (m_track->isNotationTypeEnabled(CONTROLLER)) count++;
+    
+    if (m_track->isNotationTypeEnabled(SCORE))      m_score_editor->setRelativeHeight(1.0f / count);
+    if (m_track->isNotationTypeEnabled(KEYBOARD))   m_keyboard_editor->setRelativeHeight(1.0f / count);
+    if (m_track->isNotationTypeEnabled(GUITAR))     m_guitar_editor->setRelativeHeight(1.0f / count);
+    if (m_track->isNotationTypeEnabled(DRUM))       m_drum_editor->setRelativeHeight(1.0f / count);
+    if (m_track->isNotationTypeEnabled(CONTROLLER)) m_controller_editor->setRelativeHeight(1.0f / count);
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -1890,8 +1899,9 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
 
     }
 
+    evenlyDistributeSpace();
+    
     return true;
-
 }
 
 // ----------------------------------------------------------------------------------------------------------
