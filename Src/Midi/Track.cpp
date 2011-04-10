@@ -1207,6 +1207,8 @@ void Track::setNotationType(NotationType t, bool enabled)
 {
     m_editor_mode[t] = enabled;
     if (m_listener != NULL) m_listener->onNotationTypeChange();
+    
+    if (t == GUITAR and enabled) prepareNotesForGuitarEditor();
 }
 
 // =======================================================================================================

@@ -754,7 +754,6 @@ bool GraphicalTrack::processMouseDown(RelativeXCoord mousex, int mousey)
                 }
 
                 m_track->setNotationType(GUITAR, true);
-                m_track->prepareNotesForGuitarEditor(); // FIXME(DESIGN): there should be no need to manually call this
             }
             else if (winX > m_drum_button->getX() and winX < m_drum_button->getX() + EDITOR_ICON_SIZE)
             {
