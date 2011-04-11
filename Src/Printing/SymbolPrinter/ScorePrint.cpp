@@ -228,8 +228,15 @@ namespace AriaMaestosa
     
     // -------------------------------------------------------------------------------------------
     /** Renders a 'G clef' sign at the the given coordinates */
-    void renderGClef(wxDC& dc, const int x, const float score_bottom, const float b_line_y)
+    void renderGClef(wxDC& dc, wxGraphicsContext* gc, const int x, const float score_bottom, const float b_line_y)
     {
+#if wxCHECK_VERSION(2,9,1)
+        RenderRoutines::paintTreble(*gc, x + 20, b_line_y, score_bottom);
+        
+        //dc.SetBrush(*wxRED_BRUSH);
+        //dc.SetPen(*wxRED_PEN);
+        //dc.DrawRectangle( x + 10, b_line_y - 10, 20, 20 );
+#else
         const int b_on_image = 30;
         const int bottom_on_image = 49;
         const float scale = (score_bottom - b_line_y) / (float)(bottom_on_image - b_on_image);
@@ -247,50 +254,17 @@ namespace AriaMaestosa
         
 
         dc.DrawBitmap(scaled, x, y, true);
-        
-        /*
-         dc.SetPen(  wxPen( wxColour(0,0,0), 7 ) );
-         
-         const float scale = abs(score_bottom - b_line_y) / 6.729;
-         const int y = score_bottom - 3.776*scale;
-         
-         #define POINT(MX,MY) wxPoint( (int)round(x + MX*scale), (int)round(y - MY*scale) )
-         
-         wxPoint points[] =
-         {
-         POINT(4.531, -8.744), // bottom tail
-         POINT(3.181, -9.748),
-         POINT(4.946, -11.236),
-         POINT(7.191, -10.123),
-         POINT(7.577, -6.909),
-         POINT(6.642, -1.336),
-         POINT(4.941, 4.612),
-         POINT(3.852, 10.668),
-         POINT(4.527, 14.740),
-         POINT(6.063, 16.144), // 10 - top
-         POINT(7.227, 15.416),
-         POINT(7.485, 11.511),
-         POINT(5.365, 8.513),
-         POINT(0.796, 3.155),
-         POINT(1.062, -1.551), // 15
-         POINT(5.739, -3.776), // main circle bottom
-         POINT(9.401, 0.390),
-         POINT(6.059, 2.953), // main circle top
-         POINT(3.358, 1.260),
-         POINT(3.908, -1.258), // 20
-         POINT(4.503, -1.487) // G end
-         };
-         
-         #undef POINT
-         
-         dc.DrawSpline(21, points);
-         */
+#endif
     }
     
     // -------------------------------------------------------------------------------------------
     /** Renders a 'F clef' sign at the the given coordinates */
-    void renderFClef(wxDC& dc, const int x, const float score_top, const float e_line_y)
+    void renderFClef(wxDC& dc, wxGraphicsContext* gc, const int x, const float score_top,
+                     const float e_line_y)
     {
+#if wxCHECK_VERSION(2,9,1)
+        RenderRoutines::paintBass(*gc, x + 20, score_top, e_line_y);
+#else
         const int e_on_image = 15;
         const float scale = (float)(e_line_y - score_top) / (float)e_on_image;
         wxString path =  getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() + wxT("FKey.png");
@@ -304,6 +278,7 @@ namespace AriaMaestosa
         */
         
         dc.DrawBitmap(scaled, x, score_top, true);
+#endif
     }
     
     // -------------------------------------------------------------------------------------------
@@ -1179,13 +1154,13 @@ namespace AriaMaestosa
             //std::cout << "[ScorePrintable] rendering line header\n";
             if (!f_clef)
             {
-                renderGClef(dc, headElement.getXFrom(),
+                renderGClef(dc, grctx, headElement.getXFrom(),
                             LEVEL_TO_Y(last_score_level)+10,
                             LEVEL_TO_Y(last_score_level-4)-5);
             }
             else
             {
-                renderFClef(dc, headElement.getXFrom(),
+                renderFClef(dc, grctx, headElement.getXFrom(),
                             LEVEL_TO_Y(first_score_level),
                             LEVEL_TO_Y(first_score_level+3));
             }

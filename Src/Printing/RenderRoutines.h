@@ -72,6 +72,10 @@ namespace AriaMaestosa
          */
         void drawSilence(wxGraphicsContext& dc, const Range<int> x, const int y, const int level_height,
                          const int type, const bool triplet, const bool dotted);
+        
+        void paintTreble(wxGraphicsContext& painter, int x, int B_y, int E_y);
+        void paintBass(wxGraphicsContext& painter, int x, int score_top, int E_y);
+
 #endif
         
         /**
