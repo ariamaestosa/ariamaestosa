@@ -8,7 +8,7 @@
 - Fixed crash when trying to print a song containing an empty track
 - Grey out irrelevant fields in note select dialog
 - Migrate OSX player to Aria generic sequencer, like on other systems
-- wxWidgets 2.9 builds will now feature nicer silences on printed scores
+- wxWidgets 2.9 builds will now feature nicer symbols on printed scores
 - Improve tool picker
 
 ===================================================================================================

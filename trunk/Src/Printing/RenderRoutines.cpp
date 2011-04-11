@@ -33,12 +33,15 @@ using namespace AriaMaestosa::RenderRoutines;
  * Based on TuxGuitar render routines, released under GNU GPL
  * (c) Julian Gabriel Casadesus and others
  */
-void paintTreble(wxGraphicsContext& painter, int x, int y, float scale)
+void AriaMaestosa::RenderRoutines::paintTreble(wxGraphicsContext& painter, int x, int B_y, int E_y)
 {
-    painter.SetPen( *wxBLACK_PEN );
-    painter.SetBrush( *wxBLACK_BRUSH );
-    
     wxGraphicsPath path = painter.CreatePath();
+    
+    // B : (x + (1.2321913f * scale)),(y + (2.1369102f * scale))
+    // E : (x + (1.578771f * scale)),(y + (3.8828878f * scale))
+    
+    float scale = (E_y - B_y)/1.95; // 1.95 = approximate distance from B to E
+    float y = B_y - (2.2f * scale); // 2.2 = coordinate of B
     
     path.MoveToPoint((x + (0.9706216f * scale)),(y + (-0.9855771f * scale)));
     path.AddCurveToPoint((x + (0.99023926f * scale)),(y + (-0.99538594f * scale)),
@@ -61,6 +64,10 @@ void paintTreble(wxGraphicsContext& painter, int x, int y, float scale)
     path.AddCurveToPoint((x + (1.1144851f * scale)),(y + (1.7576342f * scale)),
                          (x + (1.1864164f * scale)),(y + (1.9766989f * scale)),
                          (x + (1.2321913f * scale)),(y + (2.1369102f * scale)));
+    
+    //painter.SetBrush( *wxYELLOW_BRUSH );
+    //painter.DrawRectangle((x + (1.2321913f * scale)),(y + (2.1369102f * scale)), 3, 3);
+    
     path.AddCurveToPoint((x + (1.24527f * scale)),(y + (2.1761456f * scale)),
                          (x + (1.2550789f * scale)),(y + (2.208842f * scale)),
                          (x + (1.2550789f * scale)),(y + (2.212112f * scale)));
@@ -84,10 +91,14 @@ void paintTreble(wxGraphicsContext& painter, int x, int y, float scale)
                          (x + (2.0561357f * scale)),(y + (3.3662882f * scale)));
     path.AddCurveToPoint((x + (2.0169f * scale)),(y + (3.4905329f * scale)),
                          (x + (1.9449685f * scale)),(y + (3.60497f * scale)),
-                         (x + (1.8468798f * scale)),(y + (3.7030587f * scale)));
+                         (x + (1.8468798f * scale)),(y + (3.7030587f * scale)));    
     path.AddCurveToPoint((x + (1.7618695f * scale)),(y + (3.7880688f * scale)),
                          (x + (1.6833986f * scale)),(y + (3.8403826f * scale)),
                          (x + (1.578771f * scale)),(y + (3.8828878f * scale)));
+    
+    //painter.SetBrush( *wxBLUE_BRUSH );
+    //painter.DrawRectangle((x + (1.578771f * scale)),(y + (3.8828878f * scale)), 10, 10);
+    
     path.AddLineToPoint((x + (1.5395356f * scale)),(y + (3.8992357f * scale)));
     path.AddLineToPoint((x + (1.5395356f * scale)),(y + (4.016942f * scale)));
     path.AddCurveToPoint((x + (1.5395356f * scale)),(y + (4.183693f * scale)),
@@ -303,6 +314,8 @@ void paintTreble(wxGraphicsContext& painter, int x, int y, float scale)
                          (x + (1.4676039f * scale)),(y + (2.6371622f * scale)),
                          (x + (1.3924028f * scale)),(y + (2.617545f * scale)));
     
+    painter.SetPen( *wxBLACK_PEN );
+    painter.SetBrush( *wxBLACK_BRUSH );
     painter.FillPath(path);
 }
 
@@ -310,11 +323,13 @@ void paintTreble(wxGraphicsContext& painter, int x, int y, float scale)
  * Based on TuxGuitar render routines, released under GNU GPL
  * (c) Julian Gabriel Casadesus and others
  */
-void paintBass(wxGraphicsContext& painter, int x, int y,float scale)
+void AriaMaestosa::RenderRoutines::paintBass(wxGraphicsContext& painter, int x, int score_top, int E_y)
 {
-    painter.SetPen( *wxBLACK_PEN );
-    painter.SetBrush( *wxBLACK_BRUSH );
-    
+    //float scale = 75.0f;   
+
+    float scale = (E_y - score_top)/1.25; // 1.25 = approximate distance from top to E
+    float y = score_top - 0.17f*scale; // topmost y at 0.17
+
     wxGraphicsPath path = painter.CreatePath();
     
     path.MoveToPoint((x + (0.71937084f * scale)),(y + (0.16147426f * scale)));
@@ -432,6 +447,11 @@ void paintBass(wxGraphicsContext& painter, int x, int y,float scale)
                          (x + (1.8929471f * scale)),(y + (1.2774905f * scale)),
                          (x + (1.9632971f * scale)),(y + (1.2583042f * scale)));
     
+    //painter.SetBrush( *wxRED_BRUSH );
+    //painter.DrawRectangle((x + (2.1167896f * scale)),(y + (1.2966768f * scale)), 5, 5);
+    
+    painter.SetPen( *wxBLACK_PEN );
+    painter.SetBrush( *wxBLACK_BRUSH );
     painter.FillPath(path);
 }
 
