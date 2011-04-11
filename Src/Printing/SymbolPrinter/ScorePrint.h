@@ -44,8 +44,8 @@ namespace AriaMaestosa
         };
         
         void analyseAndDrawScore(ClefRenderType clefType, ScoreAnalyser& analyser, LayoutLine& line,
-                                 const GraphicalTrack* track,
-                                 wxDC& dc, const int extra_lines_above, const int extra_lines_under,
+                                 const GraphicalTrack* track, wxDC& dc,
+                                 wxGraphicsContext* grctx, const int extra_lines_above, const int extra_lines_under,
                                  const int x0, const int y0, const int x1, const int y1,
                                  bool show_measure_number, const int grandStaffCenterY);
         
@@ -69,7 +69,7 @@ namespace AriaMaestosa
         
         /** Implement method from EditorPrintable */
         virtual void drawTrack(const int trackID, const LineTrackRef& track, LayoutLine& line,
-                               wxDC& dc, const bool drawMeasureNumbers);
+                               wxDC& dc, wxGraphicsContext* gc, const bool drawMeasureNumbers);
         
         /** Implement method from EditorPrintable */
         virtual int calculateHeight(const int trackID, LineTrackRef& renderInfo, LayoutLine& line, bool* empty);

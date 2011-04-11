@@ -215,7 +215,8 @@ int TablaturePrintable::calculateHeight(const int trackID, LineTrackRef& lineTra
 // ------------------------------------------------------------------------------------------------------------
 
 void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& currentTrack,
-                                   LayoutLine& currentLine, wxDC& dc, const bool drawMeasureNumbers)
+                                   LayoutLine& currentLine, wxDC& dc, wxGraphicsContext* gc,
+                                   const bool drawMeasureNumbers)
 {
     const TrackCoords* trackCoords = currentTrack.m_track_coords.raw_ptr;
     ASSERT(trackCoords != NULL);
@@ -387,9 +388,15 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
             Range<int> silenceX = tickToX(trackID, currentLine, tick);
             if (silenceX.from == -1 or silenceX.to == -1) continue;
             
+#if wxCHECK_VERSION(2,9,1)
+            RenderRoutines::drawSilence(*gc, silenceX, (m_silences[n].m_type <= 2 ? silencesY : silencesY2),
+                                        stringHeight, m_silences[n].m_type, m_silences[n].m_triplet,
+                                        m_silences[n].m_dotted);
+#else
             RenderRoutines::drawSilence(&dc, silenceX, (m_silences[n].m_type <= 2 ? silencesY : silencesY2),
                                         stringHeight, m_silences[n].m_type, m_silences[n].m_triplet,
                                         m_silences[n].m_dotted);
+#endif
             
             //DEBUG
             //Range<int> symbolArea = tickToX(trackID, currentLine, tick);

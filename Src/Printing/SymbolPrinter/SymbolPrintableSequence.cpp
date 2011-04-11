@@ -96,9 +96,9 @@ EditorPrintable* SymbolPrintableSequence::getEditorPrintable(const int trackID)
 
 // ------------------------------------------------------------------------------------------------------------------
 
-void SymbolPrintableSequence::printLinesInArea(wxDC& dc, const int pageID, 
-                                         const float notation_area_y0, const float notation_area_h,
-                                         const int pageHeight, const int x0, const int x1)
+void SymbolPrintableSequence::printLinesInArea(wxDC& dc, wxGraphicsContext* grctx, const int pageID, 
+                                               const float notation_area_y0, const float notation_area_h,
+                                               const int pageHeight, const int x0, const int x1)
 {
     ASSERT(m_layout_calculated);
     ASSERT(m_numeric_layout_manager != NULL);
@@ -121,13 +121,13 @@ void SymbolPrintableSequence::printLinesInArea(wxDC& dc, const int pageID,
     for (int l=0; l<lineAmount; l++)
     {
         dc.SetFont( regularFont );
-        this->printLine(page.getLine(l), dc);
+        this->printLine(page.getLine(l), dc, grctx);
     }
 }
 
 // -----------------------------------------------------------------------------------------------------------------
 
-void SymbolPrintableSequence::printLine(LayoutLine& line, wxDC& dc)
+void SymbolPrintableSequence::printLine(LayoutLine& line, wxDC& dc, wxGraphicsContext* grctx)
 {        
     const int trackAmount = line.getTrackAmount();
     
@@ -197,7 +197,7 @@ void SymbolPrintableSequence::printLine(LayoutLine& line, wxDC& dc)
 #endif
         
         EditorPrintable* editorPrintable = this->getEditorPrintable(n);
-        editorPrintable->drawTrack(n, sizing, line, dc, first);
+        editorPrintable->drawTrack(n, sizing, line, dc, grctx, first);
         first = false;
     }
 }

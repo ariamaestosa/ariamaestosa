@@ -27,6 +27,8 @@
 #include <wx/dcmemory.h>
 #include <wx/print.h>
 #include <wx/printdlg.h>
+#include <wx/graphics.h>
+#include <wx/dcprint.h>
 
 using namespace AriaMaestosa;
 
@@ -198,6 +200,17 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     
     ASSERT( m_seq != NULL );
     
+    wxGraphicsContext* gc = NULL;
+    
+    if (dynamic_cast<wxPrinterDC*>(&dc) != NULL)
+    {
+        gc = wxGraphicsContext::Create( dynamic_cast<wxPrinterDC&>(dc) );
+    }
+    else if (dynamic_cast<wxMemoryDC*>(&dc) != NULL)
+    {
+        gc = wxGraphicsContext::Create( dynamic_cast<wxMemoryDC&>(dc) );
+    }
+    
     const int h = y1 - y0;
 
     //LayoutPage& page = m_seq->getPage(pageNum-1);
@@ -315,7 +328,9 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     ASSERT_E(notation_area_y0 + notation_area_h, <=, y1);
 
     dc.SetFont( m_normal_font );
-    m_seq->printLinesInArea(dc, pageNum-1, notation_area_y0, notation_area_h, h, x0, x1);
+    m_seq->printLinesInArea(dc, gc, pageNum-1, notation_area_y0, notation_area_h, h, x0, x1);
+    
+    delete gc;
     
 }
     
