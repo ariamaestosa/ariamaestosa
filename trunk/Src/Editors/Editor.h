@@ -31,6 +31,7 @@ namespace AriaMaestosa
 {
     const int BORDER_SIZE = 20;
     const int MARGIN = 5;
+    const int MARGIN_Y = 4;
     const int LEFT_EDGE_X = 10;
     
     const int RIGHT_SCISSOR = 15;

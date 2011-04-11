@@ -1540,11 +1540,11 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
     
     if (m_collapsed)
     {
-        m_to_y = m_from_y + BORDER_SIZE + COLLAPSED_BAR_HEIGHT + BORDER_SIZE + MARGIN;
+        m_to_y = m_from_y + BORDER_SIZE + COLLAPSED_BAR_HEIGHT + BORDER_SIZE + MARGIN_Y;
     }
     else
     {
-        m_to_y = editor_from_y + m_height + BORDER_SIZE + MARGIN;
+        m_to_y = editor_from_y + m_height + BORDER_SIZE + MARGIN_Y;
     }
     
     // tell the editor(s) about its/their new location
