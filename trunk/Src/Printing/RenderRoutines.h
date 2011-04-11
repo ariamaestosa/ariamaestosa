@@ -24,6 +24,7 @@
 
 class wxDC;
 class wxImage;
+class wxGraphicsContext;
 
 namespace AriaMaestosa
 {
@@ -53,13 +54,25 @@ namespace AriaMaestosa
         
         /** @brief Utility function : renders an arc (half an ellipse) at the given coordinates */
         void renderArc(wxDC& dc, const int center_x, const int center_y,
-                              const int radius_x, const int radius_y);
+                       const int radius_x, const int radius_y);
+        
+        /** @brief Utility function : renders an arc (half an ellipse) at the given coordinates */
+        void renderArc(wxGraphicsContext& dc, const int center_x, const int center_y,
+                       const int radius_x, const int radius_y);
         
         /**
           * @brief utility function to render a silence at a given location
           */
         void drawSilence(wxDC* dc, const Range<int> x, const int y, const int level_height,
                          const int type, const bool triplet, const bool dotted);
+        
+#if wxCHECK_VERSION(2,9,1)
+        /**
+         * @brief utility function to render a silence at a given location
+         */
+        void drawSilence(wxGraphicsContext& dc, const Range<int> x, const int y, const int level_height,
+                         const int type, const bool triplet, const bool dotted);
+#endif
         
         /**
          * @brief  loads an image from file and scales it

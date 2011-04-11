@@ -61,9 +61,9 @@ namespace AriaMaestosa
         /**
           * @brief implement callback from parent
           */
-        virtual void printLinesInArea(wxDC& dc, const int page, const float notation_area_y0,
-                                      const float notation_area_h, const int pageHeight,
-                                      const int x0, const int x1);
+        virtual void printLinesInArea(wxDC& dc, wxGraphicsContext* grctx, const int page,
+                                      const float notation_area_y0, const float notation_area_h,
+                                      const int pageHeight, const int x0, const int x1);
         
         /**
          * @brief implement callback from parent

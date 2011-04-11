@@ -25,6 +25,7 @@
 #include "Printing/SymbolPrinter/PrintLayout/PrintLayoutAbstract.h"
 
 class wxDC;
+class wxGraphicsContext;
 
 namespace AriaMaestosa
 {
@@ -48,7 +49,7 @@ namespace AriaMaestosa
         OwnerPtr<PrintLayoutNumeric>  m_numeric_layout_manager;
         
         
-        void printLine(LayoutLine& line, wxDC& dc);
+        void printLine(LayoutLine& line, wxDC& dc, wxGraphicsContext* grctx);
         
         /** Whether at least one track with guitar view was added */
         bool m_is_guitar_editor_used;
@@ -146,9 +147,9 @@ namespace AriaMaestosa
           *
           * @pre              'calculateLayout' must have been called first.
           */
-        virtual void printLinesInArea(wxDC& dc, const int page, const float notation_area_y0,
-                                      const float notation_area_h, const int pageHeight,
-                                      const int x0, const int x1);
+        virtual void printLinesInArea(wxDC& dc, wxGraphicsContext* grctx, const int page,
+                                      const float notation_area_y0, const float notation_area_h,
+                                      const int pageHeight, const int x0, const int x1);
 
     };
     

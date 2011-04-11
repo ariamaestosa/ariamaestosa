@@ -19,6 +19,7 @@
 
 class wxDC;
 class wxString;
+class wxGraphicsContext;
 
 #include "Utils.h"
 #include "ptr_vector.h"
@@ -120,9 +121,9 @@ namespace AriaMaestosa
          *
          * @pre                       'calculateLayout' must have been called first.
          */
-        virtual void printLinesInArea(wxDC& dc, const int page, const float notation_area_y0,
-                                      const float notation_area_h, const int pageHeight,
-                                      const int x0, const int x1) = 0;
+        virtual void printLinesInArea(wxDC& dc, wxGraphicsContext* grctx, const int page,
+                                      const float notation_area_y0, const float notation_area_h,
+                                      const int pageHeight, const int x0, const int x1) = 0;
         
         /** @return whether 'calculteLayout' was called on this object */
         bool isLayoutCalculated() const { return m_layout_calculated; }

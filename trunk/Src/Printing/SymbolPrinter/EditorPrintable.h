@@ -23,6 +23,7 @@ class wxDC;
 class wxPoint;
 class wxImage;
 class wxBitmap;
+class wxGraphicsContext;
 
 namespace AriaMaestosa
 {
@@ -82,7 +83,7 @@ namespace AriaMaestosa
           * This will be handled in the appropriate subclass.
          */
         virtual void drawTrack(const int trackID, const LineTrackRef& track, LayoutLine& line,
-                               wxDC& dc, const bool drawMeasureNumbers) = 0;
+                               wxDC& dc, wxGraphicsContext* gc, const bool drawMeasureNumbers) = 0;
         
         /**
           * @brief Called by the layout code to know the relative height of a track within a line

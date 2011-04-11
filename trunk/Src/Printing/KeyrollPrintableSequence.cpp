@@ -137,9 +137,9 @@ void KeyrollPrintableSequence::calculateLayout()
 
 // -------------------------------------------------------------------------------------------------------
 
-void KeyrollPrintableSequence::printLinesInArea(wxDC& dc, const int page, const float notationAreaY0,
-                                                const float notationAreaHeight, const int pageHeight,
-                                                const int x0, const int x1)
+void KeyrollPrintableSequence::printLinesInArea(wxDC& dc, wxGraphicsContext* grctx, const int page,
+                                                const float notationAreaY0, const float notationAreaHeight,
+                                                const int pageHeight, const int x0, const int x1)
 {
     dc.SetPen( wxPen(*wxBLACK, 5) );
 

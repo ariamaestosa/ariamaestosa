@@ -311,6 +311,11 @@ namespace AriaMaestosa
     // leave a pointer to the dc for the callback
     // FIXME: find cleaner way than globals
     wxDC* global_dc = NULL;
+    
+#if wxCHECK_VERSION(2,9,1)
+    wxGraphicsContext* gc = NULL;
+#endif
+    
     ScorePrintable* g_printable = NULL;
     
     // leave height of lines for the renderSilence callback
@@ -330,7 +335,11 @@ namespace AriaMaestosa
         // silences in gathered rests, for instance, will not be found by tickToX
         if (x.from < 0 or x.to < 0) return;
         
+#if wxCHECK_VERSION(2,9,1)
+        RenderRoutines::drawSilence(*gc, x, silences_y, g_line_height, type, triplet, dotted);
+#else
         RenderRoutines::drawSilence(global_dc, x, silences_y, g_line_height, type, triplet, dotted);
+#endif
     }
     
 #if 0
@@ -501,7 +510,8 @@ namespace AriaMaestosa
     // -------------------------------------------------------------------------------------------
     
     void ScorePrintable::drawTrack(const int trackID, const LineTrackRef& currentTrack,
-                                   LayoutLine& currentLine, wxDC& dc, const bool drawMeasureNumbers)
+                                   LayoutLine& currentLine, wxDC& dc, wxGraphicsContext* grctx,
+                                   const bool drawMeasureNumbers)
     {
         const TrackCoords* trackCoords = currentTrack.m_track_coords.raw_ptr;
         ASSERT(trackCoords != NULL);
@@ -563,7 +573,7 @@ namespace AriaMaestosa
         {
             ClefRenderType clef = (m_f_clef ? G_CLEF_FROM_GRAND_STAFF : G_CLEF_ALONE);
             analyseAndDrawScore(clef, *g_clef_analyser, currentLine, currentTrack.getTrack(),
-                                dc, abs(scoreData->extra_lines_above_g_score),
+                                dc, grctx, abs(scoreData->extra_lines_above_g_score),
                                 abs(scoreData->extra_lines_under_g_score),
                                 trackCoords->x0, g_clef_y_from, trackCoords->x1, g_clef_y_to,
                                 drawMeasureNumbers, grandStaffCenterY);
@@ -574,7 +584,7 @@ namespace AriaMaestosa
             ClefRenderType clef = (m_g_clef ? F_CLEF_FROM_GRAND_STAFF : F_CLEF_ALONE);
 
             analyseAndDrawScore(clef, *f_clef_analyser, currentLine, currentTrack.getTrack(),
-                                dc, abs(scoreData->extra_lines_above_f_score),
+                                dc, grctx, abs(scoreData->extra_lines_above_f_score),
                                 abs(scoreData->extra_lines_under_f_score),
                                 trackCoords->x0, f_clef_y_from, trackCoords->x1, f_clef_y_to,
                                 (m_g_clef ? false : drawMeasureNumbers) /* if we have both keys don't show twice */,
@@ -980,7 +990,7 @@ namespace AriaMaestosa
     // -------------------------------------------------------------------------------------------
     
     void ScorePrintable::analyseAndDrawScore(ClefRenderType clefType, ScoreAnalyser& analyser, LayoutLine& line,
-                                             const GraphicalTrack* gtrack, wxDC& dc,
+                                             const GraphicalTrack* gtrack, wxDC& dc, wxGraphicsContext* grctx,
                                              const int extra_lines_above, const int extra_lines_under,
                                              const int x0, const int y0, const int x1, const int y1,
                                              bool show_measure_number, const int grandStaffCenterY)
@@ -1404,6 +1414,10 @@ namespace AriaMaestosa
         const int last_measure  = line.getLastMeasure();
         
         global_dc = &dc;
+        
+#if wxCHECK_VERSION(2,9,1)
+        gc = grctx;
+#endif
         
         //FIXME: we already have collected all silence info in a vector... don't call the SilenceAnalyser again!
         if (f_clef)
