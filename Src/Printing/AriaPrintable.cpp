@@ -202,6 +202,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     
     wxGraphicsContext* gc = NULL;
     
+#if wxCHECK_VERSION(2,9,1)
     if (dynamic_cast<wxPrinterDC*>(&dc) != NULL)
     {
         gc = wxGraphicsContext::Create( dynamic_cast<wxPrinterDC&>(dc) );
@@ -210,6 +211,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     {
         gc = wxGraphicsContext::Create( dynamic_cast<wxMemoryDC&>(dc) );
     }
+#endif
     
     const int h = y1 - y0;
 
