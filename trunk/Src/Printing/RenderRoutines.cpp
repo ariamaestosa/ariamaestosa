@@ -41,7 +41,7 @@ void AriaMaestosa::RenderRoutines::paintTreble(wxGraphicsContext& painter, int x
     // E : (x + (1.578771f * scale)),(y + (3.8828878f * scale))
     
     float scale = (E_y - B_y)/1.95; // 1.95 = approximate distance from B to E
-    float y = B_y - (2.2f * scale); // 2.2 = coordinate of B
+    float y = B_y - (2.14f * scale); // 2.14 = approximate coordinate of B
     
     path.MoveToPoint((x + (0.9706216f * scale)),(y + (-0.9855771f * scale)));
     path.AddCurveToPoint((x + (0.99023926f * scale)),(y + (-0.99538594f * scale)),
