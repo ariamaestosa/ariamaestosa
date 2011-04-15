@@ -66,6 +66,8 @@ namespace AriaMaestosa
         void drawSilence(wxDC* dc, const Range<int> x, const int y, const int level_height,
                          const int type, const bool triplet, const bool dotted);
         
+        void drawFlag(wxDC* dc, wxGraphicsContext* gc, const int flag_x_origin, const int flag_y, const int orient);
+        
 #if wxCHECK_VERSION(2,9,1)
         /**
          * @brief utility function to render a silence at a given location

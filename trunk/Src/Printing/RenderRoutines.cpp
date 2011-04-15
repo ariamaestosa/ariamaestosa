@@ -534,7 +534,10 @@ void paintFooter(wxGraphicsContext& painter, float x, float y,int dir, float sca
     painter.FillPath(path);
 }
 
-
+/**
+ * Based on TuxGuitar render routines, released under GNU GPL
+ * (c) Julian Gabriel Casadesus and others
+ */
 void paintEighth(wxGraphicsContext& painter, float x, float y, float scale)
 {
     painter.SetPen( *wxBLACK_PEN );
@@ -567,7 +570,10 @@ void paintEighth(wxGraphicsContext& painter, float x, float y, float scale)
     painter.FillPath(path);
 }
 
-
+/**
+ * Based on TuxGuitar render routines, released under GNU GPL
+ * (c) Julian Gabriel Casadesus and others
+ */
 void paintQuarter(wxGraphicsContext& painter, float x, float y, float scale)
 {
     painter.SetPen( *wxBLACK_PEN );
@@ -611,7 +617,10 @@ void paintQuarter(wxGraphicsContext& painter, float x, float y, float scale)
     painter.FillPath(path);
 }
 
-
+/**
+ * Based on TuxGuitar render routines, released under GNU GPL
+ * (c) Julian Gabriel Casadesus and others
+ */
 void paintSixteenth(wxGraphicsContext& painter, float x, float y,float scale)
 {
     painter.SetPen( *wxBLACK_PEN );
@@ -656,6 +665,10 @@ void paintSixteenth(wxGraphicsContext& painter, float x, float y,float scale)
     painter.FillPath(path);
 }
 
+/**
+ * Based on TuxGuitar render routines, released under GNU GPL
+ * (c) Julian Gabriel Casadesus and others
+ */
 void paintThirtySecond(wxGraphicsContext& painter, float x, float y, float scale)
 {
     painter.SetPen( *wxBLACK_PEN );
@@ -825,6 +838,83 @@ void AriaMaestosa::RenderRoutines::drawSilence(wxGraphicsContext& dc, const Rang
 }
 
 #endif
+
+/**
+ * Based on TuxGuitar render routines, released under GNU GPL
+ * (c) Julian Gabriel Casadesus and others
+ */
+void AriaMaestosa::RenderRoutines::drawFlag(wxDC* dc, wxGraphicsContext* gc, const int flag_x_origin,
+                                            const int flag_y, const int orient)
+{
+#if wxCHECK_VERSION(2,9,1)
+    wxGraphicsPath path = gc->CreatePath();
+    
+    const float scale = 65.0f;
+    const float x = flag_x_origin + 3;
+    const float y = flag_y + orient*scale*2.2f;
+    
+    path.MoveToPoint(( x + (0.64375f * scale) ),( y + ((0.00625f * scale) * -orient) ));
+    path.AddCurveToPoint(( x + (0.659375f * scale) ),( y + ((0.0f * scale) * -orient) ),
+                         ( x + (0.69375f * scale) ),( y + ((0.00625f * scale) * -orient) ),
+                         ( x + (0.70625f * scale) ),( y + ((0.0125f * scale) * -orient) ));
+    path.AddCurveToPoint(( x + (0.725f * scale) ),( y + ((0.025f * scale) * -orient) ),
+                         ( x + (0.73125f * scale) ),( y + ((0.03125f * scale) * -orient) ),
+                         ( x + (0.75f * scale) ),( y + ((0.065625f * scale) * -orient) ));
+    path.AddCurveToPoint(( x + (0.815625f * scale) ),( y + ((0.1875f * scale) * -orient) ),
+                         ( x + (0.86875f * scale) ),( y + ((0.3375f * scale) * -orient) ),
+                         ( x + (0.890625f * scale) ),( y + ((0.4625f * scale) * -orient) ));
+    path.AddCurveToPoint(( x + (0.934375f * scale) ),( y + ((0.70937496f * scale) * -orient) ),
+                         ( x + (0.903125f * scale) ),( y + ((0.890625f * scale) * -orient) ),
+                         ( x + (0.778125f * scale) ),( y + ((1.096875f * scale) * -orient) ));
+    path.AddCurveToPoint(( x + (0.721875f * scale) ),( y + ((1.19375f * scale) * -orient) ),
+                         ( x + (0.653125f * scale) ),( y + ((1.28125f * scale) * -orient) ),
+                         ( x + (0.5f * scale) ),( y + ((1.453125f * scale) * -orient) ));
+    path.AddCurveToPoint(( x + (0.340625f * scale) ),( y + ((1.6375f * scale) * -orient) ),
+                         ( x + (0.290625f * scale) ),( y + ((1.703125f * scale) * -orient) ),
+                         ( x + (0.228125f * scale) ),( y + ((1.790625f * scale) * -orient) ));
+    path.AddCurveToPoint(( x + (0.165625f * scale) ),( y + ((1.8875f * scale) * -orient) ),
+                         ( x + (0.121875f * scale) ),( y + ((1.978125f * scale) * -orient) ),
+                         ( x + (0.09375f * scale) ),( y + ((2.06875f * scale) * -orient) ));
+    path.AddCurveToPoint(( x + (0.078125f * scale) ),( y + ((2.125f * scale) * -orient) ),
+                         ( x + (0.065625f * scale) ),( y + ((2.209375f * scale) * -orient) ),
+                         ( x + (0.065625f * scale) ),( y + ((2.25625f * scale) * -orient) ));
+    path.AddLineToPoint( x + (0.065625f * scale) ,( y + ((2.271875f * scale) * -orient) ));
+    path.AddLineToPoint(( x + (0.034375f * scale) ),( y + ((2.271875f * scale) * -orient) ));
+    path.AddLineToPoint(( x + (0.0f * scale) ),( y + ((2.271875f * scale) * -orient) ));
+    path.AddLineToPoint(( x + (0.0f * scale) ),( y + ((1.88125f * scale) * -orient) ));
+    path.AddLineToPoint(( x + (0.0f * scale) ),( y + ((1.490625f * scale) * -orient) ));
+    path.AddLineToPoint(( x + (0.034375f * scale) ),( y + ((1.490625f * scale) * -orient) ));
+    path.AddLineToPoint(( x + (0.06875f * scale) ),( y + ((1.490625f * scale) * -orient) ));
+    path.AddLineToPoint(( x + (0.15f * scale) ),( y + ((1.434375f * scale) * -orient) ));
+    path.AddCurveToPoint(( x + (0.38125f * scale) ),( y + ((1.28125f * scale) * -orient) ),
+                         ( x + (0.521875f * scale) ),( y + ((1.15625f * scale) * -orient) ),
+                         ( x + (0.621875f * scale) ),( y + ((1.021875f * scale) * -orient) ));
+    path.AddCurveToPoint(( x + (0.74375f * scale) ),( y + ((0.85625f * scale) * -orient) ),
+                         ( x + (0.778125f * scale) ),( y + ((0.71874994f * scale) * -orient) ),
+                         ( x + (0.74375f * scale) ),( y + ((0.5124999f * scale) * -orient) ));
+    path.AddCurveToPoint(( x + (0.721875f * scale) ),( y + ((0.38125f * scale) * -orient) ),
+                         ( x + (0.66875f * scale) ),( y + ((0.246875f * scale) * -orient) ),
+                         ( x + (0.6f * scale) ),( y + ((0.128125f * scale) * -orient) ));
+    path.AddCurveToPoint(( x + (0.584375f * scale) ),( y + ((0.10625f * scale) * -orient) ),
+                         ( x + (0.58125f * scale) ),( y + ((0.096875f * scale) * -orient) ),
+                         ( x + (0.58125f * scale) ),( y + ((0.0875f * scale) * -orient) ));
+    path.AddCurveToPoint(( x + (0.58125f * scale) ),( y + ((0.05f * scale) * -orient) ),
+                         ( x + (0.60625f * scale) ),( y + ((0.01875f * scale) * -orient) ),
+                         ( x + (0.64375f * scale) ),( y + ((0.00625f * scale) * -orient) ));
+    
+    gc->FillPath(path);
+#else
+    wxPoint points[] =
+    {
+        wxPoint(flag_x_origin, flag_y),
+        wxPoint(flag_x_origin + 30/2,  flag_y + orient*60/2),
+        wxPoint(flag_x_origin + 110/2, flag_y + orient*110/2),
+        wxPoint(flag_x_origin + 90/2,  flag_y + orient*150/2)
+    };
+    dc->DrawSpline(4, points);
+#endif
+}
+
 
 void AriaMaestosa::RenderRoutines::drawSilence(wxDC* dc, const Range<int> x, const int y,
                                                const int levelHeight, const int type, const bool triplet,

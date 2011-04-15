@@ -1447,14 +1447,7 @@ namespace AriaMaestosa
                     const int flag_y = stem_end + n*flag_step*5;
                     const int orient = (noteRenderInfo.m_stem_type == STEM_UP ? 1 : -1 );
                     
-                    wxPoint points[] =
-                    {
-                        wxPoint(flag_x_origin, flag_y),
-                        wxPoint(flag_x_origin + 30/2,  flag_y + orient*60/2),
-                        wxPoint(flag_x_origin + 110/2, flag_y + orient*110/2),
-                        wxPoint(flag_x_origin + 90/2,  flag_y + orient*150/2)
-                    };
-                    dc.DrawSpline(4, points);
+                    RenderRoutines::drawFlag(&dc, grctx, flag_x_origin, flag_y, orient);
                 }
             }
             
