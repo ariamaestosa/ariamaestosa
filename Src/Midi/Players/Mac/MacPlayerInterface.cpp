@@ -69,28 +69,10 @@
 #include "jdkmidi/driver.h"
 #include "jdkmidi/process.h"
 
+#include <wx/msgdlg.h>
+
 namespace AriaMaestosa
 {
-    
-    class MyPThread
-    {
-        int id;
-        pthread_t thread;
-    public:
-        MyPThread(){}
-        
-        void runFunction(void* (*func)(void*) )
-        {
-            id = pthread_create( &thread, NULL, func, (void*)NULL);
-        }
-    };
-    
-    
-    namespace threads
-    {
-        MyPThread export_audio;
-    }
-    
     bool g_playing;
     
     int g_current_tick;
@@ -98,45 +80,67 @@ namespace AriaMaestosa
     bool g_thread_should_continue = true;
     
     
-    // Silly way to pass parameters to the thread
-    wxString export_audio_filepath;
-    Sequence* g_sequence = NULL;
-    
-    void* add_events_func( void* ptr )
+    class AudioExport : public wxThread
     {
-        ASSERT(g_sequence != NULL);
-        MeasureData* md = g_sequence->getMeasureData();
+        wxString m_filepath;
+        Sequence* m_sequence;
+        char* m_data;
+        int m_length;
+        int m_firstMeasureValue;
         
-        // when we're saving, we always want song to start at first measure, so temporarly switch firstMeasure to 0, and set it back in the end
-        const int firstMeasureValue = md->getFirstMeasure();
-        md->setFirstMeasure(0);
+    public:
         
-        char* data;
-        int length = -1;
-        
-        int startTick = -1, songLength = -1;
-        allocAsMidiBytes(g_sequence, false, &songLength, &startTick, &data, &length, true);
-        
-        //exportToAudio( data, length, filepath );
-        qtkit_setData(data, length);
-        bool success = qtkit_exportToAiff( export_audio_filepath.mb_str() );
-        
-        if (not success)
+        AudioExport(Sequence* sequence, wxString filepath)
         {
-            // FIXME - give visual message. warning this is a thread.
-            std::cerr << "EXPORTING FAILED" << std::endl;
+            m_filepath = filepath;
+            m_sequence = sequence;
+            
+            if (Create() != wxTHREAD_NO_ERROR)
+            {
+                wxMessageBox("Failed to create Audio Export thread!\n");
+                return;
+            }
+            
+            MeasureData* md = m_sequence->getMeasureData();
+
+            // when we're saving, we always want song to start at first measure, so temporarly switch firstMeasure to 0, and set it back in the end
+            m_firstMeasureValue = md->getFirstMeasure();
+            md->setFirstMeasure(0);
+            
+            int startTick = -1, songLength = -1;
+            allocAsMidiBytes(m_sequence, false, &songLength, &startTick, &m_data, &m_length, true);
+            
+            qtkit_setData(m_data, m_length);
+            
+            Run();
         }
         
-        // send hide progress window event
-        MAKE_HIDE_PROGRESSBAR_EVENT(event);
-        getMainFrame()->GetEventHandler()->AddPendingEvent(event);
-        
-        free(data);
-        md->setFirstMeasure(firstMeasureValue);
-        
-        return (void*)NULL;
-    }
-
+        virtual ExitCode Entry()
+        {
+            MeasureData* md = m_sequence->getMeasureData();
+            
+            //exportToAudio( data, length, filepath );
+            //qtkit_setData(m_data, m_length);
+            bool success = qtkit_exportToAiff( m_filepath.mb_str() );
+            
+            if (not success)
+            {
+                // FIXME - give visual message. warning this is a thread.
+                std::cerr << "EXPORTING FAILED" << std::endl;
+            }
+            
+            // send hide progress window event
+            MAKE_HIDE_PROGRESSBAR_EVENT(event);
+            getMainFrame()->GetEventHandler()->AddPendingEvent(event);
+            
+            
+            free(m_data);
+            md->setFirstMeasure(m_firstMeasureValue);
+            
+            return 0;
+        }
+    };
+    
     void cleanup_after_playback()
     {
         g_playing = false;
@@ -150,11 +154,13 @@ namespace AriaMaestosa
         int songLengthInTicks;
         bool m_selection_only;
         int m_start_tick;
+        Sequence* m_sequence;
         
     public:
         
-        SequencerThread(const bool selectionOnly)
+        SequencerThread(Sequence* seq, const bool selectionOnly)
         {
+            m_sequence = seq;
             jdkmidiseq = NULL;
             jdksequencer = NULL;
             m_selection_only = selectionOnly;
@@ -171,9 +177,9 @@ namespace AriaMaestosa
             songLengthInTicks = -1;
             int trackAmount = -1;
             m_start_tick = 0;
-            makeJDKMidiSequence(g_sequence, *jdkmidiseq, m_selection_only, &songLengthInTicks,
+            makeJDKMidiSequence(m_sequence, *jdkmidiseq, m_selection_only, &songLengthInTicks,
                                 &m_start_tick, &trackAmount, true /* for playback */);
-            songLengthInTicks += g_sequence->ticksPerBeat();
+            songLengthInTicks += m_sequence->ticksPerBeat();
             
             //std::cout << "trackAmount=" << trackAmount << " start_tick=" << m_start_tick<<
             //        " songLengthInTicks=" << songLengthInTicks << std::endl;
@@ -203,7 +209,7 @@ namespace AriaMaestosa
         
         ExitCode Entry()
         {
-            AriaSequenceTimer timer(g_sequence);
+            AriaSequenceTimer timer(m_sequence);
             timer.run(jdksequencer, songLengthInTicks);
             
             //must_stop = true;
@@ -222,6 +228,8 @@ namespace AriaMaestosa
         //bool use_qtkit;
         
         int stored_songLength;
+        
+        Sequence* m_sequence;
         
     public:
         
@@ -248,7 +256,7 @@ namespace AriaMaestosa
         {
             if (g_playing) return false; //already playing
             
-            g_sequence = sequence;
+            m_sequence = sequence;
             
             /*
             char* data;
@@ -263,7 +271,7 @@ namespace AriaMaestosa
             free(data);
              */
             
-            SequencerThread* seqthread = new SequencerThread(false /* selection only */);
+            SequencerThread* seqthread = new SequencerThread(sequence, false /* selection only */);
             seqthread->go(startTick);
             
             return true;
@@ -274,7 +282,7 @@ namespace AriaMaestosa
             
             if (g_playing) return false; //already playing
             
-            g_sequence = sequence;
+            m_sequence = sequence;
             
             /*
             char* data;
@@ -296,7 +304,7 @@ namespace AriaMaestosa
             free(data);
             */
             
-            SequencerThread* seqthread = new SequencerThread(true /* selection only */);
+            SequencerThread* seqthread = new SequencerThread(sequence, true /* selection only */);
             seqthread->go(startTick);
             
             return true;
@@ -304,9 +312,7 @@ namespace AriaMaestosa
         
         virtual void exportAudioFile(Sequence* sequence, wxString filepath)
         {
-            g_sequence = sequence;
-            export_audio_filepath = filepath;
-            threads::export_audio.runFunction( &add_events_func );
+            new AudioExport(sequence, filepath);
         }
         
         virtual int getCurrentTick()
