@@ -341,7 +341,11 @@ namespace AriaMaestosa
             //const int h = wxRendererNative::GetDefault().GetHeaderButtonHeight(this);
             
             wxSizerItemList& items = m_sizer->GetChildren();
+#if wxCHECK_VERSION(2,9,2)
+            wxSizerItemList::compatibility_iterator node = items.GetFirst();
+#else
             wxwxSizerItemListNode *node = items.GetFirst();
+#endif
             int count = 0;
             while (node)
             {
