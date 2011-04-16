@@ -49,6 +49,41 @@
 		950B3EFD1125DE60006C9AF1 /* en.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EE61125DE18006C9AF1 /* en.lproj */; };
 		950B3EFE1125DE60006C9AF1 /* de.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EE31125DE18006C9AF1 /* de.lproj */; };
 		950B3EFF1125DE60006C9AF1 /* it.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EEB1125DE18006C9AF1 /* it.lproj */; };
+		95160BE61359F3C1001F20CD /* Documentation in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7C9C133E88CF0060AB17 /* Documentation */; };
+		95160BE71359F3C1001F20CD /* score in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CD4133E88CF0060AB17 /* score */; };
+		95160BE81359F3C1001F20CD /* collapse.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7C95133E88CF0060AB17 /* collapse.jpg */; };
+		95160BE91359F3C1001F20CD /* border.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7C93133E88CF0060AB17 /* border.jpg */; };
+		95160BEA1359F3C1001F20CD /* score_view.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CE7133E88CF0060AB17 /* score_view.jpg */; };
+		95160BEB1359F3C1001F20CD /* corner.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7C9A133E88CF0060AB17 /* corner.jpg */; };
+		95160BEC1359F3C1001F20CD /* guitar_view.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CC8133E88CF0060AB17 /* guitar_view.jpg */; };
+		95160BED1359F3C1001F20CD /* keyboard_view.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CC9133E88CF0060AB17 /* keyboard_view.jpg */; };
+		95160BEE1359F3C1001F20CD /* controller_view.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7C99133E88CF0060AB17 /* controller_view.jpg */; };
+		95160BEF1359F3C1001F20CD /* expand.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CC7133E88CF0060AB17 /* expand.jpg */; };
+		95160BF01359F3C1001F20CD /* title.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CEB133E88CF0060AB17 /* title.jpg */; };
+		95160BF11359F3C1001F20CD /* aria64.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7C92133E88CF0060AB17 /* aria64.png */; };
+		95160BF21359F3C1001F20CD /* combo_side.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7C98133E88CF0060AB17 /* combo_side.png */; };
+		95160BF31359F3C1001F20CD /* tool2.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CED133E88CF0060AB17 /* tool2.png */; };
+		95160BF41359F3C1001F20CD /* play.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CCF133E88CF0060AB17 /* play.png */; };
+		95160BF51359F3C1001F20CD /* notetrack.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CCD133E88CF0060AB17 /* notetrack.png */; };
+		95160BF61359F3C1001F20CD /* white_corner.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CEF133E88CF0060AB17 /* white_corner.png */; };
+		95160BF71359F3C1001F20CD /* mute_off.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CCB133E88CF0060AB17 /* mute_off.png */; };
+		95160BF81359F3C1001F20CD /* pause.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CCE133E88CF0060AB17 /* pause.png */; };
+		95160BF91359F3C1001F20CD /* dock.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7C9B133E88CF0060AB17 /* dock.png */; };
+		95160BFA1359F3C1001F20CD /* sb_arrow.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CD1133E88CF0060AB17 /* sb_arrow.png */; };
+		95160BFB1359F3C1001F20CD /* drum_view.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CC6133E88CF0060AB17 /* drum_view.png */; };
+		95160BFC1359F3C1001F20CD /* tool1.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CEC133E88CF0060AB17 /* tool1.png */; };
+		95160BFD1359F3C1001F20CD /* maximize.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CCA133E88CF0060AB17 /* maximize.png */; };
+		95160BFE1359F3C1001F20CD /* mute_on.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CCC133E88CF0060AB17 /* mute_on.png */; };
+		95160BFF1359F3C1001F20CD /* sb_arrow_sel.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CD0133E88CF0060AB17 /* sb_arrow_sel.png */; };
+		95160C001359F3C1001F20CD /* close.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7C94133E88CF0060AB17 /* close.png */; };
+		95160C011359F3C1001F20CD /* tab_side.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CEA133E88CF0060AB17 /* tab_side.png */; };
+		95160C021359F3C1001F20CD /* stop.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CE8133E88CF0060AB17 /* stop.png */; };
+		95160C031359F3C1001F20CD /* tab_body.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CE9133E88CF0060AB17 /* tab_body.png */; };
+		95160C041359F3C1001F20CD /* sb_backg.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CD2133E88CF0060AB17 /* sb_backg.png */; };
+		95160C051359F3C1001F20CD /* combo_body.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7C96133E88CF0060AB17 /* combo_body.png */; };
+		95160C061359F3C1001F20CD /* combo_select.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7C97133E88CF0060AB17 /* combo_select.png */; };
+		95160C071359F3C1001F20CD /* sb_thumb.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CD3133E88CF0060AB17 /* sb_thumb.png */; };
+		95160C081359F3C1001F20CD /* white_border.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CEE133E88CF0060AB17 /* white_border.png */; };
 		9517E6A813288D1E00EF4424 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 953EE285131709E300AA3EA1 /* CoreMIDI.framework */; };
 		9531304711FCC31A00B75472 /* JackMidiManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9531304611FCC31A00B75472 /* JackMidiManager.cpp */; };
 		9531304811FCC31A00B75472 /* JackMidiManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9531304611FCC31A00B75472 /* JackMidiManager.cpp */; };
@@ -768,6 +803,41 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				95160BE61359F3C1001F20CD /* Documentation in CopyFiles */,
+				95160BE71359F3C1001F20CD /* score in CopyFiles */,
+				95160BE81359F3C1001F20CD /* collapse.jpg in CopyFiles */,
+				95160BE91359F3C1001F20CD /* border.jpg in CopyFiles */,
+				95160BEA1359F3C1001F20CD /* score_view.jpg in CopyFiles */,
+				95160BEB1359F3C1001F20CD /* corner.jpg in CopyFiles */,
+				95160BEC1359F3C1001F20CD /* guitar_view.jpg in CopyFiles */,
+				95160BED1359F3C1001F20CD /* keyboard_view.jpg in CopyFiles */,
+				95160BEE1359F3C1001F20CD /* controller_view.jpg in CopyFiles */,
+				95160BEF1359F3C1001F20CD /* expand.jpg in CopyFiles */,
+				95160BF01359F3C1001F20CD /* title.jpg in CopyFiles */,
+				95160BF11359F3C1001F20CD /* aria64.png in CopyFiles */,
+				95160BF21359F3C1001F20CD /* combo_side.png in CopyFiles */,
+				95160BF31359F3C1001F20CD /* tool2.png in CopyFiles */,
+				95160BF41359F3C1001F20CD /* play.png in CopyFiles */,
+				95160BF51359F3C1001F20CD /* notetrack.png in CopyFiles */,
+				95160BF61359F3C1001F20CD /* white_corner.png in CopyFiles */,
+				95160BF71359F3C1001F20CD /* mute_off.png in CopyFiles */,
+				95160BF81359F3C1001F20CD /* pause.png in CopyFiles */,
+				95160BF91359F3C1001F20CD /* dock.png in CopyFiles */,
+				95160BFA1359F3C1001F20CD /* sb_arrow.png in CopyFiles */,
+				95160BFB1359F3C1001F20CD /* drum_view.png in CopyFiles */,
+				95160BFC1359F3C1001F20CD /* tool1.png in CopyFiles */,
+				95160BFD1359F3C1001F20CD /* maximize.png in CopyFiles */,
+				95160BFE1359F3C1001F20CD /* mute_on.png in CopyFiles */,
+				95160BFF1359F3C1001F20CD /* sb_arrow_sel.png in CopyFiles */,
+				95160C001359F3C1001F20CD /* close.png in CopyFiles */,
+				95160C011359F3C1001F20CD /* tab_side.png in CopyFiles */,
+				95160C021359F3C1001F20CD /* stop.png in CopyFiles */,
+				95160C031359F3C1001F20CD /* tab_body.png in CopyFiles */,
+				95160C041359F3C1001F20CD /* sb_backg.png in CopyFiles */,
+				95160C051359F3C1001F20CD /* combo_body.png in CopyFiles */,
+				95160C061359F3C1001F20CD /* combo_select.png in CopyFiles */,
+				95160C071359F3C1001F20CD /* sb_thumb.png in CopyFiles */,
+				95160C081359F3C1001F20CD /* white_border.png in CopyFiles */,
 				950B3EF81125DE59006C9AF1 /* fr.lproj in CopyFiles */,
 				950B3EF91125DE59006C9AF1 /* en.lproj in CopyFiles */,
 				950B3EFA1125DE59006C9AF1 /* de.lproj in CopyFiles */,
