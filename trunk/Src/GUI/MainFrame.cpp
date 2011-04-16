@@ -368,6 +368,7 @@ void MainFrame::init()
 
     m_play_bitmap.LoadFile( getResourcePrefix()  + wxT("play.png") , wxBITMAP_TYPE_PNG);
     m_pause_bitmap.LoadFile( getResourcePrefix()  + wxT("pause.png") , wxBITMAP_TYPE_PNG);
+    assert(m_play_bitmap.IsOk());
     m_toolbar->AddTool(PLAY_CLICKED, _("Play"), m_play_bitmap);
 
     wxBitmap stopBitmap;
