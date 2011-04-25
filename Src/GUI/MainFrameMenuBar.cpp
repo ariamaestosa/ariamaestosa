@@ -266,11 +266,26 @@ void MainFrame::initMenuBar()
     // ---- Output devices menu
     m_output_menu = new wxMenu();
     
+    wxString output = PreferencesData::getInstance()->getValue(SETTING_ID_MIDI_OUTPUT);
+
     wxArrayString choices = PlatformMidiManager::get()->getOutputChoices();
+    bool found = false;
     for (unsigned int n=0; n<choices.Count(); n++)
     {
         wxMenuItem* item = m_output_menu->QUICK_ADD_CHECK_MENU(MENU_OUTPUT_DEVICE+n, choices[n], MainFrame::menuEvent_outputDevice);
-        item->Check(n == 0);
+        m_output_device_menus.push_back(item);
+        
+        if (choices[n] == output)
+        {
+            found = true;
+            item->Check(true);
+        }
+    }
+    
+    if (not found)
+    {
+        printf("WARNING: Did not find output port '%s'\n", (const char*)output.mb_str());
+        m_output_device_menus[0].Check();
     }
     
     menuBar->Append(m_output_menu, _("&Output"));
@@ -894,7 +909,26 @@ void MainFrame::menuEvent_metronome(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_outputDevice(wxCommandEvent& evt)
 {
-    // TODO: make this menu actually  work
+    wxMenuItem* item = NULL;
+    
+    for (int n=0; n<m_output_device_menus.size(); n++)
+    {
+        if (m_output_device_menus[n].GetId() == evt.GetId())
+        {
+            item = m_output_device_menus.get(n);
+            item->Check(true);
+        }
+        else
+        {
+            m_output_device_menus[n].Check(false);
+        }
+    }
+    
+    if (item != NULL)
+    {
+        PreferencesData::getInstance()->setValue(SETTING_ID_MIDI_OUTPUT, item->GetItemLabelText());
+        PreferencesData::getInstance()->save();
+    }
 }
 
 // -----------------------------------------------------------------------------------------------------------

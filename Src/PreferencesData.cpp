@@ -189,6 +189,12 @@ void PreferencesData::fillSettingsVector()
     m_settings.push_back( launchTim );
 #endif
     
+    
+    // TODO: make default value paltform-specific
+    Setting* output = new Setting(fromCString(SETTING_ID_MIDI_OUTPUT), wxT(""),
+                                      SETTING_STRING, false /* show in preferences */, "default" );
+    m_settings.push_back( output );
+    
     // ---- printing
     Setting* marginLeft = new Setting(fromCString(SETTING_ID_MARGIN_LEFT), wxT(""),
                                       SETTING_INT, false /* show in preferences */, wxT("12") );

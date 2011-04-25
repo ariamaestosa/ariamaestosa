@@ -55,7 +55,6 @@
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
 
-
 #include "jdkmidi/world.h"
 #include "jdkmidi/track.h"
 #include "jdkmidi/multitrack.h"

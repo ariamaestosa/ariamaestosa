@@ -168,6 +168,8 @@ namespace AriaMaestosa
         /** Contains all open sequences */
         ptr_vector<GraphicalSequence> m_sequences;
 
+        ptr_vector<wxMenuItem, REF>   m_output_device_menus;
+        
         int m_play_during_edit; // what is the user's preference for note preview during edits
         bool m_playback_mode;
         MainPane*                     m_main_pane;

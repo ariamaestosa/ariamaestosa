@@ -30,6 +30,7 @@ namespace AriaMaestosa
     enum SettingType
     {
         SETTING_ENUM,
+        SETTING_STRING,
         SETTING_STRING_ENUM,
         SETTING_BOOL,
         SETTING_INT
@@ -56,6 +57,7 @@ namespace AriaMaestosa
 
     EXTERN const char* SETTING_ID_PAPER_TYPE       DEFAULT("paperType");
     EXTERN const char* SETTING_ID_MIDI_DRIVER      DEFAULT("midiDriver");
+    EXTERN const char* SETTING_ID_MIDI_OUTPUT      DEFAULT("midiOutput");
 
 #undef EXTERN
 #undef DEFAULT
