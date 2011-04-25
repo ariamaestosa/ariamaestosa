@@ -154,23 +154,17 @@ const std::vector<CoreMidiOutput::Destination>& CoreMidiOutput::getDestinations(
 }
 
 CoreMidiOutput::CoreMidiOutput()
-{
-    MIDIPortRef port;
-    
+{    
     OSStatus result = MIDIOutputPortCreate(m_client, 
                                            CFSTR("myport"), 
-                                           &port);
+                                           &m_port);
     if (result != 0) fprintf(stderr, "MIDIInputPortCreate failed!!\n");
     
-    
+    /*
     MIDITimeStamp timestamp = 0;   // 0 will mean play now. 
     Byte buffer[1024];             // storage space for MIDI Packets (max 65536)
     MIDIPacketList *packetlist = (MIDIPacketList*)buffer;
     MIDIPacket *currentpacket = MIDIPacketListInit(packetlist);
-    
-    const int channel = 0;
-    const int NOTE_ON = (9 << 4);
-    const int NOTE_OFF = (8 << 4);
     
     const int MESSAGESIZE = 3;
     
@@ -198,6 +192,7 @@ CoreMidiOutput::CoreMidiOutput()
     }
     
     printf("Done");
+     */
 }
 
 CoreMidiOutput::~CoreMidiOutput()
@@ -207,10 +202,41 @@ CoreMidiOutput::~CoreMidiOutput()
 
 void CoreMidiOutput::note_on(const int note, const int volume, const int channel)
 {
+    MIDITimeStamp timestamp = 0;   // 0 will mean play now. 
+    Byte buffer[1024];             // storage space for MIDI Packets (max 65536)
+    MIDIPacketList *packetlist = (MIDIPacketList*)buffer;
+    MIDIPacket *currentpacket = MIDIPacketListInit(packetlist);
+    
+    const int MESSAGESIZE = 3;
+
+    Byte noteon[MESSAGESIZE] = {0x90 | channel, note, 90};
+    currentpacket = MIDIPacketListAdd(packetlist, sizeof(buffer), 
+                                      currentpacket, timestamp, MESSAGESIZE, noteon);
+    
+    OSStatus result = MIDISend(m_port, MIDIGetDestination(0), packetlist);
+    if (result != 0) fprintf(stderr, "MIDISend failed!!\n");
+    
+     
 }
 
 void CoreMidiOutput::note_off(const int note, const int channel)
 {
+    MIDITimeStamp timestamp = 0;   // 0 will mean play now. 
+    Byte buffer[1024];             // storage space for MIDI Packets (max 65536)
+    MIDIPacketList *packetlist = (MIDIPacketList*)buffer;
+    MIDIPacket *currentpacket = MIDIPacketListInit(packetlist);
+    
+    const int MESSAGESIZE = 3;
+
+    currentpacket = MIDIPacketListInit(packetlist);
+    Byte noteoff[MESSAGESIZE] = {0x90 | channel, note, 0};
+    currentpacket = MIDIPacketListAdd(packetlist, sizeof(buffer), 
+                                      currentpacket, timestamp, MESSAGESIZE, noteoff);
+    
+    
+    OSStatus result = MIDISend(m_port, MIDIGetDestination(0), packetlist);
+    if (result != 0) fprintf(stderr, "MIDISend failed!!\n");
+
 }
 
 void CoreMidiOutput::prog_change(const int instrument, const int channel)
