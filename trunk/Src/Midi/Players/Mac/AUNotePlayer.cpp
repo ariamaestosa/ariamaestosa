@@ -27,6 +27,8 @@
 #include <AudioToolbox/AudioToolbox.h> //for AUGraph
 
 #include <wx/timer.h>
+#include <wx/intl.h>
+#include <wx/msgdlg.h>
 
 using namespace AriaMaestosa;
 
@@ -207,18 +209,28 @@ namespace CoreAudioNotePlayer
         ComponentDescription cd;
         
         wxString driver = PreferencesData::getInstance()->getValue(SETTING_ID_MIDI_OUTPUT);
-        if (driver == "default")
+        if (driver == "default" || driver == _("OSX Software Synthesizer"))
         {
             cd.componentManufacturer = kAudioUnitManufacturer_Apple;
             cd.componentFlags = 0;
             cd.componentFlagsMask = 0;
             
-            require_noerr (result = NewAUGraph (&outGraph), CreateAUGraph_home);
+            result = NewAUGraph (&outGraph);
+            if (result != 0)
+            {
+                fprintf(stderr, "[PlatformMIDIManager] ERROR: NewAUGraph failed\n");
+                goto CreateAUGraph_home;
+            }
             
             cd.componentType = kAudioUnitType_MusicDevice;
             cd.componentSubType = kAudioUnitSubType_DLSSynth;
             
-            require_noerr (result = AUGraphAddNode (outGraph, &cd, &synthNode), CreateAUGraph_home);
+            result = AUGraphAddNode (outGraph, &cd, &synthNode);
+            if (result != 0)
+            {
+                fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphAddNode failed\n");
+                goto CreateAUGraph_home;
+            }
         }
         else
         {
@@ -226,30 +238,70 @@ namespace CoreAudioNotePlayer
             cd.componentFlags = 0;
             cd.componentFlagsMask = 0;
             
-            require_noerr (result = NewAUGraph (&outGraph), CreateAUGraph_home);
+            result = NewAUGraph (&outGraph);
+            if (result != 0)
+            {
+                fprintf(stderr, "[PlatformMIDIManager] ERROR: NewAUGrapgh failed\n");
+                goto CreateAUGraph_home;
+            }
             
             cd.componentType = kAudioUnitType_MusicDevice;
             cd.componentSubType = kAudioUnitSubType_HALOutput;
             
-            require_noerr (result = AUGraphAddNode (outGraph, &cd, &synthNode), CreateAUGraph_home);
+            result = AUGraphAddNode (outGraph, &cd, &synthNode);
+            if (result != 0)
+            {
+                fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphAddNode (synthNode) failed\n");
+                goto CreateAUGraph_home;
+            }
         }
         
         cd.componentType = kAudioUnitType_Effect;
         cd.componentSubType = kAudioUnitSubType_PeakLimiter;  
         
-        require_noerr (result = AUGraphAddNode (outGraph, &cd, &limiterNode), CreateAUGraph_home);
+        result = AUGraphAddNode (outGraph, &cd, &limiterNode);
+        if (result != 0)
+        {
+            fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphAddNode (limiterNode) failed\n");
+            goto CreateAUGraph_home;
+        }
         
         cd.componentType = kAudioUnitType_Output;
         cd.componentSubType = kAudioUnitSubType_DefaultOutput;  
-        require_noerr (result = AUGraphAddNode (outGraph, &cd, &outNode), CreateAUGraph_home);
+        result = AUGraphAddNode (outGraph, &cd, &outNode);
+        if (result != 0)
+        {
+            fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphAddNode (outNode) failed\n");
+            goto CreateAUGraph_home;
+        }
         
-        require_noerr (result = AUGraphOpen (outGraph), CreateAUGraph_home);
+        result = AUGraphOpen (outGraph);
+        if (result != 0)
+        {
+            fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphOpen failed\n");
+            goto CreateAUGraph_home;
+        }
         
-        require_noerr (result = AUGraphConnectNodeInput (outGraph, synthNode, 0, limiterNode, 0), CreateAUGraph_home);
-        require_noerr (result = AUGraphConnectNodeInput (outGraph, limiterNode, 0, outNode, 0), CreateAUGraph_home);
+        result = AUGraphConnectNodeInput (outGraph, synthNode, 0, limiterNode, 0);
+        if (result != 0)
+        {
+            fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphConnectNodeInput (synthNode) failed\n");
+            goto CreateAUGraph_home;
+        }
         
-        // ok we're good to go - get the Synth Unit...
-        require_noerr (result = AUGraphNodeInfo(outGraph, synthNode, 0, &outSynth), CreateAUGraph_home);
+        result = AUGraphConnectNodeInput (outGraph, limiterNode, 0, outNode, 0);
+        if (result != 0)
+        {
+            fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphConnectNodeInput (limiterNode) failed\n");
+            goto CreateAUGraph_home;
+        }
+        
+        result = AUGraphNodeInfo(outGraph, synthNode, 0, &outSynth);
+        if (result != 0)
+        {
+            fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphNodeInfo failed\n");
+            goto CreateAUGraph_home;
+        }
         
     CreateAUGraph_home:
         return result;
@@ -339,7 +391,7 @@ namespace CoreAudioNotePlayer
         
         OSStatus result;
         
-        require_noerr (result = CreateAUGraph (graph, synthUnit), home);
+        require_noerr (result = CreateAUGraph (graph, synthUnit), err1);
         
         /*
          // if the user supplies a sound bank, we'll set that before we initialize and start playing
@@ -359,7 +411,7 @@ namespace CoreAudioNotePlayer
          */
         
         // initialize and start the graph
-        require_noerr (result = AUGraphInitialize (graph), home);
+        require_noerr (result = AUGraphInitialize (graph), err2);
         
         for (int n=0; n<15; n++)
         {
@@ -371,22 +423,42 @@ namespace CoreAudioNotePlayer
         require_noerr (result = MusicDeviceMIDIEvent(synthUnit,
                                                      kMidiMessage_ControlChange << 4 | midiChannelInUse,
                                                      kMidiMessage_BankMSBControl, 0,
-                                                     0/*sample offset*/), home);
+                                                     0/*sample offset*/), err3);
         
         require_noerr (result = MusicDeviceMIDIEvent(synthUnit,
                                                      kMidiMessage_ProgramChange << 4 | midiChannelInUse,
                                                      0/*prog change num*/, 0,
-                                                     0/*sample offset*/), home);
+                                                     0/*sample offset*/), err4);
         
         //CAShow (graph); // prints out the graph so we can see what it looks like...
         
-        require_noerr (result = AUGraphStart (graph), home);
+        require_noerr (result = AUGraphStart (graph), err5);
         return;
         
-    home:
-        fprintf(stderr, "An error seems to have occured when initing the AUDIO UNIT graph\n");
+    err1:
+        fprintf(stderr, "[PlatformMIDIManager] ERROR: An error has occured when initing the AUDIO UNIT graph (err 1)\n");
+        wxMessageBox( _("An error has occurred when connecting to the MIDI output device with AudioUnit; audio playback may be unavailable") );
+        return;
+    
+    err2:
+        fprintf(stderr, "[PlatformMIDIManager] ERROR: An error has occured when initing the AUDIO UNIT graph (err 2)\n");
+        wxMessageBox( _("An error has occurred when connecting to the MIDI output device with AudioUnit; audio playback may be unavailable") );
         return;
         
+    err3:
+        fprintf(stderr, "[PlatformMIDIManager] ERROR: An error has occured when initing the AUDIO UNIT graph (err 3)\n");
+        wxMessageBox( _("An error has occurred when connecting to the MIDI output device with AudioUnit; audio playback may be unavailable") );
+        return;
+        
+    err4:
+        fprintf(stderr, "[PlatformMIDIManager] ERROR: An error has occured when initing the AUDIO UNIT graph (err 4)\n");
+        wxMessageBox( _("An error has occurred when connecting to the MIDI output device with AudioUnit; audio playback may be unavailable") );
+        return;
+        
+    err5:
+        fprintf(stderr, "[PlatformMIDIManager] ERROR: An error has occured when initing the AUDIO UNIT graph (err 5)\n");
+        wxMessageBox( _("An error has occurred when connecting to the MIDI output device with AudioUnit; audio playback may be unavailable") );
+        return;
     }
     
     // ------------------------------------------------------------------------------------------------------
