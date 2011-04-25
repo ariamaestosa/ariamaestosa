@@ -134,11 +134,6 @@ std::vector<CoreMidiOutput::Destination> g_destinations;
 
 const std::vector<CoreMidiOutput::Destination>& CoreMidiOutput::getDestinations()
 {
-    return g_destinations;
-}
-
-CoreMidiOutput::CoreMidiOutput()
-{
     ItemCount destCount = MIDIGetNumberOfDestinations();
     printf("[AUNotePlayer] %i MIDI destinations\n", (int)destCount);
     for (int n=0; n<(int)destCount; n++)
@@ -155,6 +150,11 @@ CoreMidiOutput::CoreMidiOutput()
         g_destinations.push_back(d);
     }
     
+    return g_destinations;
+}
+
+CoreMidiOutput::CoreMidiOutput()
+{
     MIDIPortRef port;
     
     OSStatus result = MIDIOutputPortCreate(m_client, 

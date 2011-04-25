@@ -30,8 +30,9 @@
 #include "IO/IOUtils.h"
 #include "Midi/CommonMidiUtils.h"
 #include "Midi/MeasureData.h"
-#include "Midi/Players/Mac/OutputBase.h"
 #include "Midi/Players/Mac/AUNotePlayer.h"
+#include "Midi/Players/Mac/CoreMIDIOutput.h"
+#include "Midi/Players/Mac/OutputBase.h"
 #include "Midi/Players/Mac/QTKitPlayer.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Players/Sequencer.h"
@@ -319,16 +320,13 @@ namespace AriaMaestosa
         
         virtual wxArrayString getOutputChoices()
         {
-            // FIXME: bring th
-            //const std::vector<CoreMidiOutput::Destination>& destinations = CoreAudioNotePlayer::getDestinations();
+            const std::vector<CoreMidiOutput::Destination>& destinations = CoreMidiOutput::getDestinations();
             wxArrayString out;
             out.Add(_("OSX Software Synthesizer"));
-            /*
             for (unsigned int n=0; n<destinations.size(); n++)
             {
                 out.Add(wxString(destinations[n].m_name.c_str(), wxConvUTF8));
             }
-             */
             return out;
         }
         

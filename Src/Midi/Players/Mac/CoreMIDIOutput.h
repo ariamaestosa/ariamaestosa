@@ -36,7 +36,7 @@ public:
         MIDIEndpointRef m_ref;
         std::string m_name;
     };
-    const std::vector<Destination>& getDestinations();
+    static const std::vector<Destination>& getDestinations();
     
     virtual void note_on(const int note, const int volume, const int channel);
     virtual void note_off(const int note, const int channel);
