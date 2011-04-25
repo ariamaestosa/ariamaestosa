@@ -37,8 +37,7 @@ public:
     void prog_change(const int instrument, const int channel);
     void controlchange(const int controller, const int value, const int channel);
     void pitch_bend(const int value, const int channel);
-    
-    void reset_all_controllers();
+
 };
 
 #endif

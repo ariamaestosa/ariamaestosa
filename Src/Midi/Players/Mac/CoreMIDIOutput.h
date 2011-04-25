@@ -45,7 +45,6 @@ public:
     virtual void prog_change(const int instrument, const int channel);
     virtual void controlchange(const int controller, const int value, const int channel);
     virtual void pitch_bend(const int value, const int channel);
-    virtual void reset_all_controllers();
 };
 
 #endif

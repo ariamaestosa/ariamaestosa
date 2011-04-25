@@ -145,9 +145,6 @@ enum Controllers
     kController_BankLSBControl	= 32,
 };
 
-const int PITCH_BEND_LOWEST = 0;
-const int PITCH_BEND_CENTER = 8192;
-const int PITCH_BEND_HIGHEST = 16383;
 
 // ------------------------------------------------------------------------------------------------------
 
@@ -361,18 +358,5 @@ home_setBank:
     return;
 }
 
-// ------------------------------------------------------------------------------------------------------
-
-void AudioUnitOutput::reset_all_controllers()
-{
-    for (int channel=0; channel<16; channel++)
-    {
-        controlchange(0x78 /*120*/ /* all sound off */, 0, channel);
-        controlchange(0x79 /*121*/ /* reset controllers */, 0, channel);
-        controlchange(7 /* reset volume */, 127, channel);
-        controlchange(10 /* reset pan */, 64, channel);
-        pitch_bend(PITCH_BEND_CENTER, channel);
-    }
-}
 
 #endif
