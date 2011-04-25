@@ -14,6 +14,8 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#ifdef _MAC_QUICKTIME_COREAUDIO
+
 #include "CoreMIDIOutput.h"
 #include <wx/utils.h>
 
@@ -261,4 +263,6 @@ void CoreMidiOutput::pitch_bend(const int value, const int channel)
     OSStatus result = MIDISend(m_port, MIDIGetDestination(0), packetlist);
     if (result != 0) fprintf(stderr, "MIDISend failed!!\n");
 }
+
+#endif
 

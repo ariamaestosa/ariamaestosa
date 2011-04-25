@@ -14,6 +14,8 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#ifdef _MAC_QUICKTIME_COREAUDIO
+
 #include <wx/timer.h>
 #include "Midi/Players/Mac/OutputBase.h"
 #include "Midi/Players/Mac/AUNotePlayer.h"
@@ -110,3 +112,5 @@ void OutputBase::reset_all_controllers()
         pitch_bend(PITCH_BEND_CENTER, channel);
     }
 }
+
+#endif
