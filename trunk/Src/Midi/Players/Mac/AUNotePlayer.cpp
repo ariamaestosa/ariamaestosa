@@ -16,22 +16,19 @@
  */
 
 
-// refer to MacPlayerInterface for docs
-
-// maybe worth looking at http://developer.apple.com/documentation/QuickTime/RM/MusicAndAudio/qtma/C-Chapter/chapter_1000_section_4.html
-// since my code is deprecated
-
 #ifdef _MAC_QUICKTIME_COREAUDIO
 #include "Utils.h"
 
 #include "Midi/Players/Mac/AUNotePlayer.h"
+#include "PreferencesData.h"
 
 #include <CoreServices/CoreServices.h> //for file stuff
 #include <AudioUnit/AudioUnit.h>
 #include <AudioToolbox/AudioToolbox.h> //for AUGraph
 
-
 #include <wx/timer.h>
+
+using namespace AriaMaestosa;
 
 namespace CoreAudioNotePlayer
 {
@@ -208,16 +205,34 @@ namespace CoreAudioNotePlayer
         AUNode synthNode, limiterNode, outNode;
         
         ComponentDescription cd;
-        cd.componentManufacturer = kAudioUnitManufacturer_Apple;
-        cd.componentFlags = 0;
-        cd.componentFlagsMask = 0;
         
-        require_noerr (result = NewAUGraph (&outGraph), CreateAUGraph_home);
-        
-        cd.componentType = kAudioUnitType_MusicDevice;
-        cd.componentSubType = kAudioUnitSubType_DLSSynth;
-        
-        require_noerr (result = AUGraphAddNode (outGraph, &cd, &synthNode), CreateAUGraph_home);
+        wxString driver = PreferencesData::getInstance()->getValue(SETTING_ID_MIDI_OUTPUT);
+        if (driver == "default")
+        {
+            cd.componentManufacturer = kAudioUnitManufacturer_Apple;
+            cd.componentFlags = 0;
+            cd.componentFlagsMask = 0;
+            
+            require_noerr (result = NewAUGraph (&outGraph), CreateAUGraph_home);
+            
+            cd.componentType = kAudioUnitType_MusicDevice;
+            cd.componentSubType = kAudioUnitSubType_DLSSynth;
+            
+            require_noerr (result = AUGraphAddNode (outGraph, &cd, &synthNode), CreateAUGraph_home);
+        }
+        else
+        {
+            cd.componentManufacturer = kAudioUnitManufacturer_Apple;
+            cd.componentFlags = 0;
+            cd.componentFlagsMask = 0;
+            
+            require_noerr (result = NewAUGraph (&outGraph), CreateAUGraph_home);
+            
+            cd.componentType = kAudioUnitType_MusicDevice;
+            cd.componentSubType = kAudioUnitSubType_HALOutput;
+            
+            require_noerr (result = AUGraphAddNode (outGraph, &cd, &synthNode), CreateAUGraph_home);
+        }
         
         cd.componentType = kAudioUnitType_Effect;
         cd.componentSubType = kAudioUnitSubType_PeakLimiter;  
