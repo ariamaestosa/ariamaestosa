@@ -26,6 +26,8 @@
 
 class CoreMidiOutput : public OutputBase
 {
+    MIDIPortRef m_port;
+
 public:
     
     CoreMidiOutput();

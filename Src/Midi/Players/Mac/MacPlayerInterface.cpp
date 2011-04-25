@@ -38,6 +38,7 @@
 #include "Midi/Players/Sequencer.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
+#include "PreferencesData.h"
 
 #include "jdkmidi/world.h"
 #include "jdkmidi/track.h"
@@ -401,7 +402,15 @@ namespace AriaMaestosa
         
         virtual void initMidiPlayer()
         {
-            output = new AudioUnitOutput();
+            wxString driver = PreferencesData::getInstance()->getValue(SETTING_ID_MIDI_OUTPUT);
+            if (driver == "default" || driver == _("OSX Software Synthesizer"))
+            {
+                output = new AudioUnitOutput();
+            }
+            else
+            {
+                output = new CoreMidiOutput();
+            }
         }
         
         virtual void freeMidiPlayer()
