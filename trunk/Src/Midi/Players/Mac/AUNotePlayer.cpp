@@ -231,9 +231,59 @@ namespace CoreAudioNotePlayer
                 fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphAddNode failed\n");
                 goto CreateAUGraph_home;
             }
+            
+            cd.componentType = kAudioUnitType_Effect;
+            cd.componentSubType = kAudioUnitSubType_PeakLimiter;  
+            
+            result = AUGraphAddNode (outGraph, &cd, &limiterNode);
+            if (result != 0)
+            {
+                fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphAddNode (limiterNode) failed\n");
+                goto CreateAUGraph_home;
+            }
+            
+            cd.componentType = kAudioUnitType_Output;
+            cd.componentSubType = kAudioUnitSubType_DefaultOutput;  
+            result = AUGraphAddNode (outGraph, &cd, &outNode);
+            if (result != 0)
+            {
+                fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphAddNode (outNode) failed\n");
+                goto CreateAUGraph_home;
+            }
+            
+            result = AUGraphOpen (outGraph);
+            if (result != 0)
+            {
+                fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphOpen failed with error code %i (%s - %s)\n",
+                        (int)result, GetMacOSStatusErrorString(result), GetMacOSStatusCommentString(result));
+                goto CreateAUGraph_home;
+            }
+            
+            result = AUGraphConnectNodeInput (outGraph, synthNode, 0, limiterNode, 0);
+            if (result != 0)
+            {
+                fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphConnectNodeInput (synthNode) failed\n");
+                goto CreateAUGraph_home;
+            }
+            
+            result = AUGraphConnectNodeInput (outGraph, limiterNode, 0, outNode, 0);
+            if (result != 0)
+            {
+                fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphConnectNodeInput (limiterNode) failed\n");
+                goto CreateAUGraph_home;
+            }
+            
+            result = AUGraphNodeInfo(outGraph, synthNode, 0, &outSynth);
+            if (result != 0)
+            {
+                fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphNodeInfo failed\n");
+                goto CreateAUGraph_home;
+            }
+            
         }
         else
         {
+            // TODO: find way to pick correct output
             cd.componentManufacturer = kAudioUnitManufacturer_Apple;
             cd.componentFlags = 0;
             cd.componentFlagsMask = 0;
@@ -245,7 +295,7 @@ namespace CoreAudioNotePlayer
                 goto CreateAUGraph_home;
             }
             
-            cd.componentType = kAudioUnitType_MusicDevice;
+            cd.componentType = kAudioUnitType_Output;
             cd.componentSubType = kAudioUnitSubType_HALOutput;
             
             result = AUGraphAddNode (outGraph, &cd, &synthNode);
@@ -254,55 +304,58 @@ namespace CoreAudioNotePlayer
                 fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphAddNode (synthNode) failed\n");
                 goto CreateAUGraph_home;
             }
+            
+            cd.componentType = kAudioUnitType_Effect;
+            cd.componentSubType = kAudioUnitSubType_PeakLimiter;  
+            
+            result = AUGraphAddNode (outGraph, &cd, &limiterNode);
+            if (result != 0)
+            {
+                fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphAddNode (limiterNode) failed\n");
+                goto CreateAUGraph_home;
+            }
+            
+            cd.componentType = kAudioUnitType_Output;
+            cd.componentSubType = kAudioUnitSubType_HALOutput;  
+            result = AUGraphAddNode (outGraph, &cd, &outNode);
+            if (result != 0)
+            {
+                fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphAddNode (outNode) failed : %i (%s - %s)\n",
+                        (int)result, GetMacOSStatusErrorString(result), GetMacOSStatusCommentString(result));
+                goto CreateAUGraph_home;
+            }
+            
+            result = AUGraphOpen (outGraph);
+            if (result != 0)
+            {
+                fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphOpen failed with error code %i (%s - %s)\n",
+                        (int)result, GetMacOSStatusErrorString(result), GetMacOSStatusCommentString(result));
+                goto CreateAUGraph_home;
+            }
+            
+            result = AUGraphConnectNodeInput (outGraph, synthNode, 0, limiterNode, 0);
+            if (result != 0)
+            {
+                fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphConnectNodeInput (synthNode) failed\n");
+                goto CreateAUGraph_home;
+            }
+            
+            result = AUGraphConnectNodeInput (outGraph, limiterNode, 0, outNode, 0);
+            if (result != 0)
+            {
+                fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphConnectNodeInput (limiterNode) failed\n");
+                goto CreateAUGraph_home;
+            }
+            
+            result = AUGraphNodeInfo(outGraph, synthNode, 0, &outSynth);
+            if (result != 0)
+            {
+                fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphNodeInfo failed\n");
+                goto CreateAUGraph_home;
+            }
+            
         }
-        
-        cd.componentType = kAudioUnitType_Effect;
-        cd.componentSubType = kAudioUnitSubType_PeakLimiter;  
-        
-        result = AUGraphAddNode (outGraph, &cd, &limiterNode);
-        if (result != 0)
-        {
-            fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphAddNode (limiterNode) failed\n");
-            goto CreateAUGraph_home;
-        }
-        
-        cd.componentType = kAudioUnitType_Output;
-        cd.componentSubType = kAudioUnitSubType_DefaultOutput;  
-        result = AUGraphAddNode (outGraph, &cd, &outNode);
-        if (result != 0)
-        {
-            fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphAddNode (outNode) failed\n");
-            goto CreateAUGraph_home;
-        }
-        
-        result = AUGraphOpen (outGraph);
-        if (result != 0)
-        {
-            fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphOpen failed\n");
-            goto CreateAUGraph_home;
-        }
-        
-        result = AUGraphConnectNodeInput (outGraph, synthNode, 0, limiterNode, 0);
-        if (result != 0)
-        {
-            fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphConnectNodeInput (synthNode) failed\n");
-            goto CreateAUGraph_home;
-        }
-        
-        result = AUGraphConnectNodeInput (outGraph, limiterNode, 0, outNode, 0);
-        if (result != 0)
-        {
-            fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphConnectNodeInput (limiterNode) failed\n");
-            goto CreateAUGraph_home;
-        }
-        
-        result = AUGraphNodeInfo(outGraph, synthNode, 0, &outSynth);
-        if (result != 0)
-        {
-            fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphNodeInfo failed\n");
-            goto CreateAUGraph_home;
-        }
-        
+                
     CreateAUGraph_home:
         return result;
     }
@@ -363,7 +416,8 @@ namespace CoreAudioNotePlayer
         
     home_programChange:
         
-        fprintf(stderr, "Error in MidiPlayer::programChange\n");
+        fprintf(stderr, "Error in MidiPlayer::programChange : %i (%s - %s)\n",
+                (int)result, GetMacOSStatusErrorString(result), GetMacOSStatusCommentString(result));
     }
     
     // ------------------------------------------------------------------------------------------------------
@@ -379,7 +433,8 @@ namespace CoreAudioNotePlayer
         
     home_setBank:
         
-        fprintf(stderr, "Error in MidiPlayer::setBank\n");
+        fprintf(stderr, "Error in MidiPlayer::setBank : %i (%s - %s)\n",
+                (int)result, GetMacOSStatusErrorString(result), GetMacOSStatusCommentString(result));
     }
     
     // ------------------------------------------------------------------------------------------------------
