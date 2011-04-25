@@ -474,6 +474,14 @@
 		95711B251125D8D300104BF5 /* wxRenderPane.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119911125D8D300104BF5 /* wxRenderPane.h */; };
 		95711B261125D8D300104BF5 /* Singleton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119921125D8D300104BF5 /* Singleton.cpp */; };
 		95711B271125D8D300104BF5 /* Singleton.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119931125D8D300104BF5 /* Singleton.h */; };
+		957629731365DD3200F97DEC /* CoreMIDIOutput.h in Headers */ = {isa = PBXBuildFile; fileRef = 957629711365DD3200F97DEC /* CoreMIDIOutput.h */; };
+		957629741365DD3200F97DEC /* CoreMIDIOutput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957629721365DD3200F97DEC /* CoreMIDIOutput.cpp */; };
+		957629751365DD3200F97DEC /* CoreMIDIOutput.h in Headers */ = {isa = PBXBuildFile; fileRef = 957629711365DD3200F97DEC /* CoreMIDIOutput.h */; };
+		957629761365DD3200F97DEC /* CoreMIDIOutput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957629721365DD3200F97DEC /* CoreMIDIOutput.cpp */; };
+		957629971365DF7300F97DEC /* OutputBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 957629951365DF7300F97DEC /* OutputBase.h */; };
+		957629981365DF7300F97DEC /* OutputBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957629961365DF7300F97DEC /* OutputBase.cpp */; };
+		957629991365DF7300F97DEC /* OutputBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 957629951365DF7300F97DEC /* OutputBase.h */; };
+		9576299A1365DF7300F97DEC /* OutputBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957629961365DF7300F97DEC /* OutputBase.cpp */; };
 		9578398C11A9A1E500E2FABA /* AbstractPrintableSequence.h in Headers */ = {isa = PBXBuildFile; fileRef = 9578398A11A9A1E500E2FABA /* AbstractPrintableSequence.h */; };
 		9578398D11A9A1E500E2FABA /* AbstractPrintableSequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9578398B11A9A1E500E2FABA /* AbstractPrintableSequence.cpp */; };
 		9578398E11A9A1E500E2FABA /* AbstractPrintableSequence.h in Headers */ = {isa = PBXBuildFile; fileRef = 9578398A11A9A1E500E2FABA /* AbstractPrintableSequence.h */; };
@@ -1072,6 +1080,10 @@
 		957119911125D8D300104BF5 /* wxRenderPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wxRenderPane.h; path = ../Src/Renderers/wxRenderPane.h; sourceTree = SOURCE_ROOT; };
 		957119921125D8D300104BF5 /* Singleton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Singleton.cpp; path = ../Src/Singleton.cpp; sourceTree = SOURCE_ROOT; };
 		957119931125D8D300104BF5 /* Singleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Singleton.h; path = ../Src/Singleton.h; sourceTree = SOURCE_ROOT; };
+		957629711365DD3200F97DEC /* CoreMIDIOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreMIDIOutput.h; path = ../Src/Midi/Players/Mac/CoreMIDIOutput.h; sourceTree = SOURCE_ROOT; };
+		957629721365DD3200F97DEC /* CoreMIDIOutput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CoreMIDIOutput.cpp; path = ../Src/Midi/Players/Mac/CoreMIDIOutput.cpp; sourceTree = SOURCE_ROOT; };
+		957629951365DF7300F97DEC /* OutputBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OutputBase.h; path = ../Src/Midi/Players/Mac/OutputBase.h; sourceTree = SOURCE_ROOT; };
+		957629961365DF7300F97DEC /* OutputBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OutputBase.cpp; path = ../Src/Midi/Players/Mac/OutputBase.cpp; sourceTree = SOURCE_ROOT; };
 		9578398A11A9A1E500E2FABA /* AbstractPrintableSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AbstractPrintableSequence.h; path = ../Src/Printing/AbstractPrintableSequence.h; sourceTree = SOURCE_ROOT; };
 		9578398B11A9A1E500E2FABA /* AbstractPrintableSequence.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AbstractPrintableSequence.cpp; path = ../Src/Printing/AbstractPrintableSequence.cpp; sourceTree = SOURCE_ROOT; };
 		957839F111A9F87A00E2FABA /* EditorPrintable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EditorPrintable.cpp; path = ../Src/Printing/SymbolPrinter/EditorPrintable.cpp; sourceTree = SOURCE_ROOT; };
@@ -1519,9 +1531,13 @@
 			children = (
 				9571193F1125D8D200104BF5 /* AUNotePlayer.cpp */,
 				957119401125D8D200104BF5 /* AUNotePlayer.h */,
+				957629721365DD3200F97DEC /* CoreMIDIOutput.cpp */,
+				957629711365DD3200F97DEC /* CoreMIDIOutput.h */,
 				957119411125D8D200104BF5 /* MacPlayerInterface.cpp */,
-				957119421125D8D200104BF5 /* QTKitPlayer.h */,
+				957629961365DF7300F97DEC /* OutputBase.cpp */,
+				957629951365DF7300F97DEC /* OutputBase.h */,
 				957119431125D8D200104BF5 /* QTKitPlayer.mm */,
+				957119421125D8D200104BF5 /* QTKitPlayer.h */,
 			);
 			name = Mac;
 			path = ../Src/Midi/Players/Mac;
@@ -2074,6 +2090,8 @@
 				95593BB312D14A69001AF66B /* MagneticGridPicker.h in Headers */,
 				95593BB612D14A7E001AF66B /* MagneticGrid.h in Headers */,
 				954BECAA13490A0F000024E6 /* Machelper.h in Headers */,
+				957629731365DD3200F97DEC /* CoreMIDIOutput.h in Headers */,
+				957629971365DF7300F97DEC /* OutputBase.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2243,6 +2261,8 @@
 				95593BB112D14A69001AF66B /* MagneticGridPicker.h in Headers */,
 				95593BB812D14A7E001AF66B /* MagneticGrid.h in Headers */,
 				954BECA813490A0F000024E6 /* Machelper.h in Headers */,
+				957629751365DD3200F97DEC /* CoreMIDIOutput.h in Headers */,
+				957629991365DF7300F97DEC /* OutputBase.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2483,6 +2503,8 @@
 				95593BB212D14A69001AF66B /* MagneticGridPicker.cpp in Sources */,
 				95593BB712D14A7E001AF66B /* MagneticGrid.cpp in Sources */,
 				954BECAB13490A0F000024E6 /* Machelper.mm in Sources */,
+				957629741365DD3200F97DEC /* CoreMIDIOutput.cpp in Sources */,
+				957629981365DF7300F97DEC /* OutputBase.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2643,6 +2665,8 @@
 				95593BB012D14A69001AF66B /* MagneticGridPicker.cpp in Sources */,
 				95593BB912D14A7E001AF66B /* MagneticGrid.cpp in Sources */,
 				954BECA913490A0F000024E6 /* Machelper.mm in Sources */,
+				957629761365DD3200F97DEC /* CoreMIDIOutput.cpp in Sources */,
+				9576299A1365DF7300F97DEC /* OutputBase.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

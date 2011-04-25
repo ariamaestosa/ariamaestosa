@@ -192,7 +192,7 @@ void PreferencesData::fillSettingsVector()
     
     // TODO: make default value paltform-specific
     Setting* output = new Setting(fromCString(SETTING_ID_MIDI_OUTPUT), wxT(""),
-                                      SETTING_STRING, false /* show in preferences */, "default" );
+                                      SETTING_STRING, false /* show in preferences */, wxT("default") );
     m_settings.push_back( output );
     
     // ---- printing
