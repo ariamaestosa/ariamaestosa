@@ -159,40 +159,6 @@ CoreMidiOutput::CoreMidiOutput()
                                            CFSTR("myport"), 
                                            &m_port);
     if (result != 0) fprintf(stderr, "MIDIInputPortCreate failed!!\n");
-    
-    /*
-    MIDITimeStamp timestamp = 0;   // 0 will mean play now. 
-    Byte buffer[1024];             // storage space for MIDI Packets (max 65536)
-    MIDIPacketList *packetlist = (MIDIPacketList*)buffer;
-    MIDIPacket *currentpacket = MIDIPacketListInit(packetlist);
-    
-    const int MESSAGESIZE = 3;
-    
-    printf("==== Will send notes ====\n");
-    
-    for (int note=30; note<80; note++)
-    {
-        Byte noteon[MESSAGESIZE] = {0x90, note, 90};
-        currentpacket = MIDIPacketListAdd(packetlist, sizeof(buffer), 
-                                          currentpacket, timestamp, MESSAGESIZE, noteon);
-        
-        result = MIDISend(port, MIDIGetDestination(0), packetlist);
-        if (result != 0) fprintf(stderr, "MIDISend failed!!\n");
-        
-        wxMilliSleep(250);
-        
-        currentpacket = MIDIPacketListInit(packetlist);
-        Byte noteoff[MESSAGESIZE] = {0x90, note, 0};
-        currentpacket = MIDIPacketListAdd(packetlist, sizeof(buffer), 
-                                          currentpacket, timestamp, MESSAGESIZE, noteoff);
-        
-        
-        MIDISend(port, MIDIGetDestination(0), packetlist);
-        if (result != 0) fprintf(stderr, "MIDISend failed!!\n");
-    }
-    
-    printf("Done");
-     */
 }
 
 CoreMidiOutput::~CoreMidiOutput()
@@ -241,16 +207,58 @@ void CoreMidiOutput::note_off(const int note, const int channel)
 
 void CoreMidiOutput::prog_change(const int instrument, const int channel)
 {
+    MIDITimeStamp timestamp = 0;   // 0 will mean play now. 
+    Byte buffer[1024];             // storage space for MIDI Packets (max 65536)
+    MIDIPacketList *packetlist = (MIDIPacketList*)buffer;
+    MIDIPacket *currentpacket = MIDIPacketListInit(packetlist);
+    
+    const int MESSAGESIZE = 3;
+    
+    currentpacket = MIDIPacketListInit(packetlist);
+    Byte noteoff[MESSAGESIZE] = {0xC0 | channel, instrument, 0 /* unused byte */};
+    currentpacket = MIDIPacketListAdd(packetlist, sizeof(buffer), 
+                                      currentpacket, timestamp, MESSAGESIZE, noteoff);
+    
+    
+    OSStatus result = MIDISend(m_port, MIDIGetDestination(0), packetlist);
+    if (result != 0) fprintf(stderr, "MIDISend failed!!\n");
 }
 
 void CoreMidiOutput::controlchange(const int controller, const int value, const int channel)
 {
+    MIDITimeStamp timestamp = 0;   // 0 will mean play now. 
+    Byte buffer[1024];             // storage space for MIDI Packets (max 65536)
+    MIDIPacketList *packetlist = (MIDIPacketList*)buffer;
+    MIDIPacket *currentpacket = MIDIPacketListInit(packetlist);
+    
+    const int MESSAGESIZE = 3;
+    
+    currentpacket = MIDIPacketListInit(packetlist);
+    Byte noteoff[MESSAGESIZE] = {0xB0 | channel, controller, value};
+    currentpacket = MIDIPacketListAdd(packetlist, sizeof(buffer), 
+                                      currentpacket, timestamp, MESSAGESIZE, noteoff);
+    
+    
+    OSStatus result = MIDISend(m_port, MIDIGetDestination(0), packetlist);
+    if (result != 0) fprintf(stderr, "MIDISend failed!!\n");
 }
 
 void CoreMidiOutput::pitch_bend(const int value, const int channel)
 {
+    MIDITimeStamp timestamp = 0;   // 0 will mean play now. 
+    Byte buffer[1024];             // storage space for MIDI Packets (max 65536)
+    MIDIPacketList *packetlist = (MIDIPacketList*)buffer;
+    MIDIPacket *currentpacket = MIDIPacketListInit(packetlist);
+    
+    const int MESSAGESIZE = 3;
+    
+    currentpacket = MIDIPacketListInit(packetlist);
+    Byte noteoff[MESSAGESIZE] = {0xE0 | channel, value & 0xFF, (value & 0x00FF) >> 8};
+    currentpacket = MIDIPacketListAdd(packetlist, sizeof(buffer), 
+                                      currentpacket, timestamp, MESSAGESIZE, noteoff);
+    
+    
+    OSStatus result = MIDISend(m_port, MIDIGetDestination(0), packetlist);
+    if (result != 0) fprintf(stderr, "MIDISend failed!!\n");
 }
 
-void CoreMidiOutput::reset_all_controllers()
-{
-}
