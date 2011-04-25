@@ -14,24 +14,6 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-/*
- 
- The Mac implementation of Platform midi player uses QTKit, AudioToolbox and CoreAudio.
- 
- CoreAudio is used to play single notes (the previews while editing)
- 
- For actual playback of midi data, both QTKit and AudioToolbox implementations exist. The rationale behind this
- is that:
- 
- - QTKit offers more precise info for getting current tick, however it returns time and not ticks. It is easy to
-   calculate current midi tick from time with tempo, but not when there are tempo bends. Furthermore, it allows to
-   export to audio formats like AIFF.
- - AudioToolkit returns current playback location in midi beats. This is much less precise than tempo. However,
-   this does follow tempo bends.
- 
- So, when there are tempo bends, use AudioToolkit. Otherwise, use QTKit.
- 
- */
 
 #ifdef _MAC_QUICKTIME_COREAUDIO
 
@@ -48,8 +30,9 @@
 #include "IO/IOUtils.h"
 #include "Midi/CommonMidiUtils.h"
 #include "Midi/MeasureData.h"
-#include "Midi/Players/Mac/QTKitPlayer.h"
+#include "Midi/Players/Mac/OutputBase.h"
 #include "Midi/Players/Mac/AUNotePlayer.h"
+#include "Midi/Players/Mac/QTKitPlayer.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Players/Sequencer.h"
 #include "Midi/Sequence.h"
@@ -78,6 +61,7 @@ namespace AriaMaestosa
     
     bool g_thread_should_continue = true;
     
+    OutputBase* output = NULL;
     
     class AudioExport : public wxThread
     {
@@ -143,7 +127,7 @@ namespace AriaMaestosa
     void cleanup_after_playback()
     {
         g_playing = false;
-        CoreAudioNotePlayer::au_reset_all_controllers();
+        output->reset_all_controllers();
     }
     
     class SequencerThread : public wxThread
@@ -335,13 +319,16 @@ namespace AriaMaestosa
         
         virtual wxArrayString getOutputChoices()
         {
-            const std::vector<CoreAudioNotePlayer::Destination>& destinations = CoreAudioNotePlayer::getDestinations();
+            // FIXME: bring th
+            //const std::vector<CoreMidiOutput::Destination>& destinations = CoreAudioNotePlayer::getDestinations();
             wxArrayString out;
             out.Add(_("OSX Software Synthesizer"));
+            /*
             for (unsigned int n=0; n<destinations.size(); n++)
             {
                 out.Add(wxString(destinations[n].m_name.c_str(), wxConvUTF8));
             }
+             */
             return out;
         }
         
@@ -393,7 +380,7 @@ namespace AriaMaestosa
         virtual void playNote(int noteNum, int volume, int duration, int channel, int instrument)
         {
             if (g_playing) return;
-            CoreAudioNotePlayer::playNote( noteNum, volume, duration, channel, instrument );
+            output->playNote( noteNum, volume, duration, channel, instrument );
         }
         
         virtual bool isPlaying()
@@ -403,7 +390,7 @@ namespace AriaMaestosa
         
         virtual void stopNote()
         {
-            CoreAudioNotePlayer::stopNote();
+            output->stopNote();
         }
         
         virtual void stop()
@@ -416,42 +403,38 @@ namespace AriaMaestosa
         
         virtual void initMidiPlayer()
         {
-            //qtkit_init();
-            CoreAudioNotePlayer::init();
-            //audioToolboxMidiPlayer = new AudioToolboxMidiPlayer();
+            output = new AudioUnitOutput();
         }
         
         virtual void freeMidiPlayer()
         {
-            //qtkit_free();
-            CoreAudioNotePlayer::free();
-            //delete audioToolboxMidiPlayer;
-            //audioToolboxMidiPlayer = NULL;
+            delete output;
+            output = NULL;
         }
 
         void seq_note_on(const int note, const int volume, const int channel)
         {
-            CoreAudioNotePlayer::au_seq_note_on(note, volume, channel);
+            output->note_on(note, volume, channel);
         }
         
         void seq_note_off(const int note, const int channel)
         {
-            CoreAudioNotePlayer::au_seq_note_off(note, channel);
+            output->note_off(note, channel);
         }
         
         void seq_prog_change(const int instrument, const int channel)
         {
-            CoreAudioNotePlayer::au_seq_prog_change(instrument, channel);
+            output->prog_change(instrument, channel);
         }
         
         void seq_controlchange(const int controller, const int value, const int channel)
         {
-            CoreAudioNotePlayer::au_seq_controlchange(controller, value, channel);
+            output->controlchange(controller, value, channel);
         }
         
         void seq_pitch_bend(const int value, const int channel)
         {
-            CoreAudioNotePlayer::au_seq_pitch_bend(value + 8192, channel);
+            output->pitch_bend(value + 8192, channel);
         }
         
         /**

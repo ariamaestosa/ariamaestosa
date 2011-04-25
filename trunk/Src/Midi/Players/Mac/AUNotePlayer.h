@@ -20,29 +20,25 @@
 //#include <AudioUnit/AudioUnit.h>
 #include <AudioToolbox/AudioToolbox.h> //for AUGraph
 
-namespace CoreAudioNotePlayer
+#include "Midi/Players/Mac/OutputBase.h"
+
+class AudioUnitOutput : public OutputBase
 {
-
-    struct Destination
-    {
-        MIDIEndpointRef m_ref;
-        std::string m_name;
-    };
-    const std::vector<Destination>& getDestinations();
+    void setBank(uint8_t midiChannelInUse);
+    void programChange(uint8_t progChangeNum, uint8_t midiChannelInUse);
     
-    void init();
-    void free();
-
-    void playNote(int pitchID, int volume, int duration, int channel, int instrument);
-    void stopNote();
+public:
     
-    void au_seq_note_on(const int note, const int volume, const int channel);
-    void au_seq_note_off(const int note, const int channel);
-    void au_seq_prog_change(const int instrument, const int channel);
-    void au_seq_controlchange(const int controller, const int value, const int channel);
-    void au_seq_pitch_bend(const int value, const int channel);
+    AudioUnitOutput();
+    ~AudioUnitOutput();
     
-    void au_reset_all_controllers();
-}
+    void note_on(const int note, const int volume, const int channel);
+    void note_off(const int note, const int channel);
+    void prog_change(const int instrument, const int channel);
+    void controlchange(const int controller, const int value, const int channel);
+    void pitch_bend(const int value, const int channel);
+    
+    void reset_all_controllers();
+};
 
 #endif
