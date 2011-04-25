@@ -516,7 +516,7 @@ namespace CoreAudioNotePlayer
         
     home_setBank:
         
-        fprintf(stderr, "Error in MidiPlayer::setBank\n");
+        fprintf(stderr, "Error in MidiPlayer::au_seq_controlchange\n");
     }
     
     // ------------------------------------------------------------------------------------------------------
