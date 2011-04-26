@@ -929,6 +929,10 @@ void MainFrame::menuEvent_outputDevice(wxCommandEvent& evt)
         PreferencesData::getInstance()->setValue(SETTING_ID_MIDI_OUTPUT, item->GetItemLabelText());
         PreferencesData::getInstance()->save();
     }
+    
+    // re-init MIDI player so that changes take effect
+    PlatformMidiManager::get()->freeMidiPlayer();
+    PlatformMidiManager::get()->initMidiPlayer();
 }
 
 // -----------------------------------------------------------------------------------------------------------
