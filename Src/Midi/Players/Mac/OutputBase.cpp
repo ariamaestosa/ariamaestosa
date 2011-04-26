@@ -48,18 +48,21 @@ public:
     }
 };
 
-bool playing = false;
 
 StopNoteTimer* stopNoteTimer = NULL;
 
+
+// ------------------------------------------------------------------------------------------------------
 
 OutputBase::OutputBase()
 {
     MIDIClientCreate(CFSTR("MidiOutput"), NULL, NULL, &m_client);
     
     stopNoteTimer = new StopNoteTimer(this);
-
+    m_playing = false;
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 OutputBase::~OutputBase()
 {
@@ -70,19 +73,19 @@ OutputBase::~OutputBase()
     }
 }
 
-int lastNote;
-int lastChannel;
+// ------------------------------------------------------------------------------------------------------
 
 void OutputBase::playNote(int pitchID, int volume, int duration, int channel, int instrument)
 {
-    if (playing) stopNote();
+    if (m_playing) stopNote();
     
-    lastNote = pitchID;
-    lastChannel = channel;
+    m_last_note = pitchID;
+    m_last_channel = channel;
     
-    note_on(lastNote, volume, lastChannel);
+    prog_change(instrument, channel);
+    note_on(pitchID, volume, channel);
     stopNoteTimer->start(duration);
-    playing = true;
+    m_playing = true;
 
     return;
 }
@@ -91,10 +94,10 @@ void OutputBase::playNote(int pitchID, int volume, int duration, int channel, in
 
 void OutputBase::stopNote()
 {
-    if (not playing) return;
+    if (not m_playing) return;
 
-    note_off(lastNote, lastChannel);
-    playing = false;
+    note_off(m_last_note, m_last_channel);
+    m_playing = false;
 
     return;
 }

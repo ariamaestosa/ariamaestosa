@@ -287,7 +287,7 @@ AudioUnitOutput::~AudioUnitOutput()
 void AudioUnitOutput::note_on(const int note, const int volume, const int channel)
 {
     OSStatus result;
-    UInt32 noteOnCommand =        kMidiMessage_NoteOn << 4 | channel;
+    UInt32 noteOnCommand = kMidiMessage_NoteOn << 4 | channel;
     
     // note on
     require_noerr (result = MusicDeviceMIDIEvent(synthUnit, noteOnCommand, note, volume, 0), home);
@@ -317,7 +317,7 @@ home:
 void AudioUnitOutput::prog_change(const int instrument, const int channel)
 {
     OSStatus result;
-    UInt32 progamChange  = kMidiMessage_ProgramChange << 4 | channel;
+    UInt32 progamChange = kMidiMessage_ProgramChange << 4 | channel;
     
     // set instrument
     require_noerr (result = MusicDeviceMIDIEvent(synthUnit, progamChange, instrument, 0, 0), home);
