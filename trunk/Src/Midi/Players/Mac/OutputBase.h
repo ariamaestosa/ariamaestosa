@@ -25,6 +25,9 @@ class OutputBase
 {
 protected:
     MIDIClientRef m_client;
+    int m_last_note;
+    int m_last_channel;
+    bool m_playing;
     
 public:
     OutputBase();
