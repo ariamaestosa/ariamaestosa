@@ -151,7 +151,7 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
 
     double ticks_per_millis = (double)bpm * (double)beatlen / (double)60000.0;
 
-    std::cout << "bpm = " << bpm << " beatlen=" << beatlen << " ticks_per_millis=" << ticks_per_millis << std::endl;
+    //std::cout << "bpm = " << bpm << " beatlen=" << beatlen << " ticks_per_millis=" << ticks_per_millis << std::endl;
 
     float next_event_time = 0;
 
@@ -161,7 +161,7 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
     jdkmidi::MIDIClockTime tick;
     if (not jdksequencer->GetNextEventTime(&tick))
     {
-        std::cout << "failed to get first event time, returning" << std::endl;
+        std::cerr << "[AriaSequenceTimer] failed to get first event time, returning" << std::endl;
         cleanup_sequencer();
         return;
     }
