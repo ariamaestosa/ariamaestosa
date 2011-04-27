@@ -259,9 +259,10 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
                                  m_gsequence->getZoom() + Editor::getEditorXStart(), mousey_current);
             }
         }
-        AriaRender::lineWidth(1);
     }
     
+    AriaRender::lineWidth(1);
+
     // -----------------------------------------------------------------
     // left part with names
     // -----------------------------------------------------------------
