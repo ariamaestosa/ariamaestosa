@@ -66,7 +66,7 @@ static const wxString g_controller_names[] =
     // so they can join the same openGL string list, and thus render faster
     wxT("Pitch Bend"), // 30
     wxT("Tempo (global)"), // 31
-    wxT(""), // 32
+    wxT("Lyrics (global)"), // 32
     wxT(""), // 33
     wxT(""), // 34
     wxT(""), // 35
@@ -219,12 +219,16 @@ ControllerChoice::ControllerChoice() : wxMenu(), controller_label(new Model<wxSt
     Append( 91 , g_controller_names[91 ] ); // Reverb
     Append( 64 , g_controller_names[64 ] ); // Sustain
 
-    // In the midi specs, pitch bend is not a controller. However, i found it just made sense to place it among controllers, so i assigned it arbitrary ID 200.
-    Append( 200 , wxT("Pitch Bend") ); // Pitch Bend
+    // In the midi specs, pitch bend is not a controller. However, i found it just made sense to place it
+    // among controllers, so i assigned it arbitrary ID 200.
+    Append( PSEUDO_CONTROLLER_PITCH_BEND , wxT("Pitch Bend") );
 
     // Tempo bend is not a controller but for now it goes there (FIXME?)
-    Append( 201 , wxT("Tempo (global)") ); // Tempo (global)
+    Append( PSEUDO_CONTROLLER_TEMPO , wxT("Tempo (global)") );
 
+    Append( PSEUDO_CONTROLLER_LYRICS , wxT("Lyrics (global)") );
+
+    
     AppendSeparator();
 
     Append( 2  , g_controller_names[2  ] ); // Breath
@@ -300,9 +304,22 @@ void ControllerChoice::menuSelected(wxCommandEvent& evt)
     controllerID=evt.GetId();
     
     // special cases (non-controllers)
-    if      (controllerID == 200)   controller_label.getModel()->setValue(g_controller_names[30]);
-    else if (controllerID == 201)   controller_label.getModel()->setValue(g_controller_names[31]);
-    else                            controller_label.getModel()->setValue(g_controller_names[controllerID]);
+    if      (controllerID == PSEUDO_CONTROLLER_PITCH_BEND)
+    {
+        controller_label.getModel()->setValue(g_controller_names[30]);
+    }
+    else if (controllerID == PSEUDO_CONTROLLER_TEMPO)
+    {
+        controller_label.getModel()->setValue(g_controller_names[31]);
+    }
+    else if (controllerID == PSEUDO_CONTROLLER_LYRICS)
+    {
+        controller_label.getModel()->setValue(g_controller_names[32]);
+    }
+    else
+    {
+        controller_label.getModel()->setValue(g_controller_names[controllerID]);
+    }
     
     ASSERT_E(controllerID,<,205);
     ASSERT_E(controllerID,>=,0);
@@ -354,18 +371,21 @@ void ControllerChoice::renderTopLabel(const int x, const int y)
     label_renderer->bind();
 
     // pan
-    if (controllerID == 10 or controllerID == 42) label_renderer->get(5).render(x, y);
+    if (controllerID == 10 or controllerID == 42)          label_renderer->get(5).render(x, y);
 
     // pitch bend
-    else if (controllerID == 200)                 label_renderer->get(6).render(x, y);
+    else if (controllerID == PSEUDO_CONTROLLER_PITCH_BEND) label_renderer->get(6).render(x, y);
 
     // on/offs
-    else if ( isOnOffController(controllerID) )   label_renderer->get(0).render(x, y);
+    else if ( isOnOffController(controllerID) )            label_renderer->get(0).render(x, y);
 
     // tempo
-    else if (controllerID == 201)                 AriaRender::renderNumber( "400", x, y );
+    else if (controllerID == PSEUDO_CONTROLLER_TEMPO)      AriaRender::renderNumber("400", x, y);
+    
+    // lyrics
+    else if (controllerID == PSEUDO_CONTROLLER_LYRICS)     ;
 
-    else                                          label_renderer->get(3).render(x, y);
+    else                                                   label_renderer->get(3).render(x, y);
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -379,18 +399,21 @@ void ControllerChoice::renderBottomLabel(const int x, const int y)
     label_renderer->bind();
     
     // pan
-    if (controllerID== 10 or controllerID== 42) label_renderer->get(4).render(x, y);
+    if (controllerID == 10 or controllerID == 42)          label_renderer->get(4).render(x, y);
 
     // pitch bend
-    else if (controllerID==200)                 label_renderer->get(7).render(x, y);
+    else if (controllerID == PSEUDO_CONTROLLER_PITCH_BEND) label_renderer->get(7).render(x, y);
 
     // on/offs
-    else if ( isOnOffController(controllerID) ) label_renderer->get(1).render(x, y);
+    else if (isOnOffController(controllerID))              label_renderer->get(1).render(x, y);
 
     // tempo
-    else if (controllerID == 201)               AriaRender::renderNumber( "20", x, y );
+    else if (controllerID == PSEUDO_CONTROLLER_TEMPO)      AriaRender::renderNumber( "20", x, y );
+    
+    // lyrics
+    else if (controllerID == PSEUDO_CONTROLLER_LYRICS)     ;
 
-    else                                        label_renderer->get(2).render(x, y);
+    else                                                   label_renderer->get(2).render(x, y);
 }
 
 

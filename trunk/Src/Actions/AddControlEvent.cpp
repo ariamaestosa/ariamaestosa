@@ -48,7 +48,7 @@ AddControlEvent::~AddControlEvent()
 void AddControlEvent::undo()
 {
     
-    if (m_controller != 201 /*tempo*/)
+    if (m_controller != PSEUDO_CONTROLLER_TEMPO)
     {
         ptr_vector<ControllerEvent>& control_events = m_visitor->getControlEventVector();
         

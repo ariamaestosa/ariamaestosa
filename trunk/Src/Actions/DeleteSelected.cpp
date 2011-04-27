@@ -98,7 +98,7 @@ void DeleteSelected::perform()
         const int from = std::min(selBegin, selEnd);
         const int to   = std::max(selBegin, selEnd);
         
-        if (type != 201 /*tempo*/)
+        if (type != PSEUDO_CONTROLLER_TEMPO)
         {
             // remove controller events
             for (int n=0; n<ctrls.size(); n++)

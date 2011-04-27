@@ -255,7 +255,7 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                     if (value>127) value=127;
                     if (value<0) value=0;
 
-                    ariaTrack->addControlEvent_import(tick, 127-value, 200);
+                    ariaTrack->addControlEvent_import(tick, 127-value, PSEUDO_CONTROLLER_PITCH_BEND);
 
                     continue;
                 }
@@ -301,7 +301,7 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                     else
                     {
                         import->addTempoEvent(
-                                              new ControllerEvent(201,
+                                              new ControllerEvent(PSEUDO_CONTROLLER_TEMPO,
                                                                   tick,
                                                                   127 - (int)((tempo - 20.0)/380.0*128.0)
                                                                   )
@@ -349,7 +349,8 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                     //std::cout << "Beat marker: " << (int)event->GetByte1() << " " << (int)event->GetByte2() << " " << (int)event->GetByte3() << ", type=" << (int)event->GetType() << std::endl;
                 }
                  */
-                else  if ( event->IsTextEvent() ) // ----------------------------------- track name / text events -------------------------------------
+                // ----------------------------------- track name / text events -------------------------------------
+                else  if ( event->IsTextEvent() )
                 {
 
                     // sequence/track name
@@ -388,11 +389,26 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                         const char* text = (char*) event->GetSysEx()->GetBuf();
                         std::cout << "instrument name : " << text << " (ignored)"<< std::endl;
                     }
+                    */
                     else if ((int)event->GetByte1() == 5) // lyrics
                     {
                         const char* text = (char*) event->GetSysEx()->GetBuf();
-                        std::cout << "lyrics : " << text << " (ignored)"<< std::endl;
+                        
+                        if (strlen(text) > 0)
+                        {
+                            wxString s(text, wxConvUTF8);
+                            if (s.size() == 0)
+                            {
+                                // FIXME: why is that?
+                                fprintf(stderr, "[MidiFileReader] WARNING: strlen(text) is not empty but wxString(text) is????\n");
+                            }
+                            else
+                            {
+                                sequence->addTextEvent_import(tick, s, PSEUDO_CONTROLLER_LYRICS);
+                            }
+                        }
                     }
+                    /*
                     else if ((int)event->GetByte1() == 1) // comments
                     {
                         const char* text = (char*) event->GetSysEx()->GetBuf();

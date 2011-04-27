@@ -237,7 +237,7 @@ void Track::addControlEvent( ControllerEvent* evt, int* previousValue )
     if (previousValue != NULL) *previousValue = -1;
 
     // tempo events
-    if (evt->getController()==201) vector = &m_sequence->m_tempo_events;
+    if (evt->getController() == PSEUDO_CONTROLLER_TEMPO) vector = &m_sequence->m_tempo_events;
     // controller and pitch bend events
     else vector = &m_control_events;
 
@@ -632,10 +632,11 @@ int Track::findLastNoteInRange(const int fromTick, const int toTick) const
 
 // ----------------------------------------------------------------------------------------------------------
 
-int Track::getControllerEventAmount(const bool isTempo) const
+int Track::getControllerEventAmount(const bool isLyrics, const bool isTempo) const
 {
-    if (isTempo) return m_sequence->getTempoEventAmount();
-    else         return m_control_events.size();
+    if (isTempo)       return m_sequence->getTempoEventAmount();
+    else if (isLyrics) return m_sequence->m_text_events.size();
+    else               return m_control_events.size();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -665,18 +666,23 @@ int Track::getControllerEventAmount(const int controller) const
 ControllerEvent* Track::getControllerEvent(const int id, const int controllerTypeID)
 {
     ASSERT_E(id,>=,0);
-    if (controllerTypeID == 201 /*tempo*/) 
+    if (controllerTypeID == PSEUDO_CONTROLLER_TEMPO) 
     {
+        // FIXME: silly to access sequence events through Track!!
         ASSERT_E(id,<,m_sequence->getTempoEventAmount());
+        return &m_sequence->m_tempo_events[id];
+    }
+    else if (controllerTypeID == PSEUDO_CONTROLLER_LYRICS) 
+    {
+        // FIXME: silly to access sequence events through Track!!
+        ASSERT_E(id,<,m_sequence->m_text_events.size());
+        return &m_sequence->m_text_events[id];
     }
     else
     {
         ASSERT_E(id,<,m_control_events.size());
+        return &m_control_events[id];
     }
-
-    if (controllerTypeID == 201 /*tempo*/) return &m_sequence->m_tempo_events[id];
-    
-    return &m_control_events[id];
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -1525,7 +1531,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
             const int controllerID = m_control_events[control_evt_id].getController();
 
             // pitch bend
-            if (controllerID==200)
+            if (controllerID == PSEUDO_CONTROLLER_PITCH_BEND)
             {
                 int time = m_control_events[control_evt_id].getTick() - firstNoteStartTick;
 

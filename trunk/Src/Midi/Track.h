@@ -400,7 +400,7 @@ namespace AriaMaestosa
         
         static bool isTempoController(const int controllerTypeID)
         {
-            return controllerTypeID == 201;
+            return controllerTypeID == PSEUDO_CONTROLLER_TEMPO;
         }
         
         //FIXME: tempo events have nothing to do with tracks and should not be handled here at all
@@ -408,7 +408,7 @@ namespace AriaMaestosa
          * @return          the amount of ALL types of controller events
          * @param isTempo   if true, returns amount of tempo events
          */
-        int getControllerEventAmount(const bool isTempo=false) const;
+        int getControllerEventAmount(const bool isLyrics=false, const bool isTempo=false) const;
         
         /**
          * @return            the amount of ALL types of controller, not only of specified type
