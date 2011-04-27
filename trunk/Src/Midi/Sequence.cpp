@@ -824,7 +824,8 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
         
         bool copyright_mode = false;
         bool tempo_mode = false;
-
+        bool text_mode = false;
+        
         bool done = false;
         
         // parse the file until end reached
@@ -862,7 +863,7 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                         
                         if (not newTrack->readFromFile(xml, gseq)) return false;
                     }
-
+                    
                     // ---------- copyright ------
                     else if (strcmp("copyright", xml->getNodeName()) == 0)
                     {
@@ -874,36 +875,48 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                     {
                         tempo_mode = true;
                     }
+                    
+                    // ---------- text events ------
+                    else if (strcmp("text", xml->getNodeName()) == 0)
+                    {
+                        text_mode = true;
+                    }
+                    
                     // all control events in <sequence> are tempo events
                     else if (strcmp("controlevent", xml->getNodeName()) == 0)
                     {
 
-                        if (not tempo_mode)
+                        if (tempo_mode)
+                        {
+                            ControllerEvent* temp = new ControllerEvent(0, 0, 0);
+                            if (not temp->readFromFile(xml))
+                            {
+                                std::cerr << "Failed to read tempo event for .aria file\n";
+                                delete temp;
+                            }
+                            else
+                            {
+                                m_tempo_events.push_back( temp );
+                            }
+                        }
+                        else if (text_mode)
+                        {
+                            TextEvent* temp = new TextEvent(0, 0, wxT(""));
+                            if (not temp->readFromFile(xml))
+                            {
+                                std::cerr << "Failed to read text event for .aria file\n";
+                                delete temp;
+                            }
+                            else
+                            {
+                                m_text_events.push_back( temp );
+                            }
+                        }
+                        else
                         {
                             std::cerr << "Unexpected control event" << std::endl;
                             continue;
                         }
-
-                        int tempo_tick = -1;
-                        const char* tick = xml->getAttributeValue("tick");
-                        if (tick != NULL) tempo_tick = atoi( tick );
-                        if (tempo_tick < 0)
-                        {
-                            std::cerr << "Failed to read tempo event" << std::endl;
-                            continue;
-                        }
-
-                        int tempo_value = -1;
-                        const char* value = xml->getAttributeValue("value");
-                        if (value != NULL) tempo_value = atoi( value );
-                        if (tempo_value <= 0)
-                        {
-                            std::cerr << "Failed to read tempo event" << std::endl;
-                            continue;
-                        }
-
-                        m_tempo_events.push_back( new ControllerEvent(PSEUDO_CONTROLLER_TEMPO, tempo_tick, tempo_value) );
-
                     }
 
                     break;
@@ -923,6 +936,10 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                     else if (strcmp("tempo", xml->getNodeName()) == 0)
                     {
                         tempo_mode = false;
+                    }
+                    else if (strcmp("text", xml->getNodeName()) == 0)
+                    {
+                        text_mode = false;
                     }
                     break;
                 }
