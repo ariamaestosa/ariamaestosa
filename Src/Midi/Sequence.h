@@ -117,7 +117,7 @@ namespace AriaMaestosa
         int currentTrack;
 
         ptr_vector<Track> tracks;
-
+        
         ChannelManagementType channelManagement;
 
         ptr_vector<Action::EditAction> undoStack;
@@ -145,7 +145,8 @@ namespace AriaMaestosa
         OwnerPtr<MeasureData>       m_measure_data;
         
         ptr_vector<ControllerEvent> m_tempo_events;
-        
+        ptr_vector<TextEvent>       m_text_events;
+
         /** this object is to be modified by MainFrame, to remember where to save this sequence */
         wxString m_filepath;
         
@@ -302,6 +303,8 @@ namespace AriaMaestosa
         
         void  addTempoEvent( ControllerEvent* evt );
         
+        void addTextEvent_import(const int x, const wxString& value, const int controller);
+        
         int                    getTempoEventAmount() const { return m_tempo_events.size();  }
         const ControllerEvent* getTempoEvent(int id) const { return m_tempo_events.getConst(id); }
         
@@ -368,12 +371,14 @@ namespace AriaMaestosa
         int  isFollowPlaybackEnabled    () const  { return m_follow_playback;               }
         void enableFollowPlayback(bool enabled)   { m_follow_playback = enabled;            }
         
-        wxString getFilepath()                   { return m_filepath; }
-        void     setFilepath(wxString newpath)   { m_filepath = newpath; }
+        wxString getFilepath()                    { return m_filepath;                      }
+        void     setFilepath(wxString newpath)    { m_filepath = newpath;                   }
         
-        wxString getSequenceFilename()           { return m_sequence_filename->getValue(); }
-        void     setSequenceFilename(wxString a) { m_sequence_filename->setValue(a);       }
-        Model<wxString>* getNameModel()          { return m_sequence_filename;             }
+        wxString getSequenceFilename()            { return m_sequence_filename->getValue(); }
+        void     setSequenceFilename(wxString a)  { m_sequence_filename->setValue(a);       }
+        Model<wxString>* getNameModel()           { return m_sequence_filename;             }
+        
+        const ptr_vector<TextEvent>& getTextEvents() const { return m_text_events;          }
         
         /**
           * During importing, there are several differences :

@@ -18,6 +18,7 @@
 #define _ControllerEvent_
 
 #include "Utils.h"
+#include "Renderers/RenderAPI.h"
 
 class wxFileOutputStream;
 // forward
@@ -25,6 +26,13 @@ namespace irr { namespace io {
     class IXMLBase;
     template<class char_type, class super_class> class IIrrXMLReader;
     typedef IIrrXMLReader<char, IXMLBase> IrrXMLReader; } }
+
+enum PSEUDO_CONTROLLERS
+{
+    PSEUDO_CONTROLLER_PITCH_BEND = 200,
+    PSEUDO_CONTROLLER_TEMPO,
+    PSEUDO_CONTROLLER_LYRICS
+};
 
 namespace AriaMaestosa
 {
@@ -46,6 +54,7 @@ namespace AriaMaestosa
         LEAK_CHECK();
         
         ControllerEvent(unsigned short controller, int tick, unsigned short value);
+        virtual ~ControllerEvent() {}
         
         unsigned short getController() const { return m_controller; }
         int            getTick      () const { return m_tick;       }    
@@ -59,6 +68,27 @@ namespace AriaMaestosa
         // ---- serialization
         void saveToFile(wxFileOutputStream& fileout);
         bool readFromFile(irr::io::IrrXMLReader* xml);
+    };
+    
+    /** For now text events are stored like controller events, except they have a string and
+      * not a numeric value
+      */
+    class TextEvent : public ControllerEvent
+    {
+        AriaRenderString m_text;
+        
+    public:
+        
+        TextEvent(unsigned short controller, int tick, wxString text) :
+                ControllerEvent(controller, tick, -1),
+                m_text(new Model<wxString>(text), true)
+        {
+        }
+        
+        virtual ~TextEvent() {}
+        
+        AriaRenderString& getText()     { return m_text;                    }
+        void setText(const wxString& t) { m_text.getModel()->setValue( t ); }
     };
     
 }

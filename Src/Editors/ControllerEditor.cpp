@@ -62,58 +62,102 @@ ControllerEditor::~ControllerEditor()
 void ControllerEditor::renderEvents()
 {
     const int area_from_y = getEditorYStart()+7;
-    const int area_to_y = getYEnd()-15;
-    const float y_zoom = (float)( area_to_y-area_from_y ) / 127.0;
+    const int area_to_y   = getYEnd()-15;
+    const float y_zoom    = (float)(area_to_y - area_from_y) / 127.0;
 
     AriaRender::color(0, 0.4, 1);
     AriaRender::lineWidth(3);
 
     ControllerEvent* tmp;
-    int previous_location=-1, previous_value=-1;
+    int previous_location = -1, previous_value = -1;
 
     const int currentController = m_controller_choice->getControllerID();
 
-    const int eventAmount = m_track->getControllerEventAmount( Track::isTempoController(currentController) );
-    const int x_scroll = m_gsequence->getXScrollInPixels();
-
-
-    int eventsOfThisType=0;
-    for (int n=0; n<eventAmount; n++)
+    const int eventAmount = m_track->getControllerEventAmount(currentController == PSEUDO_CONTROLLER_LYRICS,
+                                                              Track::isTempoController(currentController) );
+    
+    if (currentController == PSEUDO_CONTROLLER_LYRICS)
     {
+        AriaRender::images();
+    }
+    
+    const int x_scroll = m_gsequence->getXScrollInPixels();
+    int eventsOfThisType = 0;
+    
+    for (int n=0; n<eventAmount; n++)
+    {        
         tmp = m_track->getControllerEvent(n, currentController);
         if (tmp->getController() != currentController) continue; // only draw events of this controller
         eventsOfThisType++;
-
+        
         const int xloc = ControllerEditor::getPositionInPixels(tmp->getTick(), m_gsequence);
-        const unsigned short value = tmp->getValue();
-
-        if (previous_location - x_scroll > getXEnd()) // if events are no more visible, stop drawing
-            return;
-
-        if (xloc - x_scroll > Editor::getEditorXStart())
+        
+        if (dynamic_cast<TextEvent*>(tmp) != NULL)
         {
-            if (previous_location != -1 and previous_value != -1)
+            if (xloc - x_scroll > Editor::getEditorXStart())
             {
-                AriaRender::line(previous_location - x_scroll,
-                                 area_from_y + previous_value*y_zoom,
-                                 xloc - x_scroll,
-                                 area_from_y + previous_value*y_zoom);
+                TextEvent* evt = dynamic_cast<TextEvent*>(tmp);
+                evt->getText().bind();
+                AriaRender::color(0,0,0);
+                
+                int y;
+                
+                switch (n % 3)
+                {
+                    case 0:
+                        y = (area_from_y + area_from_y + area_to_y)/3;
+                        break;
+                    case 1:
+                        y = (area_from_y + area_to_y)/2;
+                        break;
+                    default:
+                        y = (area_from_y + area_to_y + area_to_y)/3;
+                        break;
+                }
+                
+                evt->getText().render(xloc - x_scroll, y);
             }
         }
+        else
+        {
+            // -------- Non-text events
+            const unsigned short value = tmp->getValue();
 
+            if (previous_location - x_scroll > getXEnd()) // if events are no more visible, stop drawing
+                return;
+
+            // Support lyrics that are up to 100 pixels long for now...
+            if (xloc - x_scroll > Editor::getEditorXStart() - 100)
+            {
+                if (previous_location != -1 and previous_value != -1)
+                {
+                    AriaRender::line(previous_location - x_scroll,
+                                     area_from_y + previous_value*y_zoom,
+                                     xloc - x_scroll,
+                                     area_from_y + previous_value*y_zoom);
+                }
+            }
+            previous_value = value;
+        }
+        
         previous_location = xloc;
-        previous_value = value;
     }// next
 
-    // draw horizontal line drom last event to end of visible area
-    if (eventsOfThisType>0)
+    if (currentController == PSEUDO_CONTROLLER_LYRICS)
     {
-        AriaRender::line(previous_location - x_scroll,
-                         area_from_y + previous_value*y_zoom,
-                         getXEnd(),
-                         area_from_y + previous_value*y_zoom);
+        AriaRender::primitives();
     }
-
+    else
+    {
+        // draw horizontal line from last event to end of visible area
+        if (eventsOfThisType > 0)
+        {
+            AriaRender::line(previous_location - x_scroll,
+                             area_from_y + previous_value*y_zoom,
+                             getXEnd(),
+                             area_from_y + previous_value*y_zoom);
+        }
+    }
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -122,42 +166,41 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
                               RelativeXCoord mousex_initial, int mousey_initial, bool focus)
 {
     AriaRender::beginScissors(LEFT_EDGE_X, getEditorYStart(), m_width - RIGHT_SCISSOR, m_height);
-
+    
     // -------------------------------- background ----------------------------
-
+    
     const int area_from_y = getEditorYStart()+7;
     const int area_to_y = getYEnd()-15;
-
+    
     AriaRender::primitives();
-
+    
     AriaRender::color(0.9, 0.9, 0.9);
     AriaRender::rect(0, 0, getXEnd(), area_from_y);
     AriaRender::rect(0, area_to_y,getXEnd(), getYEnd());
-
+    
     AriaRender::color(1,1,1);
     AriaRender::rect(0, area_from_y, getXEnd(), area_to_y);
-
+    
     // -------------------------- selection ------------------------
-
+    
     if (m_selection_begin != -1 and focus)
     {
-
+        
         RelativeXCoord selectX1(m_selection_begin, MIDI, m_gsequence);
         RelativeXCoord selectX2(m_selection_end, MIDI, m_gsequence);
-
+        
         AriaRender::color(0.8, 0.9, 1);
         AriaRender::rect(selectX1.getRelativeTo(WINDOW) , area_from_y,
                          selectX2.getRelativeTo(WINDOW) , area_to_y);
-
+        
     }
 
     // ----------------------------------- middle line -----------------------
     AriaRender::color(0.9, 0.9, 0.9);
-
+    
     // tempo
-    if (m_controller_choice->getControllerID() == 201)
+    if (m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_TEMPO)
     {
-
         // top value is 500, bottom value is 0, find where to put middle value for it to be main tempo
         const int liney = (int)(
                                 area_to_y - (area_to_y-area_from_y)*((m_sequence->getTempo()-20) / 380.0)
@@ -169,52 +212,56 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     {
         AriaRender::line(0, (area_from_y+area_to_y)/2, getXEnd(), (area_from_y+area_to_y)/2);
     }
-
+    
     drawVerticalMeasureLines(area_from_y, area_to_y);
-
+    
     // ------------------------ min/max, on/off, left/right, etc. -------------------
     AriaRender::images();
     AriaRender::color(0.5, 0.5, 0.5);
-
-    m_controller_choice->renderTopLabel(Editor::getEditorXStart()+5 , area_from_y + 13);
-    m_controller_choice->renderBottomLabel(Editor::getEditorXStart()+5 , area_to_y);
+    
+    m_controller_choice->renderTopLabel(   Editor::getEditorXStart() + 5 , area_from_y + 13);
+    m_controller_choice->renderBottomLabel(Editor::getEditorXStart() + 5 , area_to_y);
     
     AriaRender::primitives();
     
     // -------------------------- draw controller events ---------------------
     renderEvents();
-
-    // ----------------------- add controller events (preview) -------------------
+    
+    // Resizing
     if (m_graphical_track->isDragResize()) m_has_been_resizing = true;
-
-    const bool on_off = m_controller_choice->isOnOffController( m_controller_choice->getControllerID() );
-    if (m_mouse_is_in_editor and m_selection_begin == -1 and not on_off)
+    
+    // ----------------------- add controller events (preview) -------------------
+    if (m_controller_choice->getControllerID() != PSEUDO_CONTROLLER_LYRICS)
     {
-
-        AriaRender::lineWidth(3);
-        AriaRender::color(0, 0.4, 1);
-
-        if (mousey_initial >= area_from_y and mousey_initial <= area_to_y and not m_has_been_resizing)
+        const bool on_off = m_controller_choice->isOnOffController( m_controller_choice->getControllerID() );
+        if (m_mouse_is_in_editor and m_selection_begin == -1 and not on_off)
         {
 
-            // if out of bounds
-            if (mousey_current<area_from_y) mousey_current=area_from_y;
-            if (mousey_current>area_to_y) mousey_current=area_to_y;
+            AriaRender::lineWidth(3);
+            AriaRender::color(0, 0.4, 1);
 
-            int tick1 = m_track->snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI));
-            int tick2 = m_track->snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI));
+            if (mousey_initial >= area_from_y and mousey_initial <= area_to_y and not m_has_been_resizing)
+            {
 
-            if (tick2 < 0) tick2 = 0;
-            if (tick1 < 0) tick1 = 0;
+                // if out of bounds
+                if (mousey_current < area_from_y) mousey_current = area_from_y;
+                if (mousey_current > area_to_y)   mousey_current = area_to_y;
 
-            AriaRender::line((tick1 - m_gsequence->getXScrollInMidiTicks()) *
-                             m_gsequence->getZoom() + Editor::getEditorXStart(), mousey_initial,
-                             (tick2 - m_gsequence->getXScrollInMidiTicks()) *
-                             m_gsequence->getZoom() + Editor::getEditorXStart(), mousey_current);
+                int tick1 = m_track->snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI));
+                int tick2 = m_track->snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI));
+
+                if (tick2 < 0) tick2 = 0;
+                if (tick1 < 0) tick1 = 0;
+
+                AriaRender::line((tick1 - m_gsequence->getXScrollInMidiTicks()) *
+                                 m_gsequence->getZoom() + Editor::getEditorXStart(), mousey_initial,
+                                 (tick2 - m_gsequence->getXScrollInMidiTicks()) *
+                                 m_gsequence->getZoom() + Editor::getEditorXStart(), mousey_current);
+            }
         }
+        AriaRender::lineWidth(1);
     }
-    AriaRender::lineWidth(1);
-
+    
     // -----------------------------------------------------------------
     // left part with names
     // -----------------------------------------------------------------

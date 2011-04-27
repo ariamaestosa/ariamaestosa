@@ -52,7 +52,7 @@ void AddControllerSlide::undo()
     //std::cout << "will undo control slide" << std::endl;
     // std::cout << "track->m_control_events.size() = " << track->m_control_events.size() << std::endl;
     
-    if (m_controller != 201 /*tempo*/)
+    if (m_controller != PSEUDO_CONTROLLER_TEMPO)
     {
         ptr_vector<ControllerEvent>& control_events = m_visitor->getControlEventVector();
         
@@ -131,9 +131,15 @@ void AddControllerSlide::perform()
     ptr_vector<ControllerEvent>* vector;
     
     // tempo events
-    if (m_controller == 201) vector = &m_track->getSequence()->m_tempo_events;
-    // controller and pitch bend events
-    else vector = &m_visitor->getControlEventVector();
+    if (m_controller == PSEUDO_CONTROLLER_TEMPO)
+    {
+        vector = &m_track->getSequence()->m_tempo_events;
+    }
+    else
+    {
+        // controller and pitch bend events
+        vector = &m_visitor->getControlEventVector();
+    }
     
     /*
      std::cout << "************************************************" << std::endl;

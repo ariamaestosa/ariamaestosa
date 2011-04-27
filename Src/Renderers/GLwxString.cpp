@@ -61,9 +61,9 @@ GLuint* loadImage(wxImage* img)
     int bytesPerPixel = 4;
 
     int imageSize = w * h * bytesPerPixel;
-    imageData=(GLubyte *)malloc(imageSize);
+    imageData = (GLubyte *)malloc(imageSize);
 
-    int rev_val=h-1;
+    int rev_val = h - 1;
 
     for (int y=0; y<h; y++)
     {
@@ -169,23 +169,27 @@ void TextGLDrawable::setImage(TextTexture* image, bool giveUpOwnership)
 
 void TextGLDrawable::rotate(int angle)
 {
-    m_angle=angle;
+    m_angle = angle;
 }
 
 void TextGLDrawable::render()
 {
     ASSERT(m_image != NULL);
-
-    ASSERT_E(m_w, >, 0);
-    ASSERT_E(m_h, >, 0);
+    
+    ASSERT_E(m_w, >=, 0);
+    ASSERT_E(m_h, >=, 0);
     ASSERT_E(m_w, <, 90000);
     ASSERT_E(m_h, <, 90000);
+    
+    if (m_w == 0) fprintf(stderr, "[TextGLDrawable] WARNING: empty width image\n");
+    if (m_h == 0) fprintf(stderr, "[TextGLDrawable] WARNING: empty height image\n");
+    
     glPushMatrix();
     glTranslatef(m_x*10,(m_y - m_h - y_offset)*10,0);
     
     if (m_x_scale != 1 or m_y_scale != 1) glScalef(m_x_scale, m_y_scale, 1);
     if (m_angle != 0) glRotatef(m_angle, 0,0,1);
-
+    
     if (m_max_width != -1 and getWidth() > m_max_width)
     {
         const float ratio = (float)m_max_width/(float)getWidth();

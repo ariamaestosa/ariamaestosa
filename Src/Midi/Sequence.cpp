@@ -300,6 +300,15 @@ void Sequence::snapNotesToGrid()
     if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
+void Sequence::addTextEvent_import(const int x, const wxString& value, const int controller)
+{
+    ASSERT(isImportMode()); // not to be used when not importing
+    ASSERT(value.size() > 0);
+    m_text_events.push_back(new TextEvent(controller, x, value) );
+}
+
 
 // ----------------------------------------------------------------------------------------------------------
 // -------------------------------------------- Actions and Undo --------------------------------------------
@@ -884,7 +893,7 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                             continue;
                         }
 
-                        m_tempo_events.push_back( new ControllerEvent(201, tempo_tick, tempo_value) );
+                        m_tempo_events.push_back( new ControllerEvent(PSEUDO_CONTROLLER_TEMPO, tempo_tick, tempo_value) );
 
                     }
 
