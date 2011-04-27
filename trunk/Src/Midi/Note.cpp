@@ -256,10 +256,10 @@ void Note::setEndTick(const int ticks)
 
 void Note::saveToFile(wxFileOutputStream& fileout)
 {
-    writeData( wxT("<note pitch=\"") + to_wxString(m_pitch_ID)  , fileout );
-    writeData( wxT("\" start=\"")    + to_wxString(m_start_tick), fileout );
-    writeData( wxT("\" end=\"")      + to_wxString(m_end_tick)  , fileout );
-    writeData( wxT("\" volume=\"")   + to_wxString(m_volume)    , fileout );
+    writeData( wxT("  <note pitch=\"") + to_wxString(m_pitch_ID)  , fileout );
+    writeData( wxT("\" start=\"")      + to_wxString(m_start_tick), fileout );
+    writeData( wxT("\" end=\"")        + to_wxString(m_end_tick)  , fileout );
+    writeData( wxT("\" volume=\"")     + to_wxString(m_volume)    , fileout );
 
     if (fret   != -1) writeData( wxT("\" fret=\"")   + to_wxString(fret),   fileout );
     if (string != -1) writeData( wxT("\" string=\"") + to_wxString(string), fileout );

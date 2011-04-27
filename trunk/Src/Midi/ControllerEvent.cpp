@@ -56,9 +56,9 @@ void ControllerEvent::setValue(unsigned short value)
 void ControllerEvent::saveToFile(wxFileOutputStream& fileout)
 {
 
-    writeData( wxT("<controlevent type=\"") + to_wxString(m_controller)           , fileout );
-    writeData( wxT("\" tick=\"")            + to_wxString(m_tick)                 , fileout );
-    writeData( wxT("\" value=\"")           + to_wxString(m_value) + wxT("\"/>\n"), fileout );
+    writeData( wxT("  <controlevent type=\"") + to_wxString(m_controller)           , fileout );
+    writeData( wxT("\" tick=\"")              + to_wxString(m_tick)                 , fileout );
+    writeData( wxT("\" value=\"")             + to_wxString(m_value) + wxT("\"/>\n"), fileout );
 
 }
 
@@ -105,6 +105,65 @@ bool ControllerEvent::readFromFile(irr::io::IrrXMLReader* xml)
         return false;
     }
 
+    return true;
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void TextEvent::saveToFile(wxFileOutputStream& fileout)
+{
+    writeData( wxT("  <controlevent type=\"") + to_wxString(m_controller) , fileout );
+    writeData( wxT("\" tick=\"")              + to_wxString(m_tick)       , fileout );
+    
+    wxString val = m_text.getModel()->getValue();
+    val.Replace( wxT("\r\n"), wxT("\n") );
+    val.Replace( wxT("\n"), wxT("&#xD;") );
+    val.Replace( wxT("\r"), wxT("&#xD;") );
+    writeData( wxString(wxT("\" value=\""))   + val + wxT("\"/>\n")       , fileout );
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+bool TextEvent::readFromFile(irr::io::IrrXMLReader* xml)
+{
+    // ---- read "type"
+    const char* type = xml->getAttributeValue("type");
+    if (type != NULL)
+    {
+        m_controller = atoi(type);
+    }
+    else
+    {
+        m_controller = 0;
+        std::cout << "Missing info from file: text event type" << std::endl;
+        return false;
+    }
+    
+    // ---- read "tick"
+    const char* tick_c = xml->getAttributeValue("tick");
+    if (tick_c != NULL)
+    {
+        m_tick = atoi(tick_c);
+    }
+    else
+    {
+        m_tick = 0;
+        std::cout << "Missing info from file: text event tick" << std::endl;
+        return false;
+    }
+    
+    // ---- read "value"
+    const char* value_c = xml->getAttributeValue("value");
+    if (value_c != NULL)
+    {
+        m_text.getModel()->setValue(wxString(value_c, wxConvUTF8));
+    }
+    else
+    {
+        std::cout << "Missing info from file: text event value" << std::endl;
+        return false;
+    }
+    
     return true;
 }
 
