@@ -170,8 +170,9 @@ namespace AriaMaestosa
          The wxDC argument is only used to calculate text extents and will not be rendered on. */
         virtual void consolidate(wxDC* dc);
         
-        Model<wxString>* getModel() { return m_model; }
-        
+        Model<wxString>*       getModel()       { return m_model; }
+        const Model<wxString>* getModel() const { return m_model; }
+
         void setMaxWidth(const int w, const bool warp=false /*false: truncate. true: warp.*/);
         
         /** render this string at coordinates (x,y). Must be called after bind(). */
