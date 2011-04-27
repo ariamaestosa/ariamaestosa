@@ -396,11 +396,10 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                         
                         if (strlen(text) > 0)
                         {
-                            wxString s(text, wxConvUTF8);
+                            wxString s(text, wxConvUTF8, event->GetSysEx()->GetLength());
                             if (s.size() == 0)
                             {
-                                // FIXME: why is that?
-                                fprintf(stderr, "[MidiFileReader] WARNING: strlen(text) is not empty but wxString(text) is????\n");
+                                fprintf(stderr, "[MidiFileReader] WARNING: error converting lyrics (wrong encoding?)\n");
                             }
                             else
                             {
