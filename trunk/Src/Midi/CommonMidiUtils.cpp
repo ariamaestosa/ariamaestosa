@@ -24,6 +24,8 @@
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
+#include "UnitTest.h"
+#include "ptr_vector.h"
 
 #include "jdkmidi/world.h"
 #include "jdkmidi/track.h"
@@ -94,6 +96,8 @@ namespace AriaMaestosa
     void addTimeSigFromVector(int n, int amount, MeasureData* measureData,
                               jdkmidi::MIDIMultiTrack& tracks, int substract_ticks);
     void addTempoEventFromSequenceVector(int n, int amount, Sequence* sequence,
+                                        jdkmidi::MIDIMultiTrack& tracks, int substract_ticks);
+    void addTextEventFromSequenceVector(int n, Sequence* sequence,
                                         jdkmidi::MIDIMultiTrack& tracks, int substract_ticks);
 }
 
@@ -194,6 +198,159 @@ void AriaMaestosa::addTempoEventFromSequenceVector(int n, int amount, Sequence* 
         std::cerr << "Error adding tempo event" << std::endl;
         return;
     }
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void AriaMaestosa::addTextEventFromSequenceVector(int n, Sequence* sequence,
+                                                  jdkmidi::MIDIMultiTrack& tracks, int substract_ticks)
+{
+    jdkmidi::MIDITimedBigMessage m;
+    
+    const TextEvent* evt = sequence->getTextEvents().getConst(n);
+    
+    m.SetTime( evt->getTick() );
+    
+    char type;
+    
+    if (evt->getController() == PSEUDO_CONTROLLER_LYRICS)
+    {
+        type = jdkmidi::META_LYRIC_TEXT;
+    }
+    else
+    {
+        fprintf(stderr, "WARNING: Unknown text event type : %i\n", evt->getController());
+        return;
+    }
+    
+    m.SetText( evt->getText().getModel()->getValue().size(), type);
+    
+    wxCharBuffer buffer = evt->getText().getModel()->getValue().ToUTF8();
+    
+    for (const char* c = buffer.data(); *c != 0; c++)
+    {
+        m.GetSysEx()->PutByte(*c);
+    }
+    
+    if (not tracks.GetTrack(0)->PutEvent( m ))
+    {
+        std::cerr << "Error adding text event" << std::endl;
+        return;
+    }
+}
+
+using namespace AriaMaestosa;
+
+class IMergeSource
+{
+public:
+    virtual ~IMergeSource() {}
+    virtual bool hasMore() = 0;
+    virtual int  getNextTick() = 0;
+    virtual void pop() = 0;
+};
+
+void merge( ptr_vector<IMergeSource>& sources )
+{
+    while (true)
+    {
+        IMergeSource* min = NULL;
+        int min_tick = -1;
+        for (int n=0; n<sources.size(); n++)
+        {
+            if (sources[n].hasMore())
+            {
+                if (min_tick == -1 or sources[n].getNextTick() < min_tick)
+                {
+                    min_tick = sources[n].getNextTick();
+                    min = sources.get(n);
+                }
+            }
+        }
+        
+        if (min == NULL)
+        {
+            // all sources are empty
+            return;
+        }
+        
+        min->pop();
+    }
+}
+
+UNIT_TEST( MergeTest )
+{
+    std::vector<int> output;
+    
+    class A : public IMergeSource
+    {
+        int i;
+        std::vector<int>& m_output;
+    public:
+        A(std::vector<int>& poutput) : m_output(poutput) { i = 0; }
+        virtual bool hasMore() { return i < 10; }
+        virtual int  getNextTick() { const int* v = (int[]){1,2,4,6,8,12,14,17,19,23}; return v[i]; }
+        virtual void pop() { const int* v = (int[]){1,2,4,6,8,12,14,17,19,23}; m_output.push_back(v[i]); i++; }
+    };
+    class B : public IMergeSource
+    {
+        int i;
+        std::vector<int>& m_output;
+    public:
+        B(std::vector<int>& poutput) : m_output(poutput) { i = 0; }
+        virtual bool hasMore() { return i < 10; }
+        virtual int  getNextTick() { const int* v = (int[]){5,8,12,15,25,46,48,70,71,72}; return v[i]; }
+        virtual void pop() { const int* v = (int[]){5,8,12,15,25,46,48,70,71,72}; m_output.push_back(v[i]); i++; }
+    };
+    class C : public IMergeSource
+    {
+        int i;
+        std::vector<int>& m_output;
+    public:
+        C(std::vector<int>& poutput) : m_output(poutput) { i = 0; }
+        virtual bool hasMore() { return i < 10; }
+        virtual int  getNextTick() { const int* v = (int[]){3,3,4,5,6,6,7,8,9,10}; return v[i]; }
+        virtual void pop() { const int* v = (int[]){3,3,4,5,6,6,7,8,9,10}; m_output.push_back(v[i]); i++; }
+    };
+    
+    ptr_vector<IMergeSource> sources;
+    sources.push_back( new A(output) );
+    sources.push_back( new B(output) );
+    sources.push_back( new C(output) );
+    merge( sources );
+    
+    require( output.size() == 30, "All numbers were merged" );
+    int n = 0;
+    require( output[n++] == 1, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 2, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 3, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 3, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 4, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 4, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 5, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 5, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 6, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 6, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 6, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 7, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 8, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 8, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 8, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 9, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 10, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 12, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 12, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 14, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 15, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 17, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 19, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 23, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 25, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 46, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 48, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 70, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 71, "The right numbers were merged, in the proper order" );
+    require( output[n++] == 72, "The right numbers were merged, in the proper order" );
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -370,6 +527,80 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
         }
         else
         {
+            // Closures would have been wonderful here but I need to support compilers that don't have C++0x support...
+            class TimeSigSource : public IMergeSource
+            {
+                int i;
+                int m_count;
+                MeasureData* m_md;
+                jdkmidi::MIDIMultiTrack& m_tracks;
+                int m_substract_ticks;
+                
+            public:
+                
+                TimeSigSource(MeasureData* pmd, jdkmidi::MIDIMultiTrack& ptracks, int psubstract_ticks) : m_tracks(ptracks)
+                {
+                    i = 0;
+                    m_count = pmd->getTimeSigAmount();
+                    m_md = pmd;
+                    m_substract_ticks = psubstract_ticks;
+                }
+                
+                virtual bool hasMore()
+                {
+                    return i < m_count;
+                }
+                virtual int getNextTick()
+                {
+                    return m_md->getTimeSig(i).getTick();
+                }
+                virtual void pop()
+                {
+                    addTimeSigFromVector(i, m_count, m_md, m_tracks, m_substract_ticks);
+                    i++;
+                }
+            };
+            class TempoEvtSource : public IMergeSource
+            {
+                int i;
+                int m_count;
+                Sequence* m_seq;
+                jdkmidi::MIDIMultiTrack& m_tracks;
+                int m_substract_ticks;
+                
+            public:
+                
+                TempoEvtSource(Sequence* seq, jdkmidi::MIDIMultiTrack& ptracks, int psubstract_ticks) : m_tracks(ptracks)
+                {
+                    i = 0;
+                    m_count = seq->getTempoEventAmount();
+                    m_seq = seq;
+                    m_substract_ticks = psubstract_ticks;
+                }
+                
+                virtual bool hasMore()
+                {
+                    return i < m_count;
+                }
+                virtual int getNextTick()
+                {
+                    return m_seq->getTempoEvent(i)->getTick();
+                }
+                virtual void pop()
+                {
+                    addTempoEventFromSequenceVector(i, m_count, m_seq, m_tracks, m_substract_ticks);
+                    i++;
+                }
+            };
+            
+            {
+                ptr_vector<IMergeSource> sources;
+                sources.push_back( new TimeSigSource(md, tracks, substract_ticks) );
+                sources.push_back( new TempoEvtSource(sequence, tracks, substract_ticks) );
+                merge( sources );
+            }
+            
+            /*
             // add both tempo changes and measures in time order
             const int timesig_amount = md->getTimeSigAmount();
             const int tempo_amount = sequence->getTempoEventAmount();
@@ -409,6 +640,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
                     tempo_id++;
                 }
             }
+             */
             
         }
     }

@@ -87,8 +87,9 @@ namespace AriaMaestosa
         
         virtual ~TextEvent() {}
         
-        AriaRenderString& getText()     { return m_text;                    }
-        void setText(const wxString& t) { m_text.getModel()->setValue( t ); }
+        const AriaRenderString& getText() const { return m_text;                    }
+        AriaRenderString& getText()             { return m_text;                    }
+        void setText(const wxString& t)         { m_text.getModel()->setValue( t ); }
         
         // ---- serialization
         virtual void saveToFile(wxFileOutputStream& fileout);

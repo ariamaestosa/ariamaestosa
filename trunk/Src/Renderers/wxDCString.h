@@ -56,8 +56,9 @@ namespace AriaMaestosa
         
         void render(const int x, const int y);
         
-        Model<wxString>* getModel() { return m_model; }
-        
+        Model<wxString>*       getModel()       { return m_model; }
+        const Model<wxString>* getModel() const { return m_model; }
+
         int getWidth();
         void scale(float f);
         void rotate(int angle);
