@@ -649,36 +649,45 @@ void Sequence::saveToFile(wxFileOutputStream& fileout)
                                                 wxT("auto") : wxT("manual")) +
               wxT("\" metronome=\"")         + (m_play_with_metronome ? wxT("true") : wxT("false")) +
               wxT("\">\n\n"), fileout );
-
+    
     //writeData(wxT("<view xscroll=\"") + to_wxString(m_x_scroll_in_pixels) +
     //          wxT("\" yscroll=\"")    + to_wxString(y_scroll) +
     //          wxT("\" zoom=\"")       + to_wxString(m_zoom_percent) +
     //          wxT("\"/>\n"), fileout );
-
-    m_measure_data->saveToFile(fileout);
-
-    writeData(wxT("<tempo>\n"), fileout );
-    // tempo changes
     
-    const int count = m_tempo_events.size();
-    for (int n=0; n<count; n++)
+    m_measure_data->saveToFile(fileout);
+    
+    // ---- tempo changes
+    writeData(wxT("<tempo>\n"), fileout );    
+    const int tempo_count = m_tempo_events.size();
+    for (int n=0; n<tempo_count; n++)
     {
         m_tempo_events[n].saveToFile(fileout);
     }
     writeData(wxT("</tempo>\n"), fileout );
-
+    
+    // ---- text events
+    writeData(wxT("<text>\n"), fileout );
+    const int text_count = m_text_events.size();
+    for (int n=0; n<text_count; n++)
+    {
+        m_text_events[n].saveToFile(fileout);
+    }
+    writeData(wxT("</text>\n"), fileout );
+    
+    // ---- copyright
     writeData(wxT("<copyright>"), fileout );
     writeData(getCopyright(), fileout );
     writeData(wxT("</copyright>\n"), fileout );
-
-    // tracks
+    
+    // ---- tracks
     for (int n=0; n<tracks.size(); n++)
     {
         tracks[n].saveToFile(fileout);
     }
-
+    
     writeData(wxT("</sequence>"), fileout );
-
+    
     clearUndoStack();
 }
 

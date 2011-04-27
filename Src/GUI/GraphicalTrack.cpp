@@ -1757,7 +1757,7 @@ void GraphicalTrack::saveToFile(wxFileOutputStream& fileout)
     const int octave_shift = m_score_editor->getScoreMidiConverter()->getOctaveShift();
 
     // TODO: move notation type to "Track"
-    writeData( wxT("<editor score=\"") + wxString(m_track->isNotationTypeEnabled(SCORE) ? wxT("true") : wxT("false")) +
+    writeData( wxT("  <editor score=\"") + wxString(m_track->isNotationTypeEnabled(SCORE) ? wxT("true") : wxT("false")) +
                wxT("\" keyboard=\"") + (m_track->isNotationTypeEnabled(KEYBOARD) ? wxT("true") : wxT("false")) +
                wxT("\" guitar=\"") + (m_track->isNotationTypeEnabled(GUITAR) ? wxT("true") : wxT("false")) +
                wxT("\" drum=\"") + (m_track->isNotationTypeEnabled(DRUM) ? wxT("true") : wxT("false")) +
@@ -1775,11 +1775,11 @@ void GraphicalTrack::saveToFile(wxFileOutputStream& fileout)
     //drumEditor->drumKit->saveToFile(fileout);
 
     // TODO: move this to 'Track', has nothing to do here in GraphicalTrack
-    writeData( wxT("<instrument id=\"") + to_wxString( m_track->getInstrument() ) + wxT("\"/>\n"), fileout);
-    writeData( wxT("<drumkit id=\"") + to_wxString( m_track->getDrumKit() ) + wxT("\"/>\n"), fileout);
+    writeData( wxT("  <instrument id=\"") + to_wxString( m_track->getInstrument() ) + wxT("\"/>\n"), fileout);
+    writeData( wxT("  <drumkit id=\"") + to_wxString( m_track->getDrumKit() ) + wxT("\"/>\n"), fileout);
 
     // guitar tuning (FIXME: move this out of here)
-    writeData( wxT("<guitartuning "), fileout);
+    writeData( wxT("  <guitartuning "), fileout);
     GuitarTuning* tuning = m_track->getGuitarTuning();
     
     const int stringCount = tuning->tuning.size();

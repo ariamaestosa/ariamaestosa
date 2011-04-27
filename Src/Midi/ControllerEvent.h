@@ -45,7 +45,7 @@ namespace AriaMaestosa
       */
     class ControllerEvent
     {
-        
+    protected:   
         int                m_tick;
         unsigned short     m_controller;
         unsigned short     m_value;
@@ -66,8 +66,8 @@ namespace AriaMaestosa
         ControllerEvent* clone() { return new ControllerEvent(m_controller, m_tick, m_value); }
         
         // ---- serialization
-        void saveToFile(wxFileOutputStream& fileout);
-        bool readFromFile(irr::io::IrrXMLReader* xml);
+        virtual void saveToFile(wxFileOutputStream& fileout);
+        virtual bool readFromFile(irr::io::IrrXMLReader* xml);
     };
     
     /** For now text events are stored like controller events, except they have a string and
@@ -89,6 +89,10 @@ namespace AriaMaestosa
         
         AriaRenderString& getText()     { return m_text;                    }
         void setText(const wxString& t) { m_text.getModel()->setValue( t ); }
+        
+        // ---- serialization
+        virtual void saveToFile(wxFileOutputStream& fileout);
+        virtual bool readFromFile(irr::io::IrrXMLReader* xml);
     };
     
 }

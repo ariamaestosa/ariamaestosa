@@ -80,7 +80,7 @@ void MagneticGrid::setDivider(const int newVal)
 void MagneticGrid::saveToFile(wxFileOutputStream& fileout)
 {
     
-    writeData( wxT("<magneticgrid ") +
+    writeData( wxT("  <magneticgrid ") +
               wxString(wxT("divider=\"")) + to_wxString(m_divider) +
               wxT("\" triplet=\"") + wxString(m_triplet ? wxT("true") : wxT("false")) +
               wxT("\"/>\n"), fileout);
