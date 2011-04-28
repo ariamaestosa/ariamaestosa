@@ -184,7 +184,7 @@ void PreferencesData::fillSettingsVector()
      m_settings.push_back( alsaPort );
      */
     Setting* launchTim = new Setting(fromCString(SETTING_ID_LAUNCH_TIMIDITY),
-                                     _("Automatically launch TiMidity and pick a port"),
+                                     _("Automatically launch TiMidity if needed"),
                                      SETTING_BOOL, true /* show in preferences */, wxT("1") );
     m_settings.push_back( launchTim );
 #endif
