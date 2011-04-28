@@ -13,15 +13,6 @@
  *
  */
 
-/*
- * A quick and dirty way to make Aria run on Linux taken and modified from the pmidi app.
- * There is still a lot of work to do to get a proper implementation.
- * I still have a long way to go to understand Alsa.
- * I will continue studying the code and adapting it as i understand how it works.
- *
- * Meanwhile, if someone is knowledgable in Alsa, don't hesistate to help!! ^^
- */
-
 #ifdef _ALSA
 
 #include <glib.h>
@@ -104,24 +95,23 @@ namespace threads
 wxString export_audio_filepath;
 void* export_audio_func( void *ptr )
 {
-
     // the file is exported to midi, and then we tell timidity to make it into wav
     wxString tempMidiFile = export_audio_filepath.BeforeLast('/') + wxT("/aria_temp_file.mid");
-
+    
     AriaMaestosa::exportMidiFile(g_sequence, tempMidiFile);
     wxString cmd = wxT("timidity -Ow -o \"") + export_audio_filepath + wxT("\" \"") + tempMidiFile + wxT("\" -idt");
     std::cout << "executing " << cmd.mb_str() << std::endl;
-
+    
     FILE * command_output;
     char output[128];
     int amount_read = 1;
-
+    
     std::cout << "-----------------\ntimidity output\n-----------------\n";
     try
     {
         command_output = popen(cmd.mb_str(), "r");
         if (command_output == NULL) throw;
-
+		
         while(amount_read > 0)
         {
             amount_read = fread(output, 1, 127, command_output);
@@ -138,16 +128,16 @@ void* export_audio_func( void *ptr )
         std::cout << "An error occured while exporting audio file." << std::endl;
         return (void*)NULL;
     }
-
+    
     std::cout << "\n-----------------" << std::endl;
     pclose(command_output);
-
+    
     // send hide progress window event
     MAKE_HIDE_PROGRESSBAR_EVENT(event);
     getMainFrame()->GetEventHandler()->AddPendingEvent(event);
-
+    
     wxRemoveFile(tempMidiFile);
-
+    
     return (void*)NULL;
 }
 
@@ -160,9 +150,9 @@ class SequencerThread : public wxThread
     int songLengthInTicks;
     bool selectionOnly;
     int m_start_tick;
-
-    public:
-
+    
+public:
+    
     SequencerThread(const bool selectionOnly)
     {
         jdkmidiseq = NULL;
@@ -229,23 +219,23 @@ public:
     virtual void initMidiPlayer()
     {
         AlsaPlayerStuff::alsa_output_module_init();
-
+        
         context = new MidiContext();
-
-        const bool launchTimidity = Core::getPrefsLongValue("launchTimidity") != 0;
-
-        if (not context->openDevice(not launchTimidity))
+        
+        const bool launchTimidity = (Core::getPrefsLongValue("launchTimidity") != 0);
+        
+        if (not context->openDevice(launchTimidity))
         {
+            wxMessageBox( _("Failed to open ALSA device, sound will be unavailable") );
             std::cerr << "failed to open ALSA device" << std::endl;
             sound_available = false;
             AlsaPlayerStuff::alsa_output_module_free();
             return;
-            // exit(1);
         }
         sound_available = true;
-
+        
         AlsaPlayerStuff::alsa_output_module_setContext(context);
-
+        
         context->setPlaying(false);
     }
 
