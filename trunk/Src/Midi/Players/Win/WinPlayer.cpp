@@ -267,7 +267,7 @@ namespace AriaMaestosa
                 }
                 else
                 {
-                    fprintf(stderr, "[WinPlayer] WARNING: Cannot retrieve name of output device %i\n", i)
+                    fprintf(stderr, "[WinPlayer] WARNING: Cannot retrieve name of output device %i\n", i);
                     return wxT("");
                 }
             }
@@ -295,9 +295,6 @@ namespace AriaMaestosa
                 {
                     m_devices.Add(e.getDeviceName());
                 }
-                
-                int midi_num_outputs = midiOutGetNumDevs();
-                
                 
                 // To access Midi Yoke Output, simply put its number instead of MIDI_MAPPER
                 int e = ::midiOutOpen(

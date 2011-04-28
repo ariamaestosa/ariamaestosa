@@ -202,7 +202,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     
     wxGraphicsContext* gc = NULL;
     
-#if wxCHECK_VERSION(2,9,1)
+#if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
     if (dynamic_cast<wxPrinterDC*>(&dc) != NULL)
     {
         gc = wxGraphicsContext::Create( dynamic_cast<wxPrinterDC&>(dc) );
@@ -332,8 +332,9 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     dc.SetFont( m_normal_font );
     m_seq->printLinesInArea(dc, gc, pageNum-1, notation_area_y0, notation_area_h, h, x0, x1);
     
+#if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
     delete gc;
-    
+#endif
 }
     
 // -------------------------------------------------------------------------------------------------------------
