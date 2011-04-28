@@ -1,15 +1,16 @@
 1.3 beta 1
 - Intensive code refactoring and cleanup
+- Support sending midi output to external devices
 - Improve rendering of short notes in tablature view
 - Improve selection to preview which notes are included
 - Auto-extend song length when moving notes past end
+- Support for importing lyrics events
 - Performance (fluidity/responsivity) improvements
 - Fixed glitches in software rendering mode
 - Fixed crash when trying to print a song containing an empty track
 - Grey out irrelevant fields in note select dialog
 - Migrate OSX player to Aria generic sequencer, like on other systems
 - wxWidgets 2.9 builds will now feature nicer symbols on printed scores
-- Support for importing lyrics events
 - Improve tool picker
 
 ===================================================================================================
