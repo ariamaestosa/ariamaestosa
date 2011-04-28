@@ -227,6 +227,7 @@ void AriaMaestosa::addTextEventFromSequenceVector(int n, Sequence* sequence,
     
     wxCharBuffer buffer = evt->getText().getModel()->getValue().ToUTF8();
     
+    m.sysex = new jdkmidi::MIDISystemExclusive();
     for (const char* c = buffer.data(); *c != 0; c++)
     {
         m.GetSysEx()->PutByte(*c);
@@ -503,6 +504,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
     // FIXME find real problem
     if (not playing)
     {
+        /*
         if (md->isMeasureLengthConstant())
         {
             // time signature
@@ -526,7 +528,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
             }
         }
         else
-        {
+        {*/
             // Closures would have been wonderful here but I need to support compilers that don't have C++0x support...
             class TimeSigSource : public IMergeSource
             {
@@ -592,11 +594,45 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
                     i++;
                 }
             };
+            class TextEvtSource : public IMergeSource
+            {
+                int i;
+                int m_count;
+                Sequence* m_seq;
+                jdkmidi::MIDIMultiTrack& m_tracks;
+                int m_substract_ticks;
+                
+            public:
+                
+                TextEvtSource(Sequence* seq, jdkmidi::MIDIMultiTrack& ptracks, int psubstract_ticks) : m_tracks(ptracks)
+                {
+                    i = 0;
+                    m_count = seq->getTextEvents().size();
+                    printf("(((( TextEvtSource m_count = %i ))))\n", m_count);
+                    m_seq = seq;
+                    m_substract_ticks = psubstract_ticks;
+                }
+                
+                virtual bool hasMore()
+                {
+                    return i < m_count;
+                }
+                virtual int getNextTick()
+                {
+                    return m_seq->getTextEvents()[i].getTick();
+                }
+                virtual void pop()
+                {
+                    addTextEventFromSequenceVector(i, m_seq, m_tracks, m_substract_ticks);
+                    i++;
+                }
+            };
             
             {
                 ptr_vector<IMergeSource> sources;
                 sources.push_back( new TimeSigSource(md, tracks, substract_ticks) );
                 sources.push_back( new TempoEvtSource(sequence, tracks, substract_ticks) );
+                sources.push_back( new TextEvtSource(sequence, tracks, substract_ticks) );
                 merge( sources );
             }
             
@@ -642,7 +678,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
             }
              */
             
-        }
+        //}
     }
     else
     {
