@@ -388,7 +388,7 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
             Range<int> silenceX = tickToX(trackID, currentLine, tick);
             if (silenceX.from == -1 or silenceX.to == -1) continue;
             
-#if wxCHECK_VERSION(2,9,1)
+#if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
             RenderRoutines::drawSilence(*gc, silenceX, (m_silences[n].m_type <= 2 ? silencesY : silencesY2),
                                         stringHeight, m_silences[n].m_type, m_silences[n].m_triplet,
                                         m_silences[n].m_dotted);

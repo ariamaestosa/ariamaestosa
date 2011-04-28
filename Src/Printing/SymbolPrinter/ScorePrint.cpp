@@ -230,7 +230,7 @@ namespace AriaMaestosa
     /** Renders a 'G clef' sign at the the given coordinates */
     void renderGClef(wxDC& dc, wxGraphicsContext* gc, const int x, const float score_bottom, const float b_line_y)
     {
-#if wxCHECK_VERSION(2,9,1)
+#if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
         RenderRoutines::paintTreble(*gc, x + 20, b_line_y, score_bottom);
         
         //dc.SetBrush(*wxRED_BRUSH);
@@ -262,7 +262,7 @@ namespace AriaMaestosa
     void renderFClef(wxDC& dc, wxGraphicsContext* gc, const int x, const float score_top,
                      const float e_line_y)
     {
-#if wxCHECK_VERSION(2,9,1)
+#if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
         RenderRoutines::paintBass(*gc, x + 20, score_top, e_line_y);
 #else
         const int e_on_image = 15;
@@ -310,7 +310,7 @@ namespace AriaMaestosa
         // silences in gathered rests, for instance, will not be found by tickToX
         if (x.from < 0 or x.to < 0) return;
         
-#if wxCHECK_VERSION(2,9,1)
+#if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
         RenderRoutines::drawSilence(*gc, x, silences_y, g_line_height, type, triplet, dotted);
 #else
         RenderRoutines::drawSilence(global_dc, x, silences_y, g_line_height, type, triplet, dotted);

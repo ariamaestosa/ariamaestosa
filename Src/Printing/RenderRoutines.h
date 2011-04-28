@@ -57,7 +57,7 @@ namespace AriaMaestosa
                        const int radius_x, const int radius_y);
         
         /** @brief Utility function : renders an arc (half an ellipse) at the given coordinates */
-        void renderArc(wxGraphicsContext& dc, const int center_x, const int center_y,
+        void renderArc(wxGraphicsContext& gc, wxDC& dc, const int center_x, const int center_y,
                        const int radius_x, const int radius_y);
         
         /**
@@ -68,7 +68,7 @@ namespace AriaMaestosa
         
         void drawFlag(wxDC* dc, wxGraphicsContext* gc, const int flag_x_origin, const int flag_y, const int orient);
         
-#if wxCHECK_VERSION(2,9,1)
+#if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
         /**
          * @brief utility function to render a silence at a given location
          */
