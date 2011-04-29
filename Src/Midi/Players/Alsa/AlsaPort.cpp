@@ -132,79 +132,39 @@ bool MidiContext::openDevice(bool launchTimidity)
 
     bool success = false;
     
-#if 0 
-    wxString choices[deviceAmount];
-    MidiDevice* currentDevice;
+        
+    MidiDevice* d;
     
-    if (launchTimidity)
+    wxString port = PreferencesData::getInstance()->getValue(SETTING_ID_MIDI_OUTPUT);
+    if (port == "default")
     {
-        success = openTimidityDevice();
-        /*
-        MidiDevice* device = getDevice(Core::getPrefsValue("alsaClient"),
-                                        Core::getPrefsValue("alsaPort"));
-
-        if( device == NULL )
-        {
-            runTimidity();
-            device = getDevice(Core::getPrefsValue("alsaClient"),
-                                        Core::getPrefsValue("alsaPort"));
-        }
-
-        if(device != NULL)
-        {
-            success = openDevice( device );
-        }
-        */
+        d = getDevice(0); // default is to take the first device
     }
     else
     {
-#endif
-
-/*
-        for (int n=0; n<deviceAmount; n++)
+        wxString a_str = port.BeforeFirst(wxT(':'));
+        wxString b_str = port.BeforeFirst(wxT(' ')).AfterLast(wxT(':'));
+        
+        long a, b;
+        if (!a_str.ToLong(&a) || !b_str.ToLong(&b))
         {
-            currentDevice = getDevice(n);
-            choices[n] =    to_wxString(currentDevice->client) +
-                            wxString( wxT(":") ) +
-                            to_wxString(currentDevice->port) +
-                            wxString( wxT(" (") ) +
-                            currentDevice->name +
-                            wxString( wxT(")") );
-        }
-        
-        int userChoice = wxGetSingleChoiceIndex(_("Select an ALSA midi port to use for output."),
-                                                _("ALSA midi port choice"),
-                                                deviceAmount, choices);
-        if (userChoice == -1) return false;
-        
-        success = openDevice(getDevice(userChoice));
-		*/
-        
-		wxString port = PreferencesData::getInstance()->getValue(SETTING_ID_MIDI_OUTPUT);
-		
-		wxString a_str = port.BeforeFirst(wxT(':'));
-		wxString b_str = port.BeforeFirst(wxT(' ')).AfterLast(wxT(':'));
-		
-		long a, b;
-		if (!a_str.ToLong(&a) || !b_str.ToLong(&b))
-		{
             wxMessageBox( wxT("Invalid midi output selected") );
-			fprintf(stderr, "Invalid midi output selected  <%s:%s>\n", (const char*)a_str.utf8_str(),
-			        (const char*)b_str.utf8_str());
-			return false;
-		}
-		
-        MidiDevice* d = getDevice(a,b);
+            fprintf(stderr, "Invalid midi output selected  <%s:%s>\n", (const char*)a_str.utf8_str(),
+                    (const char*)b_str.utf8_str());
+            return false;
+        }
         
-        if (d == NULL)
-        {
-            success = false;
-        }
-        else
-        {
-            success = openDevice(d);
-        }
-//    }
+        d = getDevice(a,b);
+    }
+    
+    if (d == NULL)
+    {
+        success = false;
+    }
+    else
+    {
+        success = openDevice(d);
+    }
     
     if (!success)
     {
