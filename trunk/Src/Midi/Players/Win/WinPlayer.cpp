@@ -328,6 +328,11 @@ namespace AriaMaestosa
                 
                 if (driver == "default" || driver == _("Windows Software Synthesizer"))
                 {
+                    if (driver == "default")
+                    {
+                        PreferencesData::getInstance()->setValue(SETTING_ID_MIDI_OUTPUT, _("Windows Software Synthesizer"));
+                    }
+                    
                     e = ::midiOutOpen(&m_hOutMidiDevice,
                                       MIDI_MAPPER,
                                       NULL,
