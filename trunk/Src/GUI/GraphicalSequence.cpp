@@ -484,6 +484,8 @@ bool GraphicalSequence::readFromFile(irr::io::IrrXMLReader* xml)
         return false;
     }
     
+    int zoom = -1;
+    
     // parse the file until end reached
     while (xml != NULL and xml->read())
     {
@@ -553,7 +555,8 @@ bool GraphicalSequence::readFromFile(irr::io::IrrXMLReader* xml)
                     if (zoom_c != NULL)
                     {
                         int zoom_i = atoi(zoom_c);
-                        if (zoom_i > 0 and zoom_i<501) setZoom( zoom_i );
+                        printf(">>>> Zoom : %i\n", zoom_i);
+                        if (zoom_i > 0 and zoom_i < 501) zoom = zoom_i;
                         else return false;
                     }
                     else
@@ -588,6 +591,12 @@ bool GraphicalSequence::readFromFile(irr::io::IrrXMLReader* xml)
             }
         } // end switch
     } // end while
+    
+    // It's important to set zoom last because beat resolution has not yet been set at the time we read the zoom value
+    if (zoom != -1)
+    {
+        setZoom( zoom );
+    }
     
     DisplayFrame::updateHorizontalScrollbar( m_x_scroll_in_pixels );
     

@@ -921,10 +921,10 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
 
                     break;
                 }// end case
-                    
+                
                 case irr::io::EXN_ELEMENT_END:
                 {
-
+                    
                     if (strcmp("sequence", xml->getNodeName()) == 0)
                     {
                         done = true;
@@ -943,7 +943,7 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                     }
                     break;
                 }
-
+                
                 default:
                     break;
             }//end switch
