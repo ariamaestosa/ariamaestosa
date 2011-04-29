@@ -20,15 +20,19 @@
 #ifndef _qtkitplayer_
 #define _qtkitplayer_
 
-void qtkit_setData(char* data, int length);
-//void qtkit_play();
-//void qtkit_stop();
-//float qtkit_getCurrentTime(); 
+/**
+  * @ingroup midi.players
+  *
+  * On OSX, used to export MIDI to AIFF.
+  */
+class QuickTimeExport
+{
+public:
+    
+    static void qtkit_setData(char* data, int length);
 
-bool qtkit_exportToAiff(const char* filename);
-
-//void qtkit_init();
-//void qtkit_free();
+    static bool qtkit_exportToAiff(const char* filename);
+};
 
 #endif
 

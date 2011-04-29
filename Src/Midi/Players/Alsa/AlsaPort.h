@@ -22,6 +22,11 @@ namespace AriaMaestosa
 {
     class MidiDevice;
 
+    /**
+      * @ingroup midi.players
+      *
+      * Represents an ALSA midi context
+      */
     class MidiContext
     {
         ptr_vector<MidiDevice> devices;
@@ -57,6 +62,11 @@ namespace AriaMaestosa
 
     };
 
+    /**
+      * @ingroup midi.players
+      *
+      * Represents an ALSA midi device
+      */
     class MidiDevice
     {
         MidiContext* midiContext;

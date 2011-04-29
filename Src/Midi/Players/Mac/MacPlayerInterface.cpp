@@ -65,6 +65,11 @@ namespace AriaMaestosa
     
     OutputBase* output = NULL;
     
+    /**
+      * @ingroup midi.players
+      *
+      * Helper thread class for AIFF export on OSX
+      */
     class AudioExport : public wxThread
     {
         wxString m_filepath;
@@ -95,7 +100,7 @@ namespace AriaMaestosa
             int startTick = -1, songLength = -1;
             allocAsMidiBytes(m_sequence, false, &songLength, &startTick, &m_data, &m_length, true);
             
-            qtkit_setData(m_data, m_length);
+            QuickTimeExport::qtkit_setData(m_data, m_length);
             
             Run();
         }
@@ -104,9 +109,7 @@ namespace AriaMaestosa
         {
             MeasureData* md = m_sequence->getMeasureData();
             
-            //exportToAudio( data, length, filepath );
-            //qtkit_setData(m_data, m_length);
-            bool success = qtkit_exportToAiff( m_filepath.mb_str() );
+            bool success = QuickTimeExport::qtkit_exportToAiff( m_filepath.mb_str() );
             
             if (not success)
             {
@@ -132,6 +135,11 @@ namespace AriaMaestosa
         output->reset_all_controllers();
     }
     
+    /**
+      * @ingroup midi.players
+      *
+      * Helper thread class for playback on OSX
+      */
     class SequencerThread : public wxThread
     {
         jdkmidi::MIDIMultiTrack* jdkmidiseq;
@@ -206,12 +214,13 @@ namespace AriaMaestosa
     
     void playMidiBytes(char* bytes, int length);
 
+    /**
+      * @ingroup midi.players
+      *
+      * Main interface for playback on OSX
+      */
     class MacMidiManager : public PlatformMidiManager
-    {        
-        //AudioToolboxMidiPlayer* audioToolboxMidiPlayer;
-        
-        //bool use_qtkit;
-        
+    {
         int stored_songLength;
         
         Sequence* m_sequence;
@@ -221,7 +230,6 @@ namespace AriaMaestosa
         MacMidiManager()
         {
             g_playing   = false;
-            //use_qtkit = true;
             stored_songLength = 0;
         }
         
@@ -302,20 +310,6 @@ namespace AriaMaestosa
         virtual int getCurrentTick()
         {
             return g_current_tick;
-            /*
-            if (use_qtkit)
-            {
-                const float time = qtkit_getCurrentTime();
-                
-                if (time == -1) return -1; // not playing
-                
-                return (int)(time * g_sequence->getTempo()/60.0 * (float)g_sequence->ticksPerBeat());
-            }
-            else
-            {
-                return audioToolboxMidiPlayer->getPosition() * g_sequence->ticksPerBeat();
-            }
-             */
         }
         
         virtual wxArrayString getOutputChoices()
@@ -333,47 +327,7 @@ namespace AriaMaestosa
         virtual int trackPlaybackProgression()
         {
             return g_current_tick;
-            /*
-            int currentTick = getCurrentTick();
-            
-            // song ends
-            if (currentTick >= stored_songLength-1 or currentTick == -1)
-            {
-                Core::songHasFinishedPlaying();
-                currentTick=-1;
-                stop();
-                return -1;
-            }
-            
-            
-            return currentTick;
-            */
         }
-        
-        /*
-        virtual void playMidiBytes(char* bytes, int length)
-        {
-            CoreAudioNotePlayer::stopNote();
-            
-            // if length==8, this is just the empty song to load QT. (when the app opens, Quicktime is triggered
-            // with an empty song to make it load) - FIXME: this check is ugly
-            if (length == 8 or g_sequence->getTempoEventAmount() == 0) use_qtkit = true;
-            else use_qtkit=false;
-            
-            if (use_qtkit)
-            {
-                qtkit_setData(bytes, length);
-                qtkit_play();
-            }
-            else
-            {
-                audioToolboxMidiPlayer->loadSequence(bytes, length);
-                audioToolboxMidiPlayer->play();
-            }
-            
-            playing = true;
-        }
-        */
         
         virtual void playNote(int noteNum, int volume, int duration, int channel, int instrument)
         {
@@ -393,9 +347,6 @@ namespace AriaMaestosa
         
         virtual void stop()
         {
-            //if ( use_qtkit ) qtkit_stop();
-            //else audioToolboxMidiPlayer->stop();
-            
             g_thread_should_continue = false;
         }
         

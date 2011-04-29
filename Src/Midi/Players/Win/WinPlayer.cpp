@@ -93,6 +93,11 @@ namespace AriaMaestosa
         midiOutReset(m_hOutMidiDevice);
     }
     
+    /**
+      * @ingroup midi.players
+      *
+      * Helper thread class for playback on Windows
+      */
     class SequencerThread : public wxThread
     {
         jdkmidi::MIDIMultiTrack* jdkmidiseq;
@@ -160,6 +165,11 @@ namespace AriaMaestosa
     };
     
     
+    /**
+      * @ingroup midi.players
+      *
+      * Main interface for playback on Windows
+      */
     class WinMidiManager : public PlatformMidiManager
     {
         bool play(Sequence* sequence, /*out*/int* startTick, bool selectionOnly);

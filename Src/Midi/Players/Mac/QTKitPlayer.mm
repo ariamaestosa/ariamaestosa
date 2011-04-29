@@ -28,19 +28,8 @@
 
 QTMovie* movie = nil;
 
-/*
-bool playing = false;
 
-void qtkit_init()
-{
-}
-void qtkit_free()
-{
-}
-
- */
-
-void qtkit_setData(char* data_bytes, int bytes_length)
+void QuickTimeExport::qtkit_setData(char* data_bytes, int bytes_length)
 {
     
     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
@@ -72,28 +61,7 @@ void qtkit_setData(char* data_bytes, int bytes_length)
     [pool release];
 }
 
-/*
-void qtkit_play()
-{
-    
-    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-    
-
-    //if (movie == nil)
-	//{
-	//	printf("Movie is nil!\n");
-	//	return;
-	//}
-	
-    [movie play];
-    
-    playing = true;
-    
-    [pool release];
-}
-*/
-
-bool qtkit_exportToAiff(const char* filename)
+bool QuickTimeExport::qtkit_exportToAiff(const char* filename)
 {
     printf("QTKit will save to %s\n", filename);
     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
@@ -121,47 +89,5 @@ bool qtkit_exportToAiff(const char* filename)
     [pool release];
 	return success;
 }
-
-/*
-void qtkit_stop()
-{
-    
-    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-    
-    [movie stop];
-    [movie release];
-    movie = nil;
-    playing = false;
-    
-    [pool release];
-}
-
-float qtkit_getCurrentTime()
-{
-    
-    if (!playing)
-        return -1;
-    
-    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-    
-    QTTime time = [movie currentTime];
-
-    TimeRecord timeRec;
-    QTGetTimeRecord( time, &timeRec );
-    
-    long hi = timeRec.value.hi;
-    long lo = timeRec.value.lo;
-    
-    if (hi!=0){
-        std::cout << "ERROR: too long" << std::endl;   
-    }
-    
-    
-    [pool release];
-    
-    return (float)lo / (float)timeRec.scale;
-
-}
-*/
 
 #endif
