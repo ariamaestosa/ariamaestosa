@@ -360,6 +360,11 @@ namespace AriaMaestosa
             wxString driver = PreferencesData::getInstance()->getValue(SETTING_ID_MIDI_OUTPUT);
             if (driver == "default" || driver == _("OSX Software Synthesizer"))
             {
+                if (driver == "default")
+                {
+                    PreferencesData::getInstance()->setValue(SETTING_ID_MIDI_OUTPUT, _("OSX Software Synthesizer"));
+                }
+                
                 output = new AudioUnitOutput();
             }
             else
