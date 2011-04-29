@@ -1128,6 +1128,7 @@ void AriaMaestosa::RenderRoutines::renderArc(wxDC& dc, const int center_x, const
 void AriaMaestosa::RenderRoutines::renderArc(wxGraphicsContext& dc, const int center_x, const int center_y,
                                              const int radius_x, const int radius_y)
 {
+#if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
     wxGraphicsPath path = dc.CreatePath();
     
     path.MoveToPoint(center_x + radius_x*cos(0.1), center_y + radius_y*sin(0.1));
@@ -1137,6 +1138,9 @@ void AriaMaestosa::RenderRoutines::renderArc(wxGraphicsContext& dc, const int ce
     }
     
     dc.StrokePath(path);
+#else
+    assert(false);
+#endif
 }
 
 // -------------------------------------------------------------------------------------------------------
