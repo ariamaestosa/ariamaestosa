@@ -214,10 +214,7 @@ TimeSigPicker::TimeSigPicker() : wxMiniFrame(getMainFrame(), wxNewId(),  _("Time
     
     Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(TimeSigPicker::closed), NULL, this);
     
-    SetSizer(panelSizer);
-    // FIXME: I should be able to Fit here, find why Fit allocates way too much space vertically
-    //panelSizer->SetSizeHints(this);
-    //Fit();
+    SetSizerAndFit(panelSizer);
 }
 
 // --------------------------------------------------------------------------------------------------------
