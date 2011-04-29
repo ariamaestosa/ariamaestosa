@@ -24,11 +24,20 @@
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/CommonMidiUtils.h"
 #include "Midi/Sequence.h"
-#include <wx/wx.h>
+#include "PreferencesData.h"
+
+#include <wx/string.h>
 #include <wx/utils.h>
 #include <wx/process.h>
 #include <wx/strconv.h>
+#include <wx/timer.h>
+#include <wx/intl.h>
+#include <wx/log.h>
+#include <wx/msgdlg.h>
+
 #include <sstream>
+
+#include <Windows.h>
 
 /** macro to pack a MIDI short message */
 #define MAKEMIDISHORTMSG(cStatus, cChannel, cData1, cData2)            \
@@ -290,20 +299,46 @@ namespace AriaMaestosa
             
             if (not m_bOutOpen)
             {
+                wxString driver = PreferencesData::getInstance()->getValue(SETTING_ID_MIDI_OUTPUT);
+                
+                int deviceID = -1;
+                
                 // enumerate devices
                 for (DeviceEnumerator e; e.hasNext(); e.next())
                 {
-                    m_devices.Add(e.getDeviceName());
+                    wxString name = e.getDeviceName();
+                    m_devices.Add(name);
+                    if (name == driver)
+                    {
+                        deviceID = e.getDeviceID();
+                    }
                 }
                 
-                // To access Midi Yoke Output, simply put its number instead of MIDI_MAPPER
-                int e = ::midiOutOpen(
-                                      &m_hOutMidiDevice,
+                int e;
+                
+                if (driver == "default" || driver == _("Windows Software Synthesizer"))
+                {
+                    e = ::midiOutOpen(&m_hOutMidiDevice,
                                       MIDI_MAPPER,
                                       NULL,
                                       NULL,
                                       CALLBACK_NULL
                                       );
+                }
+                else if (deviceID != -1)
+                {
+                    e = ::midiOutOpen(&m_hOutMidiDevice,
+                                      deviceID,
+                                      NULL,
+                                      NULL,
+                                      CALLBACK_NULL
+                                      );
+                }
+                else
+                {
+                    wxMessageBox( wxString(wxT("Cannot locate MIDI output ")) + driver );
+                    return;
+                }
                 
                 if (e != 0)
                 {
@@ -332,7 +367,7 @@ namespace AriaMaestosa
                     wxLogError(wxString::Format(wxT("(%i MIDI devices available)"), midiOutGetNumDevs()));
                     return;
                 }
-                m_bOutOpen=true;
+                m_bOutOpen = true;
             }
             
             stopNoteTimer = new StopNoteTimer();
