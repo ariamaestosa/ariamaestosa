@@ -35,6 +35,8 @@ namespace AriaMaestosa
      * implement this interface, and provide a PlatformMidiManagerFactory for your manager (declare the
      * factory as a global so that it registers itself automagically when Aria opens)
      *
+     * @ingroup midi.players
+     *
      * There are, globally, two ways to implement song playback.
      * @li The first is to use a native MIDI sequencer (for instance, OS X provides functions that receive a bunch
      *     of MIDI data and play them, managing the timing/sequencing automagically). In this case, the seq_*

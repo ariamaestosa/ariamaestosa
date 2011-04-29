@@ -11,29 +11,12 @@
 namespace AriaMaestosa
 {
 
-
-
 MidiDevice::MidiDevice(MidiContext* context, int client_arg, int port_arg, const char* name_arg) :
 	name(name_arg, wxConvUTF8)
 {
     client = client_arg;
     port = port_arg;
     MidiDevice::midiContext = context;
-}
-
-MidiDevice* MidiContext::getDevice(int i)
-{
-    if(i<0 or i>(int)devices.size()) return NULL;
-    return &devices[i];
-}
-
-MidiDevice* MidiContext::getDevice(int client, int port)
-{
-    for (int n=0; n<(int)devices.size(); n++)
-    {
-        if(devices[n].client == client and devices[n].port == port) return &devices[n];
-    }
-    return NULL;
 }
 
 bool MidiDevice::open()
@@ -58,16 +41,10 @@ bool MidiDevice::open()
 
 void MidiDevice::close()
 {
-    //snd_seq_port_subscribe_alloca(&midiContext->subs);
-    //snd_seq_port_subscribe_set_sender(midiContext->subs, &midiContext->address);
-    //snd_seq_port_subscribe_set_dest(midiContext->subs, &address);
-
     snd_seq_unsubscribe_port(midiContext->sequencer, midiContext->subs);
     snd_seq_drop_output(midiContext->sequencer);
     snd_seq_free_queue(midiContext->sequencer, midiContext->queue);
     snd_seq_close(midiContext->sequencer);
-
-    //snd_seq_port_subscribe_free(midiContext.subs);
 }
 
 
@@ -82,14 +59,6 @@ MidiContext::MidiContext()
 
 MidiContext::~MidiContext()
 {
-    /*
-    if(queue != -1)
-    {
-        if(snd_seq_free_queue(sequencer, queue) != 0)
-            printf("deleting queue failed\n");
-        queue = -1;
-    }
-*/
     g_array_free(destlist, TRUE);
 }
 
@@ -245,6 +214,21 @@ bool MidiContext::openDevice(bool launchTimidity)
     return success;
 }
 
+MidiDevice* MidiContext::getDevice(int i)
+{
+    if(i<0 or i>(int)devices.size()) return NULL;
+    return &devices[i];
+}
+
+MidiDevice* MidiContext::getDevice(int client, int port)
+{
+    for (int n=0; n<(int)devices.size(); n++)
+    {
+        if(devices[n].client == client and devices[n].port == port) return &devices[n];
+    }
+    return NULL;
+}
+
 void MidiContext::findDevices()
 {
     devices.clearAndDeleteAll();
@@ -329,23 +313,6 @@ bool MidiContext::openDevice(MidiDevice* device)
     return device->open();
 }
 
-/*
-bool MidiContext::openTimidityDevice()
-{
-    for (int n=0; n<devices.size(); n++)
-    {
-        if (devices[n].name.Find( wxT("TiMidity") ) != wxNOT_FOUND)
-        {
-            MidiContext::device = devices.get(n);
-            std::cout << "Trying to open device " << device->name.mb_str() << " "
-                      << device->client << ":" << device->port << std::endl;
-            if (device->open()) return true;
-            std::cout << "Opening device failed.\n";
-        }
-    }
-    return false;
-}
-*/
 
 }
 

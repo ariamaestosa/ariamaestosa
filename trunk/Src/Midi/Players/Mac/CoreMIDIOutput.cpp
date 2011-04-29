@@ -79,6 +79,9 @@ static CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal)
     }
     return result;
 }
+
+// ------------------------------------------------------------------------------------------------------
+
 static CFStringRef ConnectedEndpointName(MIDIEndpointRef endpoint)
 {
     CFMutableStringRef result = CFStringCreateMutable(NULL, 0);
@@ -131,6 +134,7 @@ static CFStringRef ConnectedEndpointName(MIDIEndpointRef endpoint)
     return EndpointName(endpoint, false);
 }
 
+// ------------------------------------------------------------------------------------------------------
 
 std::vector<CoreMidiOutput::Destination> g_destinations;
 
@@ -155,6 +159,8 @@ const std::vector<CoreMidiOutput::Destination>& CoreMidiOutput::getDestinations(
     return g_destinations;
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 CoreMidiOutput::CoreMidiOutput()
 {    
     OSStatus result = MIDIOutputPortCreate(m_client, 
@@ -163,10 +169,14 @@ CoreMidiOutput::CoreMidiOutput()
     if (result != 0) fprintf(stderr, "MIDIInputPortCreate failed!!\n");
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 CoreMidiOutput::~CoreMidiOutput()
 {
     // TODO: clean up
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 void CoreMidiOutput::note_on(const int note, const int volume, const int channel)
 {
@@ -186,6 +196,8 @@ void CoreMidiOutput::note_on(const int note, const int volume, const int channel
     
      
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 void CoreMidiOutput::note_off(const int note, const int channel)
 {
@@ -207,6 +219,8 @@ void CoreMidiOutput::note_off(const int note, const int channel)
 
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 void CoreMidiOutput::prog_change(const int instrument, const int channel)
 {
     MIDITimeStamp timestamp = 0;   // 0 will mean play now. 
@@ -225,6 +239,8 @@ void CoreMidiOutput::prog_change(const int instrument, const int channel)
     OSStatus result = MIDISend(m_port, MIDIGetDestination(0), packetlist);
     if (result != 0) fprintf(stderr, "MIDISend failed!!\n");
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 void CoreMidiOutput::controlchange(const int controller, const int value, const int channel)
 {
@@ -245,6 +261,8 @@ void CoreMidiOutput::controlchange(const int controller, const int value, const 
     if (result != 0) fprintf(stderr, "MIDISend failed!!\n");
 }
 
+// ------------------------------------------------------------------------------------------------------
+
 void CoreMidiOutput::pitch_bend(const int value, const int channel)
 {
     MIDITimeStamp timestamp = 0;   // 0 will mean play now. 
@@ -255,7 +273,7 @@ void CoreMidiOutput::pitch_bend(const int value, const int channel)
     const int MESSAGESIZE = 3;
     
     currentpacket = MIDIPacketListInit(packetlist);
-    Byte noteoff[MESSAGESIZE] = {0xE0 | channel, value & 0xFF, (value & 0x00FF) >> 8};
+    Byte noteoff[MESSAGESIZE] = {0xE0 | channel, value & 0xFF, (value & 0xFF00) >> 8};
     currentpacket = MIDIPacketListAdd(packetlist, sizeof(buffer), 
                                       currentpacket, timestamp, MESSAGESIZE, noteoff);
     
@@ -263,6 +281,8 @@ void CoreMidiOutput::pitch_bend(const int value, const int channel)
     OSStatus result = MIDISend(m_port, MIDIGetDestination(0), packetlist);
     if (result != 0) fprintf(stderr, "MIDISend failed!!\n");
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 #endif
 

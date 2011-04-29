@@ -17,10 +17,11 @@
 #ifndef __OUTPUT_BASE_H__
 #define __OUTPUT_BASE_H__
 
-#include <CoreServices/CoreServices.h> //for file stuff
-#include <AudioUnit/AudioUnit.h>
-#include <AudioToolbox/AudioToolbox.h> //for AUGraph
-
+/**
+  * @ingroup midi.players
+  *
+  * The base class for OSX output classes
+  */
 class OutputBase
 {
 protected:

@@ -24,6 +24,12 @@
 
 #include <vector>
 
+/**
+  * @ingroup midi
+  *
+  * An OS X MIDI output port that uses CoreMIDI. This output device is used to send output
+  * to external devices, not for playing with the built-in software synthesizer.
+  */
 class CoreMidiOutput : public OutputBase
 {
     MIDIPortRef m_port;

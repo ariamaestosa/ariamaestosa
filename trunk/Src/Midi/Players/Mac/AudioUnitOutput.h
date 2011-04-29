@@ -16,12 +16,13 @@
 
 #ifdef _MAC_QUICKTIME_COREAUDIO
 
-#include <vector>
-//#include <AudioUnit/AudioUnit.h>
-#include <AudioToolbox/AudioToolbox.h> //for AUGraph
-
 #include "Midi/Players/Mac/OutputBase.h"
 
+/**
+  * @ingroup midi.players
+  *
+  * An OS X player that uses AudioUnit to output to the built-in software synthesizer.
+  */
 class AudioUnitOutput : public OutputBase
 {
     void setBank(uint8_t midiChannelInUse);
