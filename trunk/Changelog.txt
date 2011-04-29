@@ -4,7 +4,7 @@
 - Improve rendering of short notes in tablature view
 - Improve selection to preview which notes are included
 - Auto-extend song length when moving notes past end
-- Support for importing lyrics events
+- Support for importing lyrics events (not yet for editing them)
 - Performance (fluidity/responsivity) improvements
 - Fixed glitches in software rendering mode
 - Fixed crash when trying to print a song containing an empty track
