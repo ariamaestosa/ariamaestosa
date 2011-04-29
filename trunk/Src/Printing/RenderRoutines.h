@@ -57,27 +57,26 @@ namespace AriaMaestosa
                        const int radius_x, const int radius_y);
         
         /** @brief Utility function : renders an arc (half an ellipse) at the given coordinates */
-        void renderArc(wxGraphicsContext& gc, wxDC& dc, const int center_x, const int center_y,
+        void renderArc(wxGraphicsContext& gc, const int center_x, const int center_y,
                        const int radius_x, const int radius_y);
-        
-        /**
-          * @brief utility function to render a silence at a given location
-          */
-        void drawSilence(wxDC* dc, const Range<int> x, const int y, const int level_height,
-                         const int type, const bool triplet, const bool dotted);
         
         void drawFlag(wxDC* dc, wxGraphicsContext* gc, const int flag_x_origin, const int flag_y, const int orient);
         
-#if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
+        /**
+         * @brief utility function to render a silence at a given location
+         */
+        void drawSilence(wxDC* dc, const Range<int> x, const int y, const int level_height,
+                         const int type, const bool triplet, const bool dotted);
+        
         /**
          * @brief utility function to render a silence at a given location
          */
         void drawSilence(wxGraphicsContext& dc, const Range<int> x, const int y, const int level_height,
                          const int type, const bool triplet, const bool dotted);
         
+#if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
         void paintTreble(wxGraphicsContext& painter, int x, int B_y, int E_y);
         void paintBass(wxGraphicsContext& painter, int x, int score_top, int E_y);
-
 #endif
         
         /**
