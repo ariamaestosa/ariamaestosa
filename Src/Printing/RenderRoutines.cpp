@@ -1125,10 +1125,9 @@ void AriaMaestosa::RenderRoutines::renderArc(wxDC& dc, const int center_x, const
 
 // -------------------------------------------------------------------------------------------------------
 
-void AriaMaestosa::RenderRoutines::renderArc(wxGraphicsContext& gc, wxDC& dc, const int center_x, const int center_y,
+void AriaMaestosa::RenderRoutines::renderArc(wxGraphicsContext& dc, const int center_x, const int center_y,
                                              const int radius_x, const int radius_y)
 {
-#if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
     wxGraphicsPath path = dc.CreatePath();
     
     path.MoveToPoint(center_x + radius_x*cos(0.1), center_y + radius_y*sin(0.1));
@@ -1138,23 +1137,6 @@ void AriaMaestosa::RenderRoutines::renderArc(wxGraphicsContext& gc, wxDC& dc, co
     }
     
     dc.StrokePath(path);
-#else
-    wxPoint points[] =
-    {
-    wxPoint(center_x + radius_x*cos(0.1), center_y + radius_y*sin(0.1)),
-    wxPoint(center_x + radius_x*cos(0.3), center_y + radius_y*sin(0.3)),
-    wxPoint(center_x + radius_x*cos(0.6), center_y + radius_y*sin(0.6)),
-    wxPoint(center_x + radius_x*cos(0.9), center_y + radius_y*sin(0.9)),
-    wxPoint(center_x + radius_x*cos(1.2), center_y + radius_y*sin(1.2)),
-    wxPoint(center_x + radius_x*cos(1.5), center_y + radius_y*sin(1.5)),
-    wxPoint(center_x + radius_x*cos(1.8), center_y + radius_y*sin(1.8)),
-    wxPoint(center_x + radius_x*cos(2.1), center_y + radius_y*sin(2.1)),
-    wxPoint(center_x + radius_x*cos(2.4), center_y + radius_y*sin(2.4)),
-    wxPoint(center_x + radius_x*cos(2.7), center_y + radius_y*sin(2.7)),
-    wxPoint(center_x + radius_x*cos(3.0), center_y + radius_y*sin(3.0)),
-    };
-    dc.DrawSpline(11, points);
-#endif
 }
 
 // -------------------------------------------------------------------------------------------------------
