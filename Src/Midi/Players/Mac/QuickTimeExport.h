@@ -29,8 +29,15 @@ class QuickTimeExport
 {
 public:
     
-    static void qtkit_setData(char* data, int length);
-
+    /** Load MIDI data into QuickTime
+      * @return Whether loading the data was successful
+      */
+    static bool qtkit_setData(char* data, int length);
+    
+    /**
+      * Export the data loaded with qtkit_setData to AIFF
+      * @return Whether exporting was successful
+      */
     static bool qtkit_exportToAiff(const char* filename);
 };
 
