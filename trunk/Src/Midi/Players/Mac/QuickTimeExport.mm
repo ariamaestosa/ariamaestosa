@@ -23,7 +23,7 @@
 #import <QTKit/QTMovie.h>
 #import <QTKit/QTDataReference.h>
 
-#import "QTKitPlayer.h"
+#import "QuickTimeExport.h"
 
 
 QTMovie* movie = nil;

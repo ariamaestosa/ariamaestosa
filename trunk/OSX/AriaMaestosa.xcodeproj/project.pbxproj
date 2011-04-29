@@ -261,8 +261,8 @@
 		95711A0E1125D8D300104BF5 /* AudioUnitOutput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571193F1125D8D200104BF5 /* AudioUnitOutput.cpp */; };
 		95711A0F1125D8D300104BF5 /* AudioUnitOutput.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119401125D8D200104BF5 /* AudioUnitOutput.h */; };
 		95711A101125D8D300104BF5 /* MacPlayerInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119411125D8D200104BF5 /* MacPlayerInterface.cpp */; };
-		95711A111125D8D300104BF5 /* QTKitPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119421125D8D200104BF5 /* QTKitPlayer.h */; };
-		95711A121125D8D300104BF5 /* QTKitPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 957119431125D8D200104BF5 /* QTKitPlayer.mm */; };
+		95711A111125D8D300104BF5 /* QuickTimeExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119421125D8D200104BF5 /* QuickTimeExport.h */; };
+		95711A121125D8D300104BF5 /* QuickTimeExport.mm in Sources */ = {isa = PBXBuildFile; fileRef = 957119431125D8D200104BF5 /* QuickTimeExport.mm */; };
 		95711A131125D8D300104BF5 /* PlatformMidiManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119441125D8D200104BF5 /* PlatformMidiManager.h */; };
 		95711A141125D8D300104BF5 /* Sequencer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119451125D8D200104BF5 /* Sequencer.cpp */; };
 		95711A151125D8D300104BF5 /* Sequencer.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119461125D8D200104BF5 /* Sequencer.h */; };
@@ -423,8 +423,8 @@
 		95711AD81125D8D300104BF5 /* AudioUnitOutput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9571193F1125D8D200104BF5 /* AudioUnitOutput.cpp */; };
 		95711AD91125D8D300104BF5 /* AudioUnitOutput.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119401125D8D200104BF5 /* AudioUnitOutput.h */; };
 		95711ADA1125D8D300104BF5 /* MacPlayerInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119411125D8D200104BF5 /* MacPlayerInterface.cpp */; };
-		95711ADB1125D8D300104BF5 /* QTKitPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119421125D8D200104BF5 /* QTKitPlayer.h */; };
-		95711ADC1125D8D300104BF5 /* QTKitPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 957119431125D8D200104BF5 /* QTKitPlayer.mm */; };
+		95711ADB1125D8D300104BF5 /* QuickTimeExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119421125D8D200104BF5 /* QuickTimeExport.h */; };
+		95711ADC1125D8D300104BF5 /* QuickTimeExport.mm in Sources */ = {isa = PBXBuildFile; fileRef = 957119431125D8D200104BF5 /* QuickTimeExport.mm */; };
 		95711ADD1125D8D300104BF5 /* PlatformMidiManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119441125D8D200104BF5 /* PlatformMidiManager.h */; };
 		95711ADE1125D8D300104BF5 /* Sequencer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119451125D8D200104BF5 /* Sequencer.cpp */; };
 		95711ADF1125D8D300104BF5 /* Sequencer.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119461125D8D200104BF5 /* Sequencer.h */; };
@@ -1029,8 +1029,8 @@
 		9571193F1125D8D200104BF5 /* AudioUnitOutput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AudioUnitOutput.cpp; path = ../Src/Midi/Players/Mac/AudioUnitOutput.cpp; sourceTree = SOURCE_ROOT; };
 		957119401125D8D200104BF5 /* AudioUnitOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioUnitOutput.h; path = ../Src/Midi/Players/Mac/AudioUnitOutput.h; sourceTree = SOURCE_ROOT; };
 		957119411125D8D200104BF5 /* MacPlayerInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MacPlayerInterface.cpp; path = ../Src/Midi/Players/Mac/MacPlayerInterface.cpp; sourceTree = SOURCE_ROOT; };
-		957119421125D8D200104BF5 /* QTKitPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QTKitPlayer.h; path = ../Src/Midi/Players/Mac/QTKitPlayer.h; sourceTree = SOURCE_ROOT; };
-		957119431125D8D200104BF5 /* QTKitPlayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = QTKitPlayer.mm; path = ../Src/Midi/Players/Mac/QTKitPlayer.mm; sourceTree = SOURCE_ROOT; };
+		957119421125D8D200104BF5 /* QuickTimeExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QuickTimeExport.h; path = ../Src/Midi/Players/Mac/QuickTimeExport.h; sourceTree = SOURCE_ROOT; };
+		957119431125D8D200104BF5 /* QuickTimeExport.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = QuickTimeExport.mm; path = ../Src/Midi/Players/Mac/QuickTimeExport.mm; sourceTree = SOURCE_ROOT; };
 		957119441125D8D200104BF5 /* PlatformMidiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlatformMidiManager.h; path = ../Src/Midi/Players/PlatformMidiManager.h; sourceTree = SOURCE_ROOT; };
 		957119451125D8D200104BF5 /* Sequencer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Sequencer.cpp; path = ../Src/Midi/Players/Sequencer.cpp; sourceTree = SOURCE_ROOT; };
 		957119461125D8D200104BF5 /* Sequencer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sequencer.h; path = ../Src/Midi/Players/Sequencer.h; sourceTree = SOURCE_ROOT; };
@@ -1536,8 +1536,8 @@
 				957119411125D8D200104BF5 /* MacPlayerInterface.cpp */,
 				957629961365DF7300F97DEC /* OutputBase.cpp */,
 				957629951365DF7300F97DEC /* OutputBase.h */,
-				957119431125D8D200104BF5 /* QTKitPlayer.mm */,
-				957119421125D8D200104BF5 /* QTKitPlayer.h */,
+				957119431125D8D200104BF5 /* QuickTimeExport.mm */,
+				957119421125D8D200104BF5 /* QuickTimeExport.h */,
 			);
 			name = Mac;
 			path = ../Src/Midi/Players/Mac;
@@ -1982,7 +1982,7 @@
 				95711AD11125D8D300104BF5 /* AlsaNotePlayer.h in Headers */,
 				95711AD41125D8D300104BF5 /* AlsaPort.h in Headers */,
 				95711AD91125D8D300104BF5 /* AudioUnitOutput.h in Headers */,
-				95711ADB1125D8D300104BF5 /* QTKitPlayer.h in Headers */,
+				95711ADB1125D8D300104BF5 /* QuickTimeExport.h in Headers */,
 				95711ADD1125D8D300104BF5 /* PlatformMidiManager.h in Headers */,
 				95711ADF1125D8D300104BF5 /* Sequencer.h in Headers */,
 				95711AE21125D8D300104BF5 /* Sequence.h in Headers */,
@@ -2153,7 +2153,7 @@
 				95711A071125D8D300104BF5 /* AlsaNotePlayer.h in Headers */,
 				95711A0A1125D8D300104BF5 /* AlsaPort.h in Headers */,
 				95711A0F1125D8D300104BF5 /* AudioUnitOutput.h in Headers */,
-				95711A111125D8D300104BF5 /* QTKitPlayer.h in Headers */,
+				95711A111125D8D300104BF5 /* QuickTimeExport.h in Headers */,
 				95711A131125D8D300104BF5 /* PlatformMidiManager.h in Headers */,
 				95711A151125D8D300104BF5 /* Sequencer.h in Headers */,
 				95711A181125D8D300104BF5 /* Sequence.h in Headers */,
@@ -2407,7 +2407,7 @@
 				95711AD31125D8D300104BF5 /* AlsaPort.cpp in Sources */,
 				95711AD81125D8D300104BF5 /* AudioUnitOutput.cpp in Sources */,
 				95711ADA1125D8D300104BF5 /* MacPlayerInterface.cpp in Sources */,
-				95711ADC1125D8D300104BF5 /* QTKitPlayer.mm in Sources */,
+				95711ADC1125D8D300104BF5 /* QuickTimeExport.mm in Sources */,
 				95711ADE1125D8D300104BF5 /* Sequencer.cpp in Sources */,
 				95711AE01125D8D300104BF5 /* WinPlayer.cpp in Sources */,
 				95711AE11125D8D300104BF5 /* Sequence.cpp in Sources */,
@@ -2569,7 +2569,7 @@
 				95711A091125D8D300104BF5 /* AlsaPort.cpp in Sources */,
 				95711A0E1125D8D300104BF5 /* AudioUnitOutput.cpp in Sources */,
 				95711A101125D8D300104BF5 /* MacPlayerInterface.cpp in Sources */,
-				95711A121125D8D300104BF5 /* QTKitPlayer.mm in Sources */,
+				95711A121125D8D300104BF5 /* QuickTimeExport.mm in Sources */,
 				95711A141125D8D300104BF5 /* Sequencer.cpp in Sources */,
 				95711A161125D8D300104BF5 /* WinPlayer.cpp in Sources */,
 				95711A171125D8D300104BF5 /* Sequence.cpp in Sources */,

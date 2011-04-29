@@ -17,6 +17,8 @@
 #ifndef __OUTPUT_BASE_H__
 #define __OUTPUT_BASE_H__
 
+#include <AudioToolbox/AudioToolbox.h> //for MIDIClientRef
+
 /**
   * @ingroup midi.players
   *
