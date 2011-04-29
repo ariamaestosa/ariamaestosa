@@ -314,12 +314,13 @@ def compile_Aria(which_os):
 
         print "*** Adding mac source files and libraries"
         env.Append(CCFLAGS=['-D_MAC_QUICKTIME_COREAUDIO'])
-        sources = sources + ['Src/Midi/Players/Mac/QTKitPlayer.mm']
+        sources = sources + ['Src/Midi/Players/Mac/QuickTimeExport.mm','Src/GUI/Machelper.mm']
         env.Append(CPPPATH=['Src/Midi/Players/Mac'])
     
         env.Append(LINKFLAGS = ['-framework','QTKit','-framework', 'Quicktime','-framework','CoreAudio',
         '-framework','AudioToolbox','-framework','AudioUnit','-framework','AppKit',
-        '-framework','Carbon','-framework','Cocoa','-framework','IOKit','-framework','System'])
+        '-framework','Carbon','-framework','Cocoa','-framework','IOKit','-framework','System',
+        '-framework','CoreMIDI'])
         
         if renderer == 'opengl':
             env.Append(LINKFLAGS = ['-framework','OpenGL','-framework','AGL'])

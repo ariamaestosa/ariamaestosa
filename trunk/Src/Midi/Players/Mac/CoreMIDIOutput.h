@@ -23,6 +23,7 @@
 #include "Midi/Players/Mac/OutputBase.h"
 
 #include <vector>
+#include <string>
 
 /**
   * @ingroup midi
