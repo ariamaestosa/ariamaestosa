@@ -19,7 +19,7 @@
 #ifdef _MAC_QUICKTIME_COREAUDIO
 #include "Utils.h"
 
-#include "Midi/Players/Mac/AUNotePlayer.h"
+#include "Midi/Players/Mac/AudioUnitOutput.h"
 #include "PreferencesData.h"
 
 #include <CoreServices/CoreServices.h> //for file stuff
