@@ -178,7 +178,7 @@ namespace AriaMaestosa
         {
             g_playing = true;
             g_thread_should_continue = true;
-
+            
             if (Create() != wxTHREAD_NO_ERROR)
             {
                 std::cerr << "[OSX Player] ERROR: failed to create thread" << std::endl;
@@ -264,7 +264,6 @@ namespace AriaMaestosa
         
         virtual bool playSelected(Sequence* sequence, /*out*/ int* startTick)
         {
-            
             if (g_playing) return false; //already playing
             
             m_sequence = sequence;
