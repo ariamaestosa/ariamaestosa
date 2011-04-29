@@ -29,29 +29,27 @@
 QTMovie* movie = nil;
 
 
-void QuickTimeExport::qtkit_setData(char* data_bytes, int bytes_length)
+bool QuickTimeExport::qtkit_setData(char* data_bytes, int bytes_length)
 {
-    
     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-
+    
     NSData* data = [NSData dataWithBytes:data_bytes length:bytes_length];
     [data retain];
 	
     QTDataReference* qtDataRef = [QTDataReference dataReferenceWithReferenceToData:data name:@".mid" MIMEType:@"MIDI"];
     [qtDataRef retain];
     
-    
     NSError* err = nil;
     movie = [QTMovie movieWithDataReference:qtDataRef error: &err];
     [movie retain];
     
     
-        
     if (err != nil)
 	{
-        printf("error:\n-->%s\n-->%s\n",
+        printf("[QuickTimeExport] ERROR setting data :\n-->%s\n-->%s\n",
                [[err localizedDescription] UTF8String],
-               [[err localizedRecoverySuggestion] UTF8String]);   
+               [[err localizedRecoverySuggestion] UTF8String]); 
+        return false;
     }
     
 
@@ -59,11 +57,12 @@ void QuickTimeExport::qtkit_setData(char* data_bytes, int bytes_length)
     [qtDataRef release];
     
     [pool release];
+    return true;
 }
 
 bool QuickTimeExport::qtkit_exportToAiff(const char* filename)
 {
-    printf("QTKit will save to %s\n", filename);
+    printf("[QuickTimeExport] QTKit will save to %s\n", filename);
     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
     
     NSDictionary *dictionary = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -77,7 +76,7 @@ bool QuickTimeExport::qtkit_exportToAiff(const char* filename)
     [nsstring_filepath retain];
 	if (nsstring_filepath == nil)
 	{
-		printf("path could not be converted to NSString, aborting\n");
+		fprintf(stderr, "[QuickTimeExport] WARNING: path could not be converted to NSString, aborting\n");
 		return false;
 	}
     

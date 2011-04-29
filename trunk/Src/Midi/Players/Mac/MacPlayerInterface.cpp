@@ -100,9 +100,14 @@ namespace AriaMaestosa
             int startTick = -1, songLength = -1;
             allocAsMidiBytes(m_sequence, false, &songLength, &startTick, &m_data, &m_length, true);
             
-            QuickTimeExport::qtkit_setData(m_data, m_length);
-            
-            Run();
+            if (not QuickTimeExport::qtkit_setData(m_data, m_length))
+            {
+                wxMessageBox( _("Sorry, an internal error occurred during export") );
+            }
+            else
+            {
+                Run();
+            }
         }
         
         virtual ExitCode Entry()
