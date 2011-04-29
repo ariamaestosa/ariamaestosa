@@ -18,7 +18,6 @@
 
 #include <wx/timer.h>
 #include "Midi/Players/Mac/OutputBase.h"
-#include "Midi/Players/Mac/AUNotePlayer.h"
 
 
 const int PITCH_BEND_LOWEST = 0;
