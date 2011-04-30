@@ -1,14 +1,28 @@
 h1
 {
-color: white;
-text-align: center;
-vertical-align: middle;
+  color: white;
+  text-align: center;
+  vertical-align: middle;
 }
 
 .selected_tab
 {
   background-color: white;
   border-top-style: solid;
+  border-right-style: solid;
+  border-left-style: solid;
+  border-width: 1px;
+  border-color: #AAAAAA;
+  padding-top: 4px;
+  padding-bottom: 2px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.selected_bottom_tab
+{
+  background-color: white;
+  border-bottom-style: solid;
   border-right-style: solid;
   border-left-style: solid;
   border-width: 1px;
@@ -47,7 +61,26 @@ vertical-align: middle;
   border-left-style:solid;
   border-width: 1px;
   border-color: #AAAAAA;
-  padding: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 15px;
+  padding-top: 35px;
+}
+
+.box
+{
+  background-color: white;
+  border-top-style:solid;
+  border-right-style:solid;
+  border-left-style:solid;
+  border-bottom-style:solid;
+  border-width: 1px;
+  border-color: #AAAAAA;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 15px;
+  padding-top: 35px;
+  
 }
 
 .bottom

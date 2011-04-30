@@ -10,15 +10,127 @@
 
 <body style="margin: 0px; padding: 0px;">
     
-     <script src="menu.js" type="text/javascript"> </script> 
+    <script language="JavaScript"><!--
+function setImage(which) {
+    if (document.images)
+    {
+        if (which == 1)
+        {
+            document.screenshot.src = "screenshot_osx_small.jpg";
+            document.getElementById('sshot_link').href = "screenshot_osx.jpg";
+            document.getElementById('link1').parentNode.className = "selected_bottom_tab";
+            document.getElementById('link2').parentNode.className = "tab";
+            document.getElementById('link3').parentNode.className = "tab";
+        }
+        if (which == 2)
+        {
+            document.screenshot.src = "screenshot_linux_small.jpg";
+            document.getElementById('sshot_link').href = "screenshot_linux.jpg";
+            document.getElementById('link1').parentNode.className = "tab";
+            document.getElementById('link2').parentNode.className = "selected_bottom_tab";
+            document.getElementById('link3').parentNode.className = "tab";
+        }
+        if (which == 3)
+        {
+            document.screenshot.src = "screenshot_windows_small.jpg";
+            document.getElementById('sshot_link').href = "screenshot_windows.jpg";
+            document.getElementById('link1').parentNode.className = "tab";
+            document.getElementById('link2').parentNode.className = "tab";
+            document.getElementById('link3').parentNode.className = "selected_bottom_tab";
+        }
+    }
+}
 
-       Hi<br/>
+function main()
+{
+    if      (navigator.appVersion.indexOf("Win")!=-1)   setImage(3);
+    else if (navigator.appVersion.indexOf("Mac")!=-1)   setImage(1);
+    else if (navigator.appVersion.indexOf("X11")!=-1)   setImage(2);
+    else if (navigator.appVersion.indexOf("Linux")!=-1) setImage(2);
+}
+onload=main;
+//--></script>
 
-      Some text<br/>
+<script src="menu.js" type="text/javascript"> </script> 
 
-      Some more text
+<!----------------------------- CONTENT ------------------------->
 
-    <script src="menu_bottom.js" type="text/javascript"> </script> 
+<blockquote>
+Aria Maestosa is an open-source (GPL) midi tracker/editor. It lets you compose, edit and play midi files with a few clicks in a user-friendly
+interface offering keyboard, guitar, drum and controller views.
+<br/><br/>
+
+Aria Maestosa runs on Mac OS X 10.4+ (PPC and Intel), Windows XP+ and Linux (Alsa).
+It has translations for English, French, German and Italian. 
+
+<br/><br/>
+
+<p align="center" style="margin: 0px; padding: 0px;">
+    <span class="box" style="display: inline-block; padding-top:20px; padding-bottom: 5px; margin-top:0px; z-index:2;">
+        <b>Screenshots</b><br/><br/>
+        <A href="screenshot_osx.jpg" target="_blank" name="sshot_link" id="sshot_link">
+            <img src="screenshot_osx_small.jpg" border="0" name="screenshot">
+        </A>
+    </span>
+    <br/>
+    <table style="border-spacing: 0pt; position: relative; top: -1px;">
+    <tr>
+        <td style="border-top-style:solid; border-width: 1px; border-color: #AAAAAA;">
+        </td>
+        
+        <td class="selected_bottom_tab">
+        <A href='javascript:setImage(1);' id="link1" name="link1" style="z-index:1;">Mac OS X</A>
+        </td>
+        
+        <td style="border-top-style:solid; border-width: 1px; border-color: #AAAAAA;">
+        &nbsp; &nbsp; &nbsp;
+        </td>
+        
+        <td class="tab">
+        <A href='javascript:setImage(2);' id="link2" name="link2" style="z-index:3;">Linux</A>
+        </td>
+            
+        <td style="border-top-style:solid; border-width: 1px; border-color: #AAAAAA;">
+        &nbsp; &nbsp; &nbsp;
+        </td>
+        
+        <td class="tab">
+        <A href='javascript:setImage(3);' id="link3" name="link3" style="z-index:3;">Windows</A>
+        </td>
+        
+        <td style="border-top-style:solid; border-width: 1px; border-color: #AAAAAA;">
+        </td>
+    </tr>
+    </table>
+</p>
+
+
+<br/>
+
+<A href="download.html" target="contents">Download</A> the latest version (<A href="download.html#changelog">Changelog</A>).
+<br/>
+
+<i>
+
+<list>
+
+<br/>
+<li/>Aria Maestosa was greatly inspired by <A href="http://www.ergonis.com/products/easybeat/">Easy Beat</A>,
+designed and produced by G&uuml;nther Blaschek, (c) and distributed by <A href="http://www.ergonis.com/">Ergonis Software</A>. Also check it out,
+it's a great app!
+</i>
+<br/>
+<li/>For another great open-source music editor, check <A href="http://www.tuxguitar.com.ar/">TuxGuitar</A>!
+
+<br/>
+<li/><b>About translations:</b> If would like to translate Aria, you're welcome! Check the "international" directory in the source, it will
+contain more information.
+
+</list>
+
+</blockquote>
+
+<script src="menu_bottom.js" type="text/javascript"> </script> 
     
 </body>
 

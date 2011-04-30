@@ -18,18 +18,18 @@ tabs[6] = ["Bugs and tasks", "bugs.html"];
 
 document.write('<table style="margin: 0px; padding: 0px; width:100%; border-spacing: 0pt;">');
 document.write('    <tr style="margin: 0px; padding: 0px;">');
-document.write('        <td style="width: 250px; background-image:url(\'backgroundleft.png\'); background-repeat:repeat-y; margin: 0px; padding: 0px;">');
+document.write('        <td style="width: 150px; background-image:url(\'backgroundleft.png\'); background-repeat:repeat-y; margin: 0px; padding: 0px;">');
 document.write('        </td>');
 document.write('        <td style="background-color:#628DC2;">');
 document.write('            <br/>');
 document.write('            <h1>Aria Maestosa</h1>');
 document.write('        </td>');
-document.write('        <td style="width: 250px; background-image:url(\'background.png\'); background-repeat:repeat-y; margin: 0px; padding: 0px;">');
+document.write('        <td style="width: 150px; background-image:url(\'background.png\'); background-repeat:repeat-y; margin: 0px; padding: 0px;">');
 document.write('        </td>');
 document.write('    </tr>');
-    
+
 document.write('    <tr style="margin: 0px; padding: 0px;">');
-document.write('        <td style="width: 250px; background-image:url(\'backgroundleft.png\'); background-repeat:repeat-y; margin: 0px; padding: 0px;">');
+document.write('        <td style="width: 150px; background-image:url(\'backgroundleft.png\'); background-repeat:repeat-y; margin: 0px; padding: 0px;">');
 document.write('        </td>');
 document.write('        <td style="background-color:#628DC2; padding: 0px; margin: 0px; text-align:center;">');
             
@@ -51,12 +51,12 @@ document.write('                </tr>');
 document.write('            </table></span>');
             
 document.write('        </td>');
-document.write('        <td style="width: 250px; background-image:url(\'background.png\'); background-repeat:repeat-y; margin: 0px; padding: 0px;">');
+document.write('        <td style="width: 150px; background-image:url(\'background.png\'); background-repeat:repeat-y; margin: 0px; padding: 0px;">');
 document.write('        </td>');
 document.write('    </tr>');
     
 document.write('    <tr style="margin: 0px; padding: 0px; padding: 0px; margin: 0px;">');
-document.write('        <td style="width: 250px; background-image:url(\'backgroundleft.png\'); background-repeat:repeat-y; margin: 0px; padding: 0px;">');
+document.write('        <td style="width: 150px; background-image:url(\'backgroundleft.png\'); background-repeat:repeat-y; margin: 0px; padding: 0px;">');
 document.write('        </td>');
 document.write('        <td class="page">');
 
