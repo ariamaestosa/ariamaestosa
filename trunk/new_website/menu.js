@@ -16,7 +16,7 @@ tabs[4] = ["Blog", "blog.html"];
 tabs[5] = ["Building from source", "building.html"];
 tabs[6] = ["Bugs and tasks", "bugs.html"];
 
-document.write('<table style="margin: 0px; padding: 0px; width:100%; border-spacing: 0pt;">');
+document.write('<table style="margin: 0px; padding: 0px; width:100%; height:100%; border-spacing: 0pt;">');
 document.write('    <tr style="margin: 0px; padding: 0px;">');
 document.write('        <td style="width: 150px; background-image:url(\'backgroundleft.png\'); background-repeat:repeat-y; margin: 0px; padding: 0px;">');
 document.write('        </td>');
@@ -58,7 +58,7 @@ document.write('    </tr>');
 document.write('    <tr style="margin: 0px; padding: 0px; padding: 0px; margin: 0px;">');
 document.write('        <td style="width: 150px; background-image:url(\'backgroundleft.png\'); background-repeat:repeat-y; margin: 0px; padding: 0px;">');
 document.write('        </td>');
-document.write('        <td class="page">');
+document.write('        <td class="page" height="100%" style="vertical-align: top;">');
 
 /*
 
