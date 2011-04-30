@@ -88,3 +88,15 @@ h1
   font-style:italic;
   color: #666666;
 }
+
+.tab > a
+{
+    color: black;
+    text-decoration: none;
+}
+
+.selected_bottom_tab > a
+{
+    color: black;
+    text-decoration: none;
+}
