@@ -41,9 +41,9 @@ document.write('                    <td class="between_tabs">&nbsp;&nbsp;</td>')
                                         for (var i=0; i<tabs.length; i++)
                                         {
                                             if (tabs[i][1] == selected_tab)
-                                                document.write( '<td class="selected_tab">' + tabs[i][0] + '<td>');
+                                                document.write( '<td class="selected_tab"><b>' + tabs[i][0] + '</b></td>');
                                             else
-                                                document.write( '<td class="tab"><a href="' + tabs[i][1] + '">' + tabs[i][0] + '</a><td>');
+                                                document.write( '<td class="tab"><a href="' + tabs[i][1] + '" style="color: black; text-decoration: none;">' + tabs[i][0] + '</a><td>');
                                             document.write( '<td class="between_tabs">&nbsp;&nbsp;</td>');
                                         }
 
