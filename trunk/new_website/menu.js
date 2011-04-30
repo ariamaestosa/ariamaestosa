@@ -11,10 +11,9 @@ var tabs = new Array();
 tabs[0] = ["About", "about.html"];
 tabs[1] = ["Downloads", "download.html"];
 tabs[2] = ["Manual", "man.html"];
-tabs[3] = ["Contact Author", "contact.html"];
+tabs[3] = ["Support", "contact.html"];
 tabs[4] = ["Blog", "blog.html"];
 tabs[5] = ["Building from source", "building.html"];
-tabs[6] = ["Bugs and tasks", "bugs.html"];
 
 document.write('<table style="margin: 0px; padding: 0px; width:100%; height:100%; border-spacing: 0pt;">');
 document.write('    <tr style="margin: 0px; padding: 0px;">');
