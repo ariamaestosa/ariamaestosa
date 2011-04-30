@@ -10,15 +10,262 @@
 
 <body style="margin: 0px; padding: 0px;">
     
-    <script src="menu.js" type="text/javascript"> </script> 
+<script src="menu.js" type="text/javascript"> </script> 
 
-    Hi<br/>
+<b><h2 align="center">The Menus</h2></b><br/>
 
-    Some text<br/>
+<p><i>(Obvious menu items have been left out)</i><br/>
+<br/>
+<b>File &gt; New</b><br/>
+Creates a new song. It will appear as a new tab in the bar that shows currently open sequences (a la Firefox tabs). You can then just click on the newly appeard tab to switch to this song.<br/>
+<br/><b>File &gt; Song Info</b><br/>
+Midi files allow their author to specify information like title and copyright.<br/>
+<br/>
+<b>Edit &gt; Paste at cursor</b><br/>
+Pastes the selected notes near the cursor (using this item from the menu has little use of course, you need to use the keyboard shortcut : CMD/CTRL + SHIFT + V).<br/>
+<br/>
+<b>Edit &gt; Select notes...</b><br/>
+Select notes according to criteria. Most of these criteria are based on a currently selected note. For instance, if you want to select all G notes, you can just select one G notes, choose this option in the menu, check "select all notes that have the same pitch", click OK, and it&#146;s done!<br/>
+You can also use this feature to select all notes within a range of measures (i.e. if you want to select all notes from measures 65 to 78)<br/>
+<br/>
+<b>
+Edit &gt; Snap notes to grid</b><br/>
+Aria uses a "magnetic grid" to ensure that notes have a precise location and duration, corresponding to those of music theory. If you end with notes that seem to have unusual lengths/locations, select the notes, select an appropriate grid size (see below in track docs) and select this option.<br/>
+<br/>
+<b>Edit &gt; Remove Overlapping Notes</b><br/>
+If you copied a hundred notes, pasted them right on top of their original ones, and accidentally unselected them before moving them - all notes now have doubles! Fortunately you can just select those notes and use this feature. It can be used in other cases too - you get the picture.<br/>
+<br/>
+<b>Track &gt; Properties</b><br/>
+Lets you set the current track's properties, including (1) default volume to use for new notes, (2) background (displays notes from other tracks, currently works only in Piano editor).<br/>
+<center>
+<img src="docs/background.png"  alt="background"/><br/></center>
 
-    Some more text
-      
-    <script src="menu_bottom.js" type="text/javascript"> </script> 
+<br/>
+<b>Settings &gt; Follow Playback</b><br/>
+If checked, when you hit play, the scroll will scroll as the song moves on so that the currently played part is always visible on screen.<br/>
+<br/>
+<b>Settings &gt; Play during edits</b><br/>
+When you edit a song, Aria offers you to play the notes you&#146;re manipulating, without you ever pressing play. Here you can decide how often you want it to play these previews.<br/>
+<br/>
+<b>Settings &gt; Channel management</b><br/>
+Midi considers tracks and channels as two seperate entities. In the midi specs, tracks are a group of notes, whereas channels are where the tracks actually play their notes. This menu allows you to choose whether you want to manually be able to specify channels or whether you prefer that Aria hides this concept. When this is enabled, you will see a new widget appear on the track header (see below).
+
+<br/>
+<br/>
+<br/>
+<!--             top bar         -->
+<b><h2 align="center">Top Bar</h2></b>
+
+<center>
+<img src="docs/topbar.png"  alt="topbar image"><br/></center>
+
+<br/>
+<list>
+<li/>The first 2 elements are the play and stop buttons, that allow you to play the song.<br/>
+<li/><b>Tempo</b> lets you set the tempo (speed) of the song in beats per minutes.<br/>
+<li/><b>Duration</b> lets you choose the total amount of measures of your song. If you run out space in the default 12 measures, just add a few more by clicking the arrows or typing a new number and pressing enter if necessary.<br/>
+<li/> <b>Time Sig</b> lets you choose the time (measure) signature (either globally, if you use only one throughout the song, or for the currently selected one, if you use multiple in advanced measure management mode). Default is 4/4.<br/>
+<li/><b>Start</b> lets you choose the measure where the song begins. For instance, if you make a long song and are composing measure 100, you may not want to start playing at measure 1 every time you change a note and want to hear how it sounds - you can just change your song to begin at, say, measure 95.<br/>
+<li/><b>Zoom</b> lets you choose how big the notes will appear on the tracks. It is useful to make it bigger if, for instance, you deal with very short notes.<br/>
+<li/><b>Tools</b> lets you switch between two different edit modes; the first is the "classic" edition mode where notes are added by "drawing them" (using mouse drag-and-drop; see more below). The second tool will let you add notes of the selected length directly by clicking.<br/>
+</list>
+</p>
+
+<!--             measure bar         -->
+<br/>
+<b><h2 align="center">Measure Bar</h2></b><br/>
+</b>
+
+<center>
+<img src="docs/measurebar.png"  alt="measure bar image"/><br/></center>
+<br/>
+This bar shows the number of each measure.<br/><br/>
+If you right-click near the line between two measures, a pop-up menu will appear, allowing you to insert empty measures between these two.<br/><br/>
+
+You can also click on a measure to select it. This will select all notes contained in this measure. You can do the same for multiple measures by dragging the mouse. You can deselect them by deselecting their notes, e.g. by clicking in an empty space in the tracks.<br/><br/>
+
+<center><img src="docs/selectMeasure.png"  alt="image of selecting measure"/><br/></center>
+Once you have selected one or many measures, you can right-click on them. This will show a pop-up enabling you to completely remove these measures.<br/><br/>
+
+<center><img src="docs/arrow.png"  alt="image of follow playback arrow"/><br/></center>
+While the song is playing, the current part of the song that is played may not visible because the horizontal scrollbar is placed to show another location. In this case, red arrows will appear at either end of the bar, telling you where current playback is relative to your current location. Clicking on the arrow will take you directly to the part of the song currently being played.
+<br/><br/>
+
+<center>
+<img src="docs/timesig.jpg"  alt="image of time sig edition"/><br/></center>
+<br/>
+If you check <b>Expanded measure management</b> in the settings menu, the measure bar will become wider and you will be able to change the time signature at any time during the song. To add a time signature change, just click in the lower half of the expanded measure bar. A new signature change event will appear. To select an event, just click on it. It will become brighter and bigger (see 3/4 signature at measure 2 in above picture) Clicking on the red square next to a time signature change will prompt a pop-up allowing you to edit the value. To remove an event, right-click on it and select <b>Remove time sig change</b>.
+
+
+<!--             tracks         -->
+<br/>
+<br/>
+<br/>
+<h2 align="center"><b>Tracks</b></h2>
+
+<p>
+When you create a new song or just open Aria, you get one track in keyboard view. You can add and delete tracks as you wish with the "Tracks" menu.<br/>
+
+<br/>
+<center>
+<img src="docs/track.png"/><br/></center>
+
+<br/>
+<img src="docs/collapse.png"> <b>Collapse</b>&nbsp;&nbsp;&nbsp;It enables you to collapse or expand the track. You can collapse a track when you don&#146;t need it for now, so that it doesn&#146;t uselessy take place on the screen. When a track is collapsed, the editor is hidden and only the header (what you see on the screenshot) remains. You can bring the track back by clicking again on the same triangle.<br/>
+<br/>
+<img src="docs/mute.png"> <b>Mute</b>&nbsp;&nbsp;&nbsp;It allows you to mute the track. Click on the speaker: a X appears on it. Next time you hit play, the track will not play anything. Click again to unmute.<br/>
+<br/>
+<img src="docs/dock.png"> <b>Maximize or Dock</b>&nbsp;&nbsp;&nbsp;When you definitely don&#146;t need a track for some time, you can click on the second button (down arrow). This track will completely disappear from the track area, moving to the small bar at the bottom of the window  - the Aria <i>dock</i>. When you want the track back, click on its name in the dock and it&#146;s back.<br/> If you would like to maximize a track, click on the left icon. The track will then take the whole screen. In this state, you can switch between tracks by using the bar at the bottom. <br/>
+<br/>
+The long text area with "Untitled" in it is the <b>name of the track</b>. Click on it, and enter any name you like.<br/>
+<br/>
+The combo box that contains notes is the <b>magnetic grid size</b>. The magnetic grid allows you to snap notes durations and locations to standard musical theory ones. In this combo box, you can choose the smallest note precision you want to use right now, simply by clicking on it. You can also click on the triplet icon to toggle triplets on or off. Click on the arrows of the combo for more choices.<br/>
+<br/>
+<img src="docs/score_view.jpg"> <img src="docs/Aria man2.jpg"> <img src="docs/Aria man4.jpg"> <img src="docs/Aria man6.jpg"> <img src="docs/Aria man8.jpg"> <b>Editor</b>&nbsp;&nbsp;&nbsp;These indicate the current editor (how the notes are displayed and edited). You can click on the piano to go in piano roll mode, you can click on guitar to get a tablature view, etc. (See editors below for more info).<br/>
+<br/>
+The last field at the right of the track header is the <b>instrument</b> used to play the notes. Click on it and you will be able to choose any instrument from the 128 standard midi instruments, placed in various categories.<br/>
+<br/>
+<img src="docs/channel.jpg"> <b>Channel</b> &nbsp;&nbsp;&nbsp;
+This widget will only appear if you turned channel management to manual (see Settings menu above). It allows you specify in which channel this track will play. (In the midi specs, there are 16 channels, 0 to 15, where channel 9 is drums).
+<br/><br/>
+You can <b>resize a track</b> by dragging its bottom.<br/>
+<br/>
+You can <b>reorder tracks</b> by grabbing (hold down the mouse on) the line marking the upper limit of a track, just above the track header. You will then be presented a list of all tracks, all you need to do is place the mouse at the new location and release mouse button.<br/>
+</p>
+<br/>
+
+<!--             keyboard         -->
+<h2 align="center"> <img src="docs/Aria man2.jpg"/> <b>Piano editor</b></h2>
+<P ALIGN=CENTER><img src="docs/Aria man3.jpg"></p>
+
+<p><br/>
+This is the default view. It shows a simple piano roll with the notes on it.<br/>
+<br/>
+To <b>add a note</b>, simply hold the mouse button down and <b>drag horizontally </b>on the track. When you release the mouse, a note will be placed where you clicked, with the length of your frag. Try it, it&#146;s easy! There is a preview to show you where the note will be when you release the mouse.<br/>
+<br/>
+To <b>select</b> <b>a single note</b>, you can simply <b>click</b> on it. Selected notes appear colored in tones of yellow/green.<br/>
+<br/>
+To <b>select many notes</b>, you can simply <b>drag</b> the mouse across the track. At first, it might look like Aria wants to add a new note, but don&#146;t bother. Once you have moved the mouse enough vertically, it will understand you want to select and will instead display a selection rectangle like you can see in all apps. All notes in the rectangle when you release the mouse will be selected.<br/>
+<br/>
+If you have some notes already selected, and want to <b>select more</b>, hold down <b>shift</b> while selecting additionnal notes.<br/>
+If you have some notes already selected, but want to <b>unselected</b> specifically some of them, hold down <b>alt</b> and click on them.<br/>
+<br/>
+You can <b>play selected notes</b> by pressing <b>space bar</b>.<br/>
+<br/>
+To change the <b>volume</b> of a note, <b>right-click</b> on it. A pop-up window will appear. You can then either drag the slider or manually enter a value and press enter. Midi volumes range from 0 (inaudible) to 127 (loudest). If you right-click on a bunch of selected notes, it will set the volume for all notes. If you want to cancel entering anew volume, press escape.<br/>
+<br/>
+The color of a note also shows its volume. Loud notes are drawn darker that soft ones.<br/>
+<br/>
+To <b>move a note</b>, you can just click on it, hold the mouse button down and <b>drag</b> <b>it</b> to its new location. You can also drag a bunch of selected notes the same way, by dragging.<br/>
+<br/>
+Alternatively, you can <b>move selected</b> <b>notes</b> by pressing the <b>arrow keys</b> on your keyboard.<br/>
+<br/>
+To <b>change the duration</b> of one (or many) note, select it, hold down <b>command or control</b> key, and hit the<b> left or right arrow key</b> on your keyboard. Each time you press an arrow key, the note will be resized in the direction the arrow points. (Try it! It&#146;s clearer when you see it)<br/>
+<br/>
+You can <b>delete</b> selected notes by pressing <b>backspace or delete</b> keys on the keyboard.<br/>
+<br/>
+You can move notes <b>one octave up or down</b> by using <b>shift + up/down</b> keys, and to the <b>next or previous measure</b> with <b>shift + left/right</b> keys.
+</p>
+
+<!--             guitar         -->
+<br/>
+<h2 align="center"><b><img src="docs/Aria man4.jpg"> Guitar Editor</b></h2>
+<p align="center"><img src="docs/Aria man5.jpg"></p>
+
+<p><br/>
+This editor allows you to edit your song as a guitar tablature. (If you don&#146;t know what tablature is, or don&#146;t play guitar, you probably
+won&#146;t be interested by this editor)<br/>
+<br/>
+You may want to read the section about Piano editor, since everything from Piano editor also applies in Guitar editor.<br/>
+<br/>
+In guitar editor, when you move a note up or down on the strings, it will keep the same fret number, and its pitch will adapt to its new string.<br/>
+If you want to <b>move a note vertically but keep same pitch</b> (for instance, 10 on A string has the same pitch as 5 on D string  and same pitch
+as 0 on G string) Aria can do that for you, simply select the note, <b>hold down shift, and hit the up or down arrow</b> key. Nothing
+will happen if you are trying to move a note to a string where it cannot be played.<br/>
+<br/>
+If you want to <b>change the fret number</b>, simply select a note a press the appropriate number key, either in the <b>num pad</b> at the right of the
+keyboard, or in the <b>numeric keys</b> at the top of the keyboard. For numbers higher than 9, you can hold down the shift key and press a number.
+For instance, shift+5 will be 15, shift+7 will give 17. You may also use keyboard shortcuts <b>command + up</b> (or <b>control + up</b>) and
+<b>command + down</b> (or <b>control + down</b>) to increase or decrease a note's fret number.<br/>
+<br/>
+You can also change the <b>tuning of the guitar</b> by clicking on the string names on the left and selecting a new tuning.<br/>
+<br/>
+If some notes, mainly from an imported midi file, or that were added in another editor, don&#146;t seem to be placed on the right strings
+(e.g. many notes are played simultaneously on the same string, or a chord that could be played on 3 consecutive strings in split, etc.) you can
+also choose "<b>Rearrange selected notes</b>" from the drop-menu when you click on the left part of the editor (the part with string names).
+It will attempt to rearrange notes in a more meaningful way. (Right now this feature is not completed and may not always give right results,
+but overall it&#146;s not bad)<br/>
+<br/>
+</p>
+
+
+
+<!--             score         -->
+<br/>
+<h2 align="center"><b><img src="docs/score_view.jpg"> Score Editor</b></h2> <br/>
+<p align="center"><img src="docs/score_example.png"/></p>
+
+<p><br/>
+Allows you to edit music with a notation closer to classical music notation. <br/>
+<br/>
+This editor works very similarly to piano editor, so if you are not used to working with keyboard editor you may want to try that first.
+<br/>
+When you move a note up or down, it will by default move it vertically to the next score line.<br/>
+If you instead want  to move a note by semi-tones (e.g. in order to introduce accidentals) simply hold down the shift key while pressing the up/down arrow keys. You can also use the sharp/flat/natural buttons found in the header of the track:
+<div align="center"><img src="docs/sharpflat_buttons.png"/></div>
+
+<br/>
+
+If you click on the left part of the area, where you can see the G and F clefs, you will presented a menu. This menu will enable you to:
+<list>
+<li/>switch to another key signature.
+<li/>choose the type of view: musical, linear (or both). Musical view will display notes in a classical way. Linear will rather display bars a bit like keyboard editor, but on the score instead. By default, both are enabled. You may activate or deactivate each one independently. Generally, enabling linear mode will make editing easier, while disabling it will make reading the score easier.
+<li/>choose which clef(s) to use
+<li/>More the score one octave up or down
+</list>
+</p>
+
+
+<!--             drums         -->
+<br/>
+<h2 align="center"><b><img src="docs/Aria man6.jpg"> Drum Editor </b></h2>
+<div align="center"><img src="docs/Aria man7.jpg"></div>
+
+<p><br/>
+Allows you to edit drums. When you are in this mode, the set of instruments proposed to you is different.<br/>
+<br/>
+Midi allows <b>only one drum channel per song</b>. It&#146;s okay if you use more than one drum track in Aria, however only one drumset can be used when playing and exporting. (For instance, you can&#146;t have a room kit in one track and an orchestral kit in another)<br/>
+<br/>
+You may want to read the part about Piano editor, since it mostly works the same, with the exception that drum hits don&#146;t have a duration. When you add a drum, no need to drag mouse, just click where you want to add a drum hit.<br/>
+<br/>
+Drums are organised in sections - you can hide a section you don&#146;t use by clicking on the little white triangle beside its name.<br/>
+<br/>
+
+Just above the name of the first drum is a black collapse/expand arrow. Clicking on it will hide all unused drums.
+<br/>
+<br/>
+</p>
+
+<!--             controller         -->
+<br/>
+<h2 align="center"><b><img src="docs/Aria man8.jpg"> Controller Editor</b></h2>
+<div align="center"><img src="docs/Aria man9.jpg"></div>
+<br/>
+
+
+<p>This editor is different from other editors, because it doesn&#146;t allow you to change the notes themselves, but details of how they&#146;re played.<br/>
+<br/>
+For instance, <i>Pan</i> will let you choose where the note should play in stereo speakers, <i>Reverb</i> will let you add echo to the instrument, <i>Volume</i> will allow you to change the general volume at will.
+<br/><br/>
+
+The controller editor appears as a pane with a value on top and a value on the bottom (see picture).
+You can firstly add sudden changes with a single click, the horizontal position being the time where it happens, the vertical position being how much effect you want (see the labels at top and bottom of the editor to know what the vertical parameter means).<br/><br/> If you do not want a sudden change, but rather a progressive slide, you can hold down the mouse and drag. This will create a line following the cursor that you can use for creating progressive effect changes.
+
+<br/><br/>
+You can <b>select</b> in controller editor by holding down the <b>shift</b> key on your keyboard and dragging. You can then delete the selected part by pressing backspace or delete keys on the keyboard.<br/>
+You can <b>unselect</b> the selection by holding down shift and clicking without dragging, or simply choosing "Select none" from the menus.</p>
+
+<script src="menu_bottom.js" type="text/javascript"> </script> 
     
 </body>
 
