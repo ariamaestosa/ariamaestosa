@@ -145,6 +145,8 @@ void RearrangeNotes::perform()
                 }// next
 
 
+                ASSERT( MAGIC_NUMBER_OK_FOR(*m_visitor.raw_ptr) );
+
                 // shift first note down if possible (if necessary)
                 const int fstr = m_track->getNoteString(candidates[0]) - (size - 1); // calculate where highest note would end up this way
 
@@ -160,7 +162,7 @@ void RearrangeNotes::perform()
                         string.push_back( m_track->getNoteString(candidates[0]) );
 
                         Action::ShiftString action( 1, candidates[0] );
-                        action.setParentTrack(m_track, m_visitor);
+                        action.setParentTrack(m_track, new Track::TrackVisitor(*m_visitor.raw_ptr));
                         action.perform();
                     }
                 }
