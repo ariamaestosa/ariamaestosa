@@ -21,7 +21,7 @@ document.write('        <td style="width: 150px; background-image:url(\'backgrou
 document.write('        </td>');
 document.write('        <td style="background-color:#628DC2;">');
 document.write('            <br/>');
-document.write('            <h1>Aria Maestosa</h1>');
+document.write('            <center><img src="aria120.png" style="margin-bottom: 25px; margin-right: 25px;"/><img src="logo.png" style="margin-bottom: 25px;"/></center>');
 document.write('        </td>');
 document.write('        <td style="width: 150px; background-image:url(\'background.png\'); background-repeat:repeat-y; margin: 0px; padding: 0px;">');
 document.write('        </td>');

@@ -1,3 +1,6 @@
+1.3 beta 2
+- Minor fixes in new OSX player code
+
 1.3 beta 1
 - Intensive code refactoring and cleanup
 - Support sending midi output to external devices
