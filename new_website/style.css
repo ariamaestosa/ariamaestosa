@@ -5,6 +5,11 @@ h1
   vertical-align: middle;
 }
 
+h2
+{
+    text-align:center;
+}
+
 .selected_tab
 {
   background-color: white;
@@ -99,4 +104,24 @@ h1
 {
     color: black;
     text-decoration: none;
+}
+
+.section
+{
+    background-color    : rgb(230, 230, 230);
+    border-color        : rgb(175, 175, 175);
+    border-style        : solid;
+    border-width        : 1px;
+    margin              : 0;
+    padding-top         : 4px;
+}
+
+.section_inside
+{
+    background-color    : rgb(255, 255, 255);
+    margin              : 0px;
+    padding-top         : 5px;
+    padding-bottom      : 5px;
+    padding-left        : 10px;
+    padding-right       : 10px;
 }
