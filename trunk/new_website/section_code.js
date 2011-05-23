@@ -14,11 +14,14 @@ function toggleDiv(classid)
     }
 }
 
-function writeSectionTop(divid, title, icon)
+function writeSectionTop(divid, title, icons)
 {
     document.write('<div class="section">');
     document.write('<table>');
-    document.write('    <td style="vertical-align: middle;">&nbsp;<img src="' + icon + '"/>&nbsp;&nbsp;');
+    for (var i=0; i<icons.length; i++)
+    {
+    document.write('    <td style="vertical-align: middle;">&nbsp;<img src="' + icons[i] + '"/>&nbsp;&nbsp;');
+    }
     document.write('    </td>');
     document.write('    <td style="vertical-align: middle;">');
     document.write('        <a href="javascript:;" onmousedown="toggleDiv(\'' + divid + '\');" border="0" style="color: black; text-decoration: none; font-weight: bold;">');
