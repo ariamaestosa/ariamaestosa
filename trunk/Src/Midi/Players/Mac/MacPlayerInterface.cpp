@@ -253,6 +253,7 @@ namespace AriaMaestosa
         virtual bool playSequence(Sequence* sequence, /*out*/ int* startTick)
         {
             if (g_playing) return false; //already playing
+            output->stopNote();
             
             m_sequence = sequence;
             
@@ -278,6 +279,7 @@ namespace AriaMaestosa
         virtual bool playSelected(Sequence* sequence, /*out*/ int* startTick)
         {
             if (g_playing) return false; //already playing
+            output->stopNote();
             
             m_sequence = sequence;
             
