@@ -16,6 +16,16 @@ function toggleDiv(classid)
 
 function writeSectionTop(divid, title, icons)
 {
+    var OSName="Unknown OS";
+    if (navigator.appVersion.indexOf("Win")!=-1) OSName="windows";
+    if (navigator.appVersion.indexOf("Mac")!=-1) OSName="osx";
+    if (navigator.appVersion.indexOf("X11")!=-1) OSName="linux";
+    if (navigator.appVersion.indexOf("Linux")!=-1) OSName="linux";
+
+    var display = "block";
+    
+    if (divid.search(OSName) == -1) display = "none";
+
     document.write('<div class="section">');
     document.write('<table>');
     for (var i=0; i<icons.length; i++)
@@ -31,7 +41,7 @@ function writeSectionTop(divid, title, icons)
     document.write('</tr>');
     document.write('</table>');
     
-    document.write('<div class="section_inside ' + divid + '" border="0">');
+    document.write('<div class="section_inside ' + divid + '" border="0" style="display: ' + display + '">');
 }
 
 function writeSectionBottom()
