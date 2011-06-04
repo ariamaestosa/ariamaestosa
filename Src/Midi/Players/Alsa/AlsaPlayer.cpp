@@ -218,6 +218,7 @@ public:
     // called when app opens
     virtual void initMidiPlayer()
     {
+        wxLogVerbose( wxT("AlsaMidiManager::initMidiPlayer (enter)") );
         AlsaPlayerStuff::alsa_output_module_init();
         
         context = new MidiContext();
@@ -237,11 +238,14 @@ public:
         AlsaPlayerStuff::alsa_output_module_setContext(context);
         
         context->setPlaying(false);
+        
+        wxLogVerbose( wxT("AlsaMidiManager::initMidiPlayer (exit)") );
     }
 
     // called when app closes
     virtual void freeMidiPlayer()
     {
+        wxLogVerbose( wxT("AlsaMidiManager::freeMidiPlayer") );
         context->closeDevice();
         delete context;
         AlsaPlayerStuff::alsa_output_module_free();

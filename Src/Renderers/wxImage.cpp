@@ -51,6 +51,7 @@ void Image::load(wxString path)
     if (!image.LoadFile(path))
     {
         wxMessageBox( _("Failed to load ") + path );
+        fprintf(stderr, "Failed to load %s\n", (const char*)path.mb_str());
         exit(1);
     }
     width = image.GetWidth();
