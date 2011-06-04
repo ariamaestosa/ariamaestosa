@@ -156,6 +156,7 @@ void wxWidgetApp::onActivate(wxActivateEvent& evt)
 
 bool wxWidgetApp::OnInit()
 {
+    wxLogVerbose( wxT("wxWidgetsApp::OnInit (enter)") );
     m_render_loop_on = false;
     
     #ifdef __WXMSW__
@@ -168,6 +169,8 @@ bool wxWidgetApp::OnInit()
     
     frame = NULL;
     
+    wxLog::SetActiveTarget( new wxLogStderr() );
+
     for (int n=0; n<argc; n++)
     {
         if (wxString(argv[n]) == wxT("--utest"))
@@ -180,8 +183,14 @@ bool wxWidgetApp::OnInit()
             UnitTestCase::showMenu();
             exit(0);
         }
+        else if (wxString(argv[n]) == wxT("--verbose"))
+        {
+            wxLog::SetLogLevel(wxLOG_Info);
+            wxLog::SetVerbose(true);
+        }
     }
     
+    wxLogVerbose( wxT("[main] init preferences") );
     prefs = PreferencesData::getInstance();
     prefs->init();
     Core::setPlayDuringEdit((PlayDuringEditMode)Core::getPrefsLongValue("playDuringEdit"));
@@ -189,8 +198,10 @@ bool wxWidgetApp::OnInit()
     //read presets
     KeyPresetGroup::getInstance();
     
+    wxLogVerbose( wxT("[main] init midi player") );
     PlatformMidiManager::get()->initMidiPlayer();
 
+    wxLogVerbose( wxT("[main] init main frame") );
     frame = new MainFrame();
     AriaMaestosa::setCurrentSequenceProvider(frame);
     frame->init();
@@ -215,6 +226,7 @@ bool wxWidgetApp::OnInit()
         }
     }
 
+    wxLogVerbose( wxT("wxWidgetsApp::OnInit (leave)") );
     return true;
 }
     
@@ -222,6 +234,8 @@ bool wxWidgetApp::OnInit()
 
 int wxWidgetApp::OnExit()
 {
+    wxLogVerbose( wxT("wxWidgetsApp::OnExit") );
+    
 #ifdef _MORE_DEBUG_CHECKS
     MemoryLeaks::checkForLeaks();
 #endif
@@ -232,7 +246,8 @@ int wxWidgetApp::OnExit()
 
 void wxWidgetApp::MacOpenFile(const wxString &fileName)
 {
-
+    wxLogVerbose( wxT("wxWidgetsApp::MacOpenFile") );
+    
     if (fileName.EndsWith(wxT("aria")))
     {
         frame->loadAriaFile( fileName );

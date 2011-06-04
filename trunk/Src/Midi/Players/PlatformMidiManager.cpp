@@ -42,6 +42,7 @@ PlatformMidiManager* PlatformMidiManager::get()
     {
         // FIXME: instead of aborting, fire a no-op driver
         wxMessageBox(_("Bad binary, no MIDI driver was compiled in!"));
+        fprintf(stderr, "Bad binary, no MIDI driver was compiled in!");
         exit(1);
     }
     

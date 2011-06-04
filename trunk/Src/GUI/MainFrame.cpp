@@ -69,6 +69,7 @@
 #include <wx/bmpbuttn.h>
 #include <wx/notebook.h>
 #include <wx/imaglist.h>
+#include <wx/log.h>
 
 #ifdef __WXMAC__
 #include <ApplicationServices/ApplicationServices.h>
@@ -276,6 +277,7 @@ void CustomToolBar::EnableTool(const int id, const bool enabled)
 MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(100,100), wxSize(900,600),
                                  ARIA_WINDOW_FLAGS )
 {
+    wxLogVerbose( wxT("MainFrame::MainFrame") );
     m_main_panel = new wxPanel(this);
 
     m_root_sizer = new wxBoxSizer(wxVERTICAL);
@@ -310,6 +312,8 @@ MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(1
 
 MainFrame::~MainFrame()
 {
+    wxLogVerbose( wxT("MainFrame::~MainFrame") );
+    
     m_border_sizer->Detach(m_main_panel);
     m_main_panel->Destroy();
     
@@ -327,6 +331,7 @@ MainFrame::~MainFrame()
 
 void MainFrame::init()
 {
+    wxLogVerbose( wxT("MainFrame::init") );
     changingValues = true;
 
     Centre();
@@ -1387,6 +1392,8 @@ void MainFrame::setCurrentSequence(int n, bool updateView)
 
 void MainFrame::loadAriaFile(wxString filePath)
 {
+    wxLogVerbose( wxT("MainFrame::loadAriaFile") );
+    
     if (filePath.IsEmpty()) return;
 
     const int old_currentSequence = m_current_sequence;
@@ -1433,6 +1440,7 @@ void MainFrame::loadAriaFile(wxString filePath)
 
 void MainFrame::loadMidiFile(wxString midiFilePath)
 {
+    wxLogVerbose( wxT("MainFrame::loadMidiFile") );
     if (midiFilePath.IsEmpty()) return;
 
     const int old_currentSequence = m_current_sequence;
