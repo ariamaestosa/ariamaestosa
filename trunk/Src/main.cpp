@@ -17,6 +17,7 @@
 #include <wx/stdpaths.h>
 #include <wx/config.h>
 #include <wx/msgdlg.h>
+#include <wx/log.h>
 
 #include "GUI/MainFrame.h"
 #include "GUI/MainPane.h"
