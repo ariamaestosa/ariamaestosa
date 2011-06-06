@@ -56,6 +56,7 @@
 #include <wx/filename.h>
 #include <wx/msgdlg.h>
 #include <wx/sizer.h>
+#include <wx/log.h>
 
 namespace AriaMaestosa
 {
@@ -591,6 +592,8 @@ void MainFrame::menuEvent_copyright(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_quit(wxCommandEvent& evt)
 {
+    wxLogVerbose(wxT("MainFrame::menuEvent_quit"));
+    
     // close all open sequences
     while (getSequenceAmount()>0)
     {

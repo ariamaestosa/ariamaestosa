@@ -611,6 +611,8 @@ void MainFrame::onHideNotifBar(wxCommandEvent& evt)
 
 void MainFrame::on_close(wxCloseEvent& evt)
 {
+    wxLogVerbose(wxT("MainFrame::on_close"));
+    
     wxCommandEvent dummy;
     menuEvent_quit(dummy);
     //closeSequence();
@@ -1299,6 +1301,8 @@ bool MainFrame::closeSequence(int id_arg) // -1 means current
 
     if (m_sequences.size() == 0)
     {
+        wxLogVerbose(wxT("MainFrame: no sequence open, will close"));
+        
         // shut down program (we close last window, so wx will shut down the app)
         Hide();
         Destroy();
