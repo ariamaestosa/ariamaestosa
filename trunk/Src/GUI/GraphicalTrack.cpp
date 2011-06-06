@@ -689,6 +689,8 @@ bool GraphicalTrack::processMouseDown(RelativeXCoord mousex, int mousey)
 
         if (mousey > m_from_y + 10 and mousey < m_from_y + 10 + EDITOR_ICON_SIZE)
         {
+            // FIXME: setting drums to channel 9 will probably fail if you're trying to enable multiple editors
+            
             // modes
             if (winX > m_score_button->getX() and winX < m_score_button->getX() + EDITOR_ICON_SIZE)
             {
@@ -701,7 +703,7 @@ bool GraphicalTrack::processMouseDown(RelativeXCoord mousex, int mousey)
                 }
                 else
                 {
-                    m_height += 150;
+                    if (not m_track->isNotationTypeEnabled(SCORE)) m_height += 150;
                     DisplayFrame::updateVerticalScrollbar();
                 }
                 
@@ -715,18 +717,19 @@ bool GraphicalTrack::processMouseDown(RelativeXCoord mousex, int mousey)
                     m_track->setNotationType(GUITAR, false);
                     m_track->setNotationType(DRUM, false);
                     m_track->setNotationType(CONTROLLER, false);
+                    
+                    
+                    // in midi, drums go to channel 9. So, if we exit drums, change channel so that it's not 9 anymore.
+                    if (m_track->isNotationTypeEnabled(DRUM) and
+                        m_gsequence->getModel()->getChannelManagementType() == CHANNEL_MANUAL)
+                    {
+                        m_track->setChannel(0);
+                    }
                 }
                 else
                 {
-                    m_height += 150;
+                    if (not m_track->isNotationTypeEnabled(KEYBOARD)) m_height += 150;
                     DisplayFrame::updateVerticalScrollbar();
-                }
-                
-                // in midi, drums go to channel 9. So, if we exit drums, change channel so that it's not 9 anymore.
-                if (m_track->isNotationTypeEnabled(DRUM) and
-                    m_gsequence->getModel()->getChannelManagementType() == CHANNEL_MANUAL)
-                {
-                    m_track->setChannel(0);
                 }
 
                 m_track->setNotationType(KEYBOARD, true);
@@ -739,18 +742,18 @@ bool GraphicalTrack::processMouseDown(RelativeXCoord mousex, int mousey)
                     m_track->setNotationType(KEYBOARD, false);
                     m_track->setNotationType(DRUM, false);
                     m_track->setNotationType(CONTROLLER, false);
+                    
+                    // in midi, drums go to channel 9. So, if we exit drums, change channel so that it's not 9 anymore.
+                    if (m_track->isNotationTypeEnabled(DRUM) and
+                        m_gsequence->getModel()->getChannelManagementType() == CHANNEL_MANUAL)
+                    {
+                        m_track->setChannel(0);
+                    }
                 }
                 else
                 {
-                    m_height += 150;
+                    if (not m_track->isNotationTypeEnabled(GUITAR)) m_height += 150;
                     DisplayFrame::updateVerticalScrollbar();
-                }
-                
-                // in midi, drums go to channel 9. So, if we exit drums, change channel so that it's not 9 anymore.
-                if (m_track->isNotationTypeEnabled(DRUM) and
-                    m_gsequence->getModel()->getChannelManagementType() == CHANNEL_MANUAL)
-                {
-                    m_track->setChannel(0);
                 }
 
                 m_track->setNotationType(GUITAR, true);
@@ -766,7 +769,7 @@ bool GraphicalTrack::processMouseDown(RelativeXCoord mousex, int mousey)
                 }
                 else
                 {
-                    m_height += 150;
+                    if (not m_track->isNotationTypeEnabled(DRUM)) m_height += 150;
                     DisplayFrame::updateVerticalScrollbar();
                 }
                 
@@ -789,7 +792,7 @@ bool GraphicalTrack::processMouseDown(RelativeXCoord mousex, int mousey)
                 }
                 else
                 {
-                    m_height += 150;
+                    if (not m_track->isNotationTypeEnabled(CONTROLLER)) m_height += 150;
                     DisplayFrame::updateVerticalScrollbar();
                 }
                 
