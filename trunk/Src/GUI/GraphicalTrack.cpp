@@ -708,6 +708,7 @@ bool GraphicalTrack::processMouseDown(RelativeXCoord mousex, int mousey)
                 }
                 
                 m_track->setNotationType(SCORE, true);
+                evenlyDistributeSpace();
             }
             else if (winX > m_piano_button->getX() and winX < m_piano_button->getX() + EDITOR_ICON_SIZE)
             {
@@ -733,6 +734,7 @@ bool GraphicalTrack::processMouseDown(RelativeXCoord mousex, int mousey)
                 }
 
                 m_track->setNotationType(KEYBOARD, true);
+                evenlyDistributeSpace();
             }
             else if (winX > m_tab_button->getX() and winX < m_tab_button->getX() + EDITOR_ICON_SIZE)
             {
@@ -757,6 +759,7 @@ bool GraphicalTrack::processMouseDown(RelativeXCoord mousex, int mousey)
                 }
 
                 m_track->setNotationType(GUITAR, true);
+                evenlyDistributeSpace();
             }
             else if (winX > m_drum_button->getX() and winX < m_drum_button->getX() + EDITOR_ICON_SIZE)
             {
@@ -780,26 +783,25 @@ bool GraphicalTrack::processMouseDown(RelativeXCoord mousex, int mousey)
                 }
 
                 m_track->setNotationType(DRUM, true);
+                evenlyDistributeSpace();
             }
             else if (winX > m_ctrl_button->getX() and winX < m_ctrl_button->getX() + EDITOR_ICON_SIZE)
             {
-                if (not Display::isSelectMorePressed())
+                if (not m_track->isNotationTypeEnabled(CONTROLLER))
                 {
-                    m_track->setNotationType(SCORE, false);
-                    m_track->setNotationType(KEYBOARD, false);
-                    m_track->setNotationType(GUITAR, false);
-                    m_track->setNotationType(DRUM, false);
+                    m_height += 150;
+                    m_track->setNotationType(CONTROLLER, true);
                 }
                 else
                 {
-                    if (not m_track->isNotationTypeEnabled(CONTROLLER)) m_height += 150;
-                    DisplayFrame::updateVerticalScrollbar();
+                    m_height -= m_height*m_controller_editor->getRelativeHeight();
+                    m_track->setNotationType(CONTROLLER, false);
                 }
                 
-                m_track->setNotationType(CONTROLLER, true);
+                DisplayFrame::updateVerticalScrollbar();
+                evenlyDistributeSpace();
             }
             
-            evenlyDistributeSpace();
         }
         
         if (m_track->isNotationTypeEnabled(SCORE) and mousey > m_from_y + 15 and mousey < m_from_y + 30)
