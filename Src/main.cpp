@@ -272,7 +272,7 @@ void wxWidgetApp::MacOpenFile(const wxString &fileName)
 
 bool wxWidgetApp::OnExceptionInMainLoop()
 {
-    wxString what = "Unknown error";
+    wxString what = wxT("Unknown error");
     
     try
     {
@@ -280,7 +280,7 @@ bool wxWidgetApp::OnExceptionInMainLoop()
     }
     catch (std::exception& e)
     {
-        what = e.what();
+        what = wxString(e.what(), wxConvUTF8);
     }
     
     std::cerr << "/!\\ An internal error occurred : an exception was caught unhandled\n" << what.mb_str()
@@ -293,7 +293,7 @@ bool wxWidgetApp::OnExceptionInMainLoop()
 
 void wxWidgetApp::OnUnhandledException()
 {
-    wxString what = "Unknown error";
+    wxString what = wxT("Unknown error");
     
     try
     {
@@ -301,7 +301,7 @@ void wxWidgetApp::OnUnhandledException()
     }
     catch (std::exception& e)
     {
-        what = e.what();
+        what = wxString(e.what(), wxConvUTF8);
     }
     
     std::cerr << "/!\\ An internal error occurred : an exception was caught unhandled\n" << what.mb_str()
