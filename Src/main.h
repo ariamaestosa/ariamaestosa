@@ -58,6 +58,12 @@ namespace AriaMaestosa
         /** callback : called when app is activated */
         void onActivate(wxActivateEvent& evt);
         
+        /** callback from wxApp */
+        virtual bool OnExceptionInMainLoop();
+        
+        /** callback from wxApp */
+        virtual void OnUnhandledException();
+        
         DECLARE_EVENT_TABLE();
         
     private:
