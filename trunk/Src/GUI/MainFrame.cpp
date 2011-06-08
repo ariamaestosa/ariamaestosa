@@ -366,6 +366,8 @@ void MainFrame::init()
     smallTextCtrlSize.SetWidth(45);
 
     // -------------------------- Toolbar ----------------------------
+    wxLogVerbose( wxT("MainFrame::init (creating toolbar)") );
+    
 #ifdef NO_WX_TOOLBAR
     m_border_sizer->Add(m_toolbar, 0, wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALL, 2);
     m_border_sizer->AddSpacer(10);
@@ -500,6 +502,8 @@ void MainFrame::init()
     m_root_sizer->Add( m_notification_panel, 0, wxEXPAND | wxALL, 2);
     
     // -------------------------- Main Pane ----------------------------
+    wxLogVerbose( wxT("MainFrame::init (creating main pane)") );
+
 #ifdef RENDERER_OPENGL
     
     int args[3];
@@ -520,6 +524,8 @@ void MainFrame::init()
     Core::setMainPane(m_main_pane);
 
     // -------------------------- Vertical Scrollbar ----------------------------
+    wxLogVerbose( wxT("MainFrame::init (creating scrollbars)") );
+
     m_vertical_scrollbar = new wxScrollBar(m_main_panel, SCROLLBAR_V,
                                            wxDefaultPosition, wxDefaultSize, wxSB_VERTICAL);
 
@@ -566,6 +572,7 @@ void MainFrame::init()
     }
 #endif
 
+    wxLogVerbose( wxT("MainFrame::init (showing)") );
     Maximize(true);
     Layout();
     Show();
@@ -582,13 +589,18 @@ void MainFrame::init()
     Connect(wxID_ANY, wxEVT_DROP_FILES, wxDropFilesEventHandler(MainFrame::onDropFile),NULL, this);
 #endif
 
+    wxLogVerbose( wxT("MainFrame::init (creating pickers)") );
+
     // create pickers
     m_tuning_picker       =  new TuningPicker();
     m_key_picker          =  new KeyPicker();
     m_instrument_picker   =  new InstrumentPicker();
     m_drumKit_picker      =  new DrumPicker();
 
+    wxLogVerbose( wxT("MainFrame::init (loading images)") );
     ImageProvider::loadImages();
+    
+    wxLogVerbose( wxT("MainFrame::init (main pane now visible)") );
     m_main_pane->isNowVisible();
 
     //ImageProvider::loadImages();
@@ -597,6 +609,7 @@ void MainFrame::init()
     if (aboutDialog.raw_ptr == NULL) aboutDialog = new AboutDialog();
     aboutDialog->show();
 #endif
+    wxLogVerbose( wxT("MainFrame::init (done)") );
 }
 
 // ----------------------------------------------------------------------------------------------------------
