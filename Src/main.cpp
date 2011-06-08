@@ -207,12 +207,16 @@ bool wxWidgetApp::OnInit()
     AriaMaestosa::setCurrentSequenceProvider(frame);
     frame->init();
 
+    wxLogVerbose( wxT("[main] init main frame 2") );
+
     frame->updateHorizontalScrollbar(0);
 
     Display::render();
 
     SetTopWindow(frame);
 
+    wxLogVerbose( wxT("[main] init main frame 3") );
+    
     // check if filenames to open were given on the command-line
     for (int n=0; n<argc; n++)
     {
