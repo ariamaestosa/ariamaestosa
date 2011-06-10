@@ -67,11 +67,16 @@ wxString extract_filename(wxString filepath)
 
 wxString extract_path(wxString str)
 {
+    if (str.IsEmpty()) return str;
+    
     if (str.GetChar(str.Length()) == wxFileName::GetPathSeparator())
     {
         return str.BeforeLast(wxFileName::GetPathSeparator()).BeforeLast(wxFileName::GetPathSeparator());
     }
-    else return str.BeforeLast(wxFileName::GetPathSeparator());
+    else
+    {
+        return str.BeforeLast(wxFileName::GetPathSeparator());
+    }
 }
 
 
@@ -113,46 +118,54 @@ wxString showFileDialog(wxString message, wxString defaultDir,
 
 wxString getResourcePrefix()
 {
+    try // someone got an exception on OpenSUSE
+    {
 #if defined(__WXMAC__) || defined(__WXGTK__)
 
-    static bool app_in_place = wxFileExists(
-            extract_path(wxStandardPaths::Get().GetExecutablePath()) +
-            wxT("/Resources/collapse.jpg") );
+        static bool app_in_place = wxFileExists(
+                extract_path(wxStandardPaths::Get().GetExecutablePath()) +
+                wxT("/Resources/collapse.jpg") );
 
-    if (app_in_place)
-    {
-        return extract_path( wxStandardPaths::Get().GetExecutablePath() ) +
-                wxT("/Resources/");
-    }
-    else
-    {
-        return wxStandardPaths::Get().GetResourcesDir() + wxT("/");
-    }
+        if (app_in_place)
+        {
+            return extract_path( wxStandardPaths::Get().GetExecutablePath() ) +
+                    wxT("/Resources/");
+        }
+        else
+        {
+            return wxStandardPaths::Get().GetResourcesDir() + wxT("/");
+        }
     
 #elif defined(__WXMSW__)
     
-    static bool app_in_place = wxFileExists(
-            extract_path(wxStandardPaths::Get().GetExecutablePath()) +
-            wxFileName::GetPathSeparator() + wxT("Resources") +
-            wxFileName::GetPathSeparator() + wxT("collapse.jpg") );
+        static bool app_in_place = wxFileExists(
+                extract_path(wxStandardPaths::Get().GetExecutablePath()) +
+                wxFileName::GetPathSeparator() + wxT("Resources") +
+                wxFileName::GetPathSeparator() + wxT("collapse.jpg") );
 
-    if (app_in_place)
-    {
-        return extract_path( wxStandardPaths::Get().GetExecutablePath() ) +
-               wxFileName::GetPathSeparator() + wxT("Resources") +
-               wxFileName::GetPathSeparator();
-    }
-    else
-    {
-        return wxStandardPaths::Get().GetDataDir() + wxFileName::GetPathSeparator();
-    }
+        if (app_in_place)
+        {
+            return extract_path( wxStandardPaths::Get().GetExecutablePath() ) +
+                   wxFileName::GetPathSeparator() + wxT("Resources") +
+                   wxFileName::GetPathSeparator();
+        }
+        else
+        {
+            return wxStandardPaths::Get().GetDataDir() + wxFileName::GetPathSeparator();
+        }
     
 #else
 
 #warning "Resource Prefix undefined for your platform"
-return wxT("./");
+        return wxT("./");
 
 #endif
+    }
+    catch (std::exception e)
+    {
+        fprintf(stderr, "ERROR: Exception in getResourcePrefix : %s\n", e.what());
+        return wxT("./");
+    }
 }
 
 wxString extractTitle(const wxString& inputPath)
