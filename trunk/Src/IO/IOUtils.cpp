@@ -69,7 +69,7 @@ wxString extract_path(wxString str)
 {
     if (str.IsEmpty()) return str;
     
-    if (str.GetChar(str.Length()) == wxFileName::GetPathSeparator())
+    if (str.GetChar(str.Length() - 1) == wxFileName::GetPathSeparator())
     {
         return str.BeforeLast(wxFileName::GetPathSeparator()).BeforeLast(wxFileName::GetPathSeparator());
     }
@@ -135,7 +135,7 @@ wxString getResourcePrefix()
         {
             return wxStandardPaths::Get().GetResourcesDir() + wxT("/");
         }
-    
+        
 #elif defined(__WXMSW__)
     
         static bool app_in_place = wxFileExists(
@@ -164,7 +164,7 @@ wxString getResourcePrefix()
     catch (std::exception e)
     {
         fprintf(stderr, "ERROR: Exception in getResourcePrefix : %s\n", e.what());
-        return wxT("./");
+        return wxStandardPaths::Get().GetResourcesDir() + wxT("/");
     }
 }
 
