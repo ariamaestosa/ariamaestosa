@@ -377,7 +377,7 @@ void MainFrame::init()
     m_pause_bitmap.LoadFile( getResourcePrefix()  + wxT("pause.png") , wxBITMAP_TYPE_PNG);
     if (not m_play_bitmap.IsOk())
     {
-        fprintf(stderr, "Cannot locate data files, aria cannot start. Please check your installation\n");
+        fprintf(stderr, "Cannot locate data files, aria cannot start. Please check your installation (you may set environment variable ARIA_MAESTOSA_DATA to help Aria find its data if the defaults fail)\n");
         wxMessageBox(wxT("Cannot locate data files, aria cannot start. Please check your installation"));
         exit(1);
     }

@@ -28,6 +28,7 @@
 #include <wx/msgdlg.h>
 #include <wx/filedlg.h>
 #include <iostream>
+#include <stdlib.h>
 
 namespace AriaMaestosa {
 
@@ -67,7 +68,7 @@ wxString extract_filename(wxString filepath)
 
 wxString extract_path(wxString str)
 {
-    if (str.IsEmpty()) return str;
+    if (str.Length() == 0) return str;
     
     if (str.GetChar(str.Length() - 1) == wxFileName::GetPathSeparator())
     {
@@ -122,10 +123,16 @@ wxString getResourcePrefix()
     {
 #if defined(__WXMAC__) || defined(__WXGTK__)
 
+        static char* env_path = getenv("ARIA_MAESTOSA_DATA");
+        
         static bool app_in_place = wxFileExists(
                 extract_path(wxStandardPaths::Get().GetExecutablePath()) +
                 wxT("/Resources/collapse.jpg") );
 
+        if (env_path != NULL)
+        {
+            return wxString(env_path, wxConvUTF8);
+        }
         if (app_in_place)
         {
             return extract_path( wxStandardPaths::Get().GetExecutablePath() ) +
