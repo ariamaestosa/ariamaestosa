@@ -529,6 +529,8 @@ bool GraphicalTrack::handleEditorChanges(int x, BitmapButton* button, Editor* ed
             {
                 m_track->setChannel(0);
             }
+            
+            m_track->setNotationType(type, true);
         }
         else
         {
@@ -558,21 +560,28 @@ bool GraphicalTrack::handleEditorChanges(int x, BitmapButton* button, Editor* ed
                 redistribute = false;
             }
             DisplayFrame::updateVerticalScrollbar();
-        }
-        
-        if (Display::isSelectMorePressed())
-        {
+            
             if (m_track->isNotationTypeEnabled(type))
             {
                 // can't disable the last shown ditor
                 if (m_track->getEnabledEditorCount() <= 1) return true;
+                
                 m_height -= m_height*editor->getRelativeHeight();
+                float toRemove = getEditorFor( type )->getRelativeHeight();
+                
+                for (int n=0; n<NOTATION_TYPE_COUNT; n++)
+                {
+                    if (n != type and m_track->isNotationTypeEnabled( (NotationType)n ))
+                    {
+                        Editor* otherEditor = getEditorFor( (NotationType)n );
+                        float curr = otherEditor->getRelativeHeight();
+                        otherEditor->setRelativeHeight( curr/(1.0f - toRemove) );
+                    }
+                }
+                redistribute = false;
             }
+            
             m_track->setNotationType(type, not m_track->isNotationTypeEnabled(type));
-        }
-        else
-        {
-            m_track->setNotationType(type, true);
         }
         
         if (redistribute) evenlyDistributeSpace();
