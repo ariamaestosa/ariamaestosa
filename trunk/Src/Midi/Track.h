@@ -554,6 +554,8 @@ namespace AriaMaestosa
 
         void setNotationType(NotationType t, bool enabled);
         
+        int getEnabledEditorCount() const;
+        
         /**
           * @brief Implement callback from IGuitarTuningListener
           */
