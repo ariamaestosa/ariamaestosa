@@ -514,6 +514,7 @@ bool GraphicalTrack::handleEditorChanges(int x, BitmapButton* button, Editor* ed
 {
     if (x > button->getX() and x < button->getX() + EDITOR_ICON_SIZE)
     {
+        bool redistribute = true;
         if (not Display::isSelectMorePressed())
         {
             if (type != SCORE)      m_track->setNotationType(SCORE, false);
@@ -531,7 +532,30 @@ bool GraphicalTrack::handleEditorChanges(int x, BitmapButton* button, Editor* ed
         }
         else
         {
-            if (not m_track->isNotationTypeEnabled(type)) m_height += 150;
+            if (not m_track->isNotationTypeEnabled(type))
+            {
+                const int DEFAULT_SIZE = 150;
+                m_height += DEFAULT_SIZE;
+                const float relativeHeight = float(DEFAULT_SIZE)/float(m_height);
+                
+                int count = m_track->getEnabledEditorCount();
+                const float subtractToOthers = relativeHeight / float(count);
+                
+                for (int n=0; n<NOTATION_TYPE_COUNT; n++)
+                {
+                    if (n == type)
+                    {
+                        getEditorFor( (NotationType)n )->setRelativeHeight( relativeHeight );
+                    }
+                    else if (m_track->isNotationTypeEnabled( (NotationType)n ))
+                    {
+                        getEditorFor( (NotationType)n )->setRelativeHeight(
+                                          getEditorFor( (NotationType)n )->getRelativeHeight() - subtractToOthers );
+                    }
+                    
+                }
+                redistribute = false;
+            }
             DisplayFrame::updateVerticalScrollbar();
         }
         
@@ -550,7 +574,7 @@ bool GraphicalTrack::handleEditorChanges(int x, BitmapButton* button, Editor* ed
             m_track->setNotationType(type, true);
         }
         
-        evenlyDistributeSpace();
+        if (redistribute) evenlyDistributeSpace();
         return true;
     }
     return false;

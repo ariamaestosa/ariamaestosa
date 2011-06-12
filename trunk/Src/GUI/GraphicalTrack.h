@@ -168,6 +168,15 @@ namespace AriaMaestosa
         const ScoreEditor*    getScoreEditor   () const { return m_score_editor;      }
 
         Editor* getEditorAt(const int y, Editor** next=NULL);
+        Editor* getEditorFor(NotationType type)
+        {
+            if      (type == SCORE)      return (Editor*)m_score_editor.raw_ptr;
+            else if (type == GUITAR)     return (Editor*)m_guitar_editor.raw_ptr;
+            else if (type == DRUM)       return (Editor*)m_drum_editor.raw_ptr;
+            else if (type == KEYBOARD)   return (Editor*)m_keyboard_editor.raw_ptr;
+            else if (type == CONTROLLER) return (Editor*)m_controller_editor.raw_ptr;
+            return NULL;
+        }
         Editor* getFocusedEditor();
         
         ControllerEditor*   getControllerEditor() { return m_controller_editor; }
