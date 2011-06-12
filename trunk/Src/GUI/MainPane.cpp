@@ -218,6 +218,15 @@ bool MainPane::do_render()
     MainFrame* mf = getMainFrame();
     
     if (not ImageProvider::imagesLoaded())  return false;
+    
+    if (mf->getSequenceAmount() == 0)
+    {
+        mf->disableScrollbars();
+        
+        // TODO; render welcome page
+        return true;
+    }
+    
     if (mf->getCurrentSequence()->isImportMode()) return false;
 
     AriaRender::images();
@@ -497,6 +506,9 @@ void MainPane::mouseHeldDown()
 void MainPane::rightClick(wxMouseEvent& event)
 {
     MainFrame* mf = getMainFrame();
+    
+    if (mf->getSequenceAmount() == 0) return;
+    
     GraphicalSequence* gseq   = mf->getCurrentGraphicalSequence();
     Sequence* seq = gseq->getModel();
     const int measureBarHeight = gseq->getMeasureBar()->getMeasureBarHeight();
@@ -538,6 +550,9 @@ void MainPane::mouseDown(wxMouseEvent& event)
     Display::requestFocus();
 
     MainFrame* mf = getMainFrame();
+    
+    if (mf->getSequenceAmount() == 0) return;
+    
     GraphicalSequence* gseq = mf->getCurrentGraphicalSequence();
     Sequence* seq = gseq->getModel();
     
@@ -703,7 +718,10 @@ void MainPane::mouseMoved(wxMouseEvent& event)
         // we are not reordering tracks
         if (m_dragged_track_id == -1)
         {
-            GraphicalSequence* gseq = getMainFrame()->getCurrentGraphicalSequence();
+            MainFrame* mf = getMainFrame();
+            if (mf->getSequenceAmount() == 0) return;
+            
+            GraphicalSequence* gseq = mf->getCurrentGraphicalSequence();
 
             
             // ----------------------------------- click is in track area ----------------------------
@@ -758,7 +776,10 @@ void MainPane::mouseLeftWindow(wxMouseEvent& event)
     // if we are dragging, notify current track that mouse has left the window
     if (m_is_mouse_down)
     {
-        getMainFrame()->
+        MainFrame* mf = getMainFrame();
+        if (mf->getSequenceAmount() == 0) return;
+        
+        mf->
         getCurrentGraphicalSequence()->
         getCurrentTrack()->
         processMouseExited(m_mouse_x_current, m_mouse_y_current,
@@ -782,7 +803,10 @@ void MainPane::mouseReleased(wxMouseEvent& event)
         
     if (invalidateMouseEvents) return;
 
-    GraphicalSequence* gseq = getMainFrame()->getCurrentGraphicalSequence();
+    MainFrame* mf = getMainFrame();
+    if (mf->getSequenceAmount() == 0) return;
+    
+    GraphicalSequence* gseq = mf->getCurrentGraphicalSequence();
     
     // if releasing after having dragged a track
     if (m_dragged_track_id != -1)
@@ -860,6 +884,8 @@ void MainPane::keyPressed(wxKeyEvent& evt)
     */
     
     MainFrame* mf = getMainFrame();
+    if (mf->getSequenceAmount() == 0) return;
+    
     GraphicalSequence* gseq = mf->getCurrentGraphicalSequence();
     Sequence* seq = gseq->getModel();
     
@@ -928,7 +954,11 @@ void MainPane::keyPressed(wxKeyEvent& evt)
 void MainPane::mouseWheelMoved(wxMouseEvent& event)
 {
     const int value = event.GetWheelRotation() / event.GetWheelDelta();
-    GraphicalSequence* gseq = getMainFrame()->getCurrentGraphicalSequence();
+    
+    MainFrame* mf = getMainFrame();
+    if (mf->getSequenceAmount() == 0) return;
+    
+    GraphicalSequence* gseq = mf->getCurrentGraphicalSequence();
     
 #if wxCHECK_VERSION(2,9,1)
     // horizontal scrolling
