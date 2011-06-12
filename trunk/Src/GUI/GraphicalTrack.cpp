@@ -538,8 +538,8 @@ bool GraphicalTrack::handleEditorChanges(int x, BitmapButton* button, Editor* ed
                 m_height += DEFAULT_SIZE;
                 const float relativeHeight = float(DEFAULT_SIZE)/float(m_height);
                 
-                int count = m_track->getEnabledEditorCount();
-                const float subtractToOthers = relativeHeight / float(count);
+                //int count = m_track->getEnabledEditorCount();
+                //const float subtractToOthers = relativeHeight / float(count);
                 
                 for (int n=0; n<NOTATION_TYPE_COUNT; n++)
                 {
@@ -550,7 +550,8 @@ bool GraphicalTrack::handleEditorChanges(int x, BitmapButton* button, Editor* ed
                     else if (m_track->isNotationTypeEnabled( (NotationType)n ))
                     {
                         Editor* otherEditor = getEditorFor( (NotationType)n );
-                        otherEditor->setRelativeHeight( otherEditor->getRelativeHeight() - subtractToOthers );
+                        float curr = otherEditor->getRelativeHeight();
+                        otherEditor->setRelativeHeight( curr - curr*relativeHeight );
                     }
                     
                 }
