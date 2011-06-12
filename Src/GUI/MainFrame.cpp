@@ -1317,6 +1317,7 @@ bool MainFrame::closeSequence(int id_arg) // -1 means current
 
     m_sequences.erase( id );
 
+    /*
     if (m_sequences.size() == 0)
     {
         wxLogVerbose(wxT("MainFrame: no sequence open, will close"));
@@ -1326,20 +1327,23 @@ bool MainFrame::closeSequence(int id_arg) // -1 means current
         Destroy();
         return true;
     }
-
-    int newCurrent = 0;
-    const int seqCount = m_sequences.size();
-    for (int n=0; n<seqCount; n++)
+*/
+    
+    if (m_sequences.size() > 0)
     {
-        if (m_sequences[n].getModel()->getSequenceFilename() == whoToFocusAfter)
+        int newCurrent = 0;
+        const int seqCount = m_sequences.size();
+        for (int n=0; n<seqCount; n++)
         {
-            newCurrent = n;
-            break;
+            if (m_sequences[n].getModel()->getSequenceFilename() == whoToFocusAfter)
+            {
+                newCurrent = n;
+                break;
+            }
         }
+        setCurrentSequence(newCurrent);
     }
-    setCurrentSequence(newCurrent);
-
-    //if (sequences.size()>0) Display::render();
+    
     Display::render();
     return true;
 
@@ -1603,3 +1607,9 @@ void MainFrame::onMeasureDataChange(int change)
 }
 
 // ----------------------------------------------------------------------------------------------------------
+
+void MainFrame::disableScrollbars()
+{
+    m_horizontal_scrollbar->Disable();
+    m_vertical_scrollbar->Disable();
+}

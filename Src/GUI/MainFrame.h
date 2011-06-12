@@ -299,6 +299,8 @@ namespace AriaMaestosa
         /** Called to update the horizontal scrollbar, usually because song length has changed. */
         void updateHorizontalScrollbar(int thumbPos=-1);
 
+        void disableScrollbars();
+        
         /**
          * User scrolled horizontally by dragging.
          * Just make sure to update the display to the new values.
