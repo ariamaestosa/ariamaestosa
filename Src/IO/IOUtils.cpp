@@ -168,7 +168,7 @@ wxString getResourcePrefix()
 
 #endif
     }
-    catch (std::exception e)
+    catch (std::exception& e)
     {
         fprintf(stderr, "ERROR: Exception in getResourcePrefix : %s\n", e.what());
         return wxStandardPaths::Get().GetResourcesDir() + wxT("/");
