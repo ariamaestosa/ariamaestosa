@@ -514,7 +514,6 @@ bool GraphicalTrack::handleEditorChanges(int x, BitmapButton* button, Editor* ed
 {
     if (x > button->getX() and x < button->getX() + EDITOR_ICON_SIZE)
     {
-        bool redistribute = true;
         if (not Display::isSelectMorePressed())
         {
             if (type != SCORE)      m_track->setNotationType(SCORE, false);
@@ -531,6 +530,7 @@ bool GraphicalTrack::handleEditorChanges(int x, BitmapButton* button, Editor* ed
             }
             
             m_track->setNotationType(type, true);
+            evenlyDistributeSpace();
         }
         else
         {
@@ -557,11 +557,8 @@ bool GraphicalTrack::handleEditorChanges(int x, BitmapButton* button, Editor* ed
                     }
                     
                 }
-                redistribute = false;
             }
-            DisplayFrame::updateVerticalScrollbar();
-            
-            if (m_track->isNotationTypeEnabled(type))
+            else
             {
                 // can't disable the last shown ditor
                 if (m_track->getEnabledEditorCount() <= 1) return true;
@@ -578,13 +575,12 @@ bool GraphicalTrack::handleEditorChanges(int x, BitmapButton* button, Editor* ed
                         otherEditor->setRelativeHeight( curr/(1.0f - toRemove) );
                     }
                 }
-                redistribute = false;
             }
             
             m_track->setNotationType(type, not m_track->isNotationTypeEnabled(type));
+            DisplayFrame::updateVerticalScrollbar();
         }
         
-        if (redistribute) evenlyDistributeSpace();
         return true;
     }
     return false;
