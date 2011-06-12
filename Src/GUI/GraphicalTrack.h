@@ -124,6 +124,8 @@ namespace AriaMaestosa
         
         void evenlyDistributeSpace();
         
+        bool handleEditorChanges(int x, BitmapButton* button, Editor* editor, NotationType type);
+        
     public:
         LEAK_CHECK();
         
