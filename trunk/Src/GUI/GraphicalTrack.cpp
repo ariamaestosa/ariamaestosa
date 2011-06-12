@@ -549,8 +549,8 @@ bool GraphicalTrack::handleEditorChanges(int x, BitmapButton* button, Editor* ed
                     }
                     else if (m_track->isNotationTypeEnabled( (NotationType)n ))
                     {
-                        getEditorFor( (NotationType)n )->setRelativeHeight(
-                                          getEditorFor( (NotationType)n )->getRelativeHeight() - subtractToOthers );
+                        Editor* otherEditor = getEditorFor( (NotationType)n );
+                        otherEditor->setRelativeHeight( otherEditor->getRelativeHeight() - subtractToOthers );
                     }
                     
                 }
