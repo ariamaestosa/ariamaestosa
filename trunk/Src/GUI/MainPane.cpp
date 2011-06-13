@@ -257,26 +257,33 @@ void MainPane::drawWelcomeMenu()
             img_x = getWidth()/2 - needed_width/2;
         }
         
+        int additional_margin = (n < 3 ? MARGIN*3 : 0);
         
         if (n < 4)
         {
-            int additional_margin = (n < 3 ? MARGIN*3 : 0);
-            
             AriaRender::primitives();
             AriaRender::color(1,1,1);
             
             AriaRender::rect(x + additional_margin + 2, y - height/2 + 2,
                              getWidth() - MARGIN - additional_margin - 2, y + height/2 - 2);
-            
-            
-            int mouse_x = m_mouse_x_current.getRelativeTo(WINDOW);
-            if (mouse_x > img_x and mouse_x < img_x + needed_width and
-                m_mouse_y_current > y - height/2 and m_mouse_y_current < y + height/2)
-            {
-                AriaRender::color(1.0f, 0.83f, 0.35f);
+        }
                 
+        int mouse_x = m_mouse_x_current.getRelativeTo(WINDOW);
+        if (mouse_x > img_x and mouse_x < img_x + needed_width and
+            m_mouse_y_current > y - height/2 and m_mouse_y_current < y + height/2)
+        {
+            AriaRender::primitives();
+            AriaRender::color(1.0f, 0.88f, 0.73f);
+            
+            if (n < 3)
+            {
                 AriaRender::rect(x + additional_margin + 2, y - height/2 + 2,
                                  getWidth() - MARGIN - additional_margin - 2, y + height/2 - 2);
+            }
+            else
+            {
+                AriaRender::rect(img_x, y - height/2 + 2,
+                                 img_x + needed_width, y + height/2 - 2);
             }
         }
         
@@ -285,8 +292,6 @@ void MainPane::drawWelcomeMenu()
         
         if (n < 4)
         {
-            int additional_margin = (n < 3 ? MARGIN*3 : 0);
-            
             int body_width = getWidth() - 2*MARGIN - additional_margin*2;
 
             whiteBorderDrawable->rotate(0);
