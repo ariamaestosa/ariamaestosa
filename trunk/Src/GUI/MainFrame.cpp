@@ -1158,6 +1158,8 @@ void MainFrame::verticalScrolling(wxScrollEvent& evt)
 
 void MainFrame::verticalScrolling_arrows(wxScrollEvent& evt)
 {
+    if (m_sequences.size() == 0) return;
+
     getCurrentGraphicalSequence()->setYScroll( m_vertical_scrollbar->GetThumbPosition() );
     Display::render();
 }
@@ -1166,6 +1168,8 @@ void MainFrame::verticalScrolling_arrows(wxScrollEvent& evt)
 
 void MainFrame::updateHorizontalScrollbar(int thumbPos)
 {
+    if (m_sequences.size() == 0) return;
+    
     const int editor_size = Display::getWidth() - 100;
 
     GraphicalSequence* gseq = getCurrentGraphicalSequence();

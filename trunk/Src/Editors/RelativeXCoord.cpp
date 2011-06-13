@@ -153,9 +153,7 @@ void RelativeXCoord::convertTo(RelativeType relativeTo)
 // ----------------------------------------------------------------------------------------------------------
 
 int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
-{
-    ASSERT(m_seq != NULL);
-    
+{    
     switch (returnRelativeTo)
     {
         case EDITOR:
@@ -166,6 +164,7 @@ int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
             }
             else if (relativeToMidi != -1)
             {
+                ASSERT(m_seq != NULL);
                 relativeToEditor = ( int )( relativeToMidi * m_seq->getZoom() ) - m_seq->getXScrollInPixels();
             }
             else
@@ -188,6 +187,7 @@ int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
             {
                     if (relativeToMidi != -1)
                     {
+                        ASSERT(m_seq != NULL);
                         return int(relativeToMidi * m_seq->getZoom()) -
                                    m_seq->getXScrollInPixels() + Editor::getEditorXStart();
                     }
@@ -209,18 +209,18 @@ int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
             }
             else
             {
-
-                    if (relativeToWindow != -1)
-                    {
-                        return (int)((relativeToWindow - Editor::getEditorXStart()) / m_seq->getZoom()) +
-                                    m_seq->getXScrollInMidiTicks();
-                    }
-                    else
-                    {
-                        std::cerr << "!! RelativeXCoord ERROR - needs one of 3 (G)" << std::endl;
-                        return -1;
-                        //ASSERT(0);
-                    }
+                ASSERT(m_seq != NULL);
+                if (relativeToWindow != -1)
+                {
+                    return (int)((relativeToWindow - Editor::getEditorXStart()) / m_seq->getZoom()) +
+                                m_seq->getXScrollInMidiTicks();
+                }
+                else
+                {
+                    std::cerr << "!! RelativeXCoord ERROR - needs one of 3 (G)" << std::endl;
+                    return -1;
+                    //ASSERT(0);
+                }
             }
 
             break;
