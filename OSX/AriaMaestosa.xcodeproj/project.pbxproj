@@ -729,6 +729,18 @@
 		95DB7D12133E88FB0060AB17 /* tool2.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CED133E88CF0060AB17 /* tool2.png */; };
 		95DB7D13133E88FB0060AB17 /* white_border.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CEE133E88CF0060AB17 /* white_border.png */; };
 		95DB7D14133E88FB0060AB17 /* white_corner.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CEF133E88CF0060AB17 /* white_corner.png */; };
+		95E963C313A5810D00927D76 /* configure.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95E963A913A5806600927D76 /* configure.png */; };
+		95E963C413A5810D00927D76 /* exit.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95E963AA13A5806600927D76 /* exit.png */; };
+		95E963C513A5810D00927D76 /* help.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95E963AB13A5806600927D76 /* help.png */; };
+		95E963C613A5810D00927D76 /* import.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95E963AC13A5806600927D76 /* import.png */; };
+		95E963C713A5810D00927D76 /* new.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95E963AD13A5806600927D76 /* new.png */; };
+		95E963C813A5810D00927D76 /* open.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95E963AE13A5806600927D76 /* open.png */; };
+		95E963C913A5811C00927D76 /* configure.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95E963A913A5806600927D76 /* configure.png */; };
+		95E963CA13A5811C00927D76 /* exit.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95E963AA13A5806600927D76 /* exit.png */; };
+		95E963CB13A5811C00927D76 /* help.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95E963AB13A5806600927D76 /* help.png */; };
+		95E963CC13A5811C00927D76 /* import.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95E963AC13A5806600927D76 /* import.png */; };
+		95E963CD13A5811C00927D76 /* new.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95E963AD13A5806600927D76 /* new.png */; };
+		95E963CE13A5811C00927D76 /* open.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95E963AE13A5806600927D76 /* open.png */; };
 		95EC9D3511DD2D56009A5743 /* InstrumentChoice.h in Headers */ = {isa = PBXBuildFile; fileRef = 95EC9D3311DD2D56009A5743 /* InstrumentChoice.h */; };
 		95EC9D3611DD2D56009A5743 /* InstrumentChoice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95EC9D3411DD2D56009A5743 /* InstrumentChoice.cpp */; };
 		95EC9D3711DD2D56009A5743 /* InstrumentChoice.h in Headers */ = {isa = PBXBuildFile; fileRef = 95EC9D3311DD2D56009A5743 /* InstrumentChoice.h */; };
@@ -761,6 +773,12 @@
 			dstSubfolderSpec = 7;
 			files = (
 				95DB7CF2133E88FB0060AB17 /* aria64.png in CopyFiles */,
+				95E963C313A5810D00927D76 /* configure.png in CopyFiles */,
+				95E963C413A5810D00927D76 /* exit.png in CopyFiles */,
+				95E963C513A5810D00927D76 /* help.png in CopyFiles */,
+				95E963C613A5810D00927D76 /* import.png in CopyFiles */,
+				95E963C713A5810D00927D76 /* new.png in CopyFiles */,
+				95E963C813A5810D00927D76 /* open.png in CopyFiles */,
 				95DB7CF3133E88FB0060AB17 /* border.jpg in CopyFiles */,
 				95DB7CF4133E88FB0060AB17 /* close.png in CopyFiles */,
 				95DB7CF5133E88FB0060AB17 /* collapse.jpg in CopyFiles */,
@@ -815,6 +833,12 @@
 				95160BE71359F3C1001F20CD /* score in CopyFiles */,
 				95160BE81359F3C1001F20CD /* collapse.jpg in CopyFiles */,
 				95160BE91359F3C1001F20CD /* border.jpg in CopyFiles */,
+				95E963C913A5811C00927D76 /* configure.png in CopyFiles */,
+				95E963CA13A5811C00927D76 /* exit.png in CopyFiles */,
+				95E963CB13A5811C00927D76 /* help.png in CopyFiles */,
+				95E963CC13A5811C00927D76 /* import.png in CopyFiles */,
+				95E963CD13A5811C00927D76 /* new.png in CopyFiles */,
+				95E963CE13A5811C00927D76 /* open.png in CopyFiles */,
 				95160BEA1359F3C1001F20CD /* score_view.jpg in CopyFiles */,
 				95160BEB1359F3C1001F20CD /* corner.jpg in CopyFiles */,
 				95160BEC1359F3C1001F20CD /* guitar_view.jpg in CopyFiles */,
@@ -1227,6 +1251,12 @@
 		95DB7CED133E88CF0060AB17 /* tool2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tool2.png; path = ../Resources/tool2.png; sourceTree = SOURCE_ROOT; };
 		95DB7CEE133E88CF0060AB17 /* white_border.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = white_border.png; path = ../Resources/white_border.png; sourceTree = SOURCE_ROOT; };
 		95DB7CEF133E88CF0060AB17 /* white_corner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = white_corner.png; path = ../Resources/white_corner.png; sourceTree = SOURCE_ROOT; };
+		95E963A913A5806600927D76 /* configure.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = configure.png; path = ../Resources/configure.png; sourceTree = SOURCE_ROOT; };
+		95E963AA13A5806600927D76 /* exit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = exit.png; path = ../Resources/exit.png; sourceTree = SOURCE_ROOT; };
+		95E963AB13A5806600927D76 /* help.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = help.png; path = ../Resources/help.png; sourceTree = SOURCE_ROOT; };
+		95E963AC13A5806600927D76 /* import.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = import.png; path = ../Resources/import.png; sourceTree = SOURCE_ROOT; };
+		95E963AD13A5806600927D76 /* new.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = new.png; path = ../Resources/new.png; sourceTree = SOURCE_ROOT; };
+		95E963AE13A5806600927D76 /* open.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = open.png; path = ../Resources/open.png; sourceTree = SOURCE_ROOT; };
 		95EC9D3311DD2D56009A5743 /* InstrumentChoice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstrumentChoice.h; sourceTree = "<group>"; };
 		95EC9D3411DD2D56009A5743 /* InstrumentChoice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InstrumentChoice.cpp; sourceTree = "<group>"; };
 		95EC9DFC11DD5207009A5743 /* DrumChoice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrumChoice.h; sourceTree = "<group>"; };
@@ -1800,6 +1830,12 @@
 				95DB7C95133E88CF0060AB17 /* collapse.jpg */,
 				95DB7C96133E88CF0060AB17 /* combo_body.png */,
 				95DB7C97133E88CF0060AB17 /* combo_select.png */,
+				95E963A913A5806600927D76 /* configure.png */,
+				95E963AA13A5806600927D76 /* exit.png */,
+				95E963AB13A5806600927D76 /* help.png */,
+				95E963AC13A5806600927D76 /* import.png */,
+				95E963AD13A5806600927D76 /* new.png */,
+				95E963AE13A5806600927D76 /* open.png */,
 				95DB7C98133E88CF0060AB17 /* combo_side.png */,
 				95DB7C99133E88CF0060AB17 /* controller_view.jpg */,
 				95DB7C9A133E88CF0060AB17 /* corner.jpg */,

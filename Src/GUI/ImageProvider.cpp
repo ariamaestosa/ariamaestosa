@@ -107,6 +107,13 @@ namespace AriaMaestosa
             mgrid_32 = new Drawable(wxT("score/mgrid_32.png"));
             mgrid_triplet = new Drawable(wxT("score/mgrid_triplet.png"));
             
+            menu_new       = new Drawable(wxT("new.png"));
+            menu_open      = new Drawable(wxT("open.png"));
+            menu_import    = new Drawable(wxT("import.png"));
+            menu_configure = new Drawable(wxT("configure.png"));
+            menu_help      = new Drawable(wxT("help.png"));
+            menu_exit      = new Drawable(wxT("exit.png"));
+            
             images_loaded = true;
         }
         
@@ -174,6 +181,13 @@ namespace AriaMaestosa
             delete mgrid_16;
             delete mgrid_32;
             delete mgrid_triplet;
+            
+            delete menu_new;
+            delete menu_open;
+            delete menu_import;
+            delete menu_configure;
+            delete menu_help;
+            delete menu_exit;
         }
         
         bool imagesLoaded()

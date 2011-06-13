@@ -123,6 +123,7 @@ namespace AriaMaestosa
     wxFont getTabHeaderFont();
     wxFont getDrumNamesFont();
     wxFont getInstrumentNameFont();
+    wxFont getWelcomeMenuFont();
     wxFont getSequenceFilenameFont();
     wxFont getTrackNameFont();
     wxFont getControllerFont();
