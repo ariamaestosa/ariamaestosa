@@ -1276,6 +1276,8 @@ void MainFrame::addSequence()
 
 bool MainFrame::closeSequence(int id_arg) // -1 means current
 {
+    if (m_sequences.size() == 0) return false;
+    
     wxString whoToFocusAfter;
 
     int id = id_arg;

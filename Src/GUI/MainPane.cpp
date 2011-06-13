@@ -308,8 +308,9 @@ bool MainPane::drawWelcomeMenu()
                 {
                     m_is_visible = false; // prevent future renders
                     
-                    wxCommandEvent dummy;
-                    mf->menuEvent_quit(dummy);
+                    wxCommandEvent dummy(wxEVT_COMMAND_MENU_SELECTED, wxID_EXIT);
+                    mf->GetEventHandler()->AddPendingEvent(dummy);
+                    //mf->menuEvent_quit(dummy);
                     return false;
                 }
             }

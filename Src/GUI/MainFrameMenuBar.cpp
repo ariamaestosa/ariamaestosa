@@ -594,6 +594,8 @@ void MainFrame::menuEvent_quit(wxCommandEvent& evt)
 {
     wxLogVerbose(wxT("MainFrame::menuEvent_quit"));
     
+    printf("MainFrame::menuEvent_quit\n");
+    
     // close all open sequences
     while (getSequenceAmount() > 0)
     {
