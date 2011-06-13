@@ -184,9 +184,9 @@ MainPane::~MainPane()
  */
 void MainPane::isNowVisible()
 {
-    MainFrame* mf = getMainFrame();
-    mf->addSequence();
-    mf->getCurrentSequence()->addTrack();
+    //MainFrame* mf = getMainFrame();
+    //mf->addSequence();
+    //mf->getCurrentSequence()->addTrack();
     m_is_visible = true;
 }
 
