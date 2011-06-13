@@ -227,7 +227,7 @@ void MainPane::render(const bool isPaintEvent)
 
 // --------------------------------------------------------------------------------------------------
 
-void MainPane::drawWelcomeMenu()
+bool MainPane::drawWelcomeMenu()
 {
     // FIXME: ugly to hardcode the welcome menu this way
     Drawable** icons = (Drawable*[]){menu_new, menu_open, menu_import, menu_configure, menu_help, menu_exit};
@@ -267,13 +267,56 @@ void MainPane::drawWelcomeMenu()
             AriaRender::rect(x + additional_margin + 2, y - height/2 + 2,
                              getWidth() - MARGIN - additional_margin - 2, y + height/2 - 2);
         }
-                
+        
         int mouse_x = m_mouse_x_current.getRelativeTo(WINDOW);
         if (mouse_x > img_x and mouse_x < img_x + needed_width and
             m_mouse_y_current > y - height/2 and m_mouse_y_current < y + height/2)
         {
             AriaRender::primitives();
-            AriaRender::color(1.0f, 0.88f, 0.73f);
+            
+            if (m_is_mouse_down)
+            {
+                AriaRender::color(1.0f, 0.5f, 0.45f);
+                MainFrame* mf = getMainFrame();
+                if (n == 0)
+                {
+                    wxCommandEvent dummy;
+                    mf->menuEvent_new(dummy);
+                }
+                else if (n == 1)
+                {
+                    wxCommandEvent dummy;
+                    mf->menuEvent_open(dummy);
+                }
+                else if (n == 2)
+                {
+                    wxCommandEvent dummy;
+                    mf->menuEvent_importmidi(dummy);
+                    Refresh();
+                }
+                else if (n == 3)
+                {
+                    wxCommandEvent dummy;
+                    mf->menuEvent_preferences(dummy);
+                }
+                else if (n == 4)
+                {
+                    wxCommandEvent dummy;
+                    mf->menuEvent_manual(dummy);
+                }
+                else if (n == 5)
+                {
+                    m_is_visible = false; // prevent future renders
+                    
+                    wxCommandEvent dummy;
+                    mf->menuEvent_quit(dummy);
+                    return false;
+                }
+            }
+            else
+            {
+                AriaRender::color(1.0f, 0.88f, 0.73f);
+            }
             
             if (n < 3)
             {
@@ -350,7 +393,7 @@ void MainPane::drawWelcomeMenu()
         strings[n]->bind();
         strings[n]->render(img_x + IMAGE_MARGIN*3 + menu_new->getImageWidth(), y + m_new_sequence_label.getHeight()/2);
     }
-    
+    return true;
 }
 
 // --------------------------------------------------------------------------------------------------
@@ -364,8 +407,7 @@ bool MainPane::do_render()
     if (mf->getSequenceAmount() == 0)
     {
         mf->disableScrollbars();
-        drawWelcomeMenu();        
-        return true;
+        return drawWelcomeMenu();
     }
     
     if (mf->getCurrentSequence()->isImportMode()) return false;
@@ -690,9 +732,14 @@ void MainPane::mouseDown(wxMouseEvent& event)
     
     Display::requestFocus();
 
-    MainFrame* mf = getMainFrame();
+    m_is_mouse_down = true;
     
-    if (mf->getSequenceAmount() == 0) return;
+    MainFrame* mf = getMainFrame();
+    if (mf->getSequenceAmount() == 0)
+    {
+        Refresh();
+        return;
+    }
     
     GraphicalSequence* gseq = mf->getCurrentGraphicalSequence();
     Sequence* seq = gseq->getModel();
@@ -706,8 +753,6 @@ void MainPane::mouseDown(wxMouseEvent& event)
     m_mouse_x_initial.setValue(event.GetX(), WINDOW);
     m_mouse_x_initial.convertTo(MIDI); // we know scrolling may change so better keep it as midi coords
     m_mouse_y_initial = m_mouse_y_current;
-
-    m_is_mouse_down=true;
 
     int measureBarHeight = gseq->getMeasureBar()->getMeasureBarHeight();
 

@@ -112,7 +112,7 @@ namespace AriaMaestosa
 
         bool do_render();
         
-        void drawWelcomeMenu();
+        bool drawWelcomeMenu();
         
     public:
         LEAK_CHECK();
