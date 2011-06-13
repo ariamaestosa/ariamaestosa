@@ -1189,6 +1189,7 @@ void MainFrame::updateHorizontalScrollbar(int thumbPos)
         changedGivenValue = true;
     }
 
+    m_horizontal_scrollbar->Enable();
     m_horizontal_scrollbar->SetScrollbar(position,
                                          editor_size,
                                          total_size,
