@@ -249,15 +249,35 @@ void MainPane::drawWelcomeMenu()
         
         const int x = (n > 2 ? MARGIN + (n - 3)*(getWidth()/3.0f) : MARGIN);
         
+        int img_x = x;
+        
+        if (n < 3)
+        {
+            // center the rendering for the 3 first
+            img_x = getWidth()/2 - needed_width/2;
+        }
+        
+        
         if (n < 4)
         {
             int additional_margin = (n < 3 ? MARGIN*3 : 0);
-
+            
             AriaRender::primitives();
             AriaRender::color(1,1,1);
             
             AriaRender::rect(x + additional_margin + 2, y - height/2 + 2,
                              getWidth() - MARGIN - additional_margin - 2, y + height/2 - 2);
+            
+            
+            int mouse_x = m_mouse_x_current.getRelativeTo(WINDOW);
+            if (mouse_x > img_x and mouse_x < img_x + needed_width and
+                m_mouse_y_current > y - height/2 and m_mouse_y_current < y + height/2)
+            {
+                AriaRender::color(1.0f, 0.83f, 0.35f);
+                
+                AriaRender::rect(x + additional_margin + 2, y - height/2 + 2,
+                                 getWidth() - MARGIN - additional_margin - 2, y + height/2 - 2);
+            }
         }
         
         AriaRender::images();
@@ -313,14 +333,6 @@ void MainPane::drawWelcomeMenu()
             whiteCornerDrawable->move(getWidth() - MARGIN - whiteCornerDrawable->getImageWidth() - additional_margin,
                                       y + height/2 - whiteCornerDrawable->getImageHeight());
             whiteCornerDrawable->render();
-        }
-        
-        int img_x = x;
-        
-        if (n < 3)
-        {
-            // center the rendering for the 3 first
-            img_x = getWidth()/2 - needed_width/2;
         }
         
         icons[n]->move(img_x + IMAGE_MARGIN, y - height/2 + IMAGE_MARGIN);
@@ -837,17 +849,20 @@ void MainPane::mouseMoved(wxMouseEvent& event)
     m_mouse_x_current.setValue(event.GetX(),WINDOW);
     m_mouse_y_current = event.GetY();
 
+    MainFrame* mf = getMainFrame();
+    if (mf->getSequenceAmount() == 0)
+    {
+        Refresh();
+        return;
+    }
+    
     if (event.Dragging())
     {
         // we are not reordering tracks
         if (m_dragged_track_id == -1)
         {
-            MainFrame* mf = getMainFrame();
-            if (mf->getSequenceAmount() == 0) return;
-            
             GraphicalSequence* gseq = mf->getCurrentGraphicalSequence();
 
-            
             // ----------------------------------- click is in track area ----------------------------
             if (m_click_area == CLICK_TRACK and m_click_in_track != -1)
             {
