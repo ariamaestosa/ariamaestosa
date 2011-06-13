@@ -395,3 +395,12 @@ wxFont AriaMaestosa::getNumberFont()
 #endif
 }
 
+wxFont AriaMaestosa::getWelcomeMenuFont()
+{
+#ifdef __WXMAC__
+    return wxFont (18,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#else
+    return wxFont (16,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#endif
+}
+

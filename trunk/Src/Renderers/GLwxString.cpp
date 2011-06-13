@@ -377,6 +377,7 @@ void wxGLString::consolidateFromArray(wxDC* dc, int x, int y)
 void wxGLString::setFont(wxFont font)
 {
     m_font = font;
+    m_consolidated = false;
 }
 
 void wxGLString::render(const int x, const int y)

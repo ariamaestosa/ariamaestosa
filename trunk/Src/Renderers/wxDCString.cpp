@@ -69,6 +69,14 @@ namespace AriaMaestosa
         ASSERT_E(m_w, <, 90000);
         return m_w;
     }
+    
+    int wxDCString::getHeight()
+    {
+        ASSERT_E(m_h, >=, 0);
+        ASSERT_E(m_h, <, 90000);
+        return m_h;
+    }
+    
     void wxDCString::scale(float f)
     {
     }

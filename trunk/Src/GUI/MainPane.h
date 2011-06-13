@@ -28,6 +28,8 @@
 #error No renderer defined
 #endif
 
+#include "Renderers/RenderAPI.h"
+
 #include <vector>
 
 namespace AriaMaestosa
@@ -92,8 +94,6 @@ namespace AriaMaestosa
         /** if click_area == CLICK_TRACK, contains the ID of the track */
         int m_click_in_track;
 
-        bool do_render();
-
         /** Whether the mouse cursor is currently hovering the tab bar */
         bool m_mouse_hovering_tabs;
 
@@ -102,6 +102,17 @@ namespace AriaMaestosa
         
         bool m_left_arrow;
         bool m_right_arrow;
+        
+        AriaRenderString m_new_sequence_label;
+        AriaRenderString m_open_label;
+        AriaRenderString m_import_label;
+        AriaRenderString m_configure_label;
+        AriaRenderString m_help_label;
+        AriaRenderString m_quit_label;
+
+        bool do_render();
+        
+        void drawWelcomeMenu();
         
     public:
         LEAK_CHECK();

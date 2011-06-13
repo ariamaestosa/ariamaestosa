@@ -103,6 +103,13 @@ namespace AriaMaestosa
     IMG_DEC Drawable* mgrid_32;
     IMG_DEC Drawable* mgrid_triplet;
 
+    IMG_DEC Drawable* menu_new;
+    IMG_DEC Drawable* menu_open;
+    IMG_DEC Drawable* menu_import;
+    IMG_DEC Drawable* menu_configure;
+    IMG_DEC Drawable* menu_help;
+    IMG_DEC Drawable* menu_exit;
+
     /** @} */
 
     /**

@@ -44,6 +44,7 @@
 #include "Pickers/MagneticGridPicker.h"
 #include "Pickers/InstrumentPicker.h"
 #include "Pickers/DrumPicker.h"
+#include "PreferencesData.h"
 #include "Editors/RelativeXCoord.h"
 #include "Editors/KeyboardEditor.h"
 
@@ -140,8 +141,21 @@ namespace AriaMaestosa
 MainPane::MainPane(wxWindow* parent, int* args) :
     RenderPane(parent, args),
     m_mouse_x_initial(NULL),
-    m_mouse_x_current(NULL)
+    m_mouse_x_current(NULL),
+    m_new_sequence_label( new Model<wxString>(_("Create a new sequence")), true ),
+    m_open_label        ( new Model<wxString>(_("Open a saved sequence")), true ),
+    m_import_label      ( new Model<wxString>(_("Import a MIDI file")),    true ),
+    m_configure_label   ( new Model<wxString>(_("Preferences")),           true ),
+    m_help_label        ( new Model<wxString>(_("Help")),                  true ),
+    m_quit_label        ( new Model<wxString>(_("Exit")),                  true )
 {
+    m_new_sequence_label.setFont(getWelcomeMenuFont());
+    m_open_label.setFont(getWelcomeMenuFont());
+    m_import_label.setFont(getWelcomeMenuFont());
+    m_configure_label.setFont(getWelcomeMenuFont());
+    m_help_label.setFont(getWelcomeMenuFont());
+    m_quit_label.setFont(getWelcomeMenuFont());
+    
     m_current_tick        = -1;
     m_dragged_track_id    = -1;
     m_is_visible          = false;
@@ -213,6 +227,117 @@ void MainPane::render(const bool isPaintEvent)
 
 // --------------------------------------------------------------------------------------------------
 
+void MainPane::drawWelcomeMenu()
+{
+    // FIXME: ugly to hardcode the welcome menu this way
+    Drawable** icons = (Drawable*[]){menu_new, menu_open, menu_import, menu_configure, menu_help, menu_exit};
+    AriaRenderString** strings = (AriaRenderString*[]) {&m_new_sequence_label, &m_open_label, &m_import_label,
+        &m_configure_label, &m_help_label, &m_quit_label};
+    
+    const int MARGIN = 50;
+    const int IMAGE_MARGIN = 15;
+    const int ICON_HEIGHT = 64;
+    const int height = ICON_HEIGHT + IMAGE_MARGIN*2;
+    
+    for (int n=0; n<6; n++)
+    {
+        strings[n]->bind(); // to make sure text width is available
+        int needed_width = IMAGE_MARGIN + icons[n]->getImageWidth() + IMAGE_MARGIN*2 + strings[n]->getWidth() + IMAGE_MARGIN;
+
+        const int y = (n > 2 ? (int)(getHeight()/2.0f + (3 - 1.5f)/1.5f*(getHeight() - height*2)/2.0f) :
+                       (int)(getHeight()/2.0f + (n - 1.5f)/1.5f*(getHeight() - height*2)/2.0f));
+        
+        const int x = (n > 2 ? MARGIN + (n - 3)*(getWidth()/3.0f) : MARGIN);
+        
+        if (n < 4)
+        {
+            int additional_margin = (n < 3 ? MARGIN*3 : 0);
+
+            AriaRender::primitives();
+            AriaRender::color(1,1,1);
+            
+            AriaRender::rect(x + additional_margin + 2, y - height/2 + 2,
+                             getWidth() - MARGIN - additional_margin - 2, y + height/2 - 2);
+        }
+        
+        AriaRender::images();
+        AriaRender::color(1,1,1);
+        
+        if (n < 4)
+        {
+            int additional_margin = (n < 3 ? MARGIN*3 : 0);
+            
+            int body_width = getWidth() - 2*MARGIN - additional_margin*2;
+
+            whiteBorderDrawable->rotate(0);
+            whiteBorderDrawable->setFlip(false, true);
+            whiteBorderDrawable->move(x + additional_margin, y - height/2);
+            whiteBorderDrawable->scale(float(body_width)/float(whiteBorderDrawable->getImageWidth()),
+                                       1.0f);
+            whiteBorderDrawable->render();
+            
+            whiteBorderDrawable->setFlip(false, false);
+            whiteBorderDrawable->move(x + additional_margin,
+                                      y + height/2 - whiteBorderDrawable->getImageHeight());
+            whiteBorderDrawable->scale(float(body_width)/float(whiteBorderDrawable->getImageWidth()),
+                                       1.0f);
+            whiteBorderDrawable->render();
+            
+            whiteBorderDrawable->setFlip(false, false);
+            whiteBorderDrawable->rotate(90);
+            whiteBorderDrawable->move(x + whiteBorderDrawable->getImageWidth() + additional_margin,
+                                      y - height/2 + 10);
+            whiteBorderDrawable->scale(1.0f, float(height - 20)/float(whiteBorderDrawable->getImageHeight()));
+            whiteBorderDrawable->render();
+            
+            whiteBorderDrawable->setFlip(false, true);
+            whiteBorderDrawable->rotate(90);
+            whiteBorderDrawable->move(getWidth() - MARGIN - additional_margin, y - height/2 + 10);
+            whiteBorderDrawable->render();
+            
+            
+            
+            whiteCornerDrawable->setFlip(false, true);
+            whiteCornerDrawable->move(x + additional_margin, y - height/2);
+            whiteCornerDrawable->render();
+            
+            whiteCornerDrawable->setFlip(false, false);
+            whiteCornerDrawable->move(x + additional_margin, y + height/2 - whiteCornerDrawable->getImageHeight());
+            whiteCornerDrawable->render();
+            
+            whiteCornerDrawable->setFlip(true, true);
+            whiteCornerDrawable->move(getWidth() - MARGIN - whiteCornerDrawable->getImageWidth() - additional_margin, y - height/2);
+            whiteCornerDrawable->render();
+            
+            whiteCornerDrawable->setFlip(true, false);
+            whiteCornerDrawable->move(getWidth() - MARGIN - whiteCornerDrawable->getImageWidth() - additional_margin,
+                                      y + height/2 - whiteCornerDrawable->getImageHeight());
+            whiteCornerDrawable->render();
+        }
+        
+        int img_x = x;
+        
+        if (n < 3)
+        {
+            // center the rendering for the 3 first
+            img_x = getWidth()/2 - needed_width/2;
+        }
+        
+        icons[n]->move(img_x + IMAGE_MARGIN, y - height/2 + IMAGE_MARGIN);
+        icons[n]->scale( float(height - IMAGE_MARGIN*2) / float(menu_new->getImageHeight()) );
+        icons[n]->render();
+        
+        AriaRender::images();
+        
+        AriaRender::color(0,0,0);
+        strings[n]->bind();
+        strings[n]->render(img_x + IMAGE_MARGIN*3 + menu_new->getImageWidth(), y + m_new_sequence_label.getHeight()/2);
+    }
+    
+}
+
+// --------------------------------------------------------------------------------------------------
+
 bool MainPane::do_render()
 {
     MainFrame* mf = getMainFrame();
@@ -222,8 +347,7 @@ bool MainPane::do_render()
     if (mf->getSequenceAmount() == 0)
     {
         mf->disableScrollbars();
-        
-        // TODO; render welcome page
+        drawWelcomeMenu();        
         return true;
     }
     
