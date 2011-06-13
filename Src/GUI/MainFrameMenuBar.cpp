@@ -958,13 +958,13 @@ void MainFrame::menuEvent_about(wxCommandEvent& evt)
 // -----------------------------------------------------------------------------------------------------------
 
 #ifdef __WXMAC__
-class ManualView : public wxFrame
+class ManualView : public wxDialog
 {
     wxWebKitCtrl* m_html;
     wxBoxSizer* m_sizer;
 
 public:
-    ManualView(wxFrame* parent, wxString file) : wxFrame(parent, wxID_ANY, _("Manual"), wxDefaultPosition, wxSize(1000,600))
+    ManualView(wxFrame* parent, wxString file) : wxDialog(parent, wxID_ANY, _("Manual"), wxDefaultPosition, wxSize(1000,600))
     {
         m_sizer = new wxBoxSizer(wxHORIZONTAL);
         wxString filepath = wxT("file://") + file ;
@@ -985,12 +985,16 @@ public:
         Connect(wxID_CLOSE, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( ManualView::onClose ));
 
         Center();
-        Show();
+#ifdef __WXOSX__
+        ShowWindowModal();
+#else
+        ShowModal();
+#endif
     }
 
     void onClose(wxCommandEvent& evt)
     {
-        Hide();
+        EndModal(GetReturnCode());
         Destroy();
     }
 
