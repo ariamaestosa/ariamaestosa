@@ -234,6 +234,8 @@ bool MainPane::drawWelcomeMenu()
     AriaRenderString** strings = (AriaRenderString*[]) {&m_new_sequence_label, &m_open_label, &m_import_label,
         &m_configure_label, &m_help_label, &m_quit_label};
     
+    AriaRender::setImageState(AriaRender::STATE_NORMAL);
+    
     const int MARGIN = 50;
     const int IMAGE_MARGIN = 15;
     const int ICON_HEIGHT = 64;
