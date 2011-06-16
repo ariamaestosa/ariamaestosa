@@ -1510,7 +1510,7 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
         std::set<wxString>::iterator it;
         std::ostringstream full;
         
-        full << _("Some problems were encountered while importing this MIDI file :");
+        full << wxString(_("Some problems were encountered while importing this MIDI file :")).utf8_str();
         
         for (it=warnings.begin() ; it != warnings.end(); it++)
         {
