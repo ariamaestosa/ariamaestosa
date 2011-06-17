@@ -58,6 +58,13 @@ namespace AriaMaestosa
       */
     class MainPane : public RenderPane
     {
+        enum WelcomeResult
+        {
+            NOTHING_SPECIAL,
+            ABORT_RENDER,
+            RENDER_AGAIN
+        };
+        
         /** To send events repeatedly when the mouse is held down */
         OwnerPtr<MouseDownTimer> m_mouse_down_timer;
 
@@ -112,7 +119,7 @@ namespace AriaMaestosa
 
         bool do_render();
         
-        bool drawWelcomeMenu();
+        WelcomeResult drawWelcomeMenu();
         
     public:
         LEAK_CHECK();
