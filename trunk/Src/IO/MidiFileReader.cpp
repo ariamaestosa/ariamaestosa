@@ -225,14 +225,37 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                     }
 
 
-                    if (controllerID == 3 or controllerID == 6 or controllerID == 9 or
-                        (controllerID > 19 and controllerID < 32) or controllerID == 79 or
-                        (controllerID > 84 and controllerID < 91) or
-                        (controllerID > 95 and controllerID < 200 and controllerID != 127 /*stereo mode*/))
+                    if (controllerID == 3 or controllerID == 9 or controllerID == 14 or controllerID == 15 or
+                        (controllerID > 19 and controllerID < 32) or (controllerID >= 85 and controllerID <= 87) or
+                        controllerID == 89 or controllerID == 90 or (controllerID >= 102 and controllerID <= 119))
+                    {
+                        warnings.insert( wxString::Format(_("This MIDI file uses controller #%i, which is not part of the MIDI standard. This information will be discarded."), controllerID) );
+                    }
+                    else if (controllerID == 6 or
+                             controllerID == 79 or
+                             controllerID == 88 or
+                             (controllerID > 95 and controllerID < 200 and controllerID != 127 /*stereo mode*/))
                     {
                         if (controllerID == 6 or controllerID == 38 or controllerID == 100 or controllerID == 101)
                         {
+                            // TODO: add support for registered parameters http://www.midi.org/techspecs/midimessages.php#3
                             warnings.insert( _("This MIDI file uses Registered Parameters, which are currently not supported by Aria Maestosa.") );
+                        }
+                        else if (controllerID == 98 or controllerID == 99)
+                        {
+                            warnings.insert( _("This MIDI files uses NRPN (Non-Registered Parameters, i.e. non-standard controllers), which are currently not supported by Aria Maestosa.") );
+                        }
+                        else if (controllerID >= 120 and controllerID <= 127)
+                        {
+                            // TODO: 120: all sound off
+                            //       121: reset controllers
+                            //       122: local control on/off
+                            //       123: all notes off
+                            //       124: omni mode off (+ all notes off)
+                            //       125: omni mode on (+ all notes on)
+                            //       126: Mono Mode On
+                            //       127: Poly Mode On (stereo)
+                            warnings.insert( _("This MIDI files uses Channel Mode Message, which are currently not supported by Aria Maestosa.") );
                         }
                         else
                         {
