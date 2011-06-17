@@ -10,3 +10,4 @@ document.write('        </td>');
 document.write('    </tr>');
     
 document.write('</table>');
+document.write('</div>');
