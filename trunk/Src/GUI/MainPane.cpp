@@ -227,7 +227,7 @@ void MainPane::render(const bool isPaintEvent)
 
 // --------------------------------------------------------------------------------------------------
 
-bool MainPane::drawWelcomeMenu()
+MainPane::WelcomeResult MainPane::drawWelcomeMenu()
 {
     // FIXME: ugly to hardcode the welcome menu this way
     Drawable** icons = (Drawable*[]){menu_new, menu_open, menu_import, menu_configure, menu_help, menu_exit};
@@ -289,12 +289,15 @@ bool MainPane::drawWelcomeMenu()
                 {
                     wxCommandEvent dummy;
                     mf->menuEvent_open(dummy);
+                    mf->Refresh();
+                    return RENDER_AGAIN;
                 }
                 else if (n == 2)
                 {
                     wxCommandEvent dummy;
                     mf->menuEvent_importmidi(dummy);
-                    Refresh();
+                    mf->Refresh();
+                    return RENDER_AGAIN;
                 }
                 else if (n == 3)
                 {
@@ -313,7 +316,7 @@ bool MainPane::drawWelcomeMenu()
                     wxCommandEvent dummy(wxEVT_COMMAND_MENU_SELECTED, wxID_EXIT);
                     mf->GetEventHandler()->AddPendingEvent(dummy);
                     //mf->menuEvent_quit(dummy);
-                    return false;
+                    return ABORT_RENDER;
                 }
                 
                 // click works once
@@ -399,7 +402,7 @@ bool MainPane::drawWelcomeMenu()
         strings[n]->bind();
         strings[n]->render(img_x + IMAGE_MARGIN*3 + menu_new->getImageWidth(), y + m_new_sequence_label.getHeight()/2);
     }
-    return true;
+    return NOTHING_SPECIAL;
 }
 
 // --------------------------------------------------------------------------------------------------
@@ -413,9 +416,13 @@ bool MainPane::do_render()
     if (mf->getSequenceAmount() == 0)
     {
         mf->disableScrollbars();
-        return drawWelcomeMenu();
+        WelcomeResult result = drawWelcomeMenu();
+        if (result == ABORT_RENDER) return false;
+        else if (result == NOTHING_SPECIAL) return true;
+        else if (result == RENDER_AGAIN) beginFrame();
     }
     
+    if (mf->getCurrentSequence() == NULL) return false;
     if (mf->getCurrentSequence()->isImportMode()) return false;
 
     AriaRender::images();
