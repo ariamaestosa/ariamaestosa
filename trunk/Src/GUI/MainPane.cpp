@@ -315,6 +315,9 @@ bool MainPane::drawWelcomeMenu()
                     //mf->menuEvent_quit(dummy);
                     return false;
                 }
+                
+                // click works once
+                m_is_mouse_down = false;
             }
             else
             {
