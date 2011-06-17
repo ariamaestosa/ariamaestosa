@@ -27,21 +27,21 @@ function writeSectionTop(divid, title, icons)
     if (divid.search(OSName) == -1) display = "none";
 
     document.write('<div class="section">');
-    document.write('<table>');
+    document.write('<table style="margin: 0px; padding: 0px;">');
     for (var i=0; i<icons.length; i++)
     {
     document.write('    <td style="vertical-align: middle;">&nbsp;<img src="' + icons[i] + '"/>&nbsp;&nbsp;');
     }
     document.write('    </td>');
     document.write('    <td style="vertical-align: middle;">');
-    document.write('        <a href="javascript:;" onmousedown="toggleDiv(\'' + divid + '\');" border="0" style="color: black; text-decoration: none; font-weight: bold;">');
+    document.write('        <a href="javascript:;" onmousedown="toggleDiv(\'' + divid + '\');" style="border: 0px; color: black; text-decoration: none; font-weight: bold;">');
     document.write('          ' + title);
     document.write('        </a>');
     document.write('    </td>');
     document.write('</tr>');
     document.write('</table>');
     
-    document.write('<div class="section_inside ' + divid + '" border="0" style="display: ' + display + '">');
+    document.write('<div class="section_inside ' + divid + '" style="border: 0px; display: ' + display + '">');
 }
 
 function writeSectionBottom()

@@ -1,3 +1,5 @@
+#content { min-height: 100%; }
+
 h1
 {
   color: white;
@@ -8,6 +10,18 @@ h1
 h2
 {
     text-align:center;
+}
+
+html
+{
+	min-height: 100%;
+}
+
+body
+{
+	margin: 0;
+	padding: 0;
+	height: 1000px;
 }
 
 .selected_tab
@@ -124,4 +138,10 @@ h2
     padding-bottom      : 5px;
     padding-left        : 10px;
     padding-right       : 10px;
+}
+
+.img
+{
+    border: 0px;
+    padding: 0px;
 }

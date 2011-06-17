@@ -15,7 +15,8 @@ tabs[3] = ["Support", "contact.html"];
 tabs[4] = ["Blog", "blog.html"];
 tabs[5] = ["Building from source", "building.html"];
 
-document.write('<table style="margin: 0px; padding: 0px; width:100%; height:100%; border-spacing: 0pt;">');
+document.write('<div style="min-height: 100%;">');
+document.write('<table style="margin: 0px; padding: 0px; width:100%; border-spacing: 0pt; height: 100%;">');
 document.write('    <tr style="margin: 0px; padding: 0px;">');
 document.write('        <td style="width: 150px; background-image:url(\'backgroundleft.png\'); background-repeat:repeat-y; margin: 0px; padding: 0px;">');
 document.write('        </td>');
@@ -30,10 +31,11 @@ document.write('    </tr>');
 document.write('    <tr style="margin: 0px; padding: 0px;">');
 document.write('        <td style="width: 150px; background-image:url(\'backgroundleft.png\'); background-repeat:repeat-y; margin: 0px; padding: 0px;">');
 document.write('        </td>');
-document.write('        <td style="background-color:#628DC2; padding: 0px; margin: 0px; text-align:center;">');
-            
-document.write('            <span style="width:100%; text-align:center; align:center; margin: 0px; padding: 0px;"><!--');
-document.write('            --><table style="margin: 0px; padding: 0px; border-spacing: 0pt; display: inline-block;">');
+document.write('        <td style="background-color:#628DC2; padding: 0px; margin: 0px; text-align:center;  vertical-align: text-bottom;">');
+
+//document.write('            <span style="width:100%; text-align:center; align:center; padding: 0px;"><!--');
+document.write('            <!--');
+document.write('            --><table style="margin: 0px; padding: 0px; border-spacing: 0pt; display: inline-block; vertical-align: text-bottom;">');
 document.write('                <tr style="margin: 0px; padding: 0px;">');
 document.write('                    <td class="between_tabs">&nbsp;&nbsp;</td>');
 
@@ -47,8 +49,9 @@ document.write('                    <td class="between_tabs">&nbsp;&nbsp;</td>')
                                         }
 
 document.write('                </tr>');
-document.write('            </table></span>');
-            
+//document.write('            </table></span>');
+document.write('            </table>');
+        
 document.write('        </td>');
 document.write('        <td style="width: 150px; background-image:url(\'background.png\'); background-repeat:repeat-y; margin: 0px; padding: 0px;">');
 document.write('        </td>');
