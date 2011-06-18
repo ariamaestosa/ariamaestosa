@@ -1,4 +1,3 @@
-#content { min-height: 100%; }
 
 h1
 {
@@ -15,6 +14,13 @@ h2
 html
 {
 	min-height: 100%;
+    /* Background by Pikao, released under Gnu GPL license, with modifications by Marianne Gagnon */
+    background: url(bg.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+
 }
 
 body
@@ -27,15 +33,23 @@ body
 .selected_tab
 {
   background-color: white;
+  border-style: solid;
+  /*
   border-top-style: solid;
   border-right-style: solid;
   border-left-style: solid;
-  border-width: 1px;
   border-color: #AAAAAA;
+  */
+  border-width: 1px;
+  border-color: #FFFFFF;
   padding-top: 4px;
   padding-bottom: 2px;
   padding-left: 8px;
   padding-right: 8px;
+  
+  margin-bottom: -1px;
+  
+  display: inline-block;
 }
 
 .selected_bottom_tab
@@ -62,6 +76,10 @@ body
   padding-bottom: 2px;
   padding-left: 8px;
   padding-right: 8px;
+  
+  margin-bottom: 0px;
+  
+  display: inline-block;
 }
 
 .between_tabs
@@ -75,14 +93,16 @@ body
 .page
 {
   background-color: white;
-  border-bottom-style:solid;
+  /*border-bottom-style:solid;*/
   border-right-style:solid;
   border-left-style:solid;
   border-width: 1px;
   border-color: #AAAAAA;
   padding-left: 10px;
   padding-right: 10px;
-  padding-bottom: 15px;
+  /*padding-bottom: 15px;*/
+  padding-bottom: 0px;
+  margin-bottom: 0px;
   padding-top: 35px;
 }
 
@@ -106,6 +126,25 @@ body
 {
   font-style:italic;
   color: #666666;
+  width: 100%;
+  text-align: center;
+  
+  background-color: white;
+  border-right-style:solid;
+  border-left-style:solid;
+  border-width: 1px;
+  border-color: #AAAAAA;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 0px;
+  padding-bottom: 30px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  
 }
 
 .tab > a
