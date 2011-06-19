@@ -13,7 +13,6 @@ h2
 
 html
 {
-	min-height: 100%;
     /* Background by Pikao, released under Gnu GPL license, with modifications by Marianne Gagnon */
     background: url('ariabg.png') no-repeat center center fixed;
     -webkit-background-size: cover;
@@ -27,7 +26,6 @@ body
 {
 	margin: 0;
 	padding: 0;
-	height: 1000px;
 }
 
 .selected_tab
@@ -192,4 +190,15 @@ body
 {
     border: 0px;
     padding: 0px;
+}
+
+
+a:link
+{
+    color: #0A007D;
+}
+
+a:visited
+{
+    color: #0A007D;
 }
