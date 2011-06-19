@@ -5,7 +5,8 @@ function returnDocument()
     return file_name.substring(file_name.lastIndexOf("/")+1, end);
 }
 
-
+document.write('<a href="http://sourceforge.net/projects/ariamaestosa" style="position: absolute; left: 5px; top: 5px;">')
+document.write('<img src="http://sflogo.sourceforge.net/sflogo.php?group_id=186987&type=12" width="120" height="30" border="0" alt="Get Aria Maestosa at SourceForge.net. Fast, secure and Free Open Source software downloads" /></a>');
 document.write('<br/><center><img src="aria120.png" style="margin-bottom: 25px; margin-right: 25px;"/><img src="logo.png" style="margin-bottom: 25px;"/></center>');
 
 var selected_tab = returnDocument();
