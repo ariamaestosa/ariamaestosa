@@ -15,7 +15,7 @@ html
 {
 	min-height: 100%;
     /* Background by Pikao, released under Gnu GPL license, with modifications by Marianne Gagnon */
-    background: url(bg.jpg) no-repeat center center fixed;
+    background: url('ariabg.png') no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
