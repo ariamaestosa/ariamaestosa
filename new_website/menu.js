@@ -18,7 +18,7 @@ tabs[3] = ["Support", "contact.html"];
 tabs[4] = ["Blog", "blog.html"];
 tabs[5] = ["Building from source", "building.html"];
 
-document.write('<center><div style="text-align: center;">');
+document.write('<div style="text-align: center; min-height: 100%"><div style="text-align: center;">');
 for (var i=0; i<tabs.length; i++)
 {
     document.write( '&nbsp;' );
@@ -31,4 +31,4 @@ for (var i=0; i<tabs.length; i++)
 document.write('</div>');
     
 
-document.write('<div class="page">');
+document.write('<div class="page" style="min-height: 500px;">');
