@@ -78,7 +78,9 @@
 </p>
 
 <p>
-    Example terminal commands to build wx (read the instructions that come with wxWidgets or wxWiki for more info):<br/>
+    Example terminal commands to build wx (read the instructions that come with wxWidgets or wxWiki for more info):
+    
+    <br/><br/>
     <span class="code">
     cd wxMac2.x.x
     mkdir osx-build &amp;&amp; cd osx-build
@@ -135,7 +137,7 @@
     <b>Installing wxWidgets : </b> You can simply download wxWidgets 2.8 from your distribution's repositories. It needs OpenGL support enabled if
     you want to use the OpenGL renderer, and should be Unicode. Don't forget to install -dev packages if your distribution uses them.
     <br/><br/>If you want to build wxWidgets from source, you can use commands like (read the instructions that come with wxWidgets or wxWiki for
-    more info):<br/>
+    more info):<br/><br/>
     <span class="code">
     cd wxGTK2.8.x
     mkdir gtk-build &amp;&amp; cd gtk-build
@@ -264,10 +266,11 @@
 
 <p>
     You can make a mac OS X app bundle with the following command:
-    <br/>
+    <br/><br/>
     
     <span class="code">
-    python scons/scons.py install</span>
+    python scons/scons.py install
+    </span>
 </p>
 
 <script type="text/javascript">
@@ -289,20 +292,20 @@
 <p>
     If it is not already the case, you will need to install a softsynth like Timidity configured with flags :
     
-    <br/>
+    <br/><br/>
     <span class="code">
     ./configure --enable-audio=alsa --enable-server --enable-alsaseq
     </span>
-    <br/>
+    <br/><br/>
     
     And you also need a soundbank (many distros will ship FreePats in their repos).
     And finally run the synth as an Alsa daemon with commands (in the case of Timidity) :
     
-    <br/>
+    <br/><br/>
     <span class="code">
     timidity -iA -Os -EFreverb=0
     </span>
-    <br/>
+    <br/><br/>
     
     <tt>-EFreverb=0</tt> disables reverbering because it tends to cause problems, but you can leave that
     part out if you computer is very fast.
@@ -336,27 +339,27 @@
 <p>
     You can also install Aria into /usr/local/ by running the following command as root :
 
-    <br/>
+    <br/><br/>
     <span class="code">
     python scons/scons.py install
     </span>
-    <br/>
+    <br/><br/>
 
     Or, to specify an install prefix :
 
-    <br/>
+    <br/><br/>
     <span class="code">
     python scons/scons.py install prefix=/usr/
     </span>
-    <br/>
+    <br/><br/>
     
     You can uninstall it later if you want with
     
-    <br/>
+    <br/><br/>
     <span class="code">
     python scons/scons.py uninstall prefix=/usr
     </span>
-    <br/>
+    <br/><br/>
     
     Don't forget to specify the prefix it was installed into if it is not the default one.
     <br/><br/>
