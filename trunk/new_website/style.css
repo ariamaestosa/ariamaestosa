@@ -147,6 +147,13 @@ body
     width: 100%;
 }
 
+.center
+{
+    text-align:center;
+    display: inline-block;
+    width: 100%;
+}
+
 .bottom
 {
   font-style:italic;
