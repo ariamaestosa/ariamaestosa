@@ -19,29 +19,34 @@ function setImage(which)
     {
         if (which == 1)
         {
-            document.screenshot.src = "screenshot_osx_small.jpg";
-            document.getElementById('sshot_link').href = "screenshot_osx.jpg";
+            document.getElementById('the_screenshot').src = "screenshot_osx_small.jpg";
+            document.getElementById('sshot_link').href = "javascript: open_screenshot('screenshot_osx.jpg')";
             document.getElementById('link1').parentNode.className = "selected_bottom_tab";
             document.getElementById('link2').parentNode.className = "tab";
             document.getElementById('link3').parentNode.className = "tab";
         }
         if (which == 2)
         {
-            document.screenshot.src = "screenshot_linux_small.jpg";
-            document.getElementById('sshot_link').href = "screenshot_linux.jpg";
+            document.getElementById('the_screenshot').src = "screenshot_linux_small.jpg";
+            document.getElementById('sshot_link').href = "javascript: open_screenshot('screenshot_linux.jpg')";
             document.getElementById('link1').parentNode.className = "tab";
             document.getElementById('link2').parentNode.className = "selected_bottom_tab";
             document.getElementById('link3').parentNode.className = "tab";
         }
         if (which == 3)
         {
-            document.screenshot.src = "screenshot_windows_small.jpg";
-            document.getElementById('sshot_link').href = "screenshot_windows.jpg";
+            document.getElementById('the_screenshot').src = "screenshot_windows_small.jpg";
+            document.getElementById('sshot_link').href = "javascript: open_screenshot('screenshot_windows.jpg')";
             document.getElementById('link1').parentNode.className = "tab";
             document.getElementById('link2').parentNode.className = "tab";
             document.getElementById('link3').parentNode.className = "selected_bottom_tab";
         }
     }
+}
+
+function open_screenshot(which)
+{
+    window.open(which,'Screenshot','toolbar=no,location=no,status=no');
 }
 
 function main()
@@ -71,8 +76,8 @@ onload=main;
 <p style="margin: 0px; padding: 0px; text-align: center; align: center;">
     <span class="box" style="display: inline-block; padding-top:20px; padding-bottom: 5px; margin-top:0px; z-index:2;">
         <b>Screenshots</b><br/><br/>
-        <a href="screenshot_osx.jpg" target="_blank" name="sshot_link" id="sshot_link">
-            <img src="screenshot_osx_small.jpg" name="screenshot" alt="Screenshot"/>
+        <a id="sshot_link" href="#">
+            <img src="screenshot_osx_small.jpg" id="the_screenshot" alt="Screenshot"/>
         </a>
     </span>
 </p>
@@ -114,7 +119,7 @@ onload=main;
 <p>
     <br/>
     <img src="download.png" alt="Download" style="display: inline-block; vertical-align: middle;"/>&nbsp;&nbsp;
-    <a href="download.html" target="contents">Download</a> the latest version (<a href="download.html#changelog">Changelog</a>)
+    <a href="download.html">Download</a> the latest version (<a href="download.html#changelog">Changelog</a>)
     <br/><br/>
 </p>
 
