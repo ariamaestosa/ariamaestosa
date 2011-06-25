@@ -137,6 +137,14 @@ body
 {
     font-family: monospace;
     white-space: pre;
+    background-color: #FFFFEB;
+    display: inline-block;
+    border-left-style: solid;
+    border-left-color: #98bf21;
+    border-left-width: 10px;
+    padding-top: 0px;
+    margin-top: 0px;
+    width: 100%;
 }
 
 .bottom
