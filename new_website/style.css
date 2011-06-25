@@ -133,6 +133,12 @@ body
     font-style:italic;
 }
 
+.code
+{
+    font-family: monospace;
+    white-space: pre;
+}
+
 .bottom
 {
   font-style:italic;
