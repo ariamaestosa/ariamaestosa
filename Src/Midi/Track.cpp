@@ -1992,7 +1992,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
 
                             if (count_c != NULL)  count = atoi(count_c);
 
-                            // For now we tolerator 0 because older file formats used it.
+                            // For now we tolerate 0 because older file formats used it.
                             // TODO: eventually remove old format compat
                             if (count_c == NULL or count < 0 or count > 7)
                             {

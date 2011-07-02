@@ -594,8 +594,7 @@ bool GraphicalTrack::processMouseDown(RelativeXCoord mousex, int mousey)
     
     m_last_mouse_y = mousey;
     
-    // FIXME: m_to_y should indicate the very bottom; this is not the case atm
-    if (mousey > m_from_y and mousey < m_to_y + (m_collapsed ? 15 : 0))
+    if (mousey > m_from_y and mousey < m_to_y)
     {
         m_gsequence->getModel()->setCurrentTrack( m_track );
 
