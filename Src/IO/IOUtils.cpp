@@ -102,6 +102,26 @@ long atoi_u(wxString s)
     }
 }
 
+#ifdef __WXOSX__
+bool g_have_answer = false;
+wxString g_answer;
+void sheetCallback(wxWindowModalDialogEvent& evt)
+{
+    printf("Closed\n");
+    printf("answer = %i; wxID_OK = %i; path=<%s>\n", evt.GetReturnCode(), wxID_OK,
+           (const char*)((wxFileDialog*)evt.GetDialog())->GetPath().utf8_str());
+    
+    if (evt.GetReturnCode() == wxID_OK)
+    {
+        g_answer = ((wxFileDialog*)evt.GetDialog())->GetPath();
+    }
+    else
+    {
+        g_answer = wxT("");
+    }
+    g_have_answer = true;
+}
+#endif
 
 wxString showFileDialog(wxWindow* parent,
                         wxString message,
@@ -112,12 +132,20 @@ wxString showFileDialog(wxWindow* parent,
 {
     wxFileDialog* dialog = new wxFileDialog(parent, message, defaultDir, filename, wildcard, (save?wxFD_SAVE:wxFD_OPEN));
     
-//#ifdef __WXOSX__
-//    dialog->ShowWindowModal();
-//    int answer = dialog->GetReturnCode();
-//#else
+#ifdef __WXOSX__
+    g_have_answer = false;
+    dialog->Bind(wxEVT_WINDOW_MODAL_DIALOG_CLOSED, &sheetCallback);
+    dialog->ShowWindowModal();
+    
+    // FIXME: that's ugly :)
+    while (not g_have_answer)
+    {
+        wxYield();
+        wxMilliSleep(10);
+    }
+    return g_answer;
+#else
     int answer = dialog->ShowModal();
-//#endif
     
     wxString path = dialog->GetPath();
     //dialog->Hide();
@@ -125,10 +153,10 @@ wxString showFileDialog(wxWindow* parent,
     dialog->EndModal(answer);
     //dialog->Destroy();
     
-    //printf("answer = %i; wxID_OK = %i; path=<%s>\n", answer, wxID_OK, (const char*)path.utf8_str());
     if (answer != wxID_OK) return wxT("");
 
     return path;
+#endif
 }
 
 wxString getResourcePrefix()
