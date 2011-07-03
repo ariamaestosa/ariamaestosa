@@ -103,15 +103,29 @@ long atoi_u(wxString s)
 }
 
 
-wxString showFileDialog(wxString message, wxString defaultDir,
+wxString showFileDialog(wxWindow* parent,
+                        wxString message,
+                        wxString defaultDir,
                         wxString filename,
-                        wxString wildcard, bool save)
+                        wxString wildcard,
+                        bool save)
 {
-    wxFileDialog* dialog = new wxFileDialog( NULL, message, defaultDir, filename, wildcard, (save?wxFD_SAVE:wxFD_OPEN));
+    wxFileDialog* dialog = new wxFileDialog(parent, message, defaultDir, filename, wildcard, (save?wxFD_SAVE:wxFD_OPEN));
+    
+//#ifdef __WXOSX__
+//    dialog->ShowWindowModal();
+//    int answer = dialog->GetReturnCode();
+//#else
     int answer = dialog->ShowModal();
+//#endif
+    
     wxString path = dialog->GetPath();
-    dialog->Hide();
-    dialog->Destroy();
+    //dialog->Hide();
+    //dialog->Destroy();
+    dialog->EndModal(answer);
+    //dialog->Destroy();
+    
+    //printf("answer = %i; wxID_OK = %i; path=<%s>\n", answer, wxID_OK, (const char*)path.utf8_str());
     if (answer != wxID_OK) return wxT("");
 
     return path;
