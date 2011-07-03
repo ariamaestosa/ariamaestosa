@@ -552,7 +552,8 @@ void MainFrame::menuEvent_exportmidi(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_exportSampledAudio(wxCommandEvent& evt)
 {
-
+    if (getSequenceAmount() == 0) return;
+    
     wxString extension = PlatformMidiManager::get()->getAudioExtension();
     wxString wildcard = PlatformMidiManager::get()->getAudioWildcard();
 
@@ -587,6 +588,7 @@ void MainFrame::menuEvent_exportSampledAudio(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_copyright(wxCommandEvent& evt)
 {
+    if (getSequenceAmount() == 0) return;
     CopyrightWindow::show( getCurrentSequence() );
 }
 
