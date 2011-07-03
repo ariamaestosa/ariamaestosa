@@ -523,6 +523,58 @@ void GuitarEditor::addNote(const int snapped_start_tick, const int snapped_end_t
 
 void GuitarEditor::processKeyPress(int keycode, bool commandDown, bool shiftDown)
 {
+    
+    if (keycode == '!')
+    {
+        keycode = '1';
+        shiftDown = true;
+    }
+    else if (keycode == '@')
+    {
+        keycode = '2';
+        shiftDown = true;
+    }
+    else if (keycode == '#')
+    {
+        keycode = '3';
+        shiftDown = true;
+    }
+    else if (keycode == '$')
+    {
+        keycode = '4';
+        shiftDown = true;
+    }
+    else if (keycode == '%')
+    {
+        keycode = '5';
+        shiftDown = true;
+    }
+    else if (keycode == '^')
+    {
+        keycode = '6';
+        shiftDown = true;
+    }
+    else if (keycode == '&')
+    {
+        keycode = '7';
+        shiftDown = true;
+    }
+    else if (keycode == '*')
+    {
+        keycode = '8';
+        shiftDown = true;
+    }
+    else if (keycode == '(')
+    {
+        keycode = '9';
+        shiftDown = true;
+    }
+    else if (keycode == ')')
+    {
+        keycode = '0';
+        shiftDown = true;
+    }
+    
     // ------------------- numbers -------------------
     // number at the top of the keyboard
     if (keycode >= 48 and keycode <= 57)
