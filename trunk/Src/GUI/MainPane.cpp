@@ -289,15 +289,29 @@ MainPane::WelcomeResult MainPane::drawWelcomeMenu()
                 {
                     wxCommandEvent dummy;
                     mf->menuEvent_open(dummy);
-                    mf->Refresh();
-                    return RENDER_AGAIN;
+                    if (mf->getSequenceAmount() > 0)
+                    {
+                        mf->Refresh();
+                        return RENDER_AGAIN;
+                    }
+                    else
+                    {
+                        return ABORT_RENDER;
+                    }
                 }
                 else if (n == 2)
                 {
                     wxCommandEvent dummy;
                     mf->menuEvent_importmidi(dummy);
-                    mf->Refresh();
-                    return RENDER_AGAIN;
+                    if (mf->getSequenceAmount() > 0)
+                    {
+                        mf->Refresh();
+                        return RENDER_AGAIN;
+                    }
+                    else
+                    {
+                        return ABORT_RENDER;
+                    }
                 }
                 else if (n == 3)
                 {
