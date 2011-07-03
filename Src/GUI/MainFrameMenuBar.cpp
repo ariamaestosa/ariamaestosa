@@ -430,6 +430,7 @@ void MainFrame::menuEvent_close(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_exportNotation(wxCommandEvent& evt)
 {
+    if (getSequenceAmount() == 0) return;
     showPrintSetupDialog( getCurrentSequence() );
 }
 

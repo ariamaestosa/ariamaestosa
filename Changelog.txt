@@ -1,6 +1,8 @@
 1.3 beta 2
 - Improved working with more than one editor per track
-- Don't quit when last sequence is closed
+- Add a Welcome screen instead of quitting when last tab is closed
+- Fixed pressing shift+number in guitar editor in Cocoa
+- use sheet dialogs on OSX
 - Minor fixes in new OSX player code
 
 1.3 beta 1
