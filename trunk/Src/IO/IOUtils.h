@@ -23,6 +23,7 @@
 #include <wx/string.h>
 
 class wxFileOutputStream;
+class wxWindow;
 
 namespace AriaMaestosa
 {
@@ -44,7 +45,7 @@ namespace AriaMaestosa
     wxString extract_path(wxString str);
     
     /** @ingroup io */
-    wxString showFileDialog(wxString message, wxString defaultDir,
+    wxString showFileDialog(wxWindow* parent, wxString message, wxString defaultDir,
                             wxString filename, wxString wildcard, bool save);
     
     /** Returns the path to the directory where resource files are located. The returned path

@@ -468,8 +468,8 @@ bool MainFrame::doSaveAs()
 {
     wxString suggestedName = getCurrentSequence()->suggestFileName() + wxT(".aria");
 
-    wxString givenPath = showFileDialog( _("Select destination file"), wxT(""), suggestedName,
-                                                     wxT("Aria Maestosa file|*.aria"), true /*save*/);
+    wxString givenPath = showFileDialog(this, _("Select destination file"), wxT(""), suggestedName,
+                                        wxT("Aria Maestosa file|*.aria"), true /*save*/);
 
     if (not givenPath.IsEmpty())
     {
@@ -503,7 +503,8 @@ bool MainFrame::doSaveAs()
 void MainFrame::menuEvent_open(wxCommandEvent& evt)
 {
     m_main_pane->forgetClickData();
-    wxString filePath = showFileDialog( _("Select file"), wxT(""), wxT(""),  _("Aria Maestosa file|*.aria"), false /*open*/);
+    wxString filePath = showFileDialog(this, _("Select file"), wxT(""), wxT(""),
+                                       _("Aria Maestosa file|*.aria"), false /*open*/);
     MainFrame::loadAriaFile(filePath);
 }
 
@@ -512,7 +513,8 @@ void MainFrame::menuEvent_open(wxCommandEvent& evt)
 void MainFrame::menuEvent_importmidi(wxCommandEvent& evt)
 {
     m_main_pane->forgetClickData();
-    wxString midiFilePath = showFileDialog( _("Select midi file"), wxT(""), wxT(""),  _("Midi file|*.mid;*.midi"), false /*open*/);
+    wxString midiFilePath = showFileDialog(this, _("Select midi file"), wxT(""), wxT(""),
+                                           _("Midi file|*.mid;*.midi"), false /*open*/);
     MainFrame::loadMidiFile(midiFilePath);
 }
 
@@ -523,8 +525,8 @@ void MainFrame::menuEvent_exportmidi(wxCommandEvent& evt)
     wxString suggestedName = getCurrentSequence()->suggestFileName() + wxT(".mid");
 
     // show file dialog
-    wxString midiFilePath = showFileDialog( _("Select destination file"), wxT(""),
-                                            suggestedName, _("Midi file|*.mid"), true /*save*/);
+    wxString midiFilePath = showFileDialog(this, _("Select destination file"), wxT(""),
+                                           suggestedName, _("Midi file|*.mid"), true /*save*/);
 
     if (midiFilePath.IsEmpty()) return;
 
@@ -556,9 +558,8 @@ void MainFrame::menuEvent_exportSampledAudio(wxCommandEvent& evt)
     wxString suggestedName = getCurrentSequence()->suggestFileName() + extension;
 
     // show file dialog
-    wxString audioFilePath = showFileDialog(  _("Select destination file"), wxT(""),
-                                              suggestedName,
-                                              wildcard, true /*save*/);
+    wxString audioFilePath = showFileDialog(this, _("Select destination file"), wxT(""),
+                                            suggestedName, wildcard, true /*save*/);
 
     if (audioFilePath.IsEmpty()) return;
 
