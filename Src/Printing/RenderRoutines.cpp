@@ -534,6 +534,8 @@ void paintFooter(wxGraphicsContext& painter, float x, float y,int dir, float sca
     painter.FillPath(path);
 }
 
+const float HEIGHT_SIZE = 6.26f;
+
 /**
  * Based on TuxGuitar render routines, released under GNU GPL
  * (c) Julian Gabriel Casadesus and others
@@ -569,6 +571,8 @@ void paintEighth(wxGraphicsContext& painter, float x, float y, float scale)
     
     painter.FillPath(path);
 }
+
+const float QUARTER_SIZE = 6.4f;
 
 /**
  * Based on TuxGuitar render routines, released under GNU GPL
@@ -616,6 +620,8 @@ void paintQuarter(wxGraphicsContext& painter, float x, float y, float scale)
     path.AddCurveToPoint((x + (1.8670654f * scale)),(y + (0.30723906f * scale)),(x + (1.9379692f * scale)),(y + (0.11816859f * scale)),(x + (2.1034088f * scale)),(y + (0.047267675f * scale)));
     painter.FillPath(path);
 }
+
+const int SIXTEENTH_SIZE = 8.0f;
 
 /**
  * Based on TuxGuitar render routines, released under GNU GPL
@@ -760,41 +766,41 @@ void AriaMaestosa::RenderRoutines::drawSilence(wxGraphicsContext& dc, const Rang
     }
     else if ( type == 4 )
     {
-        silence_radius = 10;
+        float scale = 10.0f;
+        silence_radius = int(QUARTER_SIZE*scale/2.0f);
         
         // for dotted silences, place them much closer to the left area, to leave room at the right for the dot
-        if (dotted) silence_center = (x.from + silence_radius*2);
+        if (dotted) silence_center = (x.to - silence_radius*2);
         else        silence_center = (x_center + (x.to - silence_radius))/2;
         
-        paintQuarter(dc, silence_center - silence_radius, y, silence_radius);
+        paintQuarter(dc, silence_center - silence_radius, y, scale);
         
-        silence_radius = 25; // FIXME...
         if (dotted) silence_center = (x.from + silence_radius*2);
         else        silence_center = (x_center + (x.to - silence_radius))/2;
     }
     else if ( type == 8 )
-    {        
-        silence_radius = 10;
-                
-        if (dotted) silence_center = (x.to - silence_radius - 30);
-        else        silence_center = (x.to - silence_radius);
+    {
+        float scale = 10.0f;
+        silence_radius = int(scale*HEIGHT_SIZE/2.0f);
         
-        paintEighth(dc, silence_center, y + 50, silence_radius);
+        if (dotted) silence_center = (x.to - silence_radius*2 - 30);
+        else        silence_center = (x.to - silence_radius*2);
         
-        silence_radius = 55; // FIXME...
+        paintEighth(dc, silence_center, y + 50, scale);
+        
         if (dotted) silence_center = (x.from + silence_radius*2);
         else        silence_center = (x_center + (x.to - silence_radius))/2;
     }
     else if ( type == 16 )
-    {        
-        silence_radius = 10;
+    {
+        float scale = 10.0f;
+        silence_radius = int(SIXTEENTH_SIZE*scale/2.0f);
         
-        if (dotted) silence_center = (x.to - silence_radius - 30);
-        else        silence_center = (x.to - silence_radius);
+        if (dotted) silence_center = (x.to - silence_radius*2 - 30);
+        else        silence_center = (x.to - silence_radius*2);
         
-        paintSixteenth(dc, silence_center, y, silence_radius);
+        paintSixteenth(dc, silence_center, y, scale);
         
-        silence_radius = 55; // FIXME...
         if (dotted) silence_center = (x.from + silence_radius*2);
         else        silence_center = (x_center + (x.to - silence_radius))/2;
     }
