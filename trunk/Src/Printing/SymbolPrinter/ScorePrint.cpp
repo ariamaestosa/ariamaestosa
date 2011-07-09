@@ -310,6 +310,10 @@ namespace AriaMaestosa
         // silences in gathered rests, for instance, will not be found by tickToX
         if (x.from < 0 or x.to < 0) return;
         
+        //global_dc->SetPen(*wxRED_PEN);
+        //global_dc->SetBrush(*wxTRANSPARENT_BRUSH);
+        //global_dc->DrawRectangle(x.from, silences_y-20, x.to - x.from, 420);
+        
 #if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
         RenderRoutines::drawSilence(*gc, x, silences_y, g_line_height, type, triplet, dotted);
 #else
