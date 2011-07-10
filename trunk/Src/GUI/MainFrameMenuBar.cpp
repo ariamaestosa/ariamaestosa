@@ -110,7 +110,7 @@ using namespace AriaMaestosa;
 
 void MainFrame::initMenuBar()
 {
-    wxMenuBar* menuBar = new wxMenuBar();
+    m_menu_bar = new wxMenuBar();
 
 #define QUICK_ADD_MENU( MENUID, MENUSTRING, METHOD ) Append( MENUID,  MENUSTRING ); Connect(MENUID, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( METHOD ) );
 #define QUICK_ADD_CHECK_MENU( MENUID, MENUSTRING, METHOD ) AppendCheckItem( MENUID,  MENUSTRING ); Connect(MENUID, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( METHOD ) );
@@ -167,7 +167,7 @@ void MainFrame::initMenuBar()
 
 
     //I18N: name of a menu
-    menuBar->Append(m_file_menu,  _("&File") );
+    m_menu_bar->Append(m_file_menu,  _("&File") );
 
     // ---- Edit menu
     m_edit_menu = new wxMenu();
@@ -207,7 +207,7 @@ void MainFrame::initMenuBar()
     m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_REMOVE_OVERLAPPING, _("Remove O&verlapping Notes"), MainFrame::menuEvent_removeOverlapping );
 
     //I18N: name of a menu
-    menuBar->Append(m_edit_menu,  _("&Edit"));
+    m_menu_bar->Append(m_edit_menu,  _("&Edit"));
 
 
     // ---- Tracks menu
@@ -221,7 +221,7 @@ void MainFrame::initMenuBar()
     //I18N: - in the track menu, allows choosing the properties of a track
     m_track_menu -> QUICK_ADD_MENU ( MENU_TRACK_BACKG, _("&Properties..."), MainFrame::menuEvent_trackBackground );
 
-    menuBar->Append(m_track_menu,  _("&Tracks"));
+    m_menu_bar->Append(m_track_menu,  _("&Tracks"));
 
     // ---- Settings menu
     m_settings_menu = new wxMenu();
@@ -262,7 +262,7 @@ void MainFrame::initMenuBar()
     else if (playValue == PLAY_NEVER)  m_play_during_edits_never->Check();
     else                               {ASSERT(false);}
 
-    menuBar->Append(m_settings_menu,  _("&Settings"));
+    m_menu_bar->Append(m_settings_menu,  _("&Settings"));
 
     // ---- Output devices menu
     m_output_menu = new wxMenu();
@@ -289,7 +289,7 @@ void MainFrame::initMenuBar()
         m_output_device_menus[0].Check();
     }
     
-    menuBar->Append(m_output_menu, _("&Output"));
+    m_menu_bar->Append(m_output_menu, _("&Output"));
 
     // ---- Help menu
     m_help_menu = new wxMenu();
@@ -300,12 +300,12 @@ void MainFrame::initMenuBar()
 
 #ifdef __WXMAC__
     // On OSX a menu item named "&Help" will be translated by wx into a native help menu
-    menuBar->Append(m_help_menu, wxT("&Help"));
+    m_menu_bar->Append(m_help_menu, wxT("&Help"));
 #else
-    menuBar->Append(m_help_menu, _("&Help"));
+    m_menu_bar->Append(m_help_menu, _("&Help"));
 #endif
     
-    SetMenuBar(menuBar);
+    SetMenuBar(m_menu_bar);
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -344,6 +344,34 @@ void MainFrame::disableMenus(const bool disable)
     m_file_menu->Enable(MENU_FILE_EXPORT_NOTATION, on);
     m_file_menu->Enable(MENU_FILE_COPYRIGHT, on);
     m_file_menu->Enable(wxID_EXIT, on);
+}
+
+
+// -----------------------------------------------------------------------------------------------------------
+
+void MainFrame::doDisableMenusForWelcomeScreen(const bool disable)
+{
+    m_disabled_for_welcome_screen = disable;
+    
+    const bool on = (not disable);
+    
+    m_file_menu->Enable(MENU_FILE_SAVE, on);
+    m_file_menu->Enable(MENU_FILE_SAVE_AS, on);
+    m_file_menu->Enable(MENU_FILE_CLOSE, on);
+    m_file_menu->Enable(MENU_FILE_EXPORT_MIDI, on);
+
+    if (not PlatformMidiManager::get()->getAudioExtension().IsEmpty())
+    {
+        m_file_menu->Enable(MENU_FILE_EXPORT_SAMPLED_AUDIO, on);
+    }
+    
+    m_file_menu->Enable(MENU_FILE_EXPORT_NOTATION, on);
+    m_file_menu->Enable(MENU_FILE_COPYRIGHT, on);
+    m_file_menu->Enable(wxID_EXIT, on);
+    
+    m_menu_bar->EnableTop(1, on);
+    m_menu_bar->EnableTop(2, on);
+    m_menu_bar->EnableTop(3, on);
 }
 
 // -----------------------------------------------------------------------------------------------------------

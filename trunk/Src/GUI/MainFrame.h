@@ -134,6 +134,8 @@ namespace AriaMaestosa
         wxSpinCtrl* m_display_zoom;
         wxTextCtrl* m_tempo_ctrl;
         
+        wxMenuBar* m_menu_bar;
+        
         wxMenu* m_file_menu;
         wxMenu* m_edit_menu;
         wxMenu* m_settings_menu;
@@ -179,6 +181,9 @@ namespace AriaMaestosa
         OwnerPtr<TuningPicker>        m_tuning_picker;
         OwnerPtr<KeyPicker>           m_key_picker;
         
+        bool m_disabled_for_welcome_screen;
+        void doDisableMenusForWelcomeScreen(const bool disable);
+        
 #if !defined(__WXOSX_CARBON__)
         wxStaticBitmap* m_tools_bitmap;
         void onToolsBitmapMousedown(wxMouseEvent& evt);
@@ -212,6 +217,13 @@ namespace AriaMaestosa
         void firstMeasureChanged(wxCommandEvent& evt);
         //void changeMeasureAmount(int i, bool throwEvent=true);
         void disableMenus(const bool disable);
+        
+        void disableMenusForWelcomeScreen(const bool disable)
+        {
+            if (m_disabled_for_welcome_screen == disable) return;
+            doDisableMenusForWelcomeScreen(disable);
+        }
+        
         void onHideNotifBar(wxCommandEvent& evt);
 
         void enterPressedInTopBar(wxCommandEvent& evt);
