@@ -743,6 +743,7 @@ void AriaMaestosa::RenderRoutines::drawSilence(wxGraphicsContext& dc, const Rang
     if ( type == 1 )
     {
         dc.SetPen(  *wxTRANSPARENT_PEN  );
+        dc.SetBrush( *wxBLACK_BRUSH );
         silence_radius = RECTANGULAR_SILENCE_SIZE/2;
         
         dc.DrawRectangle(/* x */ x.from + RECTANGULAR_SILENCE_LEFT_MARGIN,
@@ -755,6 +756,7 @@ void AriaMaestosa::RenderRoutines::drawSilence(wxGraphicsContext& dc, const Rang
     {
         silence_radius = RECTANGULAR_SILENCE_SIZE/2;
         dc.SetPen(  *wxTRANSPARENT_PEN  );
+        dc.SetBrush( *wxBLACK_BRUSH );
         
         const int h = (int)round(levelHeight/2.2f);
         
