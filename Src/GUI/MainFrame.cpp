@@ -279,7 +279,8 @@ MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(1
 {
     wxLogVerbose( wxT("MainFrame::MainFrame") );
     m_main_panel = new wxPanel(this);
-
+    m_disabled_for_welcome_screen = false;
+    
     m_root_sizer = new wxBoxSizer(wxVERTICAL);
     m_root_sizer->Add(m_main_panel, 1, wxEXPAND | wxALL, 0);
     SetSizer(m_root_sizer);

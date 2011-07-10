@@ -229,6 +229,8 @@ void MainPane::render(const bool isPaintEvent)
 
 MainPane::WelcomeResult MainPane::drawWelcomeMenu()
 {
+    getMainFrame()->disableMenusForWelcomeScreen(true);
+    
     // FIXME: ugly to hardcode the welcome menu this way
     Drawable** icons = (Drawable*[]){menu_new, menu_open, menu_import, menu_configure, menu_help, menu_exit};
     AriaRenderString** strings = (AriaRenderString*[]) {&m_new_sequence_label, &m_open_label, &m_import_label,
@@ -434,6 +436,10 @@ bool MainPane::do_render()
         if (result == ABORT_RENDER) return false;
         else if (result == NOTHING_SPECIAL) return true;
         else if (result == RENDER_AGAIN) beginFrame();
+    }
+    else
+    {
+        getMainFrame()->disableMenusForWelcomeScreen(false);
     }
     
     if (mf->getCurrentSequence() == NULL) return false;
