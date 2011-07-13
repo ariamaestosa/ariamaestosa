@@ -855,6 +855,10 @@ void AriaMaestosa::RenderRoutines::drawFlag(wxDC* dc, wxGraphicsContext* gc, con
                                             const int flag_y, const int orient)
 {
 #if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
+    
+    gc->SetPen(  *wxTRANSPARENT_PEN  );
+    gc->SetBrush( *wxBLACK_BRUSH );
+    
     wxGraphicsPath path = gc->CreatePath();
     
     const float scale = 65.0f;
