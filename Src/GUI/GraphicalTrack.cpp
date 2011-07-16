@@ -522,13 +522,6 @@ bool GraphicalTrack::handleEditorChanges(int x, BitmapButton* button, Editor* ed
             if (type != DRUM)       m_track->setNotationType(DRUM, false);
             if (type != CONTROLLER) m_track->setNotationType(CONTROLLER, false);
             
-            // in midi, drums go to channel 9. So, if we exit drums, change channel so that it's not 9 anymore.
-            if (m_track->isNotationTypeEnabled(DRUM) and
-                m_gsequence->getModel()->getChannelManagementType() == CHANNEL_MANUAL)
-            {
-                m_track->setChannel(0);
-            }
-            
             m_track->setNotationType(type, true);
             evenlyDistributeSpace();
         }
@@ -580,7 +573,6 @@ bool GraphicalTrack::handleEditorChanges(int x, BitmapButton* button, Editor* ed
             m_track->setNotationType(type, not m_track->isNotationTypeEnabled(type));
             DisplayFrame::updateVerticalScrollbar();
         }
-        
         return true;
     }
     return false;
@@ -804,6 +796,14 @@ bool GraphicalTrack::processMouseDown(RelativeXCoord mousex, int mousey)
                 evenlyDistributeSpace();
             }
             
+            // in midi, drums go to channel 9. So, if we exit drums, change channel so that it's not 9 anymore.
+            if (not m_track->isNotationTypeEnabled(DRUM) and
+                m_gsequence->getModel()->getChannelManagementType() == CHANNEL_MANUAL and
+                m_track->getChannel() == 9)
+            {
+                // FIXME: ensure all channels have the same instrument
+                m_track->setChannel(0);
+            }
         }
         
         if (m_track->isNotationTypeEnabled(SCORE) and mousey > m_from_y + 15 and mousey < m_from_y + 30)
