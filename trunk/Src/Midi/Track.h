@@ -396,7 +396,7 @@ namespace AriaMaestosa
           */
         int getNoteFretConst(const int id) const; 
 
-        void prepareNotesForGuitarEditor();
+        void updateNotesForGuitarEditor();
         
         static bool isTempoController(const int controllerTypeID)
         {

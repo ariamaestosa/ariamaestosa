@@ -784,15 +784,13 @@ bool Track::isNoteSelected(const int id) const
 
 // ----------------------------------------------------------------------------------------------------------
 
-void Track::prepareNotesForGuitarEditor()
+void Track::updateNotesForGuitarEditor()
 {
-
     const int amount = m_notes.size();
     for (int n=0; n<amount; n++)
     {
         m_notes[n].checkIfStringAndFretMatchNote(true);
     }
-
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -1214,7 +1212,8 @@ void Track::setNotationType(NotationType t, bool enabled)
     m_editor_mode[t] = enabled;
     if (m_listener != NULL) m_listener->onNotationTypeChange();
     
-    if (t == GUITAR and enabled) prepareNotesForGuitarEditor();
+    // TODO: move this code to the guitar editor
+    if (t == GUITAR and enabled) updateNotesForGuitarEditor();
 }
 
 // ----------------------------------------------------------------------------------------------------------

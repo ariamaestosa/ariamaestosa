@@ -63,7 +63,6 @@ void SetAccidentalSign::undo()
 
 void SetAccidentalSign::perform()
 {
-
     bool played = false;
 
     ptr_vector<Note>& notes = m_visitor->getNotesVector();
@@ -86,6 +85,8 @@ void SetAccidentalSign::perform()
         }
     }//next
 
+    // FIXME: maybe this should be automatic?
+    if (m_track->isNotationTypeEnabled(GUITAR)) m_track->updateNotesForGuitarEditor();
 }
 
 // ----------------------------------------------------------------------------------------------------------

@@ -105,6 +105,8 @@ void ShiftBySemiTone::perform()
         note->play(true);
     }
     
+    // FIXME: maybe this should be automatic?
+    if (m_track->isNotationTypeEnabled(GUITAR)) m_track->updateNotesForGuitarEditor();
 }
 
 // ----------------------------------------------------------------------------------------------------------

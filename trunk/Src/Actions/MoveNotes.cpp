@@ -149,6 +149,9 @@ void MoveNotes::perform()
     
     m_track->reorderNoteVector();
     m_track->reorderNoteOffVector();
+    
+    // FIXME: maybe this should be automatic?
+    if (m_track->isNotationTypeEnabled(GUITAR)) m_track->updateNotesForGuitarEditor();
 }
 
 // ----------------------------------------------------------------------------------------------------------

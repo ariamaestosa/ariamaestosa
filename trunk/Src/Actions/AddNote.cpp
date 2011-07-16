@@ -88,6 +88,9 @@ void AddNote::perform()
     relocator.rememberNote( *tmp_note );
     
     tmp_note->play(true);
+    
+    // FIXME: maybe this should be automatic?
+    if (m_track->isNotationTypeEnabled(GUITAR)) m_track->updateNotesForGuitarEditor();
 }
 
 // ----------------------------------------------------------------------------------------------------------
