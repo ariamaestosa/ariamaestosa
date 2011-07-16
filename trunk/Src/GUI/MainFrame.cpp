@@ -812,6 +812,8 @@ void MainFrame::updateTopBarAndScrollbarsForSequence(const GraphicalSequence* se
 
 void MainFrame::songLengthTextChanged(wxCommandEvent& evt)
 {
+    if (getSequenceAmount() == 0) return;
+    
     static wxString previousString = wxT("");
 
     // only send event if the same string is sent twice (i.e. first time, because it was typed in, second time because 'enter' was pressed)
@@ -839,6 +841,8 @@ void MainFrame::songLengthTextChanged(wxCommandEvent& evt)
 
 void MainFrame::timeSigClicked(wxCommandEvent& evt)
 {
+    if (getSequenceAmount() == 0) return;
+    
     MeasureData* md = getCurrentSequence()->getMeasureData();
     
     wxPoint pt = wxGetMousePosition();
@@ -852,7 +856,8 @@ void MainFrame::timeSigClicked(wxCommandEvent& evt)
 
 void MainFrame::firstMeasureChanged(wxCommandEvent& evt)
 {
-
+    if (getSequenceAmount() == 0) return;
+    
     if (changingValues) return; // discard events thrown because the computer changes values
 
     int start = atoi_u( m_first_measure->GetValue() );
@@ -878,7 +883,8 @@ void MainFrame::firstMeasureChanged(wxCommandEvent& evt)
 
 void MainFrame::tempoChanged(wxCommandEvent& evt)
 {
-
+    if (getSequenceAmount() == 0) return;
+    
     if (changingValues) return; // discard events thrown because the computer changes values
 
     if (m_tempo_ctrl->GetValue().IsEmpty()) return; // user is probably about to enter something else
@@ -941,6 +947,8 @@ void MainFrame::onTimeSigSelectionChanged(int num, int denom)
 
 void MainFrame::zoomChanged(wxSpinEvent& evt)
 {
+    if (getSequenceAmount() == 0) return;
+    
     if (changingValues) return; // discard events thrown because the computer changes values
 
     const int newZoom = m_display_zoom->GetValue();
@@ -965,6 +973,8 @@ void MainFrame::zoomChanged(wxSpinEvent& evt)
 
 void MainFrame::zoomTextChanged(wxCommandEvent& evt)
 {
+    if (getSequenceAmount() == 0) return;
+    
     // FIXME - AWFUL HACK
     static wxString previousString = wxT("");
 
@@ -1000,6 +1010,8 @@ void MainFrame::zoomTextChanged(wxCommandEvent& evt)
 
 void MainFrame::toolButtonClicked(wxCommandEvent& evt)
 {
+    if (getSequenceAmount() == 0) return;
+    
     EditTool currTool = Editor::getCurrentTool();
     if (currTool == EDIT_TOOL_PENCIL)
     {
@@ -1030,6 +1042,7 @@ void MainFrame::enterPressedInTopBar(wxCommandEvent& evt)
 
 void MainFrame::songLengthChanged(wxSpinEvent& evt)
 {
+    if (getSequenceAmount() == 0) return;
 
     if (changingValues) return; // discard events thrown because the computer changes values
 
