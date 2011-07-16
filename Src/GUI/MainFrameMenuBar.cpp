@@ -57,6 +57,9 @@
 #include <wx/msgdlg.h>
 #include <wx/sizer.h>
 #include <wx/log.h>
+#include <wx/textctrl.h>
+#include <wx/button.h>
+#include <wx/spinctrl.h>
 
 namespace AriaMaestosa
 {
@@ -372,6 +375,12 @@ void MainFrame::doDisableMenusForWelcomeScreen(const bool disable)
     m_menu_bar->EnableTop(1, on);
     m_menu_bar->EnableTop(2, on);
     m_menu_bar->EnableTop(3, on);
+    
+    m_first_measure->Enable(on);
+    m_time_sig->Enable(on);
+    m_tempo_ctrl->Enable(on);
+    m_song_length->Enable(on);
+    m_display_zoom->Enable(on);
 }
 
 // -----------------------------------------------------------------------------------------------------------
