@@ -938,7 +938,8 @@ void Track::setChannel(int i)
     const int trackAmount = m_sequence->getTrackAmount();
     for (int n=0; n<trackAmount; n++) // find another track that has same channel and use the same instrument
     {
-        if (m_sequence->getTrack(n)->getChannel() == m_channel)
+        if (m_sequence->getTrack(n) != this &&
+            m_sequence->getTrack(n)->getChannel() == m_channel)
         {
             // FIXME: remove this abuse of the 'recursive' parameter
             this->doSetInstrument(m_sequence->getTrack(n)->getInstrument(), true);
