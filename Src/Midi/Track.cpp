@@ -1723,19 +1723,13 @@ void Track::saveToFile(wxFileOutputStream& fileout)
               (m_muted ? wxT("\" muted=\"true") : wxT("") )  +
               wxT("\">\n"), fileout );
 
-    writeData(wxT("  <key sharps=\"") + to_wxString( getKeySharpsAmount() ) +
-              wxT("\" flats=\"")    + to_wxString( getKeyFlatsAmount () ) +
-              wxT("\"/>\n"), fileout);
-
-
-
     switch (m_key_type)
     {
         case KEY_TYPE_C:
             writeData(wxT("  <key type=\"C\" />\n"), fileout);
             break;
         case KEY_TYPE_SHARPS:
-            writeData(wxT("<key type=\"sharps\" value=\"") + to_wxString( getKeySharpsAmount() ) +
+            writeData(wxT("  <key type=\"sharps\" value=\"") + to_wxString( getKeySharpsAmount() ) +
                       wxT("\" />\n"), fileout);
             break;
 
