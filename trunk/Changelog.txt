@@ -5,6 +5,7 @@
 - use sheet dialogs on OSX
 - Fixed some placement issues with silences in printed scores
 - Minor fixes in new OSX player code
+- Improved note beaming in score editor when using multiple time signatures
 
 1.3 beta 1
 - Intensive code refactoring and cleanup

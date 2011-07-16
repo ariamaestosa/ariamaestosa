@@ -93,8 +93,8 @@ public:
         
         // check for number of "beamable" notes and split if current amount is not acceptable with the current time sig
         // only considering note 0 to get the measure should be fine since Aria only beams within the same measure
-        const int num   = md->getTimeSigNumerator  ( noteRenderInfo[0].m_measure_begin );
-        const int denom = md->getTimeSigDenominator( noteRenderInfo[0].m_measure_begin );
+        const int num   = md->getTimeSigNumerator  ( noteRenderInfo[m_first_id].m_measure_begin );
+        const int denom = md->getTimeSigDenominator( noteRenderInfo[m_first_id].m_measure_begin );
         const int flag_amount = noteRenderInfo[m_first_id].m_flag_amount;
 
         int max_amount_of_notes_beamed_toghether = 4;
