@@ -19,6 +19,8 @@
 
 #include "AriaCore.h"
 #include "GUI/GraphicalTrack.h"
+#include "GUI/MainFrame.h"
+#include "GUI/MainPane.h"
 #include "IO/IOUtils.h"
 #include "Midi/Sequence.h"
 #include "PreferencesData.h"
@@ -325,6 +327,7 @@ void ControllerChoice::menuSelected(wxCommandEvent& evt)
     ASSERT_E(controllerID,>=,0);
 
     Display::render();
+    getMainFrame()->getMainPane()->SetFocus();
 }
     
 // -----------------------------------------------------------------------------------------------------------

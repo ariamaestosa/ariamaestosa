@@ -25,6 +25,8 @@
 #include "GUI/ImageProvider.h"
 #include "GUI/GraphicalSequence.h"
 #include "GUI/GraphicalTrack.h"
+#include "GUI/MainFrame.h"
+#include "GUI/MainPane.h"
 #include "Midi/CommonMidiUtils.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
@@ -245,27 +247,28 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     {
         AriaRender::images();
         
+        int the_x = Display::getMouseX_current().getRelativeTo(WINDOW) + 8;
+        int the_y = m_mouse_y + 8;
+        if (the_y < area_from_y + 12)
+        {
+            the_y = area_from_y + 12;
+        }
+        
         if (m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_TEMPO)
         {
             int value = convertTempoBendToBPM(mouseYToValue(m_mouse_y));
-            AriaRender::renderNumber((const char*)to_wxString(value).mb_str(),
-                                     Display::getMouseX_current().getRelativeTo(WINDOW),
-                                     m_mouse_y);
+            AriaRender::renderNumber((const char*)to_wxString(value).mb_str(), the_x, the_y);
         }
         else if (m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_PITCH_BEND)
         {
             int value = mouseYToValue(m_mouse_y);
             float pitch = (value - 64) / 64.0f * -2.0f;
-            AriaRender::renderNumber((const char*)to_wxString2(pitch).mb_str(),
-                                     Display::getMouseX_current().getRelativeTo(WINDOW),
-                                     m_mouse_y);
+            AriaRender::renderNumber((const char*)to_wxString2(pitch).mb_str(), the_x, the_y);
         }
         else
         {
             int value = 127 - mouseYToValue(m_mouse_y);
-            AriaRender::renderNumber((const char*)to_wxString(value).mb_str(),
-                                     Display::getMouseX_current().getRelativeTo(WINDOW),
-                                     m_mouse_y);
+            AriaRender::renderNumber((const char*)to_wxString(value).mb_str(), the_x, the_y);
         }
         
         AriaRender::primitives();
@@ -355,7 +358,8 @@ void ControllerEditor::mouseDown(RelativeXCoord x, const int y)
     if (x.getRelativeTo(WINDOW) < Editor::getEditorXStart() and y > getEditorYStart() and
         not m_graphical_track->isCollapsed() )
     {
-        Display::popupMenu(m_controller_choice,x.getRelativeTo(WINDOW),y+15);
+        Display::popupMenu(m_controller_choice,x.getRelativeTo(WINDOW), y + 15);
+        getMainFrame()->getMainPane()->SetFocus();
     }
 
 }

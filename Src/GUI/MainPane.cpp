@@ -934,12 +934,10 @@ void MainPane::mouseDown(wxMouseEvent& event)
 // --------------------------------------------------------------------------------------------------
 
 void MainPane::mouseMoved(wxMouseEvent& event)
-{
-    if (invalidateMouseEvents) return;
-
+{    
     m_mouse_x_current.setValue(event.GetX(),WINDOW);
     m_mouse_y_current = event.GetY();
-
+    
     MainFrame* mf = getMainFrame();
     if (mf->getSequenceAmount() == 0)
     {
@@ -949,6 +947,9 @@ void MainPane::mouseMoved(wxMouseEvent& event)
     
     if (event.Dragging())
     {
+        if (invalidateMouseEvents) return;
+
+        
         // we are not reordering tracks
         if (m_dragged_track_id == -1)
         {
