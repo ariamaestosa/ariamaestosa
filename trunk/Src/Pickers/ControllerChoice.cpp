@@ -185,7 +185,7 @@ using namespace AriaMaestosa;
 
 // -----------------------------------------------------------------------------------------------------------
 
-ControllerChoice::ControllerChoice() : wxMenu(), controller_label(new Model<wxString>(wxT("")), false)
+ControllerChoice::ControllerChoice() : wxMenu(), m_controller_label(new Model<wxString>(wxT("")), false)
 {
     LabelSingleton* label_renderer = LabelSingleton::getInstance();
     if (label_renderer->getStringAmount() == 0)
@@ -209,11 +209,11 @@ ControllerChoice::ControllerChoice() : wxMenu(), controller_label(new Model<wxSt
     }
     
     label_renderer->setFont( getControllerFont() );
-    controller_label.setFont( getControllerFont() );
+    m_controller_label.setFont( getControllerFont() );
 
-    controllerID = 7;
-    controller_label.setMaxWidth(75, true);
-    controller_label.getModel()->setValue(g_controller_names[controllerID]);
+    m_controller_id = 7;
+    m_controller_label.setMaxWidth(75, true);
+    m_controller_label.getModel()->setValue(g_controller_names[m_controller_id]);
     
     Append( 7 ,  g_controller_names[7  ] ); // Volume // fine:39
     Append( 10 , g_controller_names[10 ] ); // Pan // fine:42
@@ -303,38 +303,31 @@ ControllerChoice::~ControllerChoice()
 
 void ControllerChoice::menuSelected(wxCommandEvent& evt)
 {
-    controllerID=evt.GetId();
+    m_controller_id = evt.GetId();
     
     // special cases (non-controllers)
-    if      (controllerID == PSEUDO_CONTROLLER_PITCH_BEND)
+    if      (m_controller_id == PSEUDO_CONTROLLER_PITCH_BEND)
     {
-        controller_label.getModel()->setValue(g_controller_names[30]);
+        m_controller_label.getModel()->setValue(g_controller_names[30]);
     }
-    else if (controllerID == PSEUDO_CONTROLLER_TEMPO)
+    else if (m_controller_id == PSEUDO_CONTROLLER_TEMPO)
     {
-        controller_label.getModel()->setValue(g_controller_names[31]);
+        m_controller_label.getModel()->setValue(g_controller_names[31]);
     }
-    else if (controllerID == PSEUDO_CONTROLLER_LYRICS)
+    else if (m_controller_id == PSEUDO_CONTROLLER_LYRICS)
     {
-        controller_label.getModel()->setValue(g_controller_names[32]);
+        m_controller_label.getModel()->setValue(g_controller_names[32]);
     }
     else
     {
-        controller_label.getModel()->setValue(g_controller_names[controllerID]);
+        m_controller_label.getModel()->setValue(g_controller_names[m_controller_id]);
     }
     
-    ASSERT_E(controllerID,<,205);
-    ASSERT_E(controllerID,>=,0);
+    ASSERT_E(m_controller_id,<,205);
+    ASSERT_E(m_controller_id,>=,0);
 
     Display::render();
     getMainFrame()->getMainPane()->SetFocus();
-}
-    
-// -----------------------------------------------------------------------------------------------------------
-
-int ControllerChoice::getControllerID()
-{
-    return controllerID;
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -342,10 +335,8 @@ int ControllerChoice::getControllerID()
 // FIXME: it's dubious that rendering belongs here
 void ControllerChoice::renderControllerName(const int x, const int y)
 {
-    controller_label.bind();
-    controller_label.render(x, y);
-    
-    return;
+    m_controller_label.bind();
+    m_controller_label.render(x, y);
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -353,14 +344,22 @@ void ControllerChoice::renderControllerName(const int x, const int y)
 /** Returns whether a specific controller is of on/off type, rather than taking values ranging from min to max */
 bool ControllerChoice::isOnOffController(const int id) const
 {
-    if (controllerID == 66 or controllerID == 67 or
-        controllerID == 68 or controllerID == 69 or
-        controllerID == 64 or controllerID == 65 )
+    if (m_controller_id == 66 or m_controller_id == 67 or
+        m_controller_id == 68 or m_controller_id == 69 or
+        m_controller_id == 64 or m_controller_id == 65 )
     {
         return true;
     }
 
     return false;
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+void ControllerChoice::setControllerID(int id)
+{
+    m_controller_id = id;
+    m_controller_label.getModel()->setValue(g_controller_names[30]);
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -374,21 +373,21 @@ void ControllerChoice::renderTopLabel(const int x, const int y)
     label_renderer->bind();
 
     // pan
-    if (controllerID == 10 or controllerID == 42)          label_renderer->get(5).render(x, y);
+    if (m_controller_id == 10 or m_controller_id == 42)       label_renderer->get(5).render(x, y);
 
     // pitch bend
-    else if (controllerID == PSEUDO_CONTROLLER_PITCH_BEND) label_renderer->get(6).render(x, y);
+    else if (m_controller_id == PSEUDO_CONTROLLER_PITCH_BEND) label_renderer->get(6).render(x, y);
 
     // on/offs
-    else if ( isOnOffController(controllerID) )            label_renderer->get(0).render(x, y);
+    else if ( isOnOffController(m_controller_id) )            label_renderer->get(0).render(x, y);
 
     // tempo
-    else if (controllerID == PSEUDO_CONTROLLER_TEMPO)      AriaRender::renderNumber("400", x, y);
+    else if (m_controller_id == PSEUDO_CONTROLLER_TEMPO)      AriaRender::renderNumber("400", x, y);
     
     // lyrics
-    else if (controllerID == PSEUDO_CONTROLLER_LYRICS)     ;
+    else if (m_controller_id == PSEUDO_CONTROLLER_LYRICS)     ;
 
-    else                                                   label_renderer->get(3).render(x, y);
+    else                                                      label_renderer->get(3).render(x, y);
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -402,21 +401,21 @@ void ControllerChoice::renderBottomLabel(const int x, const int y)
     label_renderer->bind();
     
     // pan
-    if (controllerID == 10 or controllerID == 42)          label_renderer->get(4).render(x, y);
+    if (m_controller_id == 10 or m_controller_id == 42)       label_renderer->get(4).render(x, y);
 
     // pitch bend
-    else if (controllerID == PSEUDO_CONTROLLER_PITCH_BEND) label_renderer->get(7).render(x, y);
+    else if (m_controller_id == PSEUDO_CONTROLLER_PITCH_BEND) label_renderer->get(7).render(x, y);
 
     // on/offs
-    else if (isOnOffController(controllerID))              label_renderer->get(1).render(x, y);
+    else if (isOnOffController(m_controller_id))              label_renderer->get(1).render(x, y);
 
     // tempo
-    else if (controllerID == PSEUDO_CONTROLLER_TEMPO)      AriaRender::renderNumber( "20", x, y );
+    else if (m_controller_id == PSEUDO_CONTROLLER_TEMPO)      AriaRender::renderNumber( "20", x, y );
     
     // lyrics
-    else if (controllerID == PSEUDO_CONTROLLER_LYRICS)     ;
+    else if (m_controller_id == PSEUDO_CONTROLLER_LYRICS)     ;
 
-    else                                                   label_renderer->get(2).render(x, y);
+    else                                                      label_renderer->get(2).render(x, y);
 }
 
 

@@ -24,6 +24,7 @@
 // FIXME(DESIGN) : data classes shouldn't refer to GUI classes
 #include "GUI/GraphicalTrack.h"
 #include "GUI/MainFrame.h"
+#include "Editors/ControllerEditor.h"
 
 #include "IO/IOUtils.h"
 #include "Midi/Track.h"
@@ -1948,6 +1949,15 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                     else
                     {
                         std::cerr << "Missing info from file: drum ID" << std::endl;
+                    }
+                }
+                else if (strcmp("controller", xml->getNodeName()) == 0)
+                {
+                    const char* id = xml->getAttributeValue("id");
+                    if (id != NULL)
+                    {
+                        // FIXME: remove GUI calls from here
+                        getGraphics()->getControllerEditor()->setController(atoi(id));
                     }
                 }
                 else if (strcmp("key", xml->getNodeName()) == 0)
