@@ -998,6 +998,12 @@ void MainPane::mouseMoved(wxMouseEvent& event)
         }
         else
         {
+            if (m_mouse_hovering_tabs)
+            {
+                m_mouse_hovering_tabs = false;
+                Display::render();
+            }
+            
             GraphicalSequence* gseq = mf->getCurrentGraphicalSequence();
             Sequence* seq = mf->getCurrentSequence();
             
