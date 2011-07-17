@@ -34,8 +34,8 @@ namespace AriaMaestosa
       */
     class ControllerChoice : public wxMenu
     {
-        int controllerID;
-        AriaRenderString controller_label;
+        int m_controller_id;
+        AriaRenderString m_controller_label;
         
     public:
         LEAK_CHECK();
@@ -43,7 +43,10 @@ namespace AriaMaestosa
         ControllerChoice();
         ~ControllerChoice();
         
-        int getControllerID();
+        int  getControllerID() const { return m_controller_id; }
+            
+        void setControllerID(int id);
+        
         void renderControllerName(const int x, const int y);
         bool isOnOffController(const int id) const;
         

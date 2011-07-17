@@ -108,6 +108,10 @@ namespace AriaMaestosa
         {
             return m_controller_choice->getControllerID();
         }
+        void setController(int id)
+        {
+            m_controller_choice->setControllerID(id);
+        }
         
         /** implemented from base class Editor's required interface */
         virtual int getYScrollInPixels()
