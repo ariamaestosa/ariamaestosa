@@ -121,6 +121,8 @@ namespace AriaMaestosa
         
         WelcomeResult drawWelcomeMenu();
         
+        AriaRenderString m_star;
+        
     public:
         LEAK_CHECK();
 
