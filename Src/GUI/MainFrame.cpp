@@ -826,6 +826,10 @@ void MainFrame::updateTopBarAndScrollbarsForSequence(const GraphicalSequence* se
     else if (m_playback_mode) m_toolbar->SetToolNormalBitmap(PLAY_CLICKED, m_pause_bitmap);
     else                      m_toolbar->SetToolNormalBitmap(PLAY_CLICKED, m_play_bitmap);
     
+#if defined(__WXOSX_COCOA__)
+    OSXSetModified(seq->getModel()->somethingToUndo());
+#endif
+    
     // scrollbars
     updateHorizontalScrollbar();
     updateVerticalScrollbar();

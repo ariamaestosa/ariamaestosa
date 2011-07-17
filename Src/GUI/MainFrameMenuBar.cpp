@@ -413,7 +413,7 @@ void MainFrame::updateUndoMenuLabel()
     wxMenuBar* menuBar = GetMenuBar();
     wxString undo_what = getCurrentSequence()->getTopActionName();
 
-    if (menuBar!=NULL)
+    if (menuBar != NULL)
     {
         if (undo_what.size() > 0)
         {
@@ -421,11 +421,18 @@ void MainFrame::updateUndoMenuLabel()
             label.Replace(wxT("%s"),undo_what );
             menuBar->SetLabel( MENU_EDIT_UNDO, label );
             menuBar->Enable( MENU_EDIT_UNDO, true );
+            
+#if defined(__WXOSX_COCOA__)
+            OSXSetModified(true);
+#endif
         }
         else
         {
             menuBar->SetLabel( MENU_EDIT_UNDO, wxString(_("Can't Undo"))+wxT("\tCtrl-Z") );
             menuBar->Enable( MENU_EDIT_UNDO, false );
+#if defined(__WXOSX_COCOA__)
+            OSXSetModified(false);
+#endif
         }
 
 #ifndef __WXMAC__

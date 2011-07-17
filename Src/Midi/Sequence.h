@@ -231,7 +231,10 @@ namespace AriaMaestosa
         void clearUndoStack();
         
         /** @return is there something to undo? */
-        bool somethingToUndo();
+        bool somethingToUndo() const
+        {
+            return undoStack.size() > 0;
+        }
 
         wxString suggestFileName() const;
         wxString suggestTitle() const;

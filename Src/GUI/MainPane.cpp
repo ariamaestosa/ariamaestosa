@@ -147,7 +147,8 @@ MainPane::MainPane(wxWindow* parent, int* args) :
     m_import_label      ( new Model<wxString>(_("Import a MIDI file")),    true ),
     m_configure_label   ( new Model<wxString>(_("Preferences")),           true ),
     m_help_label        ( new Model<wxString>(_("Help")),                  true ),
-    m_quit_label        ( new Model<wxString>(_("Exit")),                  true )
+    m_quit_label        ( new Model<wxString>(_("Exit")),                  true ),
+    m_star              ( new Model<wxString>("*"),                        true )
 {
     m_new_sequence_label.setFont(getWelcomeMenuFont());
     m_open_label.setFont(getWelcomeMenuFont());
@@ -541,11 +542,18 @@ bool MainPane::do_render()
         // draw tab name
         if (currentSeqID == n)  AriaRender::color(0,0,0);
         else                    AriaRender::color(0.4, 0.4, 0.4);
-
+        
+        int additionalShift = 0;
+        if (getMainFrame()->getGraphicalSequence(n)->getModel()->somethingToUndo())
+        {
+            m_star.bind();
+            additionalShift = m_star.getWidth() + 5;
+            m_star.render(start_at_x + 10, TAB_BAR_Y + 20);
+        }
+        
         AriaRenderString& seq_name = getMainFrame()->getGraphicalSequence(n)->getNameRenderer();
         seq_name.bind();
-
-        seq_name.render( start_at_x+10, TAB_BAR_Y+20);
+        seq_name.render(start_at_x + 10 + additionalShift, TAB_BAR_Y + 20);
 
         start_at_x += TAB_SIDE_WIDTH+tab_width+TAB_SIDE_WIDTH;
     }//next
