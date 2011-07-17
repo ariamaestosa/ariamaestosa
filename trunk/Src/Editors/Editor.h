@@ -223,6 +223,10 @@ namespace AriaMaestosa
         /** @brief called when it's time to render; invokes the other render method in derived editor class */
         void render();
         
+        /** @brief Called whenever the mouse is moved; override if you need this information */
+        virtual void processMouseMove(RelativeXCoord x, int y) {}
+
+        
         /** @brief called in derived class when it's time to render */
         virtual void render(RelativeXCoord mousex_current, int mousey_current,
                             RelativeXCoord mousex_initial, int, bool focus=false) = 0;

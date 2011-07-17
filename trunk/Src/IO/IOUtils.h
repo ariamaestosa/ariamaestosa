@@ -36,6 +36,11 @@ namespace AriaMaestosa
     /** @ingroup io */
     wxString to_wxString(float f);
     
+    /** @ingroup io
+      * @brief convert float to wxString, with 2 digits of precision
+      */
+    wxString to_wxString2(float f);
+    
     /** @ingroup io */
     void writeData(wxString data, wxFileOutputStream& fileout);
     

@@ -48,16 +48,30 @@ namespace AriaMaestosa
     protected:   
         int                m_tick;
         unsigned short     m_controller;
+        
+        /** 
+         * This value is 127 - [midi value]
+         */
         unsigned short     m_value;
         
     public:
         LEAK_CHECK();
         
+        /** 
+          * @param controller MIDI ID of the controller
+          * @param tick       Time at whcih this event occurs
+          * @param value      This value is 127 - [midi value]
+          */
         ControllerEvent(unsigned short controller, int tick, unsigned short value);
         virtual ~ControllerEvent() {}
         
         unsigned short getController() const { return m_controller; }
-        int            getTick      () const { return m_tick;       }    
+        int            getTick      () const { return m_tick;       }
+        
+        /** 
+          * @brief Getter for the control event value
+          * @note  This value is 127 - [midi value]
+          */
         unsigned short getValue     () const { return m_value;      }
         
         void setTick(int i);

@@ -148,7 +148,7 @@ MainPane::MainPane(wxWindow* parent, int* args) :
     m_configure_label   ( new Model<wxString>(_("Preferences")),           true ),
     m_help_label        ( new Model<wxString>(_("Help")),                  true ),
     m_quit_label        ( new Model<wxString>(_("Exit")),                  true ),
-    m_star              ( new Model<wxString>("*"),                        true )
+    m_star              ( new Model<wxString>(wxT("*")),                   true )
 {
     m_new_sequence_label.setFont(getWelcomeMenuFont());
     m_open_label.setFont(getWelcomeMenuFont());
@@ -957,7 +957,7 @@ void MainPane::mouseMoved(wxMouseEvent& event)
             // ----------------------------------- click is in track area ----------------------------
             if (m_click_area == CLICK_TRACK and m_click_in_track != -1)
             {
-                Sequence* seq = getMainFrame()->getCurrentSequence();
+                Sequence* seq = mf->getCurrentSequence();
                 Track* track = seq->getTrack(m_click_in_track);
                 gseq->getGraphicsFor(track)->processMouseDrag(m_mouse_x_current, event.GetY());
             }
@@ -979,21 +979,39 @@ void MainPane::mouseMoved(wxMouseEvent& event)
     {
         const bool mouse_hovering_tabs =  (event.GetY() > TAB_BAR_Y and event.GetY() < TAB_BAR_Y+20);
 
-        if (mouse_hovering_tabs and not m_mouse_hovering_tabs)
+        if (mouse_hovering_tabs)
         {
-            m_mouse_hovering_tabs = true;
+            if (not m_mouse_hovering_tabs)
+            {
+                m_mouse_hovering_tabs = true;
+                Display::render();
+                return;
+            }
+            else if (not mouse_hovering_tabs)
+            {
+                m_mouse_hovering_tabs = false;
+                Display::render();
+                return;
+            }
+            
             Display::render();
-            return;
         }
-        else if (m_mouse_hovering_tabs and not mouse_hovering_tabs)
+        else
         {
-            m_mouse_hovering_tabs = false;
-            Display::render();
-            return;
-        }
-        if (m_mouse_hovering_tabs)
-        {
-            Display::render();
+            GraphicalSequence* gseq = mf->getCurrentGraphicalSequence();
+            Sequence* seq = mf->getCurrentSequence();
+            
+            for (int n=0; n<seq->getTrackAmount(); n++)
+            {
+                Track* track = seq->getTrack(n);
+                GraphicalTrack* graphics = gseq->getGraphicsFor(track);
+                
+                if (event.GetY() > graphics->getFromY() and event.GetY() < graphics->getToY())
+                {
+                    gseq->getGraphicsFor(track)->processMouseMove(m_mouse_x_current, event.GetY());
+                    break;
+                }
+            }
         }
     }
 

@@ -25,6 +25,7 @@
 #include "GUI/ImageProvider.h"
 #include "GUI/GraphicalSequence.h"
 #include "GUI/GraphicalTrack.h"
+#include "Midi/CommonMidiUtils.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
@@ -45,7 +46,8 @@ ControllerEditor::ControllerEditor(GraphicalTrack* track) : Editor(track)
 
     m_selection_begin = -1;
     m_selection_end = -1;
-
+    m_mouse_y = -1;
+    
     m_has_been_resizing = false;
 
     m_controller_choice = new ControllerChoice();
@@ -61,9 +63,9 @@ ControllerEditor::~ControllerEditor()
 
 void ControllerEditor::renderEvents()
 {
-    const int area_from_y = getEditorYStart()+7;
-    const int area_to_y   = getYEnd()-15;
-    const float y_zoom    = (float)(area_to_y - area_from_y) / 127.0;
+    const int area_from_y = getAreaYFrom();
+    const int area_to_y   = getAreaYTo();
+    const float y_zoom    = getYZoom();
 
     AriaRender::color(0, 0.4, 1);
     AriaRender::lineWidth(3);
@@ -142,7 +144,7 @@ void ControllerEditor::renderEvents()
         
         previous_location = xloc;
     }// next
-
+    
     if (currentController == PSEUDO_CONTROLLER_LYRICS)
     {
         AriaRender::primitives();
@@ -169,8 +171,8 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     
     // -------------------------------- background ----------------------------
     
-    const int area_from_y = getEditorYStart()+7;
-    const int area_to_y = getYEnd()-15;
+    const int area_from_y = getAreaYFrom();
+    const int area_to_y   = getAreaYTo();
     
     AriaRender::primitives();
     
@@ -227,8 +229,39 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     // -------------------------- draw controller events ---------------------
     renderEvents();
     
-    // Resizing
+    // -------------------------- Resizing --------------------------
     if (m_graphical_track->isDragResize()) m_has_been_resizing = true;
+    
+    // -------------------------- Value preview --------------------------
+    if (m_mouse_y != -1 and m_mouse_y >= area_from_y and m_mouse_y <= area_to_y)
+    {
+        AriaRender::images();
+        
+        if (m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_TEMPO)
+        {
+            int value = convertTempoBendToBPM(mouseYToValue(m_mouse_y));
+            AriaRender::renderNumber((const char*)to_wxString(value).mb_str(),
+                                     Display::getMouseX_current().getRelativeTo(WINDOW),
+                                     m_mouse_y);
+        }
+        else if (m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_PITCH_BEND)
+        {
+            int value = mouseYToValue(m_mouse_y);
+            float pitch = (value - 64) / 64.0f * 2.0f;
+            AriaRender::renderNumber((const char*)to_wxString2(pitch).mb_str(),
+                                     Display::getMouseX_current().getRelativeTo(WINDOW),
+                                     m_mouse_y);
+        }
+        else
+        {
+            int value = 127 - mouseYToValue(m_mouse_y);
+            AriaRender::renderNumber((const char*)to_wxString(value).mb_str(),
+                                     Display::getMouseX_current().getRelativeTo(WINDOW),
+                                     m_mouse_y);
+        }
+        
+        AriaRender::primitives();
+    }
     
     // ----------------------- add controller events (preview) -------------------
     if (m_controller_choice->getControllerID() != PSEUDO_CONTROLLER_LYRICS)
@@ -242,7 +275,6 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
             if (mousey_initial >= area_from_y and mousey_initial <= area_to_y and not m_has_been_resizing)
             {
-
                 // if out of bounds
                 if (mousey_current < area_from_y) mousey_current = area_from_y;
                 if (mousey_current > area_to_y)   mousey_current = area_to_y;
@@ -298,9 +330,9 @@ void ControllerEditor::mouseDown(RelativeXCoord x, const int y)
     // check if user is dragging on this track
     m_mouse_is_in_editor = false;
     
-    if (y < getYEnd()-15 and y > getEditorYStart() and
-       x.getRelativeTo(WINDOW) < getWidth() - 24 and
-       x.getRelativeTo(EDITOR) > -1)
+    if (y < getAreaYTo() and y > getEditorYStart() and
+        x.getRelativeTo(WINDOW) < getWidth() - 24 and
+        x.getRelativeTo(EDITOR) > -1)
     {
         m_mouse_is_in_editor = true;
     }
@@ -325,16 +357,13 @@ void ControllerEditor::mouseDown(RelativeXCoord x, const int y)
 void ControllerEditor::mouseDrag(RelativeXCoord mousex_current, const int mousey_current,
                                  RelativeXCoord mousex_initial, const int mousey_initial)
 {
-
     if (m_mouse_is_in_editor and m_selecting)
     {
-
         // ------------------------ select ---------------------
         m_selection_begin = m_track->snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI) );
         m_selection_end   = m_track->snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI) );
-
     }
-
+    m_mouse_y = mousey_current;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -362,13 +391,12 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
         }
         else
         {
-
             m_selection_begin = -1;
             m_selection_end   = -1;
 
-            const int area_from_y = getEditorYStart() + 7;
-            const int area_to_y   = getYEnd() - 15;
-            const float y_zoom    = (float)( area_to_y - area_from_y ) / 127.0;
+            const int area_from_y = getAreaYFrom();
+            const int area_to_y   = getAreaYTo();
+            const float y_zoom = getYZoom();
 
             // ------------------------ add controller events ---------------------
 
@@ -379,8 +407,8 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
             if (mousey_initial < area_from_y) return;
             if (mousey_initial > area_to_y)   return;
             if (m_graphical_track->isDragResize() or m_has_been_resizing) return;
-            if (mousey_current < area_from_y) mousey_current=area_from_y;
-            if (mousey_current > area_to_y) mousey_current=area_to_y;
+            if (mousey_current < area_from_y) mousey_current = area_from_y;
+            if (mousey_current > area_to_y) mousey_current = area_to_y;
 
             int tick1 = m_track->snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI) );
             int tick2 = m_track->snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI) );
@@ -391,13 +419,7 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
             const bool on_off = m_controller_choice->isOnOffController( m_controller_choice->getControllerID() );
             if (tick1 == tick2)
             {
-                int y_value = (int)round((float)(mousey_initial-area_from_y)/y_zoom);
-                if ( on_off )
-                {
-                    // on/off controllers should only use values 0 and 127
-                    if  (y_value < 64) y_value = 0;
-                    else               y_value = 127;
-                }
+                int y_value = mouseYToValue(mousey_initial);
 
                 m_track->action( new Action::AddControlEvent(tick1,
                                                              y_value,
@@ -435,6 +457,14 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
 
 // ----------------------------------------------------------------------------------------------------------
 
+void ControllerEditor::processMouseMove(RelativeXCoord x, int y)
+{
+    m_mouse_y = y;
+    Display::render();
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
 void ControllerEditor::rightClick(RelativeXCoord x, const int y)
 {
 
@@ -447,6 +477,7 @@ void ControllerEditor::mouseExited(RelativeXCoord mousex_current, int mousey_cur
 {
     // if mouse leaves the frame, it has the same effect as if it was released (terminate drag, terminate selection, etc.)
     this->mouseUp(mousex_current, mousey_current, mousex_initial, mousey_initial);
+    m_mouse_y = -1;
     Display::render();
 }
 
