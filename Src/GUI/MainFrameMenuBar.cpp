@@ -637,10 +637,17 @@ void MainFrame::menuEvent_quit(wxCommandEvent& evt)
     
     printf("MainFrame::menuEvent_quit\n");
     
+    // the quit menu is greyed out in playback mode, but there are other ways to get this code called
+    // (like closing the frame)
+    if (m_playback_mode)
+    {
+        m_main_pane->exitPlayLoop();
+    }
+    
     // close all open sequences
     while (getSequenceAmount() > 0)
     {
-        if ( not closeSequence() )
+        if (not closeSequence())
         {
             // user canceled, don't quit
             return;
