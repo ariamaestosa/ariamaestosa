@@ -145,6 +145,7 @@ namespace AriaMaestosa
 
         wxBitmap m_play_bitmap;
         wxBitmap m_pause_bitmap;
+        wxBitmap m_pause_down_bitmap;
         wxBitmap m_tool1_bitmap;
         wxBitmap m_tool2_bitmap;
 
@@ -183,6 +184,9 @@ namespace AriaMaestosa
         
         bool m_disabled_for_welcome_screen;
         void doDisableMenusForWelcomeScreen(const bool disable);
+        
+        bool m_paused;
+        int  m_pause_location;
         
 #if !defined(__WXOSX_CARBON__)
         wxStaticBitmap* m_tools_bitmap;

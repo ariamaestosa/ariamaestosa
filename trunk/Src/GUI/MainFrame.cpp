@@ -280,6 +280,7 @@ MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(1
     wxLogVerbose( wxT("MainFrame::MainFrame") );
     m_main_panel = new wxPanel(this);
     m_disabled_for_welcome_screen = false;
+    m_paused = false;
     
     m_root_sizer = new wxBoxSizer(wxVERTICAL);
     m_root_sizer->Add(m_main_panel, 1, wxEXPAND | wxALL, 0);
@@ -375,13 +376,14 @@ void MainFrame::init()
 #endif
 
     m_play_bitmap.LoadFile( getResourcePrefix()  + wxT("play.png") , wxBITMAP_TYPE_PNG);
-    m_pause_bitmap.LoadFile( getResourcePrefix()  + wxT("pause.png") , wxBITMAP_TYPE_PNG);
     if (not m_play_bitmap.IsOk())
     {
         fprintf(stderr, "Cannot locate data files, aria cannot start. Please check your installation (you may set environment variable ARIA_MAESTOSA_DATA to help Aria find its data if the defaults fail)\n");
         wxMessageBox(wxT("Cannot locate data files, aria cannot start. Please check your installation"));
         exit(1);
     }
+    m_pause_bitmap.LoadFile( getResourcePrefix()  + wxT("pause.png") , wxBITMAP_TYPE_PNG);
+    m_pause_down_bitmap.LoadFile( getResourcePrefix()  + wxT("pause_down.png") , wxBITMAP_TYPE_PNG);
     m_toolbar->AddTool(PLAY_CLICKED, _("Play"), m_play_bitmap);
 
     wxBitmap stopBitmap;
@@ -680,27 +682,42 @@ void MainFrame::onMouseWheel(wxMouseEvent& event)
 void MainFrame::playClicked(wxCommandEvent& evt)
 {
     Sequence* seq = getCurrentSequence();
-
+    
     if (m_playback_mode)
-    {
-        MeasureData* md = seq->getMeasureData();
-        
+    {        
         // already playing, this button does "pause" instead
-        md->setFirstMeasure( md->measureAtTick(m_main_pane->getCurrentTick()) );
+        m_pause_location = m_main_pane->getCurrentTick();
+        m_paused = true;
         m_main_pane->exitPlayLoop();
-        updateTopBarAndScrollbarsForSequence( getCurrentGraphicalSequence() );
         return;
     }
-
+    
     toolsEnterPlaybackMode();
-
+    
     int startTick = -1;
-
+    int previousStartMeasure = -1;
+    
+    if (m_paused)
+    {
+        m_paused = false;
+        startTick = m_pause_location;
+        
+        MeasureData* md = seq->getMeasureData();
+        previousStartMeasure = md->getFirstMeasure();
+        md->setFirstMeasure( md->measureAtTick(m_pause_location) );
+    }
+    
     const bool success = PlatformMidiManager::get()->playSequence( seq, /*out*/ &startTick );
     if (not success) std::cerr << "Couldn't play" << std::endl;
-
+    
     seq->setPlaybackStartTick( startTick );
-
+    
+    if (previousStartMeasure != -1)
+    {
+        MeasureData* md = seq->getMeasureData();
+        md->setFirstMeasure( previousStartMeasure );
+    }
+    
     if (startTick == -1 or not success) m_main_pane->exitPlayLoop();
     else                                m_main_pane->enterPlayLoop();
 }
@@ -710,6 +727,8 @@ void MainFrame::playClicked(wxCommandEvent& evt)
 void MainFrame::stopClicked(wxCommandEvent& evt)
 {
     if (not m_playback_mode) return;
+    
+    m_paused = false;
     m_main_pane->exitPlayLoop();
 }
 
@@ -752,7 +771,9 @@ void MainFrame::toolsExitPlaybackMode()
 {
     m_playback_mode = false;
 
-    m_toolbar->SetToolNormalBitmap(PLAY_CLICKED, m_play_bitmap);
+    if (m_paused) m_toolbar->SetToolNormalBitmap(PLAY_CLICKED, m_pause_down_bitmap);
+    else          m_toolbar->SetToolNormalBitmap(PLAY_CLICKED, m_play_bitmap);
+    
     m_toolbar->EnableTool(STOP_CLICKED, false);
 
     disableMenus(false);
@@ -801,6 +822,10 @@ void MainFrame::updateTopBarAndScrollbarsForSequence(const GraphicalSequence* se
 
     m_expanded_measures_menu_item->Check( measData->isExpandedMode() );
 
+    if (m_paused)             m_toolbar->SetToolNormalBitmap(PLAY_CLICKED, m_pause_down_bitmap);
+    else if (m_playback_mode) m_toolbar->SetToolNormalBitmap(PLAY_CLICKED, m_pause_bitmap);
+    else                      m_toolbar->SetToolNormalBitmap(PLAY_CLICKED, m_play_bitmap);
+    
     // scrollbars
     updateHorizontalScrollbar();
     updateVerticalScrollbar();
@@ -1284,6 +1309,7 @@ void MainFrame::addSequence()
     setCurrentSequence( m_sequences.size() - 1, false /* update */ );
     gs->createViewForTracks(-1 /* all */);
     
+    m_paused = false;
     updateTopBarAndScrollbarsForSequence( getCurrentGraphicalSequence() );
     updateMenuBarToSequence();
     Display::render();
@@ -1337,6 +1363,8 @@ bool MainFrame::closeSequence(int id_arg) // -1 means current
     }
 
     m_sequences.erase( id );
+    m_paused = false;
+    m_toolbar->SetToolNormalBitmap(PLAY_CLICKED, m_play_bitmap);
 
     /*
     if (m_sequences.size() == 0)
@@ -1424,6 +1452,7 @@ void MainFrame::setCurrentSequence(int n, bool updateView)
     m_current_sequence = n;
     if (updateView)
     {
+        m_paused = false;
         updateTopBarAndScrollbarsForSequence( getCurrentGraphicalSequence() );
         updateMenuBarToSequence();
     }
@@ -1470,7 +1499,7 @@ void MainFrame::loadAriaFile(wxString filePath)
     getCurrentSequence()->setSequenceFilename( extractTitle(getCurrentSequence()->getFilepath()) );
 
     // if a song is currently playing, it needs to stay on top
-    if (PlatformMidiManager::get()->isPlaying())
+    if (PlatformMidiManager::get()->isPlaying() or m_paused)
     {
         setCurrentSequence(old_currentSequence);
     }
@@ -1515,7 +1544,7 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
     getCurrentSequence()->setSequenceFilename( extractTitle(midiFilePath) );
 
     // if a song is currently playing, it needs to stay on top
-    if (PlatformMidiManager::get()->isPlaying()) setCurrentSequence(old_currentSequence);
+    if (PlatformMidiManager::get()->isPlaying() or m_paused) setCurrentSequence(old_currentSequence);
 
     Display::render();
     

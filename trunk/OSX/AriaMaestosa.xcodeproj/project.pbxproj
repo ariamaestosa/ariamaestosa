@@ -532,6 +532,8 @@
 		95783A4311A9FB9800E2FABA /* RenderRoutines.h in Headers */ = {isa = PBXBuildFile; fileRef = 95783A4111A9FB9800E2FABA /* RenderRoutines.h */; };
 		95783A4411A9FB9800E2FABA /* RenderRoutines.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95783A4011A9FB9800E2FABA /* RenderRoutines.cpp */; };
 		95783A4511A9FB9800E2FABA /* RenderRoutines.h in Headers */ = {isa = PBXBuildFile; fileRef = 95783A4111A9FB9800E2FABA /* RenderRoutines.h */; };
+		957E67BA13D2692D0057E065 /* pause_down.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 957E67B913D269220057E065 /* pause_down.png */; };
+		957E67BB13D269390057E065 /* pause_down.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 957E67B913D269220057E065 /* pause_down.png */; };
 		95866C6B11CE7C10008F2938 /* KeyPresets.h in Headers */ = {isa = PBXBuildFile; fileRef = 95866C6911CE7C10008F2938 /* KeyPresets.h */; };
 		95866C6C11CE7C10008F2938 /* KeyPresets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95866C6A11CE7C10008F2938 /* KeyPresets.cpp */; };
 		95866C6D11CE7C10008F2938 /* KeyPresets.h in Headers */ = {isa = PBXBuildFile; fileRef = 95866C6911CE7C10008F2938 /* KeyPresets.h */; };
@@ -772,6 +774,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				957E67BA13D2692D0057E065 /* pause_down.png in CopyFiles */,
 				95DB7CF2133E88FB0060AB17 /* aria64.png in CopyFiles */,
 				95E963C313A5810D00927D76 /* configure.png in CopyFiles */,
 				95E963C413A5810D00927D76 /* exit.png in CopyFiles */,
@@ -829,6 +832,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				957E67BB13D269390057E065 /* pause_down.png in CopyFiles */,
 				95160BE61359F3C1001F20CD /* Documentation in CopyFiles */,
 				95160BE71359F3C1001F20CD /* score in CopyFiles */,
 				95160BE81359F3C1001F20CD /* collapse.jpg in CopyFiles */,
@@ -1135,6 +1139,7 @@
 		95783A4111A9FB9800E2FABA /* RenderRoutines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RenderRoutines.h; path = ../Src/Printing/RenderRoutines.h; sourceTree = SOURCE_ROOT; };
 		957C860F1127013D006AC7D3 /* Changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Changelog.txt; path = ../Changelog.txt; sourceTree = SOURCE_ROOT; };
 		957C861011270142006AC7D3 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO.txt; path = ../TODO.txt; sourceTree = SOURCE_ROOT; };
+		957E67B913D269220057E065 /* pause_down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pause_down.png; path = ../Resources/pause_down.png; sourceTree = SOURCE_ROOT; };
 		95866C6911CE7C10008F2938 /* KeyPresets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeyPresets.h; path = ../Src/Midi/KeyPresets.h; sourceTree = SOURCE_ROOT; };
 		95866C6A11CE7C10008F2938 /* KeyPresets.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KeyPresets.cpp; path = ../Src/Midi/KeyPresets.cpp; sourceTree = SOURCE_ROOT; };
 		95866DA011CE9561008F2938 /* PresetEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PresetEditor.h; path = ../Src/Dialogs/PresetEditor.h; sourceTree = SOURCE_ROOT; };
@@ -1824,6 +1829,7 @@
 		95DB7A4C133E88B10060AB17 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				957E67B913D269220057E065 /* pause_down.png */,
 				95DB7C92133E88CF0060AB17 /* aria64.png */,
 				95DB7C93133E88CF0060AB17 /* border.jpg */,
 				95DB7C94133E88CF0060AB17 /* close.png */,
