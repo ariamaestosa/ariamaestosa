@@ -41,6 +41,11 @@ wxString to_wxString(float f)
 {
     return wxString::Format(wxT("%f"), f);
 }
+    
+wxString to_wxString2(float f)
+{
+    return wxString::Format(wxT("%.2f"), f);
+}
 
 void assertFailed(wxString message)
 {

@@ -201,12 +201,14 @@ namespace AriaMaestosa
         
         bool processRightMouseClick(RelativeXCoord x, int y);
         bool processMouseDrag(RelativeXCoord x, int y);
+        void processMouseMove(RelativeXCoord x, int y);
         void processMouseRelease();
         void processMouseExited(RelativeXCoord x_now, int y_now,
                                 RelativeXCoord x_initial, int y_initial);
         
         int getFromY() const { return m_from_y; }
-        
+        int getToY()   const { return m_to_y;   }
+
         AriaRenderString& getNameRenderer() { return m_name_renderer; }
         
         //void onInstrumentChange(const int newInstrument, const bool isDrumKit);

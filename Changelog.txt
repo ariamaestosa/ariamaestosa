@@ -1,5 +1,6 @@
 1.3 beta 2
 - Improved working with more than one editor per track
+- Preview values in the controller editor
 - Add a Welcome screen instead of quitting when last tab is closed
 - Fixed pressing shift+number in guitar editor in Cocoa
 - use sheet dialogs on OSX

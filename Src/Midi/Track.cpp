@@ -1684,6 +1684,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
                     m.SetControlChange(channel,
                                        controllerID,
+                                       // FIXME: why do I need to do 127 - value??
                                        127 - m_control_events[control_evt_id].getValue() );
 
                     if (not midiTrack->PutEvent( m ))

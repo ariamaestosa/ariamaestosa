@@ -980,6 +980,18 @@ bool GraphicalTrack::processMouseDrag(RelativeXCoord x, int y)
 
 // ----------------------------------------------------------------------------------------------------------
 
+
+void GraphicalTrack::processMouseMove(RelativeXCoord x, int y)
+{
+    Editor* ed = getEditorAt(y);
+    if (ed != NULL)
+    {
+        ed->processMouseMove(x, y);
+    }
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
 void GraphicalTrack::onTrackRemoved(Track* track)
 {
     m_keyboard_editor->trackDeleted(track);

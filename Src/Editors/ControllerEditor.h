@@ -47,6 +47,38 @@ namespace AriaMaestosa
         
         int m_selection_begin, m_selection_end;
         
+        int m_mouse_y;
+        
+        float getYZoom() const
+        {
+            const int area_from_y = getEditorYStart() + 7;
+            const int area_to_y   = getYEnd() - 15;
+            return (float)( area_to_y - area_from_y ) / 127.0;
+        }
+        
+        int getAreaYFrom() const
+        {
+            return getEditorYStart() + 7;
+        }
+        int getAreaYTo() const
+        {
+            return getYEnd() - 15;
+        }
+        
+        int mouseYToValue(int mouseY) const
+        {
+            const float y_zoom = getYZoom();
+            const bool on_off = m_controller_choice->isOnOffController( m_controller_choice->getControllerID() );
+            const int area_from_y = getAreaYFrom();
+            int y_value = (int)round((float)(mouseY - area_from_y)/y_zoom);
+            if ( on_off )
+            {
+                // on/off controllers should only use values 0 and 127
+                if  (y_value < 64) y_value = 0;
+                else               y_value = 127;
+            }
+            return y_value;
+        }
     public:
         
         ControllerEditor(GraphicalTrack* track);
@@ -67,7 +99,8 @@ namespace AriaMaestosa
         void rightClick(RelativeXCoord, const int y);
         void mouseExited(RelativeXCoord dragX_arg, int mousey_current,
                          RelativeXCoord XBeforeDrag_arg, int mousey_initial);
-        
+        virtual void processMouseMove(RelativeXCoord x, int y);
+
         int getSelectionBegin() const { return m_selection_begin; }
         int getSelectionEnd  () const { return m_selection_end;   }
         
