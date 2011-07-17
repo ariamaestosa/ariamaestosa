@@ -197,7 +197,7 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
         
     }
 
-    // ----------------------------------- middle line -----------------------
+    // ----------------------------------- horizontal lines -----------------------
     AriaRender::color(0.9, 0.9, 0.9);
     
     // tempo
@@ -212,7 +212,15 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     else
         // all others
     {
-        AriaRender::line(0, (area_from_y+area_to_y)/2, getXEnd(), (area_from_y+area_to_y)/2);
+        AriaRender::line(0, (area_from_y + area_to_y)/2, getXEnd(), (area_from_y+area_to_y)/2);
+        
+        const int quarter_y = area_from_y + (area_to_y - area_from_y)/4;
+        
+        AriaRender::line(0, quarter_y, getXEnd(), quarter_y);
+        
+        const int three_quarters_y = area_from_y + (area_to_y - area_from_y)*3/4;
+        AriaRender::line(0, three_quarters_y, getXEnd(), three_quarters_y);
+
     }
     
     drawVerticalMeasureLines(area_from_y, area_to_y);
@@ -247,7 +255,7 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
         else if (m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_PITCH_BEND)
         {
             int value = mouseYToValue(m_mouse_y);
-            float pitch = (value - 64) / 64.0f * 2.0f;
+            float pitch = (value - 64) / 64.0f * -2.0f;
             AriaRender::renderNumber((const char*)to_wxString2(pitch).mb_str(),
                                      Display::getMouseX_current().getRelativeTo(WINDOW),
                                      m_mouse_y);
