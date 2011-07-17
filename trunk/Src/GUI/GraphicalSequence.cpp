@@ -195,10 +195,20 @@ void GraphicalSequence::setXScrollInPixels(int value)
 
     const int editor_size = Display::getWidth() - 100;
     const int total_size  = m_measure_bar->getTotalPixelAmount();
-    ASSERT_E(total_size, >=, editor_size);
-    
+        
     if (m_x_scroll_in_pixels < 0) m_x_scroll_in_pixels = 0;
-    if (m_x_scroll_in_pixels >= total_size-editor_size) m_x_scroll_in_pixels = total_size-editor_size - 1;
+    if (m_x_scroll_in_pixels >= total_size - editor_size)
+    {
+        if (total_size > editor_size)
+        {
+            m_x_scroll_in_pixels = total_size - editor_size - 1;
+        }
+        else
+        {
+            // special case where song is short enough to be fully visible
+            m_x_scroll_in_pixels = 0;
+        }
+    }
     ASSERT_E(m_x_scroll_in_pixels, >=, 0);
 
     Display::render();
