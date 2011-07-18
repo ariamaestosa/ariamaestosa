@@ -840,3 +840,81 @@ int AriaMaestosa::convertTempoBendToBPM(int val)
 }
 
 // ----------------------------------------------------------------------------------------------------------
+
+int AriaMaestosa::getTimeAtTick(int tick, const Sequence* seq)
+{
+    std::vector<int> tempos;
+    std::vector<int> duration;
+    
+    const int tempo_events_amount = seq->getTempoEventAmount();
+    //std::cout << "tempo_events_amount = " << tempo_events_amount << std::endl;
+    if (tempo_events_amount < 1 or (tempo_events_amount == 1 and seq->getTempoEvent(0)->getTick() == 0) )
+    {
+        tempos.push_back(seq->getTempo());
+        duration.push_back(tick);
+    }
+    else
+    {
+        // multiple tempo changes
+        
+        if (tick > seq->getTempoEvent(0)->getTick())
+        {
+            // from beginning to first event
+            tempos.push_back(seq->getTempo());
+            duration.push_back(seq->getTempoEvent(0)->getTick());
+            
+            //std::cout << "Firstly, " << (seq->tempoEvents[0].getTick()) << " ticks at " << seq->getTempo() << std::endl;
+            
+            // other events
+            int n;
+            for (n = 1; n<tempo_events_amount; n++)
+            {
+                if (seq->getTempoEvent(n)->getTick() > tick)
+                {
+                    // this tempo event is only partially used, remove what we had calculated and just to the next part
+                    tempos.pop_back();
+                    duration.pop_back();
+                    break;
+                }
+                else
+                {
+                    tempos.push_back( convertTempoBendToBPM(seq->getTempoEvent(n-1)->getValue()) );
+                    duration.push_back(seq->getTempoEvent(n)->getTick() - seq->getTempoEvent(n-1)->getTick());
+                }
+                //std::cout << (duration[duration.size()-1]) << " ticks at " << (tempos[tempos.size()-1]) << std::endl;
+            }
+            
+            if (seq->getTempoEvent(n-1)->getTick() <= tick)
+            {
+                // after last event
+                tempos.push_back( convertTempoBendToBPM(seq->getTempoEvent(n-1)->getValue()) );
+                duration.push_back( tick - seq->getTempoEvent(n-1)->getTick() );
+            }
+        }
+        else
+        {
+            // tick is before the first event!
+            tempos.push_back(seq->getTempo());
+            duration.push_back(tick);
+        }
+        
+        //std::cout << "Finally, " << (duration[duration.size()-1]) << " ticks at " << (tempos[tempos.size()-1]) << std::endl;
+    }
+    
+    
+    float song_duration = 0;
+    const int amount = tempos.size();
+    for (int n=0; n<amount; n++)
+    {
+        //printf("%i for %i\n", tempos[n], duration[n]);
+        
+        // std::cout << " -- adding " << (int)round( ((float)duration[n] * 60.0f ) / ((float)seq->ticksPerBeat() * (float)tempos[n])) << std::endl;
+        song_duration += ((float)duration[n] * 60.0f ) / ((float)seq->ticksPerBeat() * (float)tempos[n]);
+    }
+    
+    //wxString duration_label = wxString::Format(wxString(_("Song duration :")) + wxT("  %i:%.2i"), (int)(song_duration/60), song_duration%60);
+    //songLength->SetLabel(duration_label);
+    
+    return (int)round(song_duration);
+}
+

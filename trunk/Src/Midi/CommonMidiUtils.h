@@ -48,9 +48,17 @@ namespace AriaMaestosa
     bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bool selectionOnly,
                              /*out*/int* songLengthInTicks, /*out*/int* startTick, /*out*/ int* numTracks, bool playing);
     
-    /** @ingroup midi */
+    /**
+      * @brief For use with the controller editor, when entering tempo bends
+      * @ingroup midi
+      */
     int convertTempoBendToBPM(int val);
     
+    /**
+      * @ingroup midi
+      * @return Time elapsed from start of song to given tick, in seconds
+      */
+    int getTimeAtTick(int tick, const Sequence* seq);
     
 }
 
