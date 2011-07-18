@@ -83,6 +83,7 @@ namespace AriaMaestosa
         /** Gives information about the location of the mouse in a drag */
         bool m_is_mouse_down;
 
+        /** During playback, the current tick; -1 otherwise */
         int m_current_tick;
 
         /** which track the user is dragging (in a track reordering process), or -1 if none */
