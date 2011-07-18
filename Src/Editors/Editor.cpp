@@ -425,7 +425,8 @@ void Editor::mouseDrag(RelativeXCoord mousex_current, int mousey_current,
     {
 
         // -------------------  drag scrollbar  ---------------
-        if (m_vertical_scrolling and mousey_initial < getYEnd() - 15 and mousey_initial > getEditorYStart())
+        if (m_vertical_scrolling and m_click_on_scrollbar and
+            mousey_initial < getYEnd() - 15 and mousey_initial > getEditorYStart())
         {
             // if we reach scrollbar extremity, wait until mouse comes back to the middle of the thumb before starting to scroll again
             if (m_sb_position == 0 and mousey_current < getEditorYStart() + 25)
@@ -633,7 +634,7 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
     // -------------- check if user is clicking on scroll bar, but not grabbing the thumb ----------------
     if (m_use_vertical_scrollbar)
     {
-        m_click_on_scrollbar = false;
+        //m_click_on_scrollbar = false;
 
         // make thumb slide to mouse
         if (mousex_current.getRelativeTo(WINDOW) > sbThumbDrawable->getX() and
@@ -642,13 +643,14 @@ void Editor::mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
             mousey_current > getEditorYStart() + SCROLLBAR_ARROW_HEIGHT)
         {
 
-            m_click_on_scrollbar = true;
+            //m_click_on_scrollbar = true;
             
             // not grabbing the thumb
             if (
                not m_scroll_up_arrow_pressed and
                not m_scroll_down_arrow_pressed and
-               not m_vertical_scrolling
+               not m_vertical_scrolling and
+               m_click_on_scrollbar
                )
             {
 
