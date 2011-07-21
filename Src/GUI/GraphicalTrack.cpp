@@ -593,7 +593,7 @@ bool GraphicalTrack::processMouseDown(RelativeXCoord mousex, int mousey)
         if (not m_collapsed)
         {
             // resize drag
-            if (mousey > m_to_y - 10 and mousey < m_to_y)
+            if (mousey > m_to_y - 10 and mousey < m_to_y and not m_gsequence->isTrackMaximized())
             {
                 m_dragging_resize = true;
                 
