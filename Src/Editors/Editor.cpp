@@ -588,6 +588,7 @@ void Editor::mouseExited(RelativeXCoord mousex_current, int mousey_current,
     m_selecting = false;
     
     m_mouse_is_in_editor = false;
+    m_clicked_on_note = false;
 
     Display::render();
 }
