@@ -609,7 +609,7 @@ void MainFrame::init()
     wxLogVerbose( wxT("MainFrame::init (creating pickers)") );
 
     // create pickers
-    m_tuning_picker       =  new TuningPicker();
+    m_tuning_picker       =  NULL;
     m_key_picker          =  new KeyPicker();
     m_instrument_picker   =  new InstrumentPicker();
     m_drumKit_picker      =  new DrumPicker();
@@ -801,6 +801,17 @@ void MainFrame::toolsExitPlaybackMode()
     m_tempo_ctrl->Enable(true);
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
+TuningPicker* MainFrame::getTuningPicker()
+{
+    if (m_tuning_picker == NULL)
+    {
+        m_tuning_picker = new TuningPicker();
+    }
+    
+    return m_tuning_picker;
+}
 
 // ----------------------------------------------------------------------------------------------------------
 // ----------------------------------------------------------------------------------------------------------
