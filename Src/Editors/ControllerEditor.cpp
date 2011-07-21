@@ -244,34 +244,41 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     
     // -------------------------- Value preview --------------------------
     if (m_mouse_y != -1 and m_mouse_y >= area_from_y and m_mouse_y <= area_to_y)
-    {
-        AriaRender::images();
-        
-        int the_x = Display::getMouseX_current().getRelativeTo(WINDOW) + 8;
-        int the_y = m_mouse_y + 8;
-        if (the_y < area_from_y + 12)
+    {        
+        const int check_y = Display::getMouseY_current();
+        if (check_y > area_to_y or check_y < area_from_y)
         {
-            the_y = area_from_y + 12;
-        }
-        
-        if (m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_TEMPO)
-        {
-            int value = convertTempoBendToBPM(mouseYToValue(m_mouse_y));
-            AriaRender::renderNumber((const char*)to_wxString(value).mb_str(), the_x, the_y);
-        }
-        else if (m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_PITCH_BEND)
-        {
-            int value = mouseYToValue(m_mouse_y);
-            float pitch = (value - 64) / 64.0f * -2.0f;
-            AriaRender::renderNumber((const char*)to_wxString2(pitch).mb_str(), the_x, the_y);
+            m_mouse_y = NULL;
         }
         else
         {
-            int value = 127 - mouseYToValue(m_mouse_y);
-            AriaRender::renderNumber((const char*)to_wxString(value).mb_str(), the_x, the_y);
+            AriaRender::images();
+            int the_x = Display::getMouseX_current().getRelativeTo(WINDOW) + 8;
+            int the_y = m_mouse_y + 8;
+            if (the_y < area_from_y + 12)
+            {
+                the_y = area_from_y + 12;
+            }
+            
+            if (m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_TEMPO)
+            {
+                int value = convertTempoBendToBPM(mouseYToValue(m_mouse_y));
+                AriaRender::renderNumber((const char*)to_wxString(value).mb_str(), the_x, the_y);
+            }
+            else if (m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_PITCH_BEND)
+            {
+                int value = mouseYToValue(m_mouse_y);
+                float pitch = (value - 64) / 64.0f * -2.0f;
+                AriaRender::renderNumber((const char*)to_wxString2(pitch).mb_str(), the_x, the_y);
+            }
+            else
+            {
+                int value = 127 - mouseYToValue(m_mouse_y);
+                AriaRender::renderNumber((const char*)to_wxString(value).mb_str(), the_x, the_y);
+            }
+            
+            AriaRender::primitives();
         }
-        
-        AriaRender::primitives();
     }
     
     // ----------------------- add controller events (preview) -------------------
@@ -473,6 +480,17 @@ void ControllerEditor::processMouseMove(RelativeXCoord x, int y)
 {
     m_mouse_y = y;
     Display::render();
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void ControllerEditor::processMouseOutsideOfMe()
+{
+    if (m_mouse_y != -1)
+    {
+        m_mouse_y = -1;
+        getMainFrame()->getMainPane()->Refresh();
+    }
 }
 
 // ----------------------------------------------------------------------------------------------------------

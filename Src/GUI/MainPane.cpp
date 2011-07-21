@@ -1016,7 +1016,10 @@ void MainPane::mouseMoved(wxMouseEvent& event)
                 if (event.GetY() > graphics->getFromY() and event.GetY() < graphics->getToY())
                 {
                     gseq->getGraphicsFor(track)->processMouseMove(m_mouse_x_current, event.GetY());
-                    break;
+                }
+                else
+                {
+                    gseq->getGraphicsFor(track)->processMouseOutsideOfMe();
                 }
             }
         }

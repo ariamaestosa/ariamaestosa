@@ -203,8 +203,13 @@ namespace AriaMaestosa
         bool processMouseDrag(RelativeXCoord x, int y);
         void processMouseMove(RelativeXCoord x, int y);
         void processMouseRelease();
+        
+        /** A mouse _drag_ exited this track */
         void processMouseExited(RelativeXCoord x_now, int y_now,
                                 RelativeXCoord x_initial, int y_initial);
+        
+        /** Mouse moved (hovering) outside of this track (this method is used to disable anything enabled on hover) */
+        void processMouseOutsideOfMe();
         
         int getFromY() const { return m_from_y; }
         int getToY()   const { return m_to_y;   }

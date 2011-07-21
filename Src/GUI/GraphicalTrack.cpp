@@ -987,6 +987,23 @@ void GraphicalTrack::processMouseMove(RelativeXCoord x, int y)
     if (ed != NULL)
     {
         ed->processMouseMove(x, y);
+        for (int n=0; n<m_all_editors.size(); n++)
+        {
+            if (m_all_editors.get(n) != ed)
+            {
+                m_all_editors[n].processMouseOutsideOfMe();
+            }
+        }
+    }
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void GraphicalTrack::processMouseOutsideOfMe()
+{
+    for (int n=0; n<m_all_editors.size(); n++)
+    {
+        m_all_editors[n].processMouseOutsideOfMe();
     }
 }
 

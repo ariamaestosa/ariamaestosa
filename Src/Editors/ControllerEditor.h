@@ -100,6 +100,7 @@ namespace AriaMaestosa
         void mouseExited(RelativeXCoord dragX_arg, int mousey_current,
                          RelativeXCoord XBeforeDrag_arg, int mousey_initial);
         virtual void processMouseMove(RelativeXCoord x, int y);
+        virtual void processMouseOutsideOfMe();
 
         int getSelectionBegin() const { return m_selection_begin; }
         int getSelectionEnd  () const { return m_selection_end;   }
