@@ -360,7 +360,7 @@ void ScoreMidiConverter::updateConversionData()
             //FIXME: octave numbers are wrong in Score Editor
             const int natural_note_on_this_line = Note::findNotePitch( note_7, NATURAL, 9 - octave);
 
-            m_level_to_midi_note[n] = natural_note_on_this_line;
+            m_level_to_natural_note[n] = natural_note_on_this_line;
 
             // only use natural signs if this note cannot be displayed without natural sign on another line
             // in wich case 'm_midi_note_to_level' will have been set (or will be overwritten later)
