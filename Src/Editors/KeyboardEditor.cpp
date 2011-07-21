@@ -27,6 +27,7 @@
 #include "GUI/GraphicalSequence.h"
 #include "GUI/GraphicalTrack.h"
 #include "GUI/ImageProvider.h"
+#include "GUI/MainFrame.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
@@ -89,7 +90,24 @@ void KeyboardEditor::mouseDown(RelativeXCoord x, const int y)
     Editor::mouseDown(x, y);
 }
 
+// -----------------------------------------------------------------------------------------------------------
+
+void KeyboardEditor::processMouseMove(RelativeXCoord x, int y)
+{
+    const int note = getLevelAtY(y);
     
+    Note12 note12;
+    int octave;
+    
+    if (Note::findNoteName(note, &note12 /* out */, &octave /* out */))
+    {
+        wxString status;
+        status << NOTE_12_NAME[note12];
+        status << octave;
+        getMainFrame()->setStatusText(status);
+    }
+}
+
 // ***********************************************************************************************************
 // ******************************************    EDITOR METHODS      *****************************************
 // ***********************************************************************************************************

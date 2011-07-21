@@ -11,6 +11,7 @@
 - Other bug fixes and minor improvements
 - Show which sequences have unsaved changes
 - Display a timer during playback
+- Preview note in a status bar
 
 1.3 beta 1
 - Intensive code refactoring and cleanup

@@ -41,6 +41,7 @@ namespace AriaMaestosa
         
         /** event callback from base class */
         virtual void mouseDown(RelativeXCoord x, const int y);
+        virtual void processMouseMove(RelativeXCoord x, int y);
         
         virtual void render(RelativeXCoord mousex_current, int mousey_current,
                             RelativeXCoord mousex_initial, int mousey_initial, bool focus=false);

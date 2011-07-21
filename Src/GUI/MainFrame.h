@@ -185,6 +185,8 @@ namespace AriaMaestosa
         bool m_disabled_for_welcome_screen;
         void doDisableMenusForWelcomeScreen(const bool disable);
         
+        wxStaticText* m_status_text;
+        
         bool m_paused;
         int  m_pause_location;
         
@@ -232,6 +234,8 @@ namespace AriaMaestosa
 
         void enterPressedInTopBar(wxCommandEvent& evt);
 
+        void setStatusText(wxString text);
+        
         // wait window events
         void evt_showWaitWindow(wxCommandEvent& evt);
         void evt_updateWaitWindow(wxCommandEvent& evt);
