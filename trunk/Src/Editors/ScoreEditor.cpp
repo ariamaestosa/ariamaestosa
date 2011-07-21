@@ -24,6 +24,7 @@
 #include "GUI/ImageProvider.h"
 #include "GUI/GraphicalSequence.h"
 #include "GUI/GraphicalTrack.h"
+#include "GUI/MainFrame.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
 #include "Midi/MeasureData.h"
@@ -1485,6 +1486,26 @@ void ScoreEditor::rightClick(RelativeXCoord x, int y)
 {
     Editor::rightClick(x, y);
 
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void ScoreEditor::processMouseMove(RelativeXCoord x, int y)
+{
+    const int level = getLevelAtY(y);
+    if (level < 0 or level >= 73) return;
+    int note = m_converter->levelToNote(level);
+    
+    Note12 note12;
+    int octave;
+    
+    if (Note::findNoteName(note, &note12 /* out */, &octave /* out */))
+    {
+        wxString status;
+        status << NOTE_12_NAME[note12];
+        status << octave;
+        getMainFrame()->setStatusText(status);
+    }
 }
 
 // ----------------------------------------------------------------------------------------------------------

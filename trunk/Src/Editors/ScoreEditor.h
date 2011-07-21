@@ -229,8 +229,13 @@ namespace AriaMaestosa
         /** event callback from base class */
         virtual void rightClick(RelativeXCoord x, int y);
         
+        /** event callback from base class */
         virtual void mouseExited(RelativeXCoord mousex_current, int mousey_current,
                                  RelativeXCoord mousex_initial, int mousey_initial);
+        
+        /** event callback from base class */
+        virtual void processMouseMove(RelativeXCoord x, int y);
+
         
         /** implemented from base class Editor's required interface */
         virtual int getYScrollInPixels();

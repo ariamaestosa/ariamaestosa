@@ -519,12 +519,12 @@ void MainFrame::init()
     args[1]=WX_GL_DOUBLEBUFFER;
     args[2]=0;
     m_main_pane = new MainPane(m_main_panel, args);
-    m_border_sizer->Add( static_cast<wxGLCanvas*>(m_main_pane), 1, wxEXPAND | wxALL, 2);
+    m_border_sizer->Add( static_cast<wxGLCanvas*>(m_main_pane), 1, wxEXPAND | wxTOP | wxLEFT, 1);
     
 #elif defined(RENDERER_WXWIDGETS)
     
     m_main_pane = new MainPane(m_main_panel, NULL);
-    m_border_sizer->Add( static_cast<wxPanel*>(m_main_pane), 1, wxEXPAND | wxALL, 2 );
+    m_border_sizer->Add( static_cast<wxPanel*>(m_main_pane), 1, wxEXPAND | wxTOP | wxLEFT, 1);
     
 #endif
 
@@ -547,7 +547,16 @@ void MainFrame::init()
 
     // -------------------------- Horizontal Scrollbar ----------------------------
     m_horizontal_scrollbar = new wxScrollBar(m_main_panel, SCROLLBAR_H);
-    m_border_sizer->Add(m_horizontal_scrollbar, 1, wxEXPAND | wxALL, 0);
+    wxBoxSizer* h_sizer = new wxBoxSizer(wxHORIZONTAL);
+    m_status_text = new wxStaticText(m_main_panel, wxID_ANY, wxT(""));
+    m_status_text->SetMinSize( wxSize(90, -1) );
+    m_status_text->SetMaxSize( wxSize(90, -1) );
+    
+    m_status_text->SetFont( getNumberFont() );
+    h_sizer->Add(m_status_text, 0, wxEXPAND | wxLEFT, 2);
+    
+    h_sizer->Add(m_horizontal_scrollbar, 1, wxEXPAND | wxALL, 0);
+    m_border_sizer->Add(h_sizer, 1, wxEXPAND | wxALL, 0);
 
     // For the first time, set scrollbar manually and not using updateHorizontalScrollbar(), because this method assumes the frame is visible.
     const int editor_size=695, total_size=12*128;
@@ -668,6 +677,14 @@ void MainFrame::onDropFile(wxDropFilesEvent& event)
 void MainFrame::onMouseWheel(wxMouseEvent& event)
 {
     m_main_pane->mouseWheelMoved(event);
+}
+
+
+// ----------------------------------------------------------------------------------------------------------
+
+void MainFrame::setStatusText(wxString text)
+{
+    m_status_text->SetLabel(text);
 }
 
 
