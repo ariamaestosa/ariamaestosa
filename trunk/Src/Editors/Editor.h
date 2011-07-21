@@ -216,7 +216,7 @@ namespace AriaMaestosa
         virtual void mouseHeldDown(RelativeXCoord mousex_current, int mousey_current,
                                    RelativeXCoord mousex_initial, int mousey_initial);
         
-        /** @brief event callback for when mouse drag exited the bounds of the editor */
+        /** @brief event callback for when mouse _drag_ exited the bounds of the editor */
         virtual void mouseExited(RelativeXCoord dragX_arg, int mousey_current,
                                  RelativeXCoord XBeforeDrag_arg, int mousey_initial);
         
@@ -226,6 +226,8 @@ namespace AriaMaestosa
         /** @brief Called whenever the mouse is moved; override if you need this information */
         virtual void processMouseMove(RelativeXCoord x, int y) {}
 
+        /** Mouse moved (hovering) outside of this track (this method is used to disable anything enabled on hover) */
+        virtual void processMouseOutsideOfMe() {}
         
         /** @brief called in derived class when it's time to render */
         virtual void render(RelativeXCoord mousex_current, int mousey_current,
