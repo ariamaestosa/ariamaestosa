@@ -191,11 +191,11 @@ def sys_command(command):
 def compile_Aria(which_os):
 
     if which_os == "windows":
-        # on Windows ask for MinGW, VC++ can't handle Aria (since it doesn't support recent C++ standards)
+        # on Windows ask for MinGW, VC++ can't handle Aria
         env = Environment(tools = ['mingw'])
     else:
         env = Environment()
-	
+    
     env.Decider('MD5-timestamp')
     
     env.Append(PATH = os.environ['PATH'])
@@ -213,7 +213,10 @@ def compile_Aria(which_os):
     print ">> Build type : " + build_type
     
     # check renderer
-    renderer = ARGUMENTS.get('renderer', 'opengl')
+    if which_os == "macosx":
+        renderer = ARGUMENTS.get('renderer', 'opengl')
+    else:
+        renderer = ARGUMENTS.get('renderer', 'wxwidgets')
     if renderer != 'opengl' and renderer != 'wxwidgets':
         print "!! Unknown renderer " + renderer
         sys.exit(0)
