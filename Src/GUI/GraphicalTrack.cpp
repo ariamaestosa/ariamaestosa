@@ -530,7 +530,7 @@ bool GraphicalTrack::handleEditorChanges(int x, BitmapButton* button, Editor* ed
             if (not m_track->isNotationTypeEnabled(type))
             {
                 const int DEFAULT_SIZE = 150;
-                m_height += DEFAULT_SIZE;
+                if (not m_gsequence->isTrackMaximized()) m_height += DEFAULT_SIZE;
                 const float relativeHeight = float(DEFAULT_SIZE)/float(m_height);
                 
                 //int count = m_track->getEnabledEditorCount();
@@ -556,7 +556,7 @@ bool GraphicalTrack::handleEditorChanges(int x, BitmapButton* button, Editor* ed
                 // can't disable the last shown ditor
                 if (m_track->getEnabledEditorCount() <= 1) return true;
                 
-                m_height -= m_height*editor->getRelativeHeight();
+                if (not m_gsequence->isTrackMaximized()) m_height -= m_height*editor->getRelativeHeight();
                 float toRemove = getEditorFor( type )->getRelativeHeight();
                 
                 for (int n=0; n<NOTATION_TYPE_COUNT; n++)
@@ -783,12 +783,15 @@ bool GraphicalTrack::processMouseDown(RelativeXCoord mousex, int mousey)
             {
                 if (not m_track->isNotationTypeEnabled(CONTROLLER))
                 {
-                    m_height += 150;
+                    if (not m_gsequence->isTrackMaximized()) m_height += 150;
                     m_track->setNotationType(CONTROLLER, true);
                 }
                 else
                 {
-                    m_height -= m_height*m_controller_editor->getRelativeHeight();
+                    if (not m_gsequence->isTrackMaximized())
+                    {
+                        m_height -= m_height*m_controller_editor->getRelativeHeight();
+                    }
                     m_track->setNotationType(CONTROLLER, false);
                 }
                 
