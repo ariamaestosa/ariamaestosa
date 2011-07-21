@@ -252,7 +252,6 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
         }
         else
         {
-            AriaRender::images();
             int the_x = Display::getMouseX_current().getRelativeTo(WINDOW) + 8;
             int the_y = m_mouse_y + 8;
             if (the_y < area_from_y + 12)
@@ -263,21 +262,32 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
             if (m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_TEMPO)
             {
                 int value = convertTempoBendToBPM(mouseYToValue(m_mouse_y));
+                
+                AriaRender::images();
                 AriaRender::renderNumber((const char*)to_wxString(value).mb_str(), the_x, the_y);
+                AriaRender::primitives();
             }
             else if (m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_PITCH_BEND)
             {
                 int value = mouseYToValue(m_mouse_y);
                 float pitch = (value - 64) / 64.0f * -2.0f;
+                
+                AriaRender::images();
                 AriaRender::renderNumber((const char*)to_wxString2(pitch).mb_str(), the_x, the_y);
+                AriaRender::primitives();
+            }
+            else if (m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_LYRICS)
+            {
+                // no preview for this one
             }
             else
             {
                 int value = 127 - mouseYToValue(m_mouse_y);
+                
+                AriaRender::images();
                 AriaRender::renderNumber((const char*)to_wxString(value).mb_str(), the_x, the_y);
+                AriaRender::primitives();
             }
-            
-            AriaRender::primitives();
         }
     }
     
