@@ -295,7 +295,7 @@ namespace AriaMaestosa
         // ---- Pickers
         InstrumentPicker* getInstrumentPicker() { return m_instrument_picker; }
         DrumPicker*       getDrumPicker      () { return m_drumKit_picker;    }
-        TuningPicker*     getTuningPicker    () { return m_tuning_picker;     }
+        TuningPicker*     getTuningPicker    ();
         KeyPicker*        getKeyPicker       () { return m_key_picker;        }
         
         // ---- I/O
