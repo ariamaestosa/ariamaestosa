@@ -133,12 +133,16 @@ bool MidiContext::openDevice(bool launchTimidity)
     bool success = false;
     
         
-    MidiDevice* d;
+    MidiDevice* d = NULL;
     
     wxString port = PreferencesData::getInstance()->getValue(SETTING_ID_MIDI_OUTPUT);
     if (port == wxString(wxT("default")))
     {
-        d = getDevice(0); // default is to take the first device
+        if (devices.size() > 0)
+        {
+            d = getDevice(0); // default is to take the first device
+            PreferencesData::getInstance()->setValue(SETTING_ID_MIDI_OUTPUT, d->name);
+        }
     }
     else
     {
