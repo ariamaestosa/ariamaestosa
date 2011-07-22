@@ -270,9 +270,9 @@ void MainFrame::initMenuBar()
     // ---- Output devices menu
     m_output_menu = new wxMenu();
     
+    wxArrayString choices = PlatformMidiManager::get()->getOutputChoices();
     wxString output = PreferencesData::getInstance()->getValue(SETTING_ID_MIDI_OUTPUT);
 
-    wxArrayString choices = PlatformMidiManager::get()->getOutputChoices();
     bool found = false;
     for (unsigned int n=0; n<choices.Count(); n++)
     {
