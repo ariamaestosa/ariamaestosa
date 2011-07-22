@@ -153,10 +153,7 @@ wxString showFileDialog(wxWindow* parent,
     int answer = dialog->ShowModal();
     
     wxString path = dialog->GetPath();
-    //dialog->Hide();
-    //dialog->Destroy();
-    dialog->EndModal(answer);
-    //dialog->Destroy();
+    dialog->Destroy();
     
     if (answer != wxID_OK) return wxT("");
 

@@ -285,11 +285,13 @@ MainPane::WelcomeResult MainPane::drawWelcomeMenu()
                 MainFrame* mf = getMainFrame();
                 if (n == 0)
                 {
+                    m_is_mouse_down = false;
                     wxCommandEvent dummy;
                     mf->menuEvent_new(dummy);
                 }
                 else if (n == 1)
                 {
+                    m_is_mouse_down = false;
                     wxCommandEvent dummy;
                     mf->menuEvent_open(dummy);
                     if (mf->getSequenceAmount() > 0)
@@ -304,6 +306,7 @@ MainPane::WelcomeResult MainPane::drawWelcomeMenu()
                 }
                 else if (n == 2)
                 {
+                    m_is_mouse_down = false;
                     wxCommandEvent dummy;
                     mf->menuEvent_importmidi(dummy);
                     if (mf->getSequenceAmount() > 0)
@@ -318,16 +321,19 @@ MainPane::WelcomeResult MainPane::drawWelcomeMenu()
                 }
                 else if (n == 3)
                 {
+                    m_is_mouse_down = false;
                     wxCommandEvent dummy;
                     mf->menuEvent_preferences(dummy);
                 }
                 else if (n == 4)
                 {
+                    m_is_mouse_down = false;
                     wxCommandEvent dummy;
                     mf->menuEvent_manual(dummy);
                 }
                 else if (n == 5)
                 {
+                    m_is_mouse_down = false;
                     m_is_visible = false; // prevent future renders
                     
                     wxCommandEvent dummy(wxEVT_COMMAND_MENU_SELECTED, wxID_EXIT);
