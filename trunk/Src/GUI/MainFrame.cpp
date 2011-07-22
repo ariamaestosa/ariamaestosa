@@ -83,23 +83,6 @@ using namespace AriaMaestosa;
 
 namespace AriaMaestosa
 {
-    enum IDs
-    {
-        PLAY_CLICKED,
-        STOP_CLICKED,
-        TEMPO,
-        ZOOM,
-        LENGTH,
-        BEGINNING,
-        TOOL_BUTTON,
-
-        SCROLLBAR_H,
-        SCROLLBAR_V,
-
-        TIME_SIGNATURE
-    };
-
-
     // events useful if you need to show a progress bar from another thread
     DEFINE_LOCAL_EVENT_TYPE(wxEVT_SHOW_WAIT_WINDOW)
     DEFINE_LOCAL_EVENT_TYPE(wxEVT_UPDATE_WAIT_WINDOW)
