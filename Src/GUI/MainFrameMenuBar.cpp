@@ -64,7 +64,7 @@
 namespace AriaMaestosa
 {
 
-    enum IDs
+    enum MenuIDs
     {
 
         MENU_FILE_NEW = wxID_HIGHEST+1,
@@ -375,6 +375,7 @@ void MainFrame::doDisableMenusForWelcomeScreen(const bool disable)
     m_menu_bar->EnableTop(1, on);
     m_menu_bar->EnableTop(2, on);
     m_menu_bar->EnableTop(3, on);
+    m_toolbar->EnableTool(PLAY_CLICKED, on);
     
     m_first_measure->Enable(on);
     m_time_sig->Enable(on);
