@@ -16,8 +16,8 @@ echo "making packgage for version $VERSION"
 
 USE_WX_CONFIG="/Developer/svn/wxWidgets/cocoa_build/wx-config "
 OUTPUT="$HOME/Desktop/aria-build/"
-ADDITIONAL_BUILD_FLAGS="-isysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.4 -Wfatal-errors -arch i386"
-ADDITIONAL_LINK_FLAGS="-isysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.4 -arch i386"
+ADDITIONAL_BUILD_FLAGS="-isysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.4 -Wfatal-errors"
+ADDITIONAL_LINK_FLAGS="-isysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.4"
 export CC="gcc-4.0"
 export CXX="g++-4.0"
 
@@ -53,7 +53,7 @@ cd $OUTPUT/build
 #make -f GNUMakefile all
 #cd ..
 
-python scons/scons.py config=release WXCONFIG=$USE_WX_CONFIG CXXFLAGS="$ADDITIONAL_BUILD_FLAGS" LDFLAGS="$ADDITIONAL_LINK_FLAGS" -j 2
+python scons/scons.py config=release WXCONFIG=$USE_WX_CONFIG CXXFLAGS="$ADDITIONAL_BUILD_FLAGS" LDFLAGS="$ADDITIONAL_LINK_FLAGS" compiler_arch=32bit -j 2
 python scons/scons.py install
 
 mkdir -p "$OUTPUT/AriaMaestosa-$VERSION/"
