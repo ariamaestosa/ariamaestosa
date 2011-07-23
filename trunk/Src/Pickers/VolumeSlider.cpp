@@ -107,7 +107,7 @@ const int VOLUME_SLIDER_FRAME_HEIGHT = 160;
 
 VolumeSlider::VolumeSlider() : wxDialog(NULL, wxNewId(),  _("volume"), wxDefaultPosition,
                                         wxSize(VOLUME_SLIDER_FRAME_WIDTH, VOLUME_SLIDER_FRAME_HEIGHT),
-                                        wxSTAY_ON_TOP | wxWANTS_CHARS )
+                                        wxSTAY_ON_TOP | wxWANTS_CHARS | wxBORDER_NONE )
 {
     m_pane = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(VOLUME_SLIDER_FRAME_WIDTH,
                                                                    VOLUME_SLIDER_FRAME_HEIGHT));
@@ -120,6 +120,8 @@ VolumeSlider::VolumeSlider() : wxDialog(NULL, wxNewId(),  _("volume"), wxDefault
     
     m_value_text = new wxTextCtrl(m_pane, wxNewId(), wxT("0"), wxPoint(0,130), smallsize,
                                   wxTE_PROCESS_ENTER | wxWANTS_CHARS);
+    m_value_text->SetMinSize(smallsize);
+    m_value_text->SetMaxSize(smallsize);
     m_note_ID = -1;
     m_current_track = NULL;
     
@@ -183,6 +185,7 @@ void VolumeSlider::show(int x, int y, int noteID, Track* track)
     m_value_text->SetValue( to_wxString(m_current_track->getNoteVolume(noteID)) );
     m_value_text->SetFocus();
     m_value_text->SetSelection(-1,-1); // select all
+    
     m_return_code = ShowModal();
 }
 
