@@ -324,7 +324,6 @@ void MainFrame::doDisableMenusForWelcomeScreen(const bool disable)
     
     m_file_menu->Enable(MENU_FILE_EXPORT_NOTATION, on);
     m_file_menu->Enable(MENU_FILE_COPYRIGHT, on);
-    m_file_menu->Enable(wxID_EXIT, on);
     
     m_menu_bar->EnableTop(1, on);
     m_menu_bar->EnableTop(2, on);
