@@ -725,11 +725,17 @@ void MainFrame::playClicked(wxCommandEvent& evt)
 // ----------------------------------------------------------------------------------------------------------
 
 void MainFrame::stopClicked(wxCommandEvent& evt)
-{
-    if (not m_playback_mode) return;
-    
-    m_paused = false;
-    m_main_pane->exitPlayLoop();
+{    
+    if (m_paused)
+    {
+        m_paused = false;
+        toolsExitPlaybackMode();
+    }
+    else
+    {
+        if (not m_playback_mode) return;
+        m_main_pane->exitPlayLoop();
+    }
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -771,11 +777,17 @@ void MainFrame::toolsExitPlaybackMode()
 {
     m_playback_mode = false;
 
-    if (m_paused) m_toolbar->SetToolNormalBitmap(PLAY_CLICKED, m_pause_down_bitmap);
-    else          m_toolbar->SetToolNormalBitmap(PLAY_CLICKED, m_play_bitmap);
+    if (m_paused)
+    {
+        m_toolbar->SetToolNormalBitmap(PLAY_CLICKED, m_pause_down_bitmap);
+        m_toolbar->EnableTool(STOP_CLICKED, true);
+    }
+    else
+    {
+        m_toolbar->SetToolNormalBitmap(PLAY_CLICKED, m_play_bitmap);
+        m_toolbar->EnableTool(STOP_CLICKED, false);
+    }
     
-    m_toolbar->EnableTool(STOP_CLICKED, false);
-
     disableMenus(false);
 
     m_time_sig->Enable(true);
