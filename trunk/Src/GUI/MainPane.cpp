@@ -322,8 +322,7 @@ MainPane::WelcomeResult MainPane::drawWelcomeMenu()
                 else if (n == 3)
                 {
                     m_is_mouse_down = false;
-                    wxCommandEvent dummy;
-                    mf->menuEvent_preferences(dummy);
+                    return SHOW_PREFERENCES;
                 }
                 else if (n == 4)
                 {
@@ -443,6 +442,13 @@ bool MainPane::do_render()
         if (result == ABORT_RENDER) return false;
         else if (result == NOTHING_SPECIAL) return true;
         else if (result == RENDER_AGAIN) beginFrame();
+        else if (result == SHOW_PREFERENCES)
+        {
+            wxCommandEvent dummy(wxEVT_COMMAND_MENU_SELECTED, wxID_PREFERENCES);
+            mf->GetEventHandler()->AddPendingEvent(dummy);
+           // mf->menuEvent_preferences(dummy);
+           return true;
+        }
     }
     else
     {

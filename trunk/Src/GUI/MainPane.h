@@ -62,7 +62,8 @@ namespace AriaMaestosa
         {
             NOTHING_SPECIAL,
             ABORT_RENDER,
-            RENDER_AGAIN
+            RENDER_AGAIN,
+            SHOW_PREFERENCES
         };
         
         /** To send events repeatedly when the mouse is held down */
