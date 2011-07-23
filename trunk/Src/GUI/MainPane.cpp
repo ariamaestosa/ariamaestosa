@@ -233,10 +233,22 @@ MainPane::WelcomeResult MainPane::drawWelcomeMenu()
     getMainFrame()->disableMenusForWelcomeScreen(true);
     
     // FIXME: ugly to hardcode the welcome menu this way
-    Drawable** icons = (Drawable*[]){menu_new, menu_open, menu_import, menu_configure, menu_help, menu_exit};
-    AriaRenderString** strings = (AriaRenderString*[]) {&m_new_sequence_label, &m_open_label, &m_import_label,
-        &m_configure_label, &m_help_label, &m_quit_label};
+    Drawable* icons[6];
+    icons[0] = menu_new;
+    icons[1] = menu_open;
+    icons[2] = menu_import;
+    icons[3] = menu_configure;
+    icons[4] = menu_help;
+    icons[5] = menu_exit;
     
+    AriaRenderString* strings[6];
+    strings[0] = &m_new_sequence_label;
+    strings[1] = &m_open_label;
+    strings[2] = &m_import_label;
+    strings[3] = &m_configure_label;
+    strings[4] = &m_help_label;
+    strings[5] = &m_quit_label;
+
     AriaRender::setImageState(AriaRender::STATE_NORMAL);
     
     const int MARGIN = 50;
