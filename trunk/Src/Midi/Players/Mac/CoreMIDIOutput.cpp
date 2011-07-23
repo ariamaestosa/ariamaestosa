@@ -109,7 +109,7 @@ static CFStringRef ConnectedEndpointName(MIDIEndpointRef endpoint)
                     if (connObjectType == kMIDIObjectType_ExternalSource  ||
                         connObjectType == kMIDIObjectType_ExternalDestination) {
                         // Connected to an external device's endpoint (10.3 and later).
-                        str = EndpointName(connObject, true);
+                        str = EndpointName((OpaqueMIDIEndpoint*)(connObject), true);
                     } else {
                         // Connected to an external device (10.2) (or something else, catch-all)
                         str = NULL;

@@ -283,7 +283,7 @@ PreferencesDialog::~PreferencesDialog()
 void PreferencesDialog::show()
 {
     Center();
-#ifdef __WXOSX__
+#ifdef __WXOSX_COCOA__
     ShowWindowModal();
     modalCode = GetReturnCode();
 #else
