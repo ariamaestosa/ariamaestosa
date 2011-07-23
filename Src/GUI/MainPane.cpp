@@ -244,6 +244,8 @@ MainPane::WelcomeResult MainPane::drawWelcomeMenu()
     const int ICON_HEIGHT = 64;
     const int height = ICON_HEIGHT + IMAGE_MARGIN*2;
     
+    WelcomeResult returnValue = NOTHING_SPECIAL;
+    
     for (int n=0; n<6; n++)
     {
         strings[n]->bind(); // to make sure text width is available
@@ -292,37 +294,45 @@ MainPane::WelcomeResult MainPane::drawWelcomeMenu()
                 else if (n == 1)
                 {
                     m_is_mouse_down = false;
-                    wxCommandEvent dummy;
-                    mf->menuEvent_open(dummy);
-                    if (mf->getSequenceAmount() > 0)
-                    {
-                        mf->Refresh();
-                        return RENDER_AGAIN;
-                    }
-                    else
-                    {
-                        return ABORT_RENDER;
-                    }
+                    //wxCommandEvent dummy;
+                    //mf->menuEvent_open(dummy);
+                    
+                    wxCommandEvent dummy(wxEVT_COMMAND_MENU_SELECTED, MENU_FILE_OPEN);
+                    mf->GetEventHandler()->AddPendingEvent(dummy);
+                    
+                    //if (mf->getSequenceAmount() > 0)
+                    //{
+                    //    mf->Refresh();
+                    //    returnValue = RENDER_AGAIN;
+                    //}
+                    //else
+                    //{
+                    //    returnValue = ABORT_RENDER;
+                    //}
                 }
                 else if (n == 2)
                 {
                     m_is_mouse_down = false;
-                    wxCommandEvent dummy;
-                    mf->menuEvent_importmidi(dummy);
-                    if (mf->getSequenceAmount() > 0)
-                    {
-                        mf->Refresh();
-                        return RENDER_AGAIN;
-                    }
-                    else
-                    {
-                        return ABORT_RENDER;
-                    }
+                    //wxCommandEvent dummy;
+                    //mf->menuEvent_importmidi(dummy);
+                    
+                    wxCommandEvent dummy(wxEVT_COMMAND_MENU_SELECTED, MENU_FILE_IMPORT_MIDI);
+                    mf->GetEventHandler()->AddPendingEvent(dummy);
+                    
+                    //if (mf->getSequenceAmount() > 0)
+                    //{
+                    //    mf->Refresh();
+                    //    return RENDER_AGAIN;
+                    //}
+                    //else
+                    //{
+                    //    return ABORT_RENDER;
+                    //}
                 }
                 else if (n == 3)
                 {
                     m_is_mouse_down = false;
-                    return SHOW_PREFERENCES;
+                    returnValue = SHOW_PREFERENCES;
                 }
                 else if (n == 4)
                 {
@@ -424,7 +434,7 @@ MainPane::WelcomeResult MainPane::drawWelcomeMenu()
         strings[n]->bind();
         strings[n]->render(img_x + IMAGE_MARGIN*3 + menu_new->getImageWidth(), y + m_new_sequence_label.getHeight()/2);
     }
-    return NOTHING_SPECIAL;
+    return returnValue;
 }
 
 // --------------------------------------------------------------------------------------------------

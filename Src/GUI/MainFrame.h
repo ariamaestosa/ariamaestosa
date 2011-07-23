@@ -74,6 +74,49 @@ namespace AriaMaestosa
         TIME_SIGNATURE
     };
     
+    
+    enum MenuIDs
+    {
+        
+        MENU_FILE_NEW = wxID_HIGHEST+1,
+        MENU_FILE_OPEN,
+        MENU_FILE_SAVE,
+        MENU_FILE_SAVE_AS,
+        MENU_FILE_IMPORT_MIDI,
+        MENU_FILE_EXPORT_MIDI,
+        MENU_FILE_EXPORT_SAMPLED_AUDIO,
+        MENU_FILE_EXPORT_NOTATION,
+        MENU_FILE_CLOSE,
+        MENU_FILE_COPYRIGHT,
+        
+        MENU_EDIT_COPY,
+        MENU_EDIT_PASTE,
+        MENU_EDIT_SELECT_ALL,
+        MENU_EDIT_SELECT_NONE,
+        MENU_EDIT_SELECT_CUSTOM,
+        MENU_EDIT_PASTE_AT_CURSOR,
+        MENU_EDIT_SNAP_TO_GRID,
+        MENU_EDIT_SCALE,
+        MENU_EDIT_REMOVE_OVERLAPPING,
+        MENU_EDIT_UNDO,
+        
+        MENU_SETTINGS_FOLLOW_PLAYBACK,
+        MENU_SETTINGS_PLAY_ALWAYS,
+        MENU_SETTINGS_PLAY_NEVER,
+        MENU_SETTINGS_MEASURE_EXPANDED,
+        MENU_SETTINGS_PLAY_ON_CHANGE,
+        MENU_SETTINGS_CHANNELS_AUTO,
+        MENU_SETTINGS_CHANNEL_MANUAL,
+        MENU_SETTINGS_METRONOME,
+        
+        MENU_TRACK_ADD,
+        MENU_TRACK_REMOVE,
+        MENU_TRACK_BACKG,
+        
+        MENU_OUTPUT_DEVICE
+    };
+    
+
     // events useful if you need to show a
     // progress bar from another thread
     DECLARE_LOCAL_EVENT_TYPE(wxEVT_SHOW_WAIT_WINDOW,   -1)
