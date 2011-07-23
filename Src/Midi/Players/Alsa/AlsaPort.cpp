@@ -41,10 +41,13 @@ bool MidiDevice::open()
 
 void MidiDevice::close()
 {
-    snd_seq_unsubscribe_port(midiContext->sequencer, midiContext->subs);
-    snd_seq_drop_output(midiContext->sequencer);
-    snd_seq_free_queue(midiContext->sequencer, midiContext->queue);
-    snd_seq_close(midiContext->sequencer);
+    if (midiContext != NULL)
+    {
+        snd_seq_unsubscribe_port(midiContext->sequencer, midiContext->subs);
+        snd_seq_drop_output(midiContext->sequencer);
+        snd_seq_free_queue(midiContext->sequencer, midiContext->queue);
+        snd_seq_close(midiContext->sequencer);
+    }
 }
 
 
@@ -55,6 +58,7 @@ void MidiDevice::close()
 MidiContext::MidiContext()
 {
     queue = -1;
+    device = NULL;
 }
 
 MidiContext::~MidiContext()
@@ -109,7 +113,11 @@ void runTimidity()
 
 void MidiContext::closeDevice()
 {
-    device->close();
+    if (device != NULL)
+    {
+        device->close();
+        device = NULL;
+    }
 }
 
 bool MidiContext::openDevice(bool launchTimidity)
@@ -172,7 +180,7 @@ bool MidiContext::openDevice(bool launchTimidity)
     
     if (!success)
     {
-        wxMessageBox( _("The selected ALSA device could not be opened.") );
+        wxMessageBox( wxString::Format(_("The selected ALSA device (%s) could not be opened."), (const char*)port.mb_str()) );
     }
     
     return success;

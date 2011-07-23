@@ -227,7 +227,7 @@ public:
         
         if (not context->openDevice(launchTimidity))
         {
-            wxMessageBox( _("Failed to open ALSA device, sound will be unavailable") );
+            wxMessageBox( _("Failed to open ALSA device, sound will be unavailable (you can try selecting another output device from the 'Output' menu)") );
             std::cerr << "failed to open ALSA device" << std::endl;
             sound_available = false;
             AlsaPlayerStuff::alsa_output_module_free();
