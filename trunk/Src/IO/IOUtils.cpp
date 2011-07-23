@@ -107,7 +107,7 @@ long atoi_u(wxString s)
     }
 }
 
-#ifdef __WXOSX__
+#ifdef __WXOSX_COCOA__
 bool g_have_answer = false;
 wxString g_answer;
 void sheetCallback(wxWindowModalDialogEvent& evt)
@@ -137,7 +137,7 @@ wxString showFileDialog(wxWindow* parent,
 {
     wxFileDialog* dialog = new wxFileDialog(parent, message, defaultDir, filename, wildcard, (save?wxFD_SAVE:wxFD_OPEN));
     
-#ifdef __WXOSX__
+#ifdef __WXOSX_COCOA__
     g_have_answer = false;
     dialog->Bind(wxEVT_WINDOW_MODAL_DIALOG_CLOSED, &sheetCallback);
     dialog->ShowWindowModal();

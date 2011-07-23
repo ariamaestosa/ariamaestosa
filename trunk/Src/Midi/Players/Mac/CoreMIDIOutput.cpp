@@ -8,7 +8,7 @@
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
- 
+
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -109,7 +109,7 @@ static CFStringRef ConnectedEndpointName(MIDIEndpointRef endpoint)
                     if (connObjectType == kMIDIObjectType_ExternalSource  ||
                         connObjectType == kMIDIObjectType_ExternalDestination) {
                         // Connected to an external device's endpoint (10.3 and later).
-                        str = EndpointName((OpaqueMIDIEndpoint*)(connObject), true);
+                        str = EndpointName(connObject, true);
                     } else {
                         // Connected to an external device (10.2) (or something else, catch-all)
                         str = NULL;

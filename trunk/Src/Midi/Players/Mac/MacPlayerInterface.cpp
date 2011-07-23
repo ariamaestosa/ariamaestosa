@@ -87,7 +87,7 @@ namespace AriaMaestosa
             
             if (Create() != wxTHREAD_NO_ERROR)
             {
-                wxMessageBox("Failed to create Audio Export thread!\n");
+                wxMessageBox(wxT("Failed to create Audio Export thread!"));
                 return;
             }
             
@@ -360,9 +360,9 @@ namespace AriaMaestosa
         virtual void initMidiPlayer()
         {
             wxString driver = PreferencesData::getInstance()->getValue(SETTING_ID_MIDI_OUTPUT);
-            if (driver == "default" || driver == _("OSX Software Synthesizer"))
+            if (driver == wxT("default") || driver == _("OSX Software Synthesizer"))
             {
-                if (driver == "default")
+                if (driver == wxT("default"))
                 {
                     PreferencesData::getInstance()->setValue(SETTING_ID_MIDI_OUTPUT, _("OSX Software Synthesizer"));
                 }
