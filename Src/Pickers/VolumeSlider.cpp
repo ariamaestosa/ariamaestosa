@@ -148,6 +148,9 @@ VolumeSlider::VolumeSlider() : wxDialog(NULL, wxNewId(),  _("volume"), wxDefault
     Connect(m_value_text->GetId(), wxEVT_COMMAND_TEXT_ENTER,   wxCommandEventHandler(VolumeSlider::enterPressed),      NULL, this);
     
     Connect(wxID_CANCEL, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(VolumeSlider::onCancel), NULL, this);
+    
+    SetMinSize(wxSize(VOLUME_SLIDER_FRAME_WIDTH, VOLUME_SLIDER_FRAME_HEIGHT));
+    SetMaxSize(wxSize(VOLUME_SLIDER_FRAME_WIDTH, VOLUME_SLIDER_FRAME_HEIGHT));
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -178,8 +181,8 @@ void VolumeSlider::show(int x, int y, int noteID, Track* track)
     m_slider->SetValue(m_current_track->getNoteVolume(noteID));
     
     m_value_text->SetValue( to_wxString(m_current_track->getNoteVolume(noteID)) );
-    
-    m_slider->SetFocus();
+    m_value_text->SetFocus();
+    m_value_text->SetSelection(-1,-1); // select all
     m_return_code = ShowModal();
 }
 
