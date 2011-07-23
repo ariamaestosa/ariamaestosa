@@ -325,6 +325,14 @@ def compile_Aria(which_os):
         '-framework','Carbon','-framework','Cocoa','-framework','IOKit','-framework','System',
         '-framework','CoreMIDI'])
         
+        if compiler_arch == '32bit':
+            env.Append(CCFLAGS=['-arch','i386'])
+            env.Append(LINKFLAGS = ['-arch','i386'])
+        elif compiler_arch == '64bit':
+            env.Append(CCFLAGS=['-arch','x86_64'])
+            env.Append(LINKFLAGS = ['-arch','x86_64'])
+            
+            
         if renderer == 'opengl':
             env.Append(LINKFLAGS = ['-framework','OpenGL','-framework','AGL'])
         
