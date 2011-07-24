@@ -36,7 +36,7 @@
 #include "jdkmidi/world.h"
 
 #include "jdkmidi/multitrack.h"
-
+#include <cassert>
 
 #ifndef DEBUG_MDMLTTRK
 # define DEBUG_MDMLTTRK	0
