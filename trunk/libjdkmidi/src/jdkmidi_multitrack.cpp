@@ -103,11 +103,13 @@ namespace jdkmidi
   
   MIDITrack *MIDIMultiTrack::GetTrack( int trk ) 
   {
+    assert(trk < num_tracks);
     return tracks[trk];
   } 
   
   const MIDITrack *MIDIMultiTrack::GetTrack( int trk ) const 
   {
+    assert(trk < num_tracks);
     return tracks[trk];
   } 
   

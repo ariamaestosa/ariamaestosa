@@ -370,6 +370,8 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
     
     MeasureData* md = sequence->getMeasureData();
     
+    bool tooManyChannelsMessageShown = false;
+    
     if (selectionOnly)
     {
         //  ---- add events to tracks
@@ -395,10 +397,27 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
         {
             bool drum_track = (sequence->getTrack(n)->isNotationTypeEnabled(DRUM));
             
-            int trackFirstNote =-1;
-            trackLength = sequence->getTrack(n)->addMidiEvents(tracks.GetTrack(n+1), (drum_track ? 9 : channel),
-                                                               md->getFirstMeasure(), false,
-                                                               trackFirstNote );
+            int trackFirstNote = -1;
+            
+            if (n+1 < tracks.GetNumTracks())
+            {
+                trackLength = sequence->getTrack(n)->addMidiEvents(tracks.GetTrack(n+1), (drum_track ? 9 : channel),
+                                                                   md->getFirstMeasure(), false,
+                                                                   trackFirstNote );
+            }
+            else
+            {
+                if (not tooManyChannelsMessageShown)
+                {
+                    if (WaitWindow::isShown()) WaitWindow::hide();
+                    wxMessageBox(_("WARNING: this song has too many\nchannels, expect unpredictable output"));
+                    std::cout << "WARNING: this song has too many channels, expect unpredictable output" << std::endl;
+                    tooManyChannelsMessageShown = true;
+                }
+                trackLength = sequence->getTrack(n)->addMidiEvents(tracks.GetTrack(1), (drum_track ? 9 : channel),
+                                                                   md->getFirstMeasure(), false,
+                                                                   trackFirstNote );
+            }
             
             if ((trackFirstNote<(*startTick) and trackFirstNote != -1) or (*startTick) == -1)
             {
@@ -413,10 +432,14 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
             {
                 if (channel > 15 and sequence->getChannelManagementType() == CHANNEL_AUTO)
                 {
-                    if (WaitWindow::isShown()) WaitWindow::hide();
-                    wxMessageBox(_("WARNING: this song has too many\nchannels, expect unpredictable output"));
+                    if (not tooManyChannelsMessageShown)
+                    {
+                        if (WaitWindow::isShown()) WaitWindow::hide();
+                        wxMessageBox(_("WARNING: this song has too many\nchannels, expect unpredictable output"));
+                        std::cout << "WARNING: this song has too many channels, expect unpredictable output" << std::endl;
+                        tooManyChannelsMessageShown = true;
+                    }
                     channel = 0;
-                    std::cout << "WARNING: this song has too many channels, expect unpredictable output" << std::endl;
                 }
                 channel++; if (channel==9) channel++;
             }
@@ -704,9 +727,21 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
         const int count = sequence->getTrackAmount();
         for (int n=0; n<count; n++)
         {
-            if (not tracks.GetTrack(n+1)->PutEvent( m ))
+            if (n+1 < tracks.GetNumTracks())
             {
-                std::cerr << "Error adding dummy end midi event!" << std::endl;
+                if (not tracks.GetTrack(n+1)->PutEvent( m ))
+                {
+                    std::cerr << "Error adding dummy end midi event!" << std::endl;
+                }
+            }
+            else
+            {
+                std::cerr << "Too many tracks, expect unpredictable output" << std::endl;
+
+                if (not tracks.GetTrack(1)->PutEvent( m ))
+                {
+                    std::cerr << "Error adding dummy end midi event!" << std::endl;
+                }
             }
         }//next
     }
