@@ -119,6 +119,10 @@ void KeyboardEditor::processMouseMove(RelativeXCoord x, int y)
         status << octave;
         getMainFrame()->setStatusText(status);
     }
+    else
+    {
+        getMainFrame()->setStatusText(wxT(""));
+    }
 }
 
 // ***********************************************************************************************************

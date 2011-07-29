@@ -1004,6 +1004,7 @@ void MainPane::mouseMoved(wxMouseEvent& event)
                                                  m_mouse_y_current - MEASURE_BAR_Y,
                                                  m_mouse_x_initial.getRelativeTo(WINDOW),
                                                  m_mouse_y_initial - MEASURE_BAR_Y);
+                mf->setStatusText(wxT(""));
             }
         }
 
@@ -1030,6 +1031,7 @@ void MainPane::mouseMoved(wxMouseEvent& event)
             }
             
             Display::render();
+            mf->setStatusText(wxT(""));
         }
         else
         {
@@ -1055,6 +1057,13 @@ void MainPane::mouseMoved(wxMouseEvent& event)
                 {
                     gseq->getGraphicsFor(track)->processMouseOutsideOfMe();
                 }
+            }
+            
+            const int measureBarHeight = gseq->getMeasureBar()->getMeasureBarHeight();
+
+            if (event.GetY() > MEASURE_BAR_Y and event.GetY() < MEASURE_BAR_Y + measureBarHeight)
+            {
+                getMainFrame()->setStatusText(wxT(""));
             }
         }
     }
@@ -1085,6 +1094,8 @@ void MainPane::mouseLeftWindow(wxMouseEvent& event)
         m_mouse_hovering_tabs = false;
         Display::render();
     }
+    
+    getMainFrame()->setStatusText(wxT(""));
 }
 
 // --------------------------------------------------------------------------------------------------

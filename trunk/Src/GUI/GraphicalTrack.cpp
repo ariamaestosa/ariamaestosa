@@ -998,6 +998,10 @@ void GraphicalTrack::processMouseMove(RelativeXCoord x, int y)
             }
         }
     }
+    else
+    {
+        getMainFrame()->setStatusText(wxT(""));
+    }
 }
 
 // ----------------------------------------------------------------------------------------------------------
