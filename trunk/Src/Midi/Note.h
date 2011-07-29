@@ -109,6 +109,22 @@ namespace AriaMaestosa
         wxT("G#")
     };
     
+    static const wxString NOTE_12_NAME_FLATS[] =
+    {
+        wxT("A"),
+        wxT("Bb"),
+        wxT("B"),
+        wxT("C"),
+        wxT("Db"),
+        wxT("D"),
+        wxT("Eb"),
+        wxT("E"),
+        wxT("F"),
+        wxT("Gb"),
+        wxT("G"),
+        wxT("Ab")
+    };
+    
     /**
       * @brief represents one note
       * @ingroup midi
