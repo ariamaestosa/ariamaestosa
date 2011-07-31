@@ -955,7 +955,8 @@ void MainPane::mouseDown(wxMouseEvent& event)
         if (not (m_current_tick != -1 and (m_left_arrow or m_right_arrow))) // ignore when playing
         {
             gseq->getMeasureBar()->mouseDown(m_mouse_x_current.getRelativeTo(WINDOW),
-                                             m_mouse_y_current - MEASURE_BAR_Y);
+                                             m_mouse_y_current - MEASURE_BAR_Y,
+                                             event.ShiftDown());
         }
 
     }

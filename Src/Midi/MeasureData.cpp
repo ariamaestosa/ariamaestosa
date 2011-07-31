@@ -148,6 +148,28 @@ void MeasureData::selectNothing()
 
 // ----------------------------------------------------------------------------------------------------------
 
+void MeasureData::selectNotesInSelectedMeasures()
+{
+    
+    // iterate through notes and select those that are within the selection range just found
+    const int trackAmount = m_sequence->getTrackAmount();
+    for (int trackID=0; trackID<trackAmount; trackID++)
+    {
+        Track* track = m_sequence->getTrack(trackID);
+        
+        const int noteAmount = track->getNoteAmount();
+        for (int n=0; n<noteAmount; n++)
+        {
+            const int note_tick = track->getNoteStartInMidiTicks(n);
+            
+            // note is within selection range? if so, select it, else unselect it.
+            track->selectNote(n, m_measure_info[measureAtTick(note_tick)].selected , true);
+        }
+    }
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
 void MeasureData::checkUpToDate()
 {
     // if measure amount changed and MeasureBar is out of sync with its current number of measures, fix it
