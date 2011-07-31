@@ -241,9 +241,6 @@ namespace AriaMaestosa
           */
         virtual NoteSearchResult noteAt(RelativeXCoord x, const int y, int& noteID) = 0;
         
-        /** to notify the editor that note 'id' was just clicked. */
-        virtual void noteClicked(const int id) = 0;
-        
         /** called when user adds a note */
         virtual void addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY) = 0;
         

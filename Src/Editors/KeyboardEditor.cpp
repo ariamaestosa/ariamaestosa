@@ -141,15 +141,6 @@ void KeyboardEditor::addNote(const int snapped_start_tick, const int snapped_end
 }
 
 // -----------------------------------------------------------------------------------------------------------
-    
-void KeyboardEditor::noteClicked(const int id)
-{
-    m_graphical_track->selectNote(ALL_NOTES, false);
-    m_graphical_track->selectNote(id, true);
-    m_track->playNote(id);
-}
-
-// -----------------------------------------------------------------------------------------------------------
 
 NoteSearchResult KeyboardEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
 {

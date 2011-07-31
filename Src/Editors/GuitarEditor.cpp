@@ -497,15 +497,6 @@ NoteSearchResult GuitarEditor::noteAt(RelativeXCoord x, const int y, int& noteID
 
 // ----------------------------------------------------------------------------------------------------------
 
-void GuitarEditor::noteClicked(const int id)
-{
-    m_graphical_track->selectNote(ALL_NOTES, false);
-    m_graphical_track->selectNote(id, true);
-    m_track->playNote(id);
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
 void GuitarEditor::addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY)
 {
     int string = (int)round( (float)(mouseY - getEditorYStart() - first_string_position) / (float)y_step );

@@ -570,15 +570,6 @@ NoteSearchResult DrumEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
 
 // ----------------------------------------------------------------------------------------------------------
 
-void DrumEditor::noteClicked(const int id)
-{
-    m_graphical_track->selectNote(ALL_NOTES, false);
-    m_graphical_track->selectNote(id, true);
-    m_track->playNote(id);
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
 void DrumEditor::addNote(const int snappedX, const int mouseY)
 {
     // FIXME - double checks? something very similar is also checked in MouseDown

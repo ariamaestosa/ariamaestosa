@@ -395,7 +395,9 @@ void Editor::mouseDown(RelativeXCoord x, int y)
         if (result == FOUND_NOTE)
         {
             m_clicked_on_note = true;
-            noteClicked( m_last_clicked_note );
+            m_graphical_track->selectNote(ALL_NOTES, false);
+            m_graphical_track->selectNote(m_last_clicked_note, true);
+            m_track->playNote(m_last_clicked_note);
         }
         else if (result == FOUND_SELECTED_NOTE)
         {

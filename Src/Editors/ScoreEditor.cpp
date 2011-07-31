@@ -1616,15 +1616,6 @@ NoteSearchResult ScoreEditor::noteAt(RelativeXCoord x, const int y, int& noteID)
 
 // ----------------------------------------------------------------------------------------------------------
 
-void ScoreEditor::noteClicked(const int id)
-{
-    m_graphical_track->selectNote(ALL_NOTES, false);
-    m_graphical_track->selectNote(id, true);
-    m_track->playNote(id);
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
 void ScoreEditor::addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY)
 {
     const int level = getLevelAtY(mouseY);
