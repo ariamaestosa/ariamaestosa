@@ -16,7 +16,7 @@
 
 #include "Utils.h"
 
-//#include "GUI/MainFrame.h"
+#include "GUI/MainFrame.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
@@ -220,7 +220,11 @@ int MeasureData::measureAtTick(int tick) const
         {
             // verify that we're within song bounds. except if importing, since the song length
             // might not have been set yet.
-            ASSERT_E(tick, <=, lastTickInMeasure(m_measure_amount-1));
+            const int lastTick = lastTickInMeasure(m_measure_amount-1);
+            if (tick > lastTick)
+            {
+                fprintf(stderr, "[MeasureData] WARNING: tick %i is beyond song end %i!\n", tick, lastTick);
+            }
         }
         
         // iterate through measures till we find the one at the given tick
@@ -526,7 +530,23 @@ void MeasureData::updateMeasureInfo()
     totalNeededLengthInTicks = (int)tick;
     //totalNeededLengthInPixels = (int)( tick * zoom );
 
+    
+    const int sequenceLength = m_sequence->getLastTickInSequence();
+    const int lastTickMeasure = getTotalTickAmount();
+    if (sequenceLength > lastTickMeasure)
+    {
+        const int missingTicks = (sequenceLength - lastTickMeasure);
+        const int missingMeasures = ceil( float(missingTicks) / float(getMeasureLength(getMeasureAmount() - 1)) );
+        setMeasureAmount( m_measure_amount + missingMeasures );
+        updateMeasureInfo();
+        return;
+    }
+    
+    
+    // FIXME: (DESIGN) use listener instead of referring to GUI class from model
     DisplayFrame::updateHorizontalScrollbar();
+    getMainFrame()->updateTopBarAndScrollbars();
+    
     ASSERT_E(m_measure_amount, ==, (int)m_measure_info.size());
 }
 

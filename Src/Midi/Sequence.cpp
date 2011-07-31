@@ -309,6 +309,24 @@ void Sequence::addTextEvent_import(const int x, const wxString& value, const int
     m_text_events.push_back(new TextEvent(controller, x, value) );
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
+int Sequence::getLastTickInSequence() const
+{
+    int tick = 0;
+    for (int n=0; n<tracks.size(); n++)
+    {
+        if (tracks[n].getNoteAmount() > 0)
+        {
+            const int noteTick = tracks[n].getNoteEndInMidiTicks(tracks[n].getNoteAmount() - 1);
+            if (noteTick > tick)
+            {
+                tick = noteTick;
+            }
+        }
+    }
+    return tick;
+}
 
 // ----------------------------------------------------------------------------------------------------------
 // -------------------------------------------- Actions and Undo --------------------------------------------

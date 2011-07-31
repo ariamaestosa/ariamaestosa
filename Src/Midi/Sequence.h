@@ -395,6 +395,8 @@ namespace AriaMaestosa
         /** @return whether we're currently in import mode (@see Sequence::startImport) */
         bool isImportMode() const { return m_importing; }
         
+        int getLastTickInSequence() const;
+        
         // ---- serialization
         
         /** Called when saving \<Sequence\> ... \</Sequence\> in .aria file */
