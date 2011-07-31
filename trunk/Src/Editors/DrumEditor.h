@@ -90,9 +90,6 @@ namespace AriaMaestosa
         virtual NoteSearchResult noteAt(RelativeXCoord x, const int y, int& noteID);
         
         /** implemented from base class Editor's required interface */
-        virtual void noteClicked(const int id);
-        
-        /** implemented from base class Editor's required interface */
         virtual void addNote(const int snappedX, const int mouseY);
         
         /** implemented from base class Editor's required interface */
