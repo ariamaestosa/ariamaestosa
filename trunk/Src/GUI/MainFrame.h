@@ -341,8 +341,12 @@ namespace AriaMaestosa
         void menuEvent_metronome(wxCommandEvent& evt);
         void menuEvent_outputDevice(wxCommandEvent& evt);
 
-        void updateMenuBarToSequence();
+#ifdef __WXMSW__
+        void onDropFile(wxDropFilesEvent& event);
+#endif
         
+        void onMouseWheel(wxMouseEvent& event);
+                
         // ---- playback
         void songHasFinishedPlaying();
         void toolsEnterPlaybackMode();
@@ -357,20 +361,20 @@ namespace AriaMaestosa
         TuningPicker*     getTuningPicker    ();
         KeyPicker*        getKeyPicker       () { return m_key_picker;        }
         
-        // ---- I/O
         void updateTopBarAndScrollbarsForSequence(const GraphicalSequence* seq);
-
+        void updateTopBarAndScrollbars()
+        {
+            updateTopBarAndScrollbarsForSequence( getCurrentGraphicalSequence() );
+        }
+        void updateMenuBarToSequence();
+        
+        // ---- I/O
         /** Opens the .aria file in filepath, reads it and prepares the editor to display and edit it. */
         void loadAriaFile(wxString path);
 
         /** Opens the .mid file in filepath, reads it and prepares the editor to display and edit it. */
         void loadMidiFile(wxString path);
 
-#ifdef __WXMSW__
-        void onDropFile(wxDropFilesEvent& event);
-#endif
-
-        void onMouseWheel(wxMouseEvent& event);
 
         // ---- scrollbars
         void updateVerticalScrollbar();

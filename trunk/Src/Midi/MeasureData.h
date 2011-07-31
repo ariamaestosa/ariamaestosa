@@ -369,6 +369,9 @@ namespace AriaMaestosa
         
         void selectMeasure(int mid);
         
+        Sequence*       getSequence()       { return m_sequence; }
+        const Sequence* getSequence() const { return m_sequence; }
+        
         /** @brief deserializatiuon */
         bool  readFromFile(irr::io::IrrXMLReader* xml);
         
