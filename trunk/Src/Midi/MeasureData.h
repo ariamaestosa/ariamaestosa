@@ -369,6 +369,8 @@ namespace AriaMaestosa
         
         void selectMeasure(int mid);
         
+        void selectNotesInSelectedMeasures();
+        
         Sequence*       getSequence()       { return m_sequence; }
         const Sequence* getSequence() const { return m_sequence; }
         

@@ -44,9 +44,10 @@
 namespace AriaMaestosa
 {
 
-  int insert_at_measure = -1;
-  int remove_from = -1;
-  int remove_to = -1;
+    // FIXME: remove globals
+    int g_insert_at_measure = -1;
+    int g_remove_from = -1;
+    int g_remove_to = -1;
 
 // ----------------------------------------------------------------------------------------------------------
 // ----------------------------------------------------------------------------------------------------------
@@ -85,7 +86,7 @@ public:
         
         Sequence* seq = m_gseq->getModel();
         
-        seq->action( new Action::RemoveMeasures(remove_from, remove_to) );
+        seq->action( new Action::RemoveMeasures(g_remove_from, g_remove_to) );
         m_gseq->getMeasureBar()->selectTimeSig(0);
     }
 
@@ -126,8 +127,8 @@ public:
     void insert(wxCommandEvent& event)
     {
         int number = wxGetNumberFromUser(  _("Insert empty measures between measures ") +
-                                           to_wxString(insert_at_measure+1) +
-                                           _(" and ") + to_wxString(insert_at_measure+2),
+                                           to_wxString(g_insert_at_measure+1) +
+                                           _(" and ") + to_wxString(g_insert_at_measure+2),
                                            _("Amount: "), wxT(""), 4 /*default*/, 1 /*min*/);
         if (number==-1) return;
 
@@ -135,7 +136,7 @@ public:
 
         // --------- move notes in all tracks -----------
 
-        seq->action( new Action::InsertEmptyMeasures(insert_at_measure+1, number) );
+        seq->action( new Action::InsertEmptyMeasures(g_insert_at_measure+1, number) );
 
     }
 
@@ -497,7 +498,7 @@ void MeasureBar::unselect()
 /**
   * @brief When mouse button is pushed on Measure Bar
   */
-void MeasureBar::mouseDown(int x, int y)
+void MeasureBar::mouseDown(int x, int y, bool shiftPressed)
 {    
     // if click is in time sig change areas
     if (y > 20)
@@ -521,8 +522,48 @@ void MeasureBar::mouseDown(int x, int y)
     }
     
     const int measure_vectorID = measureAtPixel( x );
-    m_data->selectOnly(measure_vectorID);
-    m_last_measure_in_drag = measure_vectorID;
+    
+    if (shiftPressed)
+    {
+        int from = -1, to = -1;
+        getFirstAndLastSelectedMeasure(&from, &to);
+
+        if (measure_vectorID < from and from != -1)
+        {
+            m_last_measure_in_drag = from;
+        }
+        else if (measure_vectorID > to and to != -1)
+        {
+            m_last_measure_in_drag = to;
+        }
+        else
+        {
+            // weird use of the feature
+            m_last_measure_in_drag = measure_vectorID;
+        }
+        
+        m_data->selectMeasure(measure_vectorID);
+        
+        if (m_last_measure_in_drag < measure_vectorID)
+        {
+            for (int n=m_last_measure_in_drag; n<=measure_vectorID; n++)
+            {
+                m_data->selectMeasure(n);
+            }
+        }
+        else if (m_last_measure_in_drag > measure_vectorID)
+        {
+            for (int n=m_last_measure_in_drag; n>=measure_vectorID; n--)
+            {
+                m_data->selectMeasure(n);
+            }
+        }
+    }
+    else
+    {
+        m_data->selectOnly(measure_vectorID);
+        m_last_measure_in_drag = measure_vectorID;
+    }
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -587,30 +628,7 @@ void MeasureBar::mouseUp(int mousex_current, int mousey_current, int mousex_init
         }
     }
 
-    // iterate through notes and select those that are within the selection range just found
-    const int trackAmount = m_gseq->getTrackAmount();
-    for (int trackID=0; trackID<trackAmount; trackID++)
-    {
-        GraphicalTrack* gtrack = m_gseq->getTrack(trackID);
-        Track* track = gtrack->getTrack();
-        
-        const int noteAmount = track->getNoteAmount();
-        for (int n=0; n<noteAmount; n++)
-        {
-            const int note_tick = track->getNoteStartInMidiTicks(n);
-            
-            // note is within selection range? if so, select it, else unselect it.
-            if ( note_tick >= minimal_tick and note_tick < maximal_tick )
-            {
-                gtrack->selectNote(n, true, true);
-            }
-            else
-            {
-                gtrack->selectNote(n, false, true);
-            }
-        }
-    }
-
+    m_data->selectNotesInSelectedMeasures();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -643,22 +661,17 @@ void MeasureBar::rightClick(int x, int y)
     // is the clicked measure selected?
     if (m_data->getMeasureInfo(measure_vectorID).selected)
     {
-        const int measureAmount = m_data->getMeasureInfoAmount();
-        for (int n=0; n<measureAmount; n++)
-        {
-            // iterate through measures to find which measures are selected
-            if (m_data->getMeasureInfo(n).selected)
-            {
-                // we found a first selected measure, remember it
-                remove_from = n;
-                do{ n++; } while (m_data->getMeasureInfo(n).selected); // skip all selected measures
-                remove_to = n;
-                break;
-            }
-        }
+        g_remove_from = -1;
+        g_remove_to = -1;
+        getFirstAndLastSelectedMeasure(&g_remove_from, &g_remove_to);
 
+        if (g_remove_to == -1 or g_remove_from == -1)
+        {
+            return;
+        }
+        
         // unselect
-        //for (int n=remove_from; n<remove_to+1; n++)
+        //for (int n=g_remove_from; n<g_remove_to+1; n++)
         //{
         //    data->m_measure_info[n].selected = false;
         //}
@@ -667,10 +680,29 @@ void MeasureBar::rightClick(int x, int y)
     else
     {
         // find between which measures the user clicked
-        insert_at_measure = measureDivisionAt(x) - 1;
+        g_insert_at_measure = measureDivisionAt(x) - 1;
 
         m_unselected_menu->enable_deleteTimeSig_item(false);
         Display::popupMenu( (wxMenu*)m_unselected_menu, x, y+20);
     }
 
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void MeasureBar::getFirstAndLastSelectedMeasure(int* first, int* last)
+{
+    const int measureAmount = m_data->getMeasureInfoAmount();
+    for (int n=0; n<measureAmount; n++)
+    {
+        // iterate through measures to find which measures are selected
+        if (m_data->getMeasureInfo(n).selected)
+        {
+            // we found a first selected measure, remember it
+            *first = n;
+            do{ n++; } while (m_data->getMeasureInfo(n).selected); // skip all selected measures
+            *last = n;
+            break;
+        }
+    }
 }
