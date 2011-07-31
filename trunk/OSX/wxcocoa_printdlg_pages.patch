@@ -1,0 +1,16 @@
+Index: src/osx/cocoa/printdlg.mm
+===================================================================
+--- src/osx/cocoa/printdlg.mm	(revision 68142)
++++ src/osx/cocoa/printdlg.mm	(working copy)
+@@ -68,6 +68,11 @@
+ 
+     NSPrintPanel* panel = [NSPrintPanel printPanel];
+     NSPrintInfo* printInfo = ((wxOSXCocoaPrintData*)m_printDialogData.GetPrintData().GetNativeData())->GetNSPrintInfo();
++    
++    NSMutableDictionary* dict = [printInfo printSettings];
++    [dict setValue:[NSNumber numberWithInt:m_printDialogData.GetMinPage()] forKey:@"com_apple_print_PrintSettings_PMFirstPage"];
++    [dict setValue:[NSNumber numberWithInt:m_printDialogData.GetMaxPage()] forKey:@"com_apple_print_PrintSettings_PMLastPage"];
++
+     if ( (NSInteger)[panel runModalWithPrintInfo:printInfo] == NSOKButton )
+     {
+         result = wxID_OK;
