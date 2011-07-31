@@ -112,10 +112,6 @@ bool g_have_answer = false;
 wxString g_answer;
 void sheetCallback(wxWindowModalDialogEvent& evt)
 {
-    printf("Closed\n");
-    printf("answer = %i; wxID_OK = %i; path=<%s>\n", evt.GetReturnCode(), wxID_OK,
-           (const char*)((wxFileDialog*)evt.GetDialog())->GetPath().utf8_str());
-    
     if (evt.GetReturnCode() == wxID_OK)
     {
         g_answer = ((wxFileDialog*)evt.GetDialog())->GetPath();
