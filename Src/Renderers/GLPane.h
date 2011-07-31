@@ -43,7 +43,7 @@ namespace AriaMaestosa
         GLPane(wxWindow* parent, int* args);
         ~GLPane();
 
-        void resized(wxSizeEvent& evt);
+        virtual void resized(wxSizeEvent& evt);
 
         // size
         int getWidth();

@@ -211,7 +211,9 @@ namespace AriaMaestosa
             m_click_in_track   = -1;
             m_dragged_track_id = -1;
         }
-
+        
+        virtual void resized(wxSizeEvent& evt);
+        
         // ---- rendering
         bool isVisible() const { return m_is_visible; }
         void render(const bool paintEvent = false);

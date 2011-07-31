@@ -42,7 +42,7 @@ namespace AriaMaestosa
         wxRenderPane(wxWindow* parent, int* args);
         ~wxRenderPane();
 
-        void resized(wxSizeEvent& evt);
+        virtual void resized(wxSizeEvent& evt);
 
         // size
         int getWidth();
