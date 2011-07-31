@@ -191,6 +191,18 @@ void MainPane::isNowVisible()
     m_is_visible = true;
 }
 
+void MainPane::resized(wxSizeEvent& evt)
+{
+    MainFrame* mf = getMainFrame();
+    
+    if (mf->getSequenceAmount() > 0 and mf->getCurrentGraphicalSequence()->isTrackMaximized())
+    {
+        mf->getCurrentGraphicalSequence()->getCurrentTrack()->maximizeHeight();
+    }
+    
+    RenderPane::resized(evt);
+}
+
 // --------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
@@ -876,7 +888,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
         for (unsigned int n=0; n<m_positions_in_dock.size(); n+=2)
         {
 
-            if (event.GetX()>m_positions_in_dock[n] and event.GetX()<m_positions_in_dock[n+1])
+            if (event.GetX() > m_positions_in_dock[n] and event.GetX() < m_positions_in_dock[n+1])
             {
                 if (gseq->isTrackMaximized())
                 {

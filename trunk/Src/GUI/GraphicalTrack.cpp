@@ -637,15 +637,28 @@ bool GraphicalTrack::processMouseDown(RelativeXCoord mousex, int mousey)
 
             if (not m_gsequence->isTrackMaximized())
             {
-                
                 // switch on maximize mode
                 const int track_amount = seq->getTrackAmount();
                 for (int n=0; n<track_amount; n++)
                 {
                     Track* track = seq->getTrack(n);
                     GraphicalTrack* gtrack = m_gsequence->getGraphicsFor(track);
-                    if (gtrack == this) maximizeHeight();
-                    else                gtrack->dock();
+                    if (gtrack != this)
+                    {
+                        gtrack->dock();
+                        m_gsequence->setDockVisible(true);
+                    }
+                }
+                for (int n=0; n<track_amount; n++)
+                {
+                    Track* track = seq->getTrack(n);
+                    GraphicalTrack* gtrack = m_gsequence->getGraphicsFor(track);
+                    if (gtrack == this)
+                    {
+                        maximizeHeight();
+                        seq->setCurrentTrack(track);
+                        break;
+                    }
                 }
                 m_gsequence->setYScroll(0);
                 DisplayFrame::updateVerticalScrollbar();
@@ -1077,9 +1090,10 @@ void GraphicalTrack::maximizeHeight(bool maximize)
     if (maximize)
     {
         setCollapsed(false);
+                
         const bool exp = m_gsequence->getModel()->getMeasureData()->isExpandedMode();
         setHeight(Display::getHeight() - m_gsequence->getDockHeight() - MEASURE_BAR_Y -
-                  EXPANDED_BAR_HEIGHT - BORDER_SIZE - 50 -
+                  EXPANDED_BAR_HEIGHT - BORDER_SIZE - 30 -
                   (exp ? EXPANDED_MEASURE_BAR_H : MEASURE_BAR_H)  );
     }
     else
