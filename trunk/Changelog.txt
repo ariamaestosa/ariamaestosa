@@ -1,6 +1,7 @@
 1.3 beta 3
 - Show note names in flats when the key is going in flats
 - Allow shift-clicking in measure bar to select more measures
+- Shift-clicking on a note that is already selected unselects it
 
 1.3 beta 2
 - Improved working with more than one editor per track

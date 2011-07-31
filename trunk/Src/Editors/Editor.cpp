@@ -404,8 +404,13 @@ void Editor::mouseDown(RelativeXCoord x, int y)
             m_clicked_on_note = true;
             m_track->playNote( m_last_clicked_note, false );
 
+            if (Display::isSelectMorePressed())
+            {
+                m_track->selectNote(m_last_clicked_note, not m_track->isNoteSelected(m_last_clicked_note), true);
+            }
+            
             // 'noteAt' set 'm_last_clicked_note' to the ID of the note that was clicked. However at this point
-            // this is not important anymore to know precisely which one was clicked, because all future
+            // it is not important anymore to know precisely which one was clicked, because all future
             // operations that can be done will be applied to all selected notes. therefore we set
             // m_last_clicked_note to -1, meaning 'selected notes'.
             m_last_clicked_note = -1;
