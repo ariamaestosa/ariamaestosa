@@ -503,7 +503,7 @@ void MainFrame::menuEvent_open(wxCommandEvent& evt)
 {
     m_main_pane->forgetClickData();
     wxString filePath = showFileDialog(this, _("Select file"), wxT(""), wxT(""),
-                                       _("Aria Maestosa file|*.aria"), false /*open*/);
+                                       wxString(_("Aria Maestosa file")+wxT("|*.aria")), false /*open*/);
     MainFrame::loadAriaFile(filePath);
 }
 
@@ -513,7 +513,7 @@ void MainFrame::menuEvent_importmidi(wxCommandEvent& evt)
 {
     m_main_pane->forgetClickData();
     wxString midiFilePath = showFileDialog(this, _("Select midi file"), wxT(""), wxT(""),
-                                           _("Midi file|*.mid;*.midi"), false /*open*/);
+                                           wxString(_("Midi file"))+wxT("|*.mid;*.midi"), false /*open*/);
     MainFrame::loadMidiFile(midiFilePath);
 }
 
@@ -525,7 +525,7 @@ void MainFrame::menuEvent_exportmidi(wxCommandEvent& evt)
 
     // show file dialog
     wxString midiFilePath = showFileDialog(this, _("Select destination file"), wxT(""),
-                                           suggestedName, _("Midi file|*.mid"), true /*save*/);
+                                           suggestedName, wxString(_("Midi file"))+wxT("|*.mid"), true /*save*/);
 
     if (midiFilePath.IsEmpty()) return;
 
