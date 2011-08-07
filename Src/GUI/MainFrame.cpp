@@ -1372,13 +1372,16 @@ bool MainFrame::closeSequence(int id_arg) // -1 means current
 
     if (m_sequences[id].getModel()->somethingToUndo())
     {
-        wxString message = _("You have unsaved changes in sequence '%s'. Do you want to save them before proceeding?");
+        wxString message = _("You have unsaved changes in sequence '%s'. Do you want to save them before proceeding?") +
+                           wxString(wxT("\n\n")) +
+                           _("Selecting 'Yes' will save your document before closing") +
+                           wxString(wxT("\n")) + _("Selecting 'No' will discard unsaved changes") +
+                           wxString(wxT("\n")) + _("Selecting 'Cancel' will cancel exiting the application");
+
         message.Replace(wxT("%s"), m_sequences[id].getModel()->getSequenceFilename(), false);
 
-        int answer = wxMessageBox(  _("Selecting 'Yes' will save your document before closing") +
-                                    wxString(wxT("\n")) + _("Selecting 'No' will discard unsaved changes") +
-                                    wxString(wxT("\n")) + _("Selecting 'Cancel' will cancel exiting the application"),
-                                    message,  wxYES_NO | wxCANCEL, this);
+        int answer = wxMessageBox( message, _("Unsaved changes in sequence"),
+                                   wxYES_NO | wxCANCEL, this);
 
         if (answer == wxCANCEL) return false;
 
