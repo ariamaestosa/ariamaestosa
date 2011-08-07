@@ -253,7 +253,7 @@ void MainFrame::initMenuBar()
 
     m_help_menu->QUICK_ADD_MENU(wxID_ABOUT,  _("&About Aria Maestosa"), MainFrame::menuEvent_about);
     //I18N: - in help menu - see the help files
-    m_help_menu->QUICK_ADD_MENU(wxID_HELP,  _("&Manual"), MainFrame::menuEvent_manual);
+    m_help_menu->QUICK_ADD_MENU(wxID_HELP,  _("User's &Manual"), MainFrame::menuEvent_manual);
 
 #ifdef __WXMAC__
     // On OSX a menu item named "&Help" will be translated by wx into a native help menu
