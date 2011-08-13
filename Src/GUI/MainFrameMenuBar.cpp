@@ -503,7 +503,7 @@ void MainFrame::menuEvent_open(wxCommandEvent& evt)
 {
     m_main_pane->forgetClickData();
     wxString filePath = showFileDialog(this, _("Select file"), wxT(""), wxT(""),
-                                       wxString(_("Aria Maestosa file")+wxT("|*.aria")), false /*open*/);
+                                       wxString(_("Aria Maestosa file"))+wxT("|*.aria"), false /*open*/);
     MainFrame::loadAriaFile(filePath);
 }
 
