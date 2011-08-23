@@ -429,7 +429,7 @@ namespace AriaMaestosa
         
         /** Not to be called during editing, as it does not generate an action in the action stack.
          * @param[out] previousValue Returns the old value there was, if any, before this new event replaces it.*/
-        void addControlEvent( ControllerEvent* evt, int* previousValue = NULL );
+        void addControlEvent( ControllerEvent* evt, float* previousValue = NULL );
         
         /**
          * This is the method called for performing any action that can be undone.

@@ -65,17 +65,17 @@ namespace AriaMaestosa
             return getYEnd() - 15;
         }
         
-        int mouseYToValue(int mouseY) const
+        float mouseYToValue(int mouseY) const
         {
             const float y_zoom = getYZoom();
             const bool on_off = m_controller_choice->isOnOffController( m_controller_choice->getControllerID() );
             const int area_from_y = getAreaYFrom();
-            int y_value = (int)round((float)(mouseY - area_from_y)/y_zoom);
+            float y_value = (float)(mouseY - area_from_y)/y_zoom;
             if ( on_off )
             {
                 // on/off controllers should only use values 0 and 127
-                if  (y_value < 64) y_value = 0;
-                else               y_value = 127;
+                if  (y_value < 64.0f) y_value = 0.0f;
+                else                  y_value = 127.0f;
             }
             return y_value;
         }

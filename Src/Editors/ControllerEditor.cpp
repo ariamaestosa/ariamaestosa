@@ -243,7 +243,7 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     if (m_graphical_track->isDragResize()) m_has_been_resizing = true;
     
     // -------------------------- Value preview --------------------------
-    if (m_mouse_y != -1 and m_mouse_y >= area_from_y and m_mouse_y <= area_to_y)
+    if (m_mouse_y != -1 and m_mouse_y >= area_from_y and m_mouse_y < area_to_y)
     {        
         const int check_y = Display::getMouseY_current();
         if (check_y > area_to_y or check_y < area_from_y)
@@ -269,15 +269,20 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
             }
             else if (m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_PITCH_BEND)
             {
-                int value = mouseYToValue(m_mouse_y);
+                float value = mouseYToValue(m_mouse_y);
                 
-                // bring range [-8192, 8191] to [-2, +2]
-                const double divider = (8191.0 + 8192.0)/4.0;
-                const double pitchBendVal = ControllerEvent::getPitchBendValue(value)/divider;
-                
-                AriaRender::images();
-                AriaRender::renderNumber((const char*)to_wxString2(pitchBendVal).mb_str(), the_x, the_y);
-                AriaRender::primitives();
+                if (value >= 0.0f and value <= 127.0f)
+                {
+                    // bring range [-8192, 8191] to [-2, +2]
+                    const double divider = (8191.0 + 8192.0)/4.0;
+                    double pitchBendVal = ControllerEvent::getPitchBendValue(value)/divider;
+                    
+                    if (pitchBendVal == -0.0) pitchBendVal = 0.0;
+                    
+                    AriaRender::images();
+                    AriaRender::renderNumber((const char*)to_wxString2(pitchBendVal).mb_str(), the_x, the_y);
+                    AriaRender::primitives();
+                }
             }
             else if (m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_LYRICS)
             {
@@ -428,7 +433,6 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
 
             const int area_from_y = getAreaYFrom();
             const int area_to_y   = getAreaYTo();
-            const float y_zoom = getYZoom();
 
             // ------------------------ add controller events ---------------------
 
@@ -440,7 +444,7 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
             if (mousey_initial > area_to_y)   return;
             if (m_graphical_track->isDragResize() or m_has_been_resizing) return;
             if (mousey_current < area_from_y) mousey_current = area_from_y;
-            if (mousey_current > area_to_y) mousey_current = area_to_y;
+            if (mousey_current > area_to_y)   mousey_current = area_to_y;
 
             int tick1 = m_track->snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI) );
             int tick2 = m_track->snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI) );
@@ -451,7 +455,7 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
             const bool on_off = m_controller_choice->isOnOffController( m_controller_choice->getControllerID() );
             if (tick1 == tick2)
             {
-                int y_value = mouseYToValue(mousey_initial);
+                float y_value = mouseYToValue(mousey_initial);
 
                 m_track->action( new Action::AddControlEvent(tick1,
                                                              y_value,
@@ -462,18 +466,18 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
                 if (tick1 < tick2) 
                 {
                     m_track->action( new Action::AddControllerSlide(tick1,
-                                                       (int)( (mousey_initial - area_from_y)/y_zoom ),
-                                                       tick2,
-                                                       (int)( (mousey_current - area_from_y)/y_zoom ),
-                                                       m_controller_choice->getControllerID()) );
+                                                                    mouseYToValue(mousey_initial),
+                                                                    tick2,
+                                                                    mouseYToValue(mousey_current),
+                                                                    m_controller_choice->getControllerID()) );
                 }
                 else
                 {
                     m_track->action( new Action::AddControllerSlide(tick2,
-                                                       (int)( (mousey_current - area_from_y)/y_zoom ),
-                                                       tick1,
-                                                       (int)( (mousey_initial - area_from_y)/y_zoom ),
-                                                       m_controller_choice->getControllerID()) );
+                                                                    mouseYToValue(mousey_current),
+                                                                    tick1,
+                                                                    mouseYToValue(mousey_initial),
+                                                                    m_controller_choice->getControllerID()) );
                 }
             } // end if tick1==tick2
 
