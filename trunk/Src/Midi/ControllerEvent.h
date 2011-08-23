@@ -62,7 +62,7 @@ namespace AriaMaestosa
           * @param tick       Time at whcih this event occurs
           * @param value      This value is 127 - [midi value]
           */
-        ControllerEvent(unsigned short controller, int tick, unsigned short value);
+        ControllerEvent(unsigned short controller, int tick, float value);
         virtual ~ControllerEvent() {}
         
         unsigned short getController() const { return m_controller; }

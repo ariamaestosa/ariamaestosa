@@ -24,7 +24,7 @@ using namespace AriaMaestosa;
 
 // ----------------------------------------------------------------------------------------------------------
 
-ControllerEvent::ControllerEvent(unsigned short controller, int tick, unsigned short value)
+ControllerEvent::ControllerEvent(unsigned short controller, int tick, float value)
 {
     m_controller = controller;
     m_tick       = tick;

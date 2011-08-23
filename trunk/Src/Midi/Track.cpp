@@ -231,7 +231,7 @@ bool Track::addNote(Note* note, bool check_for_overlapping_notes)
 
 // ----------------------------------------------------------------------------------------------------------
 
-void Track::addControlEvent( ControllerEvent* evt, int* previousValue )
+void Track::addControlEvent( ControllerEvent* evt, float* previousValue )
 {
     ptr_vector<ControllerEvent>* vector;
 

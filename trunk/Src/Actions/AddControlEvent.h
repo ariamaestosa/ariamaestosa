@@ -33,11 +33,14 @@ namespace AriaMaestosa
         class AddControlEvent : public SingleTrackAction
         {
             friend class AriaMaestosa::Track;
-            int m_x, m_value, m_controller;
+            int m_x, m_controller;
+            float m_value;
             
-            int m_removed_event_value; //!< if any event was replaced by this one...
+            float m_removed_event_value; //!< if any event was replaced by this one...
+            
         public:
-            AddControlEvent(const int x, const int value, const int controller);
+            
+            AddControlEvent(const int x, const float value, const int controller);
             void perform();
             void undo();
             virtual ~AddControlEvent();
