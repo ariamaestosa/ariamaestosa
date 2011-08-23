@@ -40,7 +40,7 @@ void ControllerEvent::setTick(int i)
 
 // ----------------------------------------------------------------------------------------------------------
 
-void ControllerEvent::setValue(unsigned short value)
+void ControllerEvent::setValue(float value)
 {
     m_value = value;
 }
@@ -96,7 +96,7 @@ bool ControllerEvent::readFromFile(irr::io::IrrXMLReader* xml)
     const char* value_c = xml->getAttributeValue("value");
     if (value_c != NULL)
     {
-        m_value = atoi(value_c);
+        m_value = atof(value_c);
     }
     else
     {

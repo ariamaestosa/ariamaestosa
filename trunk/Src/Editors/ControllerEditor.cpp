@@ -285,10 +285,10 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
             }
             else
             {
-                int value = 127 - mouseYToValue(m_mouse_y);
+                int value = round((127 - mouseYToValue(m_mouse_y))/127.0f*100.0f);
                 
                 AriaRender::images();
-                AriaRender::renderNumber((const char*)to_wxString(value).mb_str(), the_x, the_y);
+                AriaRender::renderNumber((const char*)(to_wxString(value) + wxT("%")).mb_str(), the_x, the_y);
                 AriaRender::primitives();
             }
         }
