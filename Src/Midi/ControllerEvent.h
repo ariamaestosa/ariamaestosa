@@ -52,7 +52,7 @@ namespace AriaMaestosa
         /** 
          * This value is 127 - [midi value]
          */
-        unsigned short     m_value;
+        float m_value;
         
     public:
         LEAK_CHECK();
@@ -72,13 +72,13 @@ namespace AriaMaestosa
           * @brief Getter for the control event value
           * @note  This value is 127 - [midi value]
           */
-        unsigned short getValue     () const { return m_value;      }
+        float getValue              () const { return m_value;      }
         
         /**
          * @brief  Convert an Aria controller value to a pitch bend value
          * @return the value in range [-8192, 8191], where -8192 is -2, 8191 is + 2, and 0 is no change.
          */
-        static int getPitchBendValue(int controllerValue)
+        static int getPitchBendValue(float controllerValue)
         {
             ASSERT_E(controllerValue,>=,0);
             ASSERT_E(controllerValue,<=,127);
@@ -110,7 +110,7 @@ namespace AriaMaestosa
         }
         
         void setTick(int i);
-        void setValue(unsigned short value);
+        void setValue(float value);
           
         ControllerEvent* clone() { return new ControllerEvent(m_controller, m_tick, m_value); }
         

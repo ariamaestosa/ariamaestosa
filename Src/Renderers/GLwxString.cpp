@@ -409,9 +409,9 @@ wxGLString::~wxGLString()
 #pragma mark wxGLNumberRenderer implementation
 #endif
 
-wxGLNumberRenderer::wxGLNumberRenderer() : wxGLString( new Model<wxString>(wxT("0 1 2 3 4 5 6 7 8 9 . - ")), true )
+wxGLNumberRenderer::wxGLNumberRenderer() : wxGLString( new Model<wxString>(wxT("0 1 2 3 4 5 6 7 8 9 . - % ")), true )
 {
-    number_location = new int[13];
+    number_location = new int[14];
     setFont( getNumberFont() );
     space_w = -1;
 }
@@ -440,6 +440,7 @@ void wxGLNumberRenderer::consolidate(wxDC* dc)
     number_location[10] = dc->GetTextExtent(wxT("0 1 2 3 4 5 6 7 8 9 ")).GetWidth();
     number_location[11] = dc->GetTextExtent(wxT("0 1 2 3 4 5 6 7 8 9 . ")).GetWidth();
     number_location[12] = dc->GetTextExtent(wxT("0 1 2 3 4 5 6 7 8 9 . - ")).GetWidth();
+    number_location[13] = dc->GetTextExtent(wxT("0 1 2 3 4 5 6 7 8 9 . - % ")).GetWidth();
 
     space_w = dc->GetTextExtent(wxT(" ")).GetWidth();
     m_consolidated = true;
@@ -489,6 +490,7 @@ void wxGLNumberRenderer::renderNumber(const char* s, int x, int y)
             case '.' :
             case ',' : charid = 10; break;
             case '-' : charid = 11; break;
+            case '%' : charid = 12; break;
             default: printf("Warning: character %c unexpected in number!\n", schar); continue;
         }
 
