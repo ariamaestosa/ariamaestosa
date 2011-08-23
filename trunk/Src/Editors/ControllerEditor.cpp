@@ -270,10 +270,13 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
             else if (m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_PITCH_BEND)
             {
                 int value = mouseYToValue(m_mouse_y);
-                float pitch = (value - 64) / 64.0f * -2.0f;
+                
+                // bring range [-8192, 8191] to [-2, +2]
+                const double divider = (8191.0 + 8192.0)/4.0;
+                const double pitchBendVal = ControllerEvent::getPitchBendValue(value)/divider;
                 
                 AriaRender::images();
-                AriaRender::renderNumber((const char*)to_wxString2(pitch).mb_str(), the_x, the_y);
+                AriaRender::renderNumber((const char*)to_wxString2(pitchBendVal).mb_str(), the_x, the_y);
                 AriaRender::primitives();
             }
             else if (m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_LYRICS)

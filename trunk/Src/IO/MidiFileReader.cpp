@@ -273,13 +273,13 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                 {
 
                     int pitchBendVal = event->GetBenderValue();
+                    float value = ControllerEvent::fromPitchBendValue(pitchBendVal);
+                    //int value = (int)round( (pitchBendVal+8064.0)*128.0/16128.0 );
+                    
+                    if (value > 127) value = 127;
+                    if (value < 0)   value = 0;
 
-                    int value = (int)round( (pitchBendVal+8064.0)*128.0/16128.0 );
-                    if (value>127) value=127;
-                    if (value<0) value=0;
-
-                    ariaTrack->addControlEvent_import(tick, 127-value, PSEUDO_CONTROLLER_PITCH_BEND);
-
+                    ariaTrack->addControlEvent_import(tick, value, PSEUDO_CONTROLLER_PITCH_BEND);
                     continue;
                 }
                 // ----------------------------------- program chnage -------------------------------------
