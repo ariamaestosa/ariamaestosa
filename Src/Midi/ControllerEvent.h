@@ -74,6 +74,41 @@ namespace AriaMaestosa
           */
         unsigned short getValue     () const { return m_value;      }
         
+        /**
+         * @brief  Convert an Aria controller value to a pitch bend value
+         * @return the value in range [-8192, 8191], where -8192 is -2, 8191 is + 2, and 0 is no change.
+         */
+        static int getPitchBendValue(int controllerValue)
+        {
+            ASSERT_E(controllerValue,>=,0);
+            ASSERT_E(controllerValue,<=,127);
+            
+            const double factor = 129.0; // (2.0*8192.0 - 1.0)/127.0;
+            return round(factor*(127 - controllerValue) - 8192.0);
+        }
+        
+        /**
+         * @brief      Convert a MIDI pitch bend in range [-8192, 8191] to an Aria controller value in range [0, 127]
+         * @param bend the value in range [-8192, 8191], where -8192 is -2, 8191 is + 2, and 0 is no change.
+         */
+        static float fromPitchBendValue(int bend)
+        {
+            ASSERT_E(bend,>=,-8192);
+            ASSERT_E(bend,<=,8191);
+            
+            const double factor = 129.0; // (2.0*8192.0 - 1.0)/127.0;
+            return 127 - ((bend + 8192.0)/factor);
+        }
+        
+        /**
+          * @brief  If this is a pitch bend event
+          * @return the value in range [-8192, 8191], where -8192 is -2, 8191 is + 2, and 0 is no change.
+          */
+        int getPitchBendValue() const
+        {
+            return getPitchBendValue(m_value);
+        }
+        
         void setTick(int i);
         void setValue(unsigned short value);
           

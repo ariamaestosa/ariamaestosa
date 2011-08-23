@@ -1605,17 +1605,14 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
                 if (doAddControlEvent)
                 {
-
                     m.SetTime( time );
-
-                    int pitchBendVal = (127 - m_control_events[control_evt_id].getValue())*128 - 128*128;
-
-                    if      (pitchBendVal > 0) pitchBendVal -= 8192;
-                    else if (pitchBendVal < 0) pitchBendVal += 8192;
-
+                                        
+                    /** In range [-8192, 8191] */
+                    const int pitchBendVal = m_control_events[control_evt_id].getPitchBendValue();
+                                        
                     m.SetPitchBend(channel, pitchBendVal);
-
-                    if ( !midiTrack->PutEvent( m ) ) { std::cout << "Error adding midi event!" << std::endl; }
+                    
+                    if (not midiTrack->PutEvent(m)) { std::cout << "Error adding midi event!" << std::endl; }
                 }
                 control_evt_id++;
 
