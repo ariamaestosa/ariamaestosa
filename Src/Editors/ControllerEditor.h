@@ -105,6 +105,8 @@ namespace AriaMaestosa
         int getSelectionBegin() const { return m_selection_begin; }
         int getSelectionEnd  () const { return m_selection_end;   }
         
+        void addPreciseEvent(int tick, int value);
+        
         int getCurrentControllerType() const
         {
             return m_controller_choice->getControllerID();

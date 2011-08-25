@@ -52,7 +52,9 @@ namespace AriaMaestosa
       * @brief For use with the controller editor, when entering tempo bends
       * @ingroup midi
       */
-    int convertTempoBendToBPM(int val);
+    float convertTempoBendToBPM(float val);
+    
+    float convertBPMToTempoBend(float tempo);
     
     /**
       * @ingroup midi

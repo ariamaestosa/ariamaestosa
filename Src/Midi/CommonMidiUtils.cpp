@@ -189,7 +189,7 @@ void AriaMaestosa::addTempoEventFromSequenceVector(int n, int amount, Sequence* 
     }
     
     m.SetTime( tempo_time );
-    m.SetTempo32( convertTempoBendToBPM(sequence->getTempoEvent(n)->getValue()) * 32
+    m.SetTempo32( convertTempoBendToBPM(sequence->getTempoEvent(n)->getValue()) * 32.0
                  // tempo is stored as bpm * 32, giving 1/32 bpm resolution
                  );
     
@@ -869,16 +869,23 @@ void AriaMaestosa::allocAsMidiBytes(Sequence* sequence, bool selectionOnly, /*ou
 
 // ----------------------------------------------------------------------------------------------------------
 
-int AriaMaestosa::convertTempoBendToBPM(int val)
+float AriaMaestosa::convertTempoBendToBPM(float val)
 {
-    return (int)( (127-val)*380.0/128.0 + 20);
+    return (127.0 - val)*380.0/128.0 + 20.0;
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+float AriaMaestosa::convertBPMToTempoBend(float tempo)
+{
+    return 127 - (int)((tempo - 20.0)/380.0*128.0);
 }
 
 // ----------------------------------------------------------------------------------------------------------
 
 int AriaMaestosa::getTimeAtTick(int tick, const Sequence* seq)
 {
-    std::vector<int> tempos;
+    std::vector<float> tempos;
     std::vector<int> duration;
     
     const int tempo_events_amount = seq->getTempoEventAmount();
