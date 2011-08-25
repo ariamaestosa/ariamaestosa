@@ -302,7 +302,7 @@ namespace AriaMaestosa
         int   getTempo() const { return m_tempo; }
         
         /** @return the tempo at any tick (not necessarily a tick where there is a tempo change event) */
-        int   getTempoAtTick(const int tick) const;
+        float getTempoAtTick(const int tick) const;
         
         void  addTempoEvent( ControllerEvent* evt );
         

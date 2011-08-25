@@ -37,8 +37,119 @@
 #include <string>
 #include <cmath>
 
+#include <wx/minifram.h>
+#include <wx/sizer.h>
+#include <wx/panel.h>
+#include <wx/textctrl.h>
+#include <wx/stattext.h>
 
 using namespace AriaMaestosa;
+
+class ControlChangeInput : public wxMiniFrame
+{
+    ControllerEditor* m_parent;
+    wxTextCtrl* m_input;
+    int m_tick;
+    int m_controller;
+    
+public:
+    
+    LEAK_CHECK();
+    
+    ControlChangeInput(ControllerEditor* parent, int tick, wxPoint where) : wxMiniFrame(NULL, wxID_ANY, wxT(""), where, wxDefaultSize, wxCAPTION | wxCLOSE_BOX)
+    {
+        m_parent = parent;
+        m_tick = tick;
+        m_controller = parent->getCurrentControllerType();
+        
+        wxPanel* panel = new wxPanel(this);
+        wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
+        
+        m_input = new wxTextCtrl(panel, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
+        m_input->SetMinSize( wxSize(100, -1) );
+        sizer->Add(m_input, 0, wxALL, 3);
+        
+        wxString labelContents = wxT("%");
+        
+        if (m_controller == PSEUDO_CONTROLLER_TEMPO)
+        {
+            //I18N: beats per minute (tempo)
+            labelContents = _("bpm");
+        }
+        else if (m_controller == PSEUDO_CONTROLLER_PITCH_BEND)
+        {
+            //I18N: as in "+2 semitones"
+            labelContents = _("semitones");
+        }
+        
+        wxStaticText* label = new wxStaticText(panel, wxID_ANY, labelContents);
+        sizer->Add(label, 0, wxALL, 3);
+
+        panel->SetSizer(sizer);
+        sizer->Layout();
+        sizer->SetSizeHints(panel);
+        
+        Fit();
+        
+        SetPosition( GetPosition() + wxSize(0, GetSize().GetHeight()) );
+        
+        Show();
+        
+        m_input->Connect(m_input->GetId(), wxEVT_COMMAND_TEXT_ENTER,
+                         wxCommandEventHandler(ControlChangeInput::onEnter), NULL, this);
+    }
+    
+    void onEnter(wxCommandEvent& evt)
+    {        
+        wxString valueStr = m_input->GetValue();
+        
+        double value = -1;
+        
+        if (m_controller == PSEUDO_CONTROLLER_TEMPO)
+        {
+            if (not valueStr.ToDouble(&value))
+            {
+                wxBell();
+                return;
+            }
+            
+            value = convertBPMToTempoBend(value);
+            
+            if (value < 0.0 or value > 127.0)
+            {
+                wxBell();
+                return;
+            }
+        }
+        else if (m_controller == PSEUDO_CONTROLLER_PITCH_BEND)
+        {
+            if (not valueStr.ToDouble(&value) or value < -2.0 or value > 2.0)
+            {
+                wxBell();
+                return;
+            }
+
+            value = (value > 0.0f ? ControllerEvent::fromPitchBendValue(value/2.0f*8191.0f) :
+                                    ControllerEvent::fromPitchBendValue(value/2.0f*8192.0f));
+        }
+        else
+        {
+            if (not valueStr.ToDouble(&value) or value < 0.0 or value > 100.0)
+            {
+                wxBell();
+                return;
+            }
+
+            // map from percentage to [0, 127]
+            value = 127.0 - value/100.0*127.0;
+            if (value > 127.0)    value = 127.0;
+            else if (value < 0.0) value = 0.0;
+        }
+        
+        m_parent->addPreciseEvent(m_tick, value);
+        Destroy();
+    }
+};
 
 // ----------------------------------------------------------------------------------------------------------
 
@@ -514,7 +625,13 @@ void ControllerEditor::processMouseOutsideOfMe()
 
 void ControllerEditor::rightClick(RelativeXCoord x, const int y)
 {
-
+    if (not m_controller_choice->isOnOffController(m_controller_choice->getControllerID()) and
+        m_controller_choice->getControllerID() != PSEUDO_CONTROLLER_LYRICS)
+    {
+        wxPoint mouse(x.getRelativeTo(WINDOW), y);
+        mouse = getMainFrame()->getMainPane()->ClientToScreen(mouse);
+        new ControlChangeInput(this, x.getRelativeTo(MIDI), mouse);
+    }
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -557,3 +674,12 @@ int ControllerEditor::getPositionInPixels(int tick, GraphicalSequence* gseq)
                  );
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
+void ControllerEditor::addPreciseEvent(int tick, int value)
+{
+    m_track->action( new Action::AddControlEvent(m_track->snapMidiTickToGrid( tick ),
+                                                 value,
+                                                 m_controller_choice->getControllerID()) );
+    Display::render();
+}

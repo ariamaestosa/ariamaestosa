@@ -18,9 +18,10 @@
 #include "GUI/GraphicalSequence.h"
 #include "IO/MidiFileReader.h"
 #include "IO/IOUtils.h"
+#include "Midi/CommonMidiUtils.h"
+#include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
-#include "Midi/MeasureData.h"
 
 #include "jdkmidi/world.h"
 #include "jdkmidi/track.h"
@@ -313,11 +314,11 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                 else if ( event->IsTempo() )
                 {
 
-                    const int tempo = event->GetTempo32()/32;
+                    const float tempo = event->GetTempo32()/32.0f;
 
                     if (firstTempoEvent)
                     {
-                        sequence->setTempo(tempo);
+                        sequence->setTempo( (int)round(tempo) );
                         firstTempoEvent = false;
                         continue;
                     }
@@ -326,7 +327,7 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                         import->addTempoEvent(
                                               new ControllerEvent(PSEUDO_CONTROLLER_TEMPO,
                                                                   tick,
-                                                                  127 - (int)((tempo - 20.0)/380.0*128.0)
+                                                                  convertBPMToTempoBend(tempo)
                                                                   )
                                               );
                         continue;

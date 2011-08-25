@@ -252,9 +252,9 @@ void Sequence::setTempo(int tmp)
 
 // ----------------------------------------------------------------------------------------------------------
 
-int Sequence::getTempoAtTick(const int tick) const
+float Sequence::getTempoAtTick(const int tick) const
 {
-    int outTempo = getTempo();
+    float outTempo = getTempo();
     
     const int amount = m_tempo_events.size();
     for (int n=0; n<amount; n++)
