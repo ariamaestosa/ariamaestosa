@@ -1583,7 +1583,7 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
         std::set<wxString>::iterator it;
         std::ostringstream full;
         
-        full << wxString(_("Loading the MIDI file completed successfully, but with the following warnings (the song may not sound as intended) :")).utf8_str();
+        full << (const char*)wxString(_("Loading the MIDI file completed successfully, but with the following warnings (the song may not sound as intended) :")).utf8_str();
         
         for (it=warnings.begin() ; it != warnings.end(); it++)
         {
