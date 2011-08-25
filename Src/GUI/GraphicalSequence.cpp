@@ -411,7 +411,8 @@ void GraphicalSequence::reorderTracks()
 
 void GraphicalSequence::addToDock(GraphicalTrack* track)
 {
-    m_dock.push_back(track);
+    if (not m_dock.contains(track))
+        m_dock.push_back(track);
     
     m_sequence->setCurrentTrackID(0);
     
