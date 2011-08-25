@@ -140,6 +140,15 @@ namespace AriaMaestosa
             return contentsVector[ID];
         }
         
+        bool contains(const TYPE* obj) const
+        {
+            for (unsigned int n=0; n<contentsVector.size(); n++)
+            {
+                if (contentsVector[n] == obj) return true;
+            }
+            return false;
+        }
+        
         /**
           * Same as getConst, except it returns a reference and not a pointer
           */
