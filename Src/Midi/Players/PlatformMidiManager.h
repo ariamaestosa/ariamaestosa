@@ -143,6 +143,10 @@ namespace AriaMaestosa
           */
         virtual wxArrayString getOutputChoices() = 0;
         
+        virtual wxArrayString getInputChoices();
+        
+        virtual bool startRecording(wxString outputPort);
+
         // ---------- non-native sequencer interface ---------
         virtual void seq_note_on      (const int note, const int volume, const int channel)      { }
         virtual void seq_note_off     (const int note, const int channel)                        { }

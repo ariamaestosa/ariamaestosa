@@ -62,6 +62,7 @@ namespace AriaMaestosa
     {
         PLAY_CLICKED,
         STOP_CLICKED,
+        RECORD_CLICKED,
         TEMPO,
         ZOOM,
         LENGTH,
@@ -113,7 +114,8 @@ namespace AriaMaestosa
         MENU_TRACK_REMOVE,
         MENU_TRACK_BACKG,
         
-        MENU_OUTPUT_DEVICE
+        MENU_OUTPUT_DEVICE = wxID_HIGHEST + 100,
+        MENU_INPUT_DEVICE = wxID_HIGHEST + 200
     };
     
 
@@ -201,10 +203,13 @@ namespace AriaMaestosa
         wxMenu* m_track_menu;
         wxMenu* m_help_menu;
         wxMenu* m_output_menu;
+        wxMenu* m_input_menu;
 
         wxBitmap m_play_bitmap;
         wxBitmap m_pause_bitmap;
         wxBitmap m_pause_down_bitmap;
+        wxBitmap m_record_bitmap;
+        wxBitmap m_record_down_bitmap;
         wxBitmap m_tool1_bitmap;
         wxBitmap m_tool2_bitmap;
 
@@ -231,6 +236,7 @@ namespace AriaMaestosa
         ptr_vector<GraphicalSequence> m_sequences;
 
         ptr_vector<wxMenuItem, REF>   m_output_device_menus;
+        ptr_vector<wxMenuItem, REF>   m_input_device_menus;
         
         int m_play_during_edit; // what is the user's preference for note preview during edits
         bool m_playback_mode;
@@ -353,6 +359,7 @@ namespace AriaMaestosa
         void toolsExitPlaybackMode();
         void playClicked(wxCommandEvent& evt);
         void stopClicked(wxCommandEvent& evt);
+        void recordClicked(wxCommandEvent& evt);
         bool isPlaybackMode() const { return m_playback_mode; }
         
         // ---- Pickers
