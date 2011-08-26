@@ -666,6 +666,17 @@
 		959724B112C1378C00BF73D3 /* jdkmidi_tick.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9597240312C1378600BF73D3 /* jdkmidi_tick.cpp */; };
 		959724B212C1378C00BF73D3 /* jdkmidi_track.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9597240412C1378600BF73D3 /* jdkmidi_track.cpp */; };
 		959724B312C1378C00BF73D3 /* jdkmidi_driverwin32.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9597240612C1378600BF73D3 /* jdkmidi_driverwin32.cpp */; };
+		9598ECDB1407216200D4548A /* RtError.h in Headers */ = {isa = PBXBuildFile; fileRef = 9598ECD81407216200D4548A /* RtError.h */; };
+		9598ECDC1407216200D4548A /* RtMidi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9598ECD91407216200D4548A /* RtMidi.cpp */; };
+		9598ECDD1407216200D4548A /* RtMidi.h in Headers */ = {isa = PBXBuildFile; fileRef = 9598ECDA1407216200D4548A /* RtMidi.h */; };
+		9598ECDE1407216200D4548A /* RtError.h in Headers */ = {isa = PBXBuildFile; fileRef = 9598ECD81407216200D4548A /* RtError.h */; };
+		9598ECDF1407216200D4548A /* RtMidi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9598ECD91407216200D4548A /* RtMidi.cpp */; };
+		9598ECE01407216200D4548A /* RtMidi.h in Headers */ = {isa = PBXBuildFile; fileRef = 9598ECDA1407216200D4548A /* RtMidi.h */; };
+		9598ED091407252600D4548A /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9598ED081407252600D4548A /* CoreAudio.framework */; };
+		9598ED3E14072A5300D4548A /* record.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9598ED181407281E00D4548A /* record.png */; };
+		9598ED3F14072A5300D4548A /* record_down.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9598ED3B14072A2000D4548A /* record_down.png */; };
+		9598ED4014072A5F00D4548A /* record.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9598ED181407281E00D4548A /* record.png */; };
+		9598ED4114072A5F00D4548A /* record_down.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9598ED3B14072A2000D4548A /* record_down.png */; };
 		959FD68B1144493C00F22579 /* AddTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959FD6891144493C00F22579 /* AddTrack.cpp */; };
 		959FD68C1144493C00F22579 /* AddTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 959FD68A1144493C00F22579 /* AddTrack.h */; };
 		959FD68D1144493C00F22579 /* AddTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959FD6891144493C00F22579 /* AddTrack.cpp */; };
@@ -774,6 +785,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				9598ED3E14072A5300D4548A /* record.png in CopyFiles */,
+				9598ED3F14072A5300D4548A /* record_down.png in CopyFiles */,
 				957E67BA13D2692D0057E065 /* pause_down.png in CopyFiles */,
 				95DB7CF2133E88FB0060AB17 /* aria64.png in CopyFiles */,
 				95E963C313A5810D00927D76 /* configure.png in CopyFiles */,
@@ -832,6 +845,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				9598ED4014072A5F00D4548A /* record.png in CopyFiles */,
+				9598ED4114072A5F00D4548A /* record_down.png in CopyFiles */,
 				957E67BB13D269390057E065 /* pause_down.png in CopyFiles */,
 				95160BE61359F3C1001F20CD /* Documentation in CopyFiles */,
 				95160BE71359F3C1001F20CD /* score in CopyFiles */,
@@ -1206,6 +1221,13 @@
 		9597240312C1378600BF73D3 /* jdkmidi_tick.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_tick.cpp; path = ../libjdkmidi/src/jdkmidi_tick.cpp; sourceTree = SOURCE_ROOT; };
 		9597240412C1378600BF73D3 /* jdkmidi_track.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_track.cpp; path = ../libjdkmidi/src/jdkmidi_track.cpp; sourceTree = SOURCE_ROOT; };
 		9597240612C1378600BF73D3 /* jdkmidi_driverwin32.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jdkmidi_driverwin32.cpp; path = ../libjdkmidi/src/win32/jdkmidi_driverwin32.cpp; sourceTree = SOURCE_ROOT; };
+		9598ECD71407216200D4548A /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = readme.txt; path = ../rtmidi/readme.txt; sourceTree = SOURCE_ROOT; };
+		9598ECD81407216200D4548A /* RtError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RtError.h; path = ../rtmidi/RtError.h; sourceTree = SOURCE_ROOT; };
+		9598ECD91407216200D4548A /* RtMidi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RtMidi.cpp; path = ../rtmidi/RtMidi.cpp; sourceTree = SOURCE_ROOT; };
+		9598ECDA1407216200D4548A /* RtMidi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RtMidi.h; path = ../rtmidi/RtMidi.h; sourceTree = SOURCE_ROOT; };
+		9598ED081407252600D4548A /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		9598ED181407281E00D4548A /* record.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = record.png; path = ../Resources/record.png; sourceTree = SOURCE_ROOT; };
+		9598ED3B14072A2000D4548A /* record_down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = record_down.png; path = ../Resources/record_down.png; sourceTree = SOURCE_ROOT; };
 		959FD6891144493C00F22579 /* AddTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AddTrack.cpp; path = ../Src/Actions/AddTrack.cpp; sourceTree = SOURCE_ROOT; };
 		959FD68A1144493C00F22579 /* AddTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddTrack.h; path = ../Src/Actions/AddTrack.h; sourceTree = SOURCE_ROOT; };
 		959FD6BD114451A400F22579 /* DeleteTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DeleteTrack.cpp; path = ../Src/Actions/DeleteTrack.cpp; sourceTree = SOURCE_ROOT; };
@@ -1313,6 +1335,7 @@
 				4E65A3030B4C3DEC0096E9C0 /* IOKit.framework in Frameworks */,
 				4E65A46F0B4C3E250096E9C0 /* Cocoa.framework in Frameworks */,
 				953EE286131709E300AA3EA1 /* CoreMIDI.framework in Frameworks */,
+				9598ED091407252600D4548A /* CoreAudio.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1826,9 +1849,23 @@
 			path = ../libjdkmidi/src/win32;
 			sourceTree = SOURCE_ROOT;
 		};
+		9598ECD61407216200D4548A /* rtmidi */ = {
+			isa = PBXGroup;
+			children = (
+				9598ECD71407216200D4548A /* readme.txt */,
+				9598ECD81407216200D4548A /* RtError.h */,
+				9598ECD91407216200D4548A /* RtMidi.cpp */,
+				9598ECDA1407216200D4548A /* RtMidi.h */,
+			);
+			name = rtmidi;
+			path = ../rtmidi;
+			sourceTree = SOURCE_ROOT;
+		};
 		95DB7A4C133E88B10060AB17 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				9598ED181407281E00D4548A /* record.png */,
+				9598ED3B14072A2000D4548A /* record_down.png */,
 				957E67B913D269220057E065 /* pause_down.png */,
 				95DB7C92133E88CF0060AB17 /* aria64.png */,
 				95DB7C93133E88CF0060AB17 /* border.jpg */,
@@ -1929,6 +1966,7 @@
 				950B3E6E1125DCBB006C9AF1 /* --------------------- */,
 				95DB7A4C133E88B10060AB17 /* Resources */,
 				95711B2A1125D91500104BF5 /* mac-i18n */,
+				9598ECD61407216200D4548A /* rtmidi */,
 				950B3B411125DBCF006C9AF1 /* irrXML */,
 				9597232E12C1378600BF73D3 /* libjdkmidi */,
 				EFA04C2009BF39DF0079DEB2 /* Frameworks */,
@@ -1959,6 +1997,7 @@
 				EF85576109BDE24C00D9D1BC /* OpenGL.framework */,
 				EF9D1D5009ABE22B00CAF7A6 /* System.framework */,
 				EF9D1CB609ABE21F00CAF7A6 /* Carbon.framework */,
+				9598ED081407252600D4548A /* CoreAudio.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2134,6 +2173,8 @@
 				954BECAA13490A0F000024E6 /* Machelper.h in Headers */,
 				957629731365DD3200F97DEC /* CoreMIDIOutput.h in Headers */,
 				957629971365DF7300F97DEC /* OutputBase.h in Headers */,
+				9598ECDB1407216200D4548A /* RtError.h in Headers */,
+				9598ECDD1407216200D4548A /* RtMidi.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2305,6 +2346,8 @@
 				954BECA813490A0F000024E6 /* Machelper.h in Headers */,
 				957629751365DD3200F97DEC /* CoreMIDIOutput.h in Headers */,
 				957629991365DF7300F97DEC /* OutputBase.h in Headers */,
+				9598ECDE1407216200D4548A /* RtError.h in Headers */,
+				9598ECE01407216200D4548A /* RtMidi.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2547,6 +2590,7 @@
 				954BECAB13490A0F000024E6 /* Machelper.mm in Sources */,
 				957629741365DD3200F97DEC /* CoreMIDIOutput.cpp in Sources */,
 				957629981365DF7300F97DEC /* OutputBase.cpp in Sources */,
+				9598ECDC1407216200D4548A /* RtMidi.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2709,6 +2753,7 @@
 				954BECA913490A0F000024E6 /* Machelper.mm in Sources */,
 				957629761365DD3200F97DEC /* CoreMIDIOutput.cpp in Sources */,
 				9576299A1365DF7300F97DEC /* OutputBase.cpp in Sources */,
+				9598ECDF1407216200D4548A /* RtMidi.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

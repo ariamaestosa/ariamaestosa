@@ -1,7 +1,7 @@
 Aria Maestosa is released under GNU GPL (full text found below) EXCEPT:
 
 * the AriaMaestosa source tree includes third-party
-  librairies/applications : libjdkmidi, irrXML, scons.
+  librairies/applications : libjdkmidi, irrXML, scons, rtmidi.
   They are released under their own license.
 
 * dock.png, maximize.png, mute_off.png, mute_on.png, pause.ong, play.png,

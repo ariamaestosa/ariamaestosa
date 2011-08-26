@@ -20,10 +20,14 @@
 #include <wx/intl.h>
 #include <wx/msgdlg.h>
 
+#include "RtMidi.h"
+
 using namespace AriaMaestosa;
 
 ptr_vector<PlatformMidiManagerFactory, REF>* g_all_midi_managers = NULL;
 PlatformMidiManager* g_manager = NULL;
+
+// ----------------------------------------------------------------------------------------------------------
 
 std::vector<wxString> PlatformMidiManager::getChoices()
 {
@@ -35,6 +39,8 @@ std::vector<wxString> PlatformMidiManager::getChoices()
     }
     return out;
 }
+
+// ----------------------------------------------------------------------------------------------------------
 
 PlatformMidiManager* PlatformMidiManager::get()
 {
@@ -69,6 +75,8 @@ PlatformMidiManager* PlatformMidiManager::get()
     return g_manager;
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void PlatformMidiManager::registerManager(PlatformMidiManagerFactory* newManager)
 {
     // hack to make sure the vector is always created before using it
@@ -80,4 +88,110 @@ void PlatformMidiManager::registerManager(PlatformMidiManagerFactory* newManager
     }
     
     g_all_midi_managers->push_back(newManager);
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+wxArrayString PlatformMidiManager::getInputChoices()
+{
+    wxArrayString out;
+    RtMidiIn* midiin = new RtMidiIn();
+    
+    // Check available ports.
+    unsigned int nPorts = midiin->getPortCount();
+    if (nPorts == 0)
+    {
+        std::cout << "No ports available!\n";
+        return out;
+    }
+    
+    std::string portName;
+    for (unsigned int i=0; i<nPorts; i++)
+    {
+        try
+        {
+            portName = midiin->getPortName(i);
+        }
+        catch (RtError &error)
+        {
+            error.printMessage();
+            continue;
+        }
+        std::cout << "  Input Port #" << i+1 << ": " << portName << '\n';
+        out.Add( wxString(portName.c_str(), wxConvUTF8) );
+    }
+    delete midiin;
+    return out;
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void recordCallback( double deltatime, std::vector< unsigned char > *message, void *userData )
+{
+    unsigned int nBytes = message->size();
+    for ( unsigned int i=0; i<nBytes; i++ )
+        std::cout << "Byte " << i << " = " << (int)message->at(i) << ", ";
+    if ( nBytes > 0 )
+        std::cout << "stamp = " << deltatime << std::endl;
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+bool PlatformMidiManager::startRecording(wxString outputPort)
+{
+    RtMidiIn *midiin = new RtMidiIn();
+    
+    // Check available ports.
+    unsigned int nPorts = midiin->getPortCount();
+    if (nPorts == 0)
+    {
+        wxMessageBox(_("Sorry, no MIDI input port is available"));
+        return false;
+    }
+    
+    std::string portName;
+    int portId = -1;
+    for (unsigned int i=0; i<nPorts; i++)
+    {
+        try
+        {
+            portName = midiin->getPortName(i);
+        }
+        catch (RtError &error)
+        {
+            error.printMessage();
+            continue;
+        }
+        
+        if (outputPort == wxString(portName.c_str(), wxConvUTF8))
+        {
+            portId = i;
+            break;
+        }
+    }
+    
+    
+    if (portId == -1)
+    {
+        wxMessageBox( _("Sorry, failed to open the selected MIDI input port") );
+        return false;
+    }
+    
+    midiin->openPort( portId );
+    
+    // Set our callback function.  This should be done immediately after
+    // opening the port to avoid having incoming messages written to the
+    // queue.
+    midiin->setCallback( &recordCallback );
+    
+    // Don't ignore sysex, timing, or active sensing messages.
+    midiin->ignoreTypes( false, false, false );
+    
+    /*
+    std::cout << "\nReading MIDI input ... press <enter> to quit.\n";
+    char input;
+    std::cin.get(input);
+    delete midiin;
+     */
+    return true;
 }

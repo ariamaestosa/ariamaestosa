@@ -116,11 +116,13 @@ EVT_CLOSE(MainFrame::on_close)
 
 /* top bar */
 #ifdef NO_WX_TOOLBAR
-EVT_BUTTON(PLAY_CLICKED, MainFrame::playClicked)
-EVT_BUTTON(STOP_CLICKED, MainFrame::stopClicked)
+EVT_BUTTON(PLAY_CLICKED,   MainFrame::playClicked)
+EVT_BUTTON(STOP_CLICKED,   MainFrame::stopClicked)
+EVT_BUTTON(RECORD_CLICKED, MainFrame::recordClicked)
 #else
-EVT_TOOL(PLAY_CLICKED, MainFrame::playClicked)
-EVT_TOOL(STOP_CLICKED, MainFrame::stopClicked)
+EVT_TOOL(PLAY_CLICKED,   MainFrame::playClicked)
+EVT_TOOL(STOP_CLICKED,   MainFrame::stopClicked)
+EVT_TOOL(RECORD_CLICKED, MainFrame::recordClicked)
 #endif
 
 EVT_TEXT(TEMPO, MainFrame::tempoChanged)
@@ -365,6 +367,10 @@ void MainFrame::init()
         wxMessageBox(wxT("Cannot locate data files, aria cannot start. Please check your installation"));
         exit(1);
     }
+    m_record_bitmap.LoadFile( getResourcePrefix()  + wxT("record.png") , wxBITMAP_TYPE_PNG);
+    m_record_down_bitmap.LoadFile( getResourcePrefix()  + wxT("record_down.png") , wxBITMAP_TYPE_PNG);
+    m_toolbar->AddTool(RECORD_CLICKED, _("Record"), m_record_bitmap);
+
     m_pause_bitmap.LoadFile( getResourcePrefix()  + wxT("pause.png") , wxBITMAP_TYPE_PNG);
     m_pause_down_bitmap.LoadFile( getResourcePrefix()  + wxT("pause_down.png") , wxBITMAP_TYPE_PNG);
     m_toolbar->AddTool(PLAY_CLICKED, _("Play"), m_play_bitmap);
@@ -736,6 +742,21 @@ void MainFrame::stopClicked(wxCommandEvent& evt)
         if (not m_playback_mode) return;
         m_main_pane->exitPlayLoop();
     }
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void MainFrame::recordClicked(wxCommandEvent& evt)
+{
+    // TODO: disable record when no input port is available
+    if (PlatformMidiManager::get()->getInputChoices().IsEmpty())
+    {
+        wxBell();
+        return;
+    }
+    
+    // TODO: allow selecting input port through menu
+    PlatformMidiManager::get()->startRecording( PlatformMidiManager::get()->getInputChoices()[0] );
 }
 
 // ----------------------------------------------------------------------------------------------------------

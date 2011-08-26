@@ -248,6 +248,27 @@ void MainFrame::initMenuBar()
     
     m_menu_bar->Append(m_output_menu, _("&Output"));
 
+    
+    // ---- Input devices menu
+    m_input_menu = new wxMenu();
+    
+    choices = PlatformMidiManager::get()->getInputChoices();
+    
+    for (unsigned int n=0; n<choices.Count(); n++)
+    {
+        wxMenuItem* item = m_input_menu->QUICK_ADD_CHECK_MENU(MENU_INPUT_DEVICE+n, choices[n], MainFrame::menuEvent_outputDevice);
+        m_input_device_menus.push_back(item);
+    }
+    
+    if (choices.GetCount() == 0)
+    {
+        wxMenuItem* item = m_input_menu->QUICK_ADD_CHECK_MENU(MENU_INPUT_DEVICE, _("No input port is available"), MainFrame::menuEvent_outputDevice);
+        item->Enable(false);
+    }
+    
+    m_menu_bar->Append(m_input_menu, _("&Input"));
+    
+    
     // ---- Help menu
     m_help_menu = new wxMenu();
 

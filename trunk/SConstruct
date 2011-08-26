@@ -286,7 +286,7 @@ def compile_Aria(which_os):
         sys.exit(0)
         
     # init common header search paths
-    env.Append(CPPPATH = ['./Src','.','./libjdkmidi/include'])
+    env.Append(CPPPATH = ['./Src','.','./libjdkmidi/include','./rtmidi'])
 
     print " "
 
