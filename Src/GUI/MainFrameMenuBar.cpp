@@ -716,25 +716,26 @@ void MainFrame::menuEvent_addTrack(wxCommandEvent& evt)
 {
     //getCurrentSequence()->addTrack();
     Sequence* seq = getCurrentSequence();
-    getCurrentSequence()->action( new Action::AddTrack() );
+    seq->action( new Action::AddTrack() );
     
     // FIXME: shouldn't need to handle maximized mode manually here
     if (getSequenceAmount() > 0 and getCurrentGraphicalSequence()->isTrackMaximized())
     {
         GraphicalSequence* gs = getCurrentGraphicalSequence();
         GraphicalTrack* gt = gs->getCurrentTrack();
-        Track* t = gs->getCurrentTrack()->getTrack();
+        Track* t = gt->getTrack();
         const int track_amount = seq->getTrackAmount();
         for (int n=0; n<track_amount; n++)
         {
             Track* track = seq->getTrack(n);
             if (track != t)
             {
-                gt->dock();
+                track->getGraphics()->dock();
                 gs->setDockVisible(true);
             }
         }
         
+        gt->dock(false);
         gt->maximizeHeight();
     }
     updateVerticalScrollbar();
