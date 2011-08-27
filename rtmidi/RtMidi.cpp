@@ -37,6 +37,12 @@
 
 // RtMidi: Version 1.0.15
 
+#if defined(__WIN32__)
+// Addition for Aria Maestosa over the original rtmidi sources
+// must include wx/wx.h before win32 is included otherwise we have unicode issues
+#include <wx/wx.h>
+#endif
+
 #include "RtMidi.h"
 #include <sstream>
 
