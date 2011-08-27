@@ -273,6 +273,7 @@ namespace AriaMaestosa
             SequencerThread* seqthread = new SequencerThread(sequence, false /* selection only */);
             seqthread->go(startTick);
             
+            m_start_tick = *startTick;
             return true;
         }
         
@@ -305,6 +306,8 @@ namespace AriaMaestosa
             
             SequencerThread* seqthread = new SequencerThread(sequence, true /* selection only */);
             seqthread->go(startTick);
+            
+            m_start_tick = *startTick;
             
             return true;
         }
