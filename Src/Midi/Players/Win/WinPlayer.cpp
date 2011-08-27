@@ -556,6 +556,8 @@ namespace AriaMaestosa
         SequencerThread* seqthread = new SequencerThread(selectionOnly, sequence);
         seqthread->go(startTick);
         
+        m_start_tick = *startTick;
+        
         return true;
     }
     

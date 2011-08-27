@@ -20,6 +20,7 @@
 #include <vector>
 #include <wx/string.h>
 #include <wx/arrstr.h>
+#include <map>
 
 class RtMidiIn;
 
@@ -27,6 +28,7 @@ namespace AriaMaestosa
 {
     
     class Sequence;
+    class Track;
     class PlatformMidiManagerFactory;
     
     /**
@@ -58,7 +60,24 @@ namespace AriaMaestosa
         bool m_recording;
         RtMidiIn* m_midi_input;
         
+        struct NoteInfo
+        {
+            int m_note_on_tick;
+            int m_velocity;
+        };
+        
+        /** Used when recording. Key is the midi note ID. */
+        std::map<int, NoteInfo> m_open_notes;
+        
         PlatformMidiManager();
+
+        int m_start_tick;
+        
+        /** Track where notes go when recording */
+        Track* m_record_target;
+        
+        /** rtmidi callback function */
+        static void recordCallback( double deltatime, std::vector< unsigned char > *message, void *userData );
 
     public:
         
@@ -72,12 +91,14 @@ namespace AriaMaestosa
          * @brief                  starts playing the entire sequence, from the measure being marked as
          *                         the first one
          * @param[out] startTick   gives the tick where the song starts playing
+         * @post                   the implementation of this method must set variable @c m_start_tick
          */
         virtual bool playSequence(Sequence* sequence, /*out*/int* startTick) = 0;
         
         /**
          * @brief                  starts playing the selected notes from the current track
          * @param[out] startTick   gives the tick where the song starts playing
+         * @post                   the implementation of this method must set variable @c m_start_tick
          */
         virtual bool playSelected(Sequence* sequence, /*out*/int* startTick) = 0;
         
@@ -153,7 +174,7 @@ namespace AriaMaestosa
         
         virtual wxArrayString getInputChoices();
         
-        virtual bool startRecording(wxString outputPort);
+        virtual bool startRecording(wxString outputPort, Track* target);
 
         virtual void stopRecording();
         

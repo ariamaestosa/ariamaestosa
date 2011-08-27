@@ -273,6 +273,8 @@ public:
         SequencerThread* seqthread = new SequencerThread(false /* selection only */);
         seqthread->go(startTick);
 
+        m_start_tick = *startTick;
+        
         return true;
     }
 
@@ -291,6 +293,8 @@ public:
         SequencerThread* seqthread = new SequencerThread(true /* selection only */);
         seqthread->go(startTick);
 
+        m_start_tick = *startTick;
+        
         return true;
 
 

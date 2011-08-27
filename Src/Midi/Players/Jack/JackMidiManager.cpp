@@ -284,6 +284,7 @@ public:
 		makeJDKMidiSequence(seq, *tracks, false, &len, startTick, &nTrack, true);
 		player->play(tracks.get());
 
+        m_start_tick = *startTick;
 		return true;
 	}
 
@@ -297,6 +298,8 @@ public:
 		makeJDKMidiSequence(seq, *tracks, true, &len, startTick, &nTrack, true);
 		player->play(tracks.get());
 
+        m_start_tick = *startTick;
+        
 		return true;
 	}
 

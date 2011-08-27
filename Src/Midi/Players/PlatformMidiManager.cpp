@@ -14,6 +14,9 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include "AriaCore.h"
+
+#include "Actions/AddNote.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "PreferencesData.h"
 #include "ptr_vector.h"
@@ -133,8 +136,10 @@ wxArrayString PlatformMidiManager::getInputChoices()
 
 // ----------------------------------------------------------------------------------------------------------
 
-void recordCallback( double deltatime, std::vector< unsigned char > *message, void *userData )
+void PlatformMidiManager::recordCallback( double deltatime, std::vector< unsigned char > *message, void *userData )
 {
+    PlatformMidiManager* self = (PlatformMidiManager*)userData;
+    // self->m_open_notes
     unsigned int nBytes = message->size();
     
     if (nBytes >= 3)
@@ -149,18 +154,31 @@ void recordCallback( double deltatime, std::vector< unsigned char > *message, vo
         switch (messageType)
         {
             case 0x90:
-                if (value2 > 0)
+            case 0x80:
+                if (messageType == 0x90 and value2 > 0)
                 {
-                    printf("NOTE ON on channel %i; note : %i velocity : %i\n", channel, value, value2);
+                    //printf("NOTE ON on channel %i; note : %i velocity : %i\n", channel, value, value2);
+                    
+                    NoteInfo n = {self->m_start_tick + self->trackPlaybackProgression(), value2};
+                    self->m_open_notes[value] = n;
                 }
                 else
                 {
-                    printf("NOTE OFF on channel %i; note : %i velocity : %i\n", channel, value, value2);
+                    //printf("NOTE OFF on channel %i; note : %i velocity : %i\n", channel, value, value2);
+                    
+                    if (self->m_open_notes.find(value) != self->m_open_notes.end())
+                    {
+                        NoteInfo n = self->m_open_notes[value];
+                        self->m_open_notes.erase(value);
+                        
+                        // FIXME: recording should not fill the undo stack!!
+                        self->m_record_target->action(new Action::AddNote(127 - value,
+                                                                          n.m_note_on_tick,
+                                                                          self->m_start_tick + self->trackPlaybackProgression(),
+                                                                          n.m_velocity));
+                        
+                    }
                 }
-                break;
-                
-            case 0x80:
-                printf("NOTE OFF on channel %i; note : %i velocity : %i\n", channel, value, value2);
                 break;
                 
             case 0xC0:
@@ -191,8 +209,9 @@ void recordCallback( double deltatime, std::vector< unsigned char > *message, vo
 
 // ----------------------------------------------------------------------------------------------------------
 
-bool PlatformMidiManager::startRecording(wxString outputPort)
+bool PlatformMidiManager::startRecording(wxString outputPort, Track* target)
 {
+    m_record_target = target;
     m_midi_input = new RtMidiIn();
     
     // Check available ports.
@@ -238,7 +257,7 @@ bool PlatformMidiManager::startRecording(wxString outputPort)
     // Set our callback function.  This should be done immediately after
     // opening the port to avoid having incoming messages written to the
     // queue.
-    m_midi_input->setCallback( &recordCallback );
+    m_midi_input->setCallback( &recordCallback, this );
     
     // Don't ignore sysex, timing, or active sensing messages.
     m_midi_input->ignoreTypes( false, false, false );

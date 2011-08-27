@@ -767,7 +767,8 @@ void MainFrame::recordClicked(wxCommandEvent& evt)
     else                                m_main_pane->enterPlayLoop();
     
     // TODO: allow selecting input port through menu
-    PlatformMidiManager::get()->startRecording( PlatformMidiManager::get()->getInputChoices()[0] );
+    PlatformMidiManager::get()->startRecording(PlatformMidiManager::get()->getInputChoices()[0],
+                                               seq->getCurrentTrack());
     
     toolsEnterPlaybackMode();
 }
