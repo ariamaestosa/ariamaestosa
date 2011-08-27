@@ -318,6 +318,11 @@ public:
 		return player->getTick();
 	}
 
+    virtual int getAccurateTick()
+    {
+        return player->getTick();
+    }
+    
 	virtual wxString const getAudioExtension()
 	{
 		return wxEmptyString;

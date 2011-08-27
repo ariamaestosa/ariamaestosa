@@ -71,6 +71,7 @@ void cleanup_after_playback()
 }
 
 int currentTick;
+int g_current_accurate_tick;
 
 class MyPThread
 {
@@ -267,6 +268,7 @@ public:
 
         g_sequence = sequence;
         currentTick = 0;
+        g_current_accurate_tick = 0;
 
         // std::cout << "  * playSequencer - creating new thread" << std::endl;
 
@@ -274,6 +276,9 @@ public:
         seqthread->go(startTick);
 
         m_start_tick = *startTick;
+        
+        currentTick = m_start_tick;
+        g_current_accurate_tick = m_start_tick;
         
         return true;
     }
@@ -289,11 +294,15 @@ public:
 
         g_sequence = sequence;
         currentTick = 0;
+        g_current_accurate_tick = 0;
 
         SequencerThread* seqthread = new SequencerThread(true /* selection only */);
         seqthread->go(startTick);
 
         m_start_tick = *startTick;
+        
+        currentTick = m_start_tick;
+        g_current_accurate_tick = m_start_tick;
         
         return true;
 
@@ -340,6 +349,11 @@ public:
         }
     }
 
+    virtual int getAccurateTick()
+    {
+        return g_current_accurate_tick;
+    }
+    
     virtual bool seq_must_continue()
     {
         if (not sound_available) return false;
@@ -352,6 +366,11 @@ public:
         currentTick = tick;
     }
 
+    virtual void seq_notify_accurate_current_tick(const int tick)
+    {
+        g_current_accurate_tick = tick;
+    }
+    
     virtual bool isPlaying()
     {
         if (not sound_available) return false;

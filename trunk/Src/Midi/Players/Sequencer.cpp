@@ -298,6 +298,8 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
         const int delta = (timer->get_elapsed_millis() - last_millis);
 
         total_millis += delta;
+        
+        PlatformMidiManager::get()->seq_notify_accurate_current_tick(total_millis*ticks_per_millis);
     }
 
     cleanup_sequencer();

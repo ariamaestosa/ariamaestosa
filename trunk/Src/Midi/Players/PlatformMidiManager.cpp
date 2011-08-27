@@ -159,7 +159,7 @@ void PlatformMidiManager::recordCallback( double deltatime, std::vector< unsigne
                 {
                     //printf("NOTE ON on channel %i; note : %i velocity : %i\n", channel, value, value2);
                     
-                    NoteInfo n = {self->m_start_tick + self->trackPlaybackProgression(), value2};
+                    NoteInfo n = {self->m_start_tick + self->getAccurateTick(), value2};
                     self->m_open_notes[value] = n;
                 }
                 else
@@ -174,7 +174,7 @@ void PlatformMidiManager::recordCallback( double deltatime, std::vector< unsigne
                         // FIXME: recording should not fill the undo stack!!
                         self->m_record_target->action(new Action::AddNote(127 - value,
                                                                           n.m_note_on_tick,
-                                                                          self->m_start_tick + self->trackPlaybackProgression(),
+                                                                          self->m_start_tick + self->getAccurateTick(),
                                                                           n.m_velocity));
                         
                     }

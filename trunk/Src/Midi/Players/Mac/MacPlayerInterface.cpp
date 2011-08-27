@@ -60,6 +60,7 @@ namespace AriaMaestosa
     bool g_playing;
     
     int g_current_tick;
+    int g_current_accurate_tick;
     
     bool g_thread_should_continue = true;
     
@@ -153,7 +154,7 @@ namespace AriaMaestosa
         bool m_selection_only;
         int m_start_tick;
         Sequence* m_sequence;
-        
+                
     public:
         
         SequencerThread(Sequence* seq, const bool selectionOnly)
@@ -185,6 +186,7 @@ namespace AriaMaestosa
             jdksequencer = new jdkmidi::MIDISequencer(jdkmidiseq);
             
             g_current_tick = m_start_tick;
+            g_current_accurate_tick = m_start_tick;
         }
         
         void go(int* startTick /* out */)
@@ -378,6 +380,11 @@ namespace AriaMaestosa
             }
         }
         
+        virtual int getAccurateTick()
+        {
+            return g_current_accurate_tick;
+        }
+        
         virtual void freeMidiPlayer()
         {
             delete output;
@@ -418,6 +425,11 @@ namespace AriaMaestosa
             g_current_tick = tick;
             
             if (tick == -1) g_playing = false;
+        }
+        
+        virtual void seq_notify_accurate_current_tick(const int tick)
+        {
+            g_current_accurate_tick = tick;
         }
         
         /**
