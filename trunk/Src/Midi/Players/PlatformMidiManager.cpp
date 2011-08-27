@@ -129,10 +129,57 @@ wxArrayString PlatformMidiManager::getInputChoices()
 void recordCallback( double deltatime, std::vector< unsigned char > *message, void *userData )
 {
     unsigned int nBytes = message->size();
+    
+    if (nBytes >= 3)
+    {
+        int messageType = message->at(0) & 0xF0;
+        int channel = message->at(0) & 0x0F;
+        int value = message->at(1);
+        int value2 = message->at(2);
+        
+        //printf("message %x on channel %i = %i %i\n", messageType, channel, value, value2);
+        
+        switch (messageType)
+        {
+            case 0x90:
+                if (value2 > 0)
+                {
+                    printf("NOTE ON on channel %i; note : %i velocity : %i\n", channel, value, value2);
+                }
+                else
+                {
+                    printf("NOTE OFF on channel %i; note : %i velocity : %i\n", channel, value, value2);
+                }
+                break;
+                
+            case 0x80:
+                printf("NOTE OFF on channel %i; note : %i velocity : %i\n", channel, value, value2);
+                break;
+                
+            case 0xC0:
+                printf("PROGRAM CHANGE on channel %i; instrument : %i\n", channel, value);
+                break;
+                
+            case 0xE0:
+                printf("PITCH BEND on channel %i; bend : %i\n", channel, value | (value2 << 8));
+                break;
+                
+            case 0xB0:
+                printf("CONTROLLER EVENT on channel %i; controller : %i value : %i\n", channel, value, value2);
+                break;
+                
+            default:
+                printf("UNKNOWN EVENT %x on channel %i; value : %i %i\n", messageType, channel, value, value2);
+
+        }
+    }
+    
+    /*
     for ( unsigned int i=0; i<nBytes; i++ )
         std::cout << "Byte " << i << " = " << (int)message->at(i) << ", ";
     if ( nBytes > 0 )
         std::cout << "stamp = " << deltatime << std::endl;
+     */
 }
 
 // ----------------------------------------------------------------------------------------------------------
