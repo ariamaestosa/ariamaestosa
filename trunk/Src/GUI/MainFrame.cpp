@@ -690,7 +690,7 @@ void MainFrame::playClicked(wxCommandEvent& evt)
     Sequence* seq = getCurrentSequence();
     
     if (m_playback_mode)
-    {        
+    {
         // already playing, this button does "pause" instead
         m_pause_location = m_main_pane->getCurrentTick();
         m_paused = true;
@@ -749,14 +749,27 @@ void MainFrame::stopClicked(wxCommandEvent& evt)
 void MainFrame::recordClicked(wxCommandEvent& evt)
 {
     // TODO: disable record when no input port is available
-    if (PlatformMidiManager::get()->getInputChoices().IsEmpty())
+    if (PlatformMidiManager::get()->getInputChoices().IsEmpty() or m_playback_mode)
     {
         wxBell();
         return;
     }
     
+    Sequence* seq = getCurrentSequence();
+
+    int startTick = -1;
+    const bool success = PlatformMidiManager::get()->playSequence( seq, /*out*/ &startTick );
+    if (not success) std::cerr << "Couldn't play" << std::endl;
+    
+    seq->setPlaybackStartTick( startTick );
+    
+    if (startTick == -1 or not success) m_main_pane->exitPlayLoop();
+    else                                m_main_pane->enterPlayLoop();
+    
     // TODO: allow selecting input port through menu
     PlatformMidiManager::get()->startRecording( PlatformMidiManager::get()->getInputChoices()[0] );
+    
+    toolsEnterPlaybackMode();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -784,6 +797,11 @@ void MainFrame::toolsEnterPlaybackMode()
     m_toolbar->SetToolNormalBitmap(PLAY_CLICKED, m_pause_bitmap);
     m_toolbar->EnableTool(STOP_CLICKED, true);
 
+    if (PlatformMidiManager::get()->isRecording())
+    {
+        m_toolbar->SetToolNormalBitmap(RECORD_CLICKED, m_record_down_bitmap);
+    }
+    
     disableMenus(true);
 
     m_time_sig->Enable(false);
@@ -808,7 +826,8 @@ void MainFrame::toolsExitPlaybackMode()
         m_toolbar->SetToolNormalBitmap(PLAY_CLICKED, m_play_bitmap);
         m_toolbar->EnableTool(STOP_CLICKED, false);
     }
-    
+    m_toolbar->SetToolNormalBitmap(RECORD_CLICKED, m_record_bitmap);
+
     disableMenus(false);
 
     m_time_sig->Enable(true);

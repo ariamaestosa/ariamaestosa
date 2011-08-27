@@ -591,7 +591,9 @@ void Sequence::spacePressed()
     {
         if (m_playback_listener != NULL) m_playback_listener->onLeavePlaybackMode();
 
-        PlatformMidiManager::get()->stop();
+        PlatformMidiManager* midi = PlatformMidiManager::get();
+        if (midi->isRecording()) midi->stopRecording();
+        midi->stop();
         
         if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
     }

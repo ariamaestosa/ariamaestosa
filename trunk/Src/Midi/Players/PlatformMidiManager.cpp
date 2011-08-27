@@ -29,6 +29,13 @@ PlatformMidiManager* g_manager = NULL;
 
 // ----------------------------------------------------------------------------------------------------------
 
+PlatformMidiManager::PlatformMidiManager()
+{
+    m_recording = false;
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
 std::vector<wxString> PlatformMidiManager::getChoices()
 {
     std::vector<wxString> out;
@@ -186,10 +193,10 @@ void recordCallback( double deltatime, std::vector< unsigned char > *message, vo
 
 bool PlatformMidiManager::startRecording(wxString outputPort)
 {
-    RtMidiIn *midiin = new RtMidiIn();
+    m_midi_input = new RtMidiIn();
     
     // Check available ports.
-    unsigned int nPorts = midiin->getPortCount();
+    unsigned int nPorts = m_midi_input->getPortCount();
     if (nPorts == 0)
     {
         wxMessageBox(_("Sorry, no MIDI input port is available"));
@@ -202,7 +209,7 @@ bool PlatformMidiManager::startRecording(wxString outputPort)
     {
         try
         {
-            portName = midiin->getPortName(i);
+            portName = m_midi_input->getPortName(i);
         }
         catch (RtError &error)
         {
@@ -224,21 +231,28 @@ bool PlatformMidiManager::startRecording(wxString outputPort)
         return false;
     }
     
-    midiin->openPort( portId );
+    m_recording = true;
+    
+    m_midi_input->openPort( portId );
     
     // Set our callback function.  This should be done immediately after
     // opening the port to avoid having incoming messages written to the
     // queue.
-    midiin->setCallback( &recordCallback );
+    m_midi_input->setCallback( &recordCallback );
     
     // Don't ignore sysex, timing, or active sensing messages.
-    midiin->ignoreTypes( false, false, false );
-    
-    /*
-    std::cout << "\nReading MIDI input ... press <enter> to quit.\n";
-    char input;
-    std::cin.get(input);
-    delete midiin;
-     */
+    m_midi_input->ignoreTypes( false, false, false );
+
     return true;
 }
+
+// ----------------------------------------------------------------------------------------------------------
+
+void PlatformMidiManager::stopRecording()
+{
+    m_recording = false;
+    delete m_midi_input;
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
