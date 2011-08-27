@@ -130,6 +130,12 @@ namespace AriaMaestosa
          */
         virtual int trackPlaybackProgression() = 0;
         
+        /** Get the current midi, as accurate as possible
+          * (@c trackPlaybackProgression, by opposition, is really only meant to give feedback to the user and so
+          *  can be content with only updating on every beat)
+          */
+        virtual int getAccurateTick() = 0;
+        
         /** @brief called when app opens */
         virtual void initMidiPlayer() = 0;
         
@@ -190,8 +196,17 @@ namespace AriaMaestosa
         /**
           * @brief called repeatedly by the generic sequencer to tell the midi player what is the current
           *        progression. the sequencer will call this with -1 as argument to indicate it exits.
+          * @note  This timer is for end-users, and as such is generally coarse-grained
+          *        (see @c seq_notify_accurate_current_tick for a precise timer)
           */
         virtual void seq_notify_current_tick(const int tick) { }
+        
+        /**
+          * @brief called repeatedly by the generic sequencer to tell the midi player what is the current
+          *        progression. the sequencer will call this with -1 as argument to indicate it exits.
+          * @note  This timer is fine-grained
+          */
+        virtual void seq_notify_accurate_current_tick(const int tick) {}
         
         /**
           * @brief will be called by the generic sequencer to determine whether it should continue

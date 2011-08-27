@@ -37,6 +37,8 @@ namespace AriaMaestosa
 
         virtual int trackPlaybackProgression() { return 0; }
         
+        virtual int getAccurateTick() { return 0; }
+
         virtual void initMidiPlayer() { }
         
         virtual void freeMidiPlayer() { }

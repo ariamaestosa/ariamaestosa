@@ -27,6 +27,7 @@ namespace AriaMaestosa
     class AriaSequenceTimer
     {
         Sequence* m_seq;
+        
     public:
 
         AriaSequenceTimer(Sequence* seq);

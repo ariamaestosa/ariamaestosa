@@ -82,6 +82,8 @@ namespace AriaMaestosa
     int songLengthInTicks = -1;
     bool playing = false;
     int current_tick = -1;
+    int g_current_accurate_tick;
+
     HMIDIOUT m_hOutMidiDevice = 0;
     bool m_bOutOpen = false;
     int lastPlayedNote = -1, lastChannel;
@@ -233,6 +235,11 @@ namespace AriaMaestosa
             }
             
             return current_tick;
+        }
+        
+        virtual int getAccurateTick()
+        {
+            return g_current_accurate_tick;
         }
         
         wxArrayString m_devices;
@@ -512,6 +519,11 @@ namespace AriaMaestosa
             }
         }
         
+        virtual void seq_notify_accurate_current_tick(const int tick)
+        {
+            g_current_accurate_tick = tick;
+        }
+        
         // will be called by the generic sequencer to determine whether it should continue
         // return false to stop it.
         virtual bool seq_must_continue()
@@ -527,6 +539,7 @@ namespace AriaMaestosa
         if (playing) return false; // already playing
         playing = true;
         current_tick = 0;
+        g_current_accurate_tick = 0;
         
         // stop any preview note currently playing
         stopNote();
@@ -557,6 +570,9 @@ namespace AriaMaestosa
         seqthread->go(startTick);
         
         m_start_tick = *startTick;
+        
+        current_tick = m_start_tick;
+        g_current_accurate_tick = m_start_tick;
         
         return true;
     }
