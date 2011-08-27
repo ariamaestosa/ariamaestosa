@@ -1,0 +1,628 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+   
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>Aria Maestosa</title>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+
+<body>
+
+<script src="menu.js" type="text/javascript"> </script> 
+
+<!-- ================ CONTENT ================ -->
+<blockquote>
+    
+
+<h2>1.3 beta 2</h2>
+
+- Improved working with more than one editor per track<br/>
+- Preview values in the controller editor<br/>
+- Add a Welcome screen instead of quitting when last tab is closed<br/>
+- Fixed pressing shift+number in guitar editor in Cocoa<br/>
+- use sheet dialogs on OSX<br/>
+- Fixed some placement issues with silences in printed scores<br/>
+- Minor fixes in new OSX player code<br/>
+- Improved note beaming in score editor when using multiple time signatures<br/>
+- Improved the pause feature to not affect the song start measure<br/>
+- Other bug fixes and minor improvements<br/>
+- Show which sequences have unsaved changes<br/>
+- Display a timer during playback<br/>
+- Preview note in a status bar<br/>
+- Fixed score editor regression<br/><br/>
+
+<h2>1.3 beta 1</h2>
+- Intensive code refactoring and cleanup<br/>
+- Support sending midi output to external devices<br/>
+- Improve rendering of short notes in tablature view<br/>
+- Improve selection to preview which notes are included<br/>
+- Auto-extend song length when moving notes past end<br/>
+- Support for importing lyrics events (not yet for editing them)<br/>
+- Performance (fluidity/responsivity) improvements<br/>
+- Fixed glitches in software rendering mode<br/>
+- Fixed crash when trying to print a song containing an empty track<br/>
+- Grey out irrelevant fields in note select dialog<br/>
+- Migrate OSX player to Aria generic sequencer, like on other systems<br/>
+- wxWidgets 2.9 builds will now feature nicer symbols on printed scores<br/>
+- Improve tool picker<br/><br/>
+
+<h2>1.2.4.1</h2>
+- Hotfix release to correct crash related with background tracks<br/><br/>
+
+<h2>1.2.4</h2>
+- Fixed song length when importing MIDIs with multiple time signatures<br/>
+- Added support for horizontal mouse wheel scrolling (wxWidgets 2.9.1+ only)<br/>
+- Fixed rare bug that could cause tracks to have an incorrect instrument name when importing a MIDI<br/>
+- Provide graphical warnings when a MIDI file cannot be perfectly loaded<br/>
+- Fixed rare printing crash<br/>
+- Fixed problems with silences when printing scores with uneven chords<br/>
+- Fixed not staying centered when zooming with ctrl+mouse wheel<br/>
+- Fixed "rearrange notes" feature in tablature editor, which had accidentally been disabled<br/>
+- Fixed issues in score editor with stem for some notes being sometimes up, sometimes down<br/>
+- Speedups in printing code<br/>
+- Don't exit when save dialog is cancelled<br/>
+- Code cleanup and unit tests<br/><br/>
+
+<h2>1.2.3</h2>
+- Added metronome feature<br/>
+- Fixed extra silence being inserted at end of exported midi file, preventing looping<br/>
+- Fixed glitch with drum name when loading .aria file<br/>
+- Fixed keyboard focus not brought back to main pane after showing "Select Notes" dialog<br/>
+- Fixed clicking on track header of drum editor unselects notes<br/>
+- Fixed measures appearing unselected when right-clicking on them<br/>
+- Fixed printing bug where notes appeared in the wrong measure<br/>
+- Fixed wrong time sig change being selected after adding a time sig effect<br/>
+- Fixed Shift+left/Shift+right when multiple time sig changes are used<br/>
+- More code cleanup<br/><br/>
+
+
+<h2>1.2.2</h2>
+- Support for custom keys (e.g. for street organs)<br/>
+<blockquote>
+    - Added ability to save user-defined key presets<br/>
+    - Support for disabling notes (e.g. if your instrument cannot play all notes)<br/>
+</blockquote>
+- Fixed octave numbers in keyboard editor and guitar editor<br/>
+- More flexible printing dialog; allows changing the printing notation type for each track<br/>
+- Menu icons on Linux/Windows (thanks to Alexis Archambault for coding this!)<br/>
+- Keyroll printing<br/>
+- Fixed bug that caused wrong sequence to be closed when pressing "X" on an unselected tab<br/>
+- Improved sequence is selected after closing a sequence<br/>
+- Loading MIDI files is now fast again<br/>
+- Fixed hanging if a warning message is hsown when opening a file<br/>
+- Much code cleanup, documentation and refactoring<br/><br/>
+
+<h2>1.2.1</h2>
+- Fixed printing of accidentals<br/><br/>
+
+
+<h2>1.2</h2>
+
+- Printing<br/>
+<blockquote>
+    - Improved printing dialog<br/>
+    - Give access to page setup dialog<br/>
+    - Show progress dialog while calculating print layout<br/>
+    - Print song tempo<br/>
+    - Improved layout code, which result in vast improvements when printing tablatures without scores<br/>
+    - In printing code, removed absolute constants and repalced them to be relative to page size<br/>
+    - Fixed bugs that caused pages > 1 to have less contents than first page<br/>
+    - Silences are now also printed in tablature mode; makes them easier to follow<br/>
+    - Print track name(s)<br/>
+    - Many other readability improvements to tablature printing<br/>
+    - Better printing of time signature changes<br/>
+    - Connect grand staffs toghether (extend measure bars)<br/>
+    - Collapse long series of empty measures into a gathered rest<br/>
+    - Allowing configuring whether empty tracks are hidden<br/>
+    - Prevent invoking print dialog when it's already visible, which caused crashes<br/>
+    - Don't add a time sig change alone at the end of a line.<br/>
+    - Misc tweaks and fixes<br/>
+</blockquote>
+- Adding and removing tracks no more confuses the undo system<br/>
+- The "undo" menu is now chattier about what is next to undo<br/>
+- Fixed bug with key selection (when going back to C)<br/>
+- Code cleanup and general improvements/fixes<br/>
+- Improved dialog shown when quitting and there are unsaved changes (now offer to save them)<br/>
+- Fixed deleting control events when selection was done from right to left<br/>
+  (thanks to Alexis Archambault for finding this bug!)<br/>
+- Fixed preferences dialog not being translated<br/>
+- Applied several patches by Alexis Archambault to improve Windows support<br/>
+- Started adding support for custom keys (hidden for now)<br/><br/>
+
+<h2>1.2b9</h2>
+- Printing Improvements<br/>
+<blockquote>
+    - Symbols are now given an absolute minimum size, which fixes several printing glitches<br/>
+    - Better vertical space allocation, so now tracks will no more overlap vertically<br/>
+    - Various other improvements, fixes and tweaks<br/>
+    - Intensive code cleanup and documentation<br/>
+</blockquote>
+- Each tab now has its own close button<br/>
+- More code cleanup<br/><br/>
+
+
+<h2>1.2b8</h2>
+- You can now choose between two tools : the "classic" on from older versions, and a new one that adds without dragging<br/>
+- More printing improvements<br/>
+- Clicking on a note on the piano at the left of the keyboard editor now plays the note<br/>
+- Clicking on a note on the staff at the left of the score editor now plays the note<br/>
+- Clicking on an entry in the table at the left of the drum editor now plays the sound<br/>
+- Fixed crash when collapsing last drum section<br/><br/>
+
+<h2>1.2b7</h2>
+- fixed bug when loading file that used a magnetic grid size from drop-down menu and not visible on the widget<br/>
+- fixed drawing dead notes (X)<br/>
+- improved print layout<br/>
+- improved look of printed note heads<br/>
+- improved look of printed tabs<br/>
+- improved printing of triplets and ties<br/>
+- printing is now non-linear<br/>
+- fixed vertical centering of tracks + fixed assertion failure<br/>
+- hide empty lines when printing<br/>
+- improved silence printing<br/>
+- fixed rendering dotted notes<br/>
+- cleaned up preferences implementation<br/>
+- added an option to automatically launch TiMidity and pick port on linux<br/><br/>
+
+
+<h2>1.2b6</h2>
+- Printing improvements :<br/>
+<blockquote>
+    - Better G clef on printed scores<br/>
+    - Added F clef render on printed scores<br/>
+    - Added dotted silence rendering<br/>
+    - Printing : fixed vertical measure dividers to play nicely with scores<br/>
+    - Fixed crash when printing a single track<br/>
+    - Key signature now appears on printed scores<br/>
+    - Marked repetition detection as experimental, disabled by default<br/>
+    - Fixed printing of notes above/below score (previously broken)<br/>
+    - Further improved vertical division of space<br/>
+    - Time signature changes are now printed<br/>
+    - Now shows ottava bassa/alta signs<br/>
+    - Added support for printing triplet silences<br/>
+    - Fixed bug where random notes would appear at the far right of the page<br/>
+    - Fixed rendering notes with more than 1 flags (was broken when not beamed)<br/>
+    - Fixed bug where notes would appear at the far left of the page and not in their measure<br/><br/>
+</blockquote>
+
+<h2>1.2b5</h2>
+- More minor linux fixes<br/>
+- Added Code::Blocks project<br/>
+- Fixed crash when clicking below last track<br/>
+- Major refactor of render system : allow software rendering where OpenGL is not optimal<br/>
+- Fixed multiple printing-related crashes and infinite recursions<br/>
+- Removed GLUT dependency from OpenGL renderer. consequence : anti-aliased fonts and better Linux support.<br/>
+- Fixed time signature editor popping-up when opening a file<br/>
+- Fixed rounding issues when zooming<br/>
+- Fixed playback ending too quickly<br/>
+- Allowed moving notes by one octave with shift+up/down<br/>
+- Allowed moving notes by one measure with shift+left/right<br/>
+- G clef is now rendered (roughly) on printed scores<br/>
+- You can now choose the default view for score editor in preferences<br/>
+- Fixed repetiton detection on multiple-track printing<br/>
+- Improvements to maximize mode<br/><br/>
+
+<h2>1.2b4</h2>
+- Switched to unified (native) toolbar on mac  (WARNING: requires patching wxWidgets, see docs)<br/>
+- A few linux changes<br/>
+- Fixed control editor to allow minimal value (0), namely allowing to turn Sustain off.<br/>
+- Fixed (yet another) bug in accidental handling<br/>
+- More intelligently decide if notes on middle C belong to F clef or G clef<br/>
+- In editor popup menus, don't show score options in keyboard mode<br/>
+- Fixed docking tracks, which was broken in last release<br/>
+- Made 'follow playback' easier to follow by scrolling only on measure change<br/>
+- Fixed undoing guitar tuning changes<br/>
+- When printing multiple tracks, draw a line between them to make clear they belong toghether<br/>
+- Fixed silences being drawn in repetitions when printing<br/>
+- More minor tweaks to printing<br/>
+- Added ability to maximize tracks<br/>
+- Improved handling of on/off controllers, namely making sustain usable.<br/>
+- More layout and rendering improvements to score printing<br/>
+- Added keyboard shortcuts for more menu elements<br/>
+- Added built-in docs viewer on mac<br/>
+- Fixed print dialog to show correct page amount instead of 9999 (WARNING: requires patching wxWidgets, see docs)<br/>
+- It is now possible to see song length (minutes:seconds) in song info window<br/>
+- Improved mouse events propagation, so areas are less viral about mouse needing to remain within defined boundaries<br/>
+- Added track property dialog, where default note volume can be set in addition to background<br/><br/>
+
+<h2>1.2b3</h2>
+- Refactored preferences to look better, be cleaner and allow setting a default value for "follow playback"<br/>
+- Updated render code in hope to fix rounding errors on some graphics card<br/>
+- Fixed items wrongly disabled in key picker<br/>
+- Dynamic repartition of height when printing<br/>
+- Don't give error messages when cancelling printing<br/>
+- Better horizontal distribution when printing<br/>
+- Fixed beaming problems when using multiple time signatures<br/>
+- Added new time sig picker, making the interface much nicer when using multiple key sigs<br/>
+- Added pause button<br/>
+- Clicking in the blank area of the horizontal scrollbar will move by one measure (instead of a few pixels)<br/>
+- Improved scale dialog<br/>
+- Bug fixes in dialog cleanup<br/>
+- Made it easier to add new notes (cursor less likely to switch to selection, and possibility to go back)<br/><br/>
+
+
+<h2>1.2b2</h2>
+- Fixed issues with track reordering<br/>
+- Magnetic grid choice done with icons instead of text<br/>
+- Improved score printing (nicer-looking, both F and G clefs supported, adaptable height, notes above or below score, fixed crashes...)<br/>
+- Fixed bug in score printing where the first page would be a bunch filled with garbage<br/>
+- G or F clef view preference saved<br/>
+- Improved display and printing of ties on chords<br/>
+- Fixed bug with magnetic grid when using manual measure management + a very small measure (e.g. 1/16)<br/>
+- Code cleanup<br/>
+
+<h2>1.2b1</h2>
+- Added ability to print more than one track at once<br/>
+- Allowed showing only G or F clef<br/>
+- Support for moving score one octave up or down<br/>
+- Initial support for score printing<br/>
+- Fixed improper handling of accidentals<br/>
+- Fixed default suggested name when exporting to PDF on mac OS X<br/>
+- Fixed odd-numbered time signatures like 9/8<br/>
+- Reworked beaming code, resulting in nicer beams in some cases<br/>
+- Added DropD-bass tuning preset, cleaned up code<br/>
+- Improved printing output by putting a bigger centered title on first page.<br/>
+- Fixed glitches in score editor settings<br/>
+- Fixed wrong rythm on playback caused by improper ordering of note off events<br/>
+- Nicer-looking ties in score editor<br/>
+- New toolbar layout<br/>
+- Major code cleanup in measure handling code<br/>
+- Major code cleanup in track widgets<br/>
+- More automatic memory management, improved leak checks<br/>
+- Fixed memory leaks<br/><br/>
+
+<h2>1.1.3</h2>
+- improved vector implementation, fixing possible problems on 64-bits machines<br/>
+- improved 'follow playback'<br/>
+- added warning message when adding too many tracks<br/>
+- always play note on click<br/>
+- fixed file name being used over song name when printing tablature<br/>
+- removed harmless warning on the terminal when loading a midi file saved by aria<br/>
+- fixed undoing vertical moves in guitar editor<br/>
+- fixed undoing vertical moves in drum editor<br/>
+- fixed 'follow playback' menu item not properly checked/unchecked when switching between songs<br/>
+- improvement 'settings' menu layout<br/>
+- improved scons towards a real install target<br/>
+- moved docs inside resources so they're always available<br/>
+- fixed adding new tracks in manual channel management mode<br/>
+- correctly handle when there's too many tabs open for all to be visible<br/>
+- fixed crash in score editor<br/>
+- fixed 'snap notes to grid' sometimes collapsing notes of duration 0<br/>
+- code cleanup<br/>
+- more improvements to scons build system<br/><br/>
+
+<h2>1.1.2</h2>
+- Added german translation (thanks to Friedrich Weber!)<br/>
+- Cleaned up language code, making adding new languages easier and less error-prone<br/>
+- Fixed files being overwriten even if user chose "no" in the overwrite dialog (when he didn't choose another path right away)
+- Fixed song length detection when importing midi files
+- Fixed note ordering bug that could potentially have caused songs to be messed up<br/>
+- Fixed copying and pasting from a song to another when both songs don't use the same beat resolution<br/>
+- Fixed wxString conversions, fixing problems with exporting song name, copyright and track names<br/>
+- Key is now correctly loaded from files in keyboard editor too<br/>
+- Added check next to currently selected key in key pop-up menu<br/>
+- Somewhat better handling of out-of-range notes in keyboard editor<br/>
+- Fixed crashes and heap corruption in score editor<br/>
+- Fixed weird behaviour when pressing space and nothing is selected<br/>
+- Fixed notes not beaming in some imported midis<br/>
+- Hitting enter after editing values in top bar will return focus to main pane<br/>
+- Code cleanup<br/><br/>
+
+<h2>1.1.1</h2>
+- Added feature to see other tracks in background of current track (keyboard view only for now)<br/>
+- Major improvements to ALSA/linux player. Fixed crashes. Made code cleaner.<br/>
+- Fixed crash on linux when trying to activate port choice dialog<br/>
+- Cleanup in notation export code, switched from basic text generation to proper printing/pdf export<br/>
+- Fixed dialog deletion for notation export and custom tuning picker, should fix hangs (and possible crashes) on shutdown<br/>
+- Imported midi files now properly suggest a file name when e.g. re-saving them<br/>
+- Added close button to main window (especially useful on linux)<br/>
+- Fixed yet more bugs with multiple time sig changes<br/>
+- Fixed importing midi files where events are [incorrectly] not in time order<br/>
+- Code cleanup in menu code.<br/>
+- Fixed display errors when scrolling in score<br/><br/>
+
+<h2>1.1</h2>
+- Fixed behaviour when closing last document<br/>
+- Fixed undoing vertical moves in score, when there's accidentals<br/>
+- Fixed incorrect display of triplets in complex songs<br/>
+- Fixed incorrect note beaming when making notes of different lengths play at the same time<br/>
+- Improved handling of whole notes playing along chords<br/>
+- Improved handling of ties with chords<br/>
+- Fixed many cases of incorrect silence rendering<br/><br/>
+
+<h2>1.1b8</h2>
+- Hopefully fixed compatiblity problems with intel Tiger systems<br/>
+- Fixed crash when importing invalid midis<br/>
+- More improvements to scons build system<br/>
+- Fixed undoing shift+up/down in score editor<br/>
+- Made saving aria files safe : your file is not deleted until the new one is successfully written<br/>
+- Switched some small variables from int to short<br/><br/>
+
+<h2>1.1b7</h2>
+- Improved setting notes sharp/flat/natural to be easier and more flexible<br/>
+- Made accidentals last entire measure<br/>
+- Improved note splitting to be wiser<br/>
+- Made note beaming wiser about how it selects which notes to beam together<br/>
+- Added italian translation thanks to Gianluca Pignalberi<br/>
+- When importing midi, remove events from unsupported controllers (fixes some playback bugs)<br/>
+- Added more midi controllers<br/>
+- Fixed zooming in songs with multiple time signatures<br/>
+- Made zooming smoother by removing unneeded renders<br/>
+- Fixed removing empty tracks in imported midis<br/>
+- Do not accept empty track names<br/>
+- switched rendering from plain OpenGL to higher-level primitives, cleaning up code and making it more modular<br/>
+- Fixed editing time signatures in manual mode<br/>
+- Fixed rendering of silences in empty measures when using manual time signature management<br/>
+- Removed useless stuff from .Aria files, making them significantly smaller<br/>
+- Initial support for a non-OpenGL version (experimental. mainly for linux where drivers aren't always there)<br/>
+- Fixed horizontal scrollbar initially too short<br/><br/>
+
+
+<h2>1.1b6</h2>
+- fixed crash when removing tempo events<br/>
+- made it easier to trigger tuning picker in guitar editor<br/>
+- drum editor : selection now works if click/drag starts on black section header<br/>
+- more improvements to lightweight vertical scrollbar<br/>
+- handle when no vertical scrollbar is needed in drum editor<br/>
+- fixed notes not beaming in chords of some imported midis<br/>
+- fixed note subtails disappearing in some imported midis<br/>
+- fixed amount of measures too short in some imported midis<br/>
+- improved grouping of beamed notes in common non-4/4 time signatures<br/>
+- improved grouping of beamed triplets<br/>
+- converted keys image from gif to png<br/>
+- improved handling of ties with whole notes<br/>
+- Improved beamed notes grouping in non-4/4 time signatures<br/>
+- Hopefully fixed volume picker not closing when pressing escape on all platforms<br/>
+- Improved drum editor behaviour when few drums are shown<br/>
+- Removed many useless renders during song playback<br/>
+- Fixed linux crash<br/>
+- Improved ALSA port opening code on linux<br/>
+- Improved export to sampled audio on linux<br/>
+- Improved i18n support on linux<br/>
+- Cleaned up image loading code<br/>
+- Refactored beaming code so that smarter beaming becomes possible<br/>
+- Fixed triplets beaming with non-triplets<br/>
+- Improved scons build system<br/>
+- Made wait window progress bar pulse correctly<br/><br/>
+
+<h2>1.1b5</h2>
+ - note beams<br/>
+ - Keys now appear in keyboard editor too<br/>
+ - support for displaying chords in score<br/>
+ - improved document icon<br/>
+ - fixed score editor crash with very high or very low notes<br/>
+ - refactored note moving code<br/>
+ - improved editor vertical scrollbars (thumb could hardly be grabbed when it was at the bottom)<br/>
+ - fixed score editor crashes<br/>
+ - forbid changing tempo and other basic settings during playback<br/>
+ - fixed set-up menus incorrectly appearing when clicking on elements in track header<br/>
+ - fixed display of silences longer than 1 measure<br/>
+ - improved performance of non-linear score display<br/>
+ - fixed triplet sign appearing at wrong Y location<br/>
+ - fixed bugs in "rearrange notes"<br/>
+ - fixed crash in controller editor<br/>
+ - fixed bugs when using variable time signatures<br/>
+ - triplets no more group across measures<br/><br/>
+ 
+<h2>1.1b4</h2>
+ - Fixed crash in tab exporter<br/>
+ - Now checks for file format version when opening .aria file<br/>
+ - Shifting frets in guitar editor will now change string as needed<br/>
+ - Triplets now consider silences.<br/>
+ - Added silences<br/>
+ - Improved graphical appearance of scores<br/>
+ - Accidentals are now displayed correctly in linear score view<br/>
+ - Don't show scrollbar in score editor if track is wide enough to show everything<br/>
+ - Notes outside score range are displayed with little lines to make their level clear<br/>
+ - Key is now saved and loaded to/from .aria files<br/>
+ - Read key from midi files<br/>
+ - Fixed OpenGL handling to comply with wxWidgets docs, improving linux support<br/>
+ - Fixed undoing in tempo controller editor<br/>
+ - Improved build system for linux by adding library search paths with -rpath<br/>
+ - Refactored triplet code to allow for more types of note handling in the future<br/>
+ - Refactored render loop code, complying wih wxWidgets documentation and hopefully making Aria run better on linux<br/>
+ - Hopefully fixed controller editor problems<br/>
+ - Minor clean-up<br/><br/>
+ 
+<h2>1.1b3</h2>
+ - First version of score editor (still to be enhanced)<br/>
+ - major cleanup in Editor code<br/>
+ - hopefully fixed some linux bugs<br/>
+ - hopefully fixed reapparating ghost volume dialog on mac<br/>
+ - hopefully fixed reapparating ghost scale dialog on mac<br/>
+ - volume picker should be cancellable with escape on all systems now.<br/>
+ - fixed preview when dragging a single drum note<br/>
+ - .aria files now include a version number for backward compatibility<br/><br/>
+ 
+<h2>1.1b2</h2>
+ - Fixed "save changes beore closing" dialogs appearing when they shouldn't and not appearing when they should<br/>
+ - Fixed ghost notes appearing our of nowhere<br/>
+ - Fixed crash when closing song with docked tracks<br/>
+ - making selections in control editor no more requires you to hold key until after mouse is released<br/>
+ - Fixed songs sometimes given "Untitled" internal name instead of simply no internal name<br/><br/>
+ 
+
+<h2>1.1b1</h2>
+ - Make Undo work in Controller Editor too<br/>
+ - it is now possible to scroll tracks with mouse wheel<br/>
+ - total redesign of undo system, allowing for multiple undo levels and using much better code<br/>
+ - fixed opening .midi files (only .mid worked in file dialogs)<br/>
+ - fixed saving song name, copyright and track names<br/>
+ - many linux fixes<br/>
+ - preferences dialogue is now modal<br/>
+ - major code cleanup and redesign<br/>
+ - improved importing of drum kits in midi files<br/>
+ - fixed crashes with 'remove track'<br/>
+ - fixed crashes with 'remove measures'<br/>
+ - fixed shutdown<br/>
+ - fixed dragging mouse of the window in controller editor<br/>
+ - fixed notes being added under last string in guitar editor<br/>
+ - fixed adding notes "backwards" creating glitches<br/>
+ - fixed potential memory leak with tab exporter<br/><br/>
+
+<h2>1.0</h2>
+ - First iteration of Linux version<br/>
+ - Corrected name suggestion in file dialogs<br/>
+ - Fixed importing very short midis<br/>
+ - Fixed bugs when adding measures before measure 1 in extended mode<br/><br/>
+ 
+<h2>1.0b10</h2>
+ - Fixed PPC binaries<br/>
+ - Can now save and load files in paths with accentuated characters<br/>
+ - Fixed disappearing control events<br/>
+ - Fixed down arrow not working in scrollbars<br/>
+ - Hopefully fixed unexpected scrolling bugs<br/>
+ - Fixed about dialog showing spellchecking<br/>
+ - Fixed measure numbers getting out of sync with selection<br/>
+ - Fixed adding tracks in manual channel management mode<br/>
+ - Fixed main window not getting activated when switching to Aria<br/>
+ - Saving files now suggests a file name<br/>
+ - Fixed opening files while one is already playing<br/><br/>
+ 
+<h2>1.0b9</h2>
+ - Can now run from paths containing accentuated characters<br/>
+ - Major Improvements to tab exporter<br/>
+ - Export to audio now supports accentuated characters (other operations should in next version!)<br/>
+ - Allow scrolling by dragging mouse near edge<br/>
+ - Fixed errors of erroneous playback and save<br/>
+ - Custom note select dialog now checks for bogus values<br/>
+ - Fixed notes not drawn right on the line at zooms other than 100<br/>
+ - Fixed controllers when starting from middle of song<br/>
+ - Fixed bug when copying/pasting between keyboard and tablature tracks<br/>
+ - Fixed pasting long series of notes<br/>
+ - Switched to Unicode<br/>
+ - Upgraded to wxWidgets 2.8.4<br/>
+ - Major refactor of some areas<br/>
+ - Fixed control changes randomly appearing<br/><br/>
+
+
+<h2>1.0b8</h2>
+ - Added multiple time sig changes support<br/>
+ - Support for midi song names<br/>
+ - Fixed scrollbars not always working<br/>
+ - Non-4/4 time sigs now works better<br/>
+ - Fixed measure bar not responding to clicks anymore<br/>
+ - Fixed crash when switching to manual channel management<br/>
+ - Improved tablature export<br/>
+ - Fixed bug with tempo changes<br/>
+ - Fixed adding and removing measures messing up tempo changes<br/>
+ - Improved midi importing<br/>
+ - More code cleanup<br/><br/>
+ 
+<h2>1.0b7</h2>
+ - Added support for channels<br/>
+ - Reduced memory usage<br/>
+ - Opening files is now much faster<br/>
+ - More major code cleanup<br/>
+ - Fixed top bar getting messed up when dealing with multiple songs in particular circumstances<br/>
+ - Improved display of disabled song names to be easier on the eyes<br/>
+ - Fixed localisation errors on computers whose localisation is not supported<br/><br/>
+ 
+<h2>1.0b6</h2>
+ - Hopefully fixed intel binaries<br/>
+ - Now uses real universal binaries!<br/>
+ - Fixed loading control events<br/>
+ - Added 'export as tablature'<br/>
+ - Fixed 'insert measures' picking up^wrong measure when using weird zooms and long songs<br/>
+ - Fixed changing current song messing up measure bar<br/>
+ - Fixed 'follow playback' messing up scrollbar<br/>
+ - Fixed scrollbar being messed up when changing measure settings<br/>
+ - Fixed changing instrument of inactive tracks<br/>
+ - Improved handling of failed asserts in order to avoid data loss<br/>
+ - More major code cleanup<br/>
+ - Significantly improved build system<br/><br/>
+ 
+<h2>1.0b5</h2>
+ - Fixed many measure bar glitches<br/>
+ - Fixed crash when reordering tracks<br/>
+ - Fixed bug when trying to remove measure 1<br/>
+ - Selecting measures with top bar now selects notes in all tracks<br/>
+ - Will show a warning and not crash when dealing with accentuated characters<br/>
+ - Fixed 'insert empty measures' messing up controller events<br/>
+ - Fixed removing controllers removing more stuff than what is selected<br/>
+ - Fixed selection in controller editor, had to change keyboard modifier<br/>
+ - Improved handling of bad midi files<br/>
+ - In guitar editor, improved handling of notes too low for current tuning<br/>
+ - Improved selection in guitar editor when notes are overlapping<br/>
+ - Improved selection when mouse exits track<br/>
+ - Fixed custom guitar tuning not updating immediately upon change<br/>
+ - Totally rewrote 'remove overlapping notes', fixing bugs and improving detection<br/>
+ - Fixed changing volume of drums sometimes changing the volume of the wrong note<br/>
+ - Fixed instrument pop-up menu displaying many checks next to instrument<br/>
+ - Fixed crash when closing last document<br/><br/>
+
+<h2>1.0b4</h2>
+
+ - Fixed keyboard modifiers release sometimes not detected<br/>
+ - Fixed copying from a song and pasting in another<br/>
+ - Fixed several major memory leaks<br/>
+ - Aria is now wiser about picking a pasting location for notes<br/>
+ - Fixed errors on shutdown<br/>
+ - Editing now works on linux, fixing by the way bade code<br/>
+ - Completely refactored and cleaned up midi playing code, is now much cleaner and easier to extend<br/>
+ - You can now select measures by clicking on the measure bar<br/>
+ - Added 'insert empty mesures' feature<br/>
+ - Added 'remove measures' feature<br/>
+ - Fixed controllers getting out-of-sync when some measures are muted<br/>
+ - Fixed 'remove overlapping notes' remove too much notes<br/>
+ - Removed 'Score Editor' mode that revealed very hard to implement and is not likely to make it in anytime soon<br/>
+ - Updated documentation<br/><br/>
+ 
+<h2>1.0b3</h2>
+
+ - Added intel mac binaries (thanks to www.freesmug.org for letting me access an intel machine!)<br/>
+ - Enhanced build system to be more portable and flexible<br/>
+ - Tuning editor now has a cancel button<br/>
+ - Tuning editor now enters current tuning as default values<br/>
+ 
+ - Fixed 'export to audio' menu not being player-specific<br/>
+ - Fixed false detection of overlapping notes in tab mode<br/>
+ - Fixed 'export to audio' menu not greyed out while playing<br/>
+ - Fixed mouse clicks affecting track when clicking on the bottom of a collapsed track<br/>
+ - Fixed tuning change issues when number of strings varies (e.g. when passing from a 6-string guitar to a 5-string bass)<br/>
+ - Fixed erroneous calls to AudioToolbox on shutdown (they were harmless but caused error messages to appear on the console)<br/>
+ - Fixed tons of memory leaks on shutdown (was totally harmless since it's on shutdown so memory was freed anyway, but i prefer to keep clean code)<br/>
+ - Fixed crashes on loading corrupt .aria file<br/>
+ - Fixed bugs when entering new song beginning<br/>
+ - Fixed erroneous selection of notes when using the scrollbar<br/>
+ - Made lightweight scrollbars more responsive<br/>
+ - Fixed tempo variations being applied at the wrong place when not playing from beginning<br/>
+ - Fixed tempo variations not being laoded from .aria files<br/>
+ - Fixed 'rearrange notes' causing rearranged notes to be played all at the same time<br/>
+ - Fixed wrong zoom when changing measure size<br/>
+ - Fixed weird behaviour of Guitar editor when trying to add notes above/below track<br/>
+ - Fixed incorrectly drawn vertical lines in Guitar editor in certain circumstances<br/>
+ - Fixed erasing in tempo controller<br/>
+ - Redisinged Tempo controller to have larger range, show main tempo, not show negative values anymore<br/>
+ - Fixed no visual response upon closing a file<br/>
+ - Possibly fixed bug of playing crashes <br/><br/>
+
+<h2>1.0b2</h2>
+
+ BUGFIXES:<br/>
+ - fixed About menu not working<br/>
+ - fixed adding notes near track bottom<br/>
+ - fixed selection rectangle appearing when resizing track<br/>
+ - fixed About dialog not translated<br/>
+ <br/>
+ NEW FEATURES:<br/>
+ - new scons build system<br/>
+ - added 'Show manual' menu.<br/>
+ - added 'show only used drums' feature<br/>
+<br/>
+ - Began trying to get it work on Linux. i wrote a very basic Timidity player, just so that there's something to test. But (at least on my PPC ubuntu dual-boot), things were drawn wrong in the OpenGL pane, wxBitmapButtons were empty, keyboard input was mapped to the wrong keys, pop-up menus didn't answer. If a Linux programmer wants to take a look at it, the basic infrastructure is there though.)<br/>
+
+<br/>
+
+</blockquote>
+
+
+<script src="menu_bottom.js" type="text/javascript"> </script> 
+
+</body>
+
+</html>
