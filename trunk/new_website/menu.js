@@ -10,9 +10,13 @@ document.write('<img src="http://sflogo.sourceforge.net/sflogo.php?group_id=1869
 document.write('<br/><center><img src="aria120.png" style="margin-bottom: 25px; margin-right: 25px;"/><img src="logo.png" style="margin-bottom: 25px;"/></center>');
 
 var selected_tab = returnDocument();
+if (selected_tab.indexOf("#") != -1)
+{
+    selected_tab = selected_tab.substring(0, selected_tab.indexOf("#"));
+}
 
 var tabs = new Array();
-tabs[0] = ["About", "about.html"];
+tabs[0] = ["About", "index.html"];
 tabs[1] = ["Downloads", "download.html"];
 tabs[2] = ["Manual", "man.html"];
 tabs[3] = ["Support", "contact.html"];
