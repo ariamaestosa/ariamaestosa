@@ -130,8 +130,8 @@
     <b>Warning</b> : Midi on Linux is especially painful, synthesizers like TiMidity haven't been maintained for years, eat a lot of CPU
     and don't play nicely with PulseAudio. In the future I will consider alternative implementations.<br/>
     <br/>You will need Python, Alsa (including -dev packages if your distro uses them), wxGTK (wxWidgets), OpenGL (if you wish to use the OpenGL
-    renderer, and also get -dev packages if any), gcc/g++ (build-essential in Ubuntu). For midi playback, you will need a softsynth like Timidity
-    with a soundbank (more info below)
+    renderer, and also get -dev packages if any), gcc/g++ (build-essential in Ubuntu). For midi playback, you will need a softsynth like Fluidsynth
+    or Timidity plus a soundbank (more info below)
 </p>
 <p>
     <b>Installing wxWidgets : </b> You can simply download wxWidgets 2.8 from your distribution's repositories. It needs OpenGL support enabled if
@@ -286,39 +286,8 @@
 </script>
 
 <p>
-    <b>Getting a MIDI synthesizer</b>
-</p>
-
-<p>
-    If it is not already the case, you will need to install a softsynth like Timidity configured with flags :
-    
-    <br/><br/>
-    <span class="code">
-    ./configure --enable-audio=alsa --enable-server --enable-alsaseq
-    </span>
-    <br/><br/>
-    
-    And you also need a soundbank (many distros will ship FreePats in their repos).
-    And finally run the synth as an Alsa daemon with commands (in the case of Timidity) :
-    
-    <br/><br/>
-    <span class="code">
-    timidity -iA -Os -EFreverb=0
-    </span>
-    <br/><br/>
-    
-    <tt>-EFreverb=0</tt> disables reverbering because it tends to cause problems, but you can leave that
-    part out if you computer is very fast.
-    <br/>
-    
-    Unfortunately, if you use PulseAudio, there are known compatibility issues with the timidity daemon.
-    In particular, running the Timidity daemon at startup as part of init.d seems to cause a lot of issues.
-    <br/><br/>
-    Newer versions of Aria have an item in the preferences that, if enabled, will make Aria automatically
-    launch TiMidity and pick a port. This should make the process a little more enjoyable, even though
-    audio on Linux still seems to remain very difficult to handle =( So I'm afraid getting Aria to run on
-    Linux can be a little pain because of the Linux audio maze. Sorry, I'll try to support other midi
-    synths than TiMidity/Alsa in the future.
+    If you do not already have one, you will need to install a softsynth like Fluidsynth or Timidity. See
+    <a href="synth.html">Installing a MIDI synthesizer on Linux</a> for more information.
     <br/><br/>
 </p>
 
