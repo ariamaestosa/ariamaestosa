@@ -81,6 +81,22 @@ body
   display: inline-block;
 }
 
+.tab:hover
+{
+  background-color: #F8F8F8;
+  border-style:solid;
+  border-width: 1px;
+  border-color: #AAAAAA;
+  padding-top: 4px;
+  padding-bottom: 2px;
+  padding-left: 8px;
+  padding-right: 8px;
+  
+  margin-bottom: 0px;
+  
+  display: inline-block;
+}
+
 .between_tabs
 {
   margin: 0px;
