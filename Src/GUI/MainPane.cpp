@@ -1368,7 +1368,11 @@ void MainPane::enterPlayLoop()
 
 void MainPane::exitPlayLoop()
 {
-    PlatformMidiManager::get()->stop();
+    PlatformMidiManager* midi = PlatformMidiManager::get();
+    
+    if (midi->isRecording()) midi->stopRecording();
+    midi->stop();
+    
     getMainFrame()->toolsExitPlaybackMode();
     Core::activateRenderLoop(false);
     setCurrentTick( -1 );

@@ -21,6 +21,8 @@
 #include <wx/string.h>
 #include <wx/arrstr.h>
 
+class RtMidiIn;
+
 namespace AriaMaestosa
 {
     
@@ -52,13 +54,19 @@ namespace AriaMaestosa
      */
     class PlatformMidiManager
     {
+    protected:
+        bool m_recording;
+        RtMidiIn* m_midi_input;
+        
+        PlatformMidiManager();
+
     public:
+        
+        virtual ~PlatformMidiManager() { }
         
         static std::vector<wxString> getChoices();
         static PlatformMidiManager* get();
         static void registerManager(PlatformMidiManagerFactory* newManager);
-        
-        virtual ~PlatformMidiManager() { }
         
         /**
          * @brief                  starts playing the entire sequence, from the measure being marked as
@@ -147,6 +155,10 @@ namespace AriaMaestosa
         
         virtual bool startRecording(wxString outputPort);
 
+        virtual void stopRecording();
+        
+        bool isRecording() const { return m_recording; }
+        
         // ---------- non-native sequencer interface ---------
         virtual void seq_note_on      (const int note, const int volume, const int channel)      { }
         virtual void seq_note_off     (const int note, const int channel)                        { }
