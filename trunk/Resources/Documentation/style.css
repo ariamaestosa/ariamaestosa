@@ -13,8 +13,9 @@ h2
 
 html
 {
+    background-color: #426796;
     /* Background by Pikao, released under Gnu GPL license, with modifications by Marianne Gagnon */
-    background: url('ariabg.png') no-repeat center center fixed;
+    background: url('bg.jpg') no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
