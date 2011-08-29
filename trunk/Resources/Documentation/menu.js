@@ -27,7 +27,7 @@ document.write('<div style="text-align: center; min-height: 100%"><div style="te
 for (var i=0; i<tabs.length; i++)
 {
     document.write( '&nbsp;' );
-    if (tabs[i][1] == selected_tab)
+    if (tabs[i][1] == selected_tab || (selected_tab == "" && i == 0))
         document.write( '<div class="selected_tab"><b>' + tabs[i][0] + '</b></div>');
     else
         document.write( '<div class="tab"><a href="' + tabs[i][1] + '" style="color: black; text-decoration: none;">' + tabs[i][0] + '</a></div>');
