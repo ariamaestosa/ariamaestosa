@@ -17,6 +17,7 @@
 #include "AriaCore.h"
 
 #include "Actions/AddNote.h"
+#include "Actions/AddControlEvent.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "PreferencesData.h"
 #include "ptr_vector.h"
@@ -151,6 +152,8 @@ void PlatformMidiManager::recordCallback( double deltatime, std::vector< unsigne
         
         //printf("message %x on channel %i = %i %i\n", messageType, channel, value, value2);
         
+        int now_tick = self->m_start_tick + self->getAccurateTick();
+        
         switch (messageType)
         {
             case 0x90:
@@ -159,7 +162,7 @@ void PlatformMidiManager::recordCallback( double deltatime, std::vector< unsigne
                 {
                     //printf("NOTE ON on channel %i; note : %i velocity : %i\n", channel, value, value2);
                     
-                    NoteInfo n = {self->m_start_tick + self->getAccurateTick(), value2};
+                    NoteInfo n = {now_tick, value2};
                     self->m_open_notes[value] = n;
                 }
                 else
@@ -174,7 +177,7 @@ void PlatformMidiManager::recordCallback( double deltatime, std::vector< unsigne
                         // FIXME: recording should not fill the undo stack!!
                         self->m_record_target->action(new Action::AddNote(131 - value,
                                                                           n.m_note_on_tick,
-                                                                          self->m_start_tick + self->getAccurateTick(),
+                                                                          now_tick,
                                                                           n.m_velocity));
                         
                     }
@@ -182,15 +185,21 @@ void PlatformMidiManager::recordCallback( double deltatime, std::vector< unsigne
                 break;
                 
             case 0xC0:
-                printf("PROGRAM CHANGE on channel %i; instrument : %i\n", channel, value);
+                //printf("PROGRAM CHANGE on channel %i; instrument : %i\n", channel, value);
                 break;
                 
             case 0xE0:
-                printf("PITCH BEND on channel %i; bend : %i\n", channel, value | (value2 << 8));
-                break;
+            {
+                float val = ControllerEvent::fromPitchBendValue((value | (value2 << 7)) - 8192);
+                //printf("PITCH BEND on channel %i; bend : %i\n", channel, value | (value2 << 7));
                 
+                self->m_record_target->action(new Action::AddControlEvent(now_tick, val, PSEUDO_CONTROLLER_PITCH_BEND));
+
+                break;
+            }
             case 0xB0:
-                printf("CONTROLLER EVENT on channel %i; controller : %i value : %i\n", channel, value, value2);
+                // printf("CONTROLLER EVENT on channel %i; controller : %i value : %i\n", channel, value, value2);
+                self->m_record_target->action(new Action::AddControlEvent(now_tick, 127 - value2, value));
                 break;
                 
             default:
