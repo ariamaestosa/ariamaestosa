@@ -172,7 +172,7 @@ void PlatformMidiManager::recordCallback( double deltatime, std::vector< unsigne
                         self->m_open_notes.erase(value);
                         
                         // FIXME: recording should not fill the undo stack!!
-                        self->m_record_target->action(new Action::AddNote(127 - value,
+                        self->m_record_target->action(new Action::AddNote(131 - value,
                                                                           n.m_note_on_tick,
                                                                           self->m_start_tick + self->getAccurateTick(),
                                                                           n.m_velocity));
