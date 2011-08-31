@@ -748,8 +748,14 @@ void MainFrame::stopClicked(wxCommandEvent& evt)
 
 void MainFrame::recordClicked(wxCommandEvent& evt)
 {
+    if (m_playback_mode)
+    {
+        stopClicked(evt);
+        return;
+    }
+    
     // TODO: disable record when no input port is available
-    if (PlatformMidiManager::get()->getInputChoices().IsEmpty() or m_playback_mode)
+    if (PlatformMidiManager::get()->getInputChoices().IsEmpty())
     {
         wxBell();
         return;
