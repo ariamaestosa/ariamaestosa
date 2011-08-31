@@ -346,6 +346,7 @@ namespace AriaMaestosa
         void menuEvent_expandedMeasuresSelected(wxCommandEvent& evt);
         void menuEvent_metronome(wxCommandEvent& evt);
         void menuEvent_outputDevice(wxCommandEvent& evt);
+        void menuEvent_inputDevice(wxCommandEvent& evt);
 
 #ifdef __WXMSW__
         void onDropFile(wxDropFilesEvent& event);

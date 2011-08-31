@@ -192,8 +192,13 @@ void PreferencesData::fillSettingsVector()
     
     // TODO: make default value paltform-specific
     Setting* output = new Setting(fromCString(SETTING_ID_MIDI_OUTPUT), wxT(""),
-                                      SETTING_STRING, false /* show in preferences */, wxT("default") );
+                                  SETTING_STRING, false /* show in preferences */, wxT("default") );
     m_settings.push_back( output );
+    
+    Setting* input = new Setting(fromCString(SETTING_ID_MIDI_INPUT), wxT(""),
+                                 // NOTE: there is an identical string in MainFrameMenuBar that must be changed too if changed here
+                                 SETTING_STRING, false /* show in preferences */, _("No MIDI input") );
+    m_settings.push_back( input );
     
     // ---- printing
     Setting* marginLeft = new Setting(fromCString(SETTING_ID_MARGIN_LEFT), wxT(""),

@@ -58,6 +58,7 @@ namespace AriaMaestosa
     EXTERN const char* SETTING_ID_PAPER_TYPE       DEFAULT("paperType");
     EXTERN const char* SETTING_ID_MIDI_DRIVER      DEFAULT("midiDriver");
     EXTERN const char* SETTING_ID_MIDI_OUTPUT      DEFAULT("midiOutput");
+    EXTERN const char* SETTING_ID_MIDI_INPUT       DEFAULT("midiInput");
 
 #undef EXTERN
 #undef DEFAULT

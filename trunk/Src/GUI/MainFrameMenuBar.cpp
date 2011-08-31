@@ -254,16 +254,23 @@ void MainFrame::initMenuBar()
     
     choices = PlatformMidiManager::get()->getInputChoices();
     
-    for (unsigned int n=0; n<choices.Count(); n++)
+    wxString input = PreferencesData::getInstance()->getValue(SETTING_ID_MIDI_INPUT);
+
+    // NOTE: there is an identical string in PreferencesData that must be changed too if changed here
+    wxMenuItem* item = m_input_menu->QUICK_ADD_CHECK_MENU(MENU_INPUT_DEVICE, _("No MIDI input"), MainFrame::menuEvent_inputDevice);
+    m_input_device_menus.push_back(item);
+    if (input == _("No MIDI input"))
     {
-        wxMenuItem* item = m_input_menu->QUICK_ADD_CHECK_MENU(MENU_INPUT_DEVICE+n, choices[n], MainFrame::menuEvent_outputDevice);
-        m_input_device_menus.push_back(item);
+        item->Check();
     }
     
-    if (choices.GetCount() == 0)
+    for (unsigned int n=0; n<choices.Count(); n++)
     {
-        wxMenuItem* item = m_input_menu->QUICK_ADD_CHECK_MENU(MENU_INPUT_DEVICE, _("No input port is available"), MainFrame::menuEvent_outputDevice);
-        item->Enable(false);
+        item = m_input_menu->QUICK_ADD_CHECK_MENU(MENU_INPUT_DEVICE+n+1, choices[n], MainFrame::menuEvent_inputDevice);
+        
+        if (input == choices[n]) item->Check();
+        
+        m_input_device_menus.push_back(item);
     }
     
     m_menu_bar->Append(m_input_menu, _("&Input"));
@@ -955,13 +962,13 @@ void MainFrame::menuEvent_metronome(wxCommandEvent& evt)
     getCurrentSequence()->setPlayWithMetronome( m_metronome->IsChecked() );
 }
 
-// -----------------------------------------------------------------------------------------------------------
-// ---------------------------------------- OUTPUT MENU EVENTS -----------------------------------------------
-// -----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+// ---------------------------------------- OUTPUT MENU EVENTS ----------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 #if 0
 #pragma mark -
-#pragma mark Output Menu Events
+#pragma mark MIDI Input/Output Menu Events
 #endif
 
 void MainFrame::menuEvent_outputDevice(wxCommandEvent& evt)
@@ -992,9 +999,40 @@ void MainFrame::menuEvent_outputDevice(wxCommandEvent& evt)
     PlatformMidiManager::get()->initMidiPlayer();
 }
 
-// -----------------------------------------------------------------------------------------------------------
-// ----------------------------------------- HELP MENU EVENTS ------------------------------------------------
-// -----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+
+void MainFrame::menuEvent_inputDevice(wxCommandEvent& evt)
+{
+    wxMenuItem* item = NULL;
+    
+    for (int n=0; n<m_input_device_menus.size(); n++)
+    {
+        if (m_input_device_menus[n].GetId() == evt.GetId())
+        {
+            item = m_input_device_menus.get(n);
+            item->Check(true);
+        }
+        else
+        {
+            m_input_device_menus[n].Check(false);
+        }
+    }
+    
+    if (item != NULL)
+    {
+        PreferencesData::getInstance()->setValue(SETTING_ID_MIDI_INPUT, item->GetItemLabelText());
+        PreferencesData::getInstance()->save();
+    }
+    
+    // re-init MIDI player so that changes take effect
+    PlatformMidiManager::get()->freeMidiPlayer();
+    PlatformMidiManager::get()->initMidiPlayer();
+}
+
+
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------- HELP MENU EVENTS -----------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
 
 #if 0
 #pragma mark -
