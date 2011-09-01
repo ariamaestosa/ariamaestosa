@@ -210,8 +210,8 @@ MeasureBar::~MeasureBar()
 
 int MeasureBar::getMeasureBarHeight()
 {
-    if (m_data->isExpandedMode()) return 40;
-    else                          return 20;
+    if (m_data->isExpandedMode()) return MEASURE_BAR_H*2;
+    else                          return MEASURE_BAR_H;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -375,13 +375,13 @@ void MeasureBar::render(int m_measure_bar_y_arg)
         // erase left part of measure bar
         AriaRender::primitives();
         AriaRender::color(1, 1, 0.9);
-        AriaRender::rect(0, m_measure_bar_y + 1, 50, m_measure_bar_y + height - 1);
+        AriaRender::rect(0, m_measure_bar_y + 1, 50, m_measure_bar_y + MEASURE_BAR_H - 1);
         
         AriaRender::images();
         AriaRender::color(0.8, 0, 0);
         int song_duration = getTimeAtTick(tick, m_gseq->getModel());
         wxString duration_label = wxString::Format(wxT("%i.%.2i"), (int)(song_duration/60), song_duration%60);
-        AriaRender::renderNumber((const char*)duration_label.mb_str(), 5, m_measure_bar_y + height - 2);
+        AriaRender::renderNumber((const char*)duration_label.mb_str(), 5, m_measure_bar_y + MEASURE_BAR_H - 2);
     }
 
 }
@@ -501,7 +501,7 @@ void MeasureBar::unselect()
 void MeasureBar::mouseDown(int x, int y, bool shiftPressed)
 {    
     // if click is in time sig change areas
-    if (y > 20)
+    if (y > MEASURE_BAR_Y)
     {
         const int measureDivAt_x = measureDivisionAt(x);
 
@@ -636,7 +636,7 @@ void MeasureBar::mouseUp(int mousex_current, int mousey_current, int mousex_init
 void MeasureBar::rightClick(int x, int y)
 {
 
-    if (y > 20)
+    if (y > MEASURE_BAR_Y)
     {
         // find between which measures the user clicked
         int measure = measureDivisionAt(x);
@@ -653,7 +653,6 @@ void MeasureBar::rightClick(int x, int y)
                 return;
             }
         }
-
     }
 
     const int measure_vectorID = measureAtPixel( x );
