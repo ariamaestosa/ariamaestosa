@@ -79,6 +79,9 @@ namespace AriaMaestosa
         /** rtmidi callback function */
         static void recordCallback( double deltatime, std::vector< unsigned char > *message, void *userData );
 
+        /** Whether to play new notes while recording */
+        bool m_playthrough;
+        
     public:
         
         virtual ~PlatformMidiManager() { }
