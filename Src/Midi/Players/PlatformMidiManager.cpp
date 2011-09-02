@@ -36,6 +36,7 @@ PlatformMidiManager* g_manager = NULL;
 PlatformMidiManager::PlatformMidiManager()
 {
     m_recording = false;
+    m_playthrough = true;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -162,12 +163,16 @@ void PlatformMidiManager::recordCallback( double deltatime, std::vector< unsigne
                 {
                     //printf("NOTE ON on channel %i; note : %i velocity : %i\n", channel, value, value2);
                     
+                    if (self->m_playthrough) self->seq_note_on(value, value2, self->m_record_target->getChannel());
+                    
                     NoteInfo n = {now_tick, value2};
                     self->m_open_notes[value] = n;
                 }
                 else
                 {
                     //printf("NOTE OFF on channel %i; note : %i velocity : %i\n", channel, value, value2);
+                    
+                    if (self->m_playthrough) self->seq_note_off(value, self->m_record_target->getChannel());
                     
                     if (self->m_open_notes.find(value) != self->m_open_notes.end())
                     {
