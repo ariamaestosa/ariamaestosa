@@ -1195,7 +1195,7 @@ void GraphicalTrack::selectNote(const int id, const bool selected, bool ignoreMo
 {    
     ASSERT(id != SELECTED_NOTES); // not supported in this function
     
-    m_track->selectNote(id, selected, ignoreModifiers);
+    bool done_for_controller = false;
 
     // ---- select/deselect all notes
     if (id == ALL_NOTES)
@@ -1208,7 +1208,13 @@ void GraphicalTrack::selectNote(const int id, const bool selected, bool ignoreMo
         {
             // FIXME(DESIGN): controller editor must be handled differently (special case)
             m_controller_editor->selectAll( selected );
+            done_for_controller = true;
         }
+    }
+    
+    if (not done_for_controller)
+    {
+        m_track->selectNote(id, selected, ignoreModifiers);
     }
 }
 
