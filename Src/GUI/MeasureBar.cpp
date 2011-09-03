@@ -26,6 +26,7 @@
 #include "AriaCore.h"
 #include "Editors/Editor.h"
 #include "GUI/GraphicalSequence.h"
+#include "GUI/ImageProvider.h"
 #include "GUI/MainFrame.h"
 #include "GUI/MainPane.h"
 #include "GUI/MeasureBar.h"
@@ -36,6 +37,7 @@
 #include "Midi/TimeSigChange.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Pickers/TimeSigPicker.h"
+#include "Renderers/Drawable.h"
 #include "Renderers/RenderAPI.h"
 
 #include <iostream>
@@ -465,13 +467,16 @@ int MeasureBar::lastPixelInMeasure(int id)
 
 int MeasureBar::getTotalPixelAmount()
 {
+    // the width of scrollbards is included so that the last half-a-beat is not hidden under the scrollbar
     if (m_data->isMeasureLengthConstant())
     {
-        return (int)( m_data->getMeasureAmount() * m_data->measureLengthInTicks() * m_gseq->getZoom() );
+        return (int)( m_data->getMeasureAmount() * m_data->measureLengthInTicks() * m_gseq->getZoom() ) +
+                sbThumbDrawable->getImageWidth();
     }
     else
     {
-        return m_data->getTotalNeededLengthInTicks() * m_gseq->getZoom();
+        return m_data->getTotalNeededLengthInTicks() * m_gseq->getZoom() +
+               sbThumbDrawable->getImageWidth();
     }
 }
 
