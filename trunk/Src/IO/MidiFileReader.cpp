@@ -296,8 +296,8 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                         // only warn if there are multiple _different_ instrument changes
                         if (instrument != current)
                         {
-                            warnings.insert( _("This MIDI file plays several instruments on the same track; this is currently not supported by Aria Maestosa.") );
-                    
+                            ariaTrack->addControlEvent_import(tick, event->GetPGValue(), PSEUDO_CONTROLLER_INSTRUMENT_CHANGE);
+                            current = instrument;                    
                         }
                     }
                     else
