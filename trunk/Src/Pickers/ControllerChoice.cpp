@@ -69,7 +69,7 @@ static const wxString g_controller_names[] =
     wxT("Pitch Bend"), // 30
     wxT("Tempo (global)"), // 31
     wxT("Lyrics (global)"), // 32
-    wxT(""), // 33
+    wxT("Instrument"), // 33
     wxT(""), // 34
     wxT(""), // 35
     wxT(""), // 36
@@ -221,15 +221,13 @@ ControllerChoice::ControllerChoice() : wxMenu(), m_controller_label(new Model<wx
     Append( 91 , g_controller_names[91 ] ); // Reverb
     Append( 64 , g_controller_names[64 ] ); // Sustain
 
+    Append( PSEUDO_CONTROLLER_INSTRUMENT_CHANGE, wxT("Instrument") );
+    
     // In the midi specs, pitch bend is not a controller. However, i found it just made sense to place it
     // among controllers, so i assigned it arbitrary ID 200.
     Append( PSEUDO_CONTROLLER_PITCH_BEND , wxT("Pitch Bend") );
-
-    // Tempo bend is not a controller but for now it goes there (FIXME?)
     Append( PSEUDO_CONTROLLER_TEMPO , wxT("Tempo (global)") );
-
     Append( PSEUDO_CONTROLLER_LYRICS , wxT("Lyrics (global)") );
-
     
     AppendSeparator();
 
@@ -289,8 +287,10 @@ ControllerChoice::ControllerChoice() : wxMenu(), m_controller_label(new Model<wx
     misc_menu->Append( 83 , g_controller_names[83 ] ); // General Purpose 8
      */
 
-    Connect(0,202, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(ControllerChoice::menuSelected));
-    misc_menu->Connect(0,202, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(ControllerChoice::menuSelected), NULL, this);
+    Connect(0,204, wxEVT_COMMAND_MENU_SELECTED,
+            wxCommandEventHandler(ControllerChoice::menuSelected));
+    misc_menu->Connect(0,204, wxEVT_COMMAND_MENU_SELECTED,
+                       wxCommandEventHandler(ControllerChoice::menuSelected), NULL, this);
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -304,7 +304,13 @@ ControllerChoice::~ControllerChoice()
 void ControllerChoice::menuSelected(wxCommandEvent& evt)
 {
     m_controller_id = evt.GetId();
-    
+    updateLabel();
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+void ControllerChoice::updateLabel()
+{
     // special cases (non-controllers)
     if      (m_controller_id == PSEUDO_CONTROLLER_PITCH_BEND)
     {
@@ -318,12 +324,16 @@ void ControllerChoice::menuSelected(wxCommandEvent& evt)
     {
         m_controller_label.getModel()->setValue(g_controller_names[32]);
     }
+    else if (m_controller_id == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE)
+    {
+        m_controller_label.getModel()->setValue(g_controller_names[33]);
+    }
     else
     {
         m_controller_label.getModel()->setValue(g_controller_names[m_controller_id]);
     }
     
-    ASSERT_E(m_controller_id,<,205);
+    ASSERT_E(m_controller_id,<,204);
     ASSERT_E(m_controller_id,>=,0);
 
     Display::render();
@@ -359,7 +369,7 @@ bool ControllerChoice::isOnOffController(const int id) const
 void ControllerChoice::setControllerID(int id)
 {
     m_controller_id = id;
-    m_controller_label.getModel()->setValue(g_controller_names[30]);
+    updateLabel();
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -387,6 +397,9 @@ void ControllerChoice::renderTopLabel(const int x, const int y)
     // lyrics
     else if (m_controller_id == PSEUDO_CONTROLLER_LYRICS)     ;
 
+    // instrument
+    else if (m_controller_id == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE);
+    
     else                                                      label_renderer->get(3).render(x, y);
 }
 
@@ -414,7 +427,10 @@ void ControllerChoice::renderBottomLabel(const int x, const int y)
     
     // lyrics
     else if (m_controller_id == PSEUDO_CONTROLLER_LYRICS)     ;
-
+    
+    // instrument
+    else if (m_controller_id == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE);
+    
     else                                                      label_renderer->get(2).render(x, y);
 }
 

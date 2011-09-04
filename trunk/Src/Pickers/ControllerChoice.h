@@ -37,6 +37,8 @@ namespace AriaMaestosa
         int m_controller_id;
         AriaRenderString m_controller_label;
         
+        void updateLabel();
+        
     public:
         LEAK_CHECK();
         
