@@ -71,6 +71,8 @@ namespace AriaMaestosa
                 
         void setModel(InstrumentChoice* choice);
         
+        InstrumentChoice* getModel() { return m_model; }
+        
         void menuSelected(wxCommandEvent& evt);
         
         
