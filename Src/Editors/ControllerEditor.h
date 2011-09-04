@@ -79,6 +79,10 @@ namespace AriaMaestosa
             }
             return y_value;
         }
+        
+        /** For instrument change controller */
+        AriaRenderString m_instrument_name;
+
     public:
         
         ControllerEditor(GraphicalTrack* track);

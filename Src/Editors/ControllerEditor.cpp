@@ -153,7 +153,8 @@ public:
 
 // ----------------------------------------------------------------------------------------------------------
 
-ControllerEditor::ControllerEditor(GraphicalTrack* track) : Editor(track)
+ControllerEditor::ControllerEditor(GraphicalTrack* track) : Editor(track),
+    m_instrument_name( new Model<wxString>(wxT("")), true )
 {
     m_mouse_is_in_editor = false;
 
@@ -191,7 +192,8 @@ void ControllerEditor::renderEvents()
     const int eventAmount = m_track->getControllerEventAmount(currentController == PSEUDO_CONTROLLER_LYRICS,
                                                               Track::isTempoController(currentController) );
     
-    if (currentController == PSEUDO_CONTROLLER_LYRICS)
+    if (currentController == PSEUDO_CONTROLLER_LYRICS or
+        currentController == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE)
     {
         AriaRender::images();
     }
@@ -209,7 +211,8 @@ void ControllerEditor::renderEvents()
         
         if (dynamic_cast<TextEvent*>(tmp) != NULL)
         {
-            if (xloc - x_scroll > Editor::getEditorXStart())
+            // we support lyrics up to 100 pixels long
+            if (xloc - x_scroll > Editor::getEditorXStart() - 100)
             {
                 TextEvent* evt = dynamic_cast<TextEvent*>(tmp);
                 evt->getText().bind();
@@ -233,6 +236,41 @@ void ControllerEditor::renderEvents()
                 evt->getText().render(xloc - x_scroll, y);
             }
         }
+        else if (currentController == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE)
+        {
+            const int scrolled_x = xloc - x_scroll;
+            
+            // we support instrument names 200 pixels long
+            if (scrolled_x > Editor::getEditorXStart() - 200)
+            {
+                const int y = (area_from_y + area_to_y + area_to_y)/3;
+                
+                AriaRender::primitives();
+                
+                if (tmp->getTick() >= std::min(m_selection_begin, m_selection_end) and
+                    tmp->getTick() <= std::max(m_selection_begin, m_selection_end))
+                {
+                    AriaRender::color(0, 0.75f, 0);
+                }
+                else
+                {
+                    AriaRender::color(0.6f, 0.6f, 0.6f);
+                }
+                
+                AriaRender::bordered_rect(scrolled_x - 3, y - 6, scrolled_x + 3, y);
+                
+                AriaRender::images();
+                const unsigned short value = tmp->getValue();
+                
+                m_instrument_name.getModel()->setValue(InstrumentChoice::getInstrumentName( value ));
+                
+                // draw instrument name
+                AriaRender::color(0,0,0);
+                
+                m_instrument_name.bind();
+                m_instrument_name.render(scrolled_x + 6, y);
+            }
+        }
         else
         {
             // -------- Non-text events
@@ -241,8 +279,7 @@ void ControllerEditor::renderEvents()
             if (previous_location - x_scroll > getXEnd()) // if events are no more visible, stop drawing
                 return;
 
-            // Support lyrics that are up to 100 pixels long for now...
-            if (xloc - x_scroll > Editor::getEditorXStart() - 100)
+            if (xloc - x_scroll > Editor::getEditorXStart())
             {
                 if (previous_location != -1 and previous_value != -1)
                 {
@@ -258,7 +295,8 @@ void ControllerEditor::renderEvents()
         previous_location = xloc;
     }// next
     
-    if (currentController == PSEUDO_CONTROLLER_LYRICS)
+    if (currentController == PSEUDO_CONTROLLER_LYRICS or
+        currentController == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE)
     {
         AriaRender::primitives();
     }
@@ -399,6 +437,10 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
             {
                 // no preview for this one
             }
+            else if (m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE)
+            {
+                // no preview for this one
+            }
             else
             {
                 int value = round((127 - mouseYToValue(m_mouse_y))/127.0f*100.0f);
@@ -411,7 +453,8 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     }
     
     // ----------------------- add controller events (preview) -------------------
-    if (m_controller_choice->getControllerID() != PSEUDO_CONTROLLER_LYRICS)
+    if (m_controller_choice->getControllerID() != PSEUDO_CONTROLLER_LYRICS and
+        m_controller_choice->getControllerID() != PSEUDO_CONTROLLER_INSTRUMENT_CHANGE)
     {
         const bool on_off = m_controller_choice->isOnOffController( m_controller_choice->getControllerID() );
         if (m_mouse_is_in_editor and m_selection_begin == -1 and not on_off)
@@ -497,7 +540,13 @@ void ControllerEditor::mouseDown(RelativeXCoord x, const int y)
         Display::popupMenu(m_controller_choice,x.getRelativeTo(WINDOW), y + 15);
         getMainFrame()->getMainPane()->SetFocus();
     }
-
+    
+    if (x.getRelativeTo(WINDOW) >= Editor::getEditorXStart() and y > getEditorYStart() and
+        not m_graphical_track->isCollapsed() and
+        m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE)
+    {
+        // TODO: show pick menu
+    }
 }
 
 // ----------------------------------------------------------------------------------------------------------

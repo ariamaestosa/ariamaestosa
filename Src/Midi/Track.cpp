@@ -1617,6 +1617,19 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                 control_evt_id++;
 
             }
+            else if (controllerID == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE)
+            {
+                int time = m_control_events[control_evt_id].getTick() - firstNoteStartTick;
+                m.SetTime( time );
+                m.SetProgramChange(channel, m_control_events[control_evt_id].getValue());
+                control_evt_id++;
+                
+                if (not midiTrack->PutEvent( m ))
+                {
+                    std::cerr << "Error adding midi event!" << std::endl;
+                }
+                
+            }
             // other controller
             else
             {
