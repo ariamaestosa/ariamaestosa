@@ -465,6 +465,7 @@ void MainFrame::menuEvent_exportNotation(wxCommandEvent& evt)
 void MainFrame::menuEvent_save(wxCommandEvent& evt)
 {
     doSave();
+    Refresh(); // to remove the "unsaved" star
 }
 
 // -----------------------------------------------------------------------------------------------------------
