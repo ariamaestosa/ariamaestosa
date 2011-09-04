@@ -1442,22 +1442,7 @@ void MainPane::playbackRenderLoop()
         setCurrentTick( startTick + currentTick );
 
         RelativeXCoord tick(m_current_tick, MIDI, gseq);
-        const int XStart = Editor::getEditorXStart();
-        const int XEnd = getWidth();
-        const int tick_pixel = tick.getRelativeTo(WINDOW);
-
-        if (tick_pixel < XStart and m_left_arrow)
-        {
-            // current tick is before the visible area and arrow already there. no need to render again.
-        }
-        else if (tick_pixel > XEnd and m_right_arrow)
-        {
-            // current tick is after the visible area and arrow already there. no need to render again.
-        }
-        else
-        {
-            Display::render();
-        }
+        Display::render();
         m_last_tick = startTick + currentTick;
     }
 
