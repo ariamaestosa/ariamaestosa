@@ -32,6 +32,7 @@
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
 #include "Pickers/ControllerChoice.h"
+#include "Pickers/InstrumentPicker.h"
 #include "Renderers/RenderAPI.h"
 
 #include <string>
@@ -510,7 +511,7 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
 void ControllerEditor::mouseDown(RelativeXCoord x, const int y)
 {
-
+    
     m_has_been_resizing = false;
 
     // prepare coords
@@ -542,10 +543,24 @@ void ControllerEditor::mouseDown(RelativeXCoord x, const int y)
     }
     
     if (x.getRelativeTo(WINDOW) >= Editor::getEditorXStart() and y > getEditorYStart() and
-        not m_graphical_track->isCollapsed() and
+        not m_graphical_track->isCollapsed() and not m_selecting and
         m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE)
     {
-        // TODO: show pick menu
+        //OwnerPtr<InstrumentPicker> picker(new InstrumentPicker());
+        OwnerPtr<InstrumentChoice> choice(new InstrumentChoice(-1, NULL));
+        //picker->setModel(choice);
+        Core::getInstrumentPicker()->setModel(choice);
+        Display::popupMenu((wxMenu*)(Core::getInstrumentPicker()),
+                           x.getRelativeTo(WINDOW), y);
+        
+        int selection = Core::getInstrumentPicker()->getModel()->getSelectedInstrument();
+        if (selection != -1)
+        {
+            m_track->action( new Action::AddControlEvent(m_track->snapMidiTickToGrid( x.getRelativeTo(MIDI) ),
+                                                         selection,
+                                                         m_controller_choice->getControllerID()) );
+            Display::render();
+        }
     }
 }
 
@@ -606,6 +621,8 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
             if (mousey_current < area_from_y) mousey_current = area_from_y;
             if (mousey_current > area_to_y)   mousey_current = area_to_y;
 
+            if (m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE) return;
+            
             int tick1 = m_track->snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI) );
             int tick2 = m_track->snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI) );
 
@@ -675,7 +692,8 @@ void ControllerEditor::processMouseOutsideOfMe()
 void ControllerEditor::rightClick(RelativeXCoord x, const int y)
 {
     if (not m_controller_choice->isOnOffController(m_controller_choice->getControllerID()) and
-        m_controller_choice->getControllerID() != PSEUDO_CONTROLLER_LYRICS)
+        m_controller_choice->getControllerID() != PSEUDO_CONTROLLER_LYRICS and
+        m_controller_choice->getControllerID() != PSEUDO_CONTROLLER_INSTRUMENT_CHANGE)
     {
         wxPoint mouse(x.getRelativeTo(WINDOW), y);
         mouse = getMainFrame()->getMainPane()->ClientToScreen(mouse);
