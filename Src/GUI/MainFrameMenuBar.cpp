@@ -211,6 +211,9 @@ void MainFrame::initMenuBar()
 
     m_metronome = m_settings_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_METRONOME, _("Play with &Metronome"), MainFrame::menuEvent_metronome );
 
+    m_playthrough = m_settings_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAYTRHOUGH, _("&Playthrough when recording"), MainFrame::menuEvent_playthrough );
+
+    
     m_settings_menu->QUICK_ADD_MENU( wxID_PREFERENCES,   _("&Preferences..."), MainFrame::menuEvent_preferences );
 
     const int playValue = Core::getPrefsLongValue("playDuringEdit");
@@ -219,6 +222,8 @@ void MainFrame::initMenuBar()
     else if (playValue == PLAY_NEVER)  m_play_during_edits_never->Check();
     else                               {ASSERT(false);}
 
+    m_playthrough->Check( PlatformMidiManager::get()->isPlayThrough() );
+    
     m_menu_bar->Append(m_settings_menu,  _("&Settings"));
 
     // ---- Output devices menu
@@ -961,6 +966,13 @@ void MainFrame::menuEvent_expandedMeasuresSelected(wxCommandEvent& evt)
 void MainFrame::menuEvent_metronome(wxCommandEvent& evt)
 {
     getCurrentSequence()->setPlayWithMetronome( m_metronome->IsChecked() );
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+void MainFrame::menuEvent_playthrough(wxCommandEvent& evt)
+{
+    PlatformMidiManager::get()->setPlayThrough( m_playthrough->IsChecked() );
 }
 
 // ----------------------------------------------------------------------------------------------------------

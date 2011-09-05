@@ -36,7 +36,7 @@ PlatformMidiManager* g_manager = NULL;
 PlatformMidiManager::PlatformMidiManager()
 {
     m_recording = false;
-    m_playthrough = true;
+    m_playthrough = PreferencesData::getInstance()->getIntValue(SETTING_ID_PLAYTHROUGH);
 }
 
 // ----------------------------------------------------------------------------------------------------------
