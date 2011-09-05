@@ -216,6 +216,12 @@ namespace AriaMaestosa
           * @return false to stop it, true to continue
           */
         virtual bool seq_must_continue() { return false; }
+        
+        /** Get whether tp play through when recording */
+        bool isPlayThrough() const { return m_playthrough; }
+        
+        /** Set whether tp play through when recording */
+        void setPlayThrough(bool playthrough) { m_playthrough = playthrough; }
     };
     
     /**

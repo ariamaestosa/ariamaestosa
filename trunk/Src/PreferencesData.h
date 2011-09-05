@@ -49,7 +49,8 @@ namespace AriaMaestosa
     EXTERN const char* SETTING_ID_PLAY_DURING_EDIT DEFAULT("playDuringEdit");
     EXTERN const char* SETTING_ID_LANGUAGE         DEFAULT("lang");
     EXTERN const char* SETTING_ID_LAUNCH_TIMIDITY  DEFAULT("launchTimidity");
-    
+    EXTERN const char* SETTING_ID_PLAYTHROUGH      DEFAULT("playthrough");
+
     EXTERN const char* SETTING_ID_MARGIN_LEFT      DEFAULT("marginLeft");
     EXTERN const char* SETTING_ID_MARGIN_RIGHT     DEFAULT("marginRight");
     EXTERN const char* SETTING_ID_MARGIN_TOP       DEFAULT("marginTop");

@@ -109,6 +109,7 @@ namespace AriaMaestosa
         MENU_SETTINGS_CHANNELS_AUTO,
         MENU_SETTINGS_CHANNEL_MANUAL,
         MENU_SETTINGS_METRONOME,
+        MENU_SETTINGS_PLAYTRHOUGH,
         
         MENU_TRACK_ADD,
         MENU_TRACK_REMOVE,
@@ -224,6 +225,7 @@ namespace AriaMaestosa
         wxMenuItem* m_expanded_measures_menu_item;
         
         wxMenuItem* m_metronome;
+        wxMenuItem* m_playthrough;
 
         wxPanel*      m_notification_panel;
         wxStaticText* m_notification_text;
@@ -345,6 +347,7 @@ namespace AriaMaestosa
         void menuEvent_manualChannelModeSelected(wxCommandEvent& evt);
         void menuEvent_expandedMeasuresSelected(wxCommandEvent& evt);
         void menuEvent_metronome(wxCommandEvent& evt);
+        void menuEvent_playthrough(wxCommandEvent& evt);
         void menuEvent_outputDevice(wxCommandEvent& evt);
         void menuEvent_inputDevice(wxCommandEvent& evt);
 

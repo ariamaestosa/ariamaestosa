@@ -172,6 +172,12 @@ void PreferencesData::fillSettingsVector()
                                    SETTING_BOOL, true /* show in preferences */, wxT("0") );
     m_settings.push_back( followp );
     
+    // ---- playthrough
+    Setting* playthrough = new Setting(fromCString(SETTING_ID_PLAYTHROUGH), _("Enable playthrough when recording by default"),
+                                       SETTING_BOOL, true /* show in preferences */, wxT("1") );
+    m_settings.push_back( playthrough );
+
+    
 #ifdef __WXGTK__
     /*
      Setting usePort(wxT("usePort"), _("Automatically use this Alsa port (format 'Client:Port')"),
