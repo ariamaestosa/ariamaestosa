@@ -196,15 +196,21 @@ void PlatformMidiManager::recordCallback( double deltatime, std::vector< unsigne
             case 0xE0:
             {
                 float val = ControllerEvent::fromPitchBendValue((value | (value2 << 7)) - 8192);
-                //printf("PITCH BEND on channel %i; bend : %i\n", channel, value | (value2 << 7));
                 
                 self->m_record_target->action(new Action::AddControlEvent(now_tick, val, PSEUDO_CONTROLLER_PITCH_BEND));
+
+                if (self->m_playthrough) self->seq_pitch_bend((value | (value2 << 7)) - 8192,
+                                                              self->m_record_target->getChannel());
 
                 break;
             }
             case 0xB0:
-                // printf("CONTROLLER EVENT on channel %i; controller : %i value : %i\n", channel, value, value2);
                 self->m_record_target->action(new Action::AddControlEvent(now_tick, 127 - value2, value));
+                
+                if (self->m_playthrough) self->seq_controlchange(value, value2,
+                                                                 self->m_record_target->getChannel());
+
+                
                 break;
                 
             default:
