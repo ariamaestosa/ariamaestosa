@@ -16,6 +16,7 @@
 
 #include <wx/thread.h>
 
+#include "GUI/MainFrame.h"
 #include "Midi/Players/Sequencer.h"
 #include "Midi/CommonMidiUtils.h"
 #include "Midi/Sequence.h"
@@ -165,31 +166,33 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
         cleanup_sequencer();
         return;
     }
-
+    
     //jdksequencer->ResetAllTracks();
-
+    
     long previous_tick = tick;
-
+    
     next_event_time = tick / ticks_per_millis;
-
+    
     timer = new BasicTimer();
     timer->reset_and_start();
-
+    
     long total_millis = 0;
     long last_millis = 0;
-
-
-    while (PlatformMidiManager::get()->seq_must_continue())
+    
+    
+    while (PlatformMidiManager::get()->seq_must_continue() or PlatformMidiManager::get()->isRecording())
     {
         // process all events that need to be done by the current tick
         while (next_event_time <= total_millis)
         {
             if (not jdksequencer->GetNextEvent( &ev_track, &ev ))
             {
-                // error
-                std::cerr << "error, failed to retrieve next event, returning" << std::endl;
-                cleanup_sequencer();
-                return;
+                if (not PlatformMidiManager::get()->isRecording())
+                {
+                    std::cerr << "error, failed to retrieve next event, returning" << std::endl;
+                    cleanup_sequencer();
+                    return;
+                }
             }
             const int channel = ev.GetChannel();
 
@@ -251,17 +254,28 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
 
             if (not jdksequencer->GetNextEventTime(&tick))
             {
-                cleanup_sequencer();
-                return;
+                if (PlatformMidiManager::get()->isRecording())
+                {
+                    Sequence* seq = getMainFrame()->getCurrentSequence();
+                    tick = previous_tick + seq->ticksPerBeat();
+                }
+                else
+                {
+                    cleanup_sequencer();
+                    return;
+                }
             }
             if ((long)tick <(long) previous_tick) continue; // something wrong about time order...
 
             if ((long)tick > (long)songLengthInTicks)
             {
-                std::cout << "done, thread will exit" << std::endl;
                 PlatformMidiManager::get()->seq_notify_current_tick(-1);
-                cleanup_sequencer();
-                return;
+                if (not PlatformMidiManager::get()->isRecording())
+                {
+                    std::cout << "done, thread will exit" << std::endl;
+                    cleanup_sequencer();
+                    return;
+                }
             }
 
             PlatformMidiManager::get()->seq_notify_current_tick(previous_tick);
@@ -281,27 +295,24 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
             */
 
         }
-
+        
         wxThread::Sleep(10);
-
-/*
-        {
-        //jdkmidi::MIDIClockTime tick;
-        //jdksequencer->GetCurrentMIDIClockTime();
-        //std::cout << "current tick got from sequencer : " << tick << std::endl;
-        //PlatformMidiManager::get()->seq_notify_current_tick(tick);
-
-        std::cout << "current beat got from sequencer : " << jdksequencer->GetCurrentBeat() << std::endl;
-        }
-*/
+        
+        
         last_millis = total_millis;
         const int delta = (timer->get_elapsed_millis() - last_millis);
-
+        
         total_millis += delta;
         
         PlatformMidiManager::get()->seq_notify_accurate_current_tick(total_millis*ticks_per_millis);
+        
+        if (PlatformMidiManager::get()->isRecording())
+        {
+            Sequence* seq = getMainFrame()->getCurrentSequence();
+            seq->getMeasureData()->extendToTick(total_millis);
+        }
     }
-
+    
     cleanup_sequencer();
 }
 

@@ -1447,8 +1447,11 @@ void ScoreEditor::mouseDown(RelativeXCoord x, const int y)
         const int pitchID = m_converter->levelToNote(level);
         if (pitchID != -1)
         {
-            PlatformMidiManager::get()->playNote(131 - pitchID, m_default_volume, 500 /* duration */, 0,
-                                                 m_track->getInstrument() );
+            if (not PlatformMidiManager::get()->isRecording())
+            {
+                PlatformMidiManager::get()->playNote(131 - pitchID, m_default_volume, 500 /* duration */, 0,
+                                                     m_track->getInstrument() );
+            }
             m_clicked_note = pitchID;
             Display::render();
         }

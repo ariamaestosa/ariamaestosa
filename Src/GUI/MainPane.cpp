@@ -1388,10 +1388,13 @@ void MainPane::playbackRenderLoop()
     // check if song is over
     if (currentTick == -1 or not PlatformMidiManager::get()->isPlaying())
     {
-        exitPlayLoop();
-        return;
+        if (not PlatformMidiManager::get()->isRecording())
+        {
+            exitPlayLoop();
+            return;
+        }
     }
-
+    
     GraphicalSequence* gseq = getMainFrame()->getCurrentGraphicalSequence();
     Sequence* seq = gseq->getModel();
     const int startTick = seq->getPlaybackStartTick();
@@ -1399,7 +1402,7 @@ void MainPane::playbackRenderLoop()
     // only draw if it has changed
     if (m_last_tick != startTick + currentTick)
     {
-
+        
         // if user has clicked on a little red arrow
         if (m_scroll_to_playback_position)
         {
@@ -1408,19 +1411,19 @@ void MainPane::playbackRenderLoop()
             gseq->setXScrollInPixels(x_scroll_in_pixels);
             DisplayFrame::updateHorizontalScrollbar( startTick + currentTick );
         }
-
+        
         // if follow playback is checked in the menu
         if (seq->isFollowPlaybackEnabled())
         {
             RelativeXCoord tick(startTick + currentTick, MIDI, gseq);
             const int current_pixel = tick.getRelativeTo(WINDOW);
-
+            
             //const float zoom = getCurrentSequence()->getZoom();
             const int XStart = Editor::getEditorXStart();
             const int XEnd = getWidth() - 50; // 50 is somewhat arbitrary
             const int last_visible_measure = gseq->getMeasureBar()->measureAtPixel( XEnd );
             const int current_measure = seq->getMeasureData()->measureAtTick(startTick + currentTick);
-
+            
             if (current_pixel < XStart or current_measure >= last_visible_measure)
             {
                 int new_scroll_in_pixels = (startTick + currentTick) * gseq->getZoom();
@@ -1429,7 +1432,7 @@ void MainPane::playbackRenderLoop()
                 gseq->setXScrollInPixels(new_scroll_in_pixels);
                 DisplayFrame::updateHorizontalScrollbar( startTick + currentTick );
             }
-
+            
             /*
             int x_scroll_in_pixels = (int)( (m_playback_start_tick + currentTick - m_follow_playback_time) *
                 getCurrentSequence()->getZoom() );
@@ -1438,9 +1441,9 @@ void MainPane::playbackRenderLoop()
             DisplayFrame::updateHorizontalScrollbar( m_playback_start_tick + currentTick - m_follow_playback_time );
                  */
         }
-
+        
         setCurrentTick( startTick + currentTick );
-
+        
         RelativeXCoord tick(m_current_tick, MIDI, gseq);
         Display::render();
         m_last_tick = startTick + currentTick;
