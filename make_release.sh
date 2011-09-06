@@ -33,6 +33,12 @@ cd $OUTPUT/build
 mkdir -p "$OUTPUT/AriaSrc-$VERSION/"
 cp -R "." "$OUTPUT/AriaSrc-$VERSION"
 cp "./Resources/Documentation/building.html" "$OUTPUT/AriaSrc-$VERSION/"
+cp "./Resources/Documentation/linux.png" "$OUTPUT/AriaSrc-$VERSION/"
+cp "./Resources/Documentation/osx.png" "$OUTPUT/AriaSrc-$VERSION/"
+cp "./Resources/Documentation/windows.png" "$OUTPUT/AriaSrc-$VERSION/"
+cp "./Resources/Documentation/section_code.js" "$OUTPUT/AriaSrc-$VERSION/"
+cp "./Resources/Documentation/style.css" "$OUTPUT/AriaSrc-$VERSION/"
+rm "$OUTPUT/AriaSrc-$VERSION/install.txt"
 cd $OUTPUT/
 tar cj --exclude '.svn' --exclude '.DS_Store' --exclude '.sconsign' -f "./AriaSrc-$VERSION.tar.bz2" "./AriaSrc-$VERSION"
 cd $OUTPUT/build
