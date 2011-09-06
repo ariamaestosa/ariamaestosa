@@ -719,9 +719,12 @@ void DrumEditor::mouseDown(RelativeXCoord x, const int y)
                 const int note = m_drums[ drumID ].m_midi_key;
                 
                 if (note == -1 or m_drums[ drumID ].m_section) return;
-
-                PlatformMidiManager::get()->playNote(note, m_default_volume, 500 /* duration */, 9,
-                                                     m_track->getDrumKit() );
+                
+                if (not PlatformMidiManager::get()->isRecording())
+                {
+                    PlatformMidiManager::get()->playNote(note, m_default_volume, 500 /* duration */, 9,
+                                                         m_track->getDrumKit() );
+                }
             }    
             // click on section
             else if (m_drums[ drumID ].m_section)

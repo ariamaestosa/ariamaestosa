@@ -356,7 +356,8 @@ bool Note::readFromFile(irr::io::IrrXMLReader* xml)
 void Note::play(bool change)
 {
     if (m_track->getSequence()->isImportMode()) return;
-
+    if (PlatformMidiManager::get()->isRecording()) return;
+    
     const int playSetting = Core::playDuringEdit();
 
     if (playSetting == PLAY_NEVER) return;
@@ -364,7 +365,7 @@ void Note::play(bool change)
 
     int durationMilli = (m_end_tick - m_start_tick)*60*1000 /
                         (m_track->getSequence()->getTempo() * m_track->getSequence()->ticksPerBeat());
-
+    
     // FIXME(DESIGN): remove this 131-pitch ugliness
     if (m_track->isNotationTypeEnabled(DRUM)) 
     {

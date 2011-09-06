@@ -762,7 +762,10 @@ void MainFrame::recordClicked(wxCommandEvent& evt)
     }
     
     Sequence* seq = getCurrentSequence();
-
+    
+    wxString input = PreferencesData::getInstance()->getValue(SETTING_ID_MIDI_INPUT);
+    PlatformMidiManager::get()->startRecording(input, seq->getCurrentTrack());
+    
     int startTick = -1;
     const bool success = PlatformMidiManager::get()->playSequence( seq, /*out*/ &startTick );
     if (not success) std::cerr << "Couldn't play" << std::endl;
@@ -772,10 +775,6 @@ void MainFrame::recordClicked(wxCommandEvent& evt)
     if (startTick == -1 or not success) m_main_pane->exitPlayLoop();
     else                                m_main_pane->enterPlayLoop();
         
-    wxString input = PreferencesData::getInstance()->getValue(SETTING_ID_MIDI_INPUT);
-    PlatformMidiManager::get()->startRecording(input,
-                                               seq->getCurrentTrack());
-    
     toolsEnterPlaybackMode();
 }
 
