@@ -308,8 +308,9 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
         
         if (PlatformMidiManager::get()->isRecording())
         {
-            Sequence* seq = getMainFrame()->getCurrentSequence();
-            seq->getMeasureData()->extendToTick(total_millis);
+            wxCommandEvent evt(wxEVT_EXTEND_TICK, wxID_ANY);
+            evt.SetInt( total_millis );
+            getMainFrame()->GetEventHandler()->AddPendingEvent( evt );
         }
     }
     
