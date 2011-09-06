@@ -179,6 +179,9 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
     long total_millis = 0;
     long last_millis = 0;
     
+    int next_metronome_beat = -1;
+    int played_metronome_tick = -1;
+    
     
     while (PlatformMidiManager::get()->seq_must_continue() or PlatformMidiManager::get()->isRecording())
     {
@@ -192,6 +195,30 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
                     std::cerr << "error, failed to retrieve next event, returning" << std::endl;
                     cleanup_sequencer();
                     return;
+                }
+                else
+                {
+                    Sequence* sequence = getMainFrame()->getCurrentSequence();
+                    if (sequence->playWithMetronome())
+                    {
+                        // past the end of the song in record mode. Play metronome
+                        const int beat = sequence->ticksPerBeat();
+                        int metronome_beat = tick - (tick % beat);
+                        if (next_metronome_beat == -1 or metronome_beat > next_metronome_beat)
+                        {
+                            next_metronome_beat = metronome_beat;
+                        }
+                        
+                        const int metronomeInstrument = 37; // 31 (stick), 56 (cowbell), 37 (side stick)
+                        const int metronomeVolume = 127;
+                        
+                        
+                        if ((int)tick >= next_metronome_beat and next_metronome_beat != played_metronome_tick)
+                        {
+                            PlatformMidiManager::get()->seq_note_on(metronomeInstrument, metronomeVolume, 9);
+                            played_metronome_tick = next_metronome_beat;
+                        }
+                    }
                 }
             }
             const int channel = ev.GetChannel();

@@ -372,6 +372,8 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
     
     bool tooManyChannelsMessageShown = false;
     
+    const int past_end_time = (playing ? sequence->ticksPerBeat()*4 : 0);
+    
     if (selectionOnly)
     {
         //  ---- add events to tracks
@@ -721,7 +723,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
     if (playing)
     {
         jdkmidi::MIDITimedBigMessage m;
-        m.SetTime( *songLengthInTicks + sequence->ticksPerBeat()*4 );
+        m.SetTime( *songLengthInTicks + past_end_time );
         m.SetControlChange(0, 127, 0);
         
         const int count = sequence->getTrackAmount();
@@ -779,7 +781,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
         // FIXME: if the user adds lots of tracks, just using the last track here may not be safe.
         const int metronomeTrackId = sequence->getTrackAmount() + 1; //tracks.GetNumTracks() - 1;
         jdkmidi::MIDITrack* metronomeTrack = tracks.GetTrack(metronomeTrackId);
-                
+        
         *numTracks = *numTracks + 1;
         
         // set track name
@@ -818,7 +820,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
         const int shift = (*startTick % beat);
         
         // add the events
-        for (int tick = shift; tick <= *songLengthInTicks; tick += beat)
+        for (int tick = shift; tick <= *songLengthInTicks + past_end_time; tick += beat)
         {
             jdkmidi::MIDITimedBigMessage m;
             m.SetTime(tick);
