@@ -87,6 +87,8 @@ namespace AriaMaestosa
     DEFINE_LOCAL_EVENT_TYPE(wxEVT_SHOW_WAIT_WINDOW)
     DEFINE_LOCAL_EVENT_TYPE(wxEVT_UPDATE_WAIT_WINDOW)
     DEFINE_LOCAL_EVENT_TYPE(wxEVT_HIDE_WAIT_WINDOW)
+    DEFINE_LOCAL_EVENT_TYPE(wxEVT_EXTEND_TICK)
+
 }
 
 
@@ -152,6 +154,8 @@ EVT_COMMAND  (DESTROY_TIMESIG_EVENT_ID, wxEVT_DESTROY_TIMESIG_PICKER, MainFrame:
 EVT_COMMAND  (SHOW_WAIT_WINDOW_EVENT_ID, wxEVT_SHOW_WAIT_WINDOW,   MainFrame::evt_showWaitWindow)
 EVT_COMMAND  (UPDT_WAIT_WINDOW_EVENT_ID, wxEVT_UPDATE_WAIT_WINDOW, MainFrame::evt_updateWaitWindow)
 EVT_COMMAND  (HIDE_WAIT_WINDOW_EVENT_ID, wxEVT_HIDE_WAIT_WINDOW,   MainFrame::evt_hideWaitWindow)
+
+EVT_COMMAND  (wxID_ANY, wxEVT_EXTEND_TICK, MainFrame::evt_extendTick)
 
 EVT_MOUSEWHEEL(MainFrame::onMouseWheel)
 
@@ -1710,6 +1714,14 @@ void MainFrame::evt_updateWaitWindow(wxCommandEvent& evt)
 void MainFrame::evt_hideWaitWindow(wxCommandEvent& evt)
 {
     WaitWindow::hide();
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void MainFrame::evt_extendTick(wxCommandEvent& evt )
+{
+    Sequence* seq = getCurrentSequence();
+    seq->getMeasureData()->extendToTick(evt.GetInt());
 }
 
 // ----------------------------------------------------------------------------------------------------------
