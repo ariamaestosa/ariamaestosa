@@ -19,6 +19,7 @@
 
 #include "Utils.h"
 #include "Renderers/RenderAPI.h"
+#include <math.h>
 
 class wxFileOutputStream;
 // forward
