@@ -182,6 +182,7 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
     int next_metronome_beat = -1;
     int played_metronome_tick = -1;
     
+    int next_beat = 0;
     
     while (PlatformMidiManager::get()->seq_must_continue() or PlatformMidiManager::get()->isRecording())
     {
@@ -335,9 +336,16 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
         
         if (PlatformMidiManager::get()->isRecording())
         {
-            wxCommandEvent evt(wxEVT_EXTEND_TICK, wxID_ANY);
-            evt.SetInt( total_millis );
-            getMainFrame()->GetEventHandler()->AddPendingEvent( evt );
+            const int tick = total_millis*ticks_per_millis;
+            if (tick >= next_beat)
+            {
+                wxCommandEvent evt(wxEVT_EXTEND_TICK, wxID_ANY);
+                evt.SetInt( tick );
+                getMainFrame()->GetEventHandler()->AddPendingEvent( evt );
+                
+                Sequence* seq = getMainFrame()->getCurrentSequence();
+                next_beat += seq->ticksPerBeat();
+            }
         }
     }
     
