@@ -765,6 +765,12 @@ void MainFrame::recordClicked(wxCommandEvent& evt)
         return;
     }
     
+    if (m_sequences.size() == 0)
+    {
+        wxBell();
+        return;
+    }
+    
     Sequence* seq = getCurrentSequence();
     
     wxString input = PreferencesData::getInstance()->getValue(SETTING_ID_MIDI_INPUT);
