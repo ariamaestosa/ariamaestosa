@@ -160,7 +160,7 @@ namespace AriaMaestosa
             wxBoxSizer* right_subsizer = new wxBoxSizer(wxVERTICAL);
             props_sizer->Add(right_subsizer, 0, wxALL, 5);
             
-            wxStaticBoxSizer* default_volume_subsizer = new wxStaticBoxSizer(wxHORIZONTAL, properties_panel, _("Default Volume"));
+            wxStaticBoxSizer* default_volume_subsizer = new wxStaticBoxSizer(wxHORIZONTAL, properties_panel, _("Default volume for new notes"));
             
             volume_slider = new wxSlider(properties_panel, 300 /* ID */, 80 /* current */, 0 /* min */, 127 /* max */);
             default_volume_subsizer->Add(volume_slider, 0, wxALL, 5);
