@@ -27,6 +27,7 @@ class RtMidiIn;
 namespace AriaMaestosa
 {
     
+    namespace Action { class Record; }
     class Sequence;
     class Track;
     class PlatformMidiManagerFactory;
@@ -81,6 +82,9 @@ namespace AriaMaestosa
 
         /** Whether to play new notes while recording */
         bool m_playthrough;
+        
+        /** Used while recording */
+        Action::Record* m_record_action;
         
     public:
         

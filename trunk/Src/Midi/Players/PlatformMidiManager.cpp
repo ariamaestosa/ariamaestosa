@@ -18,6 +18,7 @@
 
 #include "Actions/AddNote.h"
 #include "Actions/AddControlEvent.h"
+#include "Actions/Record.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "PreferencesData.h"
 #include "ptr_vector.h"
@@ -36,6 +37,7 @@ PlatformMidiManager* g_manager = NULL;
 PlatformMidiManager::PlatformMidiManager()
 {
     m_recording = false;
+    m_record_action = NULL;
     m_playthrough = PreferencesData::getInstance()->getIntValue(SETTING_ID_PLAYTHROUGH);
 }
 
@@ -179,8 +181,7 @@ void PlatformMidiManager::recordCallback( double deltatime, std::vector< unsigne
                         NoteInfo n = self->m_open_notes[value];
                         self->m_open_notes.erase(value);
                         
-                        // FIXME: recording should not fill the undo stack!!
-                        self->m_record_target->action(new Action::AddNote(131 - value,
+                        self->m_record_action->action(new Action::AddNote(131 - value,
                                                                           n.m_note_on_tick,
                                                                           now_tick,
                                                                           n.m_velocity));
@@ -197,7 +198,7 @@ void PlatformMidiManager::recordCallback( double deltatime, std::vector< unsigne
             {
                 float val = ControllerEvent::fromPitchBendValue((value | (value2 << 7)) - 8192);
                 
-                self->m_record_target->action(new Action::AddControlEvent(now_tick, val, PSEUDO_CONTROLLER_PITCH_BEND));
+                self->m_record_action->action(new Action::AddControlEvent(now_tick, val, PSEUDO_CONTROLLER_PITCH_BEND));
 
                 if (self->m_playthrough) self->seq_pitch_bend((value | (value2 << 7)) - 8192,
                                                               self->m_record_target->getChannel());
@@ -205,7 +206,7 @@ void PlatformMidiManager::recordCallback( double deltatime, std::vector< unsigne
                 break;
             }
             case 0xB0:
-                self->m_record_target->action(new Action::AddControlEvent(now_tick, 127 - value2, value));
+                self->m_record_action->action(new Action::AddControlEvent(now_tick, 127 - value2, value));
                 
                 if (self->m_playthrough) self->seq_controlchange(value, value2,
                                                                  self->m_record_target->getChannel());
@@ -271,6 +272,11 @@ bool PlatformMidiManager::startRecording(wxString outputPort, Track* target)
     }
     
     m_recording = true;
+    m_record_action = new Action::Record();
+    
+    // add the action to the action stack so it can be undone
+    // FIXME: make sure user can't undo while recording
+    m_record_target->action(m_record_action);
     
     m_midi_input->openPort( portId );
     
@@ -290,6 +296,8 @@ bool PlatformMidiManager::startRecording(wxString outputPort, Track* target)
 void PlatformMidiManager::stopRecording()
 {
     m_recording = false;
+    m_record_action = NULL;
+    
     delete m_midi_input;
 }
 
