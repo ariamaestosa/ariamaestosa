@@ -15,9 +15,11 @@
  */
 
 #include "Actions/Record.h"
+
+#include "AriaCore.h"
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
-#include "AriaCore.h"
+#include "Midi/Players/PlatformMidiManager.h"
 
 #include <wx/intl.h>
 
@@ -65,4 +67,9 @@ void Record::action(SingleTrackAction* actionObj)
 }
 
 // ----------------------------------------------------------------------------------------------------------
+
+bool Record::canUndoNow()
+{
+    return not PlatformMidiManager::get()->isRecording();
+}
 

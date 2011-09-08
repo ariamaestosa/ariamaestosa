@@ -370,6 +370,12 @@ void Sequence::undo()
     }
 
     Action::EditAction* lastAction = undoStack.get( undoStack.size() - 1 );
+    if (not lastAction->canUndoNow())
+    {
+        wxBell();
+        return;
+    }
+    
     lastAction->undo();
     undoStack.erase( undoStack.size() - 1 );
 

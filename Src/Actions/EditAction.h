@@ -119,6 +119,10 @@ namespace AriaMaestosa
             EditAction(wxString name);
             virtual void perform() = 0;
             virtual void undo() = 0;
+            
+            /** Some actions may not be undoable at any time */
+            virtual bool canUndoNow() { return true; }
+            
             virtual ~EditAction() {}
             
             wxString getName() const { return m_name; }

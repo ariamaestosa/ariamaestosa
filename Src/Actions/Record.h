@@ -37,11 +37,12 @@ namespace AriaMaestosa
 
         public:
             Record();
-            void perform();
-            void undo();
+            virtual void perform();
+            virtual void undo();
             
             void action(SingleTrackAction* action);
 
+            virtual bool canUndoNow();
             
             virtual ~Record();
         };
