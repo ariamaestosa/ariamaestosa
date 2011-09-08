@@ -184,7 +184,8 @@ void PlatformMidiManager::recordCallback( double deltatime, std::vector< unsigne
                         self->m_record_action->action(new Action::AddNote(131 - value,
                                                                           n.m_note_on_tick,
                                                                           now_tick,
-                                                                          n.m_velocity));
+                                                                          n.m_velocity,
+                                                                          false));
                         
                     }
                 }

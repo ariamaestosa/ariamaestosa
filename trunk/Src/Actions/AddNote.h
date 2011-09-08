@@ -41,11 +41,14 @@ namespace AriaMaestosa
             
             int m_string;
             
+            bool m_select;
+            
             NoteRelocator relocator;
             
         public:
             
-            AddNote(const int pitchID, const int startTick, const int endTick, const int volume, const int string=-1);
+            AddNote(const int pitchID, const int startTick, const int endTick, const int volume,
+                    bool select = true, const int string=-1);
             virtual ~AddNote() {}
 
             virtual void perform();
