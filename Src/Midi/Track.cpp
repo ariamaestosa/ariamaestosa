@@ -723,7 +723,8 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
 {    
     ASSERT(id != SELECTED_NOTES); // not supported in this function
 
-    if (not Display::isSelectMorePressed() and not Display::isSelectLessPressed())
+    if (not ignoreModifiers and not Display::isSelectMorePressed() and
+        not Display::isSelectLessPressed())
     {
         ignoreModifiers = true; // if no modifier is pressed, don't do any special checks
     }

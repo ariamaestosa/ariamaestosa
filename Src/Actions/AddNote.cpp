@@ -33,7 +33,7 @@ using namespace AriaMaestosa::Action;
 // ----------------------------------------------------------------------------------------------------------
 
 AddNote::AddNote(const int pitchID, const int startTick, const int endTick,
-                 const int volume, const int string) :
+                 const int volume, bool select, const int string) :
 //I18N: (undoable) action name
 SingleTrackAction( _("add note") )
 {
@@ -42,6 +42,7 @@ SingleTrackAction( _("add note") )
     m_end_tick   = endTick;
     m_volume     = volume;
     m_string     = string;
+    m_select     = select;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -78,10 +79,10 @@ void AddNote::perform()
     
     const bool success = m_track->addNote( tmp_note );
     
-    if (success)
+    if (success and m_select)
     {
         // select last added note
-        m_track->selectNote(ALL_NOTES, false, true); // select last added note
+        m_track->selectNote(ALL_NOTES, false, true /* ignoreModifiers */);
         tmp_note->setSelected(true);
     }
     
