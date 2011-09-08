@@ -773,6 +773,12 @@ void MainFrame::recordClicked(wxCommandEvent& evt)
     
     Sequence* seq = getCurrentSequence();
     
+    if (seq->getCurrentTrack() == NULL)
+    {
+        wxBell();
+        return;
+    }
+    
     wxString input = PreferencesData::getInstance()->getValue(SETTING_ID_MIDI_INPUT);
     PlatformMidiManager::get()->startRecording(input, seq->getCurrentTrack());
     
