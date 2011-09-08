@@ -779,6 +779,11 @@ void MainFrame::menuEvent_addTrack(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_deleteTrack(wxCommandEvent& evt)
 {
+    if (getCurrentSequence()->getTrackAmount() == 1)
+    {
+        wxMessageBox(_("You may not delete the last track"));
+        return;
+    }
 
     int answer = wxMessageBox(  _("Do you really want to delete this track?"),  _("Confirm"),
                               wxYES_NO, this);
