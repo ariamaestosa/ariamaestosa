@@ -279,8 +279,16 @@ bool PlatformMidiManager::startRecording(wxString outputPort, Track* target)
     // FIXME: make sure user can't undo while recording
     m_record_target->action(m_record_action);
     
-    m_midi_input->openPort( portId );
-    
+    try
+    {
+        m_midi_input->openPort( portId );
+    }
+    catch (std::exception& e)
+    {
+        wxMessageBox( wxString(_("Sorry, failed to open the selected MIDI input port")) + wxT("\n") +
+                      wxString(e.what(), wxConvUTF8) );
+        return false;
+    }
     // Set our callback function.  This should be done immediately after
     // opening the port to avoid having incoming messages written to the
     // queue.
