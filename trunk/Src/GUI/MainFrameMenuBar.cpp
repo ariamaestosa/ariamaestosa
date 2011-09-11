@@ -362,7 +362,8 @@ void MainFrame::doDisableMenusForWelcomeScreen(const bool disable)
     m_menu_bar->EnableTop(2, on);
     m_menu_bar->EnableTop(3, on);
     m_toolbar->EnableTool(PLAY_CLICKED, on);
-    
+    m_toolbar->EnableTool(RECORD_CLICKED, on);
+
     m_first_measure->Enable(on);
     m_time_sig->Enable(on);
     m_tempo_ctrl->Enable(on);
