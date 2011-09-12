@@ -356,6 +356,7 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
         
         
         last_millis = total_millis;
+        assert(timer != NULL);
         const int delta = (timer->get_elapsed_millis() - last_millis);
         
         total_millis += delta;
