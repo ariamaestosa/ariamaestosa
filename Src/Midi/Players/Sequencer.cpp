@@ -365,11 +365,11 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
         
         if (PlatformMidiManager::get()->isRecording())
         {
-            const int tick = total_millis*ticks_per_millis;
-            if (tick >= next_beat)
+            const int extend_tick = total_millis*ticks_per_millis;
+            if (extend_tick >= next_beat)
             {
                 wxCommandEvent evt(wxEVT_EXTEND_TICK, wxID_ANY);
-                evt.SetInt( tick );
+                evt.SetInt( extend_tick );
                 getMainFrame()->GetEventHandler()->AddPendingEvent( evt );
                 
                 Sequence* seq = getMainFrame()->getCurrentSequence();
