@@ -138,9 +138,37 @@ void cleanup_sequencer()
     timer = NULL;
 }
 
+int count = 0;
+
+class ReentrencyGuard
+{
+public:
+    
+    ReentrencyGuard()
+    {
+        count++;
+    }
+    ~ReentrencyGuard()
+    {
+        count--;
+    }
+    bool ok()
+    {
+        return (count == 1);
+    }
+};
+
 void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int songLengthInTicks)
 {
-
+    // Added because I suspect invalid reentrency is the cause of bug #113
+    ReentrencyGuard guard;
+    if (not guard.ok())
+    {
+        fprintf(stderr, "SEVERE INTERNAL ERROR: AriaSequenceTimer::run is not reentrant\n");
+        wxBell();
+        assert(false);
+        return;
+    }
     //std::cout << "  * AriaSequenceTimer::run" << std::endl;
 
     //std::cout << "trying to play " << seq->suggestFileName().mb_str() << std::endl;
