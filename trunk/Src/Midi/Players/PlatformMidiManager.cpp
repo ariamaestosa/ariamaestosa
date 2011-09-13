@@ -165,6 +165,7 @@ void PlatformMidiManager::recordCallback( double deltatime, std::vector< unsigne
                 {
                     //printf("NOTE ON on channel %i; note : %i velocity : %i\n", channel, value, value2);
                     
+                    // FIXME: we are in a thread, not all players may be thread-safe!!
                     if (self->m_playthrough) self->seq_note_on(value, value2, self->m_record_target->getChannel());
                     
                     NoteInfo n = {now_tick, value2};
@@ -174,6 +175,7 @@ void PlatformMidiManager::recordCallback( double deltatime, std::vector< unsigne
                 {
                     //printf("NOTE OFF on channel %i; note : %i velocity : %i\n", channel, value, value2);
                     
+                    // FIXME: we are in a thread, not all players may be thread-safe!!
                     if (self->m_playthrough) self->seq_note_off(value, self->m_record_target->getChannel());
                     
                     if (self->m_open_notes.find(value) != self->m_open_notes.end())
@@ -206,6 +208,7 @@ void PlatformMidiManager::recordCallback( double deltatime, std::vector< unsigne
                     self->m_record_action->action(new Action::AddControlEvent(now_tick, val, PSEUDO_CONTROLLER_PITCH_BEND));
                 }
                 
+                // FIXME: we are in a thread, not all players may be thread-safe!!
                 if (self->m_playthrough) self->seq_pitch_bend((value | (value2 << 7)) - 8192,
                                                               self->m_record_target->getChannel());
 
@@ -217,6 +220,7 @@ void PlatformMidiManager::recordCallback( double deltatime, std::vector< unsigne
                     self->m_record_action->action(new Action::AddControlEvent(now_tick, 127 - value2, value));
                 }
                 
+                // FIXME: we are in a thread, not all players may be thread-safe!!
                 if (self->m_playthrough) self->seq_controlchange(value, value2,
                                                                  self->m_record_target->getChannel());
 
