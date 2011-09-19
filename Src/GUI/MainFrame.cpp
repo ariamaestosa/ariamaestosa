@@ -758,10 +758,11 @@ void MainFrame::recordClicked(wxCommandEvent& evt)
         return;
     }
     
-    // TODO: disable record when no input port is available
-    if (PlatformMidiManager::get()->getInputChoices().IsEmpty())
+    wxString input = PreferencesData::getInstance()->getValue(SETTING_ID_MIDI_INPUT);
+
+    if (input == _("No MIDI input") or PlatformMidiManager::get()->getInputChoices().IsEmpty())
     {
-        wxBell();
+        wxMessageBox( _("Please select an input port from the 'input' menu before recording") );
         return;
     }
     
@@ -779,7 +780,6 @@ void MainFrame::recordClicked(wxCommandEvent& evt)
         return;
     }
     
-    wxString input = PreferencesData::getInstance()->getValue(SETTING_ID_MIDI_INPUT);
     PlatformMidiManager::get()->startRecording(input, seq->getCurrentTrack());
     
     int startTick = -1;
