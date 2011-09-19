@@ -331,6 +331,16 @@ void MainFrame::disableMenus(const bool disable)
         m_file_menu->Enable(MENU_FILE_EXPORT_SAMPLED_AUDIO, on);
     }
 
+    
+    for (int n=0; n<m_input_device_menus.size(); n++)
+    {
+        m_input_device_menus[n].Enable(on);
+    }
+    for (int n=0; n<m_output_device_menus.size(); n++)
+    {
+        m_output_device_menus[n].Enable(on);
+    }
+    
     m_file_menu->Enable(MENU_FILE_EXPORT_NOTATION, on);
     m_file_menu->Enable(MENU_FILE_COPYRIGHT, on);
     m_file_menu->Enable(wxID_EXIT, on);
@@ -1022,6 +1032,12 @@ void MainFrame::menuEvent_outputDevice(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_inputDevice(wxCommandEvent& evt)
 {
+    if (PlatformMidiManager::get()->isRecording())
+    {
+        wxBell();
+        return;
+    }
+    
     wxMenuItem* item = NULL;
     
     for (int n=0; n<m_input_device_menus.size(); n++)
