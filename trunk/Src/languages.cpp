@@ -55,11 +55,12 @@ namespace AriaMaestosa
     void buildLanguageList()
     {
         // build list of existing languages
-        languages.push_back( AriaLanguage( wxLANGUAGE_DEFAULT, wxT("System") ) );        // 0
-        languages.push_back( AriaLanguage( wxLANGUAGE_ENGLISH, wxT("English") ) );       // 1
-        languages.push_back( AriaLanguage( wxLANGUAGE_FRENCH,  wxT("Fran\u00E7ais") ) ); // 2
-        languages.push_back( AriaLanguage( wxLANGUAGE_ITALIAN, wxT("Italiano") ) );      // 3
-        languages.push_back( AriaLanguage( wxLANGUAGE_GERMAN,  wxT("Deutsch") ) );       // 4
+        languages.push_back( AriaLanguage( wxLANGUAGE_DEFAULT,   wxT("System") ) );        // 0
+        languages.push_back( AriaLanguage( wxLANGUAGE_ENGLISH,   wxT("English") ) );       // 1
+        languages.push_back( AriaLanguage( wxLANGUAGE_FRENCH,    wxT("Fran\u00E7ais") ) ); // 2
+        languages.push_back( AriaLanguage( wxLANGUAGE_ITALIAN,   wxT("Italiano") ) );      // 3
+        languages.push_back( AriaLanguage( wxLANGUAGE_GERMAN,    wxT("Deutsch") ) );       // 4
+        languages.push_back( AriaLanguage( wxLANGUAGE_JAPANESE,  wxT("Japanese (\u65E5\u672C\u8A9E)") ) ); // 5
     }
     
     void initLanguageSupport()
@@ -73,7 +74,7 @@ namespace AriaMaestosa
             // couldn't read from prefs, use default
             language_aria_id = 0;
             language_wx_id = wxLANGUAGE_DEFAULT;
-            std::cout << "failed to read language from prefs" << std::endl;
+            std::cout << "[initLanguageSupport] failed to read language from prefs (maybe it's not set yet)" << std::endl;
         }
         // preferences contain Aria-ID of supported languages (see list above)
         // we need to convert this to a wx language code before using
@@ -91,7 +92,7 @@ namespace AriaMaestosa
                 language_known = true;
             }
         }
-        if (!language_known) std::cout << "Warning, the language code stored in preferences is unknown to Aria" << std::endl;
+        if (!language_known) std::cerr << "[initLanguageSupport] Warning, the language code stored in preferences is unknown to Aria\n";
         
         // load language if possible, fall back to english otherwise
         if (wxLocale::IsAvailable(language_wx_id))
@@ -123,8 +124,8 @@ namespace AriaMaestosa
         }
         else
         {
-            std::cout << "The selected language is not supported by your system."
-            << "Try installing support for this language." << std::endl;
+            std::cerr << "The selected language is not supported by your system."
+                      << "Try installing support for this language.\n";
             locale = new wxLocale( wxLANGUAGE_ENGLISH );
             language_aria_id = 0;
             language_wx_id = wxLANGUAGE_ENGLISH;

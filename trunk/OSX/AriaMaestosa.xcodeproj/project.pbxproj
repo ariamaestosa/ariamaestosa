@@ -49,6 +49,8 @@
 		950B3EFD1125DE60006C9AF1 /* en.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EE61125DE18006C9AF1 /* en.lproj */; };
 		950B3EFE1125DE60006C9AF1 /* de.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EE31125DE18006C9AF1 /* de.lproj */; };
 		950B3EFF1125DE60006C9AF1 /* it.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950B3EEB1125DE18006C9AF1 /* it.lproj */; };
+		950F0F0114376197008E0D62 /* ja.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950F0EF714376080008E0D62 /* ja.lproj */; };
+		950F0F02143761B3008E0D62 /* ja.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 950F0EF714376080008E0D62 /* ja.lproj */; };
 		95160BE61359F3C1001F20CD /* Documentation in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7C9C133E88CF0060AB17 /* Documentation */; };
 		95160BE71359F3C1001F20CD /* score in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7CD4133E88CF0060AB17 /* score */; };
 		95160BE81359F3C1001F20CD /* collapse.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7C95133E88CF0060AB17 /* collapse.jpg */; };
@@ -837,6 +839,7 @@
 				950B3EFD1125DE60006C9AF1 /* en.lproj in CopyFiles */,
 				950B3EFE1125DE60006C9AF1 /* de.lproj in CopyFiles */,
 				950B3EFF1125DE60006C9AF1 /* it.lproj in CopyFiles */,
+				950F0F0114376197008E0D62 /* ja.lproj in CopyFiles */,
 				950B3EF01125DE41006C9AF1 /* violin.icns in CopyFiles */,
 				950B3EF11125DE41006C9AF1 /* aria_file.icns in CopyFiles */,
 				950B3EF21125DE41006C9AF1 /* aria_midi_file.icns in CopyFiles */,
@@ -897,6 +900,7 @@
 				950B3EF91125DE59006C9AF1 /* en.lproj in CopyFiles */,
 				950B3EFA1125DE59006C9AF1 /* de.lproj in CopyFiles */,
 				950B3EFB1125DE59006C9AF1 /* it.lproj in CopyFiles */,
+				950F0F02143761B3008E0D62 /* ja.lproj in CopyFiles */,
 				950B3EF31125DE46006C9AF1 /* violin.icns in CopyFiles */,
 				950B3EF41125DE46006C9AF1 /* aria_file.icns in CopyFiles */,
 				950B3EF51125DE46006C9AF1 /* aria_midi_file.icns in CopyFiles */,
@@ -932,6 +936,7 @@
 		950B3EEB1125DE18006C9AF1 /* it.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = it.lproj; path = "../OSX/mac-i18n/it.lproj"; sourceTree = SOURCE_ROOT; };
 		950B3EEE1125DE2F006C9AF1 /* aria_file.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = aria_file.icns; path = ../OSX/aria_file.icns; sourceTree = SOURCE_ROOT; };
 		950B3EEF1125DE2F006C9AF1 /* aria_midi_file.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = aria_midi_file.icns; path = ../OSX/aria_midi_file.icns; sourceTree = SOURCE_ROOT; };
+		950F0EF714376080008E0D62 /* ja.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ja.lproj; path = "mac-i18n/ja.lproj"; sourceTree = SOURCE_ROOT; };
 		9531304611FCC31A00B75472 /* JackMidiManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = JackMidiManager.cpp; path = ../Src/Midi/Players/Jack/JackMidiManager.cpp; sourceTree = SOURCE_ROOT; };
 		953130D211FCDD3F00B75472 /* NullDevice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NullDevice.cpp; sourceTree = "<group>"; };
 		9533F85F11DFAA430002D3ED /* CustomKeyDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomKeyDialog.h; sourceTree = "<group>"; };
@@ -1701,6 +1706,7 @@
 				950B3EE61125DE18006C9AF1 /* en.lproj */,
 				950B3EE81125DE18006C9AF1 /* fr.lproj */,
 				950B3EEB1125DE18006C9AF1 /* it.lproj */,
+				950F0EF714376080008E0D62 /* ja.lproj */,
 			);
 			path = "mac-i18n";
 			sourceTree = "<group>";
