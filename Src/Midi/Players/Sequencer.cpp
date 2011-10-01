@@ -190,7 +190,7 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
     jdkmidi::MIDIClockTime tick;
     if (not jdksequencer->GetNextEventTime(&tick))
     {
-        std::cerr << "[AriaSequenceTimer] failed to get first event time, returning" << std::endl;
+        std::cerr << "[AriaSequenceTimer] failed to get first event time, returning (did you try to play en empty sequence?)" << std::endl;
         cleanup_sequencer();
         return;
     }
