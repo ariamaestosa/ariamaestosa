@@ -222,7 +222,7 @@ namespace AriaMaestosa
         // current_tick is updated by seq_notify_current_tick
         virtual int trackPlaybackProgression()
         {
-            if (current_tick > songLengthInTicks or current_tick == -1)
+            if (current_tick == -1)
             {
                 // song is over
                 playing = false;
