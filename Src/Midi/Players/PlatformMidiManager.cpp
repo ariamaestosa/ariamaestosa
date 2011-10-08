@@ -319,7 +319,17 @@ bool PlatformMidiManager::startRecording(wxString outputPort, Track* target)
 void PlatformMidiManager::stopRecording()
 {
     m_recording = false;
+    
+    try
+    {
+        m_midi_input->closePort();
+    }
+    catch (std::exception& e)
+    {
+        fprintf(stderr, "[rtmidi] %s\n", e.what());
+    }
     delete m_midi_input;
+    m_midi_input = NULL;
     m_record_action = NULL;
 }
 
