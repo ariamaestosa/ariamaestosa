@@ -296,6 +296,9 @@ bool PlatformMidiManager::startRecording(wxString outputPort, Track* target)
     }
     catch (std::exception& e)
     {
+        m_recording = false;
+        delete m_midi_input;
+        m_midi_input = NULL;
         wxMessageBox( wxString(_("Sorry, failed to open the selected MIDI input port")) + wxT("\n") +
                       wxString(e.what(), wxConvUTF8) );
         return false;
