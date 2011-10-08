@@ -224,14 +224,7 @@ namespace AriaMaestosa
         {
             if (current_tick == -1)
             {
-                printf("____ current_tick == -1 ____\n");
-                // song is over
-                //playing = false;
-                // this function is probably called too many times in this example...
                 cleanup_after_playback();
-                
-                // notify app that song is over
-                //Core::songHasFinishedPlaying();
                 return -1;
             }
             
