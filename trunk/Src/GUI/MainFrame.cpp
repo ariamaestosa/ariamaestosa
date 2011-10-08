@@ -780,7 +780,12 @@ void MainFrame::recordClicked(wxCommandEvent& evt)
         return;
     }
     
-    PlatformMidiManager::get()->startRecording(input, seq->getCurrentTrack());
+    const bool recordSuccess = PlatformMidiManager::get()->startRecording(input, seq->getCurrentTrack());
+    if (not recordSuccess)
+    {
+        m_main_pane->exitPlayLoop();
+        return;
+    }
     
     int startTick = -1;
     const bool success = PlatformMidiManager::get()->playSequence( seq, /*out*/ &startTick );
