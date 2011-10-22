@@ -17,6 +17,8 @@
 
 #include "Midi/GuitarTuning.h"
 
+#include <cstring> // for NULL
+
 using namespace AriaMaestosa;
 
 // ----------------------------------------------------------------------------------------------------------
