@@ -370,22 +370,6 @@ void MeasureBar::render(int m_measure_bar_y_arg)
             } // next time sig change
         } // end if expanded mode
     } // next
-    
-    int tick = getMainFrame()->getMainPane()->getCurrentTick();
-    if (tick != -1)
-    {
-        // erase left part of measure bar
-        AriaRender::primitives();
-        AriaRender::color(1, 1, 0.9);
-        AriaRender::rect(0, m_measure_bar_y + 1, 50, m_measure_bar_y + MEASURE_BAR_H - 1);
-        
-        AriaRender::images();
-        AriaRender::color(0.8, 0, 0);
-        int song_duration = getTimeAtTick(tick, m_gseq->getModel());
-        wxString duration_label = wxString::Format(wxT("%i.%.2i"), (int)(song_duration/60), song_duration%60);
-        AriaRender::renderNumber((const char*)duration_label.mb_str(), 5, m_measure_bar_y + MEASURE_BAR_H - 2);
-    }
-
 }
 
 // ----------------------------------------------------------------------------------------------------------

@@ -1520,7 +1520,10 @@ void ScoreEditor::processMouseMove(RelativeXCoord x, int y)
         }
         
         status << octave;
-        getMainFrame()->setStatusText(status);
+        if (not PlatformMidiManager::get()->isPlaying())
+        {
+            getMainFrame()->setStatusText(status);
+        }
     }
 }
 

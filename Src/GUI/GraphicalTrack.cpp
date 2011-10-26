@@ -41,6 +41,7 @@
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
+#include "Midi/Players/PlatformMidiManager.h"
 #include "Pickers/DrumPicker.h"
 #include "Pickers/InstrumentPicker.h"
 #include "Pickers/MagneticGridPicker.h"
@@ -1011,7 +1012,7 @@ void GraphicalTrack::processMouseMove(RelativeXCoord x, int y)
             }
         }
     }
-    else
+    else if (not PlatformMidiManager::get()->isPlaying())
     {
         getMainFrame()->setStatusText(wxT(""));
     }

@@ -103,29 +103,32 @@ void KeyboardEditor::processMouseMove(RelativeXCoord x, int y)
     Note12 note12;
     int octave;
     
-    if (Note::findNoteName(note, &note12 /* out */, &octave /* out */))
+    if (not PlatformMidiManager::get()->isPlaying())
     {
-        wxString status;
-        
-        switch (m_track->getKeyType())
+        if (Note::findNoteName(note, &note12 /* out */, &octave /* out */))
         {
-            case KEY_TYPE_SHARPS:
-            case KEY_TYPE_C:
-                status << NOTE_12_NAME[note12];
-                break;
-                
-            case KEY_TYPE_FLATS:
-            default:
-                status << NOTE_12_NAME_FLATS[note12];
-                break;
+            wxString status;
+            
+            switch (m_track->getKeyType())
+            {
+                case KEY_TYPE_SHARPS:
+                case KEY_TYPE_C:
+                    status << NOTE_12_NAME[note12];
+                    break;
+                    
+                case KEY_TYPE_FLATS:
+                default:
+                    status << NOTE_12_NAME_FLATS[note12];
+                    break;
+            }
+            
+            status << octave;
+            getMainFrame()->setStatusText(status);
         }
-        
-        status << octave;
-        getMainFrame()->setStatusText(status);
-    }
-    else
-    {
-        getMainFrame()->setStatusText(wxT(""));
+        else 
+        {
+            getMainFrame()->setStatusText(wxT(""));
+        }
     }
 }
 

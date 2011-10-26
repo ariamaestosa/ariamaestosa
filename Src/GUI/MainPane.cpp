@@ -36,6 +36,7 @@
 #include "Renderers/RenderAPI.h"
 #include "Renderers/Drawable.h"
 #include "GUI/ImageProvider.h"
+#include "Midi/CommonMidiUtils.h"
 #include "Midi/Track.h"
 #include "Midi/Note.h"
 #include "Midi/Sequence.h"
@@ -608,6 +609,14 @@ bool MainPane::do_render()
     
     gseq->getMeasureBar()->render(MEASURE_BAR_Y);
 
+    // -------------------------- update timer -------------------------
+    if (PlatformMidiManager::get()->isPlaying())
+    {
+        int time = getTimeAtTick(getCurrentTick(), gseq->getModel());
+        wxString duration_label = wxString::Format(wxT("%i:%.2i"), (int)(time/60), time%60);
+        getMainFrame()->setStatusText(duration_label);
+    }
+    
     // -------------------------- draw dock -------------------------
     AriaRender::primitives();
     const int docksize = gseq->getDockedTrackAmount();
@@ -1017,7 +1026,11 @@ void MainPane::mouseMoved(wxMouseEvent& event)
                                                  m_mouse_y_current - MEASURE_BAR_Y,
                                                  m_mouse_x_initial.getRelativeTo(WINDOW),
                                                  m_mouse_y_initial - MEASURE_BAR_Y);
-                mf->setStatusText(wxT(""));
+                
+                if (not PlatformMidiManager::get()->isPlaying())
+                {
+                    mf->setStatusText(wxT(""));
+                }
             }
         }
 
@@ -1044,7 +1057,11 @@ void MainPane::mouseMoved(wxMouseEvent& event)
             }
             
             Display::render();
-            mf->setStatusText(wxT(""));
+            
+            if (not PlatformMidiManager::get()->isPlaying())
+            {
+                mf->setStatusText(wxT(""));
+            }
         }
         else
         {
@@ -1074,7 +1091,8 @@ void MainPane::mouseMoved(wxMouseEvent& event)
             
             const int measureBarHeight = gseq->getMeasureBar()->getMeasureBarHeight();
 
-            if (event.GetY() > MEASURE_BAR_Y and event.GetY() < MEASURE_BAR_Y + measureBarHeight)
+            if (event.GetY() > MEASURE_BAR_Y and event.GetY() < MEASURE_BAR_Y + measureBarHeight and
+                not PlatformMidiManager::get()->isPlaying())
             {
                 getMainFrame()->setStatusText(wxT(""));
             }
@@ -1108,7 +1126,10 @@ void MainPane::mouseLeftWindow(wxMouseEvent& event)
         Display::render();
     }
     
-    getMainFrame()->setStatusText(wxT(""));
+    if (not PlatformMidiManager::get()->isPlaying())
+    {
+        getMainFrame()->setStatusText(wxT(""));
+    }
 }
 
 // --------------------------------------------------------------------------------------------------
