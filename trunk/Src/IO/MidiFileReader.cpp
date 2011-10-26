@@ -602,8 +602,8 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
 
     // set song length
     MeasureData* md = sequence->getMeasureData();
-    int measureAmount_i = md->measureAtTick(lastEventTick) + 1;
-
+    int measureAmount_i = md->measureAtTick(lastEventTick);
+    
     std::cout << "[loadMidiFile] song length = " << measureAmount_i << " measures, last_event_tick="
               << lastEventTick << ", beat length = " << sequence->ticksPerBeat() << std::endl;
 
