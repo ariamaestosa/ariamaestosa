@@ -49,8 +49,8 @@
 #include "Utils.h"
 #include <iostream>
 
-#ifdef __WXMAC__
-#include <wx/html/webkit.h>
+#if wxUSE_WEBVIEW
+#include <wx/webview.h>
 #endif
 
 #include <wx/filename.h>
@@ -1082,10 +1082,10 @@ void MainFrame::menuEvent_about(wxCommandEvent& evt)
 
 // -----------------------------------------------------------------------------------------------------------
 
-#ifdef __WXMAC__
+#if wxUSE_WEBVIEW
 class ManualView : public wxFrame
 {
-    wxWebKitCtrl* m_html;
+    wxWebView* m_html;
     wxBoxSizer* m_sizer;
 
 public:
@@ -1094,7 +1094,7 @@ public:
         m_sizer = new wxBoxSizer(wxHORIZONTAL);
         wxString filepath = wxT("file://") + file ;
         filepath.Replace(wxT(" "), wxT("%20"));
-        m_html = new wxWebKitCtrl(this, wxID_ANY, filepath );
+        m_html = wxWebView::New(this, wxID_ANY, filepath );
         m_sizer->Add(m_html, 1, wxEXPAND);
 
         SetSizer(m_sizer);
@@ -1127,12 +1127,11 @@ public:
 void MainFrame::menuEvent_manual(wxCommandEvent& evt)
 {
     wxString sep = wxFileName::GetPathSeparator();
-    wxString path_to_docs =  getResourcePrefix() + wxT("Documentation") + sep + wxT("index.html");
+    wxString path_to_docs =  getResourcePrefix() + wxT("Documentation") + sep + wxT("man.html");
 
-#ifdef __WXMAC__
+#ifdef wxUSE_WEBVIEW
     new ManualView(this, path_to_docs);
 #else
-
     wxString test = wxT("file:") + sep +sep + sep + path_to_docs;
 
     if (not wxFileExists( path_to_docs ) or not wxLaunchDefaultBrowser( wxT("file:") + sep +sep + sep + path_to_docs ))
