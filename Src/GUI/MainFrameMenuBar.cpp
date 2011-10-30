@@ -49,7 +49,7 @@
 #include "Utils.h"
 #include <iostream>
 
-#if wxUSE_WEBVIEW
+#if wxUSE_WEBVIEW && !defined(__WXMSW__)
 #include <wx/webview.h>
 #endif
 
@@ -1082,7 +1082,7 @@ void MainFrame::menuEvent_about(wxCommandEvent& evt)
 
 // -----------------------------------------------------------------------------------------------------------
 
-#if wxUSE_WEBVIEW
+#if wxUSE_WEBVIEW && !defined(__WXMSW__)
 class ManualView : public wxFrame
 {
     wxWebView* m_html;
@@ -1129,7 +1129,7 @@ void MainFrame::menuEvent_manual(wxCommandEvent& evt)
     wxString sep = wxFileName::GetPathSeparator();
     wxString path_to_docs =  getResourcePrefix() + wxT("Documentation") + sep + wxT("man.html");
 
-#ifdef wxUSE_WEBVIEW
+#ifdef wxUSE_WEBVIEW  && !defined(__WXMSW__)
     new ManualView(this, path_to_docs);
 #else
     wxString test = wxT("file:") + sep +sep + sep + path_to_docs;
