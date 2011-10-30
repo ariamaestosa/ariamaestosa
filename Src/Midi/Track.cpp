@@ -1306,6 +1306,9 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         return -1;
     }
     
+    MeasureData* md = m_sequence->getMeasureData();
+    const int lastTickInSong = md->firstTickInMeasure( md->getMeasureAmount() );
+    
     // if in manual mode, use the user-specified channel ID and not the stock one
     const bool manual_mode = (m_sequence->getChannelManagementType() == CHANNEL_MANUAL);
     
@@ -1483,7 +1486,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         if (activeMin == 2)
         {
             const int time = m_notes[note_on_id].getTick() - firstNoteStartTick;
-            if (not (time < 0))
+            if (time >= 0 and (time + firstNoteStartTick) <= lastTickInSong)
             {
 
                 m.SetTime( time );
@@ -1517,7 +1520,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         {
 
             const int time=m_note_off[note_off_id].getEndTick() - firstNoteStartTick;
-            if (not (time < 0))
+            if (time >= 0 and (time + firstNoteStartTick) <= lastTickInSong)
             {
                 m.SetTime( time );
 
@@ -1550,6 +1553,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
             {
                 int time = m_control_events[control_evt_id].getTick() - firstNoteStartTick;
 
+                
                 // controller changes happens before the area we play
                 // but perhaps it still is affecting the area we want to play - check for that.
                 bool doAddControlEvent = true;
@@ -1604,7 +1608,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                     doAddControlEvent = true;
                 }
 
-                if (doAddControlEvent)
+                if (doAddControlEvent and (time + firstNoteStartTick) <= lastTickInSong)
                 {
                     m.SetTime( time );
                                         
@@ -1621,15 +1625,17 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
             else if (controllerID == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE)
             {
                 int time = m_control_events[control_evt_id].getTick() - firstNoteStartTick;
-                m.SetTime( time );
-                m.SetProgramChange(channel, m_control_events[control_evt_id].getValue());
-                control_evt_id++;
-                
-                if (not midiTrack->PutEvent( m ))
+                if ((time + firstNoteStartTick) <= lastTickInSong)
                 {
-                    std::cerr << "Error adding midi event!" << std::endl;
+                    m.SetTime( time );
+                    m.SetProgramChange(channel, m_control_events[control_evt_id].getValue());
+                    control_evt_id++;
+                    
+                    if (not midiTrack->PutEvent( m ))
+                    {
+                        std::cerr << "Error adding midi event!" << std::endl;
+                    }
                 }
-                
             }
             // other controller
             else
@@ -1690,7 +1696,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                     doAddControlEvent = true;
                 }
 
-                if (doAddControlEvent)
+                if (doAddControlEvent and (time + firstNoteStartTick) <= lastTickInSong)
                 {
                     m.SetTime( time );
 
