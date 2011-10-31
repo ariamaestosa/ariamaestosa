@@ -162,7 +162,8 @@ namespace AriaMaestosa
      */
 
 
-
+    const int SHARP_WIDTH = 74;
+    
     // -------------------------------------------------------------------------------------------
     /** @brief Renders a 'sharp' symbol at the given coordinates
       * @param center  If true, the center of the symbol is drawn at the x coordinate.
@@ -178,7 +179,7 @@ namespace AriaMaestosa
         //const int INNER_HEIGHT = 20;
         //const int SLANT = 10;
 
-        const int WIDTH = 75;
+        const int WIDTH = SHARP_WIDTH;
         const int INNER_WIDTH = 30;
         const int HEIGHT = 60;
         const int INNER_HEIGHT = 30;
@@ -196,6 +197,9 @@ namespace AriaMaestosa
     }
     
     // -------------------------------------------------------------------------------------------
+    
+    const int FLAT_WIDTH = 30;
+    
     /** @brief Renders a 'flat' symbol at the given coordinates
       * @param center  If true, the center of the symbol is drawn at the x coordinate.
       *                If false, the right side of the symbol is drawn the x coordinate.
@@ -1375,11 +1379,11 @@ namespace AriaMaestosa
                 // draw sharpness sign if relevant
                 if      (noteRenderInfo.m_sign == SHARP)
                 {
-                    renderSharp  ( dc, headLocation.x - HEAD_RADIUS, noteRenderInfo.getY() - 15, false );
+                    renderSharp  ( dc, headLocation.x - HEAD_RADIUS - SHARP_WIDTH/2 - 10, noteRenderInfo.getY() - 10, true );
                 }
                 else if (noteRenderInfo.m_sign == FLAT)
                 {
-                    renderFlat   ( dc, headLocation.x - HEAD_RADIUS, noteRenderInfo.getY() - 15, false );
+                    renderFlat   ( dc, headLocation.x - HEAD_RADIUS - FLAT_WIDTH - 10, noteRenderInfo.getY() - 10, true );
                 }
                 else if (noteRenderInfo.m_sign == NATURAL)
                 {
