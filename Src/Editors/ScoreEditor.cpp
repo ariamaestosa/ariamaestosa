@@ -603,24 +603,30 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
     int score_to_level = 999;
     if      (m_f_clef) score_to_level = middle_c_level + 11;
     else if (m_g_clef) score_to_level = middle_c_level - 1;
-
+    
     // draw small lines above score if needed
     if (renderInfo.m_level < score_from_level)
     {
-        for (int lvl=score_from_level-1; lvl>=renderInfo.m_level - (renderInfo.m_level + 1)%2 + 2; lvl -= 2)
+        for (int lvl=score_from_level-1; lvl>renderInfo.m_level; lvl --)
         {
-            const int lvly = getEditorYStart() + Y_STEP_HEIGHT*lvl - head_radius - getYScrollInPixels() + 2;
-            AriaRender::line(noteX-5, lvly, noteX+15, lvly);
+            if ((score_from_level - lvl) % 2 == 1)
+            {
+                const int lvly = getEditorYStart() + Y_STEP_HEIGHT*lvl - head_radius - getYScrollInPixels() + 2;
+                AriaRender::line(noteX-5, lvly, noteX+15, lvly);
+            }
         }
     }
 
     // draw small lines below score if needed
     if (renderInfo.m_level > score_to_level)
     {
-        for (int lvl=score_to_level; lvl<=renderInfo.m_level - renderInfo.m_level%2 + 2; lvl += 2)
+        for (int lvl=score_to_level; lvl<=renderInfo.m_level+1; lvl++)
         {
-            const int lvly = getEditorYStart() + Y_STEP_HEIGHT*lvl - head_radius - getYScrollInPixels() + 2;
-            AriaRender::line(noteX-5, lvly, noteX+15, lvly);
+            if ((lvl - score_to_level) % 2 == 0)
+            {
+                const int lvly = getEditorYStart() + Y_STEP_HEIGHT*lvl - head_radius - getYScrollInPixels() + 2;
+                AriaRender::line(noteX-5, lvly, noteX+15, lvly);
+            }
         }
     }
 
