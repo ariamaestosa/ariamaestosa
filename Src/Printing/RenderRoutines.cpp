@@ -779,8 +779,7 @@ void AriaMaestosa::RenderRoutines::drawSilence(wxGraphicsContext& dc, const Rang
         
         paintQuarter(dc, silence_center - silence_radius, y, scale);
         
-        if (dotted) silence_center = (x.from + silence_radius*2);
-        else        silence_center = (x_center + (x.to - silence_radius))/2;
+        silence_center = (x_center + (x.to - silence_radius))/2;
     }
     else if ( type == 8 )
     {
