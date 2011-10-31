@@ -22,10 +22,11 @@ const float CURRENT_FILE_VERSION = 3.0;
 #include "AriaCore.h"
 
 #include "Actions/EditAction.h"
-#include "Actions/SnapNotesToGrid.h"
 #include "Actions/Paste.h"
+#include "Actions/Record.h"
 #include "Actions/ScaleTrack.h"
 #include "Actions/ScaleSong.h"
+#include "Actions/SnapNotesToGrid.h"
 
 // FIXME(DESIGN) : data classes shouldn't refer to GUI classes
 #include "Dialogs/WaitWindow.h"
@@ -352,6 +353,15 @@ void Sequence::addToUndoStack( Action::EditAction* actionObj )
 {
     undoStack.push_back(actionObj);
 
+    if (PlatformMidiManager::get()->isRecording() and
+        dynamic_cast<Action::Record*>(actionObj) == NULL and
+        undoStack.size() >= 2)
+    {
+        // special case when recording : the "record" action must stay at the top of the stack until
+        // recording is completed
+        undoStack.swap(undoStack.size() - 1, undoStack.size() - 2);
+    }
+    
     // remove old actions from undo stack, to not take memory uselessly
     if (undoStack.size() > 8) undoStack.erase(0);
     
