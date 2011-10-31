@@ -758,7 +758,8 @@ void MainPane::drumPopupSelected(wxCommandEvent& evt)
 
 bool MainPane::isSelectMorePressed() { return wxGetKeyState(WXK_SHIFT);   }
 bool MainPane::isSelectLessPressed() { return wxGetKeyState(WXK_ALT);     }
-bool MainPane::isCtrlDown         () { return wxGetKeyState(WXK_CONTROL); }
+bool MainPane::isCommandDown      () { return wxGetKeyState(WXK_WINDOWS_LEFT) or
+                                              wxGetKeyState(WXK_WINDOWS_RIGHT); }
 
 
 // --------------------------------------------------------------------------------------------------

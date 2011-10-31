@@ -163,10 +163,6 @@ namespace AriaMaestosa
         {
             return mainPane->isSelectMorePressed();
         }
-        bool isCtrlDown()
-        {
-            return mainPane->isCtrlDown();
-        }
         
         void popupMenu(wxMenu* menu, const int x, const int y)
         {

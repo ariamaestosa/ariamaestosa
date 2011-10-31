@@ -103,7 +103,6 @@ namespace AriaMaestosa
         bool isMouseDown();
         bool isSelectLessPressed();
         bool isSelectMorePressed();
-        bool isCtrlDown();
         bool isVisible();
         
         RelativeXCoord getMouseX_current();
