@@ -167,6 +167,10 @@ int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
                 ASSERT(m_seq != NULL);
                 relativeToEditor = ( int )( relativeToMidi * m_seq->getZoom() ) - m_seq->getXScrollInPixels();
             }
+            else if (relativeToEditor != -1)
+            {
+                // already in the correct format, nothing to do
+            }
             else
             {
                 std::cerr << "!! RelativeXCoord ERROR - needs one of 3 (E)" << std::endl;
