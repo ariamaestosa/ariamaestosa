@@ -180,7 +180,9 @@ bool MidiContext::openDevice(bool launchTimidity)
     
     if (!success)
     {
-        wxMessageBox( wxString::Format(_("The selected ALSA device (%s) could not be opened."), (const char*)port.mb_str()) );
+        wxString errorMsg = _("The selected ALSA device (%s) could not be opened.");
+        errorMsg.Replace(wxT("%s"), port);
+        wxMessageBox( errorMsg );
     }
     
     return success;
