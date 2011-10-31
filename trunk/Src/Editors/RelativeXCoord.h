@@ -62,6 +62,10 @@ namespace AriaMaestosa
         
         int getRelativeTo(RelativeType returnRelativeTo);
         
+        bool isValid() const { return relativeToEditor != -1 and
+                                      relativeToWindow != -1 and
+                                      relativeToMidi != -1; }
+        
     };
     
     RelativeXCoord& RelativeXCoord_empty();

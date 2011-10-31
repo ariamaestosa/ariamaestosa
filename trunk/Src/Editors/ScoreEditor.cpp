@@ -589,7 +589,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
     }
 
     // if note is above or below keys, we need to display small lines from the score
-    // to the note so that the amount of levels is visible
+    // to the note so that the amount of levels is visible (ledger lines)
     AriaRender::primitives();
     AriaRender::color(0,0,0);
     AriaRender::lineWidth(1);
@@ -929,8 +929,10 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
     if (m_musical_notation_enabled) m_converter->resetAccidentalsForNewRender();
 
     
-    const int mxc = mousex_current.getRelativeTo(WINDOW);
-    const int mxi = mousex_initial.getRelativeTo(WINDOW);
+    const bool mouseValid = (mousex_current.isValid() and mousex_initial.isValid());
+    
+    const int mxc = (mouseValid ? mousex_current.getRelativeTo(WINDOW) : -1);
+    const int mxi = (mouseValid ? mousex_initial.getRelativeTo(WINDOW) : -1);
     const int mouse_x1 = std::min(mxc, mxi) ;
     const int mouse_x2 = std::max(mxc, mxi) ;
     const int mouse_y1 = std::min(mousey_current, mousey_initial);

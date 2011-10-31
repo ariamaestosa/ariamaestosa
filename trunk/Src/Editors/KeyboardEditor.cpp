@@ -376,11 +376,14 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     // ---------------------- draw notes ----------------------------
     const float pscroll = m_gsequence->getXScrollInPixels();
 
-    const int mouse_x_min = std::min(mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR) );
-    const int mouse_x_max = std::max(mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR) );
+    
+    const bool mouseValid = (mousex_current.isValid() and mousex_initial.isValid());
+    
+    const int mouse_x_min = (mouseValid ? std::min(mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR)) : -1);
+    const int mouse_x_max = (mouseValid ? std::max(mousex_current.getRelativeTo(EDITOR), mousex_initial.getRelativeTo(EDITOR)) : -1);
     const int mouse_y_min = std::min(mousey_current, mousey_initial);
     const int mouse_y_max = std::max(mousey_current, mousey_initial);
-    
+
     const int noteAmount = m_track->getNoteAmount();
     for (int n=0; n<noteAmount; n++)
     {

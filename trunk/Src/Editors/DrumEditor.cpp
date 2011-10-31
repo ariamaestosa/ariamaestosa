@@ -808,8 +808,11 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
 
     // ---------------------- draw notes ----------------------------
-    const int mouse_x1 = std::min(mousex_current.getRelativeTo(WINDOW), mousex_initial.getRelativeTo(WINDOW));
-    const int mouse_x2 = std::max(mousex_current.getRelativeTo(WINDOW), mousex_initial.getRelativeTo(WINDOW));
+    
+    const bool mouseValid = (mousex_current.isValid() and mousex_initial.isValid());
+    
+    const int mouse_x1 = (mouseValid ? std::min(mousex_current.getRelativeTo(WINDOW), mousex_initial.getRelativeTo(WINDOW)) : -1);
+    const int mouse_x2 = (mouseValid ? std::max(mousex_current.getRelativeTo(WINDOW), mousex_initial.getRelativeTo(WINDOW)) : -1);
     const int mouse_y1 = std::min(mousey_current, mousey_initial);
     const int mouse_y2 = std::max(mousey_current, mousey_initial);
     
