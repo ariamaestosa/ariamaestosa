@@ -1,8 +1,10 @@
 1.3 beta 4
 - Fixed accidentals in score editor working over all octaves
+- Fixed incorrect ledger lines in score view and score printing
 - Move playback timer to the status bar where it is less intrusive
 - Fix reverting to default output when custom output port is not found
 - Fixed importing drum tracks from midi (would result in a graphical glitch)
+- Other minor improvements to printing
 
 1.3 beta 3
 - Added support for recording from MIDI keyboard/instrument

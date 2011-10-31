@@ -169,18 +169,30 @@ namespace AriaMaestosa
       *                If false, the right side of the symbol is drawn the x coordinate.
       */
     void renderSharp(wxDC& dc, int x, const int y, const bool center=true)
-    {
-        if (not center) x -= 50;
-        
+    {        
         dc.SetPen(  wxPen( wxColour(0,0,0), 6 ) );
         
+        //const int WIDTH = 50;
+        //const int INNER_WIDTH = 20;
+        //const int HEIGHT = 40;
+        //const int INNER_HEIGHT = 20;
+        //const int SLANT = 10;
+
+        const int WIDTH = 75;
+        const int INNER_WIDTH = 30;
+        const int HEIGHT = 60;
+        const int INNER_HEIGHT = 30;
+        const int SLANT = 15;
+        
+        if (not center) x -= WIDTH;
+
         // horizontal lines
-        dc.DrawLine( x-50/2, y,      x+50/2, y-20/2 );
-        dc.DrawLine( x-50/2, y+40/2, x+50/2, y+20/2 );
+        dc.DrawLine( x-WIDTH/2, y - INNER_HEIGHT/2 + SLANT/2, x+WIDTH/2, y-INNER_HEIGHT/2 - SLANT/2 );
+        dc.DrawLine( x-WIDTH/2, y + INNER_HEIGHT/2 + SLANT/2, x+WIDTH/2, y+INNER_HEIGHT/2 - SLANT/2 );
         
         // vertical lines
-        dc.DrawLine( x-20/2, y-30/2, x-20/2, y+60/2 );
-        dc.DrawLine( x+20/2, y-40/2, x+20/2, y+50/2 );
+        dc.DrawLine( x-INNER_WIDTH/2, y - HEIGHT/2 + SLANT/4, x-INNER_WIDTH/2, y + HEIGHT/2 + SLANT/4 );
+        dc.DrawLine( x+INNER_WIDTH/2, y - HEIGHT/2 - SLANT/4, x+INNER_WIDTH/2, y + HEIGHT/2 - SLANT/4 );
     }
     
     // -------------------------------------------------------------------------------------------
@@ -196,12 +208,12 @@ namespace AriaMaestosa
         
         wxPoint points[] =
         {
-            wxPoint(x,    y-15-40),
-            wxPoint(x,    y+60-40),
-            wxPoint(x+5,  y+60-40),
-            wxPoint(x+25, y+30-40),
-            wxPoint(x+15, y+20-40),
-            wxPoint(x,    y+30-40)
+            wxPoint(x,    y-18-43),
+            wxPoint(x,    y+72-43),
+            wxPoint(x+6,  y+72-43),
+            wxPoint(x+30, y+36-43),
+            wxPoint(x+18, y+24-43),
+            wxPoint(x,    y+36-43)
         };
         dc.DrawSpline(6, points);
     }
