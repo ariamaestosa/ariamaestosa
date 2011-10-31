@@ -249,6 +249,10 @@ void MainFrame::initMenuBar()
     {
         printf("WARNING: Did not find output port '%s'\n", (const char*)output.mb_str());
         m_output_device_menus[0].Check();
+        
+        wxCommandEvent dummy;
+        dummy.SetId( m_output_device_menus[0].GetId() );
+        menuEvent_outputDevice(dummy);
     }
     
     m_menu_bar->Append(m_output_menu, _("&Output"));

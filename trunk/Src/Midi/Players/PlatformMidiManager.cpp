@@ -115,7 +115,7 @@ wxArrayString PlatformMidiManager::getInputChoices()
     unsigned int nPorts = midiin->getPortCount();
     if (nPorts == 0)
     {
-        std::cout << "No ports available!\n";
+        // No input port is available
         return out;
     }
     
