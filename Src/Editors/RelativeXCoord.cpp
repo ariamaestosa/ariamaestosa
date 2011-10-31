@@ -183,6 +183,11 @@ int RelativeXCoord::getRelativeTo(RelativeType returnRelativeTo)
             {
                 return relativeToWindow;
             }
+            else if (relativeToEditor != -1)
+            {
+                relativeToWindow = relativeToEditor + Editor::getEditorXStart();
+                return relativeToWindow;
+            }
             else
             {
                     if (relativeToMidi != -1)
