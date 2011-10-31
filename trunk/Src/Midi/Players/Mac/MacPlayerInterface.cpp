@@ -243,125 +243,6 @@ namespace AriaMaestosa
         
         virtual ~MacMidiManager() { }
         
-        virtual const wxString getAudioExtension()
-        {
-            return wxT(".aiff");
-        }
-        
-        virtual const wxString getAudioWildcard()
-        {
-            return  wxString( _("AIFF file")) + wxT("|*.aiff");
-        }
-        
-        virtual bool playSequence(Sequence* sequence, /*out*/ int* startTick)
-        {
-            if (g_playing) return false; //already playing
-            output->stopNote();
-            
-            m_sequence = sequence;
-            
-            /*
-            char* data;
-            int datalength = -1;
-            
-            int songLengthInTicks = -1;
-            allocAsMidiBytes(sequence, false, &songLengthInTicks, startTick, &data, &datalength, true);
-            
-            stored_songLength = songLengthInTicks + sequence->ticksPerBeat()*3;
-            playMidiBytes(data, datalength);
-            
-            free(data);
-             */
-            
-            SequencerThread* seqthread = new SequencerThread(sequence, false /* selection only */);
-            seqthread->go(startTick);
-            
-            m_start_tick = *startTick;
-            return true;
-        }
-        
-        virtual bool playSelected(Sequence* sequence, /*out*/ int* startTick)
-        {
-            if (g_playing) return false; //already playing
-            output->stopNote();
-            
-            m_sequence = sequence;
-            
-            /*
-            char* data;
-            int datalength = -1;
-            int songLengthInTicks = -1;
-            
-            allocAsMidiBytes(sequence, true, &songLengthInTicks, startTick, &data, &datalength, true);
-            
-            if (songLengthInTicks < 1)
-            {
-                std::cout << "song is empty" << std::endl;
-                free(data);
-                return false;
-            }
-            
-            stored_songLength = songLengthInTicks + sequence->ticksPerBeat();
-            playMidiBytes(data, datalength);
-            
-            free(data);
-            */
-            
-            SequencerThread* seqthread = new SequencerThread(sequence, true /* selection only */);
-            seqthread->go(startTick);
-            
-            m_start_tick = *startTick;
-            
-            return true;
-        }
-        
-        virtual void exportAudioFile(Sequence* sequence, wxString filepath)
-        {
-            new AudioExport(sequence, filepath);
-        }
-        
-        virtual int getCurrentTick()
-        {
-            return g_current_tick;
-        }
-        
-        virtual wxArrayString getOutputChoices()
-        {
-            const std::vector<CoreMidiOutput::Destination>& destinations = CoreMidiOutput::getDestinations();
-            wxArrayString out;
-            out.Add(_("OSX Software Synthesizer"));
-            for (unsigned int n=0; n<destinations.size(); n++)
-            {
-                out.Add(wxString(destinations[n].m_name.c_str(), wxConvUTF8));
-            }
-            return out;
-        }
-        
-        virtual int trackPlaybackProgression()
-        {
-            return g_current_tick;
-        }
-        
-        virtual void playNote(int noteNum, int volume, int duration, int channel, int instrument)
-        {
-            if (g_playing) return;
-            output->playNote( noteNum, volume, duration, channel, instrument );
-        }
-        
-        virtual bool isPlaying()
-        {
-            return g_playing;
-        }
-        
-        virtual void stopNote()
-        {
-            output->stopNote();
-        }
-        
-        virtual void stop()
-        {
-            g_thread_should_continue = false;
-        }
         
         virtual void initMidiPlayer()
         {
@@ -381,17 +262,105 @@ namespace AriaMaestosa
             }
         }
         
-        virtual int getAccurateTick()
-        {
-            return g_current_accurate_tick;
-        }
-        
         virtual void freeMidiPlayer()
         {
             delete output;
             output = NULL;
         }
+        
+        
+        virtual void exportAudioFile(Sequence* sequence, wxString filepath)
+        {
+            new AudioExport(sequence, filepath);
+        }
+        
+        virtual const wxString getAudioExtension()
+        {
+            return wxT(".aiff");
+        }
+        
+        virtual const wxString getAudioWildcard()
+        {
+            return  wxString( _("AIFF file")) + wxT("|*.aiff");
+        }
+        
+        virtual int getAccurateTick()
+        {
+            return g_current_accurate_tick;
+        }
+        
+        virtual int getCurrentTick()
+        {
+            return g_current_tick;
+        }
+        
+        virtual wxArrayString getOutputChoices()
+        {
+            const std::vector<CoreMidiOutput::Destination>& destinations = CoreMidiOutput::getDestinations();
+            wxArrayString out;
+            out.Add(_("OSX Software Synthesizer"));
+            for (unsigned int n=0; n<destinations.size(); n++)
+            {
+                out.Add(wxString(destinations[n].m_name.c_str(), wxConvUTF8));
+            }
+            return out;
+        }
+        
+        virtual bool isPlaying()
+        {
+            return g_playing;
+        }        
+        
+        
+        virtual void playNote(int noteNum, int volume, int duration, int channel, int instrument)
+        {
+            if (g_playing) return;
+            output->playNote( noteNum, volume, duration, channel, instrument );
+        }
+        
+        virtual bool playSelected(Sequence* sequence, /*out*/ int* startTick)
+        {
+            if (g_playing) return false; //already playing
+            output->stopNote();
+            
+            m_sequence = sequence;
+            
+            SequencerThread* seqthread = new SequencerThread(sequence, true /* selection only */);
+            seqthread->go(startTick);
+            
+            m_start_tick = *startTick;
+            
+            return true;
+        }
+        
+        virtual bool playSequence(Sequence* sequence, /*out*/ int* startTick)
+        {
+            if (g_playing) return false; //already playing
+            output->stopNote();
+            
+            m_sequence = sequence;
+            
+            SequencerThread* seqthread = new SequencerThread(sequence, false /* selection only */);
+            seqthread->go(startTick);
+            
+            m_start_tick = *startTick;
+            return true;
+        }
 
+        void seq_controlchange(const int controller, const int value, const int channel)
+        {
+            output->controlchange(controller, value, channel);
+        }
+        
+        /**
+         * @brief will be called by the generic sequencer to determine whether it should continue
+         * @return false to stop it, true to continue
+         */
+        bool seq_must_continue()
+        {
+            return g_thread_should_continue;
+        }
+        
         void seq_note_on(const int note, const int volume, const int channel)
         {
             output->note_on(note, volume, channel);
@@ -400,21 +369,6 @@ namespace AriaMaestosa
         void seq_note_off(const int note, const int channel)
         {
             output->note_off(note, channel);
-        }
-        
-        void seq_prog_change(const int instrument, const int channel)
-        {
-            output->prog_change(instrument, channel);
-        }
-        
-        void seq_controlchange(const int controller, const int value, const int channel)
-        {
-            output->controlchange(controller, value, channel);
-        }
-        
-        void seq_pitch_bend(const int value, const int channel)
-        {
-            output->pitch_bend(value + 8192, channel);
         }
         
         /**
@@ -433,13 +387,29 @@ namespace AriaMaestosa
             g_current_accurate_tick = tick;
         }
         
-        /**
-         * @brief will be called by the generic sequencer to determine whether it should continue
-         * @return false to stop it, true to continue
-         */
-        bool seq_must_continue()
+        void seq_pitch_bend(const int value, const int channel)
         {
-            return g_thread_should_continue;
+            output->pitch_bend(value + 8192, channel);
+        }
+        
+        void seq_prog_change(const int instrument, const int channel)
+        {
+            output->prog_change(instrument, channel);
+        }
+        
+        virtual void stopNote()
+        {
+            output->stopNote();
+        }
+        
+        virtual void stop()
+        {
+            g_thread_should_continue = false;
+        }
+        
+        virtual int trackPlaybackProgression()
+        {
+            return g_current_tick;
         }
         
     }; // end class
