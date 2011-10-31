@@ -143,6 +143,9 @@ wxArrayString PlatformMidiManager::getInputChoices()
 void PlatformMidiManager::recordCallback( double deltatime, std::vector< unsigned char > *message, void *userData )
 {
     PlatformMidiManager* self = (PlatformMidiManager*)userData;
+    
+    ASSERT( MAGIC_NUMBER_OK_FOR(*self) );
+    
     // self->m_open_notes
     unsigned int nBytes = message->size();
     

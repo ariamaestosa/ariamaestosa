@@ -61,6 +61,8 @@ void Record::perform()
 
 void Record::action(SingleTrackAction* actionObj)
 {
+    ASSERT( MAGIC_NUMBER_OK() );
+    
     actionObj->setParentTrack(m_track, new Track::TrackVisitor(*m_visitor.raw_ptr));
     m_actions.push_back( actionObj );
     actionObj->perform();

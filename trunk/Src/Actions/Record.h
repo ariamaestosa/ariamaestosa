@@ -35,6 +35,8 @@ namespace AriaMaestosa
             friend class AriaMaestosa::Track;
             ptr_vector<SingleTrackAction> m_actions;
 
+            DECLARE_MAGIC_NUMBER();
+            
         public:
             Record();
             virtual void perform();

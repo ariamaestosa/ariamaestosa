@@ -85,9 +85,11 @@ namespace AriaMaestosa
         
         /** Used while recording */
         Action::Record* m_record_action;
-        
+                
     public:
         
+        DECLARE_MAGIC_NUMBER();
+
         virtual ~PlatformMidiManager() { }
         
         static std::vector<wxString> getChoices();
