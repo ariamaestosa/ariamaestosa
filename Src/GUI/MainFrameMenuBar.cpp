@@ -1129,7 +1129,7 @@ void MainFrame::menuEvent_manual(wxCommandEvent& evt)
     wxString sep = wxFileName::GetPathSeparator();
     wxString path_to_docs =  getResourcePrefix() + wxT("Documentation") + sep + wxT("man.html");
 
-#ifdef wxUSE_WEBVIEW  && !defined(__WXMSW__)
+#if defined(wxUSE_WEBVIEW)  && !defined(__WXMSW__)
     new ManualView(this, path_to_docs);
 #else
     wxString test = wxT("file:") + sep +sep + sep + path_to_docs;
