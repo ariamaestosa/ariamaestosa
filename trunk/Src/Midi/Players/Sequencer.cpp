@@ -378,6 +378,11 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
         }
     }
     
+    for (int c=0; c<16; c++)
+    {
+        PlatformMidiManager::get()->seq_controlchange(123 /* all notes off */, 0, c);
+    }
+    
     cleanup_sequencer();
 }
 
