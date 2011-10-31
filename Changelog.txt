@@ -1,6 +1,7 @@
 1.3 beta 4
 - Fixed accidentals in score editor working over all octaves
 - Move playback timer to the status bar where it is less intrusive
+- Fix reverting to default output when custom output port is not found
 
 1.3 beta 3
 - Added support for recording from MIDI keyboard/instrument
