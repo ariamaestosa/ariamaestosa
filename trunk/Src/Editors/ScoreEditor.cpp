@@ -82,7 +82,7 @@ ScoreMidiConverter::ScoreMidiConverter(GraphicalSequence* parent)
     for (int n=0; n<7; n++) m_score_notes_sharpness[n] = NATURAL;
 
     m_accidentals = false;
-    for (int n=0; n<7; n++) m_accidental_score_notes_sharpness[n] = -1; // FIXME - why -1 and not PITCH_SIGN_NONE?
+    for (int n=0; n<128; n++) m_accidental_score_notes_sharpness[n] = -1; // FIXME - why -1 and not PITCH_SIGN_NONE?
     m_accidentals_measure = -1;
 
     m_going_in_sharps = false;
@@ -152,7 +152,7 @@ void ScoreMidiConverter::resetAccidentalsForNewRender()
 {
     m_accidentals =  false;
     
-    for (int n=0; n<7; n++) m_accidental_score_notes_sharpness[n] = -1;
+    for (int n=0; n<128; n++) m_accidental_score_notes_sharpness[n] = -1;
     m_accidentals_measure = -1;
 }
 
@@ -230,7 +230,7 @@ int ScoreMidiConverter::noteToLevel(const Note* noteObj, const int note, PitchSi
             if (measure != m_accidentals_measure)
             {
                 m_accidentals = false;
-                for (int n=0; n<7; n++)
+                for (int n=0; n<128; n++)
                 {
                     m_accidental_score_notes_sharpness[n] = -1;
                 }
@@ -239,7 +239,7 @@ int ScoreMidiConverter::noteToLevel(const Note* noteObj, const int note, PitchSi
             else
             {
                 // we are not going in another measure, apply accidental to current note
-                const int current_accidental = m_accidental_score_notes_sharpness[ levelToNote7(answer_level) ];
+                const int current_accidental = m_accidental_score_notes_sharpness[ levelToNote(answer_level) ];
                 if (current_accidental != -1)
                 {
                     // the current note continues using the same accidental, no change
@@ -248,7 +248,7 @@ int ScoreMidiConverter::noteToLevel(const Note* noteObj, const int note, PitchSi
                     else if (current_accidental != answer_sign and
                             (answer_sign == NATURAL or answer_sign == PITCH_SIGN_NONE))
                     {
-                        const int accidentalType = m_accidental_score_notes_sharpness[ levelToNote7(answer_level) ];
+                        const int accidentalType = m_accidental_score_notes_sharpness[ levelToNote(answer_level) ];
                         // we left the original key by adding a sharp of flat,
                         // and now we come back to the original key. show a
                         // natural sign
@@ -282,13 +282,13 @@ int ScoreMidiConverter::noteToLevel(const Note* noteObj, const int note, PitchSi
             const int measure = m_sequence->getModel()->getMeasureData()->measureAtTick(noteObj->getTick());
             m_accidentals_measure = measure;
 
-            m_accidental_score_notes_sharpness[ levelToNote7(answer_level) ] = answer_sign;
+            m_accidental_score_notes_sharpness[ levelToNote(answer_level) ] = answer_sign;
 
             // remove accidental if no more needed
             if ((m_score_notes_sharpness[ levelToNote7(answer_level) ] == NATURAL and answer_sign == NATURAL) or
                m_score_notes_sharpness[ levelToNote7(answer_level) ] == answer_sign)
             {
-                m_accidental_score_notes_sharpness[ levelToNote7(answer_level) ] = -1;
+                m_accidental_score_notes_sharpness[ levelToNote(answer_level) ] = -1;
             }
         }
     }

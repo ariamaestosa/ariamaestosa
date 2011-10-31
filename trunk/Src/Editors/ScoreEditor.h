@@ -91,7 +91,7 @@ namespace AriaMaestosa
         
         // for accidentals
         bool m_accidentals;
-        int m_accidental_score_notes_sharpness[7];
+        int m_accidental_score_notes_sharpness[128];
         int m_accidentals_measure;         //!< because accidentals last only one measure
         
         int m_midi_note_to_level[128];

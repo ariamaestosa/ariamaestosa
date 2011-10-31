@@ -202,7 +202,7 @@ namespace AriaMaestosa
 
         static bool isSelectMorePressed();
         static bool isSelectLessPressed();
-        static bool isCtrlDown         ();
+        static bool isCommandDown      ();
 
         /** to be called e.g. when a track is deleted */
         //FIXME: that's ugly but it does the job...
