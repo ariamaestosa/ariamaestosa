@@ -295,7 +295,7 @@ int MeasureData::firstTickInMeasure(int id) const
         if (id >= m_measure_amount)
         {
             // allow going a little past 'official' song end to account for rounding errors, etc. (FIXME?)
-            ASSERT(id < m_measure_amount + 50); // but not too far, to detect corrupt values
+            ASSERT_E(id, <, m_measure_amount + 50); // but not too far, to detect corrupt values
             return m_measure_amount * measureLengthInTicks();
         }
         return id * measureLengthInTicks();
