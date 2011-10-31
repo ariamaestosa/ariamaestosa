@@ -1087,23 +1087,21 @@ namespace AriaMaestosa
         //std::cout << "[ScorePrintable] rendering vertical dividers & time sig changes ==\n";
         
         // const bool fclef = (clefType == F_CLEF_ALONE or clefType == F_CLEF_FROM_GRAND_STAFF);
-
+        
         /*
         //DEBUG
         {
             const int noteAmount = analyser.noteRenderInfo.size();
             
-            // ---- Draw small lines above/below score
-            std::cout << " == rendering lines for notes out of score ==\n";
             for (int i=0; i<noteAmount; i++)
             {
-                if (analyser.noteRenderInfo[i].tick < fromTick) continue;
-                if (analyser.noteRenderInfo[i].tick >= toTick) break;
+                if (analyser.noteRenderInfo[i].getTick() < fromTick) continue;
+                if (analyser.noteRenderInfo[i].getTick() >= toTick) break;
                 
                 NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
                 
                 // DEBUG
-                const Range<int> noteX = x_converter->tickToX(noteRenderInfo.tick);
+                const Range<int> noteX = x_converter->tickToX(noteRenderInfo.getTick());
                 dc.SetPen(  wxPen( wxColour(0,0,255), 2 ) );
                 
                 int lvl = round(LEVEL_TO_Y(noteRenderInfo.getBaseLevel()-1));
@@ -1111,11 +1109,15 @@ namespace AriaMaestosa
 
                 dc.DrawLine( noteX.from, lvl, noteX.to, lvl );
                 
-                lvl = round(LEVEL_TO_Y(noteRenderInfo.getBaseLevel()+1));
-                std::cout << "(2) Level " << noteRenderInfo.getBaseLevel()+1 << " has Y " << lvl << "\n";
+                int lvl2 = round(LEVEL_TO_Y(noteRenderInfo.getBaseLevel()+1));
+                std::cout << "(2) Level " << noteRenderInfo.getBaseLevel()+1 << " has Y " << lvl2 << "\n";
 
-                dc.DrawLine( noteX.from, lvl, noteX.to, lvl );
+                dc.DrawLine( noteX.from, lvl2, noteX.to, lvl2 );
 
+                dc.DrawLine( noteX.from, lvl, noteX.from, lvl2 );
+                dc.DrawLine( noteX.to, lvl, noteX.to, lvl2 );
+
+                
                 dc.SetPen(  wxPen( wxColour(0,0,0), 12 ) );
                 dc.SetBrush( *wxBLACK_BRUSH );
                 // END DEBUG
@@ -1123,7 +1125,6 @@ namespace AriaMaestosa
         }
         //END DEBUG
         */
-
         
         int measure_dividers_from_y = LEVEL_TO_Y(first_score_level);
         int measure_dividers_to_y   = LEVEL_TO_Y(last_score_level);
