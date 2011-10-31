@@ -1249,13 +1249,14 @@ namespace AriaMaestosa
                     const Range<int> noteX = x_converter->tickToX(noteRenderInfo.getTick());
                     dc.SetPen(  wxPen( wxColour(125,125,125), 8 ) );
                     
-                    for (int lvl=first_score_level - 2;
-                         lvl>=noteRenderInfo.m_level - (noteRenderInfo.m_level + 1)%2 + 1;
-                         lvl -= 2)
+                    for (int lvl=first_score_level-1; lvl>=noteRenderInfo.m_level; lvl --)
                     {
-                        const int y = LEVEL_TO_Y(lvl);
-                        //FIXME: not sure why I need to add HEAD_RADIUS/2 to make it look good
-                        dc.DrawLine(noteX.from+HEAD_RADIUS/2, y, noteX.to+HEAD_RADIUS, y);
+                        if ((first_score_level - lvl) % 2 == 0)
+                        {
+                            const int y = LEVEL_TO_Y(lvl);
+                            //FIXME: not sure why I need to add HEAD_RADIUS/2 to make it look good
+                            dc.DrawLine(noteX.from+HEAD_RADIUS/2, y, noteX.to+HEAD_RADIUS, y);
+                        }
                     }
                 }
                 
@@ -1265,12 +1266,13 @@ namespace AriaMaestosa
                     const Range<int> noteX = x_converter->tickToX(noteRenderInfo.getTick());
                     dc.SetPen(  wxPen( wxColour(125,125,125), 8 ) );
                     
-                    for (int lvl=last_score_level+2;
-                         lvl<noteRenderInfo.m_level - noteRenderInfo.m_level%2 + 2;
-                         lvl += 2)
+                    for (int lvl=last_score_level+1; lvl<=noteRenderInfo.m_level; lvl++)
                     {
-                        const int y = LEVEL_TO_Y(lvl);
-                        dc.DrawLine(noteX.from + HEAD_RADIUS, y, noteX.to+HEAD_RADIUS, y);
+                        if ((lvl - last_score_level) % 2 == 0)
+                        {
+                            const int y = LEVEL_TO_Y(lvl);
+                            dc.DrawLine(noteX.from + HEAD_RADIUS, y, noteX.to+HEAD_RADIUS, y);
+                        }
                     }
                 }
             } // end scope
