@@ -94,7 +94,8 @@ namespace AriaMaestosa
             
             MeasureData* md = m_sequence->getMeasureData();
 
-            // when we're saving, we always want song to start at first measure, so temporarly switch firstMeasure to 0, and set it back in the end
+            // when we're saving, we always want song to start at first measure, so temporarly set
+            // firstMeasure to 0, and set it back in the end
             m_firstMeasureValue = md->getFirstMeasure();
             md->setFirstMeasure(0);
             
