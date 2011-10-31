@@ -1249,8 +1249,8 @@ namespace AriaMaestosa
                     const Range<int> noteX = x_converter->tickToX(noteRenderInfo.getTick());
                     dc.SetPen(  wxPen( wxColour(125,125,125), 8 ) );
                     
-                    for (int lvl=first_score_level-2;
-                         lvl>noteRenderInfo.m_level + noteRenderInfo.m_level%2 - 2;
+                    for (int lvl=first_score_level - 2;
+                         lvl>=noteRenderInfo.m_level - (noteRenderInfo.m_level + 1)%2 + 1;
                          lvl -= 2)
                     {
                         const int y = LEVEL_TO_Y(lvl);

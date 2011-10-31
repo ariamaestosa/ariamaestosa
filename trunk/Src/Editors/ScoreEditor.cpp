@@ -607,7 +607,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
     // draw small lines above score if needed
     if (renderInfo.m_level < score_from_level)
     {
-        for (int lvl=score_from_level+1; lvl>renderInfo.m_level + renderInfo.m_level%2; lvl -= 2)
+        for (int lvl=score_from_level-1; lvl>=renderInfo.m_level - (renderInfo.m_level + 1)%2 + 1; lvl -= 2)
         {
             const int lvly = getEditorYStart() + Y_STEP_HEIGHT*lvl - head_radius - getYScrollInPixels() + 2;
             AriaRender::line(noteX-5, lvly, noteX+15, lvly);
