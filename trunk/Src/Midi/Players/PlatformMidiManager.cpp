@@ -22,6 +22,7 @@
 #include "Midi/Players/PlatformMidiManager.h"
 #include "PreferencesData.h"
 #include "ptr_vector.h"
+#include "Utils.h"
 #include <wx/intl.h>
 #include <wx/msgdlg.h>
 

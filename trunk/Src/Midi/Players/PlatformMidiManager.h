@@ -21,6 +21,7 @@
 #include <wx/string.h>
 #include <wx/arrstr.h>
 #include <map>
+#include "Utils.h"
 
 class RtMidiIn;
 
