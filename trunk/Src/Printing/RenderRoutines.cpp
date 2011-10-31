@@ -17,7 +17,9 @@
 #include "Printing/RenderRoutines.h"
 
 #include "IO/IOUtils.h"
+#include "PreferencesData.h"
 #include "Range.h"
+
 #include <wx/dc.h>
 #include <wx/filename.h>
 #include <wx/image.h>
@@ -833,6 +835,7 @@ void AriaMaestosa::RenderRoutines::drawSilence(wxGraphicsContext& dc, const Rang
         if (not size_calculated)
         {
             wxDouble width, height, descent, externalLeading;
+            dc.SetFont( getPrintFont(), *wxBLACK );
             dc.GetTextExtent(wxT("3"), &width, &height, &descent, &externalLeading);
             triplet_3_size.x = width;
             triplet_3_size.y = height;
