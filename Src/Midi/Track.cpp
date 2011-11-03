@@ -231,7 +231,7 @@ bool Track::addNote(Note* note, bool check_for_overlapping_notes)
 
 // ----------------------------------------------------------------------------------------------------------
 
-void Track::addControlEvent( ControllerEvent* evt, float* previousValue )
+void Track::addControlEvent( ControllerEvent* evt, wxFloat64* previousValue )
 {
     ptr_vector<ControllerEvent>* vector;
 
@@ -280,7 +280,7 @@ void Track::addControlEvent( ControllerEvent* evt, float* previousValue )
 
 // ----------------------------------------------------------------------------------------------------------
 
-void Track::addControlEvent_import(const int x, const int value, const int controller)
+void Track::addControlEvent_import(const int x, const wxFloat64 value, const int controller)
 {
     ASSERT(m_sequence->isImportMode()); // not to be used when not importing
     m_control_events.push_back(new ControllerEvent(controller, x, value) );
@@ -1628,7 +1628,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                 if ((time + firstNoteStartTick) <= lastTickInSong)
                 {
                     m.SetTime( time );
-                    m.SetProgramChange(channel, m_control_events[control_evt_id].getValue());
+                    m.SetProgramChange(channel, (int)round(m_control_events[control_evt_id].getValue()));
                     control_evt_id++;
                     
                     if (not midiTrack->PutEvent( m ))
@@ -1700,10 +1700,10 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                 {
                     m.SetTime( time );
 
+                    // FIXME: also write fine values
                     m.SetControlChange(channel,
                                        controllerID,
-                                       // FIXME: why do I need to do 127 - value??
-                                       127 - m_control_events[control_evt_id].getValue() );
+                                       127 - (int)round(m_control_events[control_evt_id].getValue()) );
 
                     if (not midiTrack->PutEvent( m ))
                     {

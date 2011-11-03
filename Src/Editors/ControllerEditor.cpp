@@ -104,7 +104,7 @@ public:
     {        
         wxString valueStr = m_input->GetValue();
         
-        double value = -1;
+        wxFloat64 value = -1;
         
         if (m_controller == PSEUDO_CONTROLLER_TEMPO)
         {
@@ -281,7 +281,7 @@ void ControllerEditor::renderEvents()
         else
         {
             // -------- Non-text events
-            const unsigned short value = tmp->getValue();
+            const wxFloat64 value = tmp->getValue();
 
             if (previous_location - x_scroll > getXEnd()) // if events are no more visible, stop drawing
                 return;
@@ -749,7 +749,7 @@ int ControllerEditor::getPositionInPixels(int tick, GraphicalSequence* gseq)
 
 // ----------------------------------------------------------------------------------------------------------
 
-void ControllerEditor::addPreciseEvent(int tick, int value)
+void ControllerEditor::addPreciseEvent(int tick, wxFloat64 value)
 {
     m_track->action( new Action::AddControlEvent(m_track->snapMidiTickToGrid( tick ),
                                                  value,

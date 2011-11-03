@@ -27,7 +27,7 @@ using namespace AriaMaestosa::Action;
 
 // ---------------------------------------------------------------------------------------------------------
 
-AddControlEvent::AddControlEvent(const int x, const float value, const int controller) :
+AddControlEvent::AddControlEvent(const int x, const wxFloat64 value, const int controller) :
 //I18N: (undoable) action name
 SingleTrackAction( _("add control event") )
 {
@@ -340,19 +340,19 @@ namespace TestAddControlEvent
         
         require(t->getControllerEventAmount(0) == 5, "the number of events was increased");
         require(t->getControllerEvent(0, 0)->getTick()  == 0,   "events were properly ordered");
-        require(t->getControllerEvent(0, 0)->getValue() == 53,  "events were properly ordered");
+        require((int)(t->getControllerEvent(0, 0)->getValue() == 53),  "events were properly ordered");
         
         require(t->getControllerEvent(1, 0)->getTick()  == 50,  "events were properly ordered");
-        require(t->getControllerEvent(1, 0)->getValue() == 64,  "events were properly ordered");
+        require((int)(t->getControllerEvent(1, 0)->getValue() == 64),  "events were properly ordered");
         
         require(t->getControllerEvent(2, 0)->getTick()  == 100, "events were properly ordered");
-        require(t->getControllerEvent(2, 0)->getValue() == 127, "events were properly ordered");
+        require((int)(t->getControllerEvent(2, 0)->getValue() == 127), "events were properly ordered");
         
         require(t->getControllerEvent(3, 0)->getTick()  == 200, "events were properly ordered");
-        require(t->getControllerEvent(3, 0)->getValue() == 64,  "events were properly ordered");
+        require((int)(t->getControllerEvent(3, 0)->getValue() == 64),  "events were properly ordered");
         
         require(t->getControllerEvent(4, 0)->getTick()  == 300, "events were properly ordered");
-        require(t->getControllerEvent(4, 0)->getValue() == 0,   "events were properly ordered");
+        require((int)(t->getControllerEvent(4, 0)->getValue()) == 0,   "events were properly ordered");
         
         // TODO: test undo
         

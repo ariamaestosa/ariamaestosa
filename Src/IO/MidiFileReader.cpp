@@ -214,7 +214,7 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                 else if ( event->IsControlChange() )
                 {
                     const int controllerID = event->GetController();
-                    const int value = 127-event->GetControllerValue();
+                    const int value = 127 - event->GetControllerValue();
 
                     if (controllerID > 31 and controllerID < 64)
                     {

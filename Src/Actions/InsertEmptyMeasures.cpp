@@ -288,28 +288,28 @@ namespace InsertMeasuresTest
         {
             require_e(t->getControllerEvent(n, 0 /* controller */)->getTick(), ==, (n*beatLen)/2,
                       "control events were properly modified");
-            require_e(t->getControllerEvent(n, 0 /* controller */)->getValue(), ==, 64+n*2,
+            require_e((int)(t->getControllerEvent(n, 0 /* controller */)->getValue()), ==, 64+n*2,
                       "control events were properly modified");
         }
         for (int n=0; n<16; n++)
         {
             require_e(t->getControllerEvent(n, 1 /* controller */)->getTick(), ==, (n*beatLen)/2,
                     "control events were properly modified");
-            require_e(t->getControllerEvent(n, 1 /* controller */)->getValue(), ==, 64-n*2,
+            require_e((int)(t->getControllerEvent(n, 1 /* controller */)->getValue()), ==, 64-n*2,
                     "control events were properly modified");
         }
         for (int n=16; n<32; n++)
         {
             require_e(t->getControllerEvent(n, 0 /* controller */)->getTick(), ==, insertedShift + (n*beatLen)/2,
                       "control events were properly modified");
-            require_e(t->getControllerEvent(n, 0 /* controller */)->getValue(), ==, 64+n*2,
+            require_e((int)(t->getControllerEvent(n, 0 /* controller */)->getValue()), ==, 64+n*2,
                       "control events were properly modified");
         }
         for (int n=16; n<32; n++)
         {
             require_e(t->getControllerEvent(n, 1 /* controller */)->getTick(), ==, insertedShift + (n*beatLen)/2,
                       "control events were properly modified");
-            require_e(t->getControllerEvent(n, 1 /* controller */)->getValue(), ==, 64-n*2,
+            require_e((int)(t->getControllerEvent(n, 1 /* controller */)->getValue()), ==, 64-n*2,
                       "control events were properly modified");
         }
         
