@@ -853,18 +853,21 @@ void ScoreAnalyser::processTriplets()
                 if (VERBOSE_ABOUT_TRIPLETS) std::cout << "(3) } // serie ends here :  NOT (no more) consecutive\n";
             }
             
-            ASSERT_E(i+1, <, (int)noteRenderInfo.size());
-            if ((not noteRenderInfo[i+1].m_triplet) or (i - first_triplet >= 2 and first_triplet != -1) )
+            if (first_triplet != -1)
             {
-                if (VERBOSE_ABOUT_TRIPLETS)
+                if (i == (int)noteRenderInfo.size()-1 or (not noteRenderInfo[i+1].m_triplet) or
+                    (i - first_triplet >= 2 and first_triplet != -1) )
                 {
-                    std::cout << "(3) } // serie ends here : "
-                              << (not noteRenderInfo[i+1].m_triplet ? "next is no triplet " : "")
-                              << ((i-first_triplet>=2 and first_triplet != -1) ? "We've had 3 in a row. " : "")
-                              << "\n";
+                    if (VERBOSE_ABOUT_TRIPLETS)
+                    {
+                        std::cout << "(3) } // serie ends here : "
+                                  << (not noteRenderInfo[i+1].m_triplet ? "next is no triplet " : "")
+                                  << ((i-first_triplet>=2 and first_triplet != -1) ? "We've had 3 in a row. " : "")
+                                  << "\n";
+                    }
+                    
+                    last_of_a_serie = true;
                 }
-                
-                last_of_a_serie = true;
             }
 
             // do not cross measures
