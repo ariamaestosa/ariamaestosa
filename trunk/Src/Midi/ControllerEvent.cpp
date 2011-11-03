@@ -24,7 +24,7 @@ using namespace AriaMaestosa;
 
 // ----------------------------------------------------------------------------------------------------------
 
-ControllerEvent::ControllerEvent(unsigned short controller, int tick, float value)
+ControllerEvent::ControllerEvent(unsigned short controller, int tick, wxFloat64 value)
 {
     m_controller = controller;
     m_tick       = tick;
@@ -40,7 +40,7 @@ void ControllerEvent::setTick(int i)
 
 // ----------------------------------------------------------------------------------------------------------
 
-void ControllerEvent::setValue(float value)
+void ControllerEvent::setValue(wxFloat64 value)
 {
     m_value = value;
 }

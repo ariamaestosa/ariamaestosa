@@ -34,13 +34,13 @@ namespace AriaMaestosa
         {
             friend class AriaMaestosa::Track;
             int m_x, m_controller;
-            float m_value;
+            wxFloat64 m_value;
             
-            float m_removed_event_value; //!< if any event was replaced by this one...
+            wxFloat64 m_removed_event_value; //!< if any event was replaced by this one...
             
         public:
             
-            AddControlEvent(const int x, const float value, const int controller);
+            AddControlEvent(const int x, const wxFloat64 value, const int controller);
             void perform();
             void undo();
             virtual ~AddControlEvent();

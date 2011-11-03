@@ -52,9 +52,9 @@ namespace AriaMaestosa
         unsigned short     m_controller;
         
         /** 
-         * This value is 127 - [midi value]
+         * This value is 127 - [midi value] (FIXME)
          */
-        float m_value;
+        wxFloat64 m_value;
         
     public:
         LEAK_CHECK();
@@ -64,7 +64,7 @@ namespace AriaMaestosa
           * @param tick       Time at whcih this event occurs
           * @param value      This value is 127 - [midi value]
           */
-        ControllerEvent(unsigned short controller, int tick, float value);
+        ControllerEvent(unsigned short controller, int tick, wxFloat64 value);
         virtual ~ControllerEvent() {}
         
         unsigned short getController() const { return m_controller; }
@@ -74,13 +74,13 @@ namespace AriaMaestosa
           * @brief Getter for the control event value
           * @note  This value is 127 - [midi value]
           */
-        float getValue              () const { return m_value;      }
+        wxFloat64 getValue          () const { return m_value;      }
         
         /**
          * @brief  Convert an Aria controller value to a pitch bend value
          * @return the value in range [-8192, 8191], where -8192 is -2, 8191 is + 2, and 0 is no change.
          */
-        static int getPitchBendValue(float controllerValue)
+        static int getPitchBendValue(wxFloat64 controllerValue)
         {
             ASSERT_E(controllerValue,>=,0);
             ASSERT_E(controllerValue,<=,127);
@@ -93,13 +93,13 @@ namespace AriaMaestosa
          * @brief      Convert a MIDI pitch bend in range [-8192, 8191] to an Aria controller value in range [0, 127]
          * @param bend the value in range [-8192, 8191], where -8192 is -2, 8191 is + 2, and 0 is no change.
          */
-        static float fromPitchBendValue(int bend)
+        static double fromPitchBendValue(int bend)
         {
             ASSERT_E(bend,>=,-8192);
             ASSERT_E(bend,<=,8191);
             
             const double factor = 129.0; // (2.0*8192.0 - 1.0)/127.0;
-            return 127 - ((bend + 8192.0)/factor);
+            return 127.0 - ((bend + 8192.0)/factor);
         }
         
         /**
@@ -112,7 +112,7 @@ namespace AriaMaestosa
         }
         
         void setTick(int i);
-        void setValue(float value);
+        void setValue(wxFloat64 value);
           
         ControllerEvent* clone() { return new ControllerEvent(m_controller, m_tick, m_value); }
         

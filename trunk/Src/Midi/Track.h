@@ -260,7 +260,7 @@ namespace AriaMaestosa
          * because we know events won't overlap and are in time order. (i.e. this exists, as opposed to
          * the regular add method, for performance reasons)
          */
-        void addControlEvent_import(const int x, const int value, const int controller);
+        void addControlEvent_import(const int x, const wxFloat64 value, const int controller);
         
         bool checkControlEventsOrder();
                 
@@ -429,7 +429,7 @@ namespace AriaMaestosa
         
         /** Not to be called during editing, as it does not generate an action in the action stack.
          * @param[out] previousValue Returns the old value there was, if any, before this new event replaces it.*/
-        void addControlEvent( ControllerEvent* evt, float* previousValue = NULL );
+        void addControlEvent( ControllerEvent* evt, wxFloat64* previousValue = NULL );
         
         /**
          * This is the method called for performing any action that can be undone.
