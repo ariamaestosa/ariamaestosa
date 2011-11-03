@@ -163,6 +163,7 @@ MainPane::MainPane(wxWindow* parent, int* args) :
     m_is_visible          = false;
     m_is_mouse_down       = false;
     m_mouse_hovering_tabs = false;
+    m_click_area          = CLICK_NONE;
 
     m_mouse_x_initial.setValue(0, MIDI);
     m_mouse_y_initial = 0;

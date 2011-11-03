@@ -46,6 +46,7 @@ namespace AriaMaestosa
       */
     enum ClickArea
     {
+        CLICK_NONE,
         CLICK_DOCK,
         CLICK_MEASURE_BAR,
         CLICK_REORDER,
