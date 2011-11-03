@@ -44,7 +44,6 @@ wxString to_wxString(float f)
     
 wxString to_wxString(wxFloat64 f)
 {
-    printf("%f --> %s\n", (float)f, (const char*)wxString::Format(wxT("%.8f"), f).mb_str());
     return wxString::Format(wxT("%.8f"), f);
 }
     
