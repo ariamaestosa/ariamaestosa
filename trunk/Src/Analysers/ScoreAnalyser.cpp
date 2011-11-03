@@ -831,6 +831,7 @@ void ScoreAnalyser::processTriplets()
             // ---- search for consecutive notes
             if (i + 1 < visibleNoteAmount)
             {
+                ASSERT_E(i+1, <, (int)noteRenderInfo.size());
                 start_tick_of_next_note = noteRenderInfo[i+1].getTick();
             }
 
@@ -851,6 +852,8 @@ void ScoreAnalyser::processTriplets()
                 last_of_a_serie = true;
                 if (VERBOSE_ABOUT_TRIPLETS) std::cout << "(3) } // serie ends here :  NOT (no more) consecutive\n";
             }
+            
+            ASSERT_E(i+1, <, (int)noteRenderInfo.size());
             if ((not noteRenderInfo[i+1].m_triplet) or (i - first_triplet >= 2 and first_triplet != -1) )
             {
                 if (VERBOSE_ABOUT_TRIPLETS)
