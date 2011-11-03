@@ -71,6 +71,7 @@ namespace AriaMaestosa
         AriaWidget(int width)
         {
             m_x = 0;
+            m_y = 0;
             m_width = width;
             m_hidden = false;
         }

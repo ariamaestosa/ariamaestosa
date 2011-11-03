@@ -64,12 +64,10 @@ Sequence::Sequence(IPlaybackModeListener* playbackListener, IActionStackListener
     m_playback_start_tick   = 0;
 
     m_sequence_filename     = new Model<wxString>( _("Untitled") );
-    
-    if (addDefautTrack) addTrack();
-
+    channelManagement = CHANNEL_AUTO;
     m_copyright = wxT("");
 
-    channelManagement = CHANNEL_AUTO;
+    if (addDefautTrack) addTrack();
     
     m_measure_data = new MeasureData(this, DEFAULT_SONG_LENGTH);
     
