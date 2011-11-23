@@ -5,6 +5,7 @@
 - Fix reverting to default output when custom output port is not found
 - Fixed importing drum tracks from midi (would result in a graphical glitch)
 - Fixed potential crash when editing song while recording is activated
+- Allow entering raw controller values
 - Other minor improvements to printing
 
 1.3 beta 3

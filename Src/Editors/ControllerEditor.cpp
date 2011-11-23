@@ -43,6 +43,7 @@
 #include <wx/panel.h>
 #include <wx/textctrl.h>
 #include <wx/stattext.h>
+#include <wx/choice.h>
 
 using namespace AriaMaestosa;
 
@@ -50,6 +51,8 @@ class ControlChangeInput : public wxMiniFrame
 {
     ControllerEditor* m_parent;
     wxTextCtrl* m_input;
+    wxChoice* m_units;
+    
     int m_tick;
     int m_controller;
     
@@ -65,7 +68,7 @@ public:
         
         wxPanel* panel = new wxPanel(this);
         wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
-        
+                
         m_input = new wxTextCtrl(panel, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
         m_input->SetMinSize( wxSize(100, -1) );
         sizer->Add(m_input, 0, wxALL, 3);
@@ -83,8 +86,11 @@ public:
             labelContents = _("semitones");
         }
         
-        wxStaticText* label = new wxStaticText(panel, wxID_ANY, labelContents);
-        sizer->Add(label, 0, wxALL, 3);
+        m_units = new wxChoice(panel, wxID_ANY);
+        m_units->Append(labelContents, (void*)"default");
+        if (m_controller != PSEUDO_CONTROLLER_TEMPO) m_units->Append(wxT("MIDI"), (void*)"midi");
+
+        sizer->Add(m_units, 0, wxALL, 3);
 
         panel->SetSizer(sizer);
         sizer->Layout();
@@ -102,11 +108,43 @@ public:
     
     void onEnter(wxCommandEvent& evt)
     {        
+        wxString units((const char*)m_units->GetClientData(m_units->GetSelection()), wxConvUTF8);
+        
         wxString valueStr = m_input->GetValue();
         
         wxFloat64 value = -1;
         
-        if (m_controller == PSEUDO_CONTROLLER_TEMPO)
+        if (units == wxT("midi"))
+        {
+            if (not valueStr.ToDouble(&value))
+            {
+                wxBell();
+                return;
+            }
+            
+            if (m_controller == PSEUDO_CONTROLLER_PITCH_BEND)
+            {
+                if (value < -8192.0 or value > 8191.0)
+                {
+                    wxBell();
+                    return;
+                }
+                
+                value = ControllerEvent::fromPitchBendValue(value);
+            }
+            else
+            {
+                if (value < 0.0f or value > 127.0f)
+                {
+                    wxBell();
+                    return;
+                }
+                
+                // FIXME: remove this silly thing where Aria stores controller events as 127-midi
+                value = 127.0 - value;
+            }
+        }
+        else if (m_controller == PSEUDO_CONTROLLER_TEMPO)
         {
             if (not valueStr.ToDouble(&value))
             {
@@ -130,8 +168,8 @@ public:
                 return;
             }
 
-            value = (value > 0.0f ? ControllerEvent::fromPitchBendValue(value/2.0f*8191.0f) :
-                                    ControllerEvent::fromPitchBendValue(value/2.0f*8192.0f));
+            value = (value > 0.0f ? ControllerEvent::fromPitchBendValue(value/2.0*8191.0) :
+                                    ControllerEvent::fromPitchBendValue(value/2.0*8192.0));
         }
         else
         {
