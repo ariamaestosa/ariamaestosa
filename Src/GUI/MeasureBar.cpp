@@ -88,6 +88,12 @@ public:
         
         Sequence* seq = m_gseq->getModel();
         
+        if (PlatformMidiManager::get()->isRecording())
+        {
+            wxBell();
+            return;
+        }
+        
         seq->action( new Action::RemoveMeasures(g_remove_from, g_remove_to) );
         m_gseq->getMeasureBar()->selectTimeSig(0);
     }
@@ -658,6 +664,11 @@ void MeasureBar::rightClick(int x, int y)
             return;
         }
         
+        if (PlatformMidiManager::get()->isRecording())
+        {
+            wxBell();
+            return;
+        }
         // unselect
         //for (int n=g_remove_from; n<g_remove_to+1; n++)
         //{
