@@ -873,7 +873,7 @@ namespace AriaMaestosa
                     biggest_level  = level;
                 }
             }
-                        
+            
             PerMeasureInfo info;
             info.highest_pitch = highest_pitch;
             info.lowest_pitch = lowest_pitch;
