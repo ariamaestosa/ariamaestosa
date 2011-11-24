@@ -621,17 +621,17 @@ namespace AriaMaestosa
         {
             //  FIXME : see other fixme above, this * 500 + m trick is stupid and ugly
             PerMeasureInfo& info = perMeasureInfo[trackID*5000+m];
-                        
-            if (info.biggest_level > biggest_level or biggest_level == -1)
+            
+            if ((info.biggest_level > biggest_level or biggest_level == -1) and info.biggest_level != -1)
             {
                 biggest_level = info.biggest_level;
             }
-            if (info.smallest_level < smallest_level or smallest_level == -1)
+            if ((info.smallest_level < smallest_level or smallest_level == -1) and info.smallest_level != -1)
             {
                 smallest_level = info.smallest_level;
             }
         }
-
+        
         // ---- get some values useful for later
         m_middle_c_level = converter->getScoreCenterCLevel(); //converter->getMiddleCLevel();
         
@@ -765,7 +765,7 @@ namespace AriaMaestosa
             //                   << PRINT_VAR(f_clef_from_level) << PRINT_VAR(f_clef_to_level) << std::endl;
             //std::cout << "G: " << PRINT_VAR(smallest_level) << PRINT_VAR(biggest_level)
             //                   << PRINT_VAR(g_clef_from_level) << PRINT_VAR(g_clef_to_level) << std::endl;
-
+            
             if (smallest_level!=-1 and smallest_level < g_clef_from_level)
             {
                 scoreData->extra_lines_above_g_score = (g_clef_from_level - smallest_level)/2;
@@ -873,7 +873,7 @@ namespace AriaMaestosa
                     biggest_level  = level;
                 }
             }
-            
+                        
             PerMeasureInfo info;
             info.highest_pitch = highest_pitch;
             info.lowest_pitch = lowest_pitch;
@@ -913,6 +913,7 @@ namespace AriaMaestosa
         std::cout << "[ScorePrintable] earlySetup : gathering note list\n";
         for (int m=0; m<measureAmount; m++)
         {
+            ASSERT(perMeasureInfo.find(trackID*5000+m) != perMeasureInfo.end());
             PerMeasureInfo& measInfo = perMeasureInfo[trackID*5000+m];
             const int firstNote = measInfo.first_note;
             const int lastNote = measInfo.last_note;
@@ -1323,6 +1324,8 @@ namespace AriaMaestosa
                 //ASSERT_E(noteX.to - noteX.from, >=, HEAD_RADIUS*2 +
                 //           (noteRenderInfo.sign == PITCH_SIGN_NONE ? 0 : MAX_ACCIDENTAL_SIZE) +
                 //            NOTE_HEAD_MARGIN);
+                                
+                //ASSERT_E(noteRenderInfo.getBaseLevel(), >=, min_level);
                 
                 // draw head
                 const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
