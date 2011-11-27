@@ -271,9 +271,18 @@ Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const i
             const Range<float> relative_pos = meas.getTicksPlacementManager().getSymbolRelativeArea( tick );
             
             ASSERT_E(elem_w, >, 0);
+  
+            if (relative_pos.to - relative_pos.from  < 0.05f)
+            {
+                fprintf(stderr, "[EditorPrintable::tickToX] WARNING, very small space allocated (relative_pos.from = %f, relative_pos.to = %f)\n",
+                        relative_pos.from, relative_pos.to);
+            }
             
             const int from = (int)round(relative_pos.from * elem_w + elem_x_start);
             int to = (int)round(relative_pos.to * elem_w + elem_x_start);
+            
+            //printf("elem_w = %i (elem_x_start = %i, elem_x_end = %i, relative_pos.from = %f, relative_pos.to = %f) => %i to %i\n", 
+            //       elem_w, elem_x_start, elem_x_end, relative_pos.from, relative_pos.to, from, to);
             
             // FIXME: arbitrary max length for now
             // TODO: ideally, when one symbol is given too much space, the max size reached detection should
@@ -283,6 +292,8 @@ Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const i
             ASSERT_E(to, >=, from);
             ASSERT_E(from, >=, 0);
             ASSERT_E(to, >=, 0);
+            
+            if (to - from < 20) std::cerr << "[EditorPrintable::tickToX] WARNING! Very small space allocated??\n";
             
             return Range<int>(from, to);
         }
@@ -304,6 +315,8 @@ Range<int> EditorPrintable::tickToX(const int trackID, LayoutLine& line, const i
         {
             //std::cout << "tickToX Returning -" <<  (currentLine->layoutElements[n].getXTo() + 10) << " B\n";
 
+            std::cerr << "[EditorPrintable::tickToX] Tick does not appear to be on this line!!\n";
+            
             return Range<int>(line.getLayoutElement(n).getXTo() + 10, line.getLayoutElement(n).getXTo() + 10);
         }
     }
