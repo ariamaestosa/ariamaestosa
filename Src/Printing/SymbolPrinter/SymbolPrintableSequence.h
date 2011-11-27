@@ -91,6 +91,8 @@ namespace AriaMaestosa
           */
         EditorPrintable* getEditorPrintable(const int trackID);
         
+        EditorPrintable* getEditorPrintableFor(Track* track);
+        
         /**
          * Add a track (from the parent sequence of this object) to be printed.
          *

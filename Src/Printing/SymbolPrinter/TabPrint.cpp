@@ -40,7 +40,7 @@ const int CHAR_MARGIN = 35;
 
 // ------------------------------------------------------------------------------------------------------------
 
-TablaturePrintable::TablaturePrintable(GraphicalTrack* track) : EditorPrintable()
+TablaturePrintable::TablaturePrintable(GraphicalTrack* track) : EditorPrintable(track->getTrack())
 {
     m_string_amount = track->getTrack()->getGuitarTuning()->tuning.size();
     m_editor        = track->getGuitarEditor();

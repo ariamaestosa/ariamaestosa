@@ -344,7 +344,7 @@ namespace AriaMaestosa
     
     // -------------------------------------------------------------------------------------------
     
-    ScorePrintable::ScorePrintable() : EditorPrintable()
+    ScorePrintable::ScorePrintable(Track* track) : EditorPrintable(track)
     {
         // std::cout << " *** setting global g_printable" << std::endl;
         g_printable = this;
@@ -418,6 +418,8 @@ namespace AriaMaestosa
         GraphicalTrack* gtrack = trackRef.getTrack();
         ScoreEditor* scoreEditor = gtrack->getScoreEditor();
         
+        ASSERT(gtrack->getTrack() == m_track);
+        
         ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         converter->updateConversionData();
         converter->resetAccidentalsForNewRender();
@@ -444,7 +446,7 @@ namespace AriaMaestosa
             ASSERT( current_analyser != NULL );
             
             const int noteAmount = current_analyser->noteRenderInfo.size();
-            
+                        
             // find shortest note
             int shortest = -1;
             for (int n=0; n<noteAmount; n++)
@@ -488,7 +490,7 @@ namespace AriaMaestosa
         // ---- silences
         ticks_relative_position.addSilenceSymbols(m_silences_ticks, trackID,
                                                   measureFromTick, measureToTick);
-        
+                
 #if VERBOSE
         std::cout << "}\n";
         std::cout << "[ScorePrintable] addUsedTicks : silences\n{\n";
@@ -610,6 +612,8 @@ namespace AriaMaestosa
         const GraphicalTrack* gtrack = lineTrack.getTrack();
         const ScoreEditor* scoreEditor = gtrack->getScoreEditor();
         const ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
+        
+        ASSERT(gtrack->getTrack() == m_track);
         
         // ---- Determine the y level of the highest and the lowest note
         const int fromMeasure = line.getFirstMeasure();
@@ -836,6 +840,8 @@ namespace AriaMaestosa
     {
         Track* track = gtrack->getTrack();
         
+        m_track = track;
+        
         ScoreEditor* scoreEditor = gtrack->getScoreEditor();
         ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         
@@ -910,7 +916,7 @@ namespace AriaMaestosa
         
         MeasureData* md = track->getSequence()->getMeasureData();
         
-        std::cout << "[ScorePrintable] earlySetup : gathering note list\n";
+        printf("[ScorePrintable] earlySetup (%s) : gathering note list\n", (const char*)track->getName().utf8_str());
         for (int m=0; m<measureAmount; m++)
         {
             ASSERT(perMeasureInfo.find(trackID*5000+m) != perMeasureInfo.end());
@@ -980,7 +986,12 @@ namespace AriaMaestosa
             m_silences_ticks.insert(m_silences_ticks.end(), g_clef_silences.begin(), g_clef_silences.end());
         }
         
-        
+        /*
+        printf("    %i notes in G clef (analyzer %x), %i in F clef (analyzer %x), this = %x\n",
+               (int)g_clef_analyser->noteRenderInfo.size(), (unsigned int)(void*)g_clef_analyser,
+               (int)f_clef_analyser->noteRenderInfo.size(), (unsigned int)(void*)f_clef_analyser,
+               (unsigned int)(void*)this);
+        */
     }
     
     // -------------------------------------------------------------------------------------------
@@ -993,6 +1004,9 @@ namespace AriaMaestosa
     {
         const bool f_clef = (clefType == F_CLEF_ALONE or clefType == F_CLEF_FROM_GRAND_STAFF);
         const Track* track = gtrack->getTrack();
+        
+        ASSERT(m_track == track);
+        
         const MeasureData* md = track->getSequence()->getMeasureData();
         
         const int fromTick = md->firstTickInMeasure( line.getFirstMeasure() );

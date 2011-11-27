@@ -50,6 +50,8 @@ namespace AriaMaestosa
     protected:
         wxDC* m_dc;
 
+        Track* m_track;
+        
         /**
           * Draws a vertical divider line
           * @param el     The layout element that will be used to determine at which x to draw the line.
@@ -74,7 +76,7 @@ namespace AriaMaestosa
 
 
     public:
-        EditorPrintable();
+        EditorPrintable(Track* track);
         virtual ~EditorPrintable();
         
         /** 
@@ -146,6 +148,8 @@ namespace AriaMaestosa
                              const bool drawMeasureNumbers, const int y0, const int y1,
                              const int barYFrom, const int barYTo);
 
+        Track* getTrack() { return m_track; }
+        
     };
 }
 
