@@ -544,6 +544,10 @@
 		95866DA311CE9561008F2938 /* PresetEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95866DA111CE9561008F2938 /* PresetEditor.cpp */; };
 		95866DA411CE9561008F2938 /* PresetEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = 95866DA011CE9561008F2938 /* PresetEditor.h */; };
 		95866DA511CE9561008F2938 /* PresetEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95866DA111CE9561008F2938 /* PresetEditor.cpp */; };
+		9587BABE1482DD1A003215D6 /* Duplicate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9587BABC1482DD1A003215D6 /* Duplicate.cpp */; };
+		9587BABF1482DD1A003215D6 /* Duplicate.h in Headers */ = {isa = PBXBuildFile; fileRef = 9587BABD1482DD1A003215D6 /* Duplicate.h */; };
+		9587BAC01482DD1A003215D6 /* Duplicate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9587BABC1482DD1A003215D6 /* Duplicate.cpp */; };
+		9587BAC11482DD1A003215D6 /* Duplicate.h in Headers */ = {isa = PBXBuildFile; fileRef = 9587BABD1482DD1A003215D6 /* Duplicate.h */; };
 		959693381153E612001E321B /* ScoreAnalyser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959693341153E612001E321B /* ScoreAnalyser.cpp */; };
 		959693391153E612001E321B /* ScoreAnalyser.h in Headers */ = {isa = PBXBuildFile; fileRef = 959693351153E612001E321B /* ScoreAnalyser.h */; };
 		9596933A1153E612001E321B /* SilenceAnalyser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959693361153E612001E321B /* SilenceAnalyser.cpp */; };
@@ -1168,6 +1172,8 @@
 		95866C6A11CE7C10008F2938 /* KeyPresets.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KeyPresets.cpp; path = ../Src/Midi/KeyPresets.cpp; sourceTree = SOURCE_ROOT; };
 		95866DA011CE9561008F2938 /* PresetEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PresetEditor.h; path = ../Src/Dialogs/PresetEditor.h; sourceTree = SOURCE_ROOT; };
 		95866DA111CE9561008F2938 /* PresetEditor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PresetEditor.cpp; path = ../Src/Dialogs/PresetEditor.cpp; sourceTree = SOURCE_ROOT; };
+		9587BABC1482DD1A003215D6 /* Duplicate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Duplicate.cpp; path = ../Src/Actions/Duplicate.cpp; sourceTree = SOURCE_ROOT; };
+		9587BABD1482DD1A003215D6 /* Duplicate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Duplicate.h; path = ../Src/Actions/Duplicate.h; sourceTree = SOURCE_ROOT; };
 		959693341153E612001E321B /* ScoreAnalyser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreAnalyser.cpp; path = ../Src/Analysers/ScoreAnalyser.cpp; sourceTree = SOURCE_ROOT; };
 		959693351153E612001E321B /* ScoreAnalyser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreAnalyser.h; path = ../Src/Analysers/ScoreAnalyser.h; sourceTree = SOURCE_ROOT; };
 		959693361153E612001E321B /* SilenceAnalyser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SilenceAnalyser.cpp; path = ../Src/Analysers/SilenceAnalyser.cpp; sourceTree = SOURCE_ROOT; };
@@ -1400,6 +1406,8 @@
 				957118C51125D8D200104BF5 /* DeleteSelected.h */,
 				959FD6BD114451A400F22579 /* DeleteTrack.cpp */,
 				959FD6BE114451A400F22579 /* DeleteTrack.h */,
+				9587BABC1482DD1A003215D6 /* Duplicate.cpp */,
+				9587BABD1482DD1A003215D6 /* Duplicate.h */,
 				957118C61125D8D200104BF5 /* EditAction.cpp */,
 				957118C71125D8D200104BF5 /* EditAction.h */,
 				957118C81125D8D200104BF5 /* InsertEmptyMeasures.cpp */,
@@ -2190,6 +2198,7 @@
 				9598ECDB1407216200D4548A /* RtError.h in Headers */,
 				9598ECDD1407216200D4548A /* RtMidi.h in Headers */,
 				95B380641416DC7F00AACBE7 /* Record.h in Headers */,
+				9587BABF1482DD1A003215D6 /* Duplicate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2364,6 +2373,7 @@
 				9598ECDE1407216200D4548A /* RtError.h in Headers */,
 				9598ECE01407216200D4548A /* RtMidi.h in Headers */,
 				95B380661416DC7F00AACBE7 /* Record.h in Headers */,
+				9587BAC11482DD1A003215D6 /* Duplicate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2608,6 +2618,7 @@
 				957629981365DF7300F97DEC /* OutputBase.cpp in Sources */,
 				9598ECDC1407216200D4548A /* RtMidi.cpp in Sources */,
 				95B380631416DC7F00AACBE7 /* Record.cpp in Sources */,
+				9587BABE1482DD1A003215D6 /* Duplicate.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2772,6 +2783,7 @@
 				9576299A1365DF7300F97DEC /* OutputBase.cpp in Sources */,
 				9598ECDF1407216200D4548A /* RtMidi.cpp in Sources */,
 				95B380651416DC7F00AACBE7 /* Record.cpp in Sources */,
+				9587BAC01482DD1A003215D6 /* Duplicate.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -270,9 +270,9 @@ def compile_Aria(which_os):
         env['LINKCOM']     = '$LINK -o $TARGET $LINKFLAGS $SOURCES $_LIBDIRFLAGS $_LIBFLAGS -mwindows ' + winLdFlags
     else:
         if renderer == "opengl":
-            env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,gl'])
+            env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,gl,webview'])
         else:
-            env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base'])
+            env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,webview'])
 
     # check build type and init build flags
     if build_type == "debug":
