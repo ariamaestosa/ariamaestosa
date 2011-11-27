@@ -56,7 +56,7 @@ bool SymbolPrintableSequence::addTrack(GraphicalTrack* gtrack, NotationType mode
     }
     else if (mode == SCORE)
     {
-        m_editor_printables.push_back(new ScorePrintable());
+        m_editor_printables.push_back(new ScorePrintable(gtrack->getTrack()));
         m_is_score_editor_used = true;
         
         m_max_signs_in_keysig = std::max( m_max_signs_in_keysig,
@@ -92,6 +92,19 @@ void SymbolPrintableSequence::calculateLayout()
 EditorPrintable* SymbolPrintableSequence::getEditorPrintable(const int trackID)
 {
     return m_editor_printables.get(trackID);
+}
+
+// -----------------------------------------------------------------------------------------------------------------
+
+EditorPrintable* SymbolPrintableSequence::getEditorPrintableFor(Track* track)
+{
+    for (int n=0; n<m_editor_printables.size(); n++)
+    {
+        if (m_editor_printables[n].getTrack() == track) return m_editor_printables.get(n);
+    }
+    
+    ASSERT(false);
+    return m_editor_printables.get(0);
 }
 
 // ------------------------------------------------------------------------------------------------------------------

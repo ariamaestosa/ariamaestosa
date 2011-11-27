@@ -57,7 +57,7 @@ namespace AriaMaestosa
         std::vector< SilenceAnalyser::SilenceInfo > m_silences_ticks;
         
     public:
-        ScorePrintable();
+        ScorePrintable(Track* track);
         virtual ~ScorePrintable();
         
         /** Implement method from EditorPrintable */

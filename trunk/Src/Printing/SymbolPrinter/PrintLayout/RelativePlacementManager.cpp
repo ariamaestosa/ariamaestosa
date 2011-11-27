@@ -210,7 +210,7 @@ int RelativePlacementManager::getNextTick(const int fromTick)
 }
 
 // ----------------------------------------------------------------------------------------------------------------
-
+/*
 int RelativePlacementManager::getNextTickInTrack(const int fromTick, const int trackID)
 {
     const int tickAmount = m_all_interesting_ticks.size();
@@ -228,7 +228,8 @@ int RelativePlacementManager::getNextTickInTrack(const int fromTick, const int t
     // No other symbol found in this measure, in this track. Return the end
     return m_end_of_measure_tick;
 }
-
+*/
+#if 0
 UNIT_TEST( TestFindingNextTick )
 {
     const int last_tick_in_measure = 11;
@@ -283,6 +284,7 @@ UNIT_TEST( TestFindingNextTick )
     next_tick = testObj.getNextTickInTrack(5 /* from */, 1 /* track ID */);
     require( next_tick == last_tick_in_measure, "Next tick is OK in track 1" );
 }
+#endif
 
 // ----------------------------------------------------------------------------------------------------------------
 

@@ -141,7 +141,7 @@ class RelativePlacementManager
       *
       * @return  The tick of this symbol, if found, the last tick of the measure otherwise
       */
-    int getNextTickInTrack(const int from_tick, const int trackID);
+    //int getNextTickInTrack(const int from_tick, const int trackID);
     
 public:
     
