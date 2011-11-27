@@ -407,13 +407,17 @@ void Editor::mouseDown(RelativeXCoord x, int y)
             {
                 m_is_duplicating_note = true;
                 m_track->action( new Action::Duplicate(this) );
+                
+                // perform the following operations on selected notes (the duplicate action will
+                // have changed which note is selected)
+                m_last_clicked_note = -1;
             }
         }
         else if (result == FOUND_SELECTED_NOTE)
         {
             m_clicked_on_note = true;
             m_track->playNote( m_last_clicked_note, false );
-                        
+            
             if (getMainFrame()->getMainPane()->isCommandDown())
             {
                 m_is_duplicating_note = true;
