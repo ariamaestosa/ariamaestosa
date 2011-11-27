@@ -18,10 +18,13 @@
 
 #include "AriaCore.h"
 #include "Actions/DeleteSelected.h"
+#include "Actions/Duplicate.h"
 #include "Actions/MoveNotes.h"
 #include "GUI/GraphicalSequence.h"
 #include "GUI/GraphicalTrack.h"
 #include "GUI/ImageProvider.h"
+#include "GUI/MainFrame.h"
+#include "GUI/MainPane.h"
 #include "IO/IOUtils.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
@@ -67,10 +70,11 @@ Editor::Editor(GraphicalTrack* track)
     m_selecting = false;
     m_use_vertical_scrollbar = true;
 
-    m_mouse_is_in_editor = false;
-    m_clicked_on_note    = false;
-    m_last_clicked_note  = -1;
-    m_use_instant_notes = false;
+    m_mouse_is_in_editor  = false;
+    m_clicked_on_note     = false;
+    m_last_clicked_note   = -1;
+    m_use_instant_notes   = false;
+    m_is_duplicating_note = false;
 
     m_relative_height = 1.0f;
     
@@ -398,13 +402,24 @@ void Editor::mouseDown(RelativeXCoord x, int y)
             m_graphical_track->selectNote(ALL_NOTES, false);
             m_graphical_track->selectNote(m_last_clicked_note, true);
             m_track->playNote(m_last_clicked_note);
+            
+            if (getMainFrame()->getMainPane()->isCommandDown())
+            {
+                m_is_duplicating_note = true;
+                m_track->action( new Action::Duplicate(this) );
+            }
         }
         else if (result == FOUND_SELECTED_NOTE)
         {
             m_clicked_on_note = true;
             m_track->playNote( m_last_clicked_note, false );
-
-            if (Display::isSelectMorePressed())
+                        
+            if (getMainFrame()->getMainPane()->isCommandDown())
+            {
+                m_is_duplicating_note = true;
+                m_track->action( new Action::Duplicate(this) );
+            }
+            else if (Display::isSelectMorePressed())
             {
                 m_track->selectNote(m_last_clicked_note, not m_track->isNoteSelected(m_last_clicked_note), true);
             }
@@ -568,8 +583,16 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
                 goto end_of_func;
             }
 
-            makeMoveNoteEvent(relativeX, relativeY, m_last_clicked_note);
-
+            if (m_is_duplicating_note)
+            {
+                Action::EditAction* action = m_track->getSequence()->getLatestAction();
+                makeMoveNoteEvent(relativeX, relativeY, m_last_clicked_note, dynamic_cast<Action::Duplicate*>(action));
+            }
+            else
+            {
+                makeMoveNoteEvent(relativeX, relativeY, m_last_clicked_note);
+            }
+            
         }// end if clicked on note
 
     }//end if m_mouse_is_in_editor
@@ -577,10 +600,10 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
 
 end_of_func:
 
-    m_selecting          = false;
-    m_mouse_is_in_editor = false;
-    m_clicked_on_note    = false;
-
+    m_selecting           = false;
+    m_mouse_is_in_editor  = false;
+    m_clicked_on_note     = false;
+    m_is_duplicating_note = false;
     Display::render();
 }
 
@@ -596,7 +619,8 @@ void Editor::mouseExited(RelativeXCoord mousex_current, int mousey_current,
     
     m_mouse_is_in_editor = false;
     m_clicked_on_note = false;
-
+    m_is_duplicating_note = false;
+    
     Display::render();
 }
 
@@ -742,17 +766,35 @@ int Editor::getLevelAtY(const int y)
     
 // ------------------------------------------------------------------------------------------------------------
 
-void Editor::makeMoveNoteEvent(const int relativeX, const int relativeY, const int noteID)
+void Editor::makeMoveNoteEvent(const int relativeX, const int relativeY, const int noteID,
+                               Action::Duplicate* duplicateParent)
 {
     // move a single note
     if (noteID != -1)
     {
-        m_track->action( new Action::MoveNotes(this, relativeX, relativeY, noteID) );
+        Action::MoveNotes* event = new Action::MoveNotes(this, relativeX, relativeY, noteID);
+        if (duplicateParent != NULL)
+        {
+            duplicateParent->moveEvent(event);
+        }
+        else
+        {
+            m_track->action( event );
+        }
     }
     else
     {
         // move many notes
-        m_track->action( new Action::MoveNotes(this, relativeX, relativeY, SELECTED_NOTES) );
+        Action::MoveNotes* event = new Action::MoveNotes(this, relativeX, relativeY, SELECTED_NOTES);
+
+        if (duplicateParent != NULL)
+        {
+            duplicateParent->moveEvent(event);
+        }
+        else
+        {
+            m_track->action( event );
+        }
     }
 }
 

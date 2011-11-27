@@ -221,6 +221,12 @@ namespace AriaMaestosa
         /** @brief you do not need to call this yourself, Track::action and Sequence::action do. */
         void addToUndoStack( Action::EditAction* action );
         
+        Action::EditAction* getLatestAction()
+        {
+            if (undoStack.size() == 0) return NULL;
+            return undoStack.get(undoStack.size() - 1);
+        }
+        
         /** @brief undo the Action at the top of the undo stack */
         void undo();
         

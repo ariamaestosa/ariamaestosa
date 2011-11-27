@@ -29,6 +29,8 @@
 
 namespace AriaMaestosa
 {
+    namespace Action { class Duplicate; }
+    
     const int BORDER_SIZE = 20;
     const int MARGIN = 5;
     const int MARGIN_Y = 4;
@@ -106,17 +108,21 @@ namespace AriaMaestosa
         
         bool m_clicked_on_note;
         
+        bool m_is_duplicating_note;
+        
         ptr_vector<Track, REF> m_background_tracks;
         
         unsigned short m_default_volume;
         
         /** 
           * @brief Considering the vertical step, the current scrolling, etc.
+          * @param  duplicateParent set if this move event is part of a move event
           * @return the vertical level coord from a y coord
           */
         int getLevelAtY(const int y);
         
-        void makeMoveNoteEvent(const int relativeX, const int relativeY, const int m_last_clicked_note);
+        void makeMoveNoteEvent(const int relativeX, const int relativeY, const int m_last_clicked_note,
+                               Action::Duplicate* duplicateParent=NULL);
 
         /** @brief if you use a scrollbar, call this method somewhere near the end of your render method. */
         void renderScrollbar();
