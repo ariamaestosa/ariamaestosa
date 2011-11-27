@@ -408,7 +408,7 @@ void RelativePlacementManager::calculateRelativePlacement()
     //
     //  Track 1 |ø===|ø===|ø===|ø===|   But  |ø=======|ø===|ø===|  (first note must be larger, since its extra
     //  Track 2 |ø===|====|====|====|        |ø=======|ø========|   space is not granted by the other track)
-    
+        
     const int tickAmount = m_all_interesting_ticks.size();
 
     if (tickAmount == 0) return;
@@ -512,13 +512,18 @@ void RelativePlacementManager::calculateRelativePlacement()
         
         currTick.m_size = spaceNeededToFitAllSymbols;
         
+        if (spaceNeededToFitAllSymbols < 1)
+        {
+            fprintf(stderr, "[RelativePlacementManager] WARNING: spaceNeededToFitAllSymbols is %i!\n", spaceNeededToFitAllSymbols);
+        }
+        
         // --------------------------------------------------------------------------------
         // Set coordinatess
         
         // set start position of current unit (without caring yet for value to be in range [0, 1])
         currTick.m_position     = m_total_needed_size;
         currTick.m_end_position = m_total_needed_size + spaceNeededToFitAllSymbols;
-
+        
         // set end position of previous unit (without caring yet for value to be in range [0, 1])
         //if (n>0) m_all_interesting_ticks[n-1].endPosition = totalAbsolutePosition;
         
@@ -542,6 +547,12 @@ void RelativePlacementManager::calculateRelativePlacement()
         currTick.m_position     = currTick.m_position     / m_total_needed_size;
         currTick.m_end_position = currTick.m_end_position / m_total_needed_size;
         
+        if (currTick.m_end_position - currTick.m_position  < 0.05f)
+        {
+            fprintf(stderr, "[RelativePlacementManager] WARNING: very small space allocated : %f to %f\n",
+                    currTick.m_position, currTick.m_end_position);
+        }
+        
 #if RPM_CHATTY
         std::cout << "m_all_interesting_ticks[" << n << "].position = "
                   << currTick.position << " to " << currTick.endPosition << std::endl;
@@ -564,8 +575,8 @@ Range<float> RelativePlacementManager::getSymbolRelativeArea(int tick) const
     
     if (id == -1)
     {
-        //std::cerr << "WARNING: RelativePlacementManager::getSymbolRelativeArea could not find tick " << tick 
-        //          << " (beat " << tick/float(getMeasureData()->beatLengthInTicks()) << ")\n";
+        std::cerr << "[RelativePlacementManager::getSymbolRelativeArea] WARNING: could not find tick "
+                  << tick << "\n";
         //ASSERT(false);
         return Range<float>(0, 0);
     }
