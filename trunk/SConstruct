@@ -269,11 +269,20 @@ def compile_Aria(which_os):
         # Ugly hack : wx flags need to appear at the end of the command, but scons doesn't support that, so I need to hack their link command
         env['LINKCOM']     = '$LINK -o $TARGET $LINKFLAGS $SOURCES $_LIBDIRFLAGS $_LIBFLAGS -mwindows ' + winLdFlags
     else:
-        if renderer == "opengl":
-            env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,gl,webview'])
+        wxversion = subprocess.check_output([WXCONFIG,"--version"]).strip()
+        print ">> wxWidgets version : " + wxversion
+        is_wx_3 = (wxversion[0] == '3' or (wxversion[0] == '2' and wxversion[2] == '9'))
+        if is_wx_3:
+            if renderer == "opengl":
+                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,gl,webview'])
+            else:
+                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,webview'])
         else:
-            env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,webview'])
-
+            if renderer == "opengl":
+                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,gl'])
+            else:
+                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base'])
+            
     # check build type and init build flags
     if build_type == "debug":
         env.Append(CCFLAGS=['-g','-Wall','-Wextra','-Wno-unused-parameter','-D_MORE_DEBUG_CHECKS','-D_CHECK_FOR_LEAKS','-Wfatal-errors','-DDEBUG=1'])
