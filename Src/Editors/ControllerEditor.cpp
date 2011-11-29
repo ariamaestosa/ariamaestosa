@@ -90,6 +90,8 @@ public:
         m_units->Append(labelContents, (void*)"default");
         if (m_controller != PSEUDO_CONTROLLER_TEMPO) m_units->Append(wxT("MIDI"), (void*)"midi");
 
+        m_units->SetSelection(0);
+        
         sizer->Add(m_units, 0, wxALL, 3);
 
         panel->SetSizer(sizer);
