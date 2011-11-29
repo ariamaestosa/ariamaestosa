@@ -6,6 +6,7 @@ NOTE: sorry, this is very raw :)
 	- update version in info.plist
 	- update changelog in docs
 	- update version in docs (download, changlelog)
+    - update version in windows ISS file
     - give permissions, check info.plist is the right one
 
   Linux: docs in /usr/doc/<package-name> (but on SuSE they go to/usr/share/doc/packages/<package-name>)
