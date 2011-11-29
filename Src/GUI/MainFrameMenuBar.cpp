@@ -1136,12 +1136,19 @@ void MainFrame::menuEvent_manual(wxCommandEvent& evt)
 #if wxUSE_WEBVIEW  && !defined(__WXMSW__)
     new ManualView(this, path_to_docs);
 #else
-    wxString test = wxT("file:") + sep +sep + sep + path_to_docs;
-
-    if (not wxFileExists( path_to_docs ) or not wxLaunchDefaultBrowser( wxT("file:") + sep +sep + sep + path_to_docs ))
+    wxString url = wxT("file:") + sep + sep + sep + path_to_docs;
+    url.Replace(wxT(" "), wxT("%20"));
+    url.Replace(wxT("\\"), wxT("/"));
+    
+    if (not wxFileExists( path_to_docs ))
     {
         wxMessageBox(wxT("Sorry, opening docs failed\n(") + path_to_docs +
-                     wxT(" does not appear to exist).\nTry ariamaestosa.sourceforge.net instead."));
+                     wxT(" does not appear to exist).\nTry visiting ariamaestosa.sf.net instead."));
+    }
+    else if (not wxLaunchDefaultBrowser( url ))
+    {
+        wxMessageBox(wxT("Sorry, opening docs failed\n(") + url +
+                     wxT(" does not appear to exist).\nTry visiting ariamaestosa.sf.net instead."));
     }
 #endif
 }
