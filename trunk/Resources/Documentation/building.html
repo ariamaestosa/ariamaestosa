@@ -83,22 +83,6 @@
     
     <br/><br/>
     <span class="code">
-    cd wxMac2.x.x
-    mkdir osx-build &amp;&amp; cd osx-build
-    ../configure --with-libjpeg=builtin --with-libpng=builtin --with-regex=builtin --without-libtiff
-         --with-zlib=builtin --with-expat=builtin --with-opengl --enable-unicode --disable-shared
-    make
-    sudo make install
-    </span>
-    
-</p>
-
-<p>
-    OR, to build wxOSX/Cocoa (wxWidgets 2.9.2+ only) :
-</p>
-
-<p>
-    <span class="code">
     ../configure --with-cocoa --with-libjpeg=builtin --with-libpng=builtin --with-regex=builtin
         --without-libtiff --with-zlib=builtin --with-expat=builtin --disable-shared
         --enable-macosx_arch=i386 --with-macosx-version-min=10.5
