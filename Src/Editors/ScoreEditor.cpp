@@ -697,7 +697,7 @@ void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* an
             if (renderInfo.m_stem_type == STEM_DOWN) stem_from_y += 6;
             
             const int stemx = getStemX(renderInfo, m_gsequence);
-            
+                        
             AriaRender::line(stemx, stem_from_y,
                              stemx, LEVEL_TO_Y(analyser->getStemTo(renderInfo))   );
         }

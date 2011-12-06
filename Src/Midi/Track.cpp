@@ -1494,11 +1494,15 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
                 if (m_editor_mode[DRUM])
                 {
-                    m.SetNoteOn( channel, m_notes[note_on_id].getPitchID(), m_notes[note_on_id].getVolume() );
+                    // in the MIDI standard, a note velocity of 0 turns a note on event into a note
+                    // off event, don't let that happen
+                    m.SetNoteOn(channel, m_notes[note_on_id].getPitchID(),
+                                std::max(1, m_notes[note_on_id].getVolume()) );
                 }
                 else
                 {
-                    m.SetNoteOn( channel, 131-m_notes[note_on_id].getPitchID(), m_notes[note_on_id].getVolume() );
+                    m.SetNoteOn(channel, 131-m_notes[note_on_id].getPitchID(),
+                                std::max(1, m_notes[note_on_id].getVolume()) );
                 }
 
                 // find track end
