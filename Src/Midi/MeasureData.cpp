@@ -16,17 +16,13 @@
 
 #include "Utils.h"
 
-#include "GUI/MainFrame.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 #include "Midi/Track.h"
 #include "Midi/TimeSigChange.h"
-//#include "Pickers/TimeSigPicker.h"
 
 #include <iostream>
 #include "irrXML/irrXML.h"
-//#include <wx/spinbutt.h>
-//#include <wx/msgdlg.h>
 
 using namespace AriaMaestosa;
 
@@ -566,10 +562,10 @@ void MeasureData::updateMeasureInfo()
         return;
     }
     
-    
-    // FIXME: (DESIGN) use listener instead of referring to GUI class from model
-    DisplayFrame::updateHorizontalScrollbar();
-    getMainFrame()->updateTopBarAndScrollbars();
+    for (unsigned int n=0; n<m_listeners.size(); n++)
+    {
+        m_listeners[n]->onMeasureDataChange(0);
+    }
     
     ASSERT_E(m_measure_amount, ==, (int)m_measure_info.size());
 }
