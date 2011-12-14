@@ -61,6 +61,7 @@ namespace AriaMaestosa
         languages.push_back( AriaLanguage( wxLANGUAGE_ITALIAN,   wxT("Italiano") ) );      // 3
         languages.push_back( AriaLanguage( wxLANGUAGE_GERMAN,    wxT("Deutsch") ) );       // 4
         languages.push_back( AriaLanguage( wxLANGUAGE_JAPANESE,  wxT("Japanese (\u65E5\u672C\u8A9E)") ) ); // 5
+        languages.push_back( AriaLanguage( wxLANGUAGE_SPANISH,   wxT("Espa\u00F1ol") ) );  // 6
     }
     
     void initLanguageSupport()
