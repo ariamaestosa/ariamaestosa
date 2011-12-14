@@ -476,6 +476,7 @@
 		95711B251125D8D300104BF5 /* wxRenderPane.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119911125D8D300104BF5 /* wxRenderPane.h */; };
 		95711B261125D8D300104BF5 /* Singleton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957119921125D8D300104BF5 /* Singleton.cpp */; };
 		95711B271125D8D300104BF5 /* Singleton.h in Headers */ = {isa = PBXBuildFile; fileRef = 957119931125D8D300104BF5 /* Singleton.h */; };
+		95724FA21499446500CE4BE0 /* es.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95724F871499445300CE4BE0 /* es.lproj */; };
 		957629731365DD3200F97DEC /* CoreMIDIOutput.h in Headers */ = {isa = PBXBuildFile; fileRef = 957629711365DD3200F97DEC /* CoreMIDIOutput.h */; };
 		957629741365DD3200F97DEC /* CoreMIDIOutput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957629721365DD3200F97DEC /* CoreMIDIOutput.cpp */; };
 		957629751365DD3200F97DEC /* CoreMIDIOutput.h in Headers */ = {isa = PBXBuildFile; fileRef = 957629711365DD3200F97DEC /* CoreMIDIOutput.h */; };
@@ -839,9 +840,10 @@
 				95DB7D12133E88FB0060AB17 /* tool2.png in CopyFiles */,
 				95DB7D13133E88FB0060AB17 /* white_border.png in CopyFiles */,
 				95DB7D14133E88FB0060AB17 /* white_corner.png in CopyFiles */,
-				950B3EFC1125DE60006C9AF1 /* fr.lproj in CopyFiles */,
-				950B3EFD1125DE60006C9AF1 /* en.lproj in CopyFiles */,
 				950B3EFE1125DE60006C9AF1 /* de.lproj in CopyFiles */,
+				95724FA21499446500CE4BE0 /* es.lproj in CopyFiles */,
+				950B3EFD1125DE60006C9AF1 /* en.lproj in CopyFiles */,
+				950B3EFC1125DE60006C9AF1 /* fr.lproj in CopyFiles */,
 				950B3EFF1125DE60006C9AF1 /* it.lproj in CopyFiles */,
 				950F0F0114376197008E0D62 /* ja.lproj in CopyFiles */,
 				950B3EF01125DE41006C9AF1 /* violin.icns in CopyFiles */,
@@ -1136,6 +1138,7 @@
 		957119911125D8D300104BF5 /* wxRenderPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wxRenderPane.h; path = ../Src/Renderers/wxRenderPane.h; sourceTree = SOURCE_ROOT; };
 		957119921125D8D300104BF5 /* Singleton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Singleton.cpp; path = ../Src/Singleton.cpp; sourceTree = SOURCE_ROOT; };
 		957119931125D8D300104BF5 /* Singleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Singleton.h; path = ../Src/Singleton.h; sourceTree = SOURCE_ROOT; };
+		95724F871499445300CE4BE0 /* es.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = es.lproj; path = "mac-i18n/es.lproj"; sourceTree = SOURCE_ROOT; };
 		957629711365DD3200F97DEC /* CoreMIDIOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreMIDIOutput.h; path = ../Src/Midi/Players/Mac/CoreMIDIOutput.h; sourceTree = SOURCE_ROOT; };
 		957629721365DD3200F97DEC /* CoreMIDIOutput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CoreMIDIOutput.cpp; path = ../Src/Midi/Players/Mac/CoreMIDIOutput.cpp; sourceTree = SOURCE_ROOT; };
 		957629951365DF7300F97DEC /* OutputBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OutputBase.h; path = ../Src/Midi/Players/Mac/OutputBase.h; sourceTree = SOURCE_ROOT; };
@@ -1712,6 +1715,7 @@
 			children = (
 				950B3EE31125DE18006C9AF1 /* de.lproj */,
 				950B3EE61125DE18006C9AF1 /* en.lproj */,
+				95724F871499445300CE4BE0 /* es.lproj */,
 				950B3EE81125DE18006C9AF1 /* fr.lproj */,
 				950B3EEB1125DE18006C9AF1 /* it.lproj */,
 				950F0EF714376080008E0D62 /* ja.lproj */,
