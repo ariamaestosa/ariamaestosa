@@ -110,6 +110,14 @@ namespace AriaMaestosa
         }
         
         virtual NotationType getNotationType() const { return DRUM; }
+        
+        bool showOnlyUsedDrums() const { return m_show_used_drums_only; }
+        
+        /** Set the value of m_show_used_drums_only.
+          * @note You need to call DrumEditor::useCustomDrumSet or DrumEditor::useDefaultDrumSet
+          *       manually after calling this.
+          */
+        void setShowOnlyUsedDrums(bool b) { m_show_used_drums_only = b; }
     };
     
 }

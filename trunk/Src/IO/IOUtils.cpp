@@ -37,6 +37,11 @@ wxString to_wxString(int i)
     return wxString::Format(wxT("%i"), i);
 }
 
+wxString to_wxString(bool b)
+{
+    return b ? wxT("true") : wxT("false");
+}
+    
 wxString to_wxString(float f)
 {
     return wxString::Format(wxT("%f"), f);

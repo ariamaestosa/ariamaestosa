@@ -25,6 +25,7 @@
 #include "GUI/GraphicalTrack.h"
 #include "GUI/MainFrame.h"
 #include "Editors/ControllerEditor.h"
+#include "Editors/DrumEditor.h"
 
 #include "IO/IOUtils.h"
 #include "Midi/Track.h"
@@ -1959,6 +1960,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                     
                     tuning->setTuning(newTuning, false);
                 }
+                // FIXME: this is SAVED in GraphicalTrack but LOADED here. wtf.
                 else if (strcmp("drumkit", xml->getNodeName()) == 0)
                 {
                     const char* id = xml->getAttributeValue("id");
@@ -1970,6 +1972,12 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                     else
                     {
                         std::cerr << "Missing info from file: drum ID" << std::endl;
+                    }
+                    
+                    const char* collapse = xml->getAttributeValue("collapseView");
+                    if (collapse != NULL && strcmp(collapse, "true") == 0)
+                    {
+                        getGraphics()->getDrumEditor()->setShowOnlyUsedDrums(true);
                     }
                 }
                 else if (strcmp("controller", xml->getNodeName()) == 0)
@@ -2132,6 +2140,14 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                 if (strcmp("track", xml->getNodeName()) == 0)
                 {
                     reorderNoteOffVector();
+                    
+                    // now that we have the set of notes, we can collapse the view if needed
+                    GraphicalTrack* gtrack = getGraphics();
+                    if (gtrack->getDrumEditor()->showOnlyUsedDrums())
+                    {
+                        gtrack->getDrumEditor()->useCustomDrumSet();
+                    }
+                    
                     return true;
                 }
             }
@@ -2145,6 +2161,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
     // FIXME: this code is useless, will be never reached (see "return" above)
     reorderNoteOffVector();
 
+    
     return true;
 
 }

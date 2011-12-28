@@ -1841,7 +1841,8 @@ void GraphicalTrack::saveToFile(wxFileOutputStream& fileout)
 
     // TODO: move this to 'Track', has nothing to do here in GraphicalTrack
     writeData( wxT("  <instrument id=\"") + to_wxString( m_track->getInstrument() ) + wxT("\"/>\n"), fileout);
-    writeData( wxT("  <drumkit id=\"") + to_wxString( m_track->getDrumKit() ) + wxT("\"/>\n"), fileout);
+    writeData( wxT("  <drumkit id=\"") + to_wxString( m_track->getDrumKit() ) + wxT("\" collapseView=\"") +
+               to_wxString(m_drum_editor->showOnlyUsedDrums()) + wxT("\"/>\n"), fileout);
     writeData( wxT("  <controller id=\"") + to_wxString( m_controller_editor->getCurrentControllerType() ) + wxT("\"/>\n"), fileout);
 
     
