@@ -2,6 +2,7 @@
 - Fixed MIDI export when some notes have a volume of 0
 - Spanish translation (thanks to Othyro)
 - Fix double replace confirmation on OSX (Cocoa)
+- Remember in saved Aria files whether unused drums were hidden
 
 1.3 beta 4
 - Added ability to drag-duplicate notes

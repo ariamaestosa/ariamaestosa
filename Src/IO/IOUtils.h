@@ -45,6 +45,9 @@ namespace AriaMaestosa
     wxString to_wxString2(float f);
     
     /** @ingroup io */
+    wxString to_wxString(bool b);
+    
+    /** @ingroup io */
     void writeData(wxString data, wxFileOutputStream& fileout);
     
     wxString extract_filename(wxString filepath);
