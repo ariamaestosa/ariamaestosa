@@ -521,15 +521,17 @@ bool MainFrame::doSaveAs()
 
     if (not givenPath.IsEmpty())
     {
-
-
+#ifndef __WXOSX_COCOA__
+        // Check if file already exists and ask before overwriting it, EXCEPT on Cocoa where the native
+        // file dialog has a built-in replace dialog
         if (wxFileExists(givenPath))
         {
             int answer = wxMessageBox(  _("The file already exists. Do you wish to overwrite it?"),  _("Confirm"),
                                         wxYES_NO, this);
             if (answer != wxYES) return true;
         }
-
+#endif
+        
         getCurrentSequence()->setFilepath( givenPath );
         saveAriaFile(getCurrentGraphicalSequence(), getCurrentSequence()->getFilepath());
 
@@ -578,14 +580,17 @@ void MainFrame::menuEvent_exportmidi(wxCommandEvent& evt)
 
     if (midiFilePath.IsEmpty()) return;
 
-    // if file already exists, ask for overwriting
+#ifndef __WXOSX_COCOA__
+    // Check if file already exists and ask before overwriting it, EXCEPT on Cocoa where the native
+    // file dialog has a built-in replace dialog
     if ( wxFileExists(midiFilePath) )
     {
         int answer = wxMessageBox(  _("The file already exists. Do you wish to overwrite it?"),  _("Confirm"),
                                     wxYES_NO, this);
         if (answer != wxYES) return;
     }
-
+#endif
+    
     // write data to file
     const bool success = AriaMaestosa::exportMidiFile( getCurrentSequence(), midiFilePath );
 
@@ -612,14 +617,16 @@ void MainFrame::menuEvent_exportSampledAudio(wxCommandEvent& evt)
 
     if (audioFilePath.IsEmpty()) return;
 
-    // if file already exists, ask for overwriting
+#ifndef __WXOSX_COCOA__
+    // Check if file already exists and ask before overwriting it, EXCEPT on Cocoa where the native
+    // file dialog has a built-in replace dialog
     if ( wxFileExists(audioFilePath) )
     {
         int answer = wxMessageBox(  _("The file already exists. Do you wish to overwrite it?"),  _("Confirm"),
                                     wxYES_NO, this);
         if (answer != wxYES) return;
     }
-
+#endif
 
     // show progress bar
     MAKE_SHOW_PROGRESSBAR_EVENT( event, _("Please wait while audio file is being generated.\n\nDepending on the length of your file,\nthis can take several minutes."), false );
