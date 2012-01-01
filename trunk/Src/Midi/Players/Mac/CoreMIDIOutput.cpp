@@ -173,7 +173,7 @@ CoreMidiOutput::CoreMidiOutput()
 
 CoreMidiOutput::~CoreMidiOutput()
 {
-    // TODO: clean up
+    MIDIPortDispose (m_port);
 }
 
 // ------------------------------------------------------------------------------------------------------
