@@ -149,19 +149,12 @@ enum Controllers
     kController_BankLSBControl	= 32,
 };
 
-
-// ------------------------------------------------------------------------------------------------------
-
-AUGraph graph = 0;
-AudioUnit synthUnit;
-char* bankPath = 0;
-
 // ------------------------------------------------------------------------------------------------------
 
 void AudioUnitOutput::programChange(uint8_t progChangeNum, uint8_t midiChannelInUse)
 {
     OSStatus result;
-    require_noerr (result = MusicDeviceMIDIEvent(synthUnit, 
+    require_noerr (result = MusicDeviceMIDIEvent(m_synth_unit, 
                                                  kMidiMessage_ProgramChange << 4 | midiChannelInUse, 
                                                  progChangeNum, 0,
                                                  0 /*sample offset*/), home_programChange);
@@ -178,7 +171,7 @@ home_programChange:
 void AudioUnitOutput::setBank(uint8_t midiChannelInUse)
 {
     OSStatus result;
-    require_noerr (result = MusicDeviceMIDIEvent(synthUnit, 
+    require_noerr (result = MusicDeviceMIDIEvent(m_synth_unit, 
                                                  kMidiMessage_ControlChange << 4 | midiChannelInUse, 
                                                  kController_BankMSBControl, 0,
                                                  0 /*sample offset*/), home_setBank);
@@ -194,11 +187,13 @@ home_setBank:
 
 AudioUnitOutput::AudioUnitOutput()
 {
+    m_graph = 0;
+    
     uint8_t midiChannelInUse = 0;
     
     OSStatus result;
     
-    require_noerr (result = CreateAUGraph (graph, synthUnit), err1);
+    require_noerr (result = CreateAUGraph(m_graph, m_synth_unit), err1);
     
     /*
      // if the user supplies a sound bank, we'll set that before we initialize and start playing
@@ -209,7 +204,7 @@ AudioUnitOutput::AudioUnitOutput()
      
      printf ("Setting Sound Bank:%s\n", bankPath);
      
-     require_noerr (result = AudioUnitSetProperty (synthUnit,
+     require_noerr (result = AudioUnitSetProperty (m_synth_unit,
      kMusicDeviceProperty_SoundBankFSRef,
      kAudioUnitScope_Global, 0,
      &fsRef, sizeof(fsRef)), ctor_home);
@@ -218,7 +213,7 @@ AudioUnitOutput::AudioUnitOutput()
      */
     
     // initialize and start the graph
-    require_noerr (result = AUGraphInitialize (graph), err2);
+    require_noerr (result = AUGraphInitialize(m_graph), err2);
     
     for (int n=0; n<15; n++)
     {
@@ -227,19 +222,19 @@ AudioUnitOutput::AudioUnitOutput()
     }
     
     //set our bank
-    require_noerr (result = MusicDeviceMIDIEvent(synthUnit,
+    require_noerr (result = MusicDeviceMIDIEvent(m_synth_unit,
                                                  kMidiMessage_ControlChange << 4 | midiChannelInUse,
                                                  kMidiMessage_BankMSBControl, 0,
                                                  0/*sample offset*/), err3);
     
-    require_noerr (result = MusicDeviceMIDIEvent(synthUnit,
+    require_noerr (result = MusicDeviceMIDIEvent(m_synth_unit,
                                                  kMidiMessage_ProgramChange << 4 | midiChannelInUse,
                                                  0/*prog change num*/, 0,
                                                  0/*sample offset*/), err4);
     
     //CAShow (graph); // prints out the graph so we can see what it looks like...
     
-    require_noerr (result = AUGraphStart (graph), err5);
+    require_noerr (result = AUGraphStart(m_graph), err5);
     return;
     
 err1:
@@ -272,10 +267,10 @@ err5:
 
 AudioUnitOutput::~AudioUnitOutput()
 {
-    if (graph)
+    if (m_graph)
     {
-        AUGraphStop (graph); // stop playback - AUGraphDispose will do that for us but just showing you what to do
-        DisposeAUGraph (graph);
+        AUGraphStop(m_graph);
+        DisposeAUGraph(m_graph);
     }
 }
 
@@ -294,7 +289,7 @@ void AudioUnitOutput::note_on(const int note, const int volume, const int channe
     UInt32 noteOnCommand = kMidiMessage_NoteOn << 4 | channel;
     
     // note on
-    require_noerr (result = MusicDeviceMIDIEvent(synthUnit, noteOnCommand, note, volume, 0), home);
+    require_noerr (result = MusicDeviceMIDIEvent(m_synth_unit, noteOnCommand, note, volume, 0), home);
     
 home:
     
@@ -309,7 +304,7 @@ void AudioUnitOutput::note_off(const int note, const int channel)
     UInt32 noteOnCommand = kMidiMessage_NoteOn << 4 | channel;
     
     // note off
-    require_noerr (result = MusicDeviceMIDIEvent(synthUnit, noteOnCommand, note, 0, 0), home);
+    require_noerr (result = MusicDeviceMIDIEvent(m_synth_unit, noteOnCommand, note, 0, 0), home);
     
 home:
     
@@ -324,7 +319,7 @@ void AudioUnitOutput::prog_change(const int instrument, const int channel)
     UInt32 progamChange = kMidiMessage_ProgramChange << 4 | channel;
     
     // set instrument
-    require_noerr (result = MusicDeviceMIDIEvent(synthUnit, progamChange, instrument, 0, 0), home);
+    require_noerr (result = MusicDeviceMIDIEvent(m_synth_unit, progamChange, instrument, 0, 0), home);
     
 home:
     
@@ -336,7 +331,7 @@ home:
 void AudioUnitOutput::controlchange(const int controller, const int value, const int channel)
 {
     OSStatus result;
-    require_noerr (result = MusicDeviceMIDIEvent(synthUnit, 
+    require_noerr (result = MusicDeviceMIDIEvent(m_synth_unit, 
                                                  kMidiMessage_ControlChange << 4 | channel, 
                                                  controller, value,
                                                  0 /*sample offset*/), home_setBank);
@@ -352,7 +347,7 @@ home_setBank:
 void AudioUnitOutput::pitch_bend(const int value, const int channel)
 {
     OSStatus result;
-    require_noerr (result = MusicDeviceMIDIEvent(synthUnit, 
+    require_noerr (result = MusicDeviceMIDIEvent(m_synth_unit, 
                                                  kMidiMessage_PitchBend << 4 | channel, 
                                                  (value & 0x7F), ((value >> 7) & 0x7F),
                                                  0 /*sample offset*/), home_setBank);

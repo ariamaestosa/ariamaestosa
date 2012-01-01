@@ -65,6 +65,8 @@ OutputBase::OutputBase()
 
 OutputBase::~OutputBase()
 {
+    MIDIClientDispose(m_client);
+    
     if (stopNoteTimer != NULL)
     {
         delete stopNoteTimer;

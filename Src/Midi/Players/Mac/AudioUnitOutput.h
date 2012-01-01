@@ -25,6 +25,10 @@
   */
 class AudioUnitOutput : public OutputBase
 {
+    AUGraph m_graph;
+    AudioUnit m_synth_unit;
+    //char* m_bank_path;
+    
     void setBank(uint8_t midiChannelInUse);
     void programChange(uint8_t progChangeNum, uint8_t midiChannelInUse);
     
