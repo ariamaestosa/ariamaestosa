@@ -176,6 +176,20 @@ MainPane::MainPane(wxWindow* parent, int* args) :
     m_mouse_down_timer = new MouseDownTimer(this);
 
     m_scroll_to_playback_position = false;
+    
+    m_have_plus_cursor = false;
+    
+#ifdef __WXOSX_COCOA__
+    wxString file = wxT("/System/Library/Frameworks/WebKit.framework/Versions/A/Frameworks/WebCore.framework/Versions/A/Resources/copyCursor.png");
+    if (wxFileExists(file))
+    {
+        m_have_plus_cursor = true;
+        wxImage img(file);
+        img.SetOption(wxIMAGE_OPTION_CUR_HOTSPOT_X, 4);
+        img.SetOption(wxIMAGE_OPTION_CUR_HOTSPOT_Y, 4);
+        m_plus_cursor = wxCursor(img);
+    }
+#endif
 }
 
 MainPane::~MainPane()
@@ -1194,32 +1208,27 @@ void MainPane::mouseReleased(wxMouseEvent& event)
 
 void MainPane::keyReleased(wxKeyEvent& evt)
 {
-    /*
-    if (isSelectMorePressed())
-    {
-        SetCursor( wxCursor(wxCURSOR_COPY_ARROW) );
-    }
-    else
+    if (m_have_plus_cursor)
     {
         SetCursor( wxNullCursor );
     }
-    */
 }
 
 // --------------------------------------------------------------------------------------------------
 
 void MainPane::keyPressed(wxKeyEvent& evt)
 {
-    /*
-    if (isSelectMorePressed())
+    if (m_have_plus_cursor)
     {
-        SetCursor( wxCursor(wxCURSOR_COPY_ARROW) );
+        if (isSelectMorePressed())
+        {
+            SetCursor( m_plus_cursor );
+        }
+        else
+        {
+            SetCursor( wxNullCursor );
+        }
     }
-    else
-    {
-        SetCursor( wxNullCursor );
-    }
-    */
     
     MainFrame* mf = getMainFrame();
     if (mf->getSequenceAmount() == 0) return;
