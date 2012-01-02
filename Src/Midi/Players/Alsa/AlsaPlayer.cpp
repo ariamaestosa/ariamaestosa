@@ -28,6 +28,7 @@
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/CommonMidiUtils.h"
 #include "Midi/Sequence.h"
+#include "PreferencesData.h"
 #include "GUI/MainFrame.h"
 #include "IO/MidiToMemoryStream.h"
 #include "IO/IOUtils.h"
@@ -224,7 +225,7 @@ public:
         
         context = new MidiContext();
         
-        const bool launchTimidity = (Core::getPrefsLongValue("launchTimidity") != 0);
+        const bool launchTimidity = (PreferencesData::getInstance()->getBoolValue("launchTimidity"));
         
         if (not context->openDevice(launchTimidity))
         {
