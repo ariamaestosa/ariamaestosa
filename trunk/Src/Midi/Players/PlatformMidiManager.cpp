@@ -39,7 +39,7 @@ PlatformMidiManager::PlatformMidiManager()
 {
     m_recording = false;
     m_record_action = NULL;
-    m_playthrough = PreferencesData::getInstance()->getIntValue(SETTING_ID_PLAYTHROUGH);
+    m_playthrough = PreferencesData::getInstance()->getBoolValue(SETTING_ID_PLAYTHROUGH);
 }
 
 // ----------------------------------------------------------------------------------------------------------

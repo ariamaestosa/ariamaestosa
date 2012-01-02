@@ -36,6 +36,13 @@ namespace AriaMaestosa
         SETTING_INT
     };
     
+    enum SettingSubType
+    {
+        SETTING_SUBTYPE_NONE,
+        /** Only for 'SETTING_STRING */
+        SETTING_SUBTYPE_FILE_OR_DEFAULT
+    };
+    
 #ifdef DEFINE_SETTING_NAMES
 #define EXTERN
 #define DEFAULT(X) = X
@@ -61,6 +68,10 @@ namespace AriaMaestosa
     EXTERN const char* SETTING_ID_MIDI_OUTPUT      DEFAULT("midiOutput");
     EXTERN const char* SETTING_ID_MIDI_INPUT       DEFAULT("midiInput");
 
+#ifdef __APPLE__
+    EXTERN const char* SETTING_ID_SOUNDBANK        DEFAULT("soundbank");
+#endif
+    
 #undef EXTERN
 #undef DEFAULT
     
@@ -68,15 +79,16 @@ namespace AriaMaestosa
     {
     public:
         
-        wxString      m_name;
-        wxString      m_user_name;
-        wxArrayString m_choices;
-        SettingType   m_type;
-        wxString      m_value;
-        bool          m_visible_in_preferences;
+        wxString       m_name;
+        wxString       m_user_name;
+        wxArrayString  m_choices;
+        SettingType    m_type;
+        SettingSubType m_subtype;
+        wxString       m_value;
+        bool           m_visible_in_preferences;
         
         Setting(wxString name, wxString user_name, SettingType type, bool visibleInPreferences,
-                wxString default_value = wxEmptyString);
+                wxString default_value = wxEmptyString, SettingSubType subtype = SETTING_SUBTYPE_NONE);
         void addChoice(wxString choice);
         void setChoices(wxArrayString choices);
     };
@@ -106,6 +118,7 @@ namespace AriaMaestosa
         void init();
         
         long getIntValue(const char* entryName) const { return getIntValue(wxString(entryName, wxConvUTF8)); }
+        bool getBoolValue(const char* entryName) const;
         wxString getValue(const char* entryName) const { return getValue(wxString(entryName, wxConvUTF8)); }
         wxString getValue(wxString entryName) const;
         long getIntValue(wxString entryName) const;

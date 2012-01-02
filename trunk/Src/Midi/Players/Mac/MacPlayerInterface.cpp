@@ -254,7 +254,9 @@ namespace AriaMaestosa
                     PreferencesData::getInstance()->setValue(SETTING_ID_MIDI_OUTPUT, _("OSX Software Synthesizer"));
                 }
                 
-                output = new AudioUnitOutput();
+                wxString soundfont = PreferencesData::getInstance()->getValue(SETTING_ID_SOUNDBANK);
+                output = new AudioUnitOutput(soundfont == wxT("System soundbank") ?
+                                             NULL : (const char*)soundfont.utf8_str());
             }
             else
             {

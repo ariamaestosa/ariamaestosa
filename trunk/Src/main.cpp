@@ -194,7 +194,7 @@ bool wxWidgetApp::OnInit()
     wxLogVerbose( wxT("[main] init preferences") );
     prefs = PreferencesData::getInstance();
     prefs->init();
-    Core::setPlayDuringEdit((PlayDuringEditMode)Core::getPrefsLongValue("playDuringEdit"));
+    Core::setPlayDuringEdit((PlayDuringEditMode)PreferencesData::getInstance()->getIntValue("playDuringEdit"));
     
     //read presets
     KeyPresetGroup::getInstance();

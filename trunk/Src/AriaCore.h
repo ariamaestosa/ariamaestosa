@@ -86,9 +86,6 @@ namespace AriaMaestosa
         KeyPicker*        getKeyPicker();
         DrumPicker*       getDrumPicker();
         InstrumentPicker* getInstrumentPicker();
-        
-        wxString getPrefsValue( const char* entryName );
-        long getPrefsLongValue( const char* entryName );
     }
     
     namespace Display

@@ -37,11 +37,13 @@ using namespace AriaMaestosa;
 #endif
 
 Setting::Setting(wxString name, wxString user_name, SettingType type,
-                 bool visibleInPreferences, wxString default_value)
+                 bool visibleInPreferences, wxString default_value,
+                 SettingSubType subtype)
 {
     m_name                   = name;
     m_user_name              = user_name;
     m_type                   = type;
+    m_subtype                = subtype;
     m_value                  = default_value;
     m_visible_in_preferences = visibleInPreferences;
 }
@@ -167,6 +169,14 @@ void PreferencesData::fillSettingsVector()
     scoreview->addChoice(_("Linear Only"));
     m_settings.push_back( scoreview );
     
+#ifdef __APPLE__
+    // ---- soundbank
+    Setting* soundbank = new Setting(fromCString(SETTING_ID_SOUNDBANK), _("Soundfont"),
+                                     SETTING_STRING, true /* show in preferences */, wxT("System soundbank"),
+                                     SETTING_SUBTYPE_FILE_OR_DEFAULT);
+    m_settings.push_back( soundbank );
+#endif
+    
     // ---- follow playback
     Setting* followp = new Setting(fromCString(SETTING_ID_FOLLOW_PLAYBACK), _("Follow playback by default"),
                                    SETTING_BOOL, true /* show in preferences */, wxT("0") );
@@ -227,6 +237,7 @@ void PreferencesData::fillSettingsVector()
     Setting* paperType = new Setting(fromCString(SETTING_ID_PAPER_TYPE), wxT(""),
                                      SETTING_INT, false /* show in preferences */, to_wxString(wxPAPER_LETTER) );
     m_settings.push_back( paperType );
+    
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -269,6 +280,25 @@ long PreferencesData::getIntValue(wxString entryName) const
     wxString asString = getValue(entryName);
     ASSERT(not asString.IsEmpty());
     
+    long asInt = -1;
+    if (not asString.ToLong(&asInt))
+    {
+        ASSERT(false);
+    }
+    return asInt;
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+bool PreferencesData::getBoolValue(const char* entryName) const
+{
+    wxString asString = getValue(entryName);
+    ASSERT(not asString.IsEmpty());
+    
+    if (asString == wxT("true")) return true;
+    else if (asString == wxT("false")) return false;
+    
+    // otherwise try 0/1
     long asInt = -1;
     if (not asString.ToLong(&asInt))
     {

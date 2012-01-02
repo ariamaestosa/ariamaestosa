@@ -18,7 +18,6 @@
 #include "Actions/AddNote.h"
 #include "Actions/ShiftBySemiTone.h"
 #include "Analysers/ScoreAnalyser.h"
-//#include "Dialogs/Preferences.h"
 #include "Editors/ScoreEditor.h"
 #include "Editors/RelativeXCoord.h"
 #include "GUI/ImageProvider.h"
@@ -30,6 +29,7 @@
 #include "Midi/MeasureData.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Pickers/KeyPicker.h"
+#include "PreferencesData.h"
 #include "Renderers/Drawable.h"
 #include "Renderers/ImageBase.h"
 #include "Renderers/RenderAPI.h"
@@ -410,7 +410,7 @@ ScoreEditor::ScoreEditor(GraphicalTrack* track) : Editor(track)
     m_f_clef = true;
     m_clicked_note = -1;
 
-    const long scoreView = Core::getPrefsLongValue("scoreview");
+    const int scoreView = PreferencesData::getInstance()->getIntValue("scoreview");
     m_musical_notation_enabled = (scoreView == 0 or scoreView == 1);
     m_linear_notation_enabled  = (scoreView == 0 or scoreView == 2);
 

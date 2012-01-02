@@ -31,6 +31,9 @@
 #include <wx/panel.h>
 #include <wx/stattext.h>
 #include <wx/button.h>
+#include <wx/textctrl.h>
+#include <wx/combobox.h>
+#include <wx/textentry.h>
 
 using namespace AriaMaestosa;
 
@@ -69,9 +72,10 @@ namespace AriaMaestosa
     class SettingWidget
     {
     public:
-        wxChoice*   m_combo;
-        wxCheckBox* m_checkbox;
-        wxSpinCtrl* m_number;
+        wxChoice*    m_combo;
+        wxCheckBox*  m_checkbox;
+        wxSpinCtrl*  m_number;
+        wxTextEntry* m_textbox;
         
         Setting*    m_parent;
         
@@ -81,17 +85,17 @@ namespace AriaMaestosa
             m_combo    = NULL;
             m_checkbox = NULL;
             m_number   = NULL;
+            m_textbox  = NULL;
         }
         
         void updateWidgetFromValue()
         {
-            long asLong;
-            const bool longValueValid = m_parent->m_value.ToLong(&asLong);
-            
             switch (m_parent->m_type)
             { 
                 case SETTING_ENUM:
                 {
+                    long asLong;
+                    const bool longValueValid = m_parent->m_value.ToLong(&asLong);
                     if (not longValueValid)
                     {
                         std::cerr << "WARNING: invalid integer value <" << m_parent->m_value.mb_str() 
@@ -122,18 +126,33 @@ namespace AriaMaestosa
                     
                 case SETTING_BOOL:
                 {
-                    if (not longValueValid)
+                    if (m_parent->m_value == wxT("true"))
                     {
-                        std::cerr << "WARNING: invalid boolean value <" << m_parent->m_value.mb_str() 
-                                  << "> in preferences\n";
-                        return;  
+                        m_checkbox->SetValue(true);
                     }
-                    m_checkbox->SetValue(asLong);
+                    else if (m_parent->m_value == wxT("false"))
+                    {
+                        m_checkbox->SetValue(false);
+                    }
+                    else
+                    {
+                        long asLong;
+                        const bool longValueValid = m_parent->m_value.ToLong(&asLong);
+                        if (not longValueValid)
+                        {
+                            std::cerr << "WARNING: invalid boolean value <" << m_parent->m_value.mb_str() 
+                                      << "> in preferences\n";
+                            return;  
+                        }
+                        m_checkbox->SetValue(asLong);
+                    }
                     break;
                 }
                     
                 case SETTING_INT:
                 {
+                    long asLong;
+                    const bool longValueValid = m_parent->m_value.ToLong(&asLong);
                     if (not longValueValid)
                     {
                         std::cerr << "WARNING: invalid integer value <" << m_parent->m_value.mb_str() 
@@ -144,6 +163,12 @@ namespace AriaMaestosa
                     break;
                 }
                 
+                case SETTING_STRING:
+                {
+                    m_textbox->SetValue(m_parent->m_value);
+                    break;
+                }
+                    
                 default:
                 {
                     ASSERT(false);
@@ -171,6 +196,10 @@ namespace AriaMaestosa
                     
                 case SETTING_INT:
                     m_parent->m_value = to_wxString(m_number->GetValue());
+                    break;
+                
+                case SETTING_STRING:
+                    m_parent->m_value = m_textbox->GetValue();
                     break;
                     
                 default:
@@ -248,6 +277,34 @@ wxDialog(parent, wxID_ANY,
                 box.add(w->m_number);
                 break;
             }
+            case SETTING_STRING:
+            {
+                if (settings[i].m_subtype == SETTING_SUBTYPE_FILE_OR_DEFAULT)
+                {
+                    QuickBoxLayout box(this, vert_sizer);
+                    box.add(new wxStaticText(box.pane, wxID_ANY, settings[i].m_user_name), 1);
+                    
+                    wxString choices[] = {wxT("System soundbank"), _("Browse...")};
+                    wxComboBox* combo = new wxComboBox(box.pane, wxID_ANY, settings[i].m_value,
+                                                       wxDefaultPosition, wxDefaultSize,
+                                                       2, choices);                    
+                    w->m_textbox = combo;
+                    combo->Connect(wxEVT_COMMAND_COMBOBOX_SELECTED,
+                                   wxCommandEventHandler(PreferencesDialog::onComboSelection), NULL, this);
+                    ASSERT(dynamic_cast<wxWindow*>(w->m_textbox) != NULL);
+                    box.add(dynamic_cast<wxWindow*>(w->m_textbox));
+                }
+                else
+                {
+                    QuickBoxLayout box(this, vert_sizer);
+                    box.add(new wxStaticText(box.pane, wxID_ANY, settings[i].m_user_name ), 1);
+                    
+                    w->m_textbox = new wxTextCtrl(box.pane, wxID_ANY, settings[i].m_value);
+                    ASSERT(dynamic_cast<wxWindow*>(w->m_textbox) != NULL);
+                    box.add(dynamic_cast<wxWindow*>(w->m_textbox));
+                }
+                break;
+            }
         }
     }
     
@@ -298,6 +355,27 @@ void PreferencesDialog::okClicked(wxCommandEvent& evt)
     updateValuesFromWidgets();
     m_data->save();
     wxDialog::EndModal(modalCode);
+}
+
+// ---------------------------------------------------------------------------------------------------------
+
+void PreferencesDialog::onComboSelection(wxCommandEvent& evt)
+{
+    ASSERT(dynamic_cast<wxItemContainerImmutable*>(evt.GetEventObject()) != NULL);
+    if (dynamic_cast<wxItemContainerImmutable*>(evt.GetEventObject())->GetSelection() == 1)
+    {
+        wxString filePath = showFileDialog(this, _("Select file"), wxT(""), wxT(""),
+                                           wxString(_("Sound Font"))+wxT("|*.sf2"), false /*open*/);
+        if (not filePath.IsEmpty())
+        {
+            dynamic_cast<wxTextEntry*>(evt.GetEventObject())->SetValue(filePath);
+        }
+        else
+        {
+            // FIXME: restore previous value
+            dynamic_cast<wxItemContainer*>(evt.GetEventObject())->SetSelection(0);
+        }
+    }
 }
 
 // ---------------------------------------------------------------------------------------------------------
