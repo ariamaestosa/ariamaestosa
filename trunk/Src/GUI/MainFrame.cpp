@@ -1449,6 +1449,7 @@ bool MainFrame::closeSequence(int id_arg) // -1 means current
 
         message.Replace(wxT("%s"), m_sequences[id].getModel()->getSequenceFilename(), false);
 
+        //I18N: title of dialog shown when exiting without saving
         int answer = wxMessageBox( message, _("Unsaved changes in sequence"),
                                    wxYES_NO | wxCANCEL, this);
 
