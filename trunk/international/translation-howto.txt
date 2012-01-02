@@ -1,4 +1,11 @@
 1. run ./update_pot.sh from Src directory (./international/update_pot.sh) if string catalog is not up-tp-date
+
+== For the preferred online method ==
+
+See http://ariamaestosa.sourceforge.net/translations.html for more details
+
+== For the older, desktop-based method ==
+
 2. open poEdit
     -> for a first time :
           use 'File > New catalog from POT file'
