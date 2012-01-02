@@ -989,7 +989,7 @@ msgstr "ファイルは既に存在します。上書きしますか？"
 #: Src/Midi/Players/Alsa/AlsaPort.cpp:183
 #, c-format
 msgid "The selected ALSA device (%s) could not be opened."
-msgstr "選択されたALSAデバイスは開けませんでした。"
+msgstr "選択されたALSAデバイスは開けませんでした。(%s)"
 
 #: Src/IO/MidiFileReader.cpp:206
 #, c-format
