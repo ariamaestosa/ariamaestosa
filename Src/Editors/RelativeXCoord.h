@@ -62,9 +62,9 @@ namespace AriaMaestosa
         
         int getRelativeTo(RelativeType returnRelativeTo);
         
-        bool isValid() const { return relativeToEditor != -1 and
-                                      relativeToWindow != -1 and
-                                      relativeToMidi != -1; }
+        bool isValid() const { return relativeToEditor != -1 or
+                                      relativeToWindow != -1 or
+                                      relativeToMidi   != -1; }
         
     };
     
