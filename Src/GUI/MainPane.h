@@ -126,6 +126,9 @@ namespace AriaMaestosa
         
         AriaRenderString m_star;
         
+        bool     m_have_plus_cursor;
+        wxCursor m_plus_cursor;
+        
     public:
         LEAK_CHECK();
 
