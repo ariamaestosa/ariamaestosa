@@ -1,0 +1,13 @@
+Index: src/osx/spinctrl_osx.cpp
+===================================================================
+--- src/osx/spinctrl_osx.cpp	(revision 69933)
++++ src/osx/spinctrl_osx.cpp	(working copy)
+@@ -318,6 +318,8 @@
+ 
+ bool wxSpinCtrl::Enable(bool enable)
+ {
++    if ( m_btn )  m_btn->Enable(enable);
++    if ( m_text ) m_text->Enable(enable);
+     if ( !wxControl::Enable(enable) )
+         return false;
+     return true;
