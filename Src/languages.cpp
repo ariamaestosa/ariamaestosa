@@ -15,7 +15,7 @@
  */
 
 #include "languages.h"
-#include "AriaCore.h"
+#include "PreferencesData.h"
 #include <iostream>
 
 
@@ -69,7 +69,7 @@ namespace AriaMaestosa
         if (languages.size() == 0) buildLanguageList();
         
         // read language from preferences
-        language_aria_id = Core::getPrefsLongValue("lang");
+        language_aria_id = PreferencesData::getInstance()->getIntValue("lang");
         if (language_aria_id == -1)
         {
             // couldn't read from prefs, use default

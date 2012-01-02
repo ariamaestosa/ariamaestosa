@@ -27,14 +27,13 @@ class AudioUnitOutput : public OutputBase
 {
     AUGraph m_graph;
     AudioUnit m_synth_unit;
-    //char* m_bank_path;
     
     void setBank(uint8_t midiChannelInUse);
     void programChange(uint8_t progChangeNum, uint8_t midiChannelInUse);
     
 public:
     
-    AudioUnitOutput();
+    AudioUnitOutput(const char* custom_sound_font);
     ~AudioUnitOutput();
     
     void note_on(const int note, const int volume, const int channel);

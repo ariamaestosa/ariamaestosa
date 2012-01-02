@@ -52,6 +52,7 @@ namespace AriaMaestosa
         void show();
 
         void okClicked(wxCommandEvent& evt);
+        void onComboSelection(wxCommandEvent& evt);
 
         void updateValuesFromWidgets();
         

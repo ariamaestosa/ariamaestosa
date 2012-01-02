@@ -185,32 +185,40 @@ home_setBank:
 
 // ------------------------------------------------------------------------------------------------------
 
-AudioUnitOutput::AudioUnitOutput()
+AudioUnitOutput::AudioUnitOutput(const char* custom_sound_font)
 {
     m_graph = 0;
     
     uint8_t midiChannelInUse = 0;
-    
+
     OSStatus result;
     
     require_noerr (result = CreateAUGraph(m_graph, m_synth_unit), err1);
     
-    /*
-     // if the user supplies a sound bank, we'll set that before we initialize and start playing
-     if (bankPath) 
-     {
-     FSRef fsRef;
-     require_noerr (result = FSPathMakeRef ((const UInt8*)bankPath, &fsRef, 0), ctor_home);
-     
-     printf ("Setting Sound Bank:%s\n", bankPath);
-     
-     require_noerr (result = AudioUnitSetProperty (m_synth_unit,
-     kMusicDeviceProperty_SoundBankFSRef,
-     kAudioUnitScope_Global, 0,
-     &fsRef, sizeof(fsRef)), ctor_home);
-     
-     }
-     */
+
+    // if the user supplies a sound bank, we'll set that before we initialize and start playing
+    if (custom_sound_font != NULL) 
+    {
+        FSRef fsRef;
+        result = FSPathMakeRef ((const UInt8*)custom_sound_font, &fsRef, 0);
+        if (result != 0)
+        {
+            wxMessageBox( _("Sorry, failed to set custom soundfont.") );
+            fprintf(stderr, "Failed to set custom sound font, location 1. Error code is %i\n", (int)result);
+        }
+        else
+        {
+            result = AudioUnitSetProperty (m_synth_unit,
+                                           kMusicDeviceProperty_SoundBankFSRef,
+                                           kAudioUnitScope_Global, 0,
+                                           &fsRef, sizeof(fsRef));
+            if (result != 0)
+            {
+                wxMessageBox( _("Sorry, failed to set custom soundfont.") );
+                fprintf(stderr, "Failed to set custom sound font, location 2. Error code is %i\n", (int)result);
+            }
+        }
+    }
     
     // initialize and start the graph
     require_noerr (result = AUGraphInitialize(m_graph), err2);
