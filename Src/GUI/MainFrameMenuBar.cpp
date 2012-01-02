@@ -282,6 +282,7 @@ void MainFrame::initMenuBar()
         m_input_device_menus.push_back(item);
     }
     
+    //I18N: menu where the MIDI input source is selected
     m_menu_bar->Append(m_input_menu, _("&Input"));
     
     
