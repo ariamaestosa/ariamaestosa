@@ -34,10 +34,6 @@
 #include <wx/textctrl.h>
 #include <wx/combobox.h>
 
-#if wxMAJOR_VERSION > 2 || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION == 9)
-#include <wx/textentry.h>
-#endif
-
 using namespace AriaMaestosa;
 
 namespace AriaMaestosa
@@ -385,11 +381,17 @@ void PreferencesDialog::onComboSelection(wxCommandEvent& evt)
                                            wxString(_("Sound Font"))+wxT("|*.sf2"), false /*open*/);
         if (not filePath.IsEmpty())
         {
-            dynamic_cast<wxTextEntry*>(evt.GetEventObject())->SetValue(filePath);
+            if (dynamic_cast<wxTextCtrl*>(evt.GetEventObject()) != NULL)
+            {
+                dynamic_cast<wxTextCtrl*>(evt.GetEventObject())->SetValue(filePath);
+            }
+            else if (dynamic_cast<wxComboBox*>(evt.GetEventObject()) != NULL)
+            {
+                dynamic_cast<wxComboBox*>(evt.GetEventObject())->SetValue(filePath);
+            }
         }
         else
         {
-            // FIXME: restore previous value
             dynamic_cast<wxItemContainer*>(evt.GetEventObject())->SetSelection(0);
         }
     }
