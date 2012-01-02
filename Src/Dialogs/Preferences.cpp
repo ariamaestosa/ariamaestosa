@@ -33,7 +33,10 @@
 #include <wx/button.h>
 #include <wx/textctrl.h>
 #include <wx/combobox.h>
+
+#if wxMAJOR_VERSION > 2 || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION == 9)
 #include <wx/textentry.h>
+#endif
 
 using namespace AriaMaestosa;
 
@@ -75,7 +78,7 @@ namespace AriaMaestosa
         wxChoice*    m_combo;
         wxCheckBox*  m_checkbox;
         wxSpinCtrl*  m_number;
-        wxTextEntry* m_textbox;
+        wxWindow*    m_textbox;
         
         Setting*    m_parent;
         
@@ -165,7 +168,14 @@ namespace AriaMaestosa
                 
                 case SETTING_STRING:
                 {
-                    m_textbox->SetValue(m_parent->m_value);
+                    if (dynamic_cast<wxTextCtrl*>(m_textbox) != NULL)
+                    {
+                        dynamic_cast<wxTextCtrl*>(m_textbox)->SetValue(m_parent->m_value);
+                    }
+                    else if (dynamic_cast<wxComboBox*>(m_textbox) != NULL)
+                    {
+                        dynamic_cast<wxComboBox*>(m_textbox)->SetValue(m_parent->m_value);
+                    }
                     break;
                 }
                     
@@ -199,7 +209,14 @@ namespace AriaMaestosa
                     break;
                 
                 case SETTING_STRING:
-                    m_parent->m_value = m_textbox->GetValue();
+                    if (dynamic_cast<wxTextCtrl*>(m_textbox) != NULL)
+                    {
+                        m_parent->m_value = dynamic_cast<wxTextCtrl*>(m_textbox)->GetValue();
+                    }
+                    else if (dynamic_cast<wxComboBox*>(m_textbox) != NULL)
+                    {
+                        m_parent->m_value = dynamic_cast<wxComboBox*>(m_textbox)->GetValue();
+                    }
                     break;
                     
                 default:

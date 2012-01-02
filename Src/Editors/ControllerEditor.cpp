@@ -444,7 +444,7 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
         const int check_y = Display::getMouseY_current();
         if (check_y > area_to_y or check_y < area_from_y)
         {
-            m_mouse_y = NULL;
+            m_mouse_y = 0;
         }
         else
         {
