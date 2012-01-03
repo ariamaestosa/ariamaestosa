@@ -178,6 +178,7 @@ CoreMidiOutput::~CoreMidiOutput()
 
 // ------------------------------------------------------------------------------------------------------
 
+#if 0
 void CoreMidiOutput::note_on(const int note, const int volume, const int channel)
 {
     MIDITimeStamp timestamp = 0;   // 0 will mean play now. 
@@ -281,7 +282,7 @@ void CoreMidiOutput::pitch_bend(const int value, const int channel)
     OSStatus result = MIDISend(m_port, MIDIGetDestination(0), packetlist);
     if (result != 0) fprintf(stderr, "MIDISend failed!!\n");
 }
-
+#endif
 // ------------------------------------------------------------------------------------------------------
 
 #endif

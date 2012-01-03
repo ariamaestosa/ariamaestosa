@@ -24,6 +24,8 @@
   * @ingroup midi.players
   *
   * On OSX, used to export MIDI to AIFF.
+  * @Note: has been superseeded by AudioUnits code. I'm leaving this around
+  *        though, just in case.
   */
 class QuickTimeExport
 {

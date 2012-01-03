@@ -55,6 +55,7 @@
 
 #include <wx/msgdlg.h>
 
+
 namespace AriaMaestosa
 {
     bool g_playing;
@@ -102,22 +103,27 @@ namespace AriaMaestosa
             int startTick = -1, songLength = -1;
             allocAsMidiBytes(m_sequence, false, &songLength, &startTick, &m_data, &m_length, true);
             
+            /*
             if (not QuickTimeExport::qtkit_setData(m_data, m_length))
             {
                 wxMessageBox( _("Sorry, an internal error occurred during export") );
             }
             else
-            {
+            {*/
                 Run();
-            }
+            /*
+            }*/
         }
         
         virtual ExitCode Entry()
         {
             MeasureData* md = m_sequence->getMeasureData();
             
+            bool success = ((AudioUnitOutput*)output)->outputToDisk(m_filepath.mb_str(),
+                                                                    m_data, m_length);
+            /*
             bool success = QuickTimeExport::qtkit_exportToAiff( m_filepath.mb_str() );
-            
+            */
             if (not success)
             {
                 // FIXME - give visual message. warning this is a thread.
@@ -260,7 +266,7 @@ namespace AriaMaestosa
             }
             else
             {
-                output = new CoreMidiOutput();
+                fprintf(stderr, "Unknown midi driver <%s>\n", (const char*)driver.utf8_str());
             }
         }
         

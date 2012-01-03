@@ -27,6 +27,7 @@ class AudioUnitOutput : public OutputBase
 {
     AUGraph m_graph;
     AudioUnit m_synth_unit;
+    const char* m_custom_sound_font;
     
     void setBank(uint8_t midiChannelInUse);
     void programChange(uint8_t progChangeNum, uint8_t midiChannelInUse);
@@ -36,6 +37,10 @@ public:
     AudioUnitOutput(const char* custom_sound_font);
     ~AudioUnitOutput();
     
+    bool outputToDisk(const char* outputFilePath,
+                      const char* data,
+                      const int data_size);
+
     void note_on(const int note, const int volume, const int channel);
     void note_off(const int note, const int channel);
     void prog_change(const int instrument, const int channel);
