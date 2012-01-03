@@ -382,7 +382,55 @@ namespace AriaMaestosa
             }//next
             
         }
-
+        // ------------------------------------------------------------------------
+        
+        void insertionSort(unsigned int start=0)
+        {
+            // We should not used unsigned ints here, because if the vector is 
+            // empty j needs to be compared against -1
+            for(int j=(int)start; j<(int)contentsVector.size()-1; j++)
+            {
+                if(*(contentsVector[j])<*(contentsVector[j+1])) continue;
+                // Now search the proper place for m_contents_vector[j+1] 
+                // in the sorted section contentsVectot[start:j]
+                TYPE* t = contentsVector[j+1];
+                unsigned int i = j+1;
+                do
+                {
+                    contentsVector[i] = contentsVector[i-1];
+                    i--;
+                } while (i>start && *t < *(contentsVector[i-1]));
+                contentsVector[i] = t;
+            }
+        }
+        
+        
+    };
+    
+    template<typename T>
+    class SortableVector : public std::vector<T>
+    {
+    public:   
+        void insertionSort(unsigned int start=0)
+        {
+            // We should not used unsigned ints here, because if the vector is 
+            // empty j needs to be compared against -1
+            for(int j=(int)start; j<(int)this->size()-1; j++)
+            {
+                if((*this)[j] < (*this)[j+1]) continue;
+                // Now search the proper place for m_contents_vector[j+1] 
+                // in the sorted section contentsVectot[start:j]
+                T t = (*this)[j+1];
+                unsigned int i = j+1;
+                do
+                {
+                    (*this)[i] = (*this)[i-1];
+                    i--;
+                } while (i > start && t < (*this)[i-1]);
+                (*this)[i] = t;
+            }
+        }
+        
         
     };
     

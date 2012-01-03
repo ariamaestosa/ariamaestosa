@@ -28,6 +28,8 @@
 #include "Midi/Note.h"
 #include "Utils.h"
 
+#include "ptr_vector.h"
+
 #include "Analysers/SilenceAnalyser.h"
 //#include "Editors/Editor.h"
 
@@ -72,6 +74,9 @@ namespace AriaMaestosa
         /** location and duration of note */
         int m_tick, m_tick_length;
         
+        /** vertical position of the note, in abstract level units */
+        int m_level;
+        
     public:
         /** for very short notes, e.g. drum notes. Note will appear as a X. */
         bool m_instant_hit;
@@ -100,9 +105,6 @@ namespace AriaMaestosa
         
         /** Whether to draw the stem. FIXME : stem_type == STEM_NONE can already carry this info!! */
         bool m_draw_stem;
-        
-        /** vertical position of the note, in abstract level units */
-        int m_level;
         
         /** pitch ID of the note */
         int m_pitch;
@@ -186,6 +188,9 @@ namespace AriaMaestosa
         /** Get start of notes in midi ticks */
         int getTick() const { return m_tick; }
         
+        /** Get vertical position of note in vertical units */
+        int getLevel() const { return m_level; }
+        
         /** Get length of note in midi ticks */
         int getTickLength() const { return m_tick_length; }
         
@@ -193,6 +198,21 @@ namespace AriaMaestosa
         {
             ASSERT_E(newLength, >=, 0);
             m_tick_length = newLength;
+        }
+        
+        bool operator<(const NoteRenderInfo& other)
+        {
+            return m_tick < other.m_tick;
+        }
+        
+        bool operator>(const NoteRenderInfo& other)
+        {
+            return m_tick > other.m_tick;
+        }
+        
+        bool operator==(const NoteRenderInfo& other)
+        {
+            return m_tick == other.m_tick;
         }
     };
         
@@ -231,7 +251,7 @@ namespace AriaMaestosa
     public:
         LEAK_CHECK();
         
-        std::vector<NoteRenderInfo> noteRenderInfo;
+        SortableVector<NoteRenderInfo> m_note_render_info;
         
         ScoreAnalyser(Editor* parent, int stemPivot);
         
@@ -282,25 +302,31 @@ namespace AriaMaestosa
         /** @brief implementing the INoteSource interface for the SilenceAnalyser to use */
         virtual int  getNoteCount() const
         {
-            return noteRenderInfo.size();
+            return m_note_render_info.size();
         }
         
         /** @brief implementing the INoteSource interface for the SilenceAnalyser to use */
         virtual int  getBeginMeasure(const int noteID) const
         {
-            return noteRenderInfo[noteID].m_measure_begin;
+            return m_note_render_info[noteID].m_measure_begin;
         }
         
         /** @brief implementing the INoteSource interface for the SilenceAnalyser to use */
         virtual int  getStartTick(const int noteID) const
         {
-            return noteRenderInfo[noteID].getTick();
+            return m_note_render_info[noteID].getTick();
         }
         
         /** @brief implementing the INoteSource interface for the SilenceAnalyser to use */
         virtual int  getEndTick(const int noteID) const
         {
-            return noteRenderInfo[noteID].getTick() + noteRenderInfo[noteID].getTickLength();
+            return m_note_render_info[noteID].getTick() + m_note_render_info[noteID].getTickLength();
+        }
+        
+        void doneAdding()
+        {
+            // the algorithm in 'addToVector' will produce something *mostly* sorted only
+            m_note_render_info.insertionSort();
         }
         
     protected:

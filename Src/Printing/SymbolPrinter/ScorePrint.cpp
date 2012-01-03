@@ -445,34 +445,34 @@ namespace AriaMaestosa
             }
             ASSERT( current_analyser != NULL );
             
-            const int noteAmount = current_analyser->noteRenderInfo.size();
+            const int noteAmount = current_analyser->m_note_render_info.size();
                         
             // find shortest note
             int shortest = -1;
             for (int n=0; n<noteAmount; n++)
             {
-                const int tick = current_analyser->noteRenderInfo[n].getTick();
+                const int tick = current_analyser->m_note_render_info[n].getTick();
                 if (tick < measureFromTick or tick >= measureToTick) continue;
                 
-                if (current_analyser->noteRenderInfo[n].getTickLength() < shortest or shortest == -1)
+                if (current_analyser->m_note_render_info[n].getTickLength() < shortest or shortest == -1)
                 {
-                    shortest = current_analyser->noteRenderInfo[n].getTickLength();
+                    shortest = current_analyser->m_note_render_info[n].getTickLength();
                 }
             }
             
             for (int n=0; n<noteAmount; n++)
             {
-                const int tick = current_analyser->noteRenderInfo[n].getTick();
+                const int tick = current_analyser->m_note_render_info[n].getTick();
                 if (tick < measureFromTick or tick >= measureToTick) continue;
                 
-                const int tickTo = tick + current_analyser->noteRenderInfo[n].getTickLength();
+                const int tickTo = tick + current_analyser->m_note_render_info[n].getTickLength();
                 ASSERT_E(tick, <=, tickTo);
                 
 #if VERBOSE
                 std::cout << "    Adding tick " << tick << " to list" << std::endl;
 #endif
                 
-                if (current_analyser->noteRenderInfo[n].m_sign != PITCH_SIGN_NONE)
+                if (current_analyser->m_note_render_info[n].m_sign != PITCH_SIGN_NONE)
                 {
                     // if there's an accidental sign to show, allocate a bigger space for this note
                     ticks_relative_position.addSymbol( tick, tickTo,
@@ -672,10 +672,10 @@ namespace AriaMaestosa
             lineAnalyser = analyser->getSubset(fromTick, toTick);
             lineAnalyser->analyseNoteInfo();
             
-            const int noteAmount = lineAnalyser->noteRenderInfo.size();
+            const int noteAmount = lineAnalyser->m_note_render_info.size();
             for (int i=0; i<noteAmount; i++)
             {
-                NoteRenderInfo& noteRenderInfo = lineAnalyser->noteRenderInfo[i];
+                NoteRenderInfo& noteRenderInfo = lineAnalyser->m_note_render_info[i];
                 
                 // --- stem
                 if (noteRenderInfo.m_draw_stem and noteRenderInfo.m_stem_type != STEM_NONE)
@@ -967,6 +967,15 @@ namespace AriaMaestosa
             
         }//next element
         
+        if (m_g_clef)
+        {
+            g_clef_analyser->doneAdding();
+        }
+        if (m_f_clef)
+        {
+            f_clef_analyser->doneAdding();
+        }
+        
         // ---- Silences
         std::cout << "[ScorePrintable] early setup : gathering silences\n";
         if (m_f_clef)
@@ -988,8 +997,8 @@ namespace AriaMaestosa
         
         /*
         printf("    %i notes in G clef (analyzer %x), %i in F clef (analyzer %x), this = %x\n",
-               (int)g_clef_analyser->noteRenderInfo.size(), (unsigned int)(void*)g_clef_analyser,
-               (int)f_clef_analyser->noteRenderInfo.size(), (unsigned int)(void*)f_clef_analyser,
+               (int)g_clef_analyser->m_note_render_info.size(), (unsigned int)(void*)g_clef_analyser,
+               (int)f_clef_analyser->m_note_render_info.size(), (unsigned int)(void*)f_clef_analyser,
                (unsigned int)(void*)this);
         */
     }
@@ -1019,10 +1028,10 @@ namespace AriaMaestosa
         /*
         {
             std::cout << "analyser contents {\n";
-            const int noteAmount = analyser.noteRenderInfo.size();
+            const int noteAmount = analyser.m_note_render_info.size();
             for (int i=0; i<noteAmount; i++)
             {
-                NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
+                NoteRenderInfo& noteRenderInfo = analyser.m_note_render_info[i];
                 std::cout << "    Note at beat " << noteRenderInfo.tick / 960 << "\n";
             }
             std::cout << "}\n";
@@ -1110,14 +1119,14 @@ namespace AriaMaestosa
         /*
         //DEBUG
         {
-            const int noteAmount = analyser.noteRenderInfo.size();
+            const int noteAmount = analyser.m_note_render_info.size();
             
             for (int i=0; i<noteAmount; i++)
             {
-                if (analyser.noteRenderInfo[i].getTick() < fromTick) continue;
-                if (analyser.noteRenderInfo[i].getTick() >= toTick) break;
+                if (analyser.m_note_render_info[i].getTick() < fromTick) continue;
+                if (analyser.m_note_render_info[i].getTick() >= toTick) break;
                 
-                NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
+                NoteRenderInfo& noteRenderInfo = analyser.m_note_render_info[i];
                 
                 // DEBUG
                 const Range<int> noteX = x_converter->tickToX(noteRenderInfo.getTick());
@@ -1264,24 +1273,24 @@ namespace AriaMaestosa
         
         
         {
-            const int noteAmount = analyser.noteRenderInfo.size();
+            const int noteAmount = analyser.m_note_render_info.size();
                 
             // ---- Draw small lines above/below score (ledger lines)
             //std::cout << "[ScorePrintable] rendering lines for notes out of score\n";
             for (int i=0; i<noteAmount; i++)
             {
-                if (analyser.noteRenderInfo[i].getTick() < fromTick) continue;
-                if (analyser.noteRenderInfo[i].getTick() >= toTick) break;
+                if (analyser.m_note_render_info[i].getTick() < fromTick) continue;
+                if (analyser.m_note_render_info[i].getTick() >= toTick) break;
                 
-                NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
+                NoteRenderInfo& noteRenderInfo = analyser.m_note_render_info[i];
                 
                 // draw small lines above score if needed
-                if (noteRenderInfo.m_level < first_score_level-1)
+                if (noteRenderInfo.getLevel() < first_score_level-1)
                 {
                     const Range<int> noteX = x_converter->tickToX(noteRenderInfo.getTick());
                     dc.SetPen(  wxPen( wxColour(125,125,125), 8 ) );
                     
-                    for (int lvl=first_score_level-1; lvl>=noteRenderInfo.m_level; lvl --)
+                    for (int lvl=first_score_level-1; lvl>=noteRenderInfo.getLevel(); lvl --)
                     {
                         if ((first_score_level - lvl) % 2 == 0)
                         {
@@ -1293,12 +1302,12 @@ namespace AriaMaestosa
                 }
                 
                 // draw small lines below score if needed
-                if (noteRenderInfo.m_level > last_score_level+1)
+                if (noteRenderInfo.getLevel() > last_score_level+1)
                 {
                     const Range<int> noteX = x_converter->tickToX(noteRenderInfo.getTick());
                     dc.SetPen(  wxPen( wxColour(125,125,125), 8 ) );
                     
-                    for (int lvl=last_score_level+1; lvl<=noteRenderInfo.m_level; lvl++)
+                    for (int lvl=last_score_level+1; lvl<=noteRenderInfo.getLevel(); lvl++)
                     {
                         if ((lvl - last_score_level) % 2 == 0)
                         {
@@ -1318,19 +1327,19 @@ namespace AriaMaestosa
             for (int i=0; i<noteAmount; i++)
             {
                 /*
-                std::cout << "Checking note at " << analyser.noteRenderInfo[i].tick
-                          << " - beat " <<  analyser.noteRenderInfo[i].tick/960
-                          << " in measure " << analyser.noteRenderInfo[i].measureBegin+1 << std::endl;
+                std::cout << "Checking note at " << analyser.m_note_render_info[i].tick
+                          << " - beat " <<  analyser.m_note_render_info[i].tick/960
+                          << " in measure " << analyser.m_note_render_info[i].measureBegin+1 << std::endl;
                 */
-                if (analyser.noteRenderInfo[i].getTick() < fromTick) continue;
-                if (analyser.noteRenderInfo[i].getTick() >= toTick)  break;
+                if (analyser.m_note_render_info[i].getTick() < fromTick) continue;
+                if (analyser.m_note_render_info[i].getTick() >= toTick)  break;
 
                 /*
-                std::cout << "    Drawing note at " << analyser.noteRenderInfo[i].tick
-                          << " - beat " <<  analyser.noteRenderInfo[i].tick/960
-                          << " in measure " << analyser.noteRenderInfo[i].measureBegin+1 << std::endl; 
+                std::cout << "    Drawing note at " << analyser.m_note_render_info[i].tick
+                          << " - beat " <<  analyser.m_note_render_info[i].tick/960
+                          << " in measure " << analyser.m_note_render_info[i].measureBegin+1 << std::endl; 
                 */
-                NoteRenderInfo& noteRenderInfo = analyser.noteRenderInfo[i];
+                NoteRenderInfo& noteRenderInfo = analyser.m_note_render_info[i];
 
                 const Range<int> noteX = x_converter->tickToX(noteRenderInfo.getTick());
                 
@@ -1459,10 +1468,10 @@ namespace AriaMaestosa
         
         std::cout << "[ScorePrintable] rendering note ornaments\n";
         // now that score was analysed, draw the remaining note bits
-        const int noteAmount = lineAnalyser->noteRenderInfo.size();
+        const int noteAmount = lineAnalyser->m_note_render_info.size();
         for (int i=0; i<noteAmount; i++)
         {
-            NoteRenderInfo& noteRenderInfo = lineAnalyser->noteRenderInfo[i];
+            NoteRenderInfo& noteRenderInfo = lineAnalyser->m_note_render_info[i];
             
             dc.SetPen(  wxPen( wxColour(0,0,0), 15 ) );
             
