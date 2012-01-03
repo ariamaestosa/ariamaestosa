@@ -38,6 +38,9 @@
 			STRICT LIABILITY OR OTHERWISE, EVEN IF APPLE HAS BEEN ADVISED OF THE
 			POSSIBILITY OF SUCH DAMAGE.
 */
+
+#ifdef _MAC_QUICKTIME_COREAUDIO
+
 #include "CAStreamBasicDescription.h"
 //#include "CAMath.h"
 
@@ -583,3 +586,5 @@ bool SanityCheck(const AudioStreamBasicDescription& x)
 		&& (x.mFormatID != 0)
 		&& !(x.mFormatID == kAudioFormatLinearPCM && (x.mFramesPerPacket != 1 || x.mBytesPerPacket != x.mBytesPerFrame));
 }
+
+#endif

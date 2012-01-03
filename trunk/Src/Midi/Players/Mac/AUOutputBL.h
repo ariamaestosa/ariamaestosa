@@ -1,4 +1,4 @@
-/*	Copyright © 2007 Apple Inc. All Rights Reserved.
+/*	Copyright ï¿½ 2007 Apple Inc. All Rights Reserved.
 	
 	Disclaimer: IMPORTANT:  This Apple software is supplied to you by 
 			Apple Inc. ("Apple") in consideration of your agreement to the
@@ -40,6 +40,8 @@
 */
 #ifndef __AUOutputBL_h__
 #define __AUOutputBL_h__
+
+#ifdef _MAC_QUICKTIME_COREAUDIO
 
 #include "CAStreamBasicDescription.h"
 #if !defined(__COREAUDIO_USE_FLAT_INCLUDES__)
@@ -109,4 +111,5 @@ private:
 	AUOutputBL& operator= (const AUOutputBL& c) { return *this; }
 };
 
+#endif
 #endif // __AUOutputBL_h__
