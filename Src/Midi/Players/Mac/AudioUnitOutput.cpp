@@ -19,12 +19,18 @@
 #ifdef _MAC_QUICKTIME_COREAUDIO
 #include "Utils.h"
 
+#include "Midi/Players/Mac/CAStreamBasicDescription.h"
 #include "Midi/Players/Mac/AudioUnitOutput.h"
+#include "Midi/Players/Mac/AUOutputBL.h"
+
 #include "PreferencesData.h"
 
+#include <CoreFoundation/CoreFoundation.h>
+#include <AudioToolbox/AudioToolbox.h>
 #include <CoreServices/CoreServices.h> //for file stuff
 #include <AudioUnit/AudioUnit.h>
 #include <AudioToolbox/AudioToolbox.h> //for AUGraph
+#include <CoreMIDI/CoreMIDI.h>
 
 #include <wx/timer.h>
 #include <wx/intl.h>
@@ -32,6 +38,640 @@
 
 using namespace AriaMaestosa;
 
+#if 0
+#pragma mark -
+#pragma mark Render to file
+#endif
+
+// Code by Apple, from http://developer.apple.com/library/mac/#samplecode/PlaySequence/Introduction/Intro.html
+static void str2OSType (const char * inString, OSType &outType)
+{
+	if (inString == NULL) {
+		outType = 0;
+		return;
+	}
+	
+	size_t len = strlen(inString);
+	if (len <= 4) {
+		char workingString[5];
+		
+		workingString[4] = 0;
+		workingString[0] = workingString[1] = workingString[2] = workingString[3] = ' ';
+		memcpy (workingString, inString, strlen(inString));
+		outType = 	*(workingString + 0) <<	24	|
+        *(workingString + 1) <<	16	|
+        *(workingString + 2) <<	8	|
+        *(workingString + 3);
+		return;
+	}
+    
+	if (len <= 8) {
+		if (sscanf (inString, "%lx", &outType) == 0) {
+			printf ("* * Bad conversion for OSType\n"); 
+			exit(1);
+		}
+		return;
+	}
+	printf ("* * Bad conversion for OSType\n"); 
+	exit(1);
+}
+
+
+// Code by Apple, from http://developer.apple.com/library/mac/#samplecode/PlaySequence/Introduction/Intro.html
+bool WriteOutputFile (const char*       outputFilePath, 
+                      OSType			dataFormat, 
+                      Float64			srate, 
+                      MusicTimeStamp	sequenceLength, 
+                      bool              shouldPrint,
+                      AUGraph			inGraph,
+                      UInt32			numFrames,
+                      MusicPlayer		player)
+{
+    // delete existing output  file
+    
+    if (wxFileExists(wxString(outputFilePath, wxConvUTF8)))
+    {
+        wxRemoveFile(wxString(outputFilePath, wxConvUTF8));
+    }
+    
+	OSStatus result = 0;
+	UInt32 size;
+    
+	CAStreamBasicDescription outputFormat;
+	outputFormat.mChannelsPerFrame = 2;
+	outputFormat.mSampleRate = srate;
+	outputFormat.mFormatID = dataFormat;
+	
+	AudioFileTypeID destFileType = kAudioFileAIFFType;
+	
+	if (dataFormat == kAudioFormatLinearPCM) {
+		outputFormat.mBytesPerPacket = outputFormat.mChannelsPerFrame * 2;
+		outputFormat.mFramesPerPacket = 1;
+		outputFormat.mBytesPerFrame = outputFormat.mBytesPerPacket;
+		outputFormat.mBitsPerChannel = 16;
+		
+		if (destFileType == kAudioFileWAVEType)
+			outputFormat.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger
+            | kLinearPCMFormatFlagIsPacked;
+		else
+			outputFormat.mFormatFlags = kLinearPCMFormatFlagIsBigEndian
+            | kLinearPCMFormatFlagIsSignedInteger
+            | kLinearPCMFormatFlagIsPacked;
+	} else {
+		// use AudioFormat API to fill out the rest.
+		size = sizeof(outputFormat);
+		result = AudioFormatGetProperty(kAudioFormatProperty_FormatInfo, 0, NULL, &size, &outputFormat);
+        if (result != 0)
+        {
+            fprintf(stderr, "AudioFormatGetProperty Error %i at %s:%i\n", (int)result, __FILE__, __LINE__);
+        }
+	}
+    
+	//if (shouldPrint) {
+	//	printf ("Writing to file: %s with format:\n* ", outputFilePath);
+		outputFormat.Print();
+	//}
+	
+	CFURLRef url = CFURLCreateFromFileSystemRepresentation(NULL, (const UInt8*)outputFilePath,
+                                                           strlen(outputFilePath), false);
+    
+	ExtAudioFileRef outfile;
+	result = ExtAudioFileCreateWithURL(url, destFileType, &outputFormat, NULL, 0, &outfile);
+	CFRelease (url);
+	
+    if (result != 0)
+    {
+        fprintf(stderr, "ExtAudioFileCreateWithURL Error %i at %s:%i\n", (int)result, __FILE__, __LINE__);
+        return false;
+    }
+    
+	AudioUnit outputUnit;
+	UInt32 nodeCount;
+    result = AUGraphGetNodeCount (inGraph, &nodeCount);
+    if (result != 0)
+    {
+        fprintf(stderr, "AUGraphGetNodeCount Error %i at %s:%i\n", (int)result, __FILE__, __LINE__);
+        return false;
+    }
+    
+	for (UInt32 i = 0; i < nodeCount; ++i) 
+	{
+		AUNode node;
+		result = AUGraphGetIndNode(inGraph, i, &node);
+        if (result != 0)
+        {
+            fprintf(stderr, "AUGraphGetIndNode Error %i at %s:%i\n", (int)result, __FILE__, __LINE__);
+            return false;
+        }
+        
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
+        AudioComponentDescription descs;
+#else
+        ComponentDescription desc;
+#endif
+		result = AUGraphNodeInfo(inGraph, node, &desc, NULL);
+        if (result != 0)
+        {
+            fprintf(stderr, "AUGraphNodeInfo Error %i at %s:%i\n", (int)result, __FILE__, __LINE__);
+            return false;
+        }
+        
+		if (desc.componentType == kAudioUnitType_Output) 
+		{
+			result = AUGraphNodeInfo(inGraph, node, 0, &outputUnit);
+            if (result != 0)
+            {
+                fprintf(stderr, "AUGraphNodeInfo Error %i at %s:%i\n", (int)result, __FILE__, __LINE__);
+                return false;
+            }
+            
+			break;
+		}
+	}
+        
+	{
+		CAStreamBasicDescription clientFormat = CAStreamBasicDescription();
+        result = AudioUnitGetProperty(outputUnit,
+                                      kAudioUnitProperty_StreamFormat,
+                                      kAudioUnitScope_Output, 0,
+                                      &clientFormat, &size);
+        if (result != 0)
+        {
+            fprintf(stderr, "AudioUnitGetProperty Error %i at %s:%i\n", (int)result, __FILE__, __LINE__);
+            return false;
+        }
+    
+        
+		size = sizeof(clientFormat);
+		result = ExtAudioFileSetProperty(outfile, kExtAudioFileProperty_ClientDataFormat, size, &clientFormat);
+        if (result != 0)
+        {
+            fprintf(stderr, "ExtAudioFileSetProperty Error %i at %s:%i\n", (int)result, __FILE__, __LINE__);
+            return false;
+        }
+        
+		int percentage = 0;
+		{
+			MusicTimeStamp currentTime;
+			AUOutputBL outputBuffer (clientFormat, numFrames);
+			AudioTimeStamp tStamp;
+			memset (&tStamp, 0, sizeof(AudioTimeStamp));
+			tStamp.mFlags = kAudioTimeStampSampleTimeValid;
+			do {
+				outputBuffer.Prepare();
+				AudioUnitRenderActionFlags actionFlags = 0;
+				result = AudioUnitRender (outputUnit, &actionFlags, &tStamp, 0, numFrames, outputBuffer.ABL());
+                if (result != 0)
+                {
+                    fprintf(stderr, "AudioUnitRender Error %i at %s:%i\n", (int)result, __FILE__, __LINE__);
+                    return false;
+                }
+    
+				tStamp.mSampleTime += numFrames;
+				
+				result = ExtAudioFileWrite(outfile, numFrames, outputBuffer.ABL());
+                if (result != 0)
+                {
+                    fprintf(stderr, "ExtAudioFileWrite Error %i at %s:%i\n", (int)result, __FILE__, __LINE__);
+                    return false;
+                }
+                
+                
+				result = MusicPlayerGetTime (player, &currentTime);
+                if (result != 0)
+                {
+                    fprintf(stderr, "MusicPlayerGetTime Error %i at %s:%i\n", (int)result, __FILE__, __LINE__);
+                    return false;
+                }
+                
+                if ((int)currentTime % 20 == 0)
+                {
+                    int new_percentage = (int)round((float)currentTime/(float)sequenceLength*100.0f);
+                    if (new_percentage > percentage)
+                    {
+                        printf("  --> %i%% done\n", new_percentage);
+                        percentage = new_percentage;
+                    }
+                }
+                
+			} while (currentTime < sequenceLength);
+		}
+	}
+	
+    // close
+	result = ExtAudioFileDispose(outfile);
+    if (result != 0)
+    {
+        fprintf(stderr, "ExtAudioFileDispose Error %i at %s:%i\n", (int)result, __FILE__, __LINE__);
+        return false;
+    }
+    
+    return true;
+}
+
+// Code by Apple, from http://developer.apple.com/library/mac/#samplecode/PlaySequence/Introduction/Intro.html
+OSStatus SetUpGraph (AUGraph &inGraph, UInt32 numFrames, Float64 &sampleRate, bool isOffline)
+{
+	OSStatus result = noErr;
+	AudioUnit outputUnit = 0;
+	AUNode outputNode;
+	
+	// the frame size is the I/O size to the device
+	// the device is going to run at a sample rate it is set at
+	// so, when we set this, we also have to set the max frames for the graph nodes
+	UInt32 nodeCount;
+	result = AUGraphGetNodeCount (inGraph, &nodeCount);
+    if (result != 0)
+    {
+        fprintf(stderr, "AUGraphGetNodeCount Error %i at %s:%i\n", (int)result, __FILE__, __LINE__);
+    }
+    
+    
+	for (int i = 0; i < (int)nodeCount; ++i) 
+	{
+		AUNode node;
+		result = AUGraphGetIndNode(inGraph, i, &node);
+        if (result != 0)
+        {
+            fprintf(stderr, "AUGraphGetIndNode Error %i at %s:%i\n", (int)result, __FILE__, __LINE__);
+        }
+        
+        
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
+        AudioComponentDescription descs;
+#else
+        ComponentDescription desc;
+#endif
+		AudioUnit unit;
+		result = AUGraphNodeInfo(inGraph, node, &desc, &unit);
+        if (result != 0)
+        {
+            fprintf(stderr, "Error %i at %s:%i\n", (int)result, __FILE__, __LINE__);
+        }
+        
+		
+		if (desc.componentType == kAudioUnitType_Output) 
+		{
+			if (outputUnit == 0) {
+				outputUnit = unit;
+				require_noerr (result = AUGraphNodeInfo(inGraph, node, 0, &outputUnit), home);
+				
+				if (!isOffline) {
+					// these two properties are only applicable if its a device we're playing too
+					require_noerr (result = AudioUnitSetProperty (outputUnit, 
+                                                                     kAudioDevicePropertyBufferFrameSize, 
+                                                                     kAudioUnitScope_Output, 0,
+                                                                     &numFrames, sizeof(numFrames)), home);
+                    
+                    /*
+					require_noerr (result = AudioUnitAddPropertyListener (outputUnit, 
+                                                                             kAudioDeviceProcessorOverload, 
+                                                                             OverlaodListenerProc, 0), home);
+                    */
+                    
+					// if we're rendering to the device, then we render at its sample rate
+					UInt32 theSize;
+					theSize = sizeof(sampleRate);
+					
+					require_noerr (result = AudioUnitGetProperty (outputUnit,
+                                                                     kAudioUnitProperty_SampleRate,
+                                                                     kAudioUnitScope_Output, 0,
+                                                                     &sampleRate, &theSize), home);
+				} else {
+                    // remove device output node and add generic output
+					require_noerr (result = AUGraphRemoveNode (inGraph, node), home);
+					desc.componentSubType = kAudioUnitSubType_GenericOutput;
+					require_noerr (result = AUGraphAddNode (inGraph, &desc, &node), home);
+					require_noerr (result = AUGraphNodeInfo(inGraph, node, NULL, &unit), home);
+					outputUnit = unit;
+					outputNode = node;
+					
+					// we render the output offline at the desired sample rate
+					require_noerr (result = AudioUnitSetProperty (outputUnit,
+                                                                     kAudioUnitProperty_SampleRate,
+                                                                     kAudioUnitScope_Output, 0,
+                                                                     &sampleRate, sizeof(sampleRate)), home);
+				}
+				// ok, lets start the loop again now and do it all...
+				i = -1;
+			}
+		}
+		else
+		{
+            // we only have to do this on the output side
+            // as the graph's connection mgmt will propogate this down.
+			if (outputUnit) {	
+                // reconnect up to the output unit if we're offline
+				if (isOffline && desc.componentType != kAudioUnitType_MusicDevice) {
+					require_noerr (result = AUGraphConnectNodeInput (inGraph, node, 0, outputNode, 0), home);
+				}
+				
+				require_noerr (result = AudioUnitSetProperty (unit,
+                                                                 kAudioUnitProperty_SampleRate,
+                                                                 kAudioUnitScope_Output, 0,
+                                                                 &sampleRate, sizeof(sampleRate)), home);
+                
+                
+			}
+		}
+		require_noerr (result = AudioUnitSetProperty (unit, kAudioUnitProperty_MaximumFramesPerSlice,
+                                                         kAudioUnitScope_Global, 0,
+                                                         &numFrames, sizeof(numFrames)), home);
+	}
+	
+home:
+	return result;
+}
+
+
+// Code by Apple, from http://developer.apple.com/library/mac/#samplecode/PlaySequence/Introduction/Intro.html
+
+OSStatus LoadSMF(const char* data, int dataSize, MusicSequence& sequence, MusicSequenceLoadFlags loadFlags)
+{
+	OSStatus result = noErr;
+	
+	result = NewMusicSequence(&sequence);
+	if (result != 0)
+    {
+        fprintf(stderr, "Error %i at NewMusicSequence\n", (int)result);
+        return result;
+    }
+    	
+    CFDataRef cfdata = CFDataCreate(kCFAllocatorDefault, (const UInt8*)data, dataSize);
+	result = MusicSequenceFileLoadData (sequence, cfdata, 0, loadFlags);
+    if (result != 0)
+    {
+        fprintf(stderr, "Error %i at MusicSequenceFileLoad\n", (int)result);
+        return result;
+    }
+    
+    return 0;
+}
+
+// Code by Apple, from http://developer.apple.com/library/mac/#samplecode/PlaySequence/Introduction/Intro.html
+OSStatus GetSynthFromGraph (AUGraph& inGraph, AudioUnit& outSynth)
+{	
+	UInt32 nodeCount;
+	OSStatus result = noErr;
+	require_noerr (result = AUGraphGetNodeCount (inGraph, &nodeCount), fail);
+	
+	for (UInt32 i = 0; i < nodeCount; ++i) 
+	{
+		AUNode node;
+		require_noerr (result = AUGraphGetIndNode(inGraph, i, &node), fail);
+        
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
+        AudioComponentDescription descs;
+#else
+        ComponentDescription desc;
+#endif
+		require_noerr (result = AUGraphNodeInfo(inGraph, node, &desc, 0), fail);
+		
+		if (desc.componentType == kAudioUnitType_MusicDevice) 
+		{
+			require_noerr (result = AUGraphNodeInfo(inGraph, node, 0, &outSynth), fail);
+			return noErr;
+		}
+	}
+	
+fail:		// didn't find the synth AU
+    fprintf(stderr, "Error in GetSynthFromGraph\n");
+	return -1;
+}
+
+
+
+bool AudioUnitOutput::outputToDisk(const char* outputFilePath,
+                                   const char* data,
+                                   const int data_size)
+{
+    OSStatus result;
+    
+    AUGraph graph = 0;
+    AudioUnit theSynth = 0;
+    MusicSequence sequence;
+    Float32 maxCPULoad = .8;
+
+    result = LoadSMF(data, data_size, sequence, 0 /* flags */);
+    if (result != 0)
+    {
+        fprintf(stderr, "LoadSMF failed\n");
+        return false;
+    }
+    
+    result = MusicSequenceGetAUGraph (sequence, &graph);
+    if (result != 0)
+    {
+        fprintf(stderr, "MusicSequenceGetAUGraph failed\n");
+        return false;
+    }
+    
+    result = AUGraphOpen (graph);     
+    if (result != 0)
+    {
+        fprintf(stderr, "AUGraphOpen failed\n");
+        return false;
+    }
+    
+    result = GetSynthFromGraph (graph, theSynth);
+    if (result != 0)
+    {
+        fprintf(stderr, "GetSynthFromGraph failed\n");
+        return false;
+    }
+    
+    result = AudioUnitSetProperty (theSynth,
+                                   kAudioUnitProperty_CPULoad,
+                                   kAudioUnitScope_Global, 0,
+                                   &maxCPULoad, sizeof(maxCPULoad));
+    if (result != 0)
+    {
+        fprintf(stderr, "AudioUnitSetProperty failed\n");
+        return false;
+    }
+    
+    // if the user supplies a sound bank, we'll set that before we initialize and start playing
+    if (m_custom_sound_font != NULL) 
+    {
+        printf("setting soundfont <%s>\n", m_custom_sound_font);
+        FSRef fsRef;
+        result = FSPathMakeRef ((const UInt8*)m_custom_sound_font, &fsRef, 0);
+        if (result != 0)
+        {
+            wxMessageBox( _("Sorry, failed to set custom soundfont.") );
+            fprintf(stderr, "Failed to set custom sound font, location 1. Error code is %i\n", (int)result);
+        }
+        else
+        {
+            result = AudioUnitSetProperty (theSynth,
+                                           kMusicDeviceProperty_SoundBankFSRef,
+                                           kAudioUnitScope_Global, 0,
+                                           &fsRef, sizeof(fsRef));
+            if (result != 0)
+            {
+                fprintf(stderr, "Failed to set custom sound font, location 2. Error code is %i\n", (int)result);
+            }
+        }
+    }
+    
+    /*
+    // TODO
+    if (shouldSetBank) {      
+        CFURLRef soundBankURL = CFURLCreateFromFileSystemRepresentation(kCFAllocatorDefault, (const UInt8*)bankPath, strlen(bankPath), false);
+        
+        printf ("Setting Sound Bank:%s\n", bankPath);
+        
+        result = AudioUnitSetProperty (theSynth,
+                                       kMusicDeviceProperty_SoundBankURL,
+                                       kAudioUnitScope_Global, 0,
+                                       &soundBankURL, sizeof(soundBankURL));
+        CFRelease(soundBankURL);
+        require_noerr (result, fail);
+    }
+    */
+    
+    // need to tell synth that is going to render a file.
+    UInt32 value = 1;
+    result = AudioUnitSetProperty(theSynth,
+                                  kAudioUnitProperty_OfflineRender,
+                                  kAudioUnitScope_Global, 0,
+                                  &value, sizeof(value));
+    if (result != 0)
+    {
+        fprintf(stderr, "AudioUnitSetProperty failed\n");
+        return false;
+    }
+    
+    UInt32 numFrames = 512;
+    Float64 sample_rate = 44000;
+
+    result = SetUpGraph (graph, numFrames, sample_rate, (outputFilePath != NULL));
+    if (result != 0)
+    {
+        fprintf(stderr, "SetUpGraph failed\n");
+        return false;
+    }
+    
+    result = AUGraphInitialize (graph);
+    if (result != 0)
+    {
+        fprintf(stderr, "AUGraphInitialize failed\n");
+        return false;
+    }
+    
+    MusicPlayer player;
+    result = NewMusicPlayer (&player);
+    if (result != 0)
+    {
+        fprintf(stderr, "NewMusicPlayer failed\n");
+        return false;
+    }
+    
+    result = MusicPlayerSetSequence (player, sequence);
+    if (result != 0)
+    {
+        fprintf(stderr, "MusicPlayerSetSequence failed\n");
+        return false;
+    }
+    
+    // figure out sequence length
+    UInt32 ntracks;
+    result = MusicSequenceGetTrackCount (sequence, &ntracks);
+    if (result != 0)
+    {
+        fprintf(stderr, "MusicSequenceGetTrackCount failed\n");
+        return false;
+    }
+    MusicTimeStamp sequenceLength = 0;
+    
+    for (UInt32 i = 0; i < ntracks; ++i) {
+        MusicTrack track;
+        MusicTimeStamp trackLength;
+        UInt32 propsize = sizeof(MusicTimeStamp);
+        result = MusicSequenceGetIndTrack(sequence, i, &track);
+        if (result != 0)
+        {
+            fprintf(stderr, "MusicSequenceGetIndTrack failed\n");
+            return false;
+        }
+        result = MusicTrackGetProperty(track, kSequenceTrackProperty_TrackLength,
+                                                         &trackLength, &propsize);
+        if (result != 0)
+        {
+            fprintf(stderr, "MusicTrackGetProperty failed\n");
+            return false;
+        }
+        if (trackLength > sequenceLength)
+            sequenceLength = trackLength;
+        
+        /*
+        if (!trackSet.empty() && (trackSet.find(i) == trackSet.end()))
+        {
+            Boolean mute = true;
+            require_noerr (result = MusicTrackSetProperty(track, kSequenceTrackProperty_MuteStatus, &mute, sizeof(mute)), fail);
+        }
+        */
+    }
+	// now I'm going to add 8 beats on the end for the reverb/long releases to tail off...
+    sequenceLength += 8;
+    
+    //result = MusicPlayerSetTime (player, startTime);
+    
+    //startRunningTime = CAHostTimeBase::GetCurrentTime ();
+     
+    result = MusicPlayerStart(player);
+    if (result != 0)
+    {
+        fprintf(stderr, "MusicPlayerStart failed\n");
+        return false;
+    }
+    
+    OSType dataFormat = 0;
+    str2OSType("lpcm", dataFormat); //0; //kAudioFormatLinearPCM;
+
+    bool success = WriteOutputFile(outputFilePath, dataFormat, sample_rate, sequenceLength,
+                                   false /* print */, graph, numFrames, player);
+    
+    if (not success) return false;
+    
+    result = MusicPlayerStop(player);
+    if (result != 0)
+    {
+        fprintf(stderr, "MusicPlayerStop failed\n");
+        // ignore errors in cleanup
+        return true;
+    }
+    
+    result = DisposeMusicPlayer(player);
+    if (result != 0)
+    {
+        fprintf(stderr, "DisposeMusicPlayer failed\n");
+        // ignore errors in cleanup
+        return true;
+    }
+    
+    result = DisposeMusicSequence(sequence);
+    if (result != 0)
+    {
+        fprintf(stderr, "DisposeMusicSequence failed\n");
+        // ignore errors in cleanup
+        return true;
+    }
+    
+    result = DisposeMusicSequence(sequence);
+    if (result != 0)
+    {
+        fprintf(stderr, "DisposeMusicSequence failed\n");
+        // ignore errors in cleanup
+        return true;
+    }
+    
+    return true;
+}
+
+#if 0
+#pragma mark -
+#endif
 
 // This call creates the Graph and the Synth unit...
 OSStatus CreateAUGraph (AUGraph &outGraph, AudioUnit &outSynth)
@@ -54,7 +694,7 @@ OSStatus CreateAUGraph (AUGraph &outGraph, AudioUnit &outSynth)
     if (result != 0)
     {
         fprintf(stderr, "[PlatformMIDIManager] ERROR: NewAUGraph failed\n");
-        goto CreateAUGraph_home;
+        return result;
     }
     
     cd.componentType = kAudioUnitType_MusicDevice;
@@ -64,17 +704,17 @@ OSStatus CreateAUGraph (AUGraph &outGraph, AudioUnit &outSynth)
     if (result != 0)
     {
         fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphAddNode failed\n");
-        goto CreateAUGraph_home;
+        return result;
     }
     
     cd.componentType = kAudioUnitType_Effect;
     cd.componentSubType = kAudioUnitSubType_PeakLimiter;  
     
-    result = AUGraphAddNode (outGraph, &cd, &limiterNode);
+    result = AUGraphAddNode(outGraph, &cd, &limiterNode);
     if (result != 0)
     {
         fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphAddNode (limiterNode) failed\n");
-        goto CreateAUGraph_home;
+        return result;
     }
     
     cd.componentType = kAudioUnitType_Output;
@@ -83,40 +723,38 @@ OSStatus CreateAUGraph (AUGraph &outGraph, AudioUnit &outSynth)
     if (result != 0)
     {
         fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphAddNode (outNode) failed\n");
-        goto CreateAUGraph_home;
+        return result;
     }
     
-    result = AUGraphOpen (outGraph);
+    result = AUGraphOpen(outGraph);
     if (result != 0)
     {
         fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphOpen failed with error code %i (%s - %s)\n",
                 (int)result, GetMacOSStatusErrorString(result), GetMacOSStatusCommentString(result));
-        goto CreateAUGraph_home;
+        return result;
     }
     
-    result = AUGraphConnectNodeInput (outGraph, synthNode, 0, limiterNode, 0);
+    result = AUGraphConnectNodeInput(outGraph, synthNode, 0, limiterNode, 0);
     if (result != 0)
     {
         fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphConnectNodeInput (synthNode) failed\n");
-        goto CreateAUGraph_home;
+        return result;
     }
     
     result = AUGraphConnectNodeInput (outGraph, limiterNode, 0, outNode, 0);
     if (result != 0)
     {
         fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphConnectNodeInput (limiterNode) failed\n");
-        goto CreateAUGraph_home;
+        return result;
     }
     
     result = AUGraphNodeInfo(outGraph, synthNode, 0, &outSynth);
     if (result != 0)
     {
         fprintf(stderr, "[PlatformMIDIManager] ERROR: AUGraphNodeInfo failed\n");
-        goto CreateAUGraph_home;
+        return result;
     }
     
-    
-CreateAUGraph_home:
     return result;
 }
 
@@ -124,10 +762,20 @@ OSStatus PathToFSSpec(const char *filename, FSSpec &outSpec)
 {
     FSRef fsRef;
     OSStatus result;
-    require_noerr (result = FSPathMakeRef ((const UInt8*)filename, &fsRef, 0), home);
-    require_noerr (result = FSGetCatalogInfo(&fsRef, kFSCatInfoNone, NULL, NULL, &outSpec, NULL), home);
+    result = FSPathMakeRef ((const UInt8*)filename, &fsRef, 0);
+    if (result != 0)
+    {
+        fprintf(stderr, "FSPathMakeRef failed\n");
+        return result;
+    }
     
-home:
+    result = FSGetCatalogInfo(&fsRef, kFSCatInfoNone, NULL, NULL, &outSpec, NULL);
+    if (result != 0)
+    {
+        fprintf(stderr, "FSGetCatalogInfo failed\n");
+        return result;
+    }
+    
     return result;
 }
 
@@ -189,12 +837,19 @@ AudioUnitOutput::AudioUnitOutput(const char* custom_sound_font)
 {
     m_graph = 0;
     
+    m_custom_sound_font = custom_sound_font;
+    
     uint8_t midiChannelInUse = 0;
 
     OSStatus result;
     
-    require_noerr (result = CreateAUGraph(m_graph, m_synth_unit), err1);
-    
+    result = CreateAUGraph(m_graph, m_synth_unit);
+    if (result != 0)
+    {
+        fprintf(stderr, "CreateAUGraph ERROR %i\n", (int)result);
+        wxMessageBox( _("An error has occurred when connecting to the MIDI output device with AudioUnit; audio playback may be unavailable") );
+        return;
+    }
 
     // if the user supplies a sound bank, we'll set that before we initialize and start playing
     if (custom_sound_font != NULL) 
@@ -219,9 +874,15 @@ AudioUnitOutput::AudioUnitOutput(const char* custom_sound_font)
             }
         }
     }
-    
+        
     // initialize and start the graph
-    require_noerr (result = AUGraphInitialize(m_graph), err2);
+    result = AUGraphInitialize(m_graph);
+    if (result != 0)
+    {
+        fprintf(stderr, "AUGraphInitialize ERROR %i\n", (int)result);
+        wxMessageBox( _("An error has occurred when connecting to the MIDI output device with AudioUnit; audio playback may be unavailable") );
+        return;
+    }
     
     for (int n=0; n<15; n++)
     {
@@ -230,45 +891,37 @@ AudioUnitOutput::AudioUnitOutput(const char* custom_sound_font)
     }
     
     //set our bank
-    require_noerr (result = MusicDeviceMIDIEvent(m_synth_unit,
-                                                 kMidiMessage_ControlChange << 4 | midiChannelInUse,
-                                                 kMidiMessage_BankMSBControl, 0,
-                                                 0/*sample offset*/), err3);
+    result = MusicDeviceMIDIEvent(m_synth_unit,
+                                  kMidiMessage_ControlChange << 4 | midiChannelInUse,
+                                  kMidiMessage_BankMSBControl, 0,
+                                  0/*sample offset*/);
+    if (result != 0)
+    {
+        fprintf(stderr, "MusicDeviceMIDIEvent ERROR %i\n", (int)result);
+        wxMessageBox( _("An error has occurred when connecting to the MIDI output device with AudioUnit; audio playback may be unavailable") );
+        return;
+    }
     
-    require_noerr (result = MusicDeviceMIDIEvent(m_synth_unit,
-                                                 kMidiMessage_ProgramChange << 4 | midiChannelInUse,
-                                                 0/*prog change num*/, 0,
-                                                 0/*sample offset*/), err4);
+    result = MusicDeviceMIDIEvent(m_synth_unit,
+                                  kMidiMessage_ProgramChange << 4 | midiChannelInUse,
+                                  0/*prog change num*/, 0,
+                                  0/*sample offset*/);
+    if (result != 0)
+    {
+        fprintf(stderr, "MusicDeviceMIDIEvent ERROR %i\n", (int)result);
+        wxMessageBox( _("An error has occurred when connecting to the MIDI output device with AudioUnit; audio playback may be unavailable") );
+        return;
+    }
     
     //CAShow (graph); // prints out the graph so we can see what it looks like...
     
-    require_noerr (result = AUGraphStart(m_graph), err5);
-    return;
-    
-err1:
-    fprintf(stderr, "[PlatformMIDIManager] ERROR: An error has occured when initing the AUDIO UNIT graph (err 1)\n");
-    wxMessageBox( _("An error has occurred when connecting to the MIDI output device with AudioUnit; audio playback may be unavailable") );
-    return;
-    
-err2:
-    fprintf(stderr, "[PlatformMIDIManager] ERROR: An error has occured when initing the AUDIO UNIT graph (err 2)\n");
-    wxMessageBox( _("An error has occurred when connecting to the MIDI output device with AudioUnit; audio playback may be unavailable") );
-    return;
-    
-err3:
-    fprintf(stderr, "[PlatformMIDIManager] ERROR: An error has occured when initing the AUDIO UNIT graph (err 3)\n");
-    wxMessageBox( _("An error has occurred when connecting to the MIDI output device with AudioUnit; audio playback may be unavailable") );
-    return;
-    
-err4:
-    fprintf(stderr, "[PlatformMIDIManager] ERROR: An error has occured when initing the AUDIO UNIT graph (err 4)\n");
-    wxMessageBox( _("An error has occurred when connecting to the MIDI output device with AudioUnit; audio playback may be unavailable") );
-    return;
-    
-err5:
-    fprintf(stderr, "[PlatformMIDIManager] ERROR: An error has occured when initing the AUDIO UNIT graph (err 5)\n");
-    wxMessageBox( _("An error has occurred when connecting to the MIDI output device with AudioUnit; audio playback may be unavailable") );
-    return;
+    result = AUGraphStart(m_graph);
+    if (result != 0)
+    {
+        fprintf(stderr, "AUGraphStart ERROR %i\n", (int)result);
+        wxMessageBox( _("An error has occurred when connecting to the MIDI output device with AudioUnit; audio playback may be unavailable") );
+        return;
+    }
 }
 
 // ------------------------------------------------------------------------------------------------------
