@@ -714,6 +714,8 @@
 		95B90467114ADF23007F4778 /* PrintSetupDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 95B90463114ADF23007F4778 /* PrintSetupDialog.h */; };
 		95C283751159481C007B8CF7 /* Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 95C283741159481C007B8CF7 /* Utils.h */; };
 		95C283761159481C007B8CF7 /* Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 95C283741159481C007B8CF7 /* Utils.h */; };
+		95D097C714B3A80A006AC411 /* ptr_vector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95D097C614B3A80A006AC411 /* ptr_vector.cpp */; };
+		95D097C814B3A80A006AC411 /* ptr_vector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95D097C614B3A80A006AC411 /* ptr_vector.cpp */; };
 		95DB7CF2133E88FB0060AB17 /* aria64.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7C92133E88CF0060AB17 /* aria64.png */; };
 		95DB7CF3133E88FB0060AB17 /* border.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7C93133E88CF0060AB17 /* border.jpg */; };
 		95DB7CF4133E88FB0060AB17 /* close.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95DB7C94133E88CF0060AB17 /* close.png */; };
@@ -1269,6 +1271,7 @@
 		95B90462114ADF23007F4778 /* PrintSetupDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrintSetupDialog.cpp; path = ../Src/Dialogs/PrintSetupDialog.cpp; sourceTree = SOURCE_ROOT; };
 		95B90463114ADF23007F4778 /* PrintSetupDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrintSetupDialog.h; path = ../Src/Dialogs/PrintSetupDialog.h; sourceTree = SOURCE_ROOT; };
 		95C283741159481C007B8CF7 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utils.h; path = ../Src/Utils.h; sourceTree = SOURCE_ROOT; };
+		95D097C614B3A80A006AC411 /* ptr_vector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ptr_vector.cpp; path = ../Src/ptr_vector.cpp; sourceTree = SOURCE_ROOT; };
 		95DB7C92133E88CF0060AB17 /* aria64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = aria64.png; path = ../Resources/aria64.png; sourceTree = SOURCE_ROOT; };
 		95DB7C93133E88CF0060AB17 /* border.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = border.jpg; path = ../Resources/border.jpg; sourceTree = SOURCE_ROOT; };
 		95DB7C94133E88CF0060AB17 /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = close.png; path = ../Resources/close.png; sourceTree = SOURCE_ROOT; };
@@ -1986,6 +1989,7 @@
 				953C0438122197C0005DF729 /* prefix.pch */,
 				9533F8F511DFBFF70002D3ED /* PresetManager.cpp */,
 				9533F8F611DFBFF70002D3ED /* PresetManager.h */,
+				95D097C614B3A80A006AC411 /* ptr_vector.cpp */,
 				9571197C1125D8D300104BF5 /* ptr_vector.h */,
 				9571197D1125D8D300104BF5 /* Range.h */,
 				957119921125D8D300104BF5 /* Singleton.cpp */,
@@ -2645,6 +2649,7 @@
 				95F8A97414B258F200862061 /* CAStreamBasicDescription.cpp in Sources */,
 				95F8A99C14B25AA600862061 /* AUOutputBL.cpp in Sources */,
 				95F8AB0814B27BB200862061 /* CoreMIDIOutput.cpp in Sources */,
+				95D097C714B3A80A006AC411 /* ptr_vector.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2812,6 +2817,7 @@
 				95F8A97614B258F200862061 /* CAStreamBasicDescription.cpp in Sources */,
 				95F8A99E14B25AA600862061 /* AUOutputBL.cpp in Sources */,
 				95F8AB0A14B27BB200862061 /* CoreMIDIOutput.cpp in Sources */,
+				95D097C814B3A80A006AC411 /* ptr_vector.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

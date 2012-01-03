@@ -96,7 +96,7 @@ void TablaturePrintable::earlySetup(const int trackID, GraphicalTrack* gtrack)
         /** @return the number of notes that can be obtained through this interface */
         virtual int getNoteCount() const
         {
-            return m_analyser->noteRenderInfo.size();
+            return m_analyser->m_note_render_info.size();
         }
         
         /**
@@ -105,7 +105,7 @@ void TablaturePrintable::earlySetup(const int trackID, GraphicalTrack* gtrack)
          */
         virtual int getBeginMeasure(const int noteID) const
         {
-            return m_seq->getMeasureData()->measureAtTick( m_analyser->noteRenderInfo[noteID].getTick() );
+            return m_seq->getMeasureData()->measureAtTick( m_analyser->m_note_render_info[noteID].getTick() );
         }
         
         /**
@@ -114,7 +114,7 @@ void TablaturePrintable::earlySetup(const int trackID, GraphicalTrack* gtrack)
          */
         virtual int  getStartTick(const int noteID) const
         {
-            return m_analyser->noteRenderInfo[noteID].getTick();
+            return m_analyser->m_note_render_info[noteID].getTick();
         }
         
         /**
@@ -123,7 +123,7 @@ void TablaturePrintable::earlySetup(const int trackID, GraphicalTrack* gtrack)
          */
         virtual int getEndTick(const int noteID) const
         {
-            return m_analyser->noteRenderInfo[noteID].getTick() + m_analyser->noteRenderInfo[noteID].getTickLength();
+            return m_analyser->m_note_render_info[noteID].getTick() + m_analyser->m_note_render_info[noteID].getTickLength();
         }
     };
     

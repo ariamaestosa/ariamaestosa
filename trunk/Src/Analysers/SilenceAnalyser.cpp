@@ -179,7 +179,10 @@ void AriaMaestosa::SilenceAnalyser::findSilences(const Sequence* seq, RenderSile
     
     const MeasureData* md = seq->getMeasureData();
     
+    int previous_tick = -1;
+    
     const int visibleNoteAmount = noteSource->getNoteCount();
+    
     if (visibleNoteAmount>0)
     {
         // by comparing the ending of the previous note to the beginning of the current note,
@@ -201,8 +204,13 @@ void AriaMaestosa::SilenceAnalyser::findSilences(const Sequence* seq, RenderSile
             ASSERT_E(measure,>=,0);                    
             ASSERT_E(last_measure,>=,-1);
             
+            const int startTick = noteSource->getStartTick(i);
+            ASSERT_E(startTick, >=, previous_tick);
+            
+            previous_tick = startTick;
+            
             // we switched to another measure
-            if (measure>last_measure)
+            if (measure > last_measure)
             {
                 // if the last note of previous measure does not finish at the end of the measure,
                 // we need to add a silence at the end of it
@@ -211,7 +219,7 @@ void AriaMaestosa::SilenceAnalyser::findSilences(const Sequence* seq, RenderSile
                 {
                     const int last_measure_id = md->measureAtTick(last_note_end-1);
                     const int silence_length  = md->lastTickInMeasure(last_measure_id) - 
-                    last_note_end;
+                                                last_note_end;
                     if (silence_length < 0) continue;
                     
                     recursivelyAnalyzeSilence(seq, renderSilenceCallback, last_note_end,
@@ -221,10 +229,11 @@ void AriaMaestosa::SilenceAnalyser::findSilences(const Sequence* seq, RenderSile
                 
                 // if note is not at the very beginning of the new measure, and it's the first note of
                 // the measure, we need to add a silence before it
-                if (not aboutEqual(noteSource->getStartTick(i), md->firstTickInMeasure(measure) ))
+                if (not aboutEqual(startTick, md->firstTickInMeasure(measure) ))
                 {
-                    const int silence_length = noteSource->getStartTick(i) -
-                    md->firstTickInMeasure(measure);
+                    const int silence_length = startTick -
+                                               md->firstTickInMeasure(measure);
+                    
                     recursivelyAnalyzeSilence(seq, renderSilenceCallback,
                                               md->firstTickInMeasure(measure),
                                               silence_length, silences_y, userdata);

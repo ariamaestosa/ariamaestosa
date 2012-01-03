@@ -543,7 +543,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
 {
     AriaRender::lineWidth(2);
 
-    renderInfo.setY( LEVEL_TO_Y(renderInfo.m_level) - head_radius + 4 );
+    renderInfo.setY( LEVEL_TO_Y(renderInfo.getLevel()) - head_radius + 4 );
 
     // note head
     /*
@@ -605,9 +605,9 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
     else if (m_g_clef) score_to_level = middle_c_level - 1;
     
     // draw small lines above score if needed
-    if (renderInfo.m_level < score_from_level)
+    if (renderInfo.getLevel() < score_from_level)
     {
-        for (int lvl=score_from_level-1; lvl>renderInfo.m_level; lvl --)
+        for (int lvl=score_from_level-1; lvl>renderInfo.getLevel(); lvl --)
         {
             if ((score_from_level - lvl) % 2 == 1)
             {
@@ -618,9 +618,9 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
     }
 
     // draw small lines below score if needed
-    if (renderInfo.m_level > score_to_level)
+    if (renderInfo.getLevel() > score_to_level)
     {
-        for (int lvl=score_to_level; lvl<=renderInfo.m_level+1; lvl++)
+        for (int lvl=score_to_level; lvl<=renderInfo.getLevel()+1; lvl++)
         {
             if ((lvl - score_to_level) % 2 == 0)
             {
@@ -631,7 +631,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
     }
 
     // draw small lines between both scores if needed
-    if (m_g_clef and m_f_clef and renderInfo.m_level == middle_c_level)
+    if (m_g_clef and m_f_clef and renderInfo.getLevel() == middle_c_level)
     {
         const int lvly = getEditorYStart() + Y_STEP_HEIGHT*(middle_c_level+1) - head_radius -
                          getYScrollInPixels() + 2;
@@ -945,6 +945,8 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
     const int mouse_y2 = std::max(mousey_current, mousey_initial);
     const int head_radius = noteOpen->getImageHeight()/2;
 
+    int previous_tick = -1;
+    
     // render pass 1. draw linear notation if relevant, gather information and do initial rendering for
     // musical notation
     for (int n=0; n<noteAmount; n++)
@@ -953,8 +955,11 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
         const int noteLevel = m_converter->noteToLevel(m_track->getNote(n), &note_sign);
 
         if (noteLevel == -1) continue;
-        const int noteLength = m_track->getNoteEndInMidiTicks(n) - m_track->getNoteStartInMidiTicks(n);
+        
         const int tick = m_track->getNoteStartInMidiTicks(n);
+        ASSERT_E(tick, >=, previous_tick);
+        previous_tick = tick;
+        const int noteLength = m_track->getNoteEndInMidiTicks(n) - tick;
 
         const int original_x1 = m_graphical_track->getNoteStartInPixels(n) - m_gsequence->getXScrollInPixels() +
                                 Editor::getEditorXStart();
@@ -1089,7 +1094,16 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
         } // end if musical notation enabled
     } // next note
 
-
+    
+    if (m_g_clef)
+    {
+        m_g_clef_analyser->doneAdding();
+    }
+    if (m_f_clef)
+    {
+        m_f_clef_analyser->doneAdding();
+    }
+    
     // render musical notation if enabled
     if (m_musical_notation_enabled)
     {
@@ -1377,10 +1391,10 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
 void ScoreEditor::renderScore(ScoreAnalyser* analyser, const int silences_y)
 {
-    int visibleNoteAmount = analyser->noteRenderInfo.size();
-
+    int visibleNoteAmount = analyser->getNoteCount();
+    
     // first note rendering pass
-    for (int i=0; i<visibleNoteAmount; i++) renderNote_pass1( analyser->noteRenderInfo[i] );
+    for (int i=0; i<visibleNoteAmount; i++) renderNote_pass1( analyser->m_note_render_info[i] );
 
     AriaRender::setImageState(AriaRender::STATE_NOTE);
     
@@ -1400,11 +1414,11 @@ void ScoreEditor::renderScore(ScoreAnalyser* analyser, const int silences_y)
     analyser->analyseNoteInfo();
 
     // triplet signs, tied notes, flags and beams
-    visibleNoteAmount = analyser->noteRenderInfo.size();
+    visibleNoteAmount = analyser->m_note_render_info.size();
     for (int i=0; i<visibleNoteAmount; i++)
     {
-        ASSERT_E(i,<,(int)analyser->noteRenderInfo.size());
-        renderNote_pass2(analyser->noteRenderInfo[i], analyser);
+        ASSERT_E(i,<,(int)analyser->m_note_render_info.size());
+        renderNote_pass2(analyser->m_note_render_info[i], analyser);
     }
     AriaRender::setImageState(AriaRender::STATE_NOTE);
 }

@@ -48,38 +48,38 @@ public:
         m_max_level = -999;
     }
     
-    void calculateLevel(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreMidiConverter* converter)
+    void calculateLevel(std::vector<NoteRenderInfo>& m_note_render_info, ScoreMidiConverter* converter)
     {
         for (int i=m_first_id;i<=m_last_id; i++)
         {
-            if (noteRenderInfo[i].m_chord)
+            if (m_note_render_info[i].m_chord)
             {
-                if (noteRenderInfo[i].m_min_chord_level < m_min_level)
+                if (m_note_render_info[i].m_min_chord_level < m_min_level)
                 {
-                    m_min_level = noteRenderInfo[i].m_min_chord_level;
+                    m_min_level = m_note_render_info[i].m_min_chord_level;
                 }
                 
-                if (noteRenderInfo[i].m_max_chord_level > m_max_level)
+                if (m_note_render_info[i].m_max_chord_level > m_max_level)
                 {
-                    m_max_level = noteRenderInfo[i].m_max_chord_level;
+                    m_max_level = m_note_render_info[i].m_max_chord_level;
                 }
             }
             else
             {
-                const int level = noteRenderInfo[i].m_level;
+                const int level = m_note_render_info[i].getLevel();
                 if (level < m_min_level) m_min_level = level;
                 if (level > m_max_level) m_max_level = level;
             }
         }
 
         // if nothing found (most likely meaning we only have one triplet note alone) use values from the first
-        if (m_min_level == 999)  m_min_level = noteRenderInfo[m_first_id].m_level;
-        if (m_max_level == -999) m_max_level = noteRenderInfo[m_first_id].m_level;
+        if (m_min_level == 999)  m_min_level = m_note_render_info[m_first_id].getLevel();
+        if (m_max_level == -999) m_max_level = m_note_render_info[m_first_id].getLevel();
 
         m_mid_level = (int)round( (m_min_level + m_max_level)/2.0 );
     }
 
-    void doBeam(std::vector<NoteRenderInfo>& noteRenderInfo, ScoreEditor* editor)
+    void doBeam(std::vector<NoteRenderInfo>& m_note_render_info, ScoreEditor* editor)
     {
         ASSERT( editor != NULL );
         
@@ -93,9 +93,9 @@ public:
         
         // check for number of "beamable" notes and split if current amount is not acceptable with the current time sig
         // only considering note 0 to get the measure should be fine since Aria only beams within the same measure
-        const int num   = md->getTimeSigNumerator  ( noteRenderInfo[m_first_id].m_measure_begin );
-        const int denom = md->getTimeSigDenominator( noteRenderInfo[m_first_id].m_measure_begin );
-        const int flag_amount = noteRenderInfo[m_first_id].m_flag_amount;
+        const int num   = md->getTimeSigNumerator  ( m_note_render_info[m_first_id].m_measure_begin );
+        const int denom = md->getTimeSigDenominator( m_note_render_info[m_first_id].m_measure_begin );
+        const int flag_amount = m_note_render_info[m_first_id].m_flag_amount;
 
         int max_amount_of_notes_beamed_toghether = 4;
 
@@ -113,7 +113,7 @@ public:
             max_amount_of_notes_beamed_toghether = num * (int)(std::pow(2.0,flag_amount-1));
         }
         
-        if (noteRenderInfo[m_first_id].m_triplet) max_amount_of_notes_beamed_toghether = 3;
+        if (m_note_render_info[m_first_id].m_triplet) max_amount_of_notes_beamed_toghether = 3;
 
         const int beamable_note_amount = m_last_id - m_first_id + 1;
 
@@ -130,14 +130,14 @@ public:
 
             // try to find where beamed groups of such notes usually start and end in the measure
             // this is where splitting should be performed
-            const int group_len = noteRenderInfo[m_first_id].getTickLength() * max_amount_of_notes_beamed_toghether;
-            const int measId = md->measureAtTick(noteRenderInfo[m_first_id].getTick());
+            const int group_len = m_note_render_info[m_first_id].getTickLength() * max_amount_of_notes_beamed_toghether;
+            const int measId = md->measureAtTick(m_note_render_info[m_first_id].getTick());
             const int first_tick_in_measure = md->firstTickInMeasure( measId );
 
             int split_at_id = -1;
             for (int n=m_first_id+1; n<=m_last_id; n++)
             {
-                if ((noteRenderInfo[n].getTick() - first_tick_in_measure) % group_len == 0)
+                if ((m_note_render_info[n].getTick() - first_tick_in_measure) % group_len == 0)
                 {
                     split_at_id = n;
                     break;
@@ -149,79 +149,79 @@ public:
                 // dumb split
                 BeamGroup first_half(m_analyser, m_first_id, m_first_id + max_amount_of_notes_beamed_toghether - 1);
                 BeamGroup second_half(m_analyser, m_first_id + max_amount_of_notes_beamed_toghether, m_last_id);
-                first_half.doBeam(noteRenderInfo, editor);
-                second_half.doBeam(noteRenderInfo, editor);
+                first_half.doBeam(m_note_render_info, editor);
+                second_half.doBeam(m_note_render_info, editor);
             }
             else
             {
                 BeamGroup first_half(m_analyser, m_first_id, split_at_id - 1);
                 BeamGroup second_half(m_analyser, split_at_id, m_last_id);
-                first_half.doBeam(noteRenderInfo, editor);
-                second_half.doBeam(noteRenderInfo, editor);
+                first_half.doBeam(m_note_render_info, editor);
+                second_half.doBeam(m_note_render_info, editor);
             }
 
             return;
         }
 
-        calculateLevel(noteRenderInfo, converter);
+        calculateLevel(m_note_render_info, converter);
 
-        noteRenderInfo[m_first_id].m_beam_show_above = m_analyser->stemUp(m_mid_level);
-        noteRenderInfo[m_first_id].m_beam = true;
+        m_note_render_info[m_first_id].m_beam_show_above = m_analyser->stemUp(m_mid_level);
+        m_note_render_info[m_first_id].m_beam = true;
 
         for (int j=m_first_id; j<=m_last_id; j++)
         {
             // give correct stem orientation (up or down)
-            noteRenderInfo[j].m_stem_type = (noteRenderInfo[m_first_id].m_beam_show_above ?  STEM_UP : STEM_DOWN);
+            m_note_render_info[j].m_stem_type = (m_note_render_info[m_first_id].m_beam_show_above ?  STEM_UP : STEM_DOWN);
 
             // reset any already set stem location, since we'll need to totally redo them for the beam
-            noteRenderInfo[j].m_stem_y_level = -1;
+            m_note_render_info[j].m_stem_y_level = -1;
         }
 
         // set initial beam info in note
-        noteRenderInfo[m_first_id].m_beam_to_tick  = noteRenderInfo[m_last_id].getTick();
-        noteRenderInfo[m_first_id].m_beam_to_sign  = noteRenderInfo[m_last_id].m_sign;
-        noteRenderInfo[m_first_id].m_beam_to_level = m_analyser->getStemTo(noteRenderInfo[m_last_id]);
-        noteRenderInfo[m_first_id].m_stem_y_level  = m_analyser->getStemTo(noteRenderInfo[m_first_id]);
+        m_note_render_info[m_first_id].m_beam_to_tick  = m_note_render_info[m_last_id].getTick();
+        m_note_render_info[m_first_id].m_beam_to_sign  = m_note_render_info[m_last_id].m_sign;
+        m_note_render_info[m_first_id].m_beam_to_level = m_analyser->getStemTo(m_note_render_info[m_last_id]);
+        m_note_render_info[m_first_id].m_stem_y_level  = m_analyser->getStemTo(m_note_render_info[m_first_id]);
 
         // check if the stem is too inclined, fix it if necessary
-        const float height_diff = fabsf(noteRenderInfo[m_first_id].m_beam_to_level -
-                                        noteRenderInfo[m_first_id].m_stem_y_level );
+        const float height_diff = fabsf(m_note_render_info[m_first_id].m_beam_to_level -
+                                        m_note_render_info[m_first_id].m_stem_y_level );
 
         if (height_diff > 3)
         {
             const float height_shift = height_diff - 3;
-            const bool end_on_higher_level = (noteRenderInfo[m_first_id].m_beam_to_level >
-                                              noteRenderInfo[m_first_id].m_stem_y_level );
+            const bool end_on_higher_level = (m_note_render_info[m_first_id].m_beam_to_level >
+                                              m_note_render_info[m_first_id].m_stem_y_level );
             
-            if (noteRenderInfo[m_first_id].m_beam_show_above)
+            if (m_note_render_info[m_first_id].m_beam_show_above)
             {
-                if (end_on_higher_level) noteRenderInfo[m_first_id].m_beam_to_level -= height_shift;
-                else                     noteRenderInfo[m_first_id].m_stem_y_level  -= height_shift;
+                if (end_on_higher_level) m_note_render_info[m_first_id].m_beam_to_level -= height_shift;
+                else                     m_note_render_info[m_first_id].m_stem_y_level  -= height_shift;
             }
             else
             {
-                if (end_on_higher_level) noteRenderInfo[m_first_id].m_stem_y_level  += height_shift;
-                else                     noteRenderInfo[m_first_id].m_beam_to_level += height_shift;
+                if (end_on_higher_level) m_note_render_info[m_first_id].m_stem_y_level  += height_shift;
+                else                     m_note_render_info[m_first_id].m_beam_to_level += height_shift;
             }
         }
 
         // fix all note stems so they all point in the same direction and have the correct height
         while (true)
         {
-            const int   from_tick  = noteRenderInfo[m_first_id].getTick();
-            const float from_level = m_analyser->getStemTo(noteRenderInfo[m_first_id]);
-            const int   to_tick    = noteRenderInfo[m_first_id].m_beam_to_tick;
-            const float to_level   = noteRenderInfo[m_first_id].m_beam_to_level;
+            const int   from_tick  = m_note_render_info[m_first_id].getTick();
+            const float from_level = m_analyser->getStemTo(m_note_render_info[m_first_id]);
+            const int   to_tick    = m_note_render_info[m_first_id].m_beam_to_tick;
+            const float to_level   = m_note_render_info[m_first_id].m_beam_to_level;
 
             bool need_to_start_again = false;
             for (int j=m_first_id; j<=m_last_id; j++)
             {
                 // give correct stem height (so it doesn't end above or below beam line)
                 // rel_pos will be 0 for first note of a beamed serie, and 1 for the last one
-                const float rel_pos = (float)(noteRenderInfo[j].getTick() - from_tick) / (float)(to_tick - from_tick);
+                const float rel_pos = (float)(m_note_render_info[j].getTick() - from_tick) / (float)(to_tick - from_tick);
                 if (j != m_first_id)
                 {
-                    noteRenderInfo[j].m_stem_y_level = (float)from_level +
+                    m_note_render_info[j].m_stem_y_level = (float)from_level +
                                                        (float)(to_level - from_level) * rel_pos;
                 }
 
@@ -229,15 +229,15 @@ public:
                 // here the distinction between base level and stem origin is tricky but necessary
                 // to preporly deal with chords. In a chord, when we check if the stem is long enough,
                 // we don't want to check the entire stem, only the part coming out of the top/bottom note
-                const float stemheight = fabsf(noteRenderInfo[j].m_stem_y_level -
-                                               noteRenderInfo[j].getBaseLevel());
+                const float stemheight = fabsf(m_note_render_info[j].m_stem_y_level -
+                                               m_note_render_info[j].getBaseLevel());
                 const bool too_short = stemheight < m_analyser->min_stem_height;
 
-                const float diff = noteRenderInfo[j].m_stem_y_level - noteRenderInfo[j].getBaseLevel();
+                const float diff = m_note_render_info[j].m_stem_y_level - m_note_render_info[j].getBaseLevel();
                 
                 const bool on_wrong_side_of_beam =
-                    (noteRenderInfo[m_first_id].m_beam_show_above and diff > 0) or
-                    ((not noteRenderInfo[m_first_id].m_beam_show_above) and diff < 0);
+                    (m_note_render_info[m_first_id].m_beam_show_above and diff > 0) or
+                    ((not m_note_render_info[m_first_id].m_beam_show_above) and diff < 0);
 
                 if (too_short or on_wrong_side_of_beam)
                 {
@@ -249,21 +249,21 @@ public:
                     if (on_wrong_side_of_beam) beam_shift = m_analyser->min_stem_height + fabsf(diff);
                     else if (too_short)        beam_shift = m_analyser->min_stem_height - stemheight;
 
-                    if (noteRenderInfo[m_first_id].m_beam_show_above)
+                    if (m_note_render_info[m_first_id].m_beam_show_above)
                     {
-                        noteRenderInfo[m_first_id].m_beam_to_level -= beam_shift;
-                        noteRenderInfo[m_first_id].m_stem_y_level  -= beam_shift;
+                        m_note_render_info[m_first_id].m_beam_to_level -= beam_shift;
+                        m_note_render_info[m_first_id].m_stem_y_level  -= beam_shift;
                     }
                     else
                     {
-                        noteRenderInfo[m_first_id].m_beam_to_level += beam_shift;
-                        noteRenderInfo[m_first_id].m_stem_y_level  += beam_shift;
+                        m_note_render_info[m_first_id].m_beam_to_level += beam_shift;
+                        m_note_render_info[m_first_id].m_stem_y_level  += beam_shift;
                     }
                     need_to_start_again = true;
                     break;
                 }
 
-                if (j != m_first_id) noteRenderInfo[j].m_flag_amount = 0;
+                if (j != m_first_id) m_note_render_info[j].m_flag_amount = 0;
             }
             if (not need_to_start_again) break; // we're done, no need to loop again
         }
@@ -295,7 +295,7 @@ NoteRenderInfo::NoteRenderInfo(int tick, int level, int tick_length, PitchSign s
     m_sign        = sign;
     m_level       = level;
     m_pitch       = pitch;
-
+    
     // what we will know after render pass 1
     m_instant_hit    = false;
     m_triplet        = false;
@@ -432,17 +432,17 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
         // (remember, note may be split in more than 2 if one of the 2 initial halves has a rare length)
         
         int initial_id = -1;
-        if (not recursion) initial_id = noteRenderInfo.size();
+        if (not recursion) initial_id = m_note_render_info.size();
         
         if (aboutEqual(firstLength, 0)) return;
         if (aboutEqual(secondLength, 0)) return;
         
-        NoteRenderInfo part1 = NoteRenderInfo::factory(renderInfo.getTick(), renderInfo.m_level, firstLength,
+        NoteRenderInfo part1 = NoteRenderInfo::factory(renderInfo.getTick(), renderInfo.getLevel(), firstLength,
                                                        renderInfo.m_sign, renderInfo.m_selected,
                                                        renderInfo.m_pitch, md);
         addToVector(part1, true);
         NoteRenderInfo part2 = NoteRenderInfo::factory(md->firstTickInMeasure(renderInfo.m_measure_begin+1),
-                                                       renderInfo.m_level, secondLength, renderInfo.m_sign,
+                                                       renderInfo.getLevel(), secondLength, renderInfo.m_sign,
                                                        renderInfo.m_selected, renderInfo.m_pitch, md);
         addToVector(part2, true);
         
@@ -450,10 +450,10 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
         {
             // done splitting, now iterate through all notes that
             // were added in this recusrion and tie them
-            const int amount = noteRenderInfo.size();
+            const int amount = m_note_render_info.size();
             for (int i=initial_id+1; i<amount; i++)
             {
-                noteRenderInfo[i].tieWith(noteRenderInfo[i-1]);
+                m_note_render_info[i].tieWith(m_note_render_info[i-1]);
             }
         }
         
@@ -465,7 +465,7 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
     const int beat = seq->ticksPerBeat();
     const float relativeLength = renderInfo.getTickLength() / (float)(beat*4);
     
-    renderInfo.m_stem_type = (stemUp(renderInfo.m_level) ? STEM_UP : STEM_DOWN);
+    renderInfo.m_stem_type = (stemUp(renderInfo.getLevel()) ? STEM_UP : STEM_DOWN);
     if (relativeLength >= 1) renderInfo.m_stem_type = STEM_NONE; // whole notes have no stem
     renderInfo.m_hollow_head = false;
     
@@ -518,14 +518,14 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
         
         if (not recursion)
         {
-            initial_id = noteRenderInfo.size();
+            initial_id = m_note_render_info.size();
         }
         
-        NoteRenderInfo part1 = NoteRenderInfo::factory(renderInfo.getTick(), renderInfo.m_level,
+        NoteRenderInfo part1 = NoteRenderInfo::factory(renderInfo.getTick(), renderInfo.getLevel(),
                                                        firstLength_tick, renderInfo.m_sign,
                                                        renderInfo.m_selected, renderInfo.m_pitch, md);
         addToVector(part1, true);
-        NoteRenderInfo part2 = NoteRenderInfo::factory(secondBeginning_tick, renderInfo.m_level,
+        NoteRenderInfo part2 = NoteRenderInfo::factory(secondBeginning_tick, renderInfo.getLevel(),
                                                        renderInfo.getTickLength() - firstLength_tick, renderInfo.m_sign,
                                                        renderInfo.m_selected, renderInfo.m_pitch, md);
         addToVector(part2, true);
@@ -534,10 +534,10 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
         {
             // done splitting, now iterate through all notes that
             // were added in this recusrion and tie them
-            const int amount = noteRenderInfo.size();
+            const int amount = m_note_render_info.size();
             for (int i=initial_id+1; i<amount; i++)
             {
-                noteRenderInfo[i].tieWith(noteRenderInfo[i-1]);
+                m_note_render_info[i].tieWith(m_note_render_info[i-1]);
             }
         }
         
@@ -547,11 +547,11 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
     if (renderInfo.m_triplet)
     {
         renderInfo.m_triplet_arc_tick_start = renderInfo.getTick();
-        renderInfo.m_triplet_arc_level      = renderInfo.m_level;
+        renderInfo.m_triplet_arc_level      = renderInfo.getLevel();
     }
     
-    ASSERT_E(renderInfo.m_level,>,-1);
-    noteRenderInfo.push_back(renderInfo);
+    ASSERT_E(renderInfo.getLevel(),>,-1);
+    m_note_render_info.push_back(renderInfo);
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -565,7 +565,7 @@ void ScoreAnalyser::setStemPivot(const int level)
 
 void ScoreAnalyser::clearAndPrepare()
 {
-    noteRenderInfo.clear();
+    m_note_render_info.clear();
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -601,12 +601,12 @@ ScoreAnalyser* ScoreAnalyser::getSubset(const int fromTick, const int toTick) co
         
     // Copy only the note render infos that fit the specified tick range
     // TODO: are the note render infos sorted by tick? If so this could be made faster
-    const int count = noteRenderInfo.size();
+    const int count = m_note_render_info.size();
     for (int n=0; n<count; n++)
     {
-        if (noteRenderInfo[n].getTick() >= fromTick and noteRenderInfo[n].getTick() < toTick)
+        if (m_note_render_info[n].getTick() >= fromTick and m_note_render_info[n].getTick() < toTick)
         {
-            out->noteRenderInfo.push_back( noteRenderInfo[n] );
+            out->m_note_render_info.push_back( m_note_render_info[n] );
         }
     }
     
@@ -626,7 +626,7 @@ ScoreAnalyser* ScoreAnalyser::getSubset(const int fromTick, const int toTick) co
 void ScoreAnalyser::putInTimeOrder()
 {
 
-    const int visibleNoteAmount = noteRenderInfo.size();
+    const int visibleNoteAmount = m_note_render_info.size();
 #ifdef _MORE_DEBUG_CHECKS
     int iteration = 0;
 #endif
@@ -639,14 +639,14 @@ void ScoreAnalyser::putInTimeOrder()
 
         // put in time order
         // making sure notes without stem come before notes with a stem
-        if (noteRenderInfo[i].getTick() < noteRenderInfo[i-1].getTick() or
-            (noteRenderInfo[i].getTick() == noteRenderInfo[i-1].getTick() and
-             noteRenderInfo[i-1].m_stem_type != STEM_NONE and noteRenderInfo[i].m_stem_type == STEM_NONE)
+        if (m_note_render_info[i].getTick() < m_note_render_info[i-1].getTick() or
+            (m_note_render_info[i].getTick() == m_note_render_info[i-1].getTick() and
+             m_note_render_info[i-1].m_stem_type != STEM_NONE and m_note_render_info[i].m_stem_type == STEM_NONE)
            )
         {
-            NoteRenderInfo tmp = noteRenderInfo[i-1];
-            noteRenderInfo[i-1] = noteRenderInfo[i];
-            noteRenderInfo[i] = tmp;
+            NoteRenderInfo tmp = m_note_render_info[i-1];
+            m_note_render_info[i-1] = m_note_render_info[i];
+            m_note_render_info[i] = tmp;
             i -= 2; if (i<0) i=0;
         }
     }
@@ -668,7 +668,7 @@ void ScoreAnalyser::findAndMergeChords()
      * is draw stems, triplet signs, etc. so at this point a chord of note behaves just
      * like a single note).
      */
-    for (int i=0; i<(int)noteRenderInfo.size(); i++)
+    for (int i=0; i<(int)m_note_render_info.size(); i++)
     {
         int start_tick_of_next_note = -1;
         int first_note_of_chord = -1;
@@ -683,39 +683,40 @@ void ScoreAnalyser::findAndMergeChords()
         // first note of that bunch (the ID of the last will be "i" when we get to it)
         first_note_of_chord = i;
 
-        if (noteRenderInfo[i].m_stem_type == STEM_NONE) continue;
+        if (m_note_render_info[i].m_stem_type == STEM_NONE) continue;
 
         while (true) // FIXME - it should be checked whether there is a chord BEFORE entering the while loop. same for others
         {
             // find next note's tick if there's one
-            if (i + 1 < (int)noteRenderInfo.size())
+            if (i + 1 < (int)m_note_render_info.size())
             {
-                start_tick_of_next_note = noteRenderInfo[i+1].getTick();
+                start_tick_of_next_note = m_note_render_info[i+1].getTick();
             }
             else
             {
                 start_tick_of_next_note = -1;
             }
-
+            
             // we've processed all notes, exit the loop
-            if (not (i<(int)noteRenderInfo.size())) break;
+            if (not (i<(int)m_note_render_info.size())) break;
 
             // check if we're in a chord (i.e. many notes that play at the same time). also check they have stems :
             // for instance wholes have no stems and thus there is no special processing to do on them.
             if (start_tick_of_next_note != -1 and
-                aboutEqual_tick(start_tick_of_next_note, noteRenderInfo[i].getTick(), beatLen) and
-                noteRenderInfo[i+1].m_stem_type != STEM_NONE)
+                aboutEqual_tick(start_tick_of_next_note, m_note_render_info[i].getTick(), beatLen) and
+                m_note_render_info[i+1].m_stem_type != STEM_NONE)
             {
             }
             else
             {
                 //after this one, it stops. mark this as the last so it will finalize stuff.
                 last_of_a_serie = true;
-                if (first_note_of_chord == i){ break; } //not a bunch of concurrent notes, just a note alone
+                if (first_note_of_chord == i) break; //not a bunch of concurrent notes, just a note alone
             }
-
+            
             // gather info on notes of the chord, for instance their y location (level) and their duration
-            const int level = noteRenderInfo[i].m_level;
+            const int level = m_note_render_info[i].getLevel();
+            
             if (level < min_level)
             {
                 min_level = level;
@@ -727,22 +728,22 @@ void ScoreAnalyser::findAndMergeChords()
                 maxid = i;
             }
 
-            const int len = noteRenderInfo[i].getTickLength();
+            const int len = m_note_render_info[i].getTickLength();
             if (len < smallest_duration or smallest_duration == 99999)
             {
                 smallest_duration = len;
             }
 
-            if (noteRenderInfo[i].m_flag_amount > flag_amount)
+            if (m_note_render_info[i].m_flag_amount > flag_amount)
             {
-                flag_amount = noteRenderInfo[i].m_flag_amount;
+                flag_amount = m_note_render_info[i].m_flag_amount;
             }
 
-            if (noteRenderInfo[i].m_triplet) triplet = true;
+            if (m_note_render_info[i].m_triplet) triplet = true;
 
             // remove this note's stem. we only need on stem per chord.
             // the right stem will be set on last iterated note of the chord (see below)
-            noteRenderInfo[i].m_draw_stem = false;
+            m_note_render_info[i].m_draw_stem = false;
 
             // the note of this iteration is the end of a chord, so it's time to complete chord information
             if (last_of_a_serie)
@@ -752,8 +753,8 @@ void ScoreAnalyser::findAndMergeChords()
 
                 // determine average note level to know if we put stems above or below
                 // if nothing found use values from the first
-                if (min_level == 999)  min_level = noteRenderInfo[first_note_of_chord].m_level;
-                if (max_level == -999) max_level = noteRenderInfo[first_note_of_chord].m_level;
+                if (min_level == 999)  min_level = m_note_render_info[first_note_of_chord].getLevel();
+                if (max_level == -999) max_level = m_note_render_info[first_note_of_chord].getLevel();
                 const int mid_level = (int)round( (min_level + max_level)/2.0 );
 
                 const bool stem_up = stemUp(mid_level);
@@ -766,27 +767,27 @@ void ScoreAnalyser::findAndMergeChords()
                  * Making a chord into a single note allows it to enter other steps of analysis,
                  * like beaming.
                  */
-                NoteRenderInfo summary = noteRenderInfo[ stem_up ? minid : maxid ];
+                NoteRenderInfo summary = m_note_render_info[ stem_up ? minid : maxid ];
                 summary.m_chord = true;
                 summary.m_min_chord_level = min_level;
                 summary.m_max_chord_level = max_level;
                 summary.m_stem_y_level = (stem_up ?
-                                          noteRenderInfo[minid].getStemOriginLevel() - stem_height :
-                                          noteRenderInfo[maxid].getStemOriginLevel() + stem_height);
+                                          m_note_render_info[minid].getStemOriginLevel() - stem_height :
+                                          m_note_render_info[maxid].getStemOriginLevel() + stem_height);
                 summary.m_flag_amount = flag_amount;
                 summary.m_triplet = triplet;
                 summary.m_draw_stem = true;
                 summary.m_stem_type = (stem_up ? STEM_UP : STEM_DOWN);
                 summary.setLength( smallest_duration );
 
-                summary.tieWith( noteRenderInfo[ !stem_up ? minid : maxid ].getTiedToTick() );
-                summary.setTieUp( noteRenderInfo[ !stem_up ? minid : maxid ].isTieUp() );
-
-                noteRenderInfo[i] = summary;
+                summary.tieWith( m_note_render_info[ !stem_up ? minid : maxid ].getTiedToTick() );
+                summary.setTieUp( m_note_render_info[ !stem_up ? minid : maxid ].isTieUp() );
+                
+                m_note_render_info[i] = summary;
 
                 // now that we summarised concurrent notes into a single one, we can erase the other notes of the chord
-                ASSERT_E(i,<,(int)noteRenderInfo.size());
-                noteRenderInfo.erase( noteRenderInfo.begin()+first_note_of_chord, noteRenderInfo.begin()+i );
+                ASSERT_E(i,<,(int)m_note_render_info.size());
+                m_note_render_info.erase( m_note_render_info.begin()+first_note_of_chord, m_note_render_info.begin()+i );
                 i = first_note_of_chord-2;
                 if (i<0) i=0;
 
@@ -805,20 +806,20 @@ const bool VERBOSE_ABOUT_TRIPLETS = false;
 
 void ScoreAnalyser::processTriplets()
 {
-    const int visibleNoteAmount = noteRenderInfo.size();
+    const int visibleNoteAmount = m_note_render_info.size();
     const int beatLen = m_editor->getSequence()->ticksPerBeat();
     
     for (int i=0; i<visibleNoteAmount; i++)
     {
         int start_tick_of_next_note = -1;
 
-        bool is_triplet = noteRenderInfo[i].m_triplet;
+        bool is_triplet = m_note_render_info[i].m_triplet;
         int first_triplet = (is_triplet ? i : -1);
         int min_level = 999;
         int max_level = -999;
         bool last_of_a_serie = false;
 
-        int measure = noteRenderInfo[i].m_measure_begin;
+        int measure = m_note_render_info[i].m_measure_begin;
         int previous_measure = measure;
 
         if (VERBOSE_ABOUT_TRIPLETS) std::cout << "(3) ---- Measure " << (measure+1) << " ----\n";
@@ -831,8 +832,8 @@ void ScoreAnalyser::processTriplets()
             // ---- search for consecutive notes
             if (i + 1 < visibleNoteAmount)
             {
-                ASSERT_E(i+1, <, (int)noteRenderInfo.size());
-                start_tick_of_next_note = noteRenderInfo[i+1].getTick();
+                ASSERT_E(i+1, <, (int)m_note_render_info.size());
+                start_tick_of_next_note = m_note_render_info[i+1].getTick();
             }
 
             if (not (i<visibleNoteAmount)) break;
@@ -840,7 +841,7 @@ void ScoreAnalyser::processTriplets()
             // if notes are consecutive
             if (start_tick_of_next_note != -1 and
                 aboutEqual_tick(start_tick_of_next_note,
-                                noteRenderInfo[i].getTick() + noteRenderInfo[i].getTickLength(),
+                                m_note_render_info[i].getTick() + m_note_render_info[i].getTickLength(),
                                 beatLen)
                 )
             {
@@ -855,13 +856,13 @@ void ScoreAnalyser::processTriplets()
             
             if (first_triplet != -1)
             {
-                if (i == (int)noteRenderInfo.size()-1 or (not noteRenderInfo[i+1].m_triplet) or
+                if (i == (int)m_note_render_info.size()-1 or (not m_note_render_info[i+1].m_triplet) or
                     (i - first_triplet >= 2 and first_triplet != -1) )
                 {
                     if (VERBOSE_ABOUT_TRIPLETS)
                     {
                         std::cout << "(3) } // serie ends here : "
-                                  << (not noteRenderInfo[i+1].m_triplet ? "next is no triplet " : "")
+                                  << (not m_note_render_info[i+1].m_triplet ? "next is no triplet " : "")
                                   << ((i-first_triplet>=2 and first_triplet != -1) ? "We've had 3 in a row. " : "")
                                   << "\n";
                     }
@@ -873,7 +874,7 @@ void ScoreAnalyser::processTriplets()
             // do not cross measures
             if (i + 1 < visibleNoteAmount)
             {
-                measure = noteRenderInfo[i+1].m_measure_begin;
+                measure = m_note_render_info[i+1].m_measure_begin;
                 if (measure != previous_measure)
                 {
                     if (VERBOSE_ABOUT_TRIPLETS) std::cout << "(3) } // serie ends here : crossing a measure bar\n";
@@ -883,33 +884,33 @@ void ScoreAnalyser::processTriplets()
                 previous_measure = measure;
             }
 
-            if (noteRenderInfo[i].m_chord)
+            if (m_note_render_info[i].m_chord)
             {
-                if (noteRenderInfo[i].m_min_chord_level < min_level)
+                if (m_note_render_info[i].m_min_chord_level < min_level)
                 {
-                    min_level = noteRenderInfo[i].m_min_chord_level;
+                    min_level = m_note_render_info[i].m_min_chord_level;
                 }
-                if (noteRenderInfo[i].m_max_chord_level > max_level)
+                if (m_note_render_info[i].m_max_chord_level > max_level)
                 {
-                    max_level = noteRenderInfo[i].m_max_chord_level;
+                    max_level = m_note_render_info[i].m_max_chord_level;
                 }
             }
             else
             {
-                const int level = noteRenderInfo[i].m_level;
+                const int level = m_note_render_info[i].getLevel();
                 if (level < min_level) min_level = level;
                 if (level > max_level) max_level = level;
             }
 
             // ---- ... and triplet notes
-            is_triplet = noteRenderInfo[i].m_triplet;
+            is_triplet = m_note_render_info[i].m_triplet;
             if (is_triplet and first_triplet == -1)
             {
                 if (VERBOSE_ABOUT_TRIPLETS) std::cout << "(3) { // starting triplet serie\n";
                 first_triplet = i;
                 
                 // since it's the first note in this triplet series, it's both the min and max
-                const int level = noteRenderInfo[i].m_level;
+                const int level = m_note_render_info[i].getLevel();
                 min_level = level;
                 max_level = level;
             }
@@ -927,40 +928,40 @@ void ScoreAnalyser::processTriplets()
                     
                     // if nothing found (most likely meaning we only have one triplet note alone)
                     // use values from the first then.
-                    if (min_level == 999)  min_level = noteRenderInfo[first_triplet].m_level;
-                    if (max_level == -999) max_level = noteRenderInfo[first_triplet].m_level;
+                    if (min_level == 999)  min_level = m_note_render_info[first_triplet].getLevel();
+                    if (max_level == -999) max_level = m_note_render_info[first_triplet].getLevel();
 
                     int mid_level = (int)round( (min_level + max_level)/2.0 );
 
-                    noteRenderInfo[first_triplet].m_triplet_show_above = (mid_level < m_stem_pivot);
+                    m_note_render_info[first_triplet].m_triplet_show_above = (mid_level < m_stem_pivot);
 
                     if (i != first_triplet) // if not a triplet note alone, but a 'serie' of triplets
                     {
                         // fix all note stems so they all point in the same direction
                         for (int j=first_triplet; j<=i; j++)
                         {
-                            //noteRenderInfo[j].stem_type = ( noteRenderInfo[first_triplet].triplet_show_above ? STEM_DOWN : STEM_UP );
-                            noteRenderInfo[j].m_draw_triplet_sign = false;
+                            //m_note_render_info[j].stem_type = ( m_note_render_info[first_triplet].triplet_show_above ? STEM_DOWN : STEM_UP );
+                            m_note_render_info[j].m_draw_triplet_sign = false;
                         }
                     }
                     else
                     {
                         // this is either a triplet alone or a chord... just use the orientation that it already has
-                        noteRenderInfo[first_triplet].m_triplet_show_above =
-                            (noteRenderInfo[first_triplet].m_stem_type == STEM_DOWN);
+                        m_note_render_info[first_triplet].m_triplet_show_above =
+                            (m_note_render_info[first_triplet].m_stem_type == STEM_DOWN);
                     }
 
-                    if (noteRenderInfo[first_triplet].m_triplet_show_above)
+                    if (m_note_render_info[first_triplet].m_triplet_show_above)
                     {
-                        noteRenderInfo[first_triplet].m_triplet_arc_level = min_level;
+                        m_note_render_info[first_triplet].m_triplet_arc_level = min_level;
                     }
                     else
                     {
-                        noteRenderInfo[first_triplet].m_triplet_arc_level = max_level;
+                        m_note_render_info[first_triplet].m_triplet_arc_level = max_level;
                     }
 
-                    noteRenderInfo[first_triplet].m_draw_triplet_sign = true;
-                    noteRenderInfo[first_triplet].m_triplet_arc_tick_end = noteRenderInfo[i].getTick();
+                    m_note_render_info[first_triplet].m_draw_triplet_sign = true;
+                    m_note_render_info[first_triplet].m_triplet_arc_tick_end = m_note_render_info[i].getTick();
                 }
 
                 // reset search for triplets
@@ -982,7 +983,7 @@ void ScoreAnalyser::processTriplets()
 
 void ScoreAnalyser::processNoteBeam()
 {
-    const int visibleNoteAmount = noteRenderInfo.size();
+    const int visibleNoteAmount = m_note_render_info.size();
     const int beatLen = m_editor->getSequence()->ticksPerBeat();
     
     // beaming
@@ -994,11 +995,11 @@ void ScoreAnalyser::processNoteBeam()
     {
         int start_tick_of_next_note = -1;
 
-        int flag_amount = noteRenderInfo[i].m_flag_amount;
+        int flag_amount = m_note_render_info[i].m_flag_amount;
         int first_of_serie = i;
         bool last_of_a_serie = false;
 
-        int measure = noteRenderInfo[i].m_measure_begin;
+        int measure = m_note_render_info[i].m_measure_begin;
         int previous_measure = measure;
 
         // check for consecutive notes
@@ -1006,16 +1007,16 @@ void ScoreAnalyser::processNoteBeam()
         {
             if (i + 1 < visibleNoteAmount)
             {
-                start_tick_of_next_note = noteRenderInfo[i+1].getTick();
+                start_tick_of_next_note = m_note_render_info[i+1].getTick();
             }
 
             if (not (i < visibleNoteAmount)) break;
 
             // if notes are consecutive and of same length
             if (start_tick_of_next_note != -1 and
-               aboutEqual_tick(start_tick_of_next_note, noteRenderInfo[i].getTick() + noteRenderInfo[i].getTickLength(), beatLen) and
-               noteRenderInfo[i+1].m_flag_amount == flag_amount and flag_amount > 0 and
-               noteRenderInfo[i+1].m_triplet == noteRenderInfo[i].m_triplet);
+               aboutEqual_tick(start_tick_of_next_note, m_note_render_info[i].getTick() + m_note_render_info[i].getTickLength(), beatLen) and
+               m_note_render_info[i+1].m_flag_amount == flag_amount and flag_amount > 0 and
+               m_note_render_info[i+1].m_triplet == m_note_render_info[i].m_triplet);
             else
             {
                 //notes are no more consecutive. it is likely a special action will be performed at the end of a serie
@@ -1025,7 +1026,7 @@ void ScoreAnalyser::processNoteBeam()
             // do not cross measures
             if (i + 1 < visibleNoteAmount)
             {
-                measure = noteRenderInfo[i+1].m_measure_begin;
+                measure = m_note_render_info[i+1].m_measure_begin;
                 if (measure != previous_measure) last_of_a_serie = true;
                 previous_measure = measure;
             }
@@ -1036,7 +1037,7 @@ void ScoreAnalyser::processNoteBeam()
                 if (i > first_of_serie)
                 {
                     BeamGroup beam(this, first_of_serie, i);
-                    beam.doBeam(noteRenderInfo, dynamic_cast<ScoreEditor*>(m_editor));
+                    beam.doBeam(m_note_render_info, dynamic_cast<ScoreEditor*>(m_editor));
                 }
 
                 // reset

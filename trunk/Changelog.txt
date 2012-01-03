@@ -6,6 +6,7 @@
 - Remember in saved Aria files whether unused drums were hidden
 - Fix minor leak in CoreAudio player
 - Use fancy cursor on OSX when pressing Shift to select more
+- Fixed score editor bug that caused bogus silences to appear
 
 1.3 beta 4
 - Added ability to drag-duplicate notes
