@@ -1955,10 +1955,11 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                     {
                         std::cout << "FATAL ERROR: Invalid tuning!! only " << newTuning.size() 
                                   << " strings found" << std::endl;
-                        return false;
                     }
-                    
-                    tuning->setTuning(newTuning, false);
+                    else
+                    {
+                        tuning->setTuning(newTuning, false);
+                    }
                 }
                 // FIXME: this is SAVED in GraphicalTrack but LOADED here. wtf.
                 else if (strcmp("drumkit", xml->getNodeName()) == 0)
