@@ -158,7 +158,7 @@ namespace AriaMaestosa
         
 
         /** @return a human-readable summary of the current page setup */
-        wxString getPageSetupSummary() const;
+        PageSetupSummary getPageSetupSummary() const;
         
         /** show the page setup dialog, so that the user can edit the page setup settings */
         void showPageSetupDialog();

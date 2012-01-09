@@ -141,7 +141,7 @@ void AriaPrintable::findUsableHeight()
 
 // -------------------------------------------------------------------------------------------------------------
 
-wxString AriaPrintable::getPageSetupSummary() const
+PageSetupSummary AriaPrintable::getPageSetupSummary() const
 {
     ASSERT(m_printer_manager.raw_ptr != NULL);
     return m_printer_manager->getPageSetupSummary();

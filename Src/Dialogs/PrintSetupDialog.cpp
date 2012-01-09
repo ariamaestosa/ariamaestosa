@@ -411,9 +411,11 @@ namespace AriaMaestosa
         
         wxCheckBox*    m_hide_empty_tracks; 
 
-        wxStaticText* m_page_setup_summary;
-        
-        AriaPrintable*     m_printable;
+        wxStaticText*  m_paper_text;
+        wxStaticText*  m_margin_line1;
+        wxStaticText*  m_margin_line2;
+
+        AriaPrintable* m_printable;
         
     public:
         
@@ -422,7 +424,7 @@ namespace AriaMaestosa
         PrintSetupDialog(wxWindow *parent, Sequence* sequence) : wxFrame(parent, wxID_ANY,
                                   //I18N: - title of the notation-print dialog
                                   _("Print musical notation"),
-                                  wxPoint(200,200), wxSize(500, 400), wxCAPTION | wxFRAME_FLOAT_ON_PARENT)
+                                  wxPoint(200,200), wxSize(500, 400), wxCAPTION | wxFRAME_FLOAT_ON_PARENT | wxRESIZE_BORDER)
         {
             m_current_sequence = sequence;
             //m_detect_repetitions = false;
@@ -597,37 +599,51 @@ namespace AriaMaestosa
 
             // Page setup summary
             {
-                wxStaticBoxSizer* pageSetupSizer = new wxStaticBoxSizer(wxHORIZONTAL, parent_panel, _("Page Setup"));
+                wxStaticBoxSizer* pageSetupSizerBox = new wxStaticBoxSizer(wxHORIZONTAL, parent_panel, _("Page Setup"));
                 
                 
-                m_page_setup_summary = new wxStaticText(parent_panel, wxID_ANY, m_printable->getPageSetupSummary());
-                pageSetupSizer->Add( m_page_setup_summary, 1, wxEXPAND | wxTOP | wxBOTTOM, 5 );                
-                    
-                {
-                    wxPanel* buttonsPanel = new wxPanel(parent_panel);
-                    wxBoxSizer* buttonsSizer = new wxBoxSizer(wxVERTICAL);
-                    
-                    
-                    wxButton* pageSetupButton = new wxButton(buttonsPanel, wxNewId(), _("Edit Page Setup"));
-                    buttonsSizer->Add(pageSetupButton, 0, wxEXPAND | wxTOP | wxBOTTOM, 5 );
-                    pageSetupButton->Connect(pageSetupButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED,
-                                             wxCommandEventHandler(PrintSetupDialog::onEditPageSetupClicked),
-                                             NULL, this);
-                    
+                wxFlexGridSizer* pageSetupSizer = new wxFlexGridSizer(3, 3, 0, 2);
+                pageSetupSizer->AddGrowableCol(1);
+                
+                wxStaticText* paper_label = new wxStaticText(parent_panel, wxID_ANY, wxString(_("Paper :")));
+                pageSetupSizer->Add(paper_label);
+                
+                PageSetupSummary summary = m_printable->getPageSetupSummary();
+                
+                m_paper_text = new wxStaticText(parent_panel, wxID_ANY, summary.paperName + wxT(", ") + summary.paperOrientation);
+                pageSetupSizer->Add(m_paper_text);
+
+                wxButton* pageSetupButton = new wxButton(parent_panel, wxNewId(), _("Edit Page Setup"));
+                pageSetupSizer->Add(pageSetupButton, 0, wxEXPAND | wxTOP | wxBOTTOM, 5 );
+                pageSetupButton->Connect(pageSetupButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED,
+                                         wxCommandEventHandler(PrintSetupDialog::onEditPageSetupClicked),
+                                         NULL, this);
+                
+                wxStaticText* margins_label = new wxStaticText(parent_panel, wxID_ANY, wxString(_("Margins :")));
+                pageSetupSizer->Add(margins_label);
+                                
+                m_margin_line1 = new wxStaticText(parent_panel, wxID_ANY, summary.marginsLine1);
+                pageSetupSizer->Add(m_margin_line1);
+                
 #ifdef __WXMAC__ 
-                    // the mac page setup dialog does not allow editing margins
-                    wxButton* marginsButton = new wxButton(buttonsPanel, wxNewId(), _("Margins"));
-                    buttonsSizer->Add(marginsButton, 0, wxEXPAND | wxTOP | wxBOTTOM, 5 );
-                    marginsButton->Connect(marginsButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED,
-                                           wxCommandEventHandler(PrintSetupDialog::onMacEditMargins),
-                                           NULL, this);
+                // the mac page setup dialog does not allow editing margins
+                wxButton* marginsButton = new wxButton(parent_panel, wxNewId(), _("Margins"));
+                pageSetupSizer->Add(marginsButton, 0, wxEXPAND | wxTOP | wxBOTTOM, 5 );
+                marginsButton->Connect(marginsButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED,
+                                       wxCommandEventHandler(PrintSetupDialog::onMacEditMargins),
+                                       NULL, this);
+#else
+                pageSetupSizer->AddStretchSpacer(1);
 #endif
-                    
-                    buttonsPanel->SetSizer( buttonsSizer );
-                    pageSetupSizer->Add( buttonsPanel, 0, wxLEFT | wxRIGHT, 5 );   
-                }
+
+                pageSetupSizer->AddStretchSpacer(1);
+                m_margin_line2 = new wxStaticText(parent_panel, wxID_ANY, summary.marginsLine2);
+                pageSetupSizer->Add(m_margin_line2);
+                pageSetupSizer->AddStretchSpacer(1);
                 
-                boxSizer->Add(pageSetupSizer,  0, wxALL | wxEXPAND, 5);
+                pageSetupSizer->Layout();
+                pageSetupSizerBox->Add(pageSetupSizer, 1, wxEXPAND);
+                boxSizer->Add(pageSetupSizerBox, 0, wxEXPAND | wxALL, 5);
             }
             
             // OK-Cancel buttons
@@ -670,7 +686,11 @@ namespace AriaMaestosa
         void onEditPageSetupClicked(wxCommandEvent& evt)
         {
             m_printable->showPageSetupDialog();
-            m_page_setup_summary->SetLabel(m_printable->getPageSetupSummary());
+            
+            PageSetupSummary summary = m_printable->getPageSetupSummary();
+            m_paper_text->SetLabel(summary.paperName + wxT(", ") + summary.paperOrientation);
+            m_margin_line1->SetLabel(summary.marginsLine1);
+            m_margin_line2->SetLabel(summary.marginsLine2);
         }
         
 #ifdef __WXMAC__
@@ -679,7 +699,11 @@ namespace AriaMaestosa
             Hide();
             m_printable->macEditMargins(this);
             Show();
-            m_page_setup_summary->SetLabel(m_printable->getPageSetupSummary());
+            
+            PageSetupSummary summary = m_printable->getPageSetupSummary();
+            m_paper_text->SetLabel(summary.paperName + wxT(", ") + summary.paperOrientation);
+            m_margin_line1->SetLabel(summary.marginsLine1);
+            m_margin_line2->SetLabel(summary.marginsLine2);
         }
 #endif
         
