@@ -62,10 +62,10 @@ AboutDialog::AboutDialog() : wxFrame(NULL, wxID_ANY,  _("About Aria Maestosa"), 
     wxT("\n\t") + wxString(_("Windows port by Alexis Archambault")) +
     //I18N: - in about dialog
     wxT("\n\n") + wxString(_("Translations:") +
-             wxT("\n\t") + wxString( wxT("it : Gianluca Pignalberi")) +
-             wxT("\n\t") + wxString( wxT("de : Friedrich Weber")) +
-             wxT("\n\t") + wxString( wxT("ja : Jessie Wanner") ) +
-             wxT("\n\t") + wxString( wxT("es : Othyro") )
+             wxString(wxT("\n\t")) + wxString( wxT("it : Gianluca Pignalberi")) +
+             wxString(wxT("\n\t")) + wxString( wxT("de : Friedrich Weber")) +
+             wxString(wxT("\n\t")) + wxString( wxT("ja : Jessie Wanner") ) +
+             wxString(wxT("\n\t")) + wxString( wxT("es : Othyro") )
              );
     
     wxTextCtrl* text_area = new wxTextCtrl(this, 1, about_text, wxPoint(0,174), wxSize(517,500-174),
