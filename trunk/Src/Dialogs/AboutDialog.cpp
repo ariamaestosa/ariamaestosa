@@ -45,23 +45,27 @@ AboutDialog::AboutDialog() : wxFrame(NULL, wxID_ANY,  _("About Aria Maestosa"), 
     new AboutImage(this, wxID_ANY, titleBitmap, wxPoint(0,0), wxSize(517,174));
     
     //I18N: - in about dialog
-    wxString about_text =  wxString::Format(_("version %s"), wxT("1.3 beta 4") ) +
+    wxString about_text =  wxString::Format(_("version %s"), wxT("1.3 beta 5") ) + wxT("\n\n") + 
     //I18N: - in about dialog
-    wxString::Format(_("\n\nThanks to:\n\n\tErgonis Software and %s for making EasyBeat,\n\t\ta great app that inspired Aria (www.ergonis.com).\n"), wxT(" G\u00FCnther Blaschek "))  +
+    wxString(_("Thanks to:")) + wxT("\n\n\t") +
     //I18N: - in about dialog
-    wxString(_("\tJ.D. Koftinoff Software for libjdkmidi\n\tThe irrXML team for their great XML parser\n")) +
+    wxString::Format(_("Ergonis Software and %s for making EasyBeat,\n\t\ta great app that inspired Aria (www.ergonis.com)."), wxT(" G\u00FCnther Blaschek "))  +
     //I18N: - in about dialog
-    wxString(_("\tThe wxWidgets team\n")) +
+    wxT("\n\t") + wxString(_("J.D. Koftinoff Software for libjdkmidi")) +
     //I18N: - in about dialog
-    wxString(_("\tThe Tango icon set\n")) +
+    wxT("\n\t") + wxString(_("The irrXML team for their XML parser")) +
     //I18N: - in about dialog
-    wxString(_("\tWindows port by Alexis Archambault\n")) +
+    wxT("\n\t") + wxString(_("The wxWidgets team")) +
     //I18N: - in about dialog
-    wxString(_("\nTranslations:\n") +
-             wxString( wxT("\t it : Gianluca Pignalberi\n")) +
-             wxString( wxT("\t de : Friedrich Weber\n")) +
-             wxString( wxT("\t ja : Jessie Wanner\n") ) +
-             wxString( wxT("\t es : Othyro\n") )
+    wxT("\n\t") + wxString(_("The Tango icon set")) +
+    //I18N: - in about dialog
+    wxT("\n\t") + wxString(_("Windows port by Alexis Archambault")) +
+    //I18N: - in about dialog
+    wxT("\n\n") + wxString(_("Translations:") +
+             wxT("\n\t") + wxString( wxT("it : Gianluca Pignalberi")) +
+             wxT("\n\t") + wxString( wxT("de : Friedrich Weber")) +
+             wxT("\n\t") + wxString( wxT("ja : Jessie Wanner") ) +
+             wxT("\n\t") + wxString( wxT("es : Othyro") )
              );
     
     wxTextCtrl* text_area = new wxTextCtrl(this, 1, about_text, wxPoint(0,174), wxSize(517,500-174),

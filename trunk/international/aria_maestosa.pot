@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-09 11:11-0500\n"
+"POT-Creation-Date: 2012-01-09 11:48-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -148,46 +148,48 @@ msgstr ""
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:50
-#, c-format
-msgid ""
-"\n"
-"\n"
-"Thanks to:\n"
-"\n"
-"\tErgonis Software and %s for making EasyBeat,\n"
-"\t\ta great app that inspired Aria (www.ergonis.com).\n"
+msgid "Thanks to:"
 msgstr ""
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:52
+#, c-format
 msgid ""
-"\tJ.D. Koftinoff Software for libjdkmidi\n"
-"\tThe irrXML team for their great XML parser\n"
+"Ergonis Software and %s for making EasyBeat,\n"
+"\t\ta great app that inspired Aria (www.ergonis.com)."
 msgstr ""
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:54
-msgid "\tThe wxWidgets team\n"
+msgid "J.D. Koftinoff Software for libjdkmidi"
 msgstr ""
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:56
-msgid "\tThe Tango icon set\n"
+msgid "The irrXML team for their XML parser"
 msgstr ""
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:58
-msgid "\tWindows port by Alexis Archambault\n"
+msgid "The wxWidgets team"
 msgstr ""
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:60
-msgid ""
-"\n"
-"Translations:\n"
+msgid "The Tango icon set"
 msgstr ""
 
-#: Src/Dialogs/AboutDialog.cpp:77 Src/Dialogs/PresetEditor.cpp:66
+#. I18N: - in about dialog
+#: Src/Dialogs/AboutDialog.cpp:62
+msgid "Windows port by Alexis Archambault"
+msgstr ""
+
+#. I18N: - in about dialog
+#: Src/Dialogs/AboutDialog.cpp:64
+msgid "Translations:"
+msgstr ""
+
+#: Src/Dialogs/AboutDialog.cpp:81 Src/Dialogs/PresetEditor.cpp:66
 #: Src/GUI/MainFrameMenuBar.cpp:1117
 msgid "Close"
 msgstr ""
