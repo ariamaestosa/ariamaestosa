@@ -49,6 +49,14 @@ namespace AriaMaestosa
         
     };
     
+    struct PageSetupSummary
+    {
+        wxString paperName;
+        wxString paperOrientation;
+        wxString marginsLine1;
+        wxString marginsLine2;
+    };
+    
     /**
       * @brief utility class to wrap the wxWidgets print framework into a higher-level API
       * @ingroup printing
@@ -143,15 +151,15 @@ namespace AriaMaestosa
         wxPrintData getPrintData();  
         
         /**
-         * @return a string that summarises the current page setup information
+         * @return a few strings that summarise the current page setup information
          */
-        wxString getPageSetupSummary() const;
+        PageSetupSummary getPageSetupSummary() const;
         
         /** 
           * Call before trying to actually print this wxPrintout.
           */
         void setPageCount(const int pageCount);
-                
+        
         // ---- callbacks from wxPrintout
         virtual void OnBeginPrinting();
         virtual bool OnBeginDocument(int startPage, int endPage);

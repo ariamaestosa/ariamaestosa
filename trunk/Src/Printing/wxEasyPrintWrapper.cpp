@@ -217,16 +217,16 @@ wxPrintData wxEasyPrintWrapper::getPrintData()
 
 // ----------------------------------------------------------------------------------------------------------
 
-wxString wxEasyPrintWrapper::getPageSetupSummary() const
+PageSetupSummary wxEasyPrintWrapper::getPageSetupSummary() const
 {
-    // printdata.SetOrientation( m_orient ); // wxPORTRAIT, wxLANDSCAPE
-    // printdata.SetPaperId( m_paper_id );
-    return wxString(_("Paper :")) + wxT("\t\t") + wxThePrintPaperDatabase->ConvertIdToName( m_paper_id ) + wxT(", ") +
-           //I18N: for printing (page orientation)
-           (m_orient == wxPORTRAIT ? _("Portrait") : _("Landscape")) + wxT("\n") +
-           //I18N: for printing (page setup)
-           wxString::Format(_("Margins :\tleft = %i mm, right = %i mm,\n\t\t\ttop = %i mm, bottom = %i mm"),
-                            m_left_margin, m_right_margin, m_top_margin, m_bottom_margin);
+    PageSetupSummary out;
+    out.paperName = wxThePrintPaperDatabase->ConvertIdToName( m_paper_id );
+    //I18N: for printing (page orientation)
+    out.paperOrientation = (m_orient == wxPORTRAIT ? _("Portrait") : _("Landscape"));
+    //I18N: for printing (page setup)
+    out.marginsLine1 = wxString::Format(_("left = %i mm, right = %i mm,"), m_left_margin, m_right_margin);
+    out.marginsLine2 = wxString::Format(_("top = %i mm, bottom = %i mm"), m_top_margin, m_bottom_margin);
+    return out;
 }
 
 // ----------------------------------------------------------------------------------------------------------
