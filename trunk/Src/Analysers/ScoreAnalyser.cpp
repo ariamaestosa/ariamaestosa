@@ -478,12 +478,12 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
     else if ( aboutEqual(relativeLength, 1.0/2.0) ){ renderInfo.m_hollow_head = true; } // 1/2
     else if ( aboutEqual(relativeLength, 1.0/3.0) ){ renderInfo.setTriplet(); renderInfo.m_hollow_head = true; } // triplet 1/2
     else if ( aboutEqual(relativeLength, 1.0/4.0) ); // 1/4
-    else if ( aboutEqual(relativeLength, 1.0/8.0) ) renderInfo.m_flag_amount = 1; // 1/8
-    else if ( aboutEqual(relativeLength, 1.0/6.0) ){ renderInfo.setTriplet(); } // triplet 1/4
-    else if ( aboutEqual(relativeLength, 1.0/16.0) ) renderInfo.m_flag_amount = 2; // 1/16
-    else if ( aboutEqual(relativeLength, 1.0/12.0) ){ renderInfo.setTriplet(); renderInfo.m_flag_amount = 1; } // triplet 1/8
-    else if ( aboutEqual(relativeLength, 1.0/32.0) ) renderInfo.m_flag_amount = 3; // 1/32
-    else if ( aboutEqual(relativeLength, 1.0/24.0) ) { renderInfo.setTriplet(); renderInfo.m_flag_amount = 2; } // triplet 1/16
+    else if ( relativeLength > 0.146f and relativeLength < 0.208f ) { renderInfo.setTriplet();      } // triplet 1/4 (1/6)
+    else if ( relativeLength > 0.104f and relativeLength < 0.146f ) { renderInfo.m_flag_amount = 1; } // 1/8
+    else if ( relativeLength > 0.073f and relativeLength < 0.104f ) { renderInfo.setTriplet(); renderInfo.m_flag_amount = 1; } // triplet 1/8 (1/12)
+    else if ( relativeLength > 0.052f and relativeLength < 0.073f ) { renderInfo.m_flag_amount = 2; } // 1/16
+    else if ( relativeLength > 0.037f and relativeLength < 0.052f ) { renderInfo.setTriplet(); renderInfo.m_flag_amount = 2; } // triplet 1/16 (1/24)
+    else if ( relativeLength > 0.023f and relativeLength < 0.037f ) { renderInfo.m_flag_amount = 3; } // 1/32
     else if ( aboutEqual(relativeLength, 3.0/4.0) and starts_on_beat){ renderInfo.m_dotted = true; renderInfo.m_hollow_head=true; } // dotted 1/2
     else if ( aboutEqual(relativeLength, 3.0/8.0) and starts_on_beat ) renderInfo.m_dotted = true; // dotted 1/4
     else if ( aboutEqual(relativeLength, 3.0/2.0) and starts_on_beat ){ renderInfo.m_dotted = true; renderInfo.m_hollow_head=true; } // dotted whole
