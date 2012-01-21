@@ -116,25 +116,33 @@ void recursivelyAnalyzeSilence(const Sequence* seq, RenderSilenceCallback render
     {
         type = 4; dotted = true; dot_delta_x = -3; dot_delta_y = 10;
     }
-    else if (aboutEqual(relativeLength, 1.0/8.0))
+    else if (relativeLength > 0.146f and relativeLength < 0.208f) // triplet 1/4 (1/6)
+    {
+        type = 4; triplet = true;
+    }
+    else if (relativeLength > 0.104f and relativeLength < 0.146f) // 1/8
     {
         type = 8;
     }
-    else if (aboutEqual(relativeLength, 1.0/6.0))
+    else if (relativeLength > 0.073f and relativeLength < 0.104f) // triplet 1/8 (1/12)
     {
-        type = 4; triplet = true;
+        triplet = true; type = 8;
+    }
+    else if (relativeLength > 0.052f and relativeLength < 0.073f) // 1/16
+    {
+        type = 16;
+    }
+    else if (relativeLength > 0.037f and relativeLength < 0.052f) // 1/16 (1/24)
+    {
+        type = 16; triplet = true;
+    }
+    else if (relativeLength > 0.023f and relativeLength < 0.037f) // 1/32
+    {
+        type = 32;
     }
     else if (aboutEqual(relativeLength, 3.0/16.0) and starts_on_beat)
     {
         type = 8; dotted = true;
-    }
-    else if (aboutEqual(relativeLength, 1.0/16.0))
-    {
-        type = 16;
-    }
-    else if (aboutEqual(relativeLength, 1.0/12.0))
-    {
-        triplet = true; type = 8;
     }
     else if (relativeLength < 1.0/16.0)
     {
