@@ -1035,15 +1035,17 @@ void MainFrame::menuEvent_outputDevice(wxCommandEvent& evt)
         }
     }
     
-    if (item != NULL)
+    if (item != NULL and item->GetItemLabelText() != _("No MIDI Output Available"))
     {
         PreferencesData::getInstance()->setValue(SETTING_ID_MIDI_OUTPUT, item->GetItemLabelText());
         PreferencesData::getInstance()->save();
+        
+        // re-init MIDI player so that changes take effect
+        PlatformMidiManager::get()->freeMidiPlayer();
+        PlatformMidiManager::get()->initMidiPlayer();
     }
     
-    // re-init MIDI player so that changes take effect
-    PlatformMidiManager::get()->freeMidiPlayer();
-    PlatformMidiManager::get()->initMidiPlayer();
+
 }
 
 // ----------------------------------------------------------------------------------------------------------
