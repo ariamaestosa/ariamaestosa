@@ -56,9 +56,9 @@
 namespace AriaMaestosa
 {
 
-bool sound_available;
+bool sound_available = false;
 
-MidiContext* context;
+MidiContext* context = NULL;
 
 bool must_stop=false;
 Sequence* g_sequence;
@@ -248,9 +248,14 @@ public:
     virtual void freeMidiPlayer()
     {
         wxLogVerbose( wxT("AlsaMidiManager::freeMidiPlayer") );
-        context->closeDevice();
-        delete context;
+        
+        if (context != NULL)
+        {
+            context->closeDevice();
+            delete context;
+        }
         AlsaPlayerStuff::alsa_output_module_free();
+        sound_available = false;
     }
 
     virtual bool playSequence(Sequence* sequence, /*out*/int* startTick)
