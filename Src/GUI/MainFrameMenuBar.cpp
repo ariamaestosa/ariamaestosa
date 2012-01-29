@@ -232,6 +232,12 @@ void MainFrame::initMenuBar()
     wxArrayString choices = PlatformMidiManager::get()->getOutputChoices();
     wxString output = PreferencesData::getInstance()->getValue(SETTING_ID_MIDI_OUTPUT);
 
+    if (choices.size() == 0)
+    {
+        wxMenuItem* item = m_output_menu->QUICK_ADD_CHECK_MENU(MENU_OUTPUT_DEVICE, _("No MIDI Output Available"), MainFrame::menuEvent_outputDevice);
+        m_output_device_menus.push_back(item);
+    }
+    
     bool found = false;
     for (unsigned int n=0; n<choices.Count(); n++)
     {
