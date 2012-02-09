@@ -7,6 +7,8 @@
 - Fix minor leak in CoreAudio player
 - Use fancy cursor on OSX when pressing Shift to select more
 - Fixed score editor bug that caused bogus silences to appear
+- Add dotted notes to magnetic grid
+- Improve 'pencil' tool with more accuracy
 - Improved display of very small notes
 
 1.3 beta 4

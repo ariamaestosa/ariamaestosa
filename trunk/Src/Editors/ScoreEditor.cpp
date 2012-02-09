@@ -1151,7 +1151,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
             
             const int tick1 = m_track->snapMidiTickToGrid(mousex_initial.getRelativeTo(MIDI), true);
             const int len = mousex_current.getRelativeTo(MIDI) - mousex_initial.getRelativeTo(MIDI);
-            const int tick2 = m_track->snapMidiTickToGrid(len, false);
+            const int tick2 = tick1 + m_track->snapMidiTickToGrid(len, false);
             
             int preview_x1 = (int)((tick1 - tscroll) * zoom);
             int preview_x2 = (int)((tick2 - tscroll) * zoom);
