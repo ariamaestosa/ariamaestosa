@@ -102,6 +102,7 @@ namespace AriaMaestosa
     IMG_DEC Drawable* mgrid_16;
     IMG_DEC Drawable* mgrid_32;
     IMG_DEC Drawable* mgrid_triplet;
+    IMG_DEC Drawable* mgrid_dotted;
 
     IMG_DEC Drawable* menu_new;
     IMG_DEC Drawable* menu_open;

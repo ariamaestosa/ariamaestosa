@@ -23,47 +23,41 @@
 #include "AriaCore.h"
 #include "irrXML/irrXML.h"
 
-namespace AriaMaestosa
-{
-
-    BEGIN_EVENT_TABLE(MagneticGridPicker, wxMenu)
-
-    EVT_MENU(1, MagneticGridPicker::grid1selected)
-    EVT_MENU(2, MagneticGridPicker::grid2selected)
-    EVT_MENU(4, MagneticGridPicker::grid4selected)
-    EVT_MENU(8, MagneticGridPicker::grid8selected)
-    EVT_MENU(16, MagneticGridPicker::grid16selected)
-    EVT_MENU(32, MagneticGridPicker::grid32selected)
-    EVT_MENU(64, MagneticGridPicker::grid64selected)
-    EVT_MENU(128, MagneticGridPicker::grid128selected)
-
-    EVT_MENU(3, MagneticGridPicker::tripletChanged)
-
-    END_EVENT_TABLE()
-
-}
-
 using namespace AriaMaestosa;
 
 MagneticGridPicker::MagneticGridPicker(GraphicalTrack* parent, MagneticGrid* model) : wxMenu()
 {
     m_model = model;
+    m_parent = parent;
 
-    grid1   = AppendCheckItem(1,wxT("1/1"));
-    grid2   = AppendCheckItem(2,wxT("1/2"));
-    grid4   = AppendCheckItem(4,wxT("1/4"));
-    grid8   = AppendCheckItem(8,wxT("1/8"));
-    grid16  = AppendCheckItem(16,wxT("1/16"));
-    grid32  = AppendCheckItem(32,wxT("1/32"));
-    grid64  = AppendCheckItem(64,wxT("1/64"));
-    grid128 = AppendCheckItem(128,wxT("1/128"));
+    grid1   = AppendCheckItem(wxID_ANY, wxT("1/1"));
+    grid2   = AppendCheckItem(wxID_ANY, wxT("1/2"));
+    grid4   = AppendCheckItem(wxID_ANY, wxT("1/4"));
+    grid8   = AppendCheckItem(wxID_ANY, wxT("1/8"));
+    grid16  = AppendCheckItem(wxID_ANY, wxT("1/16"));
+    grid32  = AppendCheckItem(wxID_ANY, wxT("1/32"));
+    grid64  = AppendCheckItem(wxID_ANY, wxT("1/64"));
+    grid128 = AppendCheckItem(wxID_ANY, wxT("1/128"));
 
     AppendSeparator();
-    gridTriplet = AppendCheckItem(3,wxT("Triplet"));
-
+    gridTriplet = AppendCheckItem(wxID_ANY, _("Triplet"));
+    gridDotted  = AppendCheckItem(wxID_ANY, _("Dotted"));
+    gridTriplet->Check(m_model->isTriplet());
+    gridDotted->Check(m_model->isDotted());
+    
     grid8->Check(true);
 
-    m_parent = parent;
+    Connect(grid1->GetId(), wxCommandEventHandler(MagneticGridPicker::grid1selected), NULL, this);
+    Connect(grid2->GetId(), wxCommandEventHandler(MagneticGridPicker::grid2selected), NULL, this);
+    Connect(grid4->GetId(), wxCommandEventHandler(MagneticGridPicker::grid4selected), NULL, this);
+    Connect(grid8->GetId(), wxCommandEventHandler(MagneticGridPicker::grid8selected), NULL, this);
+    Connect(grid16->GetId(), wxCommandEventHandler(MagneticGridPicker::grid16selected), NULL, this);
+    Connect(grid32->GetId(), wxCommandEventHandler(MagneticGridPicker::grid32selected), NULL, this);
+    Connect(grid64->GetId(), wxCommandEventHandler(MagneticGridPicker::grid64selected), NULL, this);
+    Connect(grid128->GetId(), wxCommandEventHandler(MagneticGridPicker::grid128selected), NULL, this);
+    
+    Connect(gridTriplet->GetId(), wxCommandEventHandler(MagneticGridPicker::tripletChanged), NULL, this);
+    Connect(gridDotted->GetId(), wxCommandEventHandler(MagneticGridPicker::dottedChanged), NULL, this);
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -84,7 +78,16 @@ void MagneticGridPicker::resetChecks()
     grid32->Check(false);
     grid64->Check(false);
     grid128->Check(false);
-    gridTriplet->Check(false);
+    gridTriplet->Check(m_model->isTriplet());
+    gridDotted->Check(m_model->isDotted());
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void MagneticGridPicker::syncWithModel()
+{
+    gridTriplet->Check(m_model->isTriplet());
+    gridDotted->Check(m_model->isDotted());
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -93,8 +96,7 @@ void MagneticGridPicker::grid1selected(wxCommandEvent& evt)
 {
     resetChecks();
     grid1->Check(true);
-    gridTriplet->Check( m_model->isTriplet() );
-
+    
     m_model->setDivider(1);
 
     Display::render();
@@ -106,10 +108,10 @@ void MagneticGridPicker::grid2selected(wxCommandEvent& evt)
 {
     resetChecks();
     grid2->Check(true);
-    gridTriplet->Check( m_model->isTriplet() );
     
     if (not m_model->isTriplet()) m_model->setDivider(2);
     else                          m_model->setDivider(3);
+    
     Display::render();
 }
 
@@ -119,10 +121,10 @@ void MagneticGridPicker::grid4selected(wxCommandEvent& evt)
 {
     resetChecks();
     grid4->Check(true);
-    gridTriplet->Check(m_model->isTriplet());
 
     if (not m_model->isTriplet()) m_model->setDivider(4);
     else                          m_model->setDivider(6);
+    
     Display::render();
 }
 
@@ -132,10 +134,10 @@ void MagneticGridPicker::grid8selected(wxCommandEvent& evt)
 {
     resetChecks();
     grid8->Check(true);
-    gridTriplet->Check( m_model->isTriplet() );
-
+    
     if (not m_model->isTriplet()) m_model->setDivider(8);
     else                          m_model->setDivider(12);
+    
     Display::render();
 }
 
@@ -145,10 +147,10 @@ void MagneticGridPicker::grid16selected(wxCommandEvent& evt)
 {
     resetChecks();
     grid16->Check(true);
-    gridTriplet->Check( m_model->isTriplet() );
 
     if (not m_model->isTriplet()) m_model->setDivider(16);
     else                          m_model->setDivider(24);
+    
     Display::render();
 }
 
@@ -158,10 +160,10 @@ void MagneticGridPicker::grid32selected(wxCommandEvent& evt)
 {
     resetChecks();
     grid32->Check(true);
-    gridTriplet->Check( m_model->isTriplet() );
 
     if (not m_model->isTriplet()) m_model->setDivider(32);
     else                          m_model->setDivider(48);
+    
     Display::render();
 }
 
@@ -171,10 +173,10 @@ void MagneticGridPicker::grid64selected(wxCommandEvent& evt)
 {
     resetChecks();
     grid64->Check(true);
-    gridTriplet->Check( m_model->isTriplet() );
 
     if (not m_model->isTriplet()) m_model->setDivider(64);
     else                          m_model->setDivider(96);
+    
     Display::render();
 }
 
@@ -184,10 +186,10 @@ void MagneticGridPicker::grid128selected(wxCommandEvent& evt)
 {
     resetChecks();
     grid128->Check(true);
-    gridTriplet->Check( m_model->isTriplet() );
 
     if (not m_model->isTriplet()) m_model->setDivider(128);
     else                          m_model->setDivider(192);
+        
     Display::render();
 }
 
@@ -198,6 +200,16 @@ void MagneticGridPicker::toggleTriplet()
     gridTriplet->Check( not gridTriplet->IsChecked() );
     wxCommandEvent useless;
     tripletChanged(useless);
+}
+
+
+// ----------------------------------------------------------------------------------------------------------
+
+void MagneticGridPicker::toggleDotted()
+{
+    gridDotted->Check( not gridDotted->IsChecked() );
+    wxCommandEvent useless;
+    dottedChanged(useless);
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -222,52 +234,26 @@ void MagneticGridPicker::tripletChanged(wxCommandEvent& evt)
     else if (grid128->IsChecked()) grid128selected(useless);
 }
 
+// ----------------------------------------------------------------------------------------------------------
 
 /*
-
-switch (m_divider)
+ * user selected or unselected 'triplet' in the combo box menu dropdown. update data accordignly
+ */
+void MagneticGridPicker::dottedChanged(wxCommandEvent& evt)
 {
-    case 1:
-        grid1->Check(true);
-        break;
-        
-    case 2:
-    case 3:
-        grid2->Check(true);
-        break;
-        
-    case 4:
-    case 6:
-        grid4->Check(true);
-        break;
-        
-    case 8:
-    case 12:
-        grid8->Check(true);
-        break;
-        
-    case 16:
-    case 24:
-        grid16->Check(true);
-        break;
-        
-    case 32:
-    case 48:
-        grid32->Check(true);
-        break;
-        
-    case 64:
-    case 96:
-        grid64->Check(true);
-        break;
-        
-    case 128:
-    case 192:
-        grid128->Check(true);
-        break;
-        
-    default:
-        std::cerr << "[MagneticGrid] Invalid divider : " << m_divider << std::endl;
-        }
-*/        
+    m_model->setDotted( gridDotted->IsChecked() );
+    
+    wxCommandEvent useless;
+    
+    // update divider and label by calling corresponding event method
+    if      (grid1->IsChecked())   grid1selected  (useless);
+    else if (grid2->IsChecked())   grid2selected  (useless);
+    else if (grid4->IsChecked())   grid4selected  (useless);
+    else if (grid8->IsChecked())   grid8selected  (useless);
+    else if (grid16->IsChecked())  grid16selected (useless);
+    else if (grid32->IsChecked())  grid32selected (useless);
+    else if (grid64->IsChecked())  grid64selected (useless);
+    else if (grid128->IsChecked()) grid128selected(useless);
+}
+  
 

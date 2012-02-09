@@ -37,6 +37,7 @@ namespace AriaMaestosa
     class MagneticGrid
     {
         bool m_triplet;
+        bool m_dotted;
         
         wxString m_label;
         int m_divider;
@@ -51,6 +52,9 @@ namespace AriaMaestosa
         
         void setTriplet(bool isTriplet);
         bool isTriplet() const { return m_triplet; }
+        
+        void setDotted(bool isDotted);
+        bool isDotted() const { return m_dotted; }
         
         int  getDivider() const { return m_divider; }
         void setDivider(const int newVal);

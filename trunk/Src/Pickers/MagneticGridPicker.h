@@ -51,7 +51,8 @@ namespace AriaMaestosa
         wxMenuItem* grid64;
         wxMenuItem* grid128;
         wxMenuItem* gridTriplet;
-        
+        wxMenuItem* gridDotted;
+
         GraphicalTrack* m_parent;
         MagneticGrid*   m_model;
         
@@ -72,12 +73,13 @@ namespace AriaMaestosa
         void grid64selected(wxCommandEvent& evt);
         void grid128selected(wxCommandEvent& evt);
         void tripletChanged(wxCommandEvent& evt);
-        
+        void dottedChanged(wxCommandEvent& evt);
+
         void toggleTriplet();
+        void toggleDotted();
         
+        void syncWithModel();
         MagneticGrid* getModel() { return m_model; }
-        
-        DECLARE_EVENT_TABLE();
     };
     
 }

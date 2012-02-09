@@ -809,11 +809,12 @@ int Track::snapMidiTickToGrid(int tick)
     }
     
     const int divider = getMagneticGrid()->getDivider();
+    const bool dotted = getMagneticGrid()->isDotted();
+        
+    float ticklen = (float)(m_sequence->ticksPerBeat()*4 / divider);
+    if (dotted) ticklen = ticklen*1.5f;
     
-    return origin_tick + (int)( round((float)(tick - origin_tick)/
-                                      (float)(m_sequence->ticksPerBeat()*4 / divider))
-                               *(m_sequence->ticksPerBeat()*4 / divider)
-                               );
+    return origin_tick + (int)(round((float)(tick - origin_tick)/ticklen)*ticklen);
     
 }
 
