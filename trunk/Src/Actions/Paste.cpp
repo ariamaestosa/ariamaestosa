@@ -89,7 +89,7 @@ int Paste::getShiftForRegularPaste()
     if (measure < 0) measure = 0;
     const int lastMeasureStart = md->firstTickInMeasure( measure );
     
-    shift = m_track->snapMidiTickToGrid( lastMeasureStart );
+    shift = m_track->snapMidiTickToGrid( lastMeasureStart, true );
     
     // find if all track->m_notes will be visible in the location just calculated,
     // otherwise move them one more measure ahead (if measure is half-visible because of scrolling)
@@ -168,11 +168,9 @@ void Paste::perform()
         trackMouseLoc_y < m_editor->getYEnd() and
         trackMouseLoc_x > Editor::getEditorXStart())
     {
-
         RelativeXCoord mx(trackMouseLoc_x, WINDOW, gtrack->getSequence());
 
-        shift = m_track->snapMidiTickToGrid( mx.getRelativeTo(MIDI) );
-
+        shift = m_track->snapMidiTickToGrid( mx.getRelativeTo(MIDI), true );
     }
     else if (not m_at_mouse and
              gtrack->getSequence()->x_scroll_upon_copying == gtrack->getSequence()->getXScrollInPixels() )

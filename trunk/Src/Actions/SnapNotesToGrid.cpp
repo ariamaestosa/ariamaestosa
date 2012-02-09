@@ -66,9 +66,10 @@ void SnapNotesToGrid::perform()
         note_start.push_back( note->getTick() );
         note_end.push_back( note->getEndTick() );
         
-        note->setTick( m_track->snapMidiTickToGrid( note->getTick() ) );
+        int len = note->getEndTick() - note->getTick();
+        note->setTick( m_track->snapMidiTickToGrid( note->getTick(), true ) );
         
-        int end_tick = m_track->snapMidiTickToGrid( note->getEndTick() );
+        int end_tick = note->getTick() + m_track->snapMidiTickToGrid( len, false );
         if ( note->getTick() == end_tick )
         {
             // note was collapsed, not good.
