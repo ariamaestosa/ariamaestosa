@@ -411,8 +411,10 @@ GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq, MagneticGri
     m_grid_combo->addItem( new BitmapButton( 16, 14, mgrid_4, true ), 0 );
     m_grid_combo->addItem( new BitmapButton( 16, 14, mgrid_8, true ), 0 );
     m_grid_combo->addItem( new BitmapButton( 16, 14, mgrid_16, true ), 0 );
-    m_grid_combo->addItem( new BitmapButton( 16, 14, mgrid_32, true ), 0 );
-    m_grid_combo->addItem( new BitmapButton( 16, 14, mgrid_triplet, true ), 25 );
+    m_grid_combo->addItem( new BitmapButton( 16, 14, mgrid_32, true ), 10 );
+    m_grid_combo->addItem( new BitmapButton( 16, 14, mgrid_triplet, true ), 0 );
+    m_grid_combo->addItem( new BitmapButton( 16, 14, mgrid_dotted, true ), 25 );
+
     m_components->addFromLeft(m_grid_combo);
     m_grid_combo->layout();
     
@@ -729,8 +731,13 @@ bool GraphicalTrack::processMouseDown(RelativeXCoord mousex, int mousey)
                 m_grid->grid32selected(fake_event);
             else if ( m_grid_combo->getItem(6).clickIsOnThisWidget(winX, mousey) )
                 m_grid->toggleTriplet();
-            else if ( winX > m_grid_combo->getItem(5).getX() + 16)
+            else if ( m_grid_combo->getItem(7).clickIsOnThisWidget(winX, mousey) )
+                m_grid->toggleDotted();
+            else if ( winX > m_grid_combo->getItem(7).getX() + 16)
+            {
+                m_grid->syncWithModel();
                 Display::popupMenu(m_grid, m_grid_combo->getX() + 5, m_from_y + 30);
+            }
         }
 
 
@@ -1551,8 +1558,16 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     AriaRender::primitives();
     AriaRender::color(0,0,0);
     AriaRender::hollow_rect(grid_selection_x, y+15, grid_selection_x+16, y+30);
-    if (m_grid->getModel()->isTriplet()) AriaRender::hollow_rect(mgrid_triplet->getX(),      y + 15,
-                                                                 mgrid_triplet->getX() + 16, y + 30);
+    if (m_grid->getModel()->isTriplet())
+    {
+        AriaRender::hollow_rect(mgrid_triplet->getX(),      y + 15,
+                                mgrid_triplet->getX() + 16, y + 30);
+    }
+    if (m_grid->getModel()->isDotted())
+    {
+        AriaRender::hollow_rect(mgrid_dotted->getX(),      y + 15,
+                                mgrid_dotted->getX() + 16, y + 30);
+    }
     
     // mark maximize mode as on if relevant
     if (m_gsequence->isTrackMaximized())

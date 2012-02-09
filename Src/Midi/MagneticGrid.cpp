@@ -28,6 +28,7 @@ using namespace AriaMaestosa;
 MagneticGrid::MagneticGrid()
 {
     m_triplet = false;
+    m_dotted  = false;
     m_divider = 8;
     m_label   = wxT("1/8");
 }
@@ -43,6 +44,13 @@ MagneticGrid::~MagneticGrid()
 void MagneticGrid::setTriplet(bool val)
 {
     m_triplet = val;
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void MagneticGrid::setDotted(bool val)
+{
+    m_dotted = val;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -83,6 +91,7 @@ void MagneticGrid::saveToFile(wxFileOutputStream& fileout)
     writeData( wxT("  <magneticgrid ") +
               wxString(wxT("divider=\"")) + to_wxString(m_divider) +
               wxT("\" triplet=\"") + wxString(m_triplet ? wxT("true") : wxT("false")) +
+              wxT("\" dotted=\"") + wxString(m_dotted ? wxT("true") : wxT("false")) +
               wxT("\"/>\n"), fileout);
     
 }
@@ -94,7 +103,8 @@ bool MagneticGrid::readFromFile(irr::io::IrrXMLReader* xml)
     
     const char* divider_c = xml->getAttributeValue("divider");
     const char* triplet_c = xml->getAttributeValue("triplet");
-    
+    const char* dotted_c  = xml->getAttributeValue("dotted");
+
     if (divider_c != NULL)
     {
         m_divider = atoi( divider_c );
@@ -125,6 +135,25 @@ bool MagneticGrid::readFromFile(irr::io::IrrXMLReader* xml)
     {
         std::cout << "Missing info from file: triplet" << std::endl;
         m_triplet = false;
+    }
+    
+    
+    
+    if (dotted_c != NULL)
+    {
+        if (strcmp(dotted_c, "true") == 0)
+        {
+            m_dotted = true;
+        }
+        else if (strcmp(dotted_c, "false") == 0)
+        {
+            m_dotted = false;
+        }
+        else
+        {
+            std::cout << "Unknown keyword for attribute 'dotted' in magneticgrid: " << dotted_c << std::endl;
+            m_dotted = false;
+        }
     }
     
     updateLabel();
