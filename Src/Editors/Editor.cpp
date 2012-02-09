@@ -533,10 +533,11 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
                         goto end_of_func;
                     }
                 }
-
-                int snapped_start = m_track->snapMidiTickToGrid(mousex_initial.getRelativeTo(MIDI) );
-                int snapped_end   = m_track->snapMidiTickToGrid(mousex_current.getRelativeTo(MIDI) );
-
+                
+                int snapped_start = m_track->snapMidiTickToGrid(mousex_initial.getRelativeTo(MIDI), true );
+                const int len = mousex_current.getRelativeTo(MIDI) - mousex_initial.getRelativeTo(MIDI);
+                int snapped_end   = snapped_start + m_track->snapMidiTickToGrid(len, false );
+                
                 // reject empty/malformed notes, add on success
                 if (m_use_instant_notes) // for drums
                 {
@@ -552,8 +553,10 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
                     // click without moving
                     if (g_current_edit_tool == EDIT_TOOL_ADD and snapped_start == snapped_end) 
                     {
+                        int notelen = m_sequence->ticksPerBeat()*4 / m_track->getMagneticGrid()->getDivider();
+                        if (m_track->getMagneticGrid()->isDotted()) notelen = notelen*1.5f;
                         addNote(snapped_start,
-                                snapped_start + m_sequence->ticksPerBeat()*4 / m_track->getMagneticGrid()->getDivider(),
+                                snapped_start + notelen,
                                 mousey_initial );
                     }
                     else if (snapped_start == snapped_end or snapped_start>snapped_end or snapped_start<0)
@@ -579,7 +582,7 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
             const int  x_difference = mousex_current.getRelativeTo(MIDI) - mousex_initial.getRelativeTo(MIDI);
             const int  y_difference = mousey_current-mousey_initial;
 
-            const int relativeX = m_track->snapMidiTickToGrid(x_difference);
+            const int relativeX = m_track->snapMidiTickToGrid(x_difference, false);
             const int relativeY = (int)round( (float)y_difference / (float)m_y_step);
 
             if (relativeX == 0 and relativeY == 0)

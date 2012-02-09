@@ -516,8 +516,8 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
                 if (mousey_current < area_from_y) mousey_current = area_from_y;
                 if (mousey_current > area_to_y)   mousey_current = area_to_y;
 
-                int tick1 = m_track->snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI));
-                int tick2 = m_track->snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI));
+                int tick1 = m_track->snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI), false );
+                int tick2 = m_track->snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI), false );
 
                 if (tick2 < 0) tick2 = 0;
                 if (tick1 < 0) tick1 = 0;
@@ -602,7 +602,7 @@ void ControllerEditor::mouseDown(RelativeXCoord x, const int y)
         int selection = Core::getInstrumentPicker()->getModel()->getSelectedInstrument();
         if (selection != -1)
         {
-            m_track->action( new Action::AddControlEvent(m_track->snapMidiTickToGrid( x.getRelativeTo(MIDI) ),
+            m_track->action( new Action::AddControlEvent(m_track->snapMidiTickToGrid( x.getRelativeTo(MIDI), false ),
                                                          selection,
                                                          m_controller_choice->getControllerID()) );
             Display::render();
@@ -618,8 +618,8 @@ void ControllerEditor::mouseDrag(RelativeXCoord mousex_current, const int mousey
     if (m_mouse_is_in_editor and m_selecting)
     {
         // ------------------------ select ---------------------
-        m_selection_begin = m_track->snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI) );
-        m_selection_end   = m_track->snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI) );
+        m_selection_begin = m_track->snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI), false );
+        m_selection_end   = m_track->snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI), false );
     }
     m_mouse_y = mousey_current;
 }
@@ -636,8 +636,8 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
         {
             // ------------------------ select ---------------------
 
-            m_selection_begin = m_track->snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI) );
-            m_selection_end   = m_track->snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI) );
+            m_selection_begin = m_track->snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI), false );
+            m_selection_end   = m_track->snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI), false );
 
             // no selection
             if (m_selection_begin == m_selection_end)
@@ -669,8 +669,8 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
 
             if (m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE) return;
             
-            int tick1 = m_track->snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI) );
-            int tick2 = m_track->snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI) );
+            int tick1 = m_track->snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI), false );
+            int tick2 = m_track->snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI), false );
 
             if (tick2 < 0) tick2 = 0;
             if (tick1 < 0) tick1 = 0;
@@ -791,7 +791,7 @@ int ControllerEditor::getPositionInPixels(int tick, GraphicalSequence* gseq)
 
 void ControllerEditor::addPreciseEvent(int tick, wxFloat64 value)
 {
-    m_track->action( new Action::AddControlEvent(m_track->snapMidiTickToGrid( tick ),
+    m_track->action( new Action::AddControlEvent(m_track->snapMidiTickToGrid( tick, false ),
                                                  value,
                                                  m_controller_choice->getControllerID()) );
     Display::render();
