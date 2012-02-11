@@ -809,15 +809,27 @@ int Track::snapMidiTickToGrid(int tick, bool isNoteStart)
     }
     
     int divider = getMagneticGrid()->getDivider();
-    if (isNoteStart and divider < 4) divider = 4; // for note start, allow starting at every bea at least
     
     const bool dotted = getMagneticGrid()->isDotted();
-    
-    float ticklen = (float)(m_sequence->ticksPerBeat()*4 / divider);
+        
+    float ticklen;
     if (dotted)
     {
-        if (isNoteStart) ticklen = ticklen/2; // when note is dotted, allow to start note at halves too
-        else             ticklen = ticklen*1.5f;
+        ticklen = (float)(m_sequence->ticksPerBeat()*4 / divider);
+        if (isNoteStart)
+        {
+            // when note is dotted, allow to start note at halves too
+            ticklen = std::min(ticklen/2.0f, (float)m_sequence->ticksPerBeat());
+        }
+        else
+        {
+            ticklen = ticklen*1.5f;
+        }
+    }
+    else
+    {
+        if (isNoteStart and divider < 4) divider = 4; // for note start, allow starting at every bea at least
+        ticklen = (float)(m_sequence->ticksPerBeat()*4 / divider);
     }
     
     return origin_tick + (int)(round((float)(tick - origin_tick)/ticklen)*ticklen);
