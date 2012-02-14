@@ -280,12 +280,10 @@ namespace AriaMaestosa
         /** Snaps a tick to the magnetic grid
           * @param absolute_x  A midi tick you want to snap
           * @param isNoteStart True if this tick represents the sgtart of a note.
+          * @param ceil        If true, will only snap the tick to a bigger value
           * @return            The given tick, snapped to the magnetic grid
           */
-        int snapMidiTickToGrid(int absolute_x, bool isNoteStart);
-        
-        /** Same as 'snapMidiTickToGrid', but will only snap the tick to a bigger value */
-        int snapMidiTickToGrid_ceil(int absolute_x);
+        int snapMidiTickToGrid(int absolute_x, bool isNoteStart, bool ceil=false);
         
         MagneticGrid* getMagneticGrid() { return m_magnetic_grid; }
         
