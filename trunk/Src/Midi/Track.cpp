@@ -798,7 +798,7 @@ void Track::updateNotesForGuitarEditor()
 
 // ----------------------------------------------------------------------------------------------------------
 
-int Track::snapMidiTickToGrid(int tick, bool isNoteStart)
+int Track::snapMidiTickToGrid(int tick, bool isNoteStart, bool is_ceil)
 {    
     int origin_tick = 0;
     MeasureData* md = m_sequence->getMeasureData();
@@ -832,28 +832,12 @@ int Track::snapMidiTickToGrid(int tick, bool isNoteStart)
         ticklen = (float)(m_sequence->ticksPerBeat()*4 / divider);
     }
     
-    return origin_tick + (int)(round((float)(tick - origin_tick)/ticklen)*ticklen);
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-int Track::snapMidiTickToGrid_ceil(int tick)
-{    
-    int origin_tick = 0;
-    MeasureData* md = m_sequence->getMeasureData();
-    if (not md->isMeasureLengthConstant())
+    if (is_ceil)
     {
-        const int measure = md->measureAtTick(tick);
-        origin_tick = md->firstTickInMeasure(measure);
+        return origin_tick + (int)(ceil((float)(tick - origin_tick)/ticklen)*ticklen);
     }
     
-    const int divider = getMagneticGrid()->getDivider();
-    const bool dotted = getMagneticGrid()->isDotted();
-
-    float ticklen = (float)(m_sequence->ticksPerBeat()*4 / divider);
-    if (dotted) ticklen = ticklen*1.5f;
-    
-    return origin_tick + (int)(ceil((float)(tick - origin_tick)/ticklen)*ticklen);
+    return origin_tick + (int)(round((float)(tick - origin_tick)/ticklen)*ticklen);
 }
 
 // -------------------------------------------------------------------------------------------------------

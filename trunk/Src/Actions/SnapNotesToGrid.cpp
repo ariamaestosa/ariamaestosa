@@ -74,7 +74,7 @@ void SnapNotesToGrid::perform()
         {
             // note was collapsed, not good.
             // use the 'ceil' variant of snapTickToGrid instead
-            end_tick = m_track->snapMidiTickToGrid_ceil( note->getEndTick() );
+            end_tick = note->getTick() + m_track->snapMidiTickToGrid( len, false, true );
         }
         
         note->setEndTick( end_tick );
