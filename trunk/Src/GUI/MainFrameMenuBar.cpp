@@ -173,6 +173,8 @@ void MainFrame::initMenuBar()
     //I18N: menu item in the "track" menu
     m_track_menu -> QUICK_ADD_MENU ( MENU_TRACK_ADD, wxString(_("&Add Track"))+wxT("\tCtrl-Shift-N"), MainFrame::menuEvent_addTrack );
     //I18N: menu item in the "track" menu
+    m_track_menu -> QUICK_ADD_MENU ( MENU_TRACK_DUP, wxString(_("&Duplicate Track"))+wxT("\tCtrl-D"), MainFrame::menuEvent_dupTrack );
+    //I18N: menu item in the "track" menu
     m_track_menu -> QUICK_ADD_MENU ( MENU_TRACK_REMOVE, wxString(_("&Delete Track"))+wxT("\tCtrl-DEL"), MainFrame::menuEvent_deleteTrack );
     m_track_menu->AppendSeparator();
     //I18N: - in the track menu, allows choosing the properties of a track
@@ -780,6 +782,39 @@ void MainFrame::menuEvent_addTrack(wxCommandEvent& evt)
     //getCurrentSequence()->addTrack();
     Sequence* seq = getCurrentSequence();
     seq->action( new Action::AddTrack() );
+    
+    // FIXME: shouldn't need to handle maximized mode manually here
+    if (getSequenceAmount() > 0 and getCurrentGraphicalSequence()->isTrackMaximized())
+    {
+        GraphicalSequence* gs = getCurrentGraphicalSequence();
+        GraphicalTrack* gt = gs->getCurrentTrack();
+        Track* t = gt->getTrack();
+        const int track_amount = seq->getTrackAmount();
+        for (int n=0; n<track_amount; n++)
+        {
+            Track* track = seq->getTrack(n);
+            if (track != t)
+            {
+                track->getGraphics()->dock();
+                gs->setDockVisible(true);
+            }
+        }
+        
+        gt->dock(false);
+        gt->maximizeHeight();
+    }
+    updateVerticalScrollbar();
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+
+void MainFrame::menuEvent_dupTrack(wxCommandEvent& evt)
+{
+    // TODO: actually duplicate
+    
+    Sequence* seq = getCurrentSequence();
+    seq->action( new Action::AddTrack(seq->getCurrentTrack()) );
     
     // FIXME: shouldn't need to handle maximized mode manually here
     if (getSequenceAmount() > 0 and getCurrentGraphicalSequence()->isTrackMaximized())

@@ -33,10 +33,16 @@ namespace AriaMaestosa
         class AddTrack : public MultiTrackAction
         {
             /** A pointer to the track that was added, or NULL if action not performed yet */
-            Track*    m_added_track;
+            Track* m_added_track;
+            
+            /** if non-NULL, the new track will use the same settings as this */
+            Track* m_model;
             
         public:
-            AddTrack();
+            /**
+              * @param model if non-NULL, the new track will use the same settings as 'model'
+              */
+            AddTrack(Track* model=NULL);
             virtual ~AddTrack();
 
             void perform();
