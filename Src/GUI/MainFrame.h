@@ -112,6 +112,7 @@ namespace AriaMaestosa
         MENU_SETTINGS_PLAYTRHOUGH,
         
         MENU_TRACK_ADD,
+        MENU_TRACK_DUP,
         MENU_TRACK_REMOVE,
         MENU_TRACK_BACKG,
         
@@ -326,6 +327,7 @@ namespace AriaMaestosa
         void menuEvent_selectNone(wxCommandEvent& evt);
         void menuEvent_selectAll(wxCommandEvent& evt);
         void menuEvent_addTrack(wxCommandEvent& evt);
+        void menuEvent_dupTrack(wxCommandEvent& evt);
         void menuEvent_deleteTrack(wxCommandEvent& evt);
         void menuEvent_trackBackground(wxCommandEvent& evt);
         void menuEvent_importmidi(wxCommandEvent& evt);
