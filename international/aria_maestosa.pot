@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-09 11:48-0500\n"
+"POT-Creation-Date: 2012-02-19 11:34-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -190,7 +190,7 @@ msgid "Translations:"
 msgstr ""
 
 #: Src/Dialogs/AboutDialog.cpp:81 Src/Dialogs/PresetEditor.cpp:66
-#: Src/GUI/MainFrameMenuBar.cpp:1117
+#: Src/GUI/MainFrameMenuBar.cpp:1160
 msgid "Close"
 msgstr ""
 
@@ -332,24 +332,28 @@ msgid "Illegal values"
 msgstr ""
 
 #. I18N: - title of the preferences dialog
-#: Src/Dialogs/Preferences.cpp:244 Src/GUI/MainPane.cpp:149
+#: Src/Dialogs/Preferences.cpp:245 Src/GUI/MainPane.cpp:149
 msgid "Preferences"
 msgstr ""
 
-#: Src/Dialogs/Preferences.cpp:300
+#: Src/Dialogs/Preferences.cpp:302
 msgid "Browse..."
 msgstr ""
 
 #. I18N: - in the preferences dialog
-#: Src/Dialogs/Preferences.cpp:333
+#: Src/Dialogs/Preferences.cpp:335
 msgid "Changes will take effect next time you open the app."
 msgstr ""
 
-#: Src/Dialogs/Preferences.cpp:380 Src/GUI/MainFrameMenuBar.cpp:557
+#: Src/Dialogs/Preferences.cpp:378
+msgid "You will need to restart Aria Maestosa for changes to be effective."
+msgstr ""
+
+#: Src/Dialogs/Preferences.cpp:390 Src/GUI/MainFrameMenuBar.cpp:565
 msgid "Select file"
 msgstr ""
 
-#: Src/Dialogs/Preferences.cpp:381
+#: Src/Dialogs/Preferences.cpp:391
 msgid "Sound Font"
 msgstr ""
 
@@ -374,10 +378,10 @@ msgstr ""
 msgid "Are you sure you want to delete this preset? This cannot be undone."
 msgstr ""
 
-#: Src/Dialogs/PresetEditor.cpp:118 Src/GUI/MainFrameMenuBar.cpp:530
-#: Src/GUI/MainFrameMenuBar.cpp:589 Src/GUI/MainFrameMenuBar.cpp:626
-#: Src/GUI/MainFrameMenuBar.cpp:811 Src/GUI/MainFrameMenuBar.cpp:894
-#: Src/GUI/MainFrameMenuBar.cpp:978 Src/Pickers/TimeSigPicker.cpp:289
+#: Src/Dialogs/PresetEditor.cpp:118 Src/GUI/MainFrameMenuBar.cpp:538
+#: Src/GUI/MainFrameMenuBar.cpp:597 Src/GUI/MainFrameMenuBar.cpp:634
+#: Src/GUI/MainFrameMenuBar.cpp:852 Src/GUI/MainFrameMenuBar.cpp:935
+#: Src/GUI/MainFrameMenuBar.cpp:1019 Src/Pickers/TimeSigPicker.cpp:289
 msgid "Confirm"
 msgstr ""
 
@@ -568,15 +572,15 @@ msgstr ""
 msgid "semitones"
 msgstr ""
 
-#: Src/GUI/GraphicalTrack.cpp:707
+#: Src/GUI/GraphicalTrack.cpp:709
 msgid "Choose a new track title."
 msgstr ""
 
-#: Src/GUI/GraphicalTrack.cpp:759
+#: Src/GUI/GraphicalTrack.cpp:766
 msgid "Enter the ID of the channel this track should play in"
 msgstr ""
 
-#: Src/GUI/GraphicalTrack.cpp:761
+#: Src/GUI/GraphicalTrack.cpp:768
 msgid "Channel choice"
 msgstr ""
 
@@ -621,8 +625,8 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:765 Src/GUI/MainFrameMenuBar.cpp:269
-#: Src/GUI/MainFrameMenuBar.cpp:271 Src/PreferencesData.cpp:216
+#: Src/GUI/MainFrame.cpp:765 Src/GUI/MainFrameMenuBar.cpp:277
+#: Src/GUI/MainFrameMenuBar.cpp:279 Src/PreferencesData.cpp:216
 msgid "No MIDI input"
 msgstr ""
 
@@ -796,135 +800,144 @@ msgstr ""
 
 #. I18N: menu item in the "track" menu
 #: Src/GUI/MainFrameMenuBar.cpp:176
+msgid "&Duplicate Track"
+msgstr ""
+
+#. I18N: menu item in the "track" menu
+#: Src/GUI/MainFrameMenuBar.cpp:178
 msgid "&Delete Track"
 msgstr ""
 
 #. I18N: - in the track menu, allows choosing the properties of a track
-#: Src/GUI/MainFrameMenuBar.cpp:179
+#: Src/GUI/MainFrameMenuBar.cpp:181
 msgid "&Properties..."
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:181
+#: Src/GUI/MainFrameMenuBar.cpp:183
 msgid "&Tracks"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:185
+#: Src/GUI/MainFrameMenuBar.cpp:187
 msgid "&Follow Playback"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:186
+#: Src/GUI/MainFrameMenuBar.cpp:188
 msgid "E&xpanded time sig management"
 msgstr ""
 
 #. I18N: - the channel setting. full context : Channel management\n\n* Automatic\n* Manual
-#: Src/GUI/MainFrameMenuBar.cpp:193
+#: Src/GUI/MainFrameMenuBar.cpp:195
 msgid "&Channel management"
 msgstr ""
 
 #. I18N: - the channel setting. full context : Channel management\n\n* Automatic\n* Manual
-#: Src/GUI/MainFrameMenuBar.cpp:195
+#: Src/GUI/MainFrameMenuBar.cpp:197
 msgid "&Automatic"
 msgstr ""
 
 #. I18N: - the channel setting. full context : Channel management\n\n* Automatic\n* Manual
-#: Src/GUI/MainFrameMenuBar.cpp:198
+#: Src/GUI/MainFrameMenuBar.cpp:200
 msgid "&Manual"
 msgstr ""
 
 #. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-#: Src/GUI/MainFrameMenuBar.cpp:204
+#: Src/GUI/MainFrameMenuBar.cpp:206
 msgid "Play during &edit"
 msgstr ""
 
 #. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-#: Src/GUI/MainFrameMenuBar.cpp:206
+#: Src/GUI/MainFrameMenuBar.cpp:208
 msgid "&Always"
 msgstr ""
 
 #. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-#: Src/GUI/MainFrameMenuBar.cpp:208
+#: Src/GUI/MainFrameMenuBar.cpp:210
 msgid "On note &change"
 msgstr ""
 
 #. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-#: Src/GUI/MainFrameMenuBar.cpp:210
+#: Src/GUI/MainFrameMenuBar.cpp:212
 msgid "&Never"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:212
+#: Src/GUI/MainFrameMenuBar.cpp:214
 msgid "Play with &Metronome"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:214
+#: Src/GUI/MainFrameMenuBar.cpp:216
 msgid "&Playthrough when recording"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:217
+#: Src/GUI/MainFrameMenuBar.cpp:219
 msgid "&Preferences..."
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:227
+#: Src/GUI/MainFrameMenuBar.cpp:229
 msgid "&Settings"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:258
+#: Src/GUI/MainFrameMenuBar.cpp:239 Src/GUI/MainFrameMenuBar.cpp:1073
+msgid "No MIDI Output Available"
+msgstr ""
+
+#: Src/GUI/MainFrameMenuBar.cpp:266
 msgid "&Output"
 msgstr ""
 
 #. I18N: menu where the MIDI input source is selected
-#: Src/GUI/MainFrameMenuBar.cpp:286
+#: Src/GUI/MainFrameMenuBar.cpp:294
 msgid "&Input"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:292
+#: Src/GUI/MainFrameMenuBar.cpp:300
 msgid "&About Aria Maestosa"
 msgstr ""
 
 #. I18N: - in help menu - see the help files
-#: Src/GUI/MainFrameMenuBar.cpp:294
+#: Src/GUI/MainFrameMenuBar.cpp:302
 msgid "User's &Manual"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:300
+#: Src/GUI/MainFrameMenuBar.cpp:308
 msgid "&Help"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:423
+#: Src/GUI/MainFrameMenuBar.cpp:431
 #, c-format
 msgid "&Undo %s"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:434
+#: Src/GUI/MainFrameMenuBar.cpp:442
 msgid "Can't Undo"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:520 Src/GUI/MainFrameMenuBar.cpp:579
-#: Src/GUI/MainFrameMenuBar.cpp:616
+#: Src/GUI/MainFrameMenuBar.cpp:528 Src/GUI/MainFrameMenuBar.cpp:587
+#: Src/GUI/MainFrameMenuBar.cpp:624
 msgid "Select destination file"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:530 Src/GUI/MainFrameMenuBar.cpp:589
-#: Src/GUI/MainFrameMenuBar.cpp:626
+#: Src/GUI/MainFrameMenuBar.cpp:538 Src/GUI/MainFrameMenuBar.cpp:597
+#: Src/GUI/MainFrameMenuBar.cpp:634
 msgid "The file already exists. Do you wish to overwrite it?"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:558
+#: Src/GUI/MainFrameMenuBar.cpp:566
 msgid "Aria Maestosa file"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:567
+#: Src/GUI/MainFrameMenuBar.cpp:575
 msgid "Select midi file"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:568 Src/GUI/MainFrameMenuBar.cpp:580
+#: Src/GUI/MainFrameMenuBar.cpp:576 Src/GUI/MainFrameMenuBar.cpp:588
 msgid "Midi file"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:600
+#: Src/GUI/MainFrameMenuBar.cpp:608
 msgid "Sorry, failed to export midi file."
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:633
+#: Src/GUI/MainFrameMenuBar.cpp:641
 msgid ""
 "Please wait while audio file is being generated.\n"
 "\n"
@@ -932,15 +945,15 @@ msgid ""
 "this can take several minutes."
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:807
+#: Src/GUI/MainFrameMenuBar.cpp:848
 msgid "You may not delete the last track"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:811
+#: Src/GUI/MainFrameMenuBar.cpp:852
 msgid "Do you really want to delete this track?"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:893
+#: Src/GUI/MainFrameMenuBar.cpp:934
 msgid ""
 "If multiple tracks play on the same channel, they will be merged.\n"
 "This cannot be undone.\n"
@@ -948,13 +961,13 @@ msgid ""
 "Do you really want to continue?"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:977 Src/Pickers/TimeSigPicker.cpp:288
+#: Src/GUI/MainFrameMenuBar.cpp:1018 Src/Pickers/TimeSigPicker.cpp:288
 msgid ""
 "Are you sure you want to go back to having a single time signature? Any time "
 "sig events you may have added will be lost. This cannot be undone."
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:1104
+#: Src/GUI/MainFrameMenuBar.cpp:1147
 msgid "Manual"
 msgstr ""
 
@@ -1072,7 +1085,7 @@ msgstr ""
 
 #: Src/IO/MidiFileReader.cpp:501 Src/Midi/Sequence.cpp:66
 #: Src/Midi/Sequence.cpp:114 Src/Midi/Sequence.cpp:136 Src/Midi/Track.cpp:73
-#: Src/Midi/Track.cpp:918 Src/Midi/Track.cpp:1852
+#: Src/Midi/Track.cpp:920 Src/Midi/Track.cpp:1854
 #: Src/Printing/AbstractPrintableSequence.cpp:39
 #: Src/Printing/AbstractPrintableSequence.cpp:43
 msgid "Untitled"
@@ -1098,7 +1111,7 @@ msgid ""
 "another output device from the 'Output' menu)"
 msgstr ""
 
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:409
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:414
 #: Src/Midi/Players/Example/ExamplePlayer.cpp:179
 msgid "WAV file"
 msgstr ""
@@ -1252,6 +1265,14 @@ msgstr ""
 
 #: Src/Pickers/KeyPicker.cpp:166
 msgid "Edit Presets..."
+msgstr ""
+
+#: Src/Pickers/MagneticGridPicker.cpp:43
+msgid "Triplet"
+msgstr ""
+
+#: Src/Pickers/MagneticGridPicker.cpp:44
+msgid "Dotted"
 msgstr ""
 
 #: Src/Pickers/TimeSigPicker.cpp:139
