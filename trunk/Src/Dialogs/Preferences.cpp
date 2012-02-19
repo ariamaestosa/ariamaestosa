@@ -33,6 +33,7 @@
 #include <wx/button.h>
 #include <wx/textctrl.h>
 #include <wx/combobox.h>
+#include <wx/msgdlg.h>
 
 using namespace AriaMaestosa;
 
@@ -244,6 +245,7 @@ wxDialog(parent, wxID_ANY,
          _("Preferences"), wxDefaultPosition, wxDefaultSize, wxCAPTION | wxRESIZE_BORDER)
 {
     m_data = data;
+    m_sound_font_selected = false;
     
     ptr_vector<Setting>& settings = PreferencesData::getInstance()->getSettings();
     
@@ -352,6 +354,8 @@ PreferencesDialog::~PreferencesDialog()
 
 void PreferencesDialog::show()
 {
+    m_sound_font_selected = false;
+    
     Center();
 #ifdef __WXOSX_COCOA__
     ShowWindowModal();
@@ -368,6 +372,12 @@ void PreferencesDialog::okClicked(wxCommandEvent& evt)
     updateValuesFromWidgets();
     m_data->save();
     wxDialog::EndModal(modalCode);
+    
+    if (m_sound_font_selected)
+    {
+        wxMessageBox( _("You will need to restart Aria Maestosa for changes to be effective.") );
+        m_sound_font_selected = false;
+    }
 }
 
 // ---------------------------------------------------------------------------------------------------------
@@ -389,11 +399,16 @@ void PreferencesDialog::onComboSelection(wxCommandEvent& evt)
             {
                 dynamic_cast<wxComboBox*>(evt.GetEventObject())->SetValue(filePath);
             }
+            m_sound_font_selected = true;
         }
         else
         {
             dynamic_cast<wxItemContainer*>(evt.GetEventObject())->SetSelection(0);
         }
+    }
+    else
+    {
+        m_sound_font_selected = true;
     }
 }
 

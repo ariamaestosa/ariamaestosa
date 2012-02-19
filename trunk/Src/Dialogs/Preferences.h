@@ -42,6 +42,8 @@ namespace AriaMaestosa
         wxBoxSizer* vert_sizer;
         wxButton* ok_btn;
         
+        bool m_sound_font_selected;
+        
         ptr_vector<SettingWidget> m_setting_widgets;
         
     public:
