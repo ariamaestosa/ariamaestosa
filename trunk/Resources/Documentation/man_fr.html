@@ -1,0 +1,604 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+   
+<head profile="http://www.w3.org/2005/10/profile">
+    <link rel="icon"  type="image/png"  href="favicon.png"/>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>Aria Maestosa</title>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+
+<body lang="fr">
+    <script src="menu.js" type="text/javascript"> </script> 
+    <h2>Les menus</h2>
+
+<i>(Les menus à la fonction évidente ne seront pas détaillés ici)</i>
+ </p>
+<p style="margin-bottom: 0.56cm"><B>Fichier
+&gt; Nouveau</B>
+ Crée une nouvelle chanson. Celle-ci apparaît comme un nouvel
+onglet dans la barre qui montre les séquences actuellement ouvertes
+(comme les onglets d'un navigateur web). Vous pouvez ensuite vous
+suffit de cliquer sur l'onglet de correspondant pour passer à cette
+chanson.</p>
+<p style="margin-bottom: 0.56cm"><B>Fichier&gt;
+information sur la séquence</B>
+ Les fichiers Midi permettent à leur auteur de spécifier des
+informations comme le titre et les informations sur le droit
+d'auteur.</p>
+<p style="margin-bottom: 0.56cm"><B>Édition&gt;
+Coller au curseur</B>
+ Colle les notes sélectionnées près du curseur de la souris
+(utiliser cette action à partir du menu a peu d'utilité bien
+entendu, vous devez utiliser le raccourci clavier: CMD / CTRL + MAJ +
+V).</p>
+<p style="margin-bottom: 0.56cm"><B>Édition&gt;
+Sélectionner avec critères ...</B>
+ Sélectionnez des notes en fonction de critères. La plupart de
+ces critères sont basés sur une note actuellement sélectionnée.
+Par exemple, si vous voulez sélectionner toutes les notes «&nbsp;sol&nbsp;»,
+il vous suffit de sélectionner une des notes «&nbsp;sol&nbsp;»,
+puis sélectionnez cette option dans le menu, cochez la case
+&quot;sélectionner toutes les notes qui ont la même hauteur&quot;,
+cliquez sur OK, et c'est fait!  Vous pouvez également utiliser
+cette fonction pour sélectionner toutes les notes dans une
+intervalle de mesures (par exemple, si vous souhaitez sélectionner
+toutes les notes dans les mesures 65 à 78)</p>
+<p style="margin-bottom: 0.56cm"><B>Édition
+&gt; Aligner les notes à la grille</B>
+ Aria utilise une &quot;grille magnétique&quot; pour s'assurer que
+les notes ont un emplacement et une durée précis, correspondant à
+celles de la théorie musicale. Si vous vous retrouvez avec des notes
+qui semblent avoir des longueurs ou emplacements inhabituels,
+sélectionnez ces notes, sélectionnez une taille de la grille
+appropriée (voir ci-dessous dans la documentation relative aux
+pistes) et sélectionnez cette option.   </p>
+<p style="margin-bottom: 0.56cm"><B>Édition
+&gt; Retirer les notes superposées</B>
+ Si vous avez copié une série de notes, les avez collé en plein
+par-dessus des notes originales, et accidentellement désélectionné
+avant de les déplacer - toutes les notes sont maintenant doubles!
+Heureusement, vous pouvez simplement sélectionner les notes et
+utiliser cette fonctionnalité. De façon plus générale cela peut
+servir dès que des notes se chevauchent.</p>
+
+<p style="margin-bottom: 0.56cm"><B>Piste
+&gt; Propriétés</B>
+ Permet de définir les propriétés de la piste en cours,
+notamment le volume par défaut (1) à utiliser pour de nouvelles
+notes, (2) l'arrière-plan (Affiche les notes d'autres pistes en
+arrière-plan, ne fonctionne actuellement qu'avec l'éditeur Piano).</p>
+<p align="center" STYLE="margin-bottom: 0.56cm">
+    <img src="docs/background.png"/>
+</p>
+<p style="margin-bottom: 0.56cm"><B>Options
+&gt; Suivre la lecture</B>
+ Si cette option est cochée, lorsque vous appuyez sur «&nbsp;jouer&nbsp;»,
+la barre de défilement horizontale se déplacera automatiquement
+pour que la mesure présentement en train de jouer soit en tout temps
+visible.</p>
+<p style="margin-bottom: 0.56cm"><B>Options
+&gt; Jouer durant l'édition</B>
+ Lorsque vous modifiez une chanson, Aria vous propose de jouer les
+notes que vous manipulez, sans que vous deviez appuyer sur le bouton
+«&nbsp;jouer&nbsp;». Vous pouvez dans ce menu décider quand les
+notes doivent être jouées durant l'édition.</p>
+<p style="margin-bottom: 0.56cm"><B>Options
+&gt; Gestion des canaux</B>
+ Midi considère pistes et canaux comme deux entités séparées.
+Dans les spécifications midi, les pistes sont un regroupement de
+notes, tandis que les canaux sont là où les pistes jouent
+réellement les notes. Ce menu vous permet de choisir si vous
+souhaitez manuellement être en mesure de préciser les canaux ou si
+vous préférez que Aria gère ce concept de façon transparente.
+Lorsque cette option est activée, vous verrez un nouveau contrôle
+apparaître dans l'entête de la piste (voir ci-dessous). </p>
+
+<p style="margin-bottom: 0.56cm">
+    <br/><br/>
+</p>
+
+
+
+<h2>La barre d'outils</h2>
+<p style="margin-left: 1.27cm; text-indent: -1.27cm; margin-bottom: 0cm; text-align: center;">
+    <img src="docs/topbar.png"/>
+</p>
+<p style="margin-left: 1.27cm; text-indent: -1.27cm; margin-bottom: 0cm;">
+<br/>
+</p>
+<p style="margin-left: 1.27cm; text-indent: -1.27cm; margin-bottom: 0cm;">
+Les
+2 premiers éléments sont les boutons «&nbsp;jouer&nbsp;» et
+«&nbsp;arrêt&nbsp;», qui vous permettent de jouer la chanson.</p>
+<p style="margin-left: 1.27cm; text-indent: -1.27cm; margin-bottom: 0cm">
+<B>Tempo</B>
+vous permet de régler le tempo (vitesse) de la chanson en battements
+par minutes.</p>
+<p style="margin-left: 1.27cm; text-indent: -1.27cm; margin-bottom: 0cm">
+<B>Durée</B>
+vous permet de choisir la quantité totale de mesures dans votre
+chanson. Si vous manquez d'espace dans les 12 mesures par défaut, il
+suffit d'en ajouter en cliquant sur les flèches ou en tapant un
+nouveau nombre et en appuyant sur entrer, si nécessaire.</p>
+<p style="margin-left: 1.27cm; text-indent: -1.27cm; margin-bottom: 0cm">
+<B>Mesure</B>
+vous permet de choisir les nombres indicateurs de mesure (soit
+globalement, si vous utilisez une durée de mesure uniforme tout au
+long de la chanson, soit pour la mesure actuellement sélectionnée,
+si vous utilisez plusieurs durées de mesure en mode mesure de
+gestion avancée). Par défaut, 4/4 est utilisé.</p>
+<p style="margin-left: 1.27cm; text-indent: -1.27cm; margin-bottom: 0cm">
+<B>Début</B>
+vous permet de choisir la mesure où la chanson commence. Par
+exemple, si vous faites une chanson longue et travaillez présentement
+sur la mesure 100, vous ne voudrez sans doute pas commencer à jouer
+à la mesure 1 à chaque fois que vous changez une note et que vous
+voulez entendre le résultat - vous pouvez simplement changer votre
+chanson pour commencer, disons, à la mesure 95.</p>
+<p style="margin-left: 1.27cm; text-indent: -1.27cm; margin-bottom: 0cm">
+<B>Zoom</B>
+vous permet de choisir la taille des notes apparaissant dans les
+pistes. Il est utile de les rendre plus grandes si, par exemple, vous
+travaillez avec des notes très courtes.</p>
+<p style="margin-left: 1.27cm; text-indent: -1.27cm; margin-bottom: 0cm">
+<B>Outils</B>
+vous permet de basculer entre deux modes d'édition différents, le
+premier est le mode &quot;classique&quot; édition où les notes sont
+ajoutés en les &quot;dessinant&quot; (à l'aide de la souris par
+glisser-déposer; voir plus bas). Le deuxième outil vous permettra
+d'ajouter des notes de la longueur choisie directement en cliquant où
+vous désirez les placer.</p>
+<p style="margin-bottom: 0.56cm; ">
+ </p>
+
+
+<h2>Barre de mesure</h2>
+<p align="center" STYLE="margin-bottom: 0.56cm">
+    <img src="docs/measurebar.png"/>
+ </p>
+<p style="margin-bottom: 0.56cm">Cette
+barre indique le numéro de chaque mesure.   </p>
+<p style="margin-bottom: 0.56cm">Si
+vous faites un clic droit près de la ligne entre deux mesures, un
+menu pop-up apparaîtra, vous permettant d'insérer des mesures vides
+entre les deux.   </p>
+<p style="margin-bottom: 0.56cm">Vous
+pouvez également cliquer sur une mesure pour la sélectionner. Cela
+permet de sélectionner toutes les notes contenues dans cette mesure.
+Vous pouvez faire la même chose pour les multiples mesures en
+faisant glisser la souris. Vous pouvez les désélectionner en
+effectuant une action qui désélectionne les notes, par exemple en
+cliquant sur un espace vide dans une piste.<br/>
+</p>
+<p align="center" STYLE="margin-bottom: 0.56cm">
+    <img src="docs/selectMeasure.png"/>
+</p>
+<p style="margin-bottom: 0.56cm">
+Une fois que vous avez sélectionné une ou plusieurs mesures, vous
+pouvez faire un clic-droit sur celles-ci. Cela affichera une pop-up
+vous permettant de supprimer complètement ces mesures.
+</p>
+<p align="center" STYLE="margin-bottom: 0.56cm">
+    <img src="docs/arrow.png"/>
+</p>
+<p style="margin-bottom: 0.56cm"> 
+Pendant que le morceau est en lecture, la partie de la chanson qui est
+présentement jouée peut ne pas être visible parce que la barre de
+défilement horizontale est placée pour montrer une autre portion de
+la chanson. Dans ce cas, une flèche rouge apparait à une extrémité
+de la barre, pour identifier où en est la lecture par rapport aux
+mesures présentement visibles. En cliquant sur la flèche, vous
+serez amenés directement à la partie de la chanson en cours de
+lecture.</p>
+<p align="center" STYLE="margin-bottom: 0.56cm">
+    <img src="docs/timesig.jpg"/>
+</p>
+<p style="margin-bottom: 0.56cm">
+Si vous cochez <B>gestion étendue des mesures</B> dans le menu Options,
+la barre de mesure deviendra plus large et vous
+pourrez alors changer les chiffres indicateurs de mesure à tout
+moment de la chanson. Pour ajouter un changement de durée des
+mesures, il suffit de cliquer dans le bas de la barre des mesures. Un
+nouveau changement de durée de mesure apparaîtra. Pour sélectionner
+un changement, il suffit de cliquer dessus. Il deviendra plus
+lumineux et plus grand (voir la signature 3/4 dans l'image ci-dessus)
+En cliquant sur le carré rouge à côté d'un changement de durée
+de mesure,  un pop-up permettant de modifier sa valeur apparaîtra.
+Pour supprimer un changement de durée de mesure, faites un clic
+droit dessus et sélectionnez <B>Supprimer
+ce changement de mesure</B>.</p>
+<p align="center" STYLE="margin-bottom: 0.67cm; font-style: normal"><br/><br/>
+</p>
+
+
+<h2>Pistes</h2>
+<p style="margin-bottom: 0.56cm">Lorsque
+vous créez un nouveau morceau, vous obtenez une piste en vue
+clavier. Vous pouvez ajouter et supprimer des pistes avec le menu
+«&nbsp;Pistes&nbsp;».</p>
+<p align="center" STYLE="margin-bottom: 0.56cm">
+    <img src="docs/track.png"/>
+</p>
+<p style="margin-bottom: 0.56cm">
+<img src="docs/collapse.png"/>
+<B>Réduire</B>
+ vous permet de minimiser (ou de restaurer) la piste. Vous pouvez
+réduire une piste lorsque vous n'en avez pas besoin pour l'instant,
+de sorte qu'il n'occupe pas inutilement d'espace à l'écran. Quand
+une piste est minimisée, l'éditeur est caché et seulement
+l'en-tête est visible (ce que vous voyez sur la capture d'écran).</p>
+<p style="margin-bottom: 0.56cm"><img src="docs/mute.png"/>
+<B>Sourdine</B>
+ vous permet de couper le son d'une piste. Cliquez sur le
+haut-parleur: un X apparaît dessus. La prochaine fois que vous
+jouerez la séquence, cette piste ne jouera rien. Cliquez à nouveau
+pour la réactiver.
+</p>
+<p style="margin-bottom: 0.56cm"><img src="docs/dock.png"/>
+ <B>Maximiser
+/ Ranger  </B>Lorsque
+vous n'aurez certainement pas besoin d'une piste pendant un certain
+temps, vous pouvez cliquer sur le deuxième bouton (flèche pointant
+vers le bas). Cette piste sera complètement retirée de la zone de
+piste, et sera rangée vers le <I>dock</I>
+au bas de l'écran. Lorsque vous voulez revenir à la piste, cliquez
+sur son nom dans le <I>dock</I>
+et elle sera ramenée.  Si vous souhaitez maximiser une piste,
+cliquez sur l'icône de gauche. La piste prendra alors tout l'écran.
+Dans cet état, vous pouvez passer d'une piste à l'autre en
+utilisant la barre en bas.  </p>
+<p style="margin-bottom: 0.56cm">
+La zone de texte avec &quot;Sans Titre&quot; est le <B>nom de la piste.</B>
+Cliquez sur ce champ et entrez le nom que vous désirez donner à la piste.
+</p>
+<p style="margin-bottom: 0.56cm">La
+zone de liste déroulante qui contient des notes est la <B>taille
+de la grille magnétique.</B>
+La grille magnétique vous permet de sélectionner la durée des
+notes. Dans cette boîte de combo, vous pouvez choisir la précision
+de la plus petite note que vous voulez utiliser, simplement en
+cliquant dessus. Vous pouvez également cliquer sur l'icône
+correspondante pour activer ou désactiver le mode triolet. Cliquez
+sur les flèches de la liste déroulante pour plus de choix.
+</p>
+<p style="margin-bottom: 0.56cm">
+    <img src="docs/score_view.jpg"/>
+    <img src="docs/Aria man2.jpg" />
+    <img src="docs/Aria man4.jpg" />
+    <img src="docs/Aria man6.jpg" />
+    <img src="docs/Aria man8.jpg" />
+<B>Éditeur</B>
+Ces boutons indiquent éditeur sélectionné (le type de vue, la
+façon dont les notes sont affichées et éditées). Vous pouvez
+cliquer sur le piano pour aller en mode piano, vous pouvez cliquer
+sur la guitare pour obtenir une vue tablature, etc (Voir ci-dessous
+éditeurs pour plus d'infos).   </p>
+<p style="margin-bottom: 0.56cm">Le
+dernier champ à la droite de la tête de la piste est l'<B>instrument</B>
+utilisé pour jouer les notes. Cliquez sur ce contrôle et vous serez
+en mesure de choisir un instrument parmi les 128 instruments standard
+de MIDI, placés dans différentes catégories.</p>
+<p style="margin-bottom: 0.56cm">
+<img src="docs/channel.jpg"/>
+<B>Canal</B>
+Ce contrôle ne s'affiche que si vous avez activé la gestion
+manuelle des canaux (voir le menu Options ci-dessus). Il vous permet
+de spécifier dans quel canal cette piste jouera. (Dans les
+spécifications midi, il y a 16 canaux, de 0 à 15, où le canal 9
+correspond aux percussions).   </p>
+<p style="margin-bottom: 0.56cm">Vous
+pouvez <B>redimensionner
+une piste</B>
+en cliquant sur et faisant glisser la bordure inférieure de la
+piste. 
+</p>
+<p style="margin-bottom: 0.56cm">Vous
+pouvez <B>réorganiser
+les pistes</B>
+en saisissant la bordure supérieure d'une piste, juste au-dessus de
+son en-tête. Vous verrez alors une liste de toutes les pistes, où
+vous pourrez placer la piste à son nouvel emplacement en glissant la
+souris.   </p>
+<p style="margin-bottom: 0.56cm"><br/><br/>
+</p>
+
+<p align="center" STYLE="margin-bottom: 0.67cm; font-style: normal">
+<h2><img src="docs/Aria man2.jpg"/> Éditeur de Piano</h2></p>
+
+<p align="center" STYLE="margin-bottom: 0.67cm; ">
+  <img src="docs/Aria man3.jpg"/>
+</p>
+
+<p style="margin-bottom: 0.56cm"> 
+Il s'agit de la vue par défaut. Il montre un «&nbsp;rouleau de notes&nbsp;»
+simple où les diverses hauteurs sont représentées à la verticale.
+  Pour <B>ajouter une note,</B>
+il suffit de maintenir le bouton de la souris enfoncé et faites
+<B>glisser horizontalement</B>
+le curseur sur la piste. Lorsque vous relâchez la souris, une note
+sera placée là où vous avez cliqué, avec une durée correspondant
+au glissement du curseur. Essayez-le, c'est facile! Il y a un <I>preview</I>
+pour vous montrer où la note sera lorsque vous relâchez la souris.
+  Pour <B>sélectionner une seule note,</B>
+vous pouvez simplement <B>cliquer dessus.</B>
+Les notes sélectionnées apparaissent en couleur dans les tons de
+jaune / vert.   Pour <B>sélectionner plusieurs notes,</B>
+vous pouvez simplement faire <B>glisser</B>
+la souris sur la piste. Dans un premier temps, il pourrait sembler
+que Aria veut ajouter une nouvelle note, mais continuez tout de même;
+lorsque vous aurez suffisamment déplacé la souris verticalement, le
+logiciel comprendra que vous voulez sélectionner et affichera un
+rectangle de sélection rectangulaire Toutes les notes dans le
+rectangle lorsque vous relâchez la souris seront sélectionnées.</p>
+<p style="margin-bottom: 0.56cm">Si
+vous avez des notes déjà sélectionnés, et que vous voulez
+<B>sélectionner
+davantage de notes,</B>
+maintenez la touche <B>MAJ</B>
+enfoncée tout en sélectionnant des notes additionnelles.  Si vous
+avez des notes déjà sélectionnés, mais que vous voulez
+<B>désélectionner</B>
+spécifiquement certaines d'entre elles, maintenez la touche <B>Alt</B>
+et cliquez sur celles-ci.   </p>
+<p style="margin-bottom: 0.56cm">Vous
+pouvez <B>jouer
+les notes sélectionnées</B>
+en appuyant sur <B>la
+barre d'espace.</B>
+Pour modifier le <B>volume</B>
+d'une note, <B>faites
+un clic droit</B>
+sur celle-ci. Une fenêtre pop-up apparaîtra. Vous pouvez ensuite
+faire glisser le curseur ou d'entrer manuellement une valeur et
+appuyez sur Entrée. Les volumes dans le standard Midi varient de 0
+(inaudible) à 127 (le plus fort). Si vous faites un clic droit sur
+un tas de notes sélectionnées, il réglera le volume pour toutes
+ces notes. Si vous souhaitez annuler l'entrée d'un nouveau volume,
+appuyez sur Echap.   De plus, la couleur d'une note montre son
+volume. Les notes fortes sont affichées plus sombres que celles
+douces.  </p>
+<p style="margin-bottom: 0.56cm">Pour
+<B>déplacer
+une note,</B>
+il vous suffit de cliquer dessus, maintenez le bouton de la souris
+enfoncé et <B>faites-la
+glisser</B>
+vers son nouvel emplacement. Vous pouvez également faire glisser un
+ensemble de notes sélectionnées de la même manière, en les
+faisant glisser.  </p>
+<p style="margin-bottom: 0.56cm">Alternativement,
+vous pouvez <B>déplacer
+les notes sélectionnées</B>
+en appuyant sur les <B>flèches
+du clavier</B>.
+  Pour <B>modifier
+la durée</B>
+d'une (ou plusieurs) note(s), sélectionnez, maintenez enfoncé la
+touche <B>commande
+ou contrôle </B>(selon
+votre système), et appuyez sur la <B>touche
+flèche gauche ou droite</B>
+de votre clavier. Chaque fois que vous appuyez sur une touche
+fléchée, la note sera redimensionnée dans le sens indiqué par la
+flèche. (Essayez-le! C'est plus clair quand vous le verrez)</p>
+<p style="margin-bottom: 0.56cm">Vous
+pouvez <B>supprimer
+</B>les
+notes sélectionnées en appuyant sur la touche <B>supprimer</B> ou <B>backspace</B>
+de votre clavier.  
+</p>
+<p style="margin-bottom: 0.56cm">
+Vous pouvez déplacer les notes <B>de une octave vers le haut ou vers le bas</B>
+en utilisant <B>shift + touches haut / bas</B>, et déplacer à la <B>mesure
+suivante ou précédente</B> avec les touches <B>shift + gauche / droite</B>.
+  Vous pouvez également <B>dupliquer</B> les notes en <B>les
+faisant glisser tout en maintenant la touche Ctrl</B>
+(ou la touche <B>commande</B> pour les utilisateurs de OSX).</p>
+<p style="margin-bottom: 0.56cm; ">
+<br/><br/>
+</p>
+
+
+<p align="center" STYLE="margin-bottom: 0.67cm; font-style: normal">
+  <h2><img src="docs/Aria man4.jpg"/> Éditeur de Guitare</h2>
+</p>
+
+<p align="center" STYLE="margin-bottom: 0.56cm">
+    <img src="docs/Aria man5.jpg"/>
+</p>
+<p style="margin-bottom: 0.56cm">Cet
+éditeur vous permet d'éditer votre chanson comme une tablature de
+guitare. (Si vous ne savez pas ce que tablature est, ou ne jouez pas
+de guitare, vous ne serez probablement pas être intéressé par cet
+éditeur)   Vous pouvez vous référer à la section concernant
+l'éditeur de piano, puisque presque toutes les fonctionnalités de
+l'éditeur de Piano s'appliquent également dans l'éditeur de
+Guitare.   </p>
+<p style="margin-bottom: 0.56cm">Dans
+l'éditeur de guitare, lorsque vous déplacez une note vers le haut
+ou vers le bas sur les cordes, elle conservera le même numéro de
+frette, et sa hauteur s'adaptera à la  corde vers laquelle vous la
+déplacez.  Si vous voulez <B>déplacer
+une note verticalement (d'une corde à l'autre) mais tout en
+conservant la même hauteur</B>
+(par exemple, 10 sur une corde a la même hauteur que 5 sur la corde
+inférieure) Aria peut le faire pour vous, il suffit de sélectionner
+la note, <B>maintenir la touche MAJ enfoncée, et appuyer sur la touche
+flèche vers le haut ou vers le bas.</B>
+Rien ne se passera si vous essayez de déplacer une note vers une
+corde où ce sont ne peut pas être joué.
+ </p>
+<p style="margin-bottom: 0.56cm"> 
+Si vous souhaitez <B>modifier le numéro de frette,</B>
+il suffit de sélectionner une note et d'appuyer sur la touche
+appropriée sur le clavier, que ce soit dans le <B>pavé
+numérique</B> à droite du clavier, ou dans les <B>touches numériques</B>
+du haut du clavier. Pour les numéros supérieurs à 9, vous pouvez
+maintenir la touche Maj enfoncée et appuyer sur un certain nombre.
+Par exemple, Maj + 5 donnera 15, Maj + 7 donnera 17. Vous pouvez
+également utiliser les raccourcis clavier <B>de
+commande + haut</B> (ou <B>Ctrl + haut)</B> et <B>commande
++ vers le bas</B> (ou <B>Ctrl + bas)</B>
+pour augmenter ou diminuer le numéro de frette d'une note.
+</p>
+<p style="margin-bottom: 0.56cm">Vous
+pouvez également modifier la façon <B>d'accorder la guitare</B>
+en cliquant sur les noms de cordes dans la partie gauche de l'éditeur
+et sélectionnant un nouveau réglage.
+  </p>
+<p style="margin-bottom: 0.56cm">Si
+quelques notes, notamment dans une chanson importée depuis un
+fichier MIDI ou qui ont été ajoutés dans un autre éditeur que
+l'éditeur de guitare, ne semblent pas être mises sur les bonnes
+cordes (par exemple plusieurs notes sont jouées simultanément sur
+la même corde, ou un accord n'est pas placé sur des cordes
+consécutives, etc), vous pouvez également choisir <B>&quot;Réorganiser
+les notes sélectionnées&quot;</B>
+dans le menu qui apparait lorsque vous cliquez sur la partie gauche
+de l'éditeur (la partie avec des noms de cordes). Aria va tenter de
+réorganiser les notes d'une manière plus agréable à jouer.
+(Présentement, cette fonctionnalité n'est pas parfait et ne donne
+pas toujours des résultats optimaux, mais dans l'ensemble aide tout
+de même à améliorer la tablature)
+ </p>
+<p style="margin-bottom: 0.56cm; ">
+<br/><br/>
+</p>
+
+
+<p align="center" STYLE="margin-bottom: 0.67cm; font-style: normal">
+    <h2><img src="docs/score_view.jpg"/> Éditeur de Partitions</h2>
+</p>
+
+<p align="center" STYLE="margin-bottom: 0.56cm; ">
+    <img src="docs/score_example.png"/>
+</p>
+<p style="margin-bottom: 0.56cm; ">
+Vous
+permet d'éditer la musique avec une notation plus proche de la
+notation musicale classique.   Cet éditeur fonctionne de manière
+similaire à l'éditeur de piano, donc si vous n'êtes pas habitué à
+travailler avec l'éditeur de clavier vous pouvez vous référer à
+la section du manuel le décrivant.  Lorsque vous déplacez une
+note vers le haut ou vers le bas, par défaut elle se déplacera à
+la ligne suivante de la partition.  Si vous voulez plutôt <B>modifier
+la valeur d'une note par demi-tons</B> (par exemple en vue
+d'introduire des altérations) il suffit de maintenir enfoncée la
+touche <B>Maj</B> tout en appuyant sur les <B>touches fléchéeds
+haut / bas</B> du clavier. Vous pouvez également utiliser les
+boutons bémol / dièse / bécarre qui se trouvent dans l'en-tête de
+la piste:   </p>
+<p align="center" STYLE="margin-bottom: 0.56cm; ">
+<img src="docs/sharpflat_buttons.png"/><br/>
+  Si vous cliquez sur la partie gauche de l'éditeur, où vous
+pouvez voir l'armature (les clés de sol et de fa), vous verrez un
+menu. Ce menu vous permettra de:</p>
+<UL>
+	<LI><p style="margin-bottom: 0cm; ">
+	passer
+	à une autre tonalité.</p>
+	<LI><p style="margin-bottom: 0cm; ">
+	choisir
+	le type de vue: musical, linéaire (ou les deux). La vue musicale
+	affichera les notes d'une manière «&nbsp;classique&nbsp;». La vue
+	linéaire affiche plutôt des barres horizontales un peu comme
+	éditeur de piano, afin de mieux visualiser la durée des notes. Par
+	défaut, les deux modes sont combinés. Vous pouvez activer ou
+	désactiver chacun de façon indépendante. En règle générale, le
+	mode linéaire facilite l'édition, alors que le mode musical
+	facilite la lecture de la partition.</p>
+	<LI><p style="margin-bottom: 0cm; ">
+	choisir
+	les clés(s) à utiliser (sol et/ou fa)</p>
+	<LI><p style="margin-bottom: 0cm; ">
+	Augmenter
+	ou diminuer la partition d'une octave</p>
+</UL>
+<p style="margin-bottom: 0cm; ">
+<br/>
+</p>
+<p style="margin-bottom: 0.56cm; ">
+<br/><br/>
+</p>
+
+
+<p align="center" STYLE="margin-bottom: 0.67cm; font-style: normal">
+    <h2><img src="docs/Aria man6.jpg"/> Éditeur de percussions</h2>
+</p>
+<p align="center" STYLE="margin-bottom: 0.56cm"><img src="docs/Aria man7.jpg"/></p>
+<p style="margin-bottom: 0.56cm">
+Permet d'éditer la batterie. Lorsque vous êtes dans ce mode, l'ensemble
+des instruments proposés est différent.   Midi ne permet qu'<B>un
+seul canal de batterie par chanson.</B>
+Aria permet d'utiliser plus d'une piste de batterie la même chanson,
+toutefois en raison de cette limite du standard MIDI un seul type de
+batterie est permis. (Par exemple, vous ne pouvez pas avoir une
+batterie «&nbsp;room kit&nbsp;» dans une piste et une batterie
+«&nbsp;orchestra kit&nbsp;» dans une autre).
+</p>
+<p style="margin-bottom: 0.56cm">
+Contrairement
+aux autres éditeurs, les notes dans cet éditeur sont instantanées
+et n'ont pas de durée. Lorsque vous ajoutez une note dans cet
+éditeur, il n'est donc pas nécessaire de faire glisser la souris,
+il suffit de cliquer où vous voulez ajouter une note de percussion.
+  Les types de percussion sont organisés verticalement en
+sections - vous pouvez masquer une section que vous n'utilisez pas en
+cliquant sur le petit triangle blanc à côté de son nom.   Juste
+au-dessus du nom du premier instrument percussif est un triangle
+noir. En cliquant sur ce triangle, tous les instruments percussifs
+non utilisés seront cachés.</p>
+<p style="margin-bottom: 0.56cm; ">
+<br/><br/>
+</p>
+
+
+<p align="center" STYLE="margin-bottom: 0.67cm; font-style: normal">
+    <h2><img src="docs/Aria man8.jpg"/> Éditeur de contrôleurs</h2>
+</p>
+<p align="center" STYLE="margin-bottom: 0.56cm"><img src="docs/Aria man9.jpg"/></p>
+<p style="margin-bottom: 0.56cm">
+Cet éditeur est différent d'autres éditeurs, car il ne vous permet pas
+de modifier les notes elles-mêmes, mais les détails de la façon
+dont elles sont jouées.
+</p>
+<p style="margin-bottom: 0.56cm">Par
+exemple, <I>Pan</SPAN></I>
+vous permettra de choisir le côté où la note doit jouer dans des
+haut-parleurs stéréo, <I>Reverb</SPAN></I>
+permet d'ajouter de l'écho à l'instrument, <I>Volume</SPAN></I>
+permet de changer le volume général à volonté.   L'éditeur
+de contrôleur apparaît comme une graphique avec une valeur maximale
+vers le haut et une valeur minimale en bas. Vous pouvez tout d'abord
+ajouter les changements brusques d'un simple clic, la position
+horizontale étant le moment où ce changement se produit et la
+position verticale étant la force de l'effet à appliquer (voir les
+noms en haut et en bas de l'éditeur pour savoir ce que signifie le
+paramètre vertical).   Si vous ne voulez pas un changement
+soudain, mais plutôt un glissement progressif, vous pouvez maintenir
+enfoncée la souris et faire glisser en diagonale. Cela va créer une
+ligne qui suit le curseur que vous pouvez utiliser pour créer des
+changements progressifs.
+</p>
+<p style="margin-bottom: 0.56cm">Vous
+pouvez également, avec un <B>clic-droit</B>
+n'importe où dans l'éditeur, entrer une valeur précise. 
+</p>
+<p style="margin-bottom: 0.56cm"> Vous
+pouvez <B>sélectionner</B>
+dans cet éditeur en appuyant sur la touche <B>shift</B>
+de votre clavier et en faisant glisser le curseur. Vous pouvez
+ensuite supprimer la partie sélectionnée en appuyant sur la touche
+<I>backspace</I> ou <I>supprimer</I>de
+votre clavier.  Vous pouvez <B>désélectionner</B>
+la sélection en tenant la touche MAJ enfoncée et en cliquant  dans
+l'éditeur sans glisser, ou tout simplement en choisissant
+&quot;Sélectionner rien&quot; dans les menus.
+</p>
+<script src="menu_bottom.js" type="text/javascript"> </script> 
+</BODY>
+</HTML>
