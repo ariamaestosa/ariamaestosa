@@ -77,30 +77,12 @@ Editor::Editor(GraphicalTrack* track)
     m_is_duplicating_note = false;
 
     m_relative_height = 1.0f;
-    
-    m_default_volume = 80;
 }
 
 // ------------------------------------------------------------------------------------------------------------
 
 Editor::~Editor()
 {
-}
-
-// ------------------------------------------------------------------------------------------------------------
-
-int Editor::getDefaultVolume() const
-{
-    ASSERT( MAGIC_NUMBER_OK() );
-    return m_default_volume;
-}
-
-// ------------------------------------------------------------------------------------------------------------
-
-void Editor::setDefaultVolume(const int v)
-{
-    ASSERT( MAGIC_NUMBER_OK() );
-    m_default_volume = v;
 }
 
 // ------------------------------------------------------------------------------------------------------------

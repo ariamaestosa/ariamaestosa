@@ -111,9 +111,7 @@ namespace AriaMaestosa
         bool m_is_duplicating_note;
         
         ptr_vector<Track, REF> m_background_tracks;
-        
-        unsigned short m_default_volume;
-        
+                
         /** 
           * @brief Considering the vertical step, the current scrolling, etc.
           * @param  duplicateParent set if this move event is part of a move event
@@ -172,18 +170,6 @@ namespace AriaMaestosa
         
         /** @brief method called by GraphicalTrack to let the Editor know about its position */
         void updatePosition(int from_y, int to_y, int width, int height);
-        
-        /** 
-          * @brief  for default volume management.
-          * @return the default volume for new notes in this editor
-          */
-        int  getDefaultVolume() const;
-        
-        /** 
-          * @brief   for default volume management.
-          * @param v the new default volume for new notes in this editor
-          */
-        void setDefaultVolume(const int v);
         
         // ------------------------------------------------------------------------------------------------------
         // utility methods that children may call as needed

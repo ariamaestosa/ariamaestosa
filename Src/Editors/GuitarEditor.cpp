@@ -506,7 +506,7 @@ void GuitarEditor::addNote(const int snapped_start_tick, const int snapped_end_t
     if (string >= (int)tuning->tuning.size()) return; //invalid note, don't add it
 
     m_track->action( new Action::AddNote(tuning->tuning[string], snapped_start_tick, snapped_end_tick,
-                                         m_default_volume, true, string) );
+                                         m_track->getDefaultVolume(), true, string) );
 }
 
 // ----------------------------------------------------------------------------------------------------------

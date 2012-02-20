@@ -208,32 +208,37 @@ namespace AriaMaestosa
         {
             Center();
             
-            // TODO: adapt with new multi-editor paradigm
-            Editor* editor = m_parent->getFocusedEditor();
-            volume_text->SetValue( to_wxString(editor->getDefaultVolume()) );
-            volume_slider->SetValue( editor->getDefaultVolume() );
+            Track* t = m_parent->getTrack();
+            volume_text->SetValue( to_wxString(t->getDefaultVolume()) );
+            volume_slider->SetValue( t->getDefaultVolume() );
             
             modalid = ShowModal();
         }
         
-        // when Cancel button of the tuning picker is pressed
+        /** when Cancel button of the tuning picker is pressed */
         void cancelButton(wxCommandEvent& evt)
         {
             wxDialog::EndModal(modalid);
         }
         
-        // when OK button of the tuning picker is pressed
+        /** when OK button of the tuning picker is pressed */
         void okButton(wxCommandEvent& evt)
         {
-            // TODO: adapt with new multi-editor paradigm
-            Editor* editor = m_parent->getFocusedEditor();
             const int value = atoi_u(volume_text->GetValue());
-            if (value >=0 and value < 128) editor->setDefaultVolume( value );
-            else wxBell();
+            if (value >=0 and value < 128)
+            {
+                m_parent->getTrack()->setDefaultVolume( value );
+            }
+            else
+            {
+                wxBell();
+            }
             
             const int amount = m_choice_panels.size();
             Sequence* seq = m_parent->getSequence()->getModel();
             
+            // TODO: adapt with new multi-editor paradigm
+            Editor* editor = m_parent->getFocusedEditor();
             editor->clearBackgroundTracks();
             
             for (int n=0; n<amount; n++)
@@ -244,7 +249,7 @@ namespace AriaMaestosa
                     std::cout << "Adding track " << n << " as background to track " << std::endl;
                 }
             }
-                        
+            
             wxDialog::EndModal(modalid);
             Display::render();
         }

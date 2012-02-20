@@ -86,7 +86,8 @@ void KeyboardEditor::mouseDown(RelativeXCoord x, const int y)
         
         if (not PlatformMidiManager::get()->isRecording())
         {
-            PlatformMidiManager::get()->playNote( 131-pitchID, m_default_volume, 500, 0, m_track->getInstrument() );
+            PlatformMidiManager::get()->playNote(131 - pitchID, m_track->getDefaultVolume(),
+                                                 500, 0, m_track->getInstrument());
         }
         return;
     }
@@ -144,7 +145,8 @@ void KeyboardEditor::processMouseMove(RelativeXCoord x, int y)
 void KeyboardEditor::addNote(const int snapped_start_tick, const int snapped_end_tick, const int mouseY)
 {
     const int note = getLevelAtY(mouseY);
-    m_track->action( new Action::AddNote(note, snapped_start_tick, snapped_end_tick, m_default_volume ) );
+    m_track->action( new Action::AddNote(note, snapped_start_tick, snapped_end_tick,
+                                         m_track->getDefaultVolume()));
 }
 
 // -----------------------------------------------------------------------------------------------------------

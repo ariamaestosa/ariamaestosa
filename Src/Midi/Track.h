@@ -164,6 +164,8 @@ namespace AriaMaestosa
         IInstrumentChoiceListener* m_next_instrument_listener;
         IDrumChoiceListener* m_next_drumkit_listener;
 
+        unsigned short m_default_volume;
+
     public:
         
         DECLARE_MAGIC_NUMBER();
@@ -559,6 +561,19 @@ namespace AriaMaestosa
           * @brief Implement callback from IGuitarTuningListener
           */
         virtual void onGuitarTuningUpdated(GuitarTuning* tuning, const bool userTriggered);
+        
+        
+        /** 
+         * @brief  for default volume management.
+         * @return the default volume for new notes in this editor
+         */
+        int  getDefaultVolume() const { return m_default_volume; }
+        
+        /** 
+         * @brief   for default volume management.
+         * @param v the new default volume for new notes in this editor
+         */
+        void setDefaultVolume(const int v);
         
         // serialization
         void saveToFile(wxFileOutputStream& fileout);
