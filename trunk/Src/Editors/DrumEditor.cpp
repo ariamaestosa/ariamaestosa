@@ -585,7 +585,7 @@ void DrumEditor::addNote(const int snappedX, const int mouseY)
                     new Action::AddNote(note,
                                         snappedX,
                                         snappedX + m_sequence->ticksPerBeat()/32+1,
-                                        m_default_volume )
+                                        m_track->getDefaultVolume() )
                     );
 }
 
@@ -722,8 +722,8 @@ void DrumEditor::mouseDown(RelativeXCoord x, const int y)
                 
                 if (not PlatformMidiManager::get()->isRecording())
                 {
-                    PlatformMidiManager::get()->playNote(note, m_default_volume, 500 /* duration */, 9,
-                                                         m_track->getDrumKit() );
+                    PlatformMidiManager::get()->playNote(note, m_track->getDefaultVolume(), 500 /* duration */,
+                                                         9, m_track->getDrumKit());
                 }
             }    
             // click on section

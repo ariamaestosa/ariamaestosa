@@ -74,7 +74,7 @@ Track::Track(Sequence* sequence)
 
     m_next_instrument_listener = NULL;
     m_next_drumkit_listener = NULL;
-    
+    m_default_volume = 80;
     m_sequence = sequence;
 
     m_channel = 0;
@@ -1233,6 +1233,13 @@ int Track::getEnabledEditorCount() const
     }
     
     return count;
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void Track::setDefaultVolume(const int v)
+{
+    m_default_volume = v;
 }
 
 // =======================================================================================================
