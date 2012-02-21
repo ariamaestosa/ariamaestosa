@@ -515,9 +515,7 @@ void ScoreEditor::setNoteSign(const int sign, const int noteID)
 namespace EditorStemParams
 {
     int   g_stem_up_x_offset   = 9;
-    float g_stem_up_y_offset   = 0.4;
     int   g_stem_down_x_offset = 1;
-    float g_stem_down_y_offset = 0.8;
 
     int getStemX(const int tick, const STEM stem_type, GraphicalSequence* gseq)
     {
