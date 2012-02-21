@@ -50,8 +50,6 @@ namespace AriaMaestosa
         bool isActive() const { ASSERT(m_active != NULL); return m_active->IsChecked(); }
         
         int getSelectedNote() const;
-        
-        DECLARE_EVENT_TABLE()
     };
     
 }

@@ -22,9 +22,6 @@
 
 using namespace AriaMaestosa;
 
-BEGIN_EVENT_TABLE(NotePickerWidget, wxPanel)
-EVT_CHOICE(201, NotePickerWidget::somethingSelected)
-END_EVENT_TABLE()
 
 // ---------------------------------------------------------------------------------------------------------
 
@@ -35,7 +32,7 @@ NotePickerWidget::NotePickerWidget(wxWindow* parent, bool withCheckbox) : wxPane
     // checkbox
     if (withCheckbox)
     {
-        m_active = new wxCheckBox(this, 200, wxT(" "));
+        m_active = new wxCheckBox(this, wxID_ANY, wxT(" "));
         sizer->Add(m_active, 0, wxALL, 5);
     }
     else
@@ -46,31 +43,38 @@ NotePickerWidget::NotePickerWidget(wxWindow* parent, bool withCheckbox) : wxPane
     // note choice
     {
         wxString choices[7] = { wxT("C"), wxT("D"), wxT("E"), wxT("F"), wxT("G"), wxT("A"), wxT("B")};
-        note_choice = new wxChoice(this, 201, wxDefaultPosition, wxDefaultSize, 7, choices);
+        note_choice = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 7, choices);
         sizer->Add(note_choice, 0, wxALL, 5);
+        
+        note_choice->Connect(note_choice->GetId(), wxEVT_COMMAND_CHOICE_SELECTED,
+                             wxCommandEventHandler(NotePickerWidget::somethingSelected), NULL, this);
     }
     
     // sign choice
     {
         wxString choices[3] = {wxT(" "), wxT("#"), wxT("b")};
-        sign_choice = new wxChoice(this, 201, wxDefaultPosition, wxDefaultSize, 3, choices);
+        sign_choice = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 3, choices);
         sizer->Add(sign_choice, 0, wxALL, 5);
+        
+        sign_choice->Connect(sign_choice->GetId(), wxEVT_COMMAND_CHOICE_SELECTED,
+                             wxCommandEventHandler(NotePickerWidget::somethingSelected), NULL, this);
     }
     
     // octave choice
     {
         // TODO: add octave -1 too (wx seems the interpret the minus "-" sign as meaning "separator here"...)
         wxString choices[10] = { wxT("0"), wxT("1"), wxT("2"), wxT("3"), wxT("4"), wxT("5"), wxT("6"), wxT("7"), wxT("8"), wxT("9")};
-        octave_choice = new wxChoice(this, 201, wxDefaultPosition, wxDefaultSize, 10, choices);
+        octave_choice = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 10, choices);
         sizer->Add(octave_choice, 0, wxALL, 5);
+        
+        octave_choice->Connect(octave_choice->GetId(), wxEVT_COMMAND_CHOICE_SELECTED,
+                               wxCommandEventHandler(NotePickerWidget::somethingSelected), NULL, this);
     }
     
     SetAutoLayout(true);
     SetSizer(sizer);
     sizer->Layout();
     sizer->SetSizeHints(this); // resize to take ideal space
-    
-    
 }
 
 // ---------------------------------------------------------------------------------------------------------
