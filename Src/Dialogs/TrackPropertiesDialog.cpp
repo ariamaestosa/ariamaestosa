@@ -112,7 +112,9 @@ namespace AriaMaestosa
         }
         
         TrackPropertiesDialog(GraphicalTrack* parent) :
-        wxDialog(NULL, wxID_ANY,  _("Track Properties"), wxPoint(100,100), wxSize(700,300), wxCAPTION | wxCLOSE_BOX | wxSTAY_ON_TOP )
+        wxDialog(NULL, wxID_ANY,  wxString::Format(_("Track '%s' Properties"),
+                                                   (const char*)parent->getTrack()->getName().c_str()),
+                 wxPoint(100,100), wxSize(700,300), wxCAPTION | wxCLOSE_BOX | wxSTAY_ON_TOP )
         {
             m_ignore_events = true;
             m_parent = parent;
