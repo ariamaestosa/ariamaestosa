@@ -41,9 +41,7 @@ using namespace AriaMaestosa;
 TuningDialog::TuningDialog() :
 wxFrame(NULL, wxID_ANY,  _("Custom Tuning Editor"), wxPoint(100,100), wxSize(500,300), wxCAPTION )
 {
-    
-    
-    sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
     
     for (int n=0; n<10; n++)
     {
@@ -51,17 +49,17 @@ wxFrame(NULL, wxID_ANY,  _("Custom Tuning Editor"), wxPoint(100,100), wxSize(500
         sizer->Add(m_note_pickers[n], 0, wxALL, 5);
     }
     
-    buttonPane = new wxPanel(this);
+    wxPanel* buttonPane = new wxPanel(this);
     sizer->Add(buttonPane, 0, wxALL, 5);
     
-    buttonsizer = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer* buttonsizer = new wxBoxSizer(wxHORIZONTAL);
     
-    ok_btn = new wxButton(buttonPane, 200, _("OK"));
-    ok_btn->SetDefault();
-    buttonsizer->Add(ok_btn, 0, wxALL, 5);
+    m_ok_btn = new wxButton(buttonPane, wxID_ANY, _("OK"));
+    m_ok_btn->SetDefault();
+    buttonsizer->Add(m_ok_btn, 0, wxALL, 5);
     
-    cancel_btn = new wxButton(buttonPane, 202,  _("Cancel"));
-    buttonsizer->Add(cancel_btn, 0, wxALL, 5);
+    m_cancel_btn = new wxButton(buttonPane, wxID_ANY,  _("Cancel"));
+    buttonsizer->Add(m_cancel_btn, 0, wxALL, 5);
     
     buttonPane->SetSizer(buttonsizer);
     m_model = NULL;
@@ -70,6 +68,11 @@ wxFrame(NULL, wxID_ANY,  _("Custom Tuning Editor"), wxPoint(100,100), wxSize(500
     SetSizer(sizer);
     sizer->Layout();
     sizer->SetSizeHints(this); // resize window to take ideal space
+    
+    m_ok_btn->Connect(m_ok_btn->GetId(), wxEVT_COMMAND_BUTTON_CLICKED,
+                      wxCommandEventHandler(TuningDialog::okButton), NULL, this);
+    m_cancel_btn->Connect(m_cancel_btn->GetId(), wxEVT_COMMAND_BUTTON_CLICKED,
+                          wxCommandEventHandler(TuningDialog::cancelButton), NULL, this);
 }
 
 // ---------------------------------------------------------------------------------------------------------
@@ -134,10 +137,5 @@ void TuningDialog::okButton(wxCommandEvent& evt)
 }
 
 // ---------------------------------------------------------------------------------------------------------
-
-BEGIN_EVENT_TABLE(TuningDialog, wxFrame)
-EVT_BUTTON(200, TuningDialog::okButton)
-EVT_BUTTON(202, TuningDialog::cancelButton)
-END_EVENT_TABLE()
 
 

@@ -35,13 +35,9 @@ namespace AriaMaestosa
       */
     class TuningDialog : public wxFrame
     {
-        wxPanel* buttonPane;
-        wxButton* ok_btn;
-        wxButton* cancel_btn;
-        wxBoxSizer* buttonsizer;
-        
-        wxBoxSizer* sizer;
-        
+        wxButton* m_ok_btn;
+        wxButton* m_cancel_btn;
+                
         GuitarTuning* m_model;
         
         NotePickerWidget* m_note_pickers[10];
@@ -61,8 +57,6 @@ namespace AriaMaestosa
         
         /** @brief callback invoked when OK button of the tuning picker is pressed */
         void okButton(wxCommandEvent& evt);
-        
-        DECLARE_EVENT_TABLE()
     };
     
 }
