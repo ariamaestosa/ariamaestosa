@@ -811,11 +811,11 @@ namespace AriaMaestosa
     
     namespace PrintStemParams
     {
-        int stem_up_x_offset;
+        int g_stem_up_x_offset;
         //float stem_up_y_offset;
-        int stem_down_x_offset;
+        int g_stem_down_x_offset;
         //float stem_down_y_offset;
-        int note_x_shift = 0;
+        int g_note_x_shift = 0;
         
         int getStemX(const int tick, const PitchSign sign, const STEM stem_type)
         {
@@ -823,8 +823,8 @@ namespace AriaMaestosa
             
             //const int accidentalShift = sign == PITCH_SIGN_NONE ? 0 : headRadius*1.85;
             
-            if      (stem_type == STEM_UP)   return (noteX.to + stem_up_x_offset  );
-            else if (stem_type == STEM_DOWN) return (noteX.to + stem_down_x_offset);
+            if      (stem_type == STEM_UP)   return (noteX.to + g_stem_up_x_offset  );
+            else if (stem_type == STEM_DOWN) return (noteX.to + g_stem_down_x_offset);
             else return -1;
         }
         int getStemX(const NoteRenderInfo& noteRenderInfo)
@@ -1044,23 +1044,23 @@ namespace AriaMaestosa
         const int last_score_level = first_score_level + 8;
         const int min_level =  first_score_level - extra_lines_above*2;
 
-        note_x_shift = HEAD_RADIUS;// shift to LEFT by a 'headRadius', since note will be drawn from the right of its area
-                                   // and its center is the origin of the drawing
-        						   // e.g. Drawing area of a note :
-          						   // |     |
-                                   // |     |  <-- stem at the right
-                                   // |  ( )|
-        						   //     ^ origin of the note here, in its center. so substract a radius from the right
+        g_note_x_shift = HEAD_RADIUS;// shift to LEFT by a 'headRadius', since note will be drawn from the right of its area
+                                     // and its center is the origin of the drawing
+        						     // e.g. Drawing area of a note :
+          						     // |     |
+                                     // |     |  <-- stem at the right
+                                     // |  ( )|
+        						     //     ^ origin of the note here, in its center. so substract a radius from the right
 
         // since note is right-aligned, keep the stem at the right. go 10 towards the note to "blend" in it.
-        stem_up_x_offset = -10;
+        g_stem_up_x_offset = -10;
         
         // since note is right-aligned. go towards the note to "blend" in it.
-        stem_down_x_offset = -HEAD_RADIUS*2 + 3;
+        g_stem_down_x_offset = -HEAD_RADIUS*2 + 3;
 
 
 #define LEVEL_TO_Y( lvl ) (y0 + 1 + lineHeight*0.5*((lvl) - min_level))
-                
+        
         
         // ------------ draw score background (horizontal lines) ------------
         //std::cout << "[ScorePrintable] rendering score background ==\n";
@@ -1354,7 +1354,7 @@ namespace AriaMaestosa
                 const int notey = LEVEL_TO_Y(noteRenderInfo.getBaseLevel());
                 
                 /** This coord is the CENTER of the note's head */
-                wxPoint headLocation( noteX.to - note_x_shift,
+                wxPoint headLocation( noteX.to - g_note_x_shift,
                                       notey                    );
                 
                 if (noteRenderInfo.m_instant_hit)

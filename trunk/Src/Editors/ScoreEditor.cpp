@@ -514,18 +514,18 @@ void ScoreEditor::setNoteSign(const int sign, const int noteID)
 
 namespace EditorStemParams
 {
-    int   stem_up_x_offset   = 9;
-    float stem_up_y_offset   = 0.4;
-    int   stem_down_x_offset = 1;
-    float stem_down_y_offset = 0.8;
+    int   g_stem_up_x_offset   = 9;
+    float g_stem_up_y_offset   = 0.4;
+    int   g_stem_down_x_offset = 1;
+    float g_stem_down_y_offset = 0.8;
 
     int getStemX(const int tick, const STEM stem_type, GraphicalSequence* gseq)
     {
         RelativeXCoord relX(tick, MIDI, gseq);
         const int noteX = relX.getRelativeTo(WINDOW);
         
-        if      (stem_type == STEM_UP)   return (noteX + stem_up_x_offset);
-        else if (stem_type == STEM_DOWN) return (noteX + stem_down_x_offset);
+        if      (stem_type == STEM_UP)   return (noteX + g_stem_up_x_offset);
+        else if (stem_type == STEM_DOWN) return (noteX + g_stem_down_x_offset);
         else return -1;
     }
     
