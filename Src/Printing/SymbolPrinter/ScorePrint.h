@@ -26,7 +26,8 @@ namespace AriaMaestosa
 {
     class ScoreAnalyser;
     class RelativePlacementManager;
-
+    class PrintXConverter;
+    
     /**
       * @brief Implementation of EditorPrintable that can print scores
       * @ingroup printing
@@ -56,6 +57,25 @@ namespace AriaMaestosa
         
         std::vector< SilenceAnalyser::SilenceInfo > m_silences_ticks;
         
+        PrintXConverter* m_x_converter;
+        
+        int m_g_clef_y_from;
+        int m_g_clef_y_to;
+        int m_f_clef_y_from;
+        int m_f_clef_y_to;
+        int m_grand_staff_center_y;
+        
+        float m_line_height;
+        int m_min_level;
+        
+        int m_first_score_level;
+        int m_last_score_level;
+        
+        void backgroundDrawing(ClefRenderType clefType, ScoreAnalyser& analyser, LayoutLine& line,
+                               const GraphicalTrack* gtrack, wxDC& dc, wxGraphicsContext* grctx,
+                               const int extra_lines_above, const int extra_lines_under,
+                               const int x0, const int y0, const int x1, const int y1,
+                               bool show_measure_number, const int grandStaffCenterY);
     public:
         ScorePrintable(Track* track);
         virtual ~ScorePrintable();
@@ -73,6 +93,10 @@ namespace AriaMaestosa
         
         /** Implement method from EditorPrintable */
         virtual int calculateHeight(const int trackID, LineTrackRef& renderInfo, LayoutLine& line, bool* empty);
+        
+        virtual void drawTrackBackground(const int trackID, const LineTrackRef& currentTrack,
+                                         LayoutLine& currentLine, wxDC& dc, wxGraphicsContext* grctx,
+                                         const bool drawMeasureNumbers);
     };
     
 }
