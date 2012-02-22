@@ -1258,6 +1258,10 @@ namespace AriaMaestosa
         const bool f_clef = (clefType == F_CLEF_ALONE or clefType == F_CLEF_FROM_GRAND_STAFF);
         std::cout << "[ScorePrintable] ==== analyseAndDrawScore " << (f_clef ? "F" : "G") << " ==== \n";
         
+        const int lineAmount = abs(extra_lines_above) + abs(extra_lines_under) + 5;
+        m_line_height = (float)(y1 - y0) / (float)(lineAmount-1);
+        
+        
         /*
         //DEBUG
          
