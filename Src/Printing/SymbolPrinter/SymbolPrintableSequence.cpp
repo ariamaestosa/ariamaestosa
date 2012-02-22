@@ -159,14 +159,25 @@ void SymbolPrintableSequence::printLine(LayoutLine& line, wxDC& dc, wxGraphicsCo
     const int my0 = lineCoords->y0 + lineCoords->margin_above;
     const int my1 = lineCoords->y0 + (lineCoords->y1 - lineCoords->y0) - lineCoords->margin_below;
     
-    if (trackAmount>1)
+    /*
+     int getFirstLineY(const LineTrackRef& currentTrack, const int y0, const int y1);
+
+     */
+    
+    if (trackAmount > 1)
     {
+        const LineTrackRef& currentTrack = line.getLineTrackRef(0);
+        const TrackCoords* trackCoords = currentTrack.m_track_coords.raw_ptr;
+        ASSERT(trackCoords != NULL);
+        EditorPrintable* editorPrintable = this->getEditorPrintable(0);
+        const int y0 = editorPrintable->getFirstLineY(currentTrack);
+        
         dc.SetPen(  wxPen( wxColour(150,150,150), 25 ) );
-        dc.DrawLine( lineCoords->x0-3, my0, lineCoords->x0-3, my1); // vertical line
-        dc.DrawLine( lineCoords->x0-3, my0, lineCoords->x0-3+30, my0-50); // top thingy
+        dc.DrawLine( lineCoords->x0-3, y0, lineCoords->x0-3, my1); // vertical line
+        dc.DrawLine( lineCoords->x0-3, y0, lineCoords->x0-3+30, y0-50); // top thingy
         dc.DrawLine( lineCoords->x0-3, my1, lineCoords->x0-3+30, my1+50); // bottom thingy
         
-        dc.DrawLine( lineCoords->x1-3, my0, lineCoords->x1-3, my1); // right-side line
+        dc.DrawLine( lineCoords->x1-3, y0, lineCoords->x1-3, my1); // right-side line
     }
     
     std::cout << "[SymbolPrintableSequence] ==== Printing Line (contains " << line.getLayoutElementCount()

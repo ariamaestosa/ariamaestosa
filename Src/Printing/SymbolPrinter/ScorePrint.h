@@ -125,6 +125,11 @@ namespace AriaMaestosa
         virtual void drawTrackBackground(const int trackID, const LineTrackRef& currentTrack,
                                          LayoutLine& currentLine, wxDC& dc, wxGraphicsContext* grctx,
                                          const bool drawMeasureNumbers);
+        
+        /**
+          * Get the Y coordinate where the first line of the score is.
+          */
+        virtual int getFirstLineY(const LineTrackRef& currentTrack);
     };
     
 }
