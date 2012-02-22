@@ -154,6 +154,11 @@ namespace AriaMaestosa
 
         Track* getTrack() { return m_track; }
         
+        /**
+         * Get the Y coordinate where the first line of the score is.
+         */
+        virtual int getFirstLineY(const LineTrackRef& currentTrack) = 0;
+        
     };
 }
 

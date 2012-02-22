@@ -567,6 +567,65 @@ namespace AriaMaestosa
     }
     
     // ------------------------------------------------------------------------------------------------------
+    
+#define LEVEL_TO_Y( lvl ) (y0 + 1 + m_line_height*0.5*((lvl) - m_min_level))
+
+    int ScorePrintable::getFirstLineY(const LineTrackRef& currentTrack)
+    {
+        const TrackCoords* trackCoords = currentTrack.m_track_coords.raw_ptr;
+        ASSERT(trackCoords != NULL);
+        
+        ASSERT_E(trackCoords->y0,>,0);
+        ASSERT_E(trackCoords->y1,>,0);
+        ASSERT_E(trackCoords->y0,<,50000);
+        ASSERT_E(trackCoords->y1,<,50000);
+                
+        ScoreData* scoreData = dynamic_cast<ScoreData*>(currentTrack.editor_data.raw_ptr);
+        
+        calculateVerticalMeasurements(trackCoords, scoreData);
+        
+
+        if (m_g_clef)
+        {
+            float y0 = m_g_clef_y_from;
+            float y1 = m_g_clef_y_to;
+
+            const int lineAmount = abs(scoreData->extra_lines_above_g_score) +
+                                   abs(scoreData->extra_lines_under_g_score) + 5;
+            m_line_height = (float)(y1 - y0) / (float)(lineAmount-1);
+            
+            m_grand_staff_center_y = (m_g_clef and m_f_clef ? (m_g_clef_y_to + m_f_clef_y_from)/2 : -1);
+        
+            
+            ClefRenderType clef = (m_f_clef ? G_CLEF_FROM_GRAND_STAFF : G_CLEF_ALONE);
+            
+            calculateClefVerticalMeasurements(clef,
+                                              currentTrack.getTrack(),
+                                              abs(scoreData->extra_lines_above_g_score));
+            return LEVEL_TO_Y(m_first_score_level);
+        }
+        else
+        {
+            float y0 = m_f_clef_y_from;
+            float y1 = m_f_clef_y_to;
+            
+            const int lineAmount = abs(scoreData->extra_lines_above_f_score) +
+                                   abs(scoreData->extra_lines_under_f_score) + 5;
+            m_line_height = (float)(y1 - y0) / (float)(lineAmount-1);
+            
+            m_grand_staff_center_y = (m_g_clef and m_f_clef ? (m_g_clef_y_to + m_f_clef_y_from)/2 : -1);
+            
+            
+            ClefRenderType clef = (m_g_clef ? F_CLEF_FROM_GRAND_STAFF : F_CLEF_ALONE);
+            
+            calculateClefVerticalMeasurements(clef,
+                                              currentTrack.getTrack(),
+                                              abs(scoreData->extra_lines_above_f_score));
+            return LEVEL_TO_Y(m_first_score_level);
+        }
+    }
+    
+    // ------------------------------------------------------------------------------------------------------
 
     void ScorePrintable::drawTrackBackground(const int trackID, const LineTrackRef& currentTrack,
                                              LayoutLine& currentLine, wxDC& dc, wxGraphicsContext* grctx,
@@ -1112,15 +1171,12 @@ namespace AriaMaestosa
     
     // -------------------------------------------------------------------------------------------
     
-#define LEVEL_TO_Y( lvl ) (y0 + 1 + m_line_height*0.5*((lvl) - m_min_level))
-
     void ScorePrintable::backgroundDrawing(ClefRenderType clefType, ScoreAnalyser& analyser, LayoutLine& line,
                                            const GraphicalTrack* gtrack, wxDC& dc, wxGraphicsContext* grctx,
                                            const int extra_lines_above, const int extra_lines_under,
                                            const int x0, const int y0, const int x1, const int y1,
                                            bool show_measure_number, const int grandStaffCenterY)
     {
-        const bool f_clef = (clefType == F_CLEF_ALONE or clefType == F_CLEF_FROM_GRAND_STAFF);
         const Track* track = gtrack->getTrack();
         
         ASSERT(m_track == track);

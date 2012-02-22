@@ -62,6 +62,11 @@ namespace AriaMaestosa
         
         /** @brief Implement method from EditorPrintable */
         virtual void earlySetup(const int trackID, GraphicalTrack* track);
+        
+        /**
+         * Get the Y coordinate where the first line of the score is.
+         */
+        virtual int getFirstLineY(const LineTrackRef& currentTrack) { return currentTrack.m_track_coords->y0; }
     };
     
 }
