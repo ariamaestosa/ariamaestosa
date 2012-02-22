@@ -515,26 +515,8 @@ namespace AriaMaestosa
     
     // ------------------------------------------------------------------------------------------------------
     
-    void ScorePrintable::drawTrackBackground(const int trackID, const LineTrackRef& currentTrack,
-                                             LayoutLine& currentLine, wxDC& dc, wxGraphicsContext* grctx,
-                                             const bool drawMeasureNumbers)
+    void ScorePrintable::calculateVerticalMeasurements(const TrackCoords* trackCoords, ScoreData* scoreData)
     {
-        const TrackCoords* trackCoords = currentTrack.m_track_coords.raw_ptr;
-        ASSERT(trackCoords != NULL);
-        
-        ASSERT_E(trackCoords->y0,>,0);
-        ASSERT_E(trackCoords->y1,>,0);
-        ASSERT_E(trackCoords->y0,<,50000);
-        ASSERT_E(trackCoords->y1,<,50000);
-        setCurrentDC(&dc);
-        
-        std::cout << "[ScorePrintable] ScorePrintable size : " << trackCoords->x0 << ", " << trackCoords->y0
-                  << " to " << trackCoords->x1 << ", " << trackCoords->y1 << std::endl;
-        
-        m_x_converter = new PrintXConverter(this, &currentLine, trackID);
-        
-        ScoreData* scoreData = dynamic_cast<ScoreData*>(currentTrack.editor_data.raw_ptr);
-        
         // if we have only one clef, give it the full space.
         // if we have two, split the space between both
         m_g_clef_y_from = -1;
@@ -556,9 +538,9 @@ namespace AriaMaestosa
         {
             m_g_clef_y_from = trackCoords->y0;
             m_g_clef_y_to   = trackCoords->y0 +
-                (int)round((trackCoords->y1 - trackCoords->y0)*scoreData->first_clef_proportion);
+            (int)round((trackCoords->y1 - trackCoords->y0)*scoreData->first_clef_proportion);
             m_f_clef_y_from = trackCoords->y0 +
-                (int)round((trackCoords->y1 - trackCoords->y0)*(1 - scoreData->second_clef_proportion));
+            (int)round((trackCoords->y1 - trackCoords->y0)*(1 - scoreData->second_clef_proportion));
             m_f_clef_y_to   = trackCoords->y1;
         }
         else
@@ -566,6 +548,47 @@ namespace AriaMaestosa
             ASSERT(false);
         }
         
+    }
+    
+    // ------------------------------------------------------------------------------------------------------
+
+    void ScorePrintable::calculateClefVerticalMeasurements(ClefRenderType clefType,
+                                                           const GraphicalTrack* gtrack,
+                                                           int extra_lines_above)
+    {
+        const bool f_clef = (clefType == F_CLEF_ALONE or clefType == F_CLEF_FROM_GRAND_STAFF);
+
+        const ScoreEditor* scoreEditor = gtrack->getScoreEditor();
+        const ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
+        const int middle_c_level = converter->getScoreCenterCLevel();
+        m_first_score_level = middle_c_level + (f_clef? 2 : -10);
+        m_last_score_level  = m_first_score_level + 8;
+        m_min_level         = m_first_score_level - extra_lines_above*2;    
+    }
+    
+    // ------------------------------------------------------------------------------------------------------
+
+    void ScorePrintable::drawTrackBackground(const int trackID, const LineTrackRef& currentTrack,
+                                             LayoutLine& currentLine, wxDC& dc, wxGraphicsContext* grctx,
+                                             const bool drawMeasureNumbers)
+    {
+        const TrackCoords* trackCoords = currentTrack.m_track_coords.raw_ptr;
+        ASSERT(trackCoords != NULL);
+        
+        ASSERT_E(trackCoords->y0,>,0);
+        ASSERT_E(trackCoords->y1,>,0);
+        ASSERT_E(trackCoords->y0,<,50000);
+        ASSERT_E(trackCoords->y1,<,50000);
+        setCurrentDC(&dc);
+        
+        std::cout << "[ScorePrintable] ScorePrintable size : " << trackCoords->x0 << ", " << trackCoords->y0
+                  << " to " << trackCoords->x1 << ", " << trackCoords->y1 << std::endl;
+        
+        m_x_converter = new PrintXConverter(this, &currentLine, trackID);
+        
+        ScoreData* scoreData = dynamic_cast<ScoreData*>(currentTrack.editor_data.raw_ptr);
+        
+        calculateVerticalMeasurements(trackCoords, scoreData);
         g_printable = this;
         
         // draw track name
@@ -578,6 +601,11 @@ namespace AriaMaestosa
         if (m_g_clef)
         {
             ClefRenderType clef = (m_f_clef ? G_CLEF_FROM_GRAND_STAFF : G_CLEF_ALONE);
+            
+            calculateClefVerticalMeasurements(clef,
+                                              currentTrack.getTrack(),
+                                              abs(scoreData->extra_lines_above_g_score));
+            
             backgroundDrawing(clef, *g_clef_analyser, currentLine, currentTrack.getTrack(),
                               dc, grctx, abs(scoreData->extra_lines_above_g_score),
                               abs(scoreData->extra_lines_under_g_score),
@@ -588,6 +616,10 @@ namespace AriaMaestosa
         if (m_f_clef)
         {
             ClefRenderType clef = (m_g_clef ? F_CLEF_FROM_GRAND_STAFF : F_CLEF_ALONE);
+            
+            calculateClefVerticalMeasurements(clef,
+                                              currentTrack.getTrack(),
+                                              abs(scoreData->extra_lines_above_f_score));
             
             backgroundDrawing(clef, *f_clef_analyser, currentLine, currentTrack.getTrack(),
                               dc, grctx, abs(scoreData->extra_lines_above_f_score),
@@ -632,6 +664,11 @@ namespace AriaMaestosa
         if (m_g_clef)
         {
             ClefRenderType clef = (m_f_clef ? G_CLEF_FROM_GRAND_STAFF : G_CLEF_ALONE);
+            
+            calculateClefVerticalMeasurements(clef,
+                                              currentTrack.getTrack(),
+                                              abs(scoreData->extra_lines_above_g_score));
+            
             analyseAndDrawScore(clef, *g_clef_analyser, currentLine, currentTrack.getTrack(),
                                 dc, grctx, abs(scoreData->extra_lines_above_g_score),
                                 abs(scoreData->extra_lines_under_g_score),
@@ -643,6 +680,10 @@ namespace AriaMaestosa
         {
             ClefRenderType clef = (m_g_clef ? F_CLEF_FROM_GRAND_STAFF : F_CLEF_ALONE);
 
+            calculateClefVerticalMeasurements(clef,
+                                              currentTrack.getTrack(),
+                                              abs(scoreData->extra_lines_above_f_score));
+            
             analyseAndDrawScore(clef, *f_clef_analyser, currentLine, currentTrack.getTrack(),
                                 dc, grctx, abs(scoreData->extra_lines_above_f_score),
                                 abs(scoreData->extra_lines_under_f_score),
@@ -1115,13 +1156,14 @@ namespace AriaMaestosa
         // since note is right-aligned. go towards the note to "blend" in it.
         g_stem_down_x_offset = -HEAD_RADIUS*2 + 3;
         
-        
+        /*
         const ScoreEditor* scoreEditor = gtrack->getScoreEditor();
         const ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
         const int middle_c_level = converter->getScoreCenterCLevel();
         m_first_score_level = middle_c_level + (f_clef? 2 : -10);
         m_last_score_level  = m_first_score_level + 8;
         m_min_level         = m_first_score_level - extra_lines_above*2;        
+        */
         
         // ------------ draw score background (horizontal lines) ------------
         //std::cout << "[ScorePrintable] rendering score background ==\n";
@@ -1159,13 +1201,6 @@ namespace AriaMaestosa
         
         const bool f_clef = (clefType == F_CLEF_ALONE or clefType == F_CLEF_FROM_GRAND_STAFF);
         std::cout << "[ScorePrintable] ==== analyseAndDrawScore " << (f_clef ? "F" : "G") << " ==== \n";
-
-        const ScoreEditor* scoreEditor = gtrack->getScoreEditor();
-        const ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
-        const int middle_c_level = converter->getScoreCenterCLevel();
-        m_first_score_level = middle_c_level + (f_clef? 2 : -10);
-        m_last_score_level  = m_first_score_level + 8;
-        m_min_level         = m_first_score_level - extra_lines_above*2;
         
         /*
         //DEBUG

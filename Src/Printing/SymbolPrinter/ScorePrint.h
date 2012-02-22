@@ -27,6 +27,7 @@ namespace AriaMaestosa
     class ScoreAnalyser;
     class RelativePlacementManager;
     class PrintXConverter;
+    class ScoreData;
     
     /**
       * @brief Implementation of EditorPrintable that can print scores
@@ -66,16 +67,36 @@ namespace AriaMaestosa
         int m_grand_staff_center_y;
         
         float m_line_height;
+        
+        /** For the current score (if you have both G and F clefs, this variable will first take the
+          * value for G, then the value for F)
+          */
         int m_min_level;
         
+        /** For the current score (if you have both G and F clefs, this variable will first take the
+          * value for G, then the value for F)
+          */
         int m_first_score_level;
+        
+        /** For the current score (if you have both G and F clefs, this variable will first take the
+          * value for G, then the value for F)
+          */
         int m_last_score_level;
         
+        /**
+          * @brief Draw the background part of a track.
+          */
         void backgroundDrawing(ClefRenderType clefType, ScoreAnalyser& analyser, LayoutLine& line,
                                const GraphicalTrack* gtrack, wxDC& dc, wxGraphicsContext* grctx,
                                const int extra_lines_above, const int extra_lines_under,
                                const int x0, const int y0, const int x1, const int y1,
                                bool show_measure_number, const int grandStaffCenterY);
+        
+        void calculateVerticalMeasurements(const TrackCoords* trackCoords, ScoreData* scoreData);
+        void calculateClefVerticalMeasurements(ClefRenderType clefType,
+                                               const GraphicalTrack* gtrack,
+                                               int extra_lines_above);
+
     public:
         ScorePrintable(Track* track);
         virtual ~ScorePrintable();
@@ -94,6 +115,13 @@ namespace AriaMaestosa
         /** Implement method from EditorPrintable */
         virtual int calculateHeight(const int trackID, LineTrackRef& renderInfo, LayoutLine& line, bool* empty);
         
+        /**
+          * @brief Draw the background part of a track.
+          * This method is called before @c drawTrack, which means it is useful to draw things that
+          * should always appear under foreground items.
+          * @note All tracks will have their background drawn first, then only all foregrounds
+          *       are drawn.
+          */
         virtual void drawTrackBackground(const int trackID, const LineTrackRef& currentTrack,
                                          LayoutLine& currentLine, wxDC& dc, wxGraphicsContext* grctx,
                                          const bool drawMeasureNumbers);
