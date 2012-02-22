@@ -87,6 +87,10 @@ namespace AriaMaestosa
         virtual void drawTrack(const int trackID, const LineTrackRef& track, LayoutLine& line,
                                wxDC& dc, wxGraphicsContext* gc, const bool drawMeasureNumbers) = 0;
         
+        virtual void drawTrackBackground(const int trackID, const LineTrackRef& currentTrack,
+                                         LayoutLine& currentLine, wxDC& dc, wxGraphicsContext* grctx,
+                                         const bool drawMeasureNumbers) = 0;
+        
         /**
           * @brief Called by the layout code to know the relative height of a track within a line
           *        for this particular editor

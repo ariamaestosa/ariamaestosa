@@ -210,6 +210,7 @@ void SymbolPrintableSequence::printLine(LayoutLine& line, wxDC& dc, wxGraphicsCo
 #endif
         
         EditorPrintable* editorPrintable = this->getEditorPrintable(n);
+        editorPrintable->drawTrackBackground(n, sizing, line, dc, grctx, first);
         editorPrintable->drawTrack(n, sizing, line, dc, grctx, first);
         first = false;
     }

@@ -53,6 +53,10 @@ namespace AriaMaestosa
         virtual void drawTrack(const int trackID, const LineTrackRef& track, LayoutLine& line,
                                wxDC& dc, wxGraphicsContext* gc, const bool drawMeasureNumbers);
         
+        virtual void drawTrackBackground(const int trackID, const LineTrackRef& currentTrack,
+                                         LayoutLine& currentLine, wxDC& dc, wxGraphicsContext* grctx,
+                                         const bool drawMeasureNumbers) {}
+        
         /** @brief Implement method from EditorPrintable */
         virtual int calculateHeight(const int trackID, LineTrackRef& renderInfo, LayoutLine& line, bool* empty);
         

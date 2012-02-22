@@ -149,9 +149,6 @@ namespace AriaMaestosa
         }
     };
     
-    // global (FIXME)
-    PrintXConverter* x_converter;
-    
 #if 0
 #pragma mark -
 #pragma mark Render Routines
@@ -321,7 +318,9 @@ namespace AriaMaestosa
     {
         ASSERT( global_dc != NULL);
         
-        const Range<int> x = x_converter->tickToX(tick);
+        PrintXConverter* converter = (PrintXConverter*)userdata;
+        
+        const Range<int> x = converter->tickToX(tick);
         
         // silences in gathered rests, for instance, will not be found by tickToX
         if (x.from < 0 or x.to < 0) return;
@@ -348,6 +347,16 @@ namespace AriaMaestosa
     {
         // std::cout << " *** setting global g_printable" << std::endl;
         g_printable = this;
+        
+        m_g_clef_y_from        = -1;
+        m_g_clef_y_to          = -1;
+        m_f_clef_y_from        = -1;
+        m_f_clef_y_to          = -1;
+        m_grand_staff_center_y = -1;
+        m_line_height          = -1;
+        m_min_level            = -1;
+        m_first_score_level    = -1;
+        m_last_score_level     = -1;
     }
     
     // -------------------------------------------------------------------------------------------
@@ -504,11 +513,11 @@ namespace AriaMaestosa
 #endif
     }
     
-    // -------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------
     
-    void ScorePrintable::drawTrack(const int trackID, const LineTrackRef& currentTrack,
-                                   LayoutLine& currentLine, wxDC& dc, wxGraphicsContext* grctx,
-                                   const bool drawMeasureNumbers)
+    void ScorePrintable::drawTrackBackground(const int trackID, const LineTrackRef& currentTrack,
+                                             LayoutLine& currentLine, wxDC& dc, wxGraphicsContext* grctx,
+                                             const bool drawMeasureNumbers)
     {
         const TrackCoords* trackCoords = currentTrack.m_track_coords.raw_ptr;
         ASSERT(trackCoords != NULL);
@@ -519,37 +528,38 @@ namespace AriaMaestosa
         ASSERT_E(trackCoords->y1,<,50000);
         setCurrentDC(&dc);
         
-        
         std::cout << "[ScorePrintable] ScorePrintable size : " << trackCoords->x0 << ", " << trackCoords->y0
                   << " to " << trackCoords->x1 << ", " << trackCoords->y1 << std::endl;
         
-        x_converter = new PrintXConverter(this, &currentLine, trackID);
+        m_x_converter = new PrintXConverter(this, &currentLine, trackID);
         
         ScoreData* scoreData = dynamic_cast<ScoreData*>(currentTrack.editor_data.raw_ptr);
         
         // if we have only one clef, give it the full space.
         // if we have two, split the space between both
-        int g_clef_y_from = -1, g_clef_y_to = -1;
-        int f_clef_y_from = -1, f_clef_y_to = -1;
+        m_g_clef_y_from = -1;
+        m_g_clef_y_to   = -1;
+        m_f_clef_y_from = -1;
+        m_f_clef_y_to   = -1;
         
         if (m_g_clef and not m_f_clef)
         {
-            g_clef_y_from = trackCoords->y0;
-            g_clef_y_to   = trackCoords->y1;
+            m_g_clef_y_from = trackCoords->y0;
+            m_g_clef_y_to   = trackCoords->y1;
         }
         else if (m_f_clef and not m_g_clef)
         {
-            f_clef_y_from = trackCoords->y0;
-            f_clef_y_to   = trackCoords->y1;
+            m_f_clef_y_from = trackCoords->y0;
+            m_f_clef_y_to   = trackCoords->y1;
         }
         else if (m_f_clef and m_g_clef)
         {
-            g_clef_y_from = trackCoords->y0;
-            g_clef_y_to   = trackCoords->y0 +
-                            (int)round((trackCoords->y1 - trackCoords->y0)*scoreData->first_clef_proportion);
-            f_clef_y_from = trackCoords->y0 +
-                            (int)round((trackCoords->y1 - trackCoords->y0)*(1-scoreData->second_clef_proportion));
-            f_clef_y_to   = trackCoords->y1;
+            m_g_clef_y_from = trackCoords->y0;
+            m_g_clef_y_to   = trackCoords->y0 +
+                (int)round((trackCoords->y1 - trackCoords->y0)*scoreData->first_clef_proportion);
+            m_f_clef_y_from = trackCoords->y0 +
+                (int)round((trackCoords->y1 - trackCoords->y0)*(1 - scoreData->second_clef_proportion));
+            m_f_clef_y_to   = trackCoords->y1;
         }
         else
         {
@@ -559,21 +569,74 @@ namespace AriaMaestosa
         g_printable = this;
         
         // draw track name
-        int score_area_from_y = (m_g_clef ? g_clef_y_from : f_clef_y_from);
-        int score_area_to_y   = (m_f_clef ? f_clef_y_to   : g_clef_y_to);
+        int score_area_from_y = (m_g_clef ? m_g_clef_y_from : m_f_clef_y_from);
+        int score_area_to_y   = (m_f_clef ? m_f_clef_y_to   : m_g_clef_y_to);
         drawTrackName(dc, currentTrack, trackCoords->x0, score_area_from_y, score_area_to_y);
         
-        // ---- draw scores
-        const int grandStaffCenterY = (m_g_clef and m_f_clef ? (g_clef_y_to + f_clef_y_from)/2 : -1);
+        m_grand_staff_center_y = (m_g_clef and m_f_clef ? (m_g_clef_y_to + m_f_clef_y_from)/2 : -1);
+        
+        if (m_g_clef)
+        {
+            ClefRenderType clef = (m_f_clef ? G_CLEF_FROM_GRAND_STAFF : G_CLEF_ALONE);
+            backgroundDrawing(clef, *g_clef_analyser, currentLine, currentTrack.getTrack(),
+                              dc, grctx, abs(scoreData->extra_lines_above_g_score),
+                              abs(scoreData->extra_lines_under_g_score),
+                              trackCoords->x0, m_g_clef_y_from, trackCoords->x1, m_g_clef_y_to,
+                              drawMeasureNumbers, m_grand_staff_center_y);
+        }
+        
+        if (m_f_clef)
+        {
+            ClefRenderType clef = (m_g_clef ? F_CLEF_FROM_GRAND_STAFF : F_CLEF_ALONE);
+            
+            backgroundDrawing(clef, *f_clef_analyser, currentLine, currentTrack.getTrack(),
+                              dc, grctx, abs(scoreData->extra_lines_above_f_score),
+                              abs(scoreData->extra_lines_under_f_score),
+                              trackCoords->x0, m_f_clef_y_from, trackCoords->x1, m_f_clef_y_to,
+                              (m_g_clef ? false : drawMeasureNumbers) /* if we have both keys don't show twice */,
+                              m_grand_staff_center_y);
+        }
+    }
+    
+    // ------------------------------------------------------------------------------------------------------
 
+    void ScorePrintable::drawTrack(const int trackID, const LineTrackRef& currentTrack,
+                                   LayoutLine& currentLine, wxDC& dc, wxGraphicsContext* grctx,
+                                   const bool drawMeasureNumbers)
+    {
+        if (m_g_clef)
+        {
+            ASSERT(m_g_clef_y_from        != -1);
+            ASSERT(m_g_clef_y_to          != -1);
+        }
+        if (m_f_clef)
+        {
+            ASSERT(m_f_clef_y_from        != -1);
+            ASSERT(m_f_clef_y_to          != -1);
+        }
+        if (m_g_clef and m_f_clef)
+        {
+            ASSERT(m_grand_staff_center_y != -1);
+        }
+        ASSERT(m_line_height          != -1);
+        ASSERT(m_min_level            != -1);
+        ASSERT(m_first_score_level    != -1);
+        ASSERT(m_last_score_level     != -1);
+        
+        const TrackCoords* trackCoords = currentTrack.m_track_coords.raw_ptr;
+        ASSERT(trackCoords != NULL);
+        
+        ScoreData* scoreData = dynamic_cast<ScoreData*>(currentTrack.editor_data.raw_ptr);
+
+        // ---- draw scores
         if (m_g_clef)
         {
             ClefRenderType clef = (m_f_clef ? G_CLEF_FROM_GRAND_STAFF : G_CLEF_ALONE);
             analyseAndDrawScore(clef, *g_clef_analyser, currentLine, currentTrack.getTrack(),
                                 dc, grctx, abs(scoreData->extra_lines_above_g_score),
                                 abs(scoreData->extra_lines_under_g_score),
-                                trackCoords->x0, g_clef_y_from, trackCoords->x1, g_clef_y_to,
-                                drawMeasureNumbers, grandStaffCenterY);
+                                trackCoords->x0, m_g_clef_y_from, trackCoords->x1, m_g_clef_y_to,
+                                drawMeasureNumbers, m_grand_staff_center_y);
         }
         
         if (m_f_clef)
@@ -583,13 +646,13 @@ namespace AriaMaestosa
             analyseAndDrawScore(clef, *f_clef_analyser, currentLine, currentTrack.getTrack(),
                                 dc, grctx, abs(scoreData->extra_lines_above_f_score),
                                 abs(scoreData->extra_lines_under_f_score),
-                                trackCoords->x0, f_clef_y_from, trackCoords->x1, f_clef_y_to,
+                                trackCoords->x0, m_f_clef_y_from, trackCoords->x1, m_f_clef_y_to,
                                 (m_g_clef ? false : drawMeasureNumbers) /* if we have both keys don't show twice */,
-                                grandStaffCenterY);
+                                m_grand_staff_center_y);
         }
         
-        delete x_converter;
-        x_converter = NULL;
+        delete m_x_converter;
+        m_x_converter = NULL;
         
         // ---- Debug guides
         if (PRINT_LAYOUT_HINTS)
@@ -817,9 +880,10 @@ namespace AriaMaestosa
         //float stem_down_y_offset;
         int g_note_x_shift = 0;
         
-        int getStemX(const int tick, const PitchSign sign, const STEM stem_type)
+        int getStemX(const int tick, const PitchSign sign, const STEM stem_type,
+                     PrintXConverter* converter)
         {
-            const Range<int> noteX = x_converter->tickToX(tick);
+            const Range<int> noteX = converter->tickToX(tick);
             
             //const int accidentalShift = sign == PITCH_SIGN_NONE ? 0 : headRadius*1.85;
             
@@ -827,9 +891,11 @@ namespace AriaMaestosa
             else if (stem_type == STEM_DOWN) return (noteX.to + g_stem_down_x_offset);
             else return -1;
         }
-        int getStemX(const NoteRenderInfo& noteRenderInfo)
+        
+        int getStemX(const NoteRenderInfo& noteRenderInfo, PrintXConverter* converter)
         {
-            return getStemX(noteRenderInfo.getTick(), noteRenderInfo.m_sign, noteRenderInfo.m_stem_type);
+            return getStemX(noteRenderInfo.getTick(), noteRenderInfo.m_sign,
+                            noteRenderInfo.m_stem_type, converter);
         }
     }
     using namespace PrintStemParams;
@@ -1005,45 +1071,36 @@ namespace AriaMaestosa
     
     // -------------------------------------------------------------------------------------------
     
-    void ScorePrintable::analyseAndDrawScore(ClefRenderType clefType, ScoreAnalyser& analyser, LayoutLine& line,
-                                             const GraphicalTrack* gtrack, wxDC& dc, wxGraphicsContext* grctx,
-                                             const int extra_lines_above, const int extra_lines_under,
-                                             const int x0, const int y0, const int x1, const int y1,
-                                             bool show_measure_number, const int grandStaffCenterY)
+#define LEVEL_TO_Y( lvl ) (y0 + 1 + m_line_height*0.5*((lvl) - m_min_level))
+
+    void ScorePrintable::backgroundDrawing(ClefRenderType clefType, ScoreAnalyser& analyser, LayoutLine& line,
+                                           const GraphicalTrack* gtrack, wxDC& dc, wxGraphicsContext* grctx,
+                                           const int extra_lines_above, const int extra_lines_under,
+                                           const int x0, const int y0, const int x1, const int y1,
+                                           bool show_measure_number, const int grandStaffCenterY)
     {
         const bool f_clef = (clefType == F_CLEF_ALONE or clefType == F_CLEF_FROM_GRAND_STAFF);
         const Track* track = gtrack->getTrack();
         
         ASSERT(m_track == track);
-        
-        const MeasureData* md = track->getSequence()->getMeasureData();
-        
-        const int fromTick = md->firstTickInMeasure( line.getFirstMeasure() );
-        const int toTick   = md->lastTickInMeasure ( line.getLastMeasure () );
-        
-        std::cout << "[ScorePrintable] ==== analyseAndDrawScore " << (f_clef ? "F" : "G") << " ==== \n";
+                
+        std::cout << "[ScorePrintable] ==== backgroundDrawing ==== \n";
         
         analyser.putInTimeOrder();
         
         /*
-        {
-            std::cout << "analyser contents {\n";
-            const int noteAmount = analyser.m_note_render_info.size();
-            for (int i=0; i<noteAmount; i++)
-            {
-                NoteRenderInfo& noteRenderInfo = analyser.m_note_render_info[i];
-                std::cout << "    Note at beat " << noteRenderInfo.tick / 960 << "\n";
-            }
-            std::cout << "}\n";
-        }
-        */
-        const ScoreEditor* scoreEditor = gtrack->getScoreEditor();
-        const ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
-        const int middle_c_level = converter->getScoreCenterCLevel();
-        const int first_score_level = middle_c_level + (f_clef? 2 : -10);
-        const int last_score_level = first_score_level + 8;
-        const int min_level =  first_score_level - extra_lines_above*2;
-
+         {
+         std::cout << "analyser contents {\n";
+         const int noteAmount = analyser.m_note_render_info.size();
+         for (int i=0; i<noteAmount; i++)
+         {
+         NoteRenderInfo& noteRenderInfo = analyser.m_note_render_info[i];
+         std::cout << "    Note at beat " << noteRenderInfo.tick / 960 << "\n";
+         }
+         std::cout << "}\n";
+         }
+         */
+        
         g_note_x_shift = HEAD_RADIUS;// shift to LEFT by a 'headRadius', since note will be drawn from the right of its area
                                      // and its center is the origin of the drawing
         						     // e.g. Drawing area of a note :
@@ -1051,35 +1108,64 @@ namespace AriaMaestosa
                                      // |     |  <-- stem at the right
                                      // |  ( )|
         						     //     ^ origin of the note here, in its center. so substract a radius from the right
-
+        
         // since note is right-aligned, keep the stem at the right. go 10 towards the note to "blend" in it.
         g_stem_up_x_offset = -10;
         
         // since note is right-aligned. go towards the note to "blend" in it.
         g_stem_down_x_offset = -HEAD_RADIUS*2 + 3;
-
-
-#define LEVEL_TO_Y( lvl ) (y0 + 1 + lineHeight*0.5*((lvl) - min_level))
         
+        
+        const ScoreEditor* scoreEditor = gtrack->getScoreEditor();
+        const ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
+        const int middle_c_level = converter->getScoreCenterCLevel();
+        m_first_score_level = middle_c_level + (f_clef? 2 : -10);
+        m_last_score_level  = m_first_score_level + 8;
+        m_min_level         = m_first_score_level - extra_lines_above*2;        
         
         // ------------ draw score background (horizontal lines) ------------
         //std::cout << "[ScorePrintable] rendering score background ==\n";
         dc.SetPen(  wxPen( wxColour(125,125,125), 7 ) );
         const int lineAmount = 5 + extra_lines_above + extra_lines_under;
-        const float lineHeight = (float)(y1 - y0) / (float)(lineAmount-1);
+        m_line_height = (float)(y1 - y0) / (float)(lineAmount-1);
         
-        for (int lvl=first_score_level; lvl<=last_score_level; lvl+=2)
+        for (int lvl=m_first_score_level; lvl<=m_last_score_level; lvl+=2)
         {
             const int y = LEVEL_TO_Y(lvl);
             dc.DrawLine(x0, y, x1, y);
             
             //std::cout << "LEVEL_TO_Y(" << lvl << ") = " << y << std::endl;
-
+            
             
             // DEBUG
             // dc.DrawText( wxString::Format(wxT("%i"), lvl), x0 - 120, y - 35 );
             // dc.DrawText( wxString::Format(wxT("%i"), y), x0 - 120, y - 35 );
         }
+    }
+    
+    // -------------------------------------------------------------------------------------------
+    
+    void ScorePrintable::analyseAndDrawScore(ClefRenderType clefType, ScoreAnalyser& analyser, LayoutLine& line,
+                                             const GraphicalTrack* gtrack, wxDC& dc, wxGraphicsContext* grctx,
+                                             const int extra_lines_above, const int extra_lines_under,
+                                             const int x0, const int y0, const int x1, const int y1,
+                                             bool show_measure_number, const int grandStaffCenterY)
+    {
+        const Track* track = gtrack->getTrack();
+        const MeasureData* md = track->getSequence()->getMeasureData();
+
+        const int fromTick = md->firstTickInMeasure( line.getFirstMeasure() );
+        const int toTick   = md->lastTickInMeasure ( line.getLastMeasure () );
+        
+        const bool f_clef = (clefType == F_CLEF_ALONE or clefType == F_CLEF_FROM_GRAND_STAFF);
+        std::cout << "[ScorePrintable] ==== analyseAndDrawScore " << (f_clef ? "F" : "G") << " ==== \n";
+
+        const ScoreEditor* scoreEditor = gtrack->getScoreEditor();
+        const ScoreMidiConverter* converter = scoreEditor->getScoreMidiConverter();
+        const int middle_c_level = converter->getScoreCenterCLevel();
+        m_first_score_level = middle_c_level + (f_clef? 2 : -10);
+        m_last_score_level  = m_first_score_level + 8;
+        m_min_level         = m_first_score_level - extra_lines_above*2;
         
         /*
         //DEBUG
@@ -1154,8 +1240,8 @@ namespace AriaMaestosa
         //END DEBUG
         */
         
-        int measure_dividers_from_y = LEVEL_TO_Y(first_score_level);
-        int measure_dividers_to_y   = LEVEL_TO_Y(last_score_level);
+        int measure_dividers_from_y = LEVEL_TO_Y(m_first_score_level);
+        int measure_dividers_to_y   = LEVEL_TO_Y(m_last_score_level);
         
         if (clefType == F_CLEF_FROM_GRAND_STAFF)
         {
@@ -1180,8 +1266,8 @@ namespace AriaMaestosa
             if (currElem.getType() == TIME_SIGNATURE_EL)
             {
                 EditorPrintable::renderTimeSignatureChange(&currElem,
-                                                           LEVEL_TO_Y(first_score_level),
-                                                           LEVEL_TO_Y(last_score_level));
+                                                           LEVEL_TO_Y(m_first_score_level),
+                                                           LEVEL_TO_Y(m_last_score_level));
             }
             
             if (currElem.m_render_end_bar)
@@ -1197,17 +1283,17 @@ namespace AriaMaestosa
             LayoutElement& headElement = line.getLayoutElement(0);
             
             //std::cout << "[ScorePrintable] rendering line header\n";
-            if (!f_clef)
+            if (not f_clef)
             {
                 renderGClef(dc, grctx, headElement.getXFrom(),
-                            LEVEL_TO_Y(last_score_level)+10,
-                            LEVEL_TO_Y(last_score_level-4)-5);
+                            LEVEL_TO_Y(m_last_score_level)+10,
+                            LEVEL_TO_Y(m_last_score_level-4)-5);
             }
             else
             {
                 renderFClef(dc, grctx, headElement.getXFrom(),
-                            LEVEL_TO_Y(first_score_level),
-                            LEVEL_TO_Y(first_score_level+3));
+                            LEVEL_TO_Y(m_first_score_level),
+                            LEVEL_TO_Y(m_first_score_level+3));
             }
             
             // render key signature next to staff
@@ -1231,14 +1317,14 @@ namespace AriaMaestosa
                 
                 for (int n=0; n<sharps; n++)
                 {
-                    const int level = first_score_level + (f_clef ? 1 : -1) + sharp_sign_lvl[n];
+                    const int level = m_first_score_level + (f_clef ? 1 : -1) + sharp_sign_lvl[n];
                     renderSharp( dc,
                                  headElement.getXFrom() + SPACE_FOR_CLEF + n*x_space_per_symbol + KEY_MAX_ACCIDENTAL_SIZE/2,
                                  LEVEL_TO_Y(level) );
                 }
                 for (int n=0; n<flats; n++)
                 {
-                    const int level = first_score_level + (f_clef ? 3 : 1) + flat_sign_lvl[n];
+                    const int level = m_first_score_level + (f_clef ? 3 : 1) + flat_sign_lvl[n];
                     renderFlat( dc,
                                 headElement.getXFrom() + SPACE_FOR_CLEF + n*x_space_per_symbol + KEY_MAX_ACCIDENTAL_SIZE/2,
                                 LEVEL_TO_Y(level) );
@@ -1250,13 +1336,13 @@ namespace AriaMaestosa
             if (octave_shift > 0)
             {
                 dc.SetTextForeground( wxColour(0,0,0) );
-                const int y = LEVEL_TO_Y(first_score_level - 3);
+                const int y = LEVEL_TO_Y(m_first_score_level - 3);
                 dc.DrawText(wxT("8va"), line.getLayoutElement(0).getXFrom()+200, y);
             }
             else if (octave_shift < 0)
             {
                 dc.SetTextForeground( wxColour(0,0,0) );
-                const int y = LEVEL_TO_Y(last_score_level);
+                const int y = LEVEL_TO_Y(m_last_score_level);
                 dc.DrawText(wxT("8vb"), line.getLayoutElement(0).getXFrom()+200, y);
             }
         }
@@ -1285,14 +1371,14 @@ namespace AriaMaestosa
                 NoteRenderInfo& noteRenderInfo = analyser.m_note_render_info[i];
                 
                 // draw small lines above score if needed
-                if (noteRenderInfo.getLevel() < first_score_level-1)
+                if (noteRenderInfo.getLevel() < m_first_score_level-1)
                 {
-                    const Range<int> noteX = x_converter->tickToX(noteRenderInfo.getTick());
+                    const Range<int> noteX = m_x_converter->tickToX(noteRenderInfo.getTick());
                     dc.SetPen(  wxPen( wxColour(125,125,125), 8 ) );
                     
-                    for (int lvl=first_score_level-1; lvl>=noteRenderInfo.getLevel(); lvl --)
+                    for (int lvl=m_first_score_level-1; lvl>=noteRenderInfo.getLevel(); lvl --)
                     {
-                        if ((first_score_level - lvl) % 2 == 0)
+                        if ((m_first_score_level - lvl) % 2 == 0)
                         {
                             const int y = LEVEL_TO_Y(lvl);
                             //FIXME: not sure why I need to add HEAD_RADIUS/2 to make it look good
@@ -1302,14 +1388,14 @@ namespace AriaMaestosa
                 }
                 
                 // draw small lines below score if needed
-                if (noteRenderInfo.getLevel() > last_score_level+1)
+                if (noteRenderInfo.getLevel() > m_last_score_level+1)
                 {
-                    const Range<int> noteX = x_converter->tickToX(noteRenderInfo.getTick());
+                    const Range<int> noteX = m_x_converter->tickToX(noteRenderInfo.getTick());
                     dc.SetPen(  wxPen( wxColour(125,125,125), 8 ) );
                     
-                    for (int lvl=last_score_level+1; lvl<=noteRenderInfo.getLevel(); lvl++)
+                    for (int lvl=m_last_score_level+1; lvl<=noteRenderInfo.getLevel(); lvl++)
                     {
-                        if ((lvl - last_score_level) % 2 == 0)
+                        if ((lvl - m_last_score_level) % 2 == 0)
                         {
                             const int y = LEVEL_TO_Y(lvl);
                             dc.DrawLine(noteX.from + HEAD_RADIUS, y, noteX.to+HEAD_RADIUS, y);
@@ -1341,7 +1427,7 @@ namespace AriaMaestosa
                 */
                 NoteRenderInfo& noteRenderInfo = analyser.m_note_render_info[i];
 
-                const Range<int> noteX = x_converter->tickToX(noteRenderInfo.getTick());
+                const Range<int> noteX = m_x_converter->tickToX(noteRenderInfo.getTick());
                 
                 // make sure we were given the requested size (TODO: fix and uncomment)
                 //ASSERT_E(noteX.to - noteX.from, >=, HEAD_RADIUS*2 +
@@ -1446,19 +1532,19 @@ namespace AriaMaestosa
         //FIXME: we already have collected all silence info in a vector... don't call the SilenceAnalyser again!
         if (f_clef)
         {
-            const int silences_y = LEVEL_TO_Y(middle_c_level + 4);
-            g_line_height = lineHeight;
+            const int silences_y = LEVEL_TO_Y(m_middle_c_level + 4);
+            g_line_height = m_line_height;
             SilenceAnalyser::findSilences(track->getSequence(), &renderSilenceCallback, lineAnalyser,
-                                          first_measure, last_measure, silences_y, NULL );
+                                          first_measure, last_measure, silences_y, m_x_converter);
         }
         else
         {
-            const int silences_y = LEVEL_TO_Y(middle_c_level - 8);
-            g_line_height = lineHeight;
+            const int silences_y = LEVEL_TO_Y(m_middle_c_level - 8);
+            g_line_height = m_line_height;
             SilenceAnalyser::findSilences(track->getSequence(), &renderSilenceCallback, lineAnalyser,
-                                          first_measure, last_measure, silences_y, NULL );
+                                          first_measure, last_measure, silences_y, m_x_converter);
         }
-
+        
         
         // ------------------ second part : intelligent drawing of the rest -----------------
         std::cout << "[ScorePrintable] analyzing score\n";
@@ -1478,7 +1564,7 @@ namespace AriaMaestosa
             // draw stem
             if (noteRenderInfo.m_stem_type != STEM_NONE)
             {                
-                const int stem_x = getStemX(noteRenderInfo);
+                const int stem_x = getStemX(noteRenderInfo, m_x_converter);
                 dc.DrawLine( stem_x, LEVEL_TO_Y(noteRenderInfo.getStemOriginLevel()),
                              stem_x, LEVEL_TO_Y(analyser.getStemTo(noteRenderInfo)) + 10    );
             }
@@ -1488,7 +1574,7 @@ namespace AriaMaestosa
                 not noteRenderInfo.m_beam)
             {
                 const int stem_end = LEVEL_TO_Y(analyser.getStemTo(noteRenderInfo)) + 10;
-                const int flag_x_origin = getStemX(noteRenderInfo);
+                const int flag_x_origin = getStemX(noteRenderInfo, m_x_converter);
                 const int flag_step = (noteRenderInfo.m_stem_type==STEM_UP ? 7 : -7 );
                 
                 for (int n=0; n<noteRenderInfo.m_flag_amount; n++)
@@ -1510,11 +1596,11 @@ namespace AriaMaestosa
                 const bool show_above = noteRenderInfo.isTieUp();
                 const int base_y = LEVEL_TO_Y( noteRenderInfo.getStemOriginLevel() ) + (show_above ? - 30 : 60);
                 
-                const Range<int> noteLoc = x_converter->tickToX(noteRenderInfo.getTick());
+                const Range<int> noteLoc = m_x_converter->tickToX(noteRenderInfo.getTick());
                 const int tiedXStart = (noteLoc.from + noteLoc.to)/2;
                 
                 //std::cout << "tied to tick " << noteRenderInfo.getTiedToTick() << " from " << noteRenderInfo.tick << std::endl;
-                const Range<int> tiedToSymbolLocation = x_converter->tickToX(noteRenderInfo.getTiedToTick());
+                const Range<int> tiedToSymbolLocation = m_x_converter->tickToX(noteRenderInfo.getTiedToTick());
 
                 const int tiedToPixel = tiedToSymbolLocation.to;
                 //std::cout << "tied to pixel " << tiedToPixel << " from " << getStemX(noteRenderInfo) << std::endl;
@@ -1530,7 +1616,7 @@ namespace AriaMaestosa
                 dc.SetPen(  wxPen( wxColour(0,0,0), 10 ) );
                 dc.SetBrush( *wxBLACK_BRUSH );
                 
-                const int beam_x1 = getStemX(noteRenderInfo) - 2;
+                const int beam_x1 = getStemX(noteRenderInfo, m_x_converter) - 2;
                 int beam_y1       = LEVEL_TO_Y(analyser.getStemTo(noteRenderInfo));
                 int beam_y2       = LEVEL_TO_Y(noteRenderInfo.m_beam_to_level);
                 
@@ -1538,7 +1624,8 @@ namespace AriaMaestosa
                                 
                 const int beam_x2 = getStemX(noteRenderInfo.m_beam_to_tick,
                                              noteRenderInfo.m_beam_to_sign,
-                                             noteRenderInfo.m_stem_type) + 2;
+                                             noteRenderInfo.m_stem_type,
+                                             m_x_converter) + 2;
                 
                 for (int n=0; n<noteRenderInfo.m_flag_amount; n++)
                 {
@@ -1564,13 +1651,13 @@ namespace AriaMaestosa
                 dc.SetPen( tiePen );
                 dc.SetBrush( *wxTRANSPARENT_BRUSH );
                 
-                int triplet_arc_x_start = x_converter->tickToX(noteRenderInfo.m_triplet_arc_tick_start).to -
+                int triplet_arc_x_start = m_x_converter->tickToX(noteRenderInfo.m_triplet_arc_tick_start).to -
                                           HEAD_RADIUS;
                 int triplet_arc_x_end = -1;
                 
                 if (noteRenderInfo.m_triplet_arc_tick_end != -1)
                 {
-                    const Range<int> arcEndSymbolLocation = x_converter->tickToX(noteRenderInfo.m_triplet_arc_tick_end);
+                    const Range<int> arcEndSymbolLocation = m_x_converter->tickToX(noteRenderInfo.m_triplet_arc_tick_end);
                     
                     triplet_arc_x_end = arcEndSymbolLocation.to - HEAD_RADIUS;
                 }

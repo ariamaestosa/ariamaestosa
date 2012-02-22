@@ -34,6 +34,7 @@ using namespace AriaMaestosa;
 EditorPrintable::EditorPrintable(Track* track)
 {
     m_track = track;
+    m_dc = NULL;
 }
 
 // -------------------------------------------------------------------------------------------------------------
