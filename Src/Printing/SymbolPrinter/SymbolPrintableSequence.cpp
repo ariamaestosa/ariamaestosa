@@ -211,6 +211,14 @@ void SymbolPrintableSequence::printLine(LayoutLine& line, wxDC& dc, wxGraphicsCo
         
         EditorPrintable* editorPrintable = this->getEditorPrintable(n);
         editorPrintable->drawTrackBackground(n, sizing, line, dc, grctx, first);
+    }
+    
+    first = true;
+    for (int n=0; n<trackAmount; n++)
+    {
+        const LineTrackRef& sizing = line.getLineTrackRef(n);
+
+        EditorPrintable* editorPrintable = this->getEditorPrintable(n);
         editorPrintable->drawTrack(n, sizing, line, dc, grctx, first);
         first = false;
     }
