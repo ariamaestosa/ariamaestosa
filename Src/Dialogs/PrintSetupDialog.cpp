@@ -14,6 +14,7 @@
 #include <wx/valtext.h>
 #include <wx/dcclient.h>
 //#include <wx/listctrl.h>
+#include <wx/statbmp.h>
 
 #include "Utils.h"
 #include "AriaCore.h"
@@ -44,13 +45,13 @@ namespace AriaMaestosa
         
     public:  
         KeyrollPrintOptions(wxWindow* parent, const std::vector< std::pair<GraphicalTrack*, NotationType> >& whatToPrint) :
-                wxDialog(parent, wxID_ANY, _("Keyroll Printing Options"), wxDefaultPosition, wxDefaultSize,
-                         wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
+        wxDialog(parent, wxID_ANY, _("Keyroll Printing Options"), wxDefaultPosition, wxDefaultSize,
+                 wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
         {
             m_ok_pressed = false;
             
             wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
-
+            
             {
                 wxBoxSizer* hsizer = new wxBoxSizer(wxHORIZONTAL);
                 m_size_spinner = new wxSpinCtrl(this, wxID_ANY, wxT("7"), wxDefaultPosition, wxDefaultSize,
@@ -64,11 +65,11 @@ namespace AriaMaestosa
             {
                 wxBoxSizer* hsizer = new wxBoxSizer(wxHORIZONTAL);
                 hsizer->Add( new wxStaticText(this, wxID_ANY, _("Vertical margin between notes : ")), 0, wxALIGN_CENTER_VERTICAL );
-
+                
                 m_vertical_margin = new wxTextCtrl(this, wxID_ANY, wxT("0"), wxDefaultPosition, wxDefaultSize, 0,
                                                    wxTextValidator(wxFILTER_NUMERIC));
                 hsizer->Add( m_vertical_margin, 0, wxALIGN_CENTER_VERTICAL );
-
+                
                 hsizer->Add( new wxStaticText(this, wxID_ANY, wxT("mm")), 0, wxALIGN_CENTER_VERTICAL | wxLEFT, 5 );
                 sizer->Add(hsizer, 1, wxALL, 5);
             }
@@ -185,7 +186,7 @@ namespace AriaMaestosa
         }
         
         bool keepGoingOn = true;
-
+        
         if (symbolPrinter and keyrollPrinter)
         {
             wxMessageBox( _("Keyroll tracks and tablature/score tracks cannot be mixed in the same printout") );
@@ -198,7 +199,7 @@ namespace AriaMaestosa
         }
         
         OwnerPtr<AbstractPrintableSequence> printableSeq;
-
+        
         if (keepGoingOn)
         {
             if (symbolPrinter) 
@@ -226,12 +227,12 @@ namespace AriaMaestosa
                 ASSERT(false);
             }
         }
-         
+        
         if (keepGoingOn)
         {
             printable->setSequence(printableSeq);
             WaitWindow::show(_("Calculating print layout...") );
-                    
+            
             for (unsigned int n=0; n<trackCount; n++)
             {
                 if (not printableSeq->addTrack( whatToPrint[n].first, whatToPrint[n].second ))
@@ -276,12 +277,12 @@ namespace AriaMaestosa
                 std::cerr << "Printing was cancelled\n";
             }
         }
-                
+        
         delete printable;
         
         getMainFrame()->disableMenus(false);
     }        
-
+    
     /** TODO: to be replaced with wxDataViewControl when switching to wxWidgets 3.0 */
     class wxTempList : public wxPanel
     {
@@ -293,7 +294,7 @@ namespace AriaMaestosa
     public:
         
         wxTempList(wxWindow* parent, const int columnCount, const wxString colNames[], const bool growable[]) :
-            wxPanel(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER)
+        wxPanel(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER)
         {
             SetBackgroundColour(*wxWHITE);
             m_sizer = new wxFlexGridSizer(columnCount);
@@ -304,7 +305,7 @@ namespace AriaMaestosa
                 if (growable[n]) m_sizer->AddGrowableCol(n);
                 
                 const int h = wxRendererNative::GetDefault().GetHeaderButtonHeight(this);
-
+                
                 wxStaticText* header = new wxStaticText(this, wxID_ANY, wxT(" ") + colNames[n] + wxT("  "));
                 header->SetMinSize( wxSize(-1, h) );
                 header->SetMaxSize( wxSize(999, h) );
@@ -318,7 +319,7 @@ namespace AriaMaestosa
             std::vector<wxWindow*> row;
             for (int n=0; n<m_col_count; n++)
             {
-                m_sizer->Add(widgets[n], 1, wxEXPAND | wxALL, 2);
+                m_sizer->Add(widgets[n], 1, wxALIGN_CENTER_VERTICAL | wxALL, 2);
                 row.push_back(widgets[n]);
             }
             m_rows.push_back(row);
@@ -360,11 +361,11 @@ namespace AriaMaestosa
             //const int h = wxRendererNative::GetDefault().GetHeaderButtonHeight(this);
             
             wxSizerItemList& items = m_sizer->GetChildren();
-//#if wxCHECK_VERSION(2,9,2)
+            //#if wxCHECK_VERSION(2,9,2)
             wxSizerItemList::compatibility_iterator node = items.GetFirst();
-//#else
-//            wxwxSizerItemListNode *node = items.GetFirst();
-//#endif
+            //#else
+            //            wxwxSizerItemListNode *node = items.GetFirst();
+            //#endif
             int count = 0;
             while (node)
             {
@@ -372,7 +373,7 @@ namespace AriaMaestosa
                 wxPoint position = win->GetPosition();
                 wxSize size = win->GetSize();
                 wxRendererNative::GetDefault().DrawHeaderButton(this, dc, wxRect(position, size));
-
+                
                 node = node->GetNext();
                 count++;
                 if (count >= m_col_count) break;
@@ -388,16 +389,77 @@ namespace AriaMaestosa
     EVT_PAINT(wxTempList::onPaint)
     END_EVENT_TABLE()
     
+    
+    class EditorPicker : public wxPanel
+    {
+        wxCheckBox* m_editor_score;
+        wxCheckBox* m_editor_tab;
+        wxCheckBox* m_editor_key_roll;
+        
+    public:
+        
+        EditorPicker(wxWindow* parent, Track* track, wxBitmap& score, wxBitmap& guitar, wxBitmap& keyroll) :
+        wxPanel(parent, wxID_ANY)
+        {
+            SetBackgroundColour(*wxWHITE);
+            
+            wxBoxSizer* editorTypeSizer = new wxBoxSizer(wxHORIZONTAL);
+            
+            m_editor_score = new wxCheckBox(this, wxID_ANY, wxT(""));
+            m_editor_score->SetValue(track->isNotationTypeEnabled(SCORE));
+            editorTypeSizer->Add(m_editor_score, 0, wxALIGN_CENTER_VERTICAL);
+            editorTypeSizer->Add(new wxStaticBitmap(this, wxID_ANY, score));
+            
+            m_editor_tab = new wxCheckBox(this, wxID_ANY, wxT(""));
+            m_editor_tab->SetValue(track->isNotationTypeEnabled(GUITAR));
+            editorTypeSizer->Add(m_editor_tab, 0, wxALIGN_CENTER_VERTICAL);
+            editorTypeSizer->Add(new wxStaticBitmap(this, wxID_ANY, guitar));
+            
+            m_editor_key_roll = new wxCheckBox(this, wxID_ANY, wxT(""));
+            m_editor_key_roll->SetValue(track->isNotationTypeEnabled(KEYBOARD));
+            editorTypeSizer->Add(m_editor_key_roll, 0, wxALIGN_CENTER_VERTICAL);
+            editorTypeSizer->Add(new wxStaticBitmap(this, wxID_ANY, keyroll));
+            
+            SetSizer(editorTypeSizer);
+        }
+        
+        bool isScoreChecked() const
+        {
+            return m_editor_score->IsChecked();
+        }
+        
+        bool isGuitarChecked() const
+        {
+            return m_editor_tab->IsChecked();
+        }
+        
+        bool isKeyboardChecked() const
+        {
+            return m_editor_key_roll->IsChecked();
+        }
+        
+#ifdef __WXMAC__
+        // FIXME: wx issues on OSX, Enable is not recursive
+        bool Enable(bool enable)
+        {
+            m_editor_score->Enable(enable);
+            m_editor_tab->Enable(enable);
+            m_editor_key_roll->Enable(enable);
+            return wxPanel::Enable(enable);
+        }
+#endif
+    };
+    
     /**
-      * @ingroup dialogs
-      * @brief the dialog to set-up printing of track(s) and page setup
-      * @note this is a private class, it won't be instanciated directly
-      * @see showPrintSetupDialog
-      */
+     * @ingroup dialogs
+     * @brief the dialog to set-up printing of track(s) and page setup
+     * @note this is a private class, it won't be instanciated directly
+     * @see showPrintSetupDialog
+     */
     class PrintSetupDialog : public wxFrame
     {
         Sequence* m_current_sequence;
-
+        
         //bool m_detect_repetitions;
         
         wxRadioButton* m_current_track_radiobtn;
@@ -410,11 +472,11 @@ namespace AriaMaestosa
         //wxListCtrl* m_track_choice;
         
         wxCheckBox*    m_hide_empty_tracks; 
-
+        
         wxStaticText*  m_paper_text;
         wxStaticText*  m_margin_line1;
         wxStaticText*  m_margin_line2;
-
+        
         AriaPrintable* m_printable;
         
     public:
@@ -422,13 +484,13 @@ namespace AriaMaestosa
         LEAK_CHECK();
         
         PrintSetupDialog(wxWindow *parent, Sequence* sequence) : wxFrame(parent, wxID_ANY,
-                                  //I18N: - title of the notation-print dialog
-                                  _("Print musical notation"),
-                                  wxPoint(200,200), wxSize(500, 400), wxCAPTION | wxFRAME_FLOAT_ON_PARENT | wxRESIZE_BORDER)
+                                                                         //I18N: - title of the notation-print dialog
+                                                                         _("Print musical notation"),
+                                                                         wxPoint(200,200), wxSize(500, 400), wxCAPTION | wxFRAME_FLOAT_ON_PARENT | wxRESIZE_BORDER)
         {
             m_current_sequence = sequence;
             //m_detect_repetitions = false;
-
+            
             bool success = false;
             m_printable = new AriaPrintable( AbstractPrintableSequence::getTitle(sequence), &success );
             
@@ -438,6 +500,13 @@ namespace AriaMaestosa
                 wxMessageBox( _("An error occurred while preparing to print.") );
                 return;
             }
+            
+            wxBitmap score(getResourcePrefix() + "score_view.jpg", wxBITMAP_TYPE_JPEG );
+            ASSERT(score.IsOk());
+            wxBitmap guitar(getResourcePrefix() + "guitar_view.jpg", wxBITMAP_TYPE_JPEG );
+            ASSERT(guitar.IsOk());
+            wxBitmap keyroll(getResourcePrefix() + "keyboard_view.jpg", wxBITMAP_TYPE_JPEG );
+            ASSERT(keyroll.IsOk());
             
             // --- Setup dialog
             SetMinSize( wxSize(500, 400) );
@@ -451,12 +520,12 @@ namespace AriaMaestosa
             //I18N: - in print setup dialog. 
             m_current_track_radiobtn = new wxRadioButton(parent_panel, wxNewId(), _("Current track only") , wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
             m_current_track_radiobtn->Connect( m_current_track_radiobtn->GetId(), wxEVT_COMMAND_RADIOBUTTON_SELECTED,
-                                    wxCommandEventHandler(PrintSetupDialog::onSelectCurrentTrackOnly), NULL, this );
+                                              wxCommandEventHandler(PrintSetupDialog::onSelectCurrentTrackOnly), NULL, this );
             
             //I18N: - in print setup dialog. 
             m_visible_tracks_radiobtn = new wxRadioButton(parent_panel, wxNewId(), _("This list of tracks"));
             m_visible_tracks_radiobtn->Connect( m_visible_tracks_radiobtn->GetId(), wxEVT_COMMAND_RADIOBUTTON_SELECTED,
-                                     wxCommandEventHandler(PrintSetupDialog::onSelectTrackList), NULL, this );
+                                               wxCommandEventHandler(PrintSetupDialog::onSelectTrackList), NULL, this );
             
             const int colCount = 3;
             const bool growable[colCount] = { false, true, true };
@@ -471,111 +540,89 @@ namespace AriaMaestosa
                 cb->SetValue(not (track->getGraphics()->isCollapsed() or track->isMuted() or
                                   track->getGraphics()->isDocked())
                              );
-
+                
                 wxStaticText* trackName = new wxStaticText(m_track_choice, wxID_ANY, track->getName() );
                 
-                wxArrayString choices;
-                //I18N: printing notation type
-                choices.Add( _("Score (staff)") );
-                //I18N: printing notation type
-                choices.Add( _("Tablature") );
-                //I18N: printing notation type
-                choices.Add( _("Keyroll") );
+                EditorPicker* editorType = new EditorPicker(m_track_choice, track, score, guitar, keyroll);
                 
-                wxChoice* editorType = new wxChoice(m_track_choice, wxID_ANY, wxDefaultPosition, wxDefaultSize,
-                                                    choices );
-                
-                // TODO: handle printing multiple tracks
-                if (track->isNotationTypeEnabled(SCORE))
-                {
-                    editorType->SetSelection(0);
-                }
-                else if (track->isNotationTypeEnabled(GUITAR))
-                {
-                    editorType->SetSelection(1);
-                }
-                else if (track->isNotationTypeEnabled(KEYBOARD))
-                {
-                    editorType->SetSelection(2);
-                }
                 wxWindow* cells[3];
                 cells[0] = cb;
                 cells[1] = trackName;
                 cells[2] = editorType;
                 m_track_choice->addRowWidgets( cells );
-                                          
+                
                 /*
-                const int id = m_track_choice->Append( track->getName() + wxT(" (") +
-                                                      track->graphics->getCurrentEditor()->getName() +
-                                                      wxT(")") );
-                m_track_choice->Check(id, not (track->graphics->collapsed or track->graphics->muted or track->graphics->docked));
+                 const int id = m_track_choice->Append( track->getName() + wxT(" (") +
+                 track->graphics->getCurrentEditor()->getName() +
+                 wxT(")") );
+                 m_track_choice->Check(id, not (track->graphics->collapsed or track->graphics->muted or track->graphics->docked));
                  */
             }
             m_track_choice->done();
             m_track_choice->Enable(false);
             
             /*
-            m_track_choice = new wxCheckListBox(parent_panel, wxID_ANY);
-            const int track_amount = m_current_sequence->getTrackAmount();
-            for (int n=0; n<track_amount; n++)
-            {
-                Track* track = m_current_sequence->getTrack(n);
-                const int id = m_track_choice->Append( track->getName() + wxT(" (") +
-                                                       track->graphics->getCurrentEditor()->getName() +
-                                                       wxT(")") );
-                m_track_choice->Check(id, not (track->graphics->collapsed or track->graphics->muted or track->graphics->docked));
-            }
-            m_track_choice->Enable(false);
+             m_track_choice = new wxCheckListBox(parent_panel, wxID_ANY);
+             const int track_amount = m_current_sequence->getTrackAmount();
+             for (int n=0; n<track_amount; n++)
+             {
+             Track* track = m_current_sequence->getTrack(n);
+             const int id = m_track_choice->Append( track->getName() + wxT(" (") +
+             track->graphics->getCurrentEditor()->getName() +
+             wxT(")") );
+             m_track_choice->Check(id, not (track->graphics->collapsed or track->graphics->muted or track->graphics->docked));
+             }
+             m_track_choice->Enable(false);
              */
             
             /*
-            m_track_choice = new wxListCtrl(parent_panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT);
-            
-            wxListItem col0;
-            col0.SetId(0);
-            //I18N: In the print dialog, name of the column containing the checkboxes where you choose if one track is printed
-            col0.SetText( _("Print") );
-            col0.SetWidth(50);
-            m_track_choice->InsertColumn(0, col0);
-            
-            wxListItem col1;
-            col1.SetId(1);
-            col1.SetText( _("Track Name") );
-            m_track_choice->InsertColumn(1, col1);
-            
-            wxListItem col2;
-            col2.SetId(2);
-            //I18N: In print dialog, will be score, tablature, etc...
-            col2.SetText( _("Notation Type") );
-            m_track_choice->InsertColumn(2, col2);
-            
-            
-            const int track_amount = m_current_sequence->getTrackAmount();
-            for (int n=0; n<track_amount; n++)
-            {
-                Track* track = m_current_sequence->getTrack(n);
-                
-                wxListItem item;
-                item.SetId(n);
-                item.SetText( track->getName() );
-                
-                m_track_choice->InsertItem( item );
-                
-                if (track->graphics->collapsed or track->graphics->muted or track->graphics->docked)
-                {
-                    m_track_choice->SetItem(n, 0, wxT("[ ]"));
-                }
-                else
-                {
-                    m_track_choice->SetItem(n, 0, wxT("[√]"));
-                }
-                m_track_choice->SetItem(n, 1, track->getName());
-                m_track_choice->SetItem(n, 2, track->graphics->getCurrentEditor()->getName());
-                
-                //m_track_choice->Check(id, not (track->graphics->collapsed or track->graphics->muted or track->graphics->docked));
-            }
-            m_track_choice->Enable(false);
-            */
+             m_track_choice = new wxListCtrl(parent_panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT);
+             
+             wxListItem col0;
+             col0.SetId(0);
+             //I18N: In the print dialog, name of the column containing the checkboxes where you choose if one track is printed
+             col0.SetText( _("Print") );
+             col0.SetWidth(50);
+             m_track_choice->InsertColumn(0, col0);
+             
+             wxListItem col1;
+             col1.SetId(1);
+             col1.SetText( _("Track Name") );
+             m_track_choice->InsertColumn(1, col1);
+             
+             wxListItem col2;
+             col2.SetId(2);
+             //I18N: In print dialog, will be score, tablature, etc...
+             col2.SetText( _("Notation Type") );
+             m_track_choice->InsertColumn(2, col2);
+             
+             
+             const int track_amount = m_current_sequence->getTrackAmount();
+             for (int n=0; n<track_amount; n++)
+             {
+             Track* track = m_current_sequence->getTrack(n);
+             
+             wxListItem item;
+             item.SetId(n);
+             item.SetText( track->getName() );
+             
+             m_track_choice->InsertItem( item );
+             
+             if (track->graphics->collapsed or track->graphics->muted or track->graphics->docked)
+             {
+             m_track_choice->SetItem(n, 0, wxT("[ ]"));
+             }
+             else
+             {
+             m_track_choice->SetItem(n, 0, wxT("[√]"));
+             }
+             m_track_choice->SetItem(n, 1, track->getName());
+             m_track_choice->SetItem(n, 2, track->graphics->getCurrentEditor()->getName());
+             
+             //m_track_choice->Check(id, not (track->graphics->collapsed or track->graphics->muted or track->graphics->docked));
+             }
+             m_track_choice->Enable(false);
+             */
             
             subsizer->Add(m_current_track_radiobtn, 0, wxALL, 5); m_current_track_radiobtn->SetValue(true);
             subsizer->Add(m_visible_tracks_radiobtn, 0, wxALL, 5);
@@ -596,7 +643,7 @@ namespace AriaMaestosa
             //m_detect_repetitions_checkbox->SetValue(false);
             //boxSizer->Add(m_detect_repetitions_checkbox, 0, wxALL, 5);
             
-
+            
             // Page setup summary
             {
                 wxStaticBoxSizer* pageSetupSizerBox = new wxStaticBoxSizer(wxHORIZONTAL, parent_panel, _("Page Setup"));
@@ -612,7 +659,7 @@ namespace AriaMaestosa
                 
                 m_paper_text = new wxStaticText(parent_panel, wxID_ANY, summary.paperName + wxT(", ") + summary.paperOrientation);
                 pageSetupSizer->Add(m_paper_text);
-
+                
                 wxButton* pageSetupButton = new wxButton(parent_panel, wxNewId(), _("Edit Page Setup"));
                 pageSetupSizer->Add(pageSetupButton, 0, wxEXPAND | wxTOP | wxBOTTOM, 5 );
                 pageSetupButton->Connect(pageSetupButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED,
@@ -621,7 +668,7 @@ namespace AriaMaestosa
                 
                 wxStaticText* margins_label = new wxStaticText(parent_panel, wxID_ANY, wxString(_("Margins :")));
                 pageSetupSizer->Add(margins_label);
-                                
+                
                 m_margin_line1 = new wxStaticText(parent_panel, wxID_ANY, summary.marginsLine1);
                 pageSetupSizer->Add(m_margin_line1);
                 
@@ -635,7 +682,7 @@ namespace AriaMaestosa
 #else
                 pageSetupSizer->AddStretchSpacer(1);
 #endif
-
+                
                 pageSetupSizer->AddStretchSpacer(1);
                 m_margin_line2 = new wxStaticText(parent_panel, wxID_ANY, summary.marginsLine2);
                 pageSetupSizer->Add(m_margin_line2);
@@ -661,15 +708,15 @@ namespace AriaMaestosa
                 buttonsSizer->AddStretchSpacer();
                 buttonsSizer->Add(cancelButton, 0, wxALL, 7);
                 buttonsSizer->Add(okButton,     0, wxALL, 7);
-
+                
                 buttonPanel->SetSizer(buttonsSizer);
                 buttonPanel->SetAutoLayout(true);
                 buttonsSizer->Layout();
                 
                 Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED,
-                                         wxCommandEventHandler(PrintSetupDialog::onOkClicked), NULL, this);
+                        wxCommandEventHandler(PrintSetupDialog::onOkClicked), NULL, this);
                 Connect(wxID_CANCEL, wxEVT_COMMAND_BUTTON_CLICKED,
-                                         wxCommandEventHandler(PrintSetupDialog::onCancelClicked), NULL, this);
+                        wxCommandEventHandler(PrintSetupDialog::onCancelClicked), NULL, this);
                 
             }
             
@@ -766,30 +813,24 @@ namespace AriaMaestosa
                     
                     if (cb->IsChecked())
                     {
-                        const wxChoice* editorChoice = dynamic_cast<wxChoice*>(m_track_choice->getRow(n)[2]);
+                        const EditorPicker* editorChoice = dynamic_cast<EditorPicker*>(m_track_choice->getRow(n)[2]);
                         ASSERT(editorChoice != NULL);
                         
-                        NotationType printType;
-                        if (editorChoice->GetSelection() == 0)
+                        if (editorChoice->isScoreChecked())
                         {
-                            printType = SCORE;
+                            what_to_print.push_back( std::pair<GraphicalTrack*, NotationType>(m_current_sequence->getTrack(n)->getGraphics(),
+                                                                                              SCORE) );
                         }
-                        else if (editorChoice->GetSelection() == 1)
+                        if (editorChoice->isGuitarChecked())
                         {
-                            printType = GUITAR;
+                            what_to_print.push_back( std::pair<GraphicalTrack*, NotationType>(m_current_sequence->getTrack(n)->getGraphics(),
+                                                                                              GUITAR) );
                         }
-                        else if (editorChoice->GetSelection() == 2)
+                        if (editorChoice->isKeyboardChecked())
                         {
-                            printType = KEYBOARD;
+                            what_to_print.push_back( std::pair<GraphicalTrack*, NotationType>(m_current_sequence->getTrack(n)->getGraphics(),
+                                                                                              KEYBOARD) );
                         }
-                        else
-                        {
-                            assert(false);
-                            continue;
-                        }
-                        
-                        what_to_print.push_back( std::pair<GraphicalTrack*, NotationType>(m_current_sequence->getTrack(n)->getGraphics(),
-                                                                                          printType) );
                     }
                 }
             }
@@ -809,7 +850,7 @@ namespace AriaMaestosa
         
         
     };
-        
+    
     // ----------------------------------------------------------------------------------------------------
     // ------------------------------------- first function called ----------------------------------------
     // ----------------------------------------------------------------------------------------------------
@@ -821,5 +862,5 @@ namespace AriaMaestosa
         mainFrame->disableMenus(true);
         new PrintSetupDialog(mainFrame, sequence);
     }
-
+    
 }
