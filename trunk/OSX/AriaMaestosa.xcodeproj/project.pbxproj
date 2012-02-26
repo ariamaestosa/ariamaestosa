@@ -687,6 +687,7 @@
 		959FD6C0114451A400F22579 /* DeleteTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 959FD6BE114451A400F22579 /* DeleteTrack.h */; };
 		959FD6C1114451A400F22579 /* DeleteTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959FD6BD114451A400F22579 /* DeleteTrack.cpp */; };
 		959FD6C2114451A400F22579 /* DeleteTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 959FD6BE114451A400F22579 /* DeleteTrack.h */; };
+		95A193CD14FAD51E0074B892 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9598ED081407252600D4548A /* CoreAudio.framework */; };
 		95AFD78E118F206E007DC6C7 /* TrackPropertiesDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95AFD78C118F206E007DC6C7 /* TrackPropertiesDialog.cpp */; };
 		95AFD78F118F206E007DC6C7 /* TrackPropertiesDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 95AFD78D118F206E007DC6C7 /* TrackPropertiesDialog.h */; };
 		95AFD790118F206E007DC6C7 /* TrackPropertiesDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95AFD78C118F206E007DC6C7 /* TrackPropertiesDialog.cpp */; };
@@ -1355,6 +1356,7 @@
 				9568DE8810D54FE30089AAAF /* IOKit.framework in Frameworks */,
 				9568DE8910D54FE30089AAAF /* Cocoa.framework in Frameworks */,
 				9517E6A813288D1E00EF4424 /* CoreMIDI.framework in Frameworks */,
+				95A193CD14FAD51E0074B892 /* CoreAudio.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
