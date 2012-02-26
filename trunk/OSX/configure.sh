@@ -7,7 +7,7 @@ fi
 
 WHICH=`which $1`
 WX_CFLAGS=`$1 --cxxflags`
-WX_LDFLAGS=`$1 --libs core,base,gl`
+WX_LDFLAGS=`$1 --libs core,base,gl,webview,net`
 
 echo "== Using wx-config '$WHICH' =="
 
