@@ -575,10 +575,8 @@ void Sequence::setCurrentTrack(Track* track)
 // and MainFrame handles the rest of playback start/stop, why have SOME of it here???
 void Sequence::spacePressed()
 {
-
-    if (not PlatformMidiManager::get()->isPlaying())
+    if (not PlatformMidiManager::get()->isPlaying() and not PlatformMidiManager::get()->isRecording())
     {
-
         if (isPlaybackMode())
         {
             return;
