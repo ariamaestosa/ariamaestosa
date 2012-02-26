@@ -1844,12 +1844,15 @@ void GraphicalTrack::saveToFile(wxFileOutputStream& fileout)
               wxT("\" g_clef=\"") + (m_score_editor->isGClefEnabled()?wxT("true"):wxT("false")) +
               wxT("\" f_clef=\"") + (m_score_editor->isFClefEnabled()?wxT("true"):wxT("false")) +
               ( octave_shift != 0 ? wxT("\" octave_shift=\"") + to_wxString(octave_shift) : wxT("")) +
+              wxT("\" scroll=\"") + to_wxString(m_score_editor->getScrollbarPosition()) +
               wxT("\"/>\n"), fileout);
     writeData(wxT("    <keyboard enabled=\"") + wxString(m_track->isNotationTypeEnabled(KEYBOARD) ? wxT("true") : wxT("false")) +
+              wxT("\" scroll=\"") + to_wxString(m_keyboard_editor->getScrollbarPosition()) +
               wxT("\"/>\n"), fileout);
     writeData(wxT("    <guitar enabled=\"") + wxString(m_track->isNotationTypeEnabled(GUITAR) ? wxT("true") : wxT("false")) +
               wxT("\"/>\n"), fileout);
     writeData(wxT("    <drum enabled=\"") + wxString(m_track->isNotationTypeEnabled(DRUM) ? wxT("true") : wxT("false")) +
+              wxT("\" scroll=\"") + to_wxString(m_drum_editor->getScrollbarPosition()) +
               wxT("\"/>\n"), fileout);
     writeData(wxT("    <controller enabled=\"") + wxString(m_track->isNotationTypeEnabled(CONTROLLER) ? wxT("true") : wxT("false")) +
               wxT("\" controller=\"") + to_wxString( m_controller_editor->getCurrentControllerType() ) + wxT("\"/>\n"), fileout);
@@ -2045,12 +2048,20 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
                         {
                             std::cerr << "[GraphicalTrack] Unknown keyword for attribute 'enabled' in editor: " << enabled_c << std::endl;
                         }
-                        
+                    }
+                    
+                    
+                    float scroll = 0.5f;
+                    const char* scroll_c = xml->getAttributeValue("scroll");
+                    if (scroll_c != NULL)
+                    {
+                        scroll = atof(scroll_c);
                     }
                     
                     if (strcmp("score", xml->getNodeName()) == 0)
                     {
                         m_track->setNotationType(SCORE, enabled);
+                        m_score_editor->setScrollbarPosition(scroll);
                         
                         const char* g_clef_c = xml->getAttributeValue("g_clef");
                         if (g_clef_c != NULL)
@@ -2097,6 +2108,7 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
                     else if (strcmp("keyboard", xml->getNodeName()) == 0)
                     {
                         m_track->setNotationType(KEYBOARD, enabled);
+                        m_keyboard_editor->setScrollbarPosition(scroll);
                     }
                     else if (strcmp("guitar", xml->getNodeName()) == 0)
                     {
@@ -2105,6 +2117,7 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
                     else if (strcmp("drum", xml->getNodeName()) == 0)
                     {
                         m_track->setNotationType(DRUM, enabled);
+                        m_drum_editor->setScrollbarPosition(scroll);
                     }
                     else if (strcmp("controller", xml->getNodeName()) == 0)
                     {

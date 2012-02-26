@@ -150,6 +150,9 @@ namespace AriaMaestosa
         Sequence*       getSequence      () { return m_sequence;        }
         GraphicalTrack* getGraphicalTrack() { return m_graphical_track; }
         
+        float getScrollbarPosition() const   { return m_sb_position; }
+        void  setScrollbarPosition(float sb) { m_sb_position = sb; }
+        
         /** @brief for background track rendering */
         void clearBackgroundTracks();
         
