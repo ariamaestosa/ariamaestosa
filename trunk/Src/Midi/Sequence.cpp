@@ -15,7 +15,7 @@
  */
 
 /** Version of the .aria file format. */
-const float CURRENT_FILE_VERSION = 3.0;
+const int CURRENT_FILE_VERSION = 4;
 
 #include "Midi/Sequence.h"
 
@@ -755,7 +755,7 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
         }
         
         const char* fileFormatVersion = xml->getAttributeValue("fileFormatVersion");
-        double fileversion = -1;
+        int fileversion = -1;
         if (fileFormatVersion != NULL)
         {
             fileversion = atoi( (char*)fileFormatVersion );

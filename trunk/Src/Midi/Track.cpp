@@ -1904,6 +1904,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                 {
                     if (not m_magnetic_grid->readFromFile(xml)) return false;
                 }
+                // TODO: this is for backwards compatibility only, eventually remove
                 else if (strcmp("editor", xml->getNodeName()) == 0)
                 {
                     const char* mode_c = xml->getAttributeValue("mode");
@@ -1948,7 +1949,16 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                     }
                     
                     getGraphics()->readFromFile(xml);
-                }                    
+                }
+                else if (strcmp("editors", xml->getNodeName()) == 0)
+                {                   
+                    setNotationType(SCORE, false);
+                    setNotationType(KEYBOARD, false);
+                    setNotationType(DRUM, false);
+                    setNotationType(GUITAR, false);
+                    setNotationType(CONTROLLER, false);
+                    getGraphics()->readFromFile(xml);
+                }
                 else if (strcmp("guitartuning", xml->getNodeName()) == 0)
                 {
                     GuitarTuning* tuning = getGuitarTuning();
@@ -1997,6 +2007,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                         getGraphics()->getDrumEditor()->setShowOnlyUsedDrums(true);
                     }
                 }
+                // TODO: for backwards compatibility only, eventually remove
                 else if (strcmp("controller", xml->getNodeName()) == 0)
                 {
                     const char* id = xml->getAttributeValue("id");
