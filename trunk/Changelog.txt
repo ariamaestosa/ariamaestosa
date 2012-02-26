@@ -5,6 +5,7 @@
 - Show a dialog asking user to restart Aria after changing soundfont
 - Improvements to track default volume feature
 - Improvements to score printing
+- PRessing spacebar while recording now stops recording as intended
 - Ability to print multiple views for the same track
 
 1.3 beta 5
