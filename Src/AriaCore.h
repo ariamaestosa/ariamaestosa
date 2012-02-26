@@ -146,6 +146,8 @@ namespace AriaMaestosa
      * view may end up messed up when you import a midi made in another editor
      */
     bool aboutEqual_tick(const int int1, const int int2, int beatLength);
+    
+    void checkVersionOnline();
 }
 
 #endif

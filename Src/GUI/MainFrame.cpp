@@ -88,7 +88,7 @@ namespace AriaMaestosa
     DEFINE_LOCAL_EVENT_TYPE(wxEVT_UPDATE_WAIT_WINDOW)
     DEFINE_LOCAL_EVENT_TYPE(wxEVT_HIDE_WAIT_WINDOW)
     DEFINE_LOCAL_EVENT_TYPE(wxEVT_EXTEND_TICK)
-
+    DEFINE_LOCAL_EVENT_TYPE(wxEVT_NEW_VERSION_AVAILABLE)
 }
 
 
@@ -156,6 +156,7 @@ EVT_COMMAND  (UPDT_WAIT_WINDOW_EVENT_ID, wxEVT_UPDATE_WAIT_WINDOW, MainFrame::ev
 EVT_COMMAND  (HIDE_WAIT_WINDOW_EVENT_ID, wxEVT_HIDE_WAIT_WINDOW,   MainFrame::evt_hideWaitWindow)
 
 EVT_COMMAND  (wxID_ANY, wxEVT_EXTEND_TICK, MainFrame::evt_extendTick)
+EVT_COMMAND  (wxID_ANY, wxEVT_NEW_VERSION_AVAILABLE, MainFrame::evt_newVersionAvailable)
 
 EVT_MOUSEWHEEL(MainFrame::onMouseWheel)
 
@@ -490,7 +491,7 @@ void MainFrame::init()
         notification_sizer->Add( new wxStaticBitmap(m_notification_panel, wxID_ANY,
                                                     wxArtProvider::GetBitmap(wxART_WARNING, wxART_OTHER , wxSize(48, 48))),
                                 0, wxALIGN_CENTER_VERTICAL | wxALL, 5 );	
-        notification_sizer->Add(m_notification_text, 1, wxEXPAND | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+        notification_sizer->Add(m_notification_text, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
         //I18N: to hide the panel that is shown when a file could not be imported successfully
         wxButton* hideNotif = new wxButton(m_notification_panel, wxID_ANY, _("Hide"));
         notification_sizer->Add(hideNotif, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
@@ -1742,6 +1743,18 @@ void MainFrame::evt_extendTick(wxCommandEvent& evt )
 {
     Sequence* seq = getCurrentSequence();
     seq->getMeasureData()->extendToTick(evt.GetInt());
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void MainFrame::evt_newVersionAvailable(wxCommandEvent& evt)
+{
+    m_notification_text->SetLabel(wxString(_("A new version of Aria Maestosa is now available!")) +
+                                  wxT("\n") + _("Visit http://ariamaestosa.sourceforge.net/ to download it"));
+    m_notification_panel->Layout();
+    m_notification_panel->GetSizer()->SetSizeHints(m_notification_panel);
+    m_notification_panel->Show();
+    Layout();
 }
 
 // ----------------------------------------------------------------------------------------------------------

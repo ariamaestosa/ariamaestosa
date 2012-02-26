@@ -21,10 +21,15 @@
 #include "PreferencesData.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
+#include "version.h"
 
 #include <wx/string.h>
 #include <wx/font.h>
 #include <wx/dcmemory.h>
+#include <wx/thread.h>
+#include <wx/url.h>
+#include <wx/sstream.h>
+#include <wx/protocol/http.h>
 
 namespace AriaMaestosa
 {
@@ -253,5 +258,153 @@ namespace AriaMaestosa
     bool aboutEqual_tick(const int int1, const int int2, int beatLength)
     {
         return abs(int1 - int2) < beatLength/16;
+    }
+    
+    
+#if 0
+#pragma mark -
+#endif
+
+    
+    class VersionCheckThread : public wxThread
+    {
+        wxInputStream* m_in;
+        wxHTTP* m_http;
+        
+    public:
+        
+        VersionCheckThread(wxInputStream* in, wxHTTP* http)
+        {
+            m_in = in;
+            m_http = http;
+        }
+        
+        virtual ExitCode Entry()
+        {
+            /*
+            wxURL url(IS_BETA ? wxT("http://ariamaestosa.sourceforge.net/beta_version.txt")
+                              : wxT("http://ariamaestosa.sourceforge.net/stable_version.txt"));
+            if (url.GetError() == wxURL_NOERR)
+            {
+                wxString version_info;
+                wxInputStream *in = url.GetInputStream();
+                
+                if (in and in->IsOk())
+                {
+                    wxStringOutputStream version_stream(&version_info);
+                    in->Read(version_stream);
+                    printf("Version : <%s>\n", (const char*)version_info.utf8_str());
+                }
+                delete in;
+            }
+            else
+            {
+                fprintf(stderr, "[VersionCheckThread] WARNING: failed to connect to the server. Error %i\n",
+                        (int)url.GetError());
+            }
+            */
+            
+
+            wxString version_info;
+            wxStringOutputStream version_stream(&version_info);
+            m_in->Read(version_stream);
+            
+            long version = -1;
+            if (version_info.ToLong(&version))
+            {
+                if ((int)version > VERSION_INT)
+                {
+                    printf("You have aria %i, but version %i is now available\n", VERSION_INT, (int)version);
+                    while (getMainFrame() == NULL)
+                    {
+                        wxMilliSleep(100);
+                    }
+                    
+                    wxCommandEvent evt(wxEVT_NEW_VERSION_AVAILABLE, wxID_ANY);
+                    getMainFrame()->GetEventHandler()->AddPendingEvent( evt );
+                }
+            }
+            else
+            {
+                fprintf(stderr, "Invalid version, should be numeric : '%s'\n", (const char*)version_info.utf8_str());
+            }
+            
+            delete m_http;
+            return 0;
+        }
+    };
+
+    
+    void checkVersionOnline()
+    {
+        wxHTTP* http = new wxHTTP();
+        http->SetHeader(_T("Content-type"), _T("text/html; charset=utf-8"));
+        http->SetTimeout(10);
+        if (not http->Connect(wxT("ariamaestosa.sourceforge.net")))
+        {
+            fprintf(stderr, "[VersionCheckThread] WARNING: failed to connect to the server.\n");
+            return;
+        }
+        wxInputStream* in = http->GetInputStream(IS_BETA ? wxT("http://ariamaestosa.sourceforge.net/beta_version.txt")
+                                                         : wxT("http://ariamaestosa.sourceforge.net/stable_version.txt"));
+        
+        if (in and in->IsOk())
+        {
+            VersionCheckThread* v = new VersionCheckThread(in, http);
+            v->Create();
+            v->Run();
+        }
+        else
+        {
+            fprintf(stderr, "[VersionCheckThread] WARNING: failed to retrieve file from server.\n");
+            return;
+        }
+        
+        /*
+        wxHTTP http;
+        http.SetHeader(_T("Content-type"), _T("text/html; charset=utf-8"));
+        http.SetTimeout(10);
+        if (not http.Connect(wxT("ariamaestosa.sourceforge.net")))
+        {
+            fprintf(stderr, "[VersionCheckThread] WARNING: failed to connect to the server.\n");
+            return;
+        }
+        wxInputStream* in = http.GetInputStream(IS_BETA ? wxT("http://ariamaestosa.sourceforge.net/beta_version.txt")
+                                                        : wxT("http://ariamaestosa.sourceforge.net/stable_version.txt"));
+        wxString version_info;
+        if (in and in->IsOk())
+        {
+            wxStringOutputStream version_stream(&version_info);
+            in->Read(version_stream);
+            printf("Version : <%s>\n", (const char*)version_info.utf8_str());
+        }
+        else
+        {
+            fprintf(stderr, "[VersionCheckThread] WARNING: failed to retrieve file from server.\n");
+            return;
+        }
+        */
+        /*
+        wxURL url(IS_BETA ? wxT("http://ariamaestosa.sourceforge.net/beta_version.txt")
+                  : wxT("http://ariamaestosa.sourceforge.net/stable_version.txt"));
+        if (url.GetError() == wxURL_NOERR)
+        {
+            wxString version_info;
+            wxInputStream *in = url.GetInputStream();
+            
+            if (in and in->IsOk())
+            {
+                wxStringOutputStream version_stream(&version_info);
+                in->Read(version_stream);
+                printf("Version : <%s>\n", (const char*)version_info.utf8_str());
+            }
+            delete in;
+        }
+        else
+        {
+            fprintf(stderr, "[VersionCheckThread] WARNING: failed to connect to the server. Error %i\n",
+                    (int)url.GetError());
+        }
+        */
     }
 }

@@ -16,6 +16,7 @@
 
 #include "Utils.h"
 #include "Dialogs/AboutDialog.h"
+#include "version.h"
 
 //#include <wx/utils.h>
 #include <wx/bitmap.h>
@@ -45,7 +46,7 @@ AboutDialog::AboutDialog() : wxFrame(NULL, wxID_ANY,  _("About Aria Maestosa"), 
     new AboutImage(this, wxID_ANY, titleBitmap, wxPoint(0,0), wxSize(517,174));
     
     //I18N: - in about dialog
-    wxString about_text =  wxString::Format(_("version %s"), wxT("1.3 beta 5") ) + wxT("\n\n") + 
+    wxString about_text =  wxString::Format(_("version %s"), VERSION_STRING ) + wxT("\n\n") + 
     //I18N: - in about dialog
     wxString(_("Thanks to:")) + wxT("\n\n\t") +
     //I18N: - in about dialog

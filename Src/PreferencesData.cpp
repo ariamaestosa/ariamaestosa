@@ -187,6 +187,10 @@ void PreferencesData::fillSettingsVector()
                                        SETTING_BOOL, true /* show in preferences */, wxT("1") );
     m_settings.push_back( playthrough );
 
+    // ---- check for new version
+    Setting* newversion = new Setting(fromCString(SETTING_ID_CHECK_NEW_VERSION), _("Check online for new versions"),
+                                       SETTING_BOOL, true /* show in preferences */, wxT("1") );
+    m_settings.push_back( newversion );
     
 #ifdef __WXGTK__
     /*

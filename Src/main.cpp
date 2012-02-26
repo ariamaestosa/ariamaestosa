@@ -156,7 +156,7 @@ void wxWidgetApp::onActivate(wxActivateEvent& evt)
 // ------------------------------------------------------------------------------------------------------
 
 bool wxWidgetApp::OnInit()
-{
+{   
     wxLogVerbose( wxT("wxWidgetsApp::OnInit (enter)") );
     m_render_loop_on = false;
     
@@ -194,6 +194,12 @@ bool wxWidgetApp::OnInit()
     wxLogVerbose( wxT("[main] init preferences") );
     prefs = PreferencesData::getInstance();
     prefs->init();
+    
+    if (prefs->getBoolValue(SETTING_ID_CHECK_NEW_VERSION))
+    {
+        checkVersionOnline();
+    }
+    
     Core::setPlayDuringEdit((PlayDuringEditMode)PreferencesData::getInstance()->getIntValue("playDuringEdit"));
     
     //read presets
