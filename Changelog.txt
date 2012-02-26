@@ -1,4 +1,5 @@
 1.3 beta 6
+- Save the vertical scroll of each track
 - Further improve magnetic grid
 - Add "Duplicate track" feature
 - Show a dialog asking user to restart Aria after changing soundfont
