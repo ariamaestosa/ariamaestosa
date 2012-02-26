@@ -1845,17 +1845,33 @@ void GraphicalTrack::saveToFile(wxFileOutputStream& fileout)
               wxT("\" f_clef=\"") + (m_score_editor->isFClefEnabled()?wxT("true"):wxT("false")) +
               ( octave_shift != 0 ? wxT("\" octave_shift=\"") + to_wxString(octave_shift) : wxT("")) +
               wxT("\" scroll=\"") + to_wxString(m_score_editor->getScrollbarPosition()) +
+              (m_track->isNotationTypeEnabled(SCORE) ? 
+               wxT("\" proportion=\"") + to_wxString(m_score_editor->getRelativeHeight()) :
+               wxT("")) +
               wxT("\"/>\n"), fileout);
     writeData(wxT("    <keyboard enabled=\"") + wxString(m_track->isNotationTypeEnabled(KEYBOARD) ? wxT("true") : wxT("false")) +
               wxT("\" scroll=\"") + to_wxString(m_keyboard_editor->getScrollbarPosition()) +
+              (m_track->isNotationTypeEnabled(KEYBOARD) ? 
+               wxT("\" proportion=\"") + to_wxString(m_keyboard_editor->getRelativeHeight()) :
+               wxT("")) +
               wxT("\"/>\n"), fileout);
     writeData(wxT("    <guitar enabled=\"") + wxString(m_track->isNotationTypeEnabled(GUITAR) ? wxT("true") : wxT("false")) +
+              (m_track->isNotationTypeEnabled(GUITAR) ? 
+               wxT("\" proportion=\"") + to_wxString(m_guitar_editor->getRelativeHeight()) :
+               wxT("")) +
               wxT("\"/>\n"), fileout);
     writeData(wxT("    <drum enabled=\"") + wxString(m_track->isNotationTypeEnabled(DRUM) ? wxT("true") : wxT("false")) +
               wxT("\" scroll=\"") + to_wxString(m_drum_editor->getScrollbarPosition()) +
+              (m_track->isNotationTypeEnabled(DRUM) ? 
+               wxT("\" proportion=\"") + to_wxString(m_drum_editor->getRelativeHeight()) :
+               wxT("")) +
               wxT("\"/>\n"), fileout);
     writeData(wxT("    <controller enabled=\"") + wxString(m_track->isNotationTypeEnabled(CONTROLLER) ? wxT("true") : wxT("false")) +
-              wxT("\" controller=\"") + to_wxString( m_controller_editor->getCurrentControllerType() ) + wxT("\"/>\n"), fileout);
+              wxT("\" controller=\"") + to_wxString(m_controller_editor->getCurrentControllerType()) +
+              (m_track->isNotationTypeEnabled(CONTROLLER) ? 
+               wxT("\" proportion=\"") + to_wxString(m_controller_editor->getRelativeHeight()) :
+               wxT("")) +
+              wxT("\"/>\n"), fileout);
     writeData(wxT("  </editors>\n"), fileout );
     
     m_grid->getModel()->saveToFile( fileout );
@@ -1886,6 +1902,9 @@ void GraphicalTrack::saveToFile(wxFileOutputStream& fileout)
 
 bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
 {
+    
+    bool missingProportions = false;
+    
     // TODO: backwards compatibility, eventually remove the first 'if'
     if (strcmp("editor", xml->getNodeName()) == 0)
     {
@@ -1984,7 +2003,7 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
             }
             
         }
-
+        evenlyDistributeSpace();
     }
     else if (strcmp("editors", xml->getNodeName()) == 0)
     {
@@ -2058,10 +2077,22 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
                         scroll = atof(scroll_c);
                     }
                     
+                    float proportion = 1.0f;
+                    const char* proportion_c = xml->getAttributeValue("proportion");
+                    if (proportion_c != NULL)
+                    {
+                        proportion = atof(proportion_c);
+                    }
+                    else if (enabled)
+                    {
+                        missingProportions = true;
+                    }
+                    
                     if (strcmp("score", xml->getNodeName()) == 0)
                     {
                         m_track->setNotationType(SCORE, enabled);
                         m_score_editor->setScrollbarPosition(scroll);
+                        if (enabled) m_score_editor->setRelativeHeight(proportion);
                         
                         const char* g_clef_c = xml->getAttributeValue("g_clef");
                         if (g_clef_c != NULL)
@@ -2109,19 +2140,23 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
                     {
                         m_track->setNotationType(KEYBOARD, enabled);
                         m_keyboard_editor->setScrollbarPosition(scroll);
+                        if (enabled) m_keyboard_editor->setRelativeHeight(proportion);
                     }
                     else if (strcmp("guitar", xml->getNodeName()) == 0)
                     {
                         m_track->setNotationType(GUITAR, enabled);
+                        if (enabled) m_guitar_editor->setRelativeHeight(proportion);
                     }
                     else if (strcmp("drum", xml->getNodeName()) == 0)
                     {
                         m_track->setNotationType(DRUM, enabled);
                         m_drum_editor->setScrollbarPosition(scroll);
+                        if (enabled) m_drum_editor->setRelativeHeight(proportion);
                     }
                     else if (strcmp("controller", xml->getNodeName()) == 0)
                     {
                         m_track->setNotationType(CONTROLLER, enabled);
+                        if (enabled) m_controller_editor->setRelativeHeight(proportion);
                         
                         const char* id = xml->getAttributeValue("controller");
                         if (id != NULL)
@@ -2139,8 +2174,7 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
                 {
                     if (strcmp("editors", xml->getNodeName()) == 0)
                     {
-                        // TODO: restore the previous division
-                        evenlyDistributeSpace();
+                        if (missingProportions) evenlyDistributeSpace();
                         return true;
                     }
                     break;   
