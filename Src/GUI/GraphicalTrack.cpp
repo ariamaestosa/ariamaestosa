@@ -1837,19 +1837,24 @@ void GraphicalTrack::saveToFile(wxFileOutputStream& fileout)
     const int octave_shift = m_score_editor->getScoreMidiConverter()->getOctaveShift();
 
     // TODO: move notation type to "Track"
-    writeData( wxT("  <editor score=\"") + wxString(m_track->isNotationTypeEnabled(SCORE) ? wxT("true") : wxT("false")) +
-               wxT("\" keyboard=\"") + (m_track->isNotationTypeEnabled(KEYBOARD) ? wxT("true") : wxT("false")) +
-               wxT("\" guitar=\"") + (m_track->isNotationTypeEnabled(GUITAR) ? wxT("true") : wxT("false")) +
-               wxT("\" drum=\"") + (m_track->isNotationTypeEnabled(DRUM) ? wxT("true") : wxT("false")) +
-               wxT("\" controller=\"") + (m_track->isNotationTypeEnabled(CONTROLLER) ? wxT("true") : wxT("false")) +
-               wxT("\" height=\"") + to_wxString(m_height) +
-               (m_collapsed ? wxT("\" collapsed=\"true") : wxT("")) +
-               wxT("\" g_clef=\"") + (m_score_editor->isGClefEnabled()?wxT("true"):wxT("false")) +
-               wxT("\" f_clef=\"") + (m_score_editor->isFClefEnabled()?wxT("true"):wxT("false")) +
-               ( octave_shift != 0 ? wxT("\" octave_shift=\"")+to_wxString(octave_shift) : wxT("")) +
-               wxT("\"/>\n")
-               , fileout );
-
+    writeData(wxString(wxT("  <editors ")) + (m_collapsed ? wxT("collapsed=\"true\" ") : wxT("")) + 
+              wxT("height=\"") + to_wxString(m_height) + wxT("\">\n"),
+              fileout);
+    writeData(wxT("    <score enabled=\"") + wxString(m_track->isNotationTypeEnabled(SCORE) ? wxT("true") : wxT("false")) +
+              wxT("\" g_clef=\"") + (m_score_editor->isGClefEnabled()?wxT("true"):wxT("false")) +
+              wxT("\" f_clef=\"") + (m_score_editor->isFClefEnabled()?wxT("true"):wxT("false")) +
+              ( octave_shift != 0 ? wxT("\" octave_shift=\"") + to_wxString(octave_shift) : wxT("")) +
+              wxT("\"/>\n"), fileout);
+    writeData(wxT("    <keyboard enabled=\"") + wxString(m_track->isNotationTypeEnabled(KEYBOARD) ? wxT("true") : wxT("false")) +
+              wxT("\"/>\n"), fileout);
+    writeData(wxT("    <guitar enabled=\"") + wxString(m_track->isNotationTypeEnabled(GUITAR) ? wxT("true") : wxT("false")) +
+              wxT("\"/>\n"), fileout);
+    writeData(wxT("    <drum enabled=\"") + wxString(m_track->isNotationTypeEnabled(DRUM) ? wxT("true") : wxT("false")) +
+              wxT("\"/>\n"), fileout);
+    writeData(wxT("    <controller enabled=\"") + wxString(m_track->isNotationTypeEnabled(CONTROLLER) ? wxT("true") : wxT("false")) +
+              wxT("\" controller=\"") + to_wxString( m_controller_editor->getCurrentControllerType() ) + wxT("\"/>\n"), fileout);
+    writeData(wxT("  </editors>\n"), fileout );
+    
     m_grid->getModel()->saveToFile( fileout );
     //keyboardEditor->instrument->saveToFile(fileout);
     //drumEditor->drumKit->saveToFile(fileout);
@@ -1858,8 +1863,6 @@ void GraphicalTrack::saveToFile(wxFileOutputStream& fileout)
     writeData( wxT("  <instrument id=\"") + to_wxString( m_track->getInstrument() ) + wxT("\"/>\n"), fileout);
     writeData( wxT("  <drumkit id=\"") + to_wxString( m_track->getDrumKit() ) + wxT("\" collapseView=\"") +
                to_wxString(m_drum_editor->showOnlyUsedDrums()) + wxT("\"/>\n"), fileout);
-    writeData( wxT("  <controller id=\"") + to_wxString( m_controller_editor->getCurrentControllerType() ) + wxT("\"/>\n"), fileout);
-
     
     // guitar tuning (FIXME: move this out of here)
     writeData( wxT("  <guitartuning "), fileout);
@@ -1880,7 +1883,7 @@ void GraphicalTrack::saveToFile(wxFileOutputStream& fileout)
 
 bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
 {
-
+    // TODO: backwards compatibility, eventually remove the first 'if'
     if (strcmp("editor", xml->getNodeName()) == 0)
     {
 
@@ -1979,6 +1982,158 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
             
         }
 
+    }
+    else if (strcmp("editors", xml->getNodeName()) == 0)
+    {
+        const char* height_c = xml->getAttributeValue("height");
+        if (height_c != NULL)
+        {
+            m_height = atoi( height_c );
+        }
+        else
+        {
+            std::cout << "Missing info from file: track height" << std::endl;
+            m_height = 200;
+        }
+        
+        const char* collapsed_c = xml->getAttributeValue("collapsed");
+        if (collapsed_c != NULL)
+        {
+            if (strcmp(collapsed_c, "true") == 0)
+            {
+                m_collapsed = true;
+            }
+            else if (strcmp(collapsed_c, "false") == 0)
+            {
+                m_collapsed = false;
+            }
+            else
+            {
+                std::cout << "Unknown keyword for attribute 'collapsed' in track: " << collapsed_c << std::endl;
+                m_collapsed = false;
+            }
+            
+        }
+        else
+        {
+            m_collapsed = false;
+        }
+        
+        while (xml != NULL and xml->read())
+        {
+            switch (xml->getNodeType())
+            {
+                case irr::io::EXN_TEXT:
+                {
+                    break;
+                }
+                case irr::io::EXN_ELEMENT:
+                {
+                    bool enabled = false;
+                    const char* enabled_c = xml->getAttributeValue("enabled");
+                    if (enabled_c != NULL)
+                    {
+                        if (strcmp(enabled_c, "true") == 0)
+                        {
+                            enabled = true;
+                        }
+                        else if (strcmp(enabled_c, "false") == 0)
+                        {
+                            enabled = false;
+                        }
+                        else
+                        {
+                            std::cerr << "[GraphicalTrack] Unknown keyword for attribute 'enabled' in editor: " << enabled_c << std::endl;
+                        }
+                        
+                    }
+                    
+                    if (strcmp("score", xml->getNodeName()) == 0)
+                    {
+                        m_track->setNotationType(SCORE, enabled);
+                        
+                        const char* g_clef_c = xml->getAttributeValue("g_clef");
+                        if (g_clef_c != NULL)
+                        {
+                            if (strcmp(g_clef_c, "true") == 0)
+                            {
+                                m_score_editor->enableGClef(true);
+                            }
+                            else if (strcmp(g_clef_c, "false") == 0)
+                            {
+                                m_score_editor->enableGClef(false);
+                            }
+                            else
+                            {
+                                std::cout << "Unknown keyword for attribute 'g_clef' in track: " << g_clef_c << std::endl;
+                            }
+                        }
+                        
+                        const char* f_clef_c = xml->getAttributeValue("f_clef");
+                        if (f_clef_c != NULL)
+                        {
+                            if (strcmp(f_clef_c, "true") == 0)
+                            {
+                                m_score_editor->enableFClef(true);
+                            }
+                            else if (strcmp(f_clef_c, "false") == 0)
+                            {
+                                m_score_editor->enableFClef(false);
+                            }
+                            else
+                            {
+                                std::cerr << "[GraphicalTrack] readFromFile() : Unknown keyword for attribute 'f_clef' in track: " << f_clef_c << std::endl;
+                            }
+                            
+                        }
+                        
+                        const char* octave_shift_c = xml->getAttributeValue("octave_shift");
+                        if ( octave_shift_c != NULL )
+                        {
+                            int new_value = atoi( octave_shift_c );
+                            if (new_value != 0) m_score_editor->getScoreMidiConverter()->setOctaveShift(new_value);
+                        }
+                    }
+                    else if (strcmp("keyboard", xml->getNodeName()) == 0)
+                    {
+                        m_track->setNotationType(KEYBOARD, enabled);
+                    }
+                    else if (strcmp("guitar", xml->getNodeName()) == 0)
+                    {
+                        m_track->setNotationType(GUITAR, enabled);
+                    }
+                    else if (strcmp("drum", xml->getNodeName()) == 0)
+                    {
+                        m_track->setNotationType(DRUM, enabled);
+                    }
+                    else if (strcmp("controller", xml->getNodeName()) == 0)
+                    {
+                        m_track->setNotationType(CONTROLLER, enabled);
+                        
+                        const char* id = xml->getAttributeValue("controller");
+                        if (id != NULL)
+                        {
+                            getControllerEditor()->setController(atoi(id));
+                        }
+                    }
+                    else
+                    {
+                        fprintf(stderr, "[GraphicalTrack] WARNING: Unknown editor type '%s'\n", xml->getNodeName());
+                    }
+                    break;
+                }
+                case irr::io::EXN_ELEMENT_END:
+                {
+                    if (strcmp("editors", xml->getNodeName()) == 0)
+                    {
+                        return true;
+                    }
+                    break;   
+                }
+                default:break;
+            }//end switch
+            
+        }
     }
 
     evenlyDistributeSpace();
