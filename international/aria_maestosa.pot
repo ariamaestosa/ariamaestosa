@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-19 11:34-0500\n"
+"POT-Creation-Date: 2012-02-26 15:24-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -136,23 +136,23 @@ msgstr ""
 msgid "change guitar tuning"
 msgstr ""
 
-#: Src/Dialogs/AboutDialog.cpp:40
+#: Src/Dialogs/AboutDialog.cpp:41
 msgid "About Aria Maestosa"
 msgstr ""
 
 #. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:48
+#: Src/Dialogs/AboutDialog.cpp:49
 #, c-format
 msgid "version %s"
 msgstr ""
 
 #. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:50
+#: Src/Dialogs/AboutDialog.cpp:51
 msgid "Thanks to:"
 msgstr ""
 
 #. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:52
+#: Src/Dialogs/AboutDialog.cpp:53
 #, c-format
 msgid ""
 "Ergonis Software and %s for making EasyBeat,\n"
@@ -160,36 +160,36 @@ msgid ""
 msgstr ""
 
 #. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:54
+#: Src/Dialogs/AboutDialog.cpp:55
 msgid "J.D. Koftinoff Software for libjdkmidi"
 msgstr ""
 
 #. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:56
+#: Src/Dialogs/AboutDialog.cpp:57
 msgid "The irrXML team for their XML parser"
 msgstr ""
 
 #. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:58
+#: Src/Dialogs/AboutDialog.cpp:59
 msgid "The wxWidgets team"
 msgstr ""
 
 #. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:60
+#: Src/Dialogs/AboutDialog.cpp:61
 msgid "The Tango icon set"
 msgstr ""
 
 #. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:62
+#: Src/Dialogs/AboutDialog.cpp:63
 msgid "Windows port by Alexis Archambault"
 msgstr ""
 
 #. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:64
+#: Src/Dialogs/AboutDialog.cpp:65
 msgid "Translations:"
 msgstr ""
 
-#: Src/Dialogs/AboutDialog.cpp:81 Src/Dialogs/PresetEditor.cpp:66
+#: Src/Dialogs/AboutDialog.cpp:82 Src/Dialogs/PresetEditor.cpp:66
 #: Src/GUI/MainFrameMenuBar.cpp:1160
 msgid "Close"
 msgstr ""
@@ -253,16 +253,16 @@ msgstr ""
 
 #: Src/Dialogs/CustomKeyDialog.cpp:161
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:171
-#: Src/Dialogs/PrintSetupDialog.cpp:104 Src/Dialogs/PrintSetupDialog.cpp:656
-#: Src/Dialogs/ScaleDialog.cpp:161 Src/Dialogs/TuningDialog.cpp:59
+#: Src/Dialogs/PrintSetupDialog.cpp:105 Src/Dialogs/PrintSetupDialog.cpp:703
+#: Src/Dialogs/ScaleDialog.cpp:147 Src/Dialogs/TuningDialog.cpp:57
 #: Src/Pickers/TimeSigPicker.cpp:181
 msgid "OK"
 msgstr ""
 
 #: Src/Dialogs/CustomKeyDialog.cpp:162
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:176
-#: Src/Dialogs/PrintSetupDialog.cpp:659 Src/Dialogs/ScaleDialog.cpp:157
-#: Src/Dialogs/TrackPropertiesDialog.cpp:194 Src/Dialogs/TuningDialog.cpp:63
+#: Src/Dialogs/PrintSetupDialog.cpp:706 Src/Dialogs/ScaleDialog.cpp:143
+#: Src/Dialogs/TrackPropertiesDialog.cpp:196 Src/Dialogs/TuningDialog.cpp:61
 msgid "Cancel"
 msgstr ""
 
@@ -385,172 +385,158 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:47
+#: Src/Dialogs/PrintSetupDialog.cpp:48
 msgid "Keyroll Printing Options"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:58
+#: Src/Dialogs/PrintSetupDialog.cpp:59
 msgid "Size of a beat : "
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:66
+#: Src/Dialogs/PrintSetupDialog.cpp:67
 msgid "Vertical margin between notes : "
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:76
+#: Src/Dialogs/PrintSetupDialog.cpp:77
 msgid "Colors"
 msgstr ""
 
 #. I18N: keyroll printing option
-#: Src/Dialogs/PrintSetupDialog.cpp:101
+#: Src/Dialogs/PrintSetupDialog.cpp:102
 msgid "Compact (print only key notes)"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:191
+#: Src/Dialogs/PrintSetupDialog.cpp:192
 msgid ""
 "Keyroll tracks and tablature/score tracks cannot be mixed in the same "
 "printout"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:196
+#: Src/Dialogs/PrintSetupDialog.cpp:197
 msgid "No printable track selected"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:233
+#: Src/Dialogs/PrintSetupDialog.cpp:234
 msgid "Calculating print layout..."
 msgstr ""
 
 #. I18N: - %s is the name of the track
-#: Src/Dialogs/PrintSetupDialog.cpp:244
+#: Src/Dialogs/PrintSetupDialog.cpp:245
 #, c-format
 msgid ""
 "Track '%s' could not be printed, since its current\n"
 "view (editor) does not support printing."
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:272
+#: Src/Dialogs/PrintSetupDialog.cpp:273
 msgid "An error occurred during printing."
 msgstr ""
 
 #. I18N: - title of the notation-print dialog
-#: Src/Dialogs/PrintSetupDialog.cpp:426
+#: Src/Dialogs/PrintSetupDialog.cpp:488
 msgid "Print musical notation"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:438
+#: Src/Dialogs/PrintSetupDialog.cpp:500
 msgid "An error occurred while preparing to print."
 msgstr ""
 
 #. I18N: - in print setup dialog.
-#: Src/Dialogs/PrintSetupDialog.cpp:449
+#: Src/Dialogs/PrintSetupDialog.cpp:518
 msgid "Print..."
 msgstr ""
 
 #. I18N: - in print setup dialog.
-#: Src/Dialogs/PrintSetupDialog.cpp:452
+#: Src/Dialogs/PrintSetupDialog.cpp:521
 msgid "Current track only"
 msgstr ""
 
 #. I18N: - in print setup dialog.
-#: Src/Dialogs/PrintSetupDialog.cpp:457
+#: Src/Dialogs/PrintSetupDialog.cpp:526
 msgid "This list of tracks"
 msgstr ""
 
-#. I18N: printing notation type
-#: Src/Dialogs/PrintSetupDialog.cpp:479
-msgid "Score (staff)"
-msgstr ""
-
-#. I18N: printing notation type
-#: Src/Dialogs/PrintSetupDialog.cpp:481
-msgid "Tablature"
-msgstr ""
-
-#. I18N: printing notation type
-#: Src/Dialogs/PrintSetupDialog.cpp:483
-msgid "Keyroll"
-msgstr ""
-
 #. I18N: in printing dialog
-#: Src/Dialogs/PrintSetupDialog.cpp:586
+#: Src/Dialogs/PrintSetupDialog.cpp:633
 msgid "Omit instruments that play nothing on the current line"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:588
+#: Src/Dialogs/PrintSetupDialog.cpp:635
 msgid ""
 "If some instrument plays nothing during a long part of the song, checking "
 "this option can make the printed score tighter by eliminating empty lines"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:602
+#: Src/Dialogs/PrintSetupDialog.cpp:649
 msgid "Page Setup"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:608
+#: Src/Dialogs/PrintSetupDialog.cpp:655
 msgid "Paper :"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:616
+#: Src/Dialogs/PrintSetupDialog.cpp:663
 msgid "Edit Page Setup"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:622
+#: Src/Dialogs/PrintSetupDialog.cpp:669
 msgid "Margins :"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:630
+#: Src/Dialogs/PrintSetupDialog.cpp:677
 msgid "Margins"
 msgstr ""
 
 #. I18N: - title of the scale dialog
-#: Src/Dialogs/ScaleDialog.cpp:80
+#: Src/Dialogs/ScaleDialog.cpp:67
 msgid "Scale"
 msgstr ""
 
 #. I18N: - in the scale dialog. full context : "Scale notes in...\n\n* selection\n* track\n* song"
-#: Src/Dialogs/ScaleDialog.cpp:122
+#: Src/Dialogs/ScaleDialog.cpp:108
 msgid "Scale notes in..."
 msgstr ""
 
 #. I18N: - in the scale dialog. full context : "Scale notes in...\n\n* selection\n* track\n* song"
-#: Src/Dialogs/ScaleDialog.cpp:126
+#: Src/Dialogs/ScaleDialog.cpp:112
 msgid "selection"
 msgstr ""
 
 #. I18N: - in the scale dialog. full context : "Scale notes in...\n\n* selection\n* track\n* song"
-#: Src/Dialogs/ScaleDialog.cpp:131
+#: Src/Dialogs/ScaleDialog.cpp:117
 msgid "track"
 msgstr ""
 
 #. I18N: - in the scale dialog. full context : "Scale notes in...\n\n* selection\n* track\n* song"
-#: Src/Dialogs/ScaleDialog.cpp:135
+#: Src/Dialogs/ScaleDialog.cpp:121
 msgid "song"
 msgstr ""
 
 #. I18N: - in the scale dialog. full context : "relative to...\n\n* first affected note\n* song beginning"
-#: Src/Dialogs/ScaleDialog.cpp:141
+#: Src/Dialogs/ScaleDialog.cpp:127
 msgid "relative to..."
 msgstr ""
 
 #. I18N: - in the scale dialog. full context : "relative to...\n\n* first affected note\n* song beginning"
-#: Src/Dialogs/ScaleDialog.cpp:145
+#: Src/Dialogs/ScaleDialog.cpp:131
 msgid "first affected note"
 msgstr ""
 
 #. I18N: - in the scale dialog. full context : "relative to...\n\n* first affected note\n* song beginning"
-#: Src/Dialogs/ScaleDialog.cpp:150
+#: Src/Dialogs/ScaleDialog.cpp:136
 msgid "song beginning"
 msgstr ""
 
 #: Src/Dialogs/TrackPropertiesDialog.cpp:115
-msgid "Track Properties"
+#, c-format
+msgid "Track '%s' Properties"
 msgstr ""
 
-#: Src/Dialogs/TrackPropertiesDialog.cpp:139
+#: Src/Dialogs/TrackPropertiesDialog.cpp:141
 msgid "Track Background"
 msgstr ""
 
-#: Src/Dialogs/TrackPropertiesDialog.cpp:163
+#: Src/Dialogs/TrackPropertiesDialog.cpp:165
 msgid "Default volume for new notes"
 msgstr ""
 
@@ -584,100 +570,108 @@ msgstr ""
 msgid "Channel choice"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:376
+#: Src/GUI/MainFrame.cpp:377
 msgid "Record"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:380
+#: Src/GUI/MainFrame.cpp:381
 msgid "Play"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:384
+#: Src/GUI/MainFrame.cpp:385
 msgid "Stop"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:397
+#: Src/GUI/MainFrame.cpp:398
 msgid "Duration"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:405
+#: Src/GUI/MainFrame.cpp:406
 msgid "Tempo"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:417
+#: Src/GUI/MainFrame.cpp:418
 msgid "Time Sig"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:425
+#: Src/GUI/MainFrame.cpp:426
 msgid "Start"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:441
+#: Src/GUI/MainFrame.cpp:442
 msgid "Zoom"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:472 Src/GUI/MainFrame.cpp:474
+#: Src/GUI/MainFrame.cpp:473 Src/GUI/MainFrame.cpp:475
 msgid "Tool"
 msgstr ""
 
 #. I18N: to hide the panel that is shown when a file could not be imported successfully
-#: Src/GUI/MainFrame.cpp:495
+#: Src/GUI/MainFrame.cpp:496
 msgid "Hide"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:765 Src/GUI/MainFrameMenuBar.cpp:277
-#: Src/GUI/MainFrameMenuBar.cpp:279 Src/PreferencesData.cpp:216
+#: Src/GUI/MainFrame.cpp:766 Src/GUI/MainFrameMenuBar.cpp:277
+#: Src/GUI/MainFrameMenuBar.cpp:279 Src/PreferencesData.cpp:220
 msgid "No MIDI input"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:767
+#: Src/GUI/MainFrame.cpp:768
 msgid "Please select an input port from the 'input' menu before recording"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1444
+#: Src/GUI/MainFrame.cpp:1445
 #, c-format
 msgid ""
 "You have unsaved changes in sequence '%s'. Do you want to save them before "
 "proceeding?"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1446
+#: Src/GUI/MainFrame.cpp:1447
 msgid "Selecting 'Yes' will save your document before closing"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1447
+#: Src/GUI/MainFrame.cpp:1448
 msgid "Selecting 'No' will discard unsaved changes"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1448
+#: Src/GUI/MainFrame.cpp:1449
 msgid "Selecting 'Cancel' will cancel exiting the application"
 msgstr ""
 
 #. I18N: title of dialog shown when exiting without saving
-#: Src/GUI/MainFrame.cpp:1453
+#: Src/GUI/MainFrame.cpp:1454
 msgid "Unsaved changes in sequence"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1581
+#: Src/GUI/MainFrame.cpp:1582
 msgid "Please wait while .aria file is loading."
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1588
+#: Src/GUI/MainFrame.cpp:1589
 msgid "Sorry, loading .aria file failed."
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1627
+#: Src/GUI/MainFrame.cpp:1628
 msgid "Please wait while midi file is loading."
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1634
+#: Src/GUI/MainFrame.cpp:1635
 msgid "Sorry, loading midi file failed."
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1656
+#: Src/GUI/MainFrame.cpp:1657
 msgid ""
 "Loading the MIDI file completed successfully, but with the following "
 "warnings (the song may not sound as intended) :"
+msgstr ""
+
+#: Src/GUI/MainFrame.cpp:1752
+msgid "A new version of Aria Maestosa is now available!"
+msgstr ""
+
+#: Src/GUI/MainFrame.cpp:1753
+msgid "Visit http://ariamaestosa.sourceforge.net/ to download it"
 msgstr ""
 
 #. I18N: menu item in the "file" menu
@@ -1085,17 +1079,17 @@ msgstr ""
 
 #: Src/IO/MidiFileReader.cpp:501 Src/Midi/Sequence.cpp:66
 #: Src/Midi/Sequence.cpp:114 Src/Midi/Sequence.cpp:136 Src/Midi/Track.cpp:73
-#: Src/Midi/Track.cpp:920 Src/Midi/Track.cpp:1854
+#: Src/Midi/Track.cpp:920 Src/Midi/Track.cpp:1868
 #: Src/Printing/AbstractPrintableSequence.cpp:39
 #: Src/Printing/AbstractPrintableSequence.cpp:43
 msgid "Untitled"
 msgstr ""
 
-#: Src/main.cpp:266
+#: Src/main.cpp:272
 msgid "Unknown file type: "
 msgstr ""
 
-#: Src/main.cpp:288 Src/main.cpp:309
+#: Src/main.cpp:294 Src/main.cpp:315
 msgid "Sorry an internal error occurred : an exception was caught unhandled : "
 msgstr ""
 
@@ -1186,7 +1180,7 @@ msgstr ""
 msgid "Failed to initialize MIDI out device"
 msgstr ""
 
-#: Src/Midi/Sequence.cpp:765
+#: Src/Midi/Sequence.cpp:763
 msgid ""
 "Warning : you are opening a file saved with a version of\n"
 "Aria Maestosa more recent than the version you currently have.\n"
@@ -1349,7 +1343,11 @@ msgstr ""
 msgid "Enable playthrough when recording by default"
 msgstr ""
 
-#: Src/PreferencesData.cpp:203
+#: Src/PreferencesData.cpp:191
+msgid "Check online for new versions"
+msgstr ""
+
+#: Src/PreferencesData.cpp:207
 msgid "Automatically launch TiMidity if needed"
 msgstr ""
 
