@@ -2126,6 +2126,8 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
                 {
                     if (strcmp("editors", xml->getNodeName()) == 0)
                     {
+                        // TODO: restore the previous division
+                        evenlyDistributeSpace();
                         return true;
                     }
                     break;   
@@ -2136,7 +2138,6 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
         }
     }
 
-    evenlyDistributeSpace();
     
     return true;
 }
