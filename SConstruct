@@ -243,11 +243,11 @@ def compile_Aria(which_os):
     if which_os == 'windows':
         # work around bugs in scons 'ParseConfig' on Windows...
         if renderer == "opengl":
-            winCppFlags=subprocess.check_output(WXCONFIG.split() + ["--cppflags","core,base,gl"])
-            winLdFlags=subprocess.check_output(WXCONFIG.split() + ["--libs", "core,base,gl"])
+            winCppFlags=subprocess.check_output(WXCONFIG.split() + ["--cppflags","core,base,net,gl"])
+            winLdFlags=subprocess.check_output(WXCONFIG.split() + ["--libs", "core,base,net,gl"])
         else:
-            winCppFlags=subprocess.check_output(WXCONFIG.split() + ["--cppflags","core,base"])
-            winLdFlags=subprocess.check_output(WXCONFIG.split() + ["--libs", "core,base"])
+            winCppFlags=subprocess.check_output(WXCONFIG.split() + ["--cppflags","core,net,base"])
+            winLdFlags=subprocess.check_output(WXCONFIG.split() + ["--libs", "core,net,base"])
         print "Build flags :", winCppFlags
         print "Link flags :", winLdFlags
         
@@ -274,14 +274,14 @@ def compile_Aria(which_os):
         is_wx_3 = (wxversion[0] == '3' or (wxversion[0] == '2' and wxversion[2] == '9'))
         if is_wx_3:
             if renderer == "opengl":
-                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,gl,webview'])
+                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,gl,net,webview'])
             else:
-                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,webview'])
+                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,net,webview'])
         else:
             if renderer == "opengl":
-                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,gl'])
+                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,net,gl'])
             else:
-                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base'])
+                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,net,base'])
             
     # check build type and init build flags
     if build_type == "debug":
