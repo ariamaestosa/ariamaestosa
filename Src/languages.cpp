@@ -22,6 +22,7 @@
 #include <wx/config.h>
 #include <wx/intl.h>
 #include <wx/stdpaths.h>
+#include <wx/dir.h>
 
 #include <vector>
 
@@ -71,6 +72,44 @@ namespace AriaMaestosa
         languages.push_back( AriaLanguage(wxLANGUAGE_SPANISH) );               // 6
         languages.push_back( AriaLanguage(wxLANGUAGE_PORTUGUESE_BRAZILIAN) );  // 7
         languages.push_back( AriaLanguage(wxLANGUAGE_RUSSIAN) );               // 8
+        
+        /*
+#if defined(__WXMAC__)
+        wxString dirname = getResourcePrefix();
+#elif defined(__WXMSW__)
+        wxString dirname = getResourcePrefix() + WINDOWS_LANG_DIR;
+#else
+        wxStandardPaths* paths = (wxStandardPaths*) &wxStandardPaths::Get();
+        wxString dirname = paths->GetInstallPrefix() + "/share/locale";
+#endif
+        
+        wxDir dir(dirname);
+        
+        if (not dir.IsOpened())
+        {
+            fprintf(stderr, "[Languages] Failed to list directory '%s'\n", (const char*)dirname.utf8_str());
+            return;
+        }
+        
+        wxString filename;
+
+        bool cont = dir.GetFirst(&filename);
+        while ( cont )
+        {
+#ifdef __WXMAC__
+            if (filename.EndsWith(".lproj"))
+#elif defined(__WXMSW__)
+            // no check on Windows
+#else
+            if (wxFileExists(dirname + "/" + filename + "/LC_MESSAGES/aria_maestosa.mo"))
+#endif
+            {
+                printf("* Language %s\n", (const char*)filename.utf8_str());
+            }
+            
+            cont = dir.GetNext(&filename);
+        }
+         */
     }
     
     void initLanguageSupport()
