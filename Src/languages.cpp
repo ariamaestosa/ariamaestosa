@@ -42,12 +42,19 @@ namespace AriaMaestosa
         long     m_wx_langcode;
         wxString m_langname;
         
-        AriaLanguage(long wxlangcode, wxString langname)
+        AriaLanguage(long wxlangcode)
         {
             m_wx_langcode = wxlangcode;
-            m_langname    = langname;
+            
+            if (wxlangcode == wxLANGUAGE_DEFAULT)
+            {
+                m_langname = wxT("System");
+            }
+            else
+            {
+            m_langname    = wxLocale::GetLanguageInfo(wxlangcode)->Description;
+            }
         }
-        
     };
     
     std::vector<AriaLanguage> languages;
@@ -55,13 +62,15 @@ namespace AriaMaestosa
     void buildLanguageList()
     {
         // build list of existing languages
-        languages.push_back( AriaLanguage( wxLANGUAGE_DEFAULT,   wxT("System") ) );        // 0
-        languages.push_back( AriaLanguage( wxLANGUAGE_ENGLISH,   wxT("English") ) );       // 1
-        languages.push_back( AriaLanguage( wxLANGUAGE_FRENCH,    wxT("Fran\u00E7ais") ) ); // 2
-        languages.push_back( AriaLanguage( wxLANGUAGE_ITALIAN,   wxT("Italiano") ) );      // 3
-        languages.push_back( AriaLanguage( wxLANGUAGE_GERMAN,    wxT("Deutsch") ) );       // 4
-        languages.push_back( AriaLanguage( wxLANGUAGE_JAPANESE,  wxT("Japanese (\u65E5\u672C\u8A9E)") ) ); // 5
-        languages.push_back( AriaLanguage( wxLANGUAGE_SPANISH,   wxT("Espa\u00F1ol") ) );  // 6
+        languages.push_back( AriaLanguage(wxLANGUAGE_DEFAULT) );               // 0
+        languages.push_back( AriaLanguage(wxLANGUAGE_ENGLISH) );               // 1
+        languages.push_back( AriaLanguage(wxLANGUAGE_FRENCH) );                // 2
+        languages.push_back( AriaLanguage(wxLANGUAGE_ITALIAN) );               // 3
+        languages.push_back( AriaLanguage(wxLANGUAGE_GERMAN) );                // 4
+        languages.push_back( AriaLanguage(wxLANGUAGE_JAPANESE) );              // 5
+        languages.push_back( AriaLanguage(wxLANGUAGE_SPANISH) );               // 6
+        languages.push_back( AriaLanguage(wxLANGUAGE_PORTUGUESE_BRAZILIAN) );  // 7
+        languages.push_back( AriaLanguage(wxLANGUAGE_RUSSIAN) );               // 8
     }
     
     void initLanguageSupport()

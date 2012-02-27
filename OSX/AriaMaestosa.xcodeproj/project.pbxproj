@@ -688,6 +688,8 @@
 		959FD6C1114451A400F22579 /* DeleteTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 959FD6BD114451A400F22579 /* DeleteTrack.cpp */; };
 		959FD6C2114451A400F22579 /* DeleteTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 959FD6BE114451A400F22579 /* DeleteTrack.h */; };
 		95A193CD14FAD51E0074B892 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9598ED081407252600D4548A /* CoreAudio.framework */; };
+		95A195EB14FBD1AF0074B892 /* pt_BR.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95A195E314FBD1950074B892 /* pt_BR.lproj */; };
+		95A195EC14FBD1AF0074B892 /* ru.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95A195E614FBD1950074B892 /* ru.lproj */; };
 		95AFD78E118F206E007DC6C7 /* TrackPropertiesDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95AFD78C118F206E007DC6C7 /* TrackPropertiesDialog.cpp */; };
 		95AFD78F118F206E007DC6C7 /* TrackPropertiesDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 95AFD78D118F206E007DC6C7 /* TrackPropertiesDialog.h */; };
 		95AFD790118F206E007DC6C7 /* TrackPropertiesDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95AFD78C118F206E007DC6C7 /* TrackPropertiesDialog.cpp */; };
@@ -859,6 +861,8 @@
 				950B3EFC1125DE60006C9AF1 /* fr.lproj in CopyFiles */,
 				950B3EFF1125DE60006C9AF1 /* it.lproj in CopyFiles */,
 				950F0F0114376197008E0D62 /* ja.lproj in CopyFiles */,
+				95A195EB14FBD1AF0074B892 /* pt_BR.lproj in CopyFiles */,
+				95A195EC14FBD1AF0074B892 /* ru.lproj in CopyFiles */,
 				950B3EF01125DE41006C9AF1 /* violin.icns in CopyFiles */,
 				950B3EF11125DE41006C9AF1 /* aria_file.icns in CopyFiles */,
 				950B3EF21125DE41006C9AF1 /* aria_midi_file.icns in CopyFiles */,
@@ -1261,6 +1265,8 @@
 		959FD68A1144493C00F22579 /* AddTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddTrack.h; path = ../Src/Actions/AddTrack.h; sourceTree = SOURCE_ROOT; };
 		959FD6BD114451A400F22579 /* DeleteTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DeleteTrack.cpp; path = ../Src/Actions/DeleteTrack.cpp; sourceTree = SOURCE_ROOT; };
 		959FD6BE114451A400F22579 /* DeleteTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DeleteTrack.h; path = ../Src/Actions/DeleteTrack.h; sourceTree = SOURCE_ROOT; };
+		95A195E314FBD1950074B892 /* pt_BR.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = pt_BR.lproj; sourceTree = "<group>"; };
+		95A195E614FBD1950074B892 /* ru.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ru.lproj; sourceTree = "<group>"; };
 		95AFD78C118F206E007DC6C7 /* TrackPropertiesDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TrackPropertiesDialog.cpp; path = ../Src/Dialogs/TrackPropertiesDialog.cpp; sourceTree = SOURCE_ROOT; };
 		95AFD78D118F206E007DC6C7 /* TrackPropertiesDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TrackPropertiesDialog.h; path = ../Src/Dialogs/TrackPropertiesDialog.h; sourceTree = SOURCE_ROOT; };
 		95AFD79E118F21C8007DC6C7 /* ScaleDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScaleDialog.cpp; path = ../Src/Dialogs/ScaleDialog.cpp; sourceTree = SOURCE_ROOT; };
@@ -1743,6 +1749,8 @@
 				950B3EE81125DE18006C9AF1 /* fr.lproj */,
 				950B3EEB1125DE18006C9AF1 /* it.lproj */,
 				950F0EF714376080008E0D62 /* ja.lproj */,
+				95A195E314FBD1950074B892 /* pt_BR.lproj */,
+				95A195E614FBD1950074B892 /* ru.lproj */,
 			);
 			path = "mac-i18n";
 			sourceTree = "<group>";
