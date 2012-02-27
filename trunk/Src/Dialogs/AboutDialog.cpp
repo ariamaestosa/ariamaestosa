@@ -38,7 +38,8 @@ using namespace AriaMaestosa;
 
 // ----------------------------------------------------------------------------------------------------------
 
-AboutDialog::AboutDialog() : wxFrame(NULL, wxID_ANY,  _("About Aria Maestosa"), wxDefaultPosition, wxSize(517, 500) )
+AboutDialog::AboutDialog() : wxFrame(NULL, wxID_ANY,  _("About Aria Maestosa"),
+                                     wxDefaultPosition, wxSize(517, 600) )
 {
     wxBitmap titleBitmap;
     titleBitmap.LoadFile( getResourcePrefix()  + wxT("title.jpg") , wxBITMAP_TYPE_JPEG );
@@ -63,13 +64,15 @@ AboutDialog::AboutDialog() : wxFrame(NULL, wxID_ANY,  _("About Aria Maestosa"), 
     wxT("\n\t") + wxString(_("Windows port by Alexis Archambault")) +
     //I18N: - in about dialog
     wxT("\n\n") + wxString(_("Translations:") +
-             wxString(wxT("\n\t")) + wxString( wxT("it : Gianluca Pignalberi")) +
              wxString(wxT("\n\t")) + wxString( wxT("de : Friedrich Weber")) +
+             wxString(wxT("\n\t")) + wxString( wxT("es : Othyro") ) +
+             wxString(wxT("\n\t")) + wxString( wxT("it : Gianluca Pignalberi")) +
              wxString(wxT("\n\t")) + wxString( wxT("ja : Jessie Wanner") ) +
-             wxString(wxT("\n\t")) + wxString( wxT("es : Othyro") )
+             wxString(wxT("\n\t")) + wxString( wxT("pt_BR : guiagge") ) +
+             wxString(wxT("\n\t")) + wxString( wxT("ru : Ruslan Tertyshny & Artem Krosheninnikov") )
              );
     
-    wxTextCtrl* text_area = new wxTextCtrl(this, 1, about_text, wxPoint(0,174), wxSize(517,500-174),
+    wxTextCtrl* text_area = new wxTextCtrl(this, 1, about_text, wxPoint(0,174), wxSize(517,600-174),
                                  wxTE_MULTILINE | wxTE_READONLY);
     
 #ifdef __WXMAC__
