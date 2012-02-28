@@ -394,7 +394,7 @@ void MainFrame::init()
                               wxDefaultSize
 #endif
                               , wxTE_PROCESS_ENTER);
-    m_song_length->SetRange(5, 9999);
+    m_song_length->SetRange(1, 9999);
     m_toolbar->add(m_song_length, _("Duration"));
 
 #if defined(__WXMSW__)
