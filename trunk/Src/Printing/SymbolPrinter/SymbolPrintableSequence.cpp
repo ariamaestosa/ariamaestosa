@@ -228,7 +228,12 @@ void SymbolPrintableSequence::printLine(LayoutLine& line, wxDC& dc, wxGraphicsCo
     for (int n=0; n<trackAmount; n++)
     {
         const LineTrackRef& sizing = line.getLineTrackRef(n);
-
+        if (sizing.m_track_coords.raw_ptr == NULL)
+        {
+            // this track is not visible on this line
+            continue;
+        }
+        
         EditorPrintable* editorPrintable = this->getEditorPrintable(n);
         editorPrintable->drawTrack(n, sizing, line, dc, grctx, first);
         first = false;
