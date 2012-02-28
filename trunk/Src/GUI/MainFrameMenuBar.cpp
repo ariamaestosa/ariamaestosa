@@ -182,6 +182,17 @@ void MainFrame::initMenuBar()
 
     m_menu_bar->Append(m_track_menu,  _("&Tracks"));
 
+    // ---- Playback menu
+    m_playback_menu = new wxMenu();
+    //I18N: In the playback menu
+    m_playback_menu -> QUICK_ADD_MENU ( MENU_PLAY_PAUSE, wxString(_("&Play / Pause"))+wxT("\tCtrl-Space"), MainFrame::menuEvent_playpause );
+    //I18N: In the playback menu
+    m_playback_menu -> QUICK_ADD_MENU ( MENU_STOP, wxString(_("&Stop")), MainFrame::menuEvent_stop );
+    //I18N: In the playback menu
+    m_playback_menu -> QUICK_ADD_MENU ( MENU_RECORD, wxString(_("&Record"))+wxT("\tCtrl-R"), MainFrame::menuEvent_record );
+    
+    m_menu_bar->Append(m_playback_menu,  _("&Playback"));
+
     // ---- Settings menu
     m_settings_menu = new wxMenu();
     m_follow_playback_menu_item   = m_settings_menu -> QUICK_ADD_CHECK_MENU ( MENU_SETTINGS_FOLLOW_PLAYBACK, _("&Follow Playback"), MainFrame::menuEvent_followPlayback );
@@ -869,6 +880,39 @@ void MainFrame::menuEvent_trackBackground(wxCommandEvent& evt)
 {
     TrackProperties::show(getCurrentGraphicalSequence()->getCurrentTrack());
 }
+
+
+// -----------------------------------------------------------------------------------------------------------
+// ----------------------------------------- PLAYBACK MENU EVENTS --------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
+
+#if 0
+#pragma mark -
+#pragma mark Playback Menu Events
+#endif
+
+void MainFrame::menuEvent_playpause(wxCommandEvent& evt)
+{
+    wxCommandEvent dummy;
+    playClicked(dummy);
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+void MainFrame::menuEvent_stop(wxCommandEvent& evt)
+{
+    wxCommandEvent dummy;
+    stopClicked(dummy);
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+void MainFrame::menuEvent_record(wxCommandEvent& evt)
+{
+    wxCommandEvent dummy;
+    recordClicked(dummy);
+}
+
 
 // -----------------------------------------------------------------------------------------------------------
 // ----------------------------------------- SETTINGS MENU EVENTS --------------------------------------------

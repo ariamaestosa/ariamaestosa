@@ -116,6 +116,10 @@ namespace AriaMaestosa
         MENU_TRACK_REMOVE,
         MENU_TRACK_BACKG,
         
+        MENU_PLAY_PAUSE,
+        MENU_STOP,
+        MENU_RECORD,
+                                           
         MENU_OUTPUT_DEVICE = wxID_HIGHEST + 100,
         MENU_INPUT_DEVICE = wxID_HIGHEST + 200
     };
@@ -208,7 +212,8 @@ namespace AriaMaestosa
         wxMenu* m_help_menu;
         wxMenu* m_output_menu;
         wxMenu* m_input_menu;
-
+        wxMenu* m_playback_menu;
+        
         wxBitmap m_play_bitmap;
         wxBitmap m_pause_bitmap;
         wxBitmap m_pause_down_bitmap;
@@ -355,6 +360,10 @@ namespace AriaMaestosa
         void menuEvent_outputDevice(wxCommandEvent& evt);
         void menuEvent_inputDevice(wxCommandEvent& evt);
 
+        void menuEvent_playpause(wxCommandEvent& evt);
+        void menuEvent_stop(wxCommandEvent& evt);
+        void menuEvent_record(wxCommandEvent& evt);
+        
 #ifdef __WXMSW__
         void onDropFile(wxDropFilesEvent& event);
 #endif
