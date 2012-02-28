@@ -501,11 +501,11 @@ namespace AriaMaestosa
                 return;
             }
             
-            wxBitmap score(getResourcePrefix() + "score_view.jpg", wxBITMAP_TYPE_JPEG );
+            wxBitmap score(getResourcePrefix() + wxT("score_view.jpg"), wxBITMAP_TYPE_JPEG );
             ASSERT(score.IsOk());
-            wxBitmap guitar(getResourcePrefix() + "guitar_view.jpg", wxBITMAP_TYPE_JPEG );
+            wxBitmap guitar(getResourcePrefix() + wxT("guitar_view.jpg"), wxBITMAP_TYPE_JPEG );
             ASSERT(guitar.IsOk());
-            wxBitmap keyroll(getResourcePrefix() + "keyboard_view.jpg", wxBITMAP_TYPE_JPEG );
+            wxBitmap keyroll(getResourcePrefix() + wxT("keyboard_view.jpg"), wxBITMAP_TYPE_JPEG );
             ASSERT(keyroll.IsOk());
             
             // --- Setup dialog
