@@ -135,7 +135,7 @@ void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
     const int measureID     = mb->measureAtPixel( Editor::getEditorXStart() );
     float new_mx;
 
-    for (int m=measureID; m<measureAmount; m+=1)
+    for (int m=measureID; m<measureAmount; m++)
     {
         new_mx = mb->firstPixelInMeasure(m);
 
@@ -168,6 +168,10 @@ void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
 
     }//end if
 
+    // close last measure with a strong line
+    new_mx = mb->lastPixelInMeasure(measureAmount-1);
+    AriaRender::color(0.5, 0.5, 0.5);
+    AriaRender::line((int)round(new_mx), from_y, (int)round(new_mx), to_y);
 }
 
 // ------------------------------------------------------------------------------------------------------------
