@@ -68,6 +68,8 @@ namespace AriaMaestosa
     EXTERN const char* SETTING_ID_MIDI_OUTPUT      DEFAULT("midiOutput");
     EXTERN const char* SETTING_ID_MIDI_INPUT       DEFAULT("midiInput");
 
+    EXTERN const char* SETTING_ID_DEFAULT_EDITOR   DEFAULT("defaultEditor");
+
     EXTERN const char* SETTING_ID_CHECK_NEW_VERSION DEFAULT("checkForNewVersion");
     
 #ifdef __APPLE__

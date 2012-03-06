@@ -61,7 +61,21 @@ Track::Track(Sequence* sequence)
     {
         m_editor_mode[n] = false;
     }
-    m_editor_mode[KEYBOARD] = true;
+    
+    // set default editor
+    switch (PreferencesData::getInstance()->getIntValue(SETTING_ID_DEFAULT_EDITOR))
+    {
+        case 2:
+            m_editor_mode[GUITAR] = true;
+            break;
+        case 1:
+            m_editor_mode[SCORE] = true;
+            break;
+        case 0:
+        default:
+            m_editor_mode[KEYBOARD] = true;
+            break;
+    }
     
     m_listener = NULL;
     

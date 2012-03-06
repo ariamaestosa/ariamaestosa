@@ -2,6 +2,7 @@
 - Add option to check online for new versions of Aria
 - Add Russian and Portuguese translations from Transifex
 - Save the vertical scroll of each track
+- Allow selecting default editor type in preferences
 - Further improve magnetic grid
 - Add "Duplicate track" feature
 - Show a dialog asking user to restart Aria after changing soundfont

@@ -154,6 +154,7 @@ void PreferencesData::fillSettingsVector()
     m_settings.push_back( midiDriver );
 
     // ---- play during edit
+    //I18N: In preferences
     Setting* play = new Setting(fromCString(SETTING_ID_PLAY_DURING_EDIT), _("Play during edit (default value)"),
                                 SETTING_ENUM, true /* show in preferences */, wxT("1") );
     play->addChoice(_("Always"));        // PLAY_ALWAYS = 0,
@@ -162,12 +163,22 @@ void PreferencesData::fillSettingsVector()
     m_settings.push_back( play );
     
     // ---- score view
+    //I18N: In preferences
     Setting* scoreview = new Setting(fromCString(SETTING_ID_SCORE_VIEW), _("Default Score View"),
                                      SETTING_ENUM, true /* show in preferences */, wxT("0") );
     scoreview->addChoice(_("Both Musical and Linear"));
     scoreview->addChoice(_("Musical Only"));
     scoreview->addChoice(_("Linear Only"));
     m_settings.push_back( scoreview );
+    
+    // ---- default editor
+    //I18N: In preferences
+    Setting* defaultEditor = new Setting(fromCString(SETTING_ID_DEFAULT_EDITOR), _("Default Editor View"),
+                                         SETTING_ENUM, true /* show in preferences */, wxT("0") );
+    defaultEditor->addChoice(_("Keyboard"));  // 0
+    defaultEditor->addChoice(_("Score"));     // 1
+    defaultEditor->addChoice(_("Tablature")); // 2
+    m_settings.push_back( defaultEditor );
     
 #ifdef __APPLE__
     // ---- soundbank
