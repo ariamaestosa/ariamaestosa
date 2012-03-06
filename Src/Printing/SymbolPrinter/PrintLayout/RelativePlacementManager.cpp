@@ -376,9 +376,12 @@ void RelativePlacementManager::addSilenceSymbols(const std::vector< SilenceAnaly
                 neededSize = RECTANGULAR_SILENCE_SIZE + RECTANGULAR_SILENCE_LEFT_MARGIN;
                 break;
             case 4:
+                neededSize = 130; // FIXME: stop hardcoding
+                break;
+                
             case 8:
             case 16:
-                neededSize = 90; // FIXME: when using vector silence symbols, fix this to not use a hardcoded value
+                neededSize = 100; // FIXME: stop hardcoding
                 break;
             default:
                 std::cerr << "WARNING, unknown silence type : " << silences_ticks[n].m_type << std::endl;
