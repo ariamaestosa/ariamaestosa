@@ -38,7 +38,8 @@ namespace AriaMaestosa
             
             NoteRelocator relocator;
             std::vector<int> m_frets;
-            
+            std::vector<int> m_strings;
+
         public:
             
             ShiftFrets(const int amount, const int noteID);

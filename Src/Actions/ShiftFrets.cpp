@@ -40,7 +40,7 @@ void ShiftFrets::undo()
     int n = 0;
     while ((current_note = relocator.getNextNote()) and current_note != NULL)
     {
-        current_note->setFret( m_frets[n] );
+        current_note->setStringAndFret( m_strings[n], m_frets[n] );
         n++;
     }
 }
@@ -65,6 +65,7 @@ void ShiftFrets::perform()
         {
             if (not notes[n].isSelected()) continue;
             
+            m_strings.push_back( notes[n].getString() );
             m_frets.push_back( notes[n].getFret() );
             notes[n].shiftFret(m_amount);
             relocator.rememberNote( notes[n] );
@@ -85,6 +86,7 @@ void ShiftFrets::perform()
         ASSERT_E(m_note_id,<,notes.size());
         
         m_frets.push_back( notes[m_note_id].getFret() );
+        m_strings.push_back( notes[m_note_id].getString() );
         notes[m_note_id].shiftFret(m_amount);
         relocator.rememberNote( notes[m_note_id] );
         
