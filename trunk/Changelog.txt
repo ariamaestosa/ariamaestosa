@@ -9,6 +9,7 @@
 - Improvements to score printing
 - Pressing spacebar while recording now stops recording as intended
 - Ability to print multiple views for the same track
+- Fix bug when undoing shifting frets in guitar editor
 - Add keyboard shortcuts for play/pause and record
 
 1.3 beta 5
