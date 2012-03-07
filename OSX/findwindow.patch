@@ -1,0 +1,18 @@
+Index: src/common/utilscmn.cpp
+===================================================================
+--- src/common/utilscmn.cpp	(revision 70628)
++++ src/common/utilscmn.cpp	(working copy)
+@@ -1293,6 +1293,13 @@
+     while (node)
+     {
+         wxWindow* child = node->GetData();
++#ifdef __WXOSX_COCOA__
++        if (dynamic_cast<wxToolBar*>(child) != NULL)
++        {
++            node = node->GetPrevious();
++            continue;
++        }
++#endif
+         wxWindow* foundWin = wxFindWindowAtPoint(child, pt);
+         if (foundWin)
+           return foundWin;
