@@ -957,8 +957,8 @@ bool GraphicalTrack::processMouseDrag(RelativeXCoord x, int y)
         // this event was thrown in the dragging process. This can be used to determine the movement of the mouse.
         // At the end of the method, mousex_current/mousey_current are set to the current values.
 
-        int barHeight = EXPANDED_BAR_HEIGHT;
-        if (m_collapsed) barHeight = COLLAPSED_BAR_HEIGHT;
+        //int barHeight = EXPANDED_BAR_HEIGHT;
+        //if (m_collapsed) barHeight = COLLAPSED_BAR_HEIGHT;
 
         if (not m_dragging_resize)
         {
