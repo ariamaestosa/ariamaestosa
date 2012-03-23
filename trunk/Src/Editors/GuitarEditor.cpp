@@ -157,7 +157,8 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
         float volume = m_track->getNoteVolume(n)/127.0;
 
-        const bool isInSelection = m_selecting and x1 > mouse_x1 and x2 < mouse_x2 and mouse_y1 < y and mouse_y2 > y;
+        const bool isInSelection = m_selecting and x1 > mouse_x1 and x2 < mouse_x2 and
+                                   mouse_y1 < y and mouse_y2 > y;
         
         if (isInSelection)
         {
@@ -204,15 +205,15 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
             if (fret < 10)
             {
                 AriaRender::quad(x1 - 1,  y - 8,
-                                 x1 - 1,  y,
-                                 x1 + 14, y,
+                                 x1 - 1,  y + 3,
+                                 x1 + 14, y + 3,
                                  x1 + 9,  y - 8);
             }
             else
             {
                 AriaRender::quad(x1 - 1,  y - 8,
-                                 x1 - 1,  y,
-                                 x1 + 18, y,
+                                 x1 - 1,  y + 3,
+                                 x1 + 18, y + 3,
                                  x1 + 13, y - 8);
             }
             
@@ -228,9 +229,13 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
                 AriaRender::color(0, 0, 0);
             }
 
+#ifdef __WXMSW__
+            AriaRender::renderNumber(fret, x1, y + 5);
+#else
             // FIXME: draw twice to make it more visible...
             AriaRender::renderNumber(fret, x1, y + 4);
             AriaRender::renderNumber(fret, x1, y + 4);
+#endif
         }
         else
         {
