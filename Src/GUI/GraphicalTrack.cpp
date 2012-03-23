@@ -1522,8 +1522,13 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     AriaRender::images();
     AriaRender::color(0,0,0);
     m_name_renderer.bind();
-    m_name_renderer.render(m_track_name->getX()+11, y+29);
     
+#ifdef __WXMSW__
+    m_name_renderer.render(m_track_name->getX()+11, y+30);
+#else
+    m_name_renderer.render(m_track_name->getX()+11, y+29);
+#endif
+
     // draw grid label
     int grid_selection_x;
     switch (m_grid->getModel()->getDivider())
@@ -1581,7 +1586,11 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     AriaRender::color(0,0,0);
     
     m_instrument_name.bind();
+#ifdef __WXMSW__
+    m_instrument_name.render(m_instrument_field->getX()+11 ,y+30);
+#else
     m_instrument_name.render(m_instrument_field->getX()+11 ,y+29);
+#endif
         
     // draw channel number
     if (channel_mode)

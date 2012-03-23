@@ -36,6 +36,10 @@
 #include "Printing/SymbolPrinter/ScorePrint.h"
 #include "Printing/RenderRoutines.h"
 
+#if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
+#include <wx/graphics.h>
+#endif
+
 #define BE_VERBOSE 0
 
 namespace AriaMaestosa
@@ -239,9 +243,10 @@ namespace AriaMaestosa
         dc.DrawLine( x+NATURAL_SIGN_WIDTH/2, y-20/2, x+NATURAL_SIGN_WIDTH/2, y+80/2 );
     }
     
-    // -------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------------------------
     /** Renders a 'G clef' sign at the the given coordinates */
-    void renderGClef(wxDC& dc, wxGraphicsContext* gc, const int x, const float score_bottom, const float b_line_y)
+    void renderGClef(wxDC& dc, wxGraphicsContext* gc, const int x, const float score_bottom,
+                     const float b_line_y)
     {
 #if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
         RenderRoutines::paintTreble(*gc, x + 20, b_line_y, score_bottom);
@@ -254,23 +259,26 @@ namespace AriaMaestosa
         const int bottom_on_image = 49;
         const float scale = (score_bottom - b_line_y) / (float)(bottom_on_image - b_on_image);
         const int y = score_bottom - bottom_on_image*scale;
-        static wxString path = getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() + wxT("keyG.png");
+        static wxString path = getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() +
+                               wxT("keyG.png");
         
         /*
         static wxBitmap gclef(path, wxBITMAP_TYPE_PNG);
-        wxBitmap scaled = wxBitmap(gclef.ConvertToImage().Scale(gclef.GetWidth()*scale, gclef.GetHeight()*scale));
+        wxBitmap scaled = wxBitmap(gclef.ConvertToImage().Scale(gclef.GetWidth()*scale,
+                                   gclef.GetHeight()*scale));
         */
         
         wxImage inputGClef(path, wxBITMAP_TYPE_PNG);
         wxImage gclef = RenderRoutines::getPrintableImage(inputGClef);
-        wxBitmap scaled = wxBitmap(gclef.Scale(gclef.GetWidth()*scale, gclef.GetHeight()*scale),wxIMAGE_QUALITY_HIGH);
+        wxBitmap scaled = wxBitmap(gclef.Scale(gclef.GetWidth()*scale, gclef.GetHeight()*scale),
+                                   wxIMAGE_QUALITY_HIGH);
         
 
         dc.DrawBitmap(scaled, x, y, true);
 #endif
     }
     
-    // -------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------------------------
     /** Renders a 'F clef' sign at the the given coordinates */
     void renderFClef(wxDC& dc, wxGraphicsContext* gc, const int x, const float score_top,
                      const float e_line_y)
@@ -280,21 +288,24 @@ namespace AriaMaestosa
 #else
         const int e_on_image = 15;
         const float scale = (float)(e_line_y - score_top) / (float)e_on_image;
-        wxString path =  getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() + wxT("FKey.png");
+        wxString path =  getResourcePrefix() + wxT("score") + wxFileName::GetPathSeparator() +
+                         wxT("FKey.png");
         
         wxImage inputFClef(path, wxBITMAP_TYPE_PNG);
         wxImage fclef = RenderRoutines::getPrintableImage(inputFClef);
-        wxBitmap scaled = wxBitmap(fclef.Scale(fclef.GetWidth()*scale, fclef.GetHeight()*scale),wxIMAGE_QUALITY_HIGH);
+        wxBitmap scaled = wxBitmap(fclef.Scale(fclef.GetWidth()*scale, fclef.GetHeight()*scale),
+                                   wxIMAGE_QUALITY_HIGH);
         /*
         static wxBitmap fclef( , wxBITMAP_TYPE_PNG );
-        wxBitmap scaled = wxBitmap(fclef.ConvertToImage().Scale(fclef.GetWidth()*scale, fclef.GetHeight()*scale));
+        wxBitmap scaled = wxBitmap(fclef.ConvertToImage().Scale(fclef.GetWidth()*scale,
+                                   fclef.GetHeight()*scale));
         */
         
         dc.DrawBitmap(scaled, x, score_top, true);
 #endif
     }
     
-    // -------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------------------------
 
     // leave a pointer to the dc for the callback
     // FIXME: find cleaner way than globals
@@ -310,11 +321,11 @@ namespace AriaMaestosa
     // FIXME: find cleaner way than globals
     int g_line_height=5;
     
-    // -------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------------------------
     
-    void renderSilenceCallback(const Sequence*, const int duration, const int tick, const int type, const int silences_y,
-                               const bool triplet, const bool dotted, const int dot_delta_x,
-                               const int dot_delta_y, void* userdata)
+    void renderSilenceCallback(const Sequence*, const int duration, const int tick, const int type,
+                               const int silences_y, const bool triplet, const bool dotted,
+                               const int dot_delta_x, const int dot_delta_y, void* userdata)
     {
         ASSERT( global_dc != NULL);
         
@@ -341,7 +352,7 @@ namespace AriaMaestosa
 #pragma mark ScorePrintable (EditorPrintable common interface)
 #endif
     
-    // -------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------------------------
     
     ScorePrintable::ScorePrintable(Track* track) : EditorPrintable(track)
     {
@@ -359,13 +370,13 @@ namespace AriaMaestosa
         m_last_score_level     = -1;
     }
     
-    // -------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------
     
     ScorePrintable::~ScorePrintable()
     {
     }
     
-    // -------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------------------------
       
     int ScorePrintable::calculateHeight(const int trackID, LineTrackRef& lineTrack, LayoutLine& line,
                                         bool* empty)
@@ -1177,9 +1188,9 @@ namespace AriaMaestosa
                                            const int x0, const int y0, const int x1, const int y1,
                                            bool show_measure_number, const int grandStaffCenterY)
     {
-        const Track* track = gtrack->getTrack();
+        // const Track* track = gtrack->getTrack();
         
-        ASSERT(m_track == track);
+        ASSERT(m_track == gtrack->getTrack());
                 
         std::cout << "[ScorePrintable] ==== backgroundDrawing ==== \n";
         
@@ -1372,6 +1383,8 @@ namespace AriaMaestosa
             }
         }
         
+        grctx->PushState();
+        
         // ------------ line header if any ------------
         if (line.getLayoutElement(0).getType() == LINE_HEADER)
         {
@@ -1414,14 +1427,16 @@ namespace AriaMaestosa
                 {
                     const int level = m_first_score_level + (f_clef ? 1 : -1) + sharp_sign_lvl[n];
                     renderSharp( dc,
-                                 headElement.getXFrom() + SPACE_FOR_CLEF + n*x_space_per_symbol + KEY_MAX_ACCIDENTAL_SIZE/2,
+                                 headElement.getXFrom() + SPACE_FOR_CLEF + n*x_space_per_symbol +
+                                    KEY_MAX_ACCIDENTAL_SIZE/2,
                                  LEVEL_TO_Y(level) );
                 }
                 for (int n=0; n<flats; n++)
                 {
                     const int level = m_first_score_level + (f_clef ? 3 : 1) + flat_sign_lvl[n];
                     renderFlat( dc,
-                                headElement.getXFrom() + SPACE_FOR_CLEF + n*x_space_per_symbol + KEY_MAX_ACCIDENTAL_SIZE/2,
+                                headElement.getXFrom() + SPACE_FOR_CLEF + n*x_space_per_symbol +
+                                    KEY_MAX_ACCIDENTAL_SIZE/2,
                                 LEVEL_TO_Y(level) );
                 }
             }
@@ -1441,6 +1456,9 @@ namespace AriaMaestosa
                 dc.DrawText(wxT("8vb"), line.getLayoutElement(0).getXFrom()+200, y);
             }
         }
+        
+        
+        grctx->PopState();        
         
         // ---- draw base  
         for (int el=0; el<elamount; el++)
@@ -1624,6 +1642,8 @@ namespace AriaMaestosa
         gc = grctx;
 #endif
         
+        grctx->PushState();
+        
         //FIXME: we already have collected all silence info in a vector... don't call the SilenceAnalyser again!
         if (f_clef)
         {
@@ -1640,6 +1660,8 @@ namespace AriaMaestosa
                                           first_measure, last_measure, silences_y, m_x_converter);
         }
         
+        grctx->PopState();
+        
         
         // ------------------ second part : intelligent drawing of the rest -----------------
         std::cout << "[ScorePrintable] analyzing score\n";
@@ -1652,6 +1674,7 @@ namespace AriaMaestosa
         const int noteAmount = lineAnalyser->m_note_render_info.size();
         for (int i=0; i<noteAmount; i++)
         {
+            grctx->PushState();
             NoteRenderInfo& noteRenderInfo = lineAnalyser->m_note_render_info[i];
             
             dc.SetPen(  wxPen( wxColour(0,0,0), 15 ) );
@@ -1775,7 +1798,7 @@ namespace AriaMaestosa
                             base_y + (noteRenderInfo.m_triplet_show_above ? -75 : -20) );
             }
             
-            
+            grctx->PopState();
         } // next note
     }
 
