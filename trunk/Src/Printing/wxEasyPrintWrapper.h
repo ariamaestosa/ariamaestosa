@@ -44,6 +44,7 @@ namespace AriaMaestosa
          * @param y0           y origin coordinate from which drawing can occur
          */
         virtual void printPage(const int pageNum, wxDC& dc,
+                               wxGraphicsContext* gc,
                                const int x0, const int y0,
                                const int x1, const int y1) = 0;
         
