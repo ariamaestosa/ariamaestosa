@@ -35,12 +35,20 @@ namespace AriaMaestosa
         void loadImages()
         {
             // scrollbar
+#ifdef __WXMSW__
+            sbArrowImg      = new Image(wxT("sb_arrow_win.png"));
+            sbArrowDownImg  = new Image(wxT("sb_arrow_sel_win.png"));
+            sbArrowDrawable = new Drawable(sbArrowImg);
+            sbBackgDrawable = new Drawable(wxT("sb_backg_win.png"));
+            sbThumbDrawable = new Drawable(wxT("sb_thumb_win.png"));
+#else
             sbArrowImg      = new Image(wxT("sb_arrow.png"));
             sbArrowDownImg  = new Image(wxT("sb_arrow_sel.png"));
             sbArrowDrawable = new Drawable(sbArrowImg);
             sbBackgDrawable = new Drawable(wxT("sb_backg.png"));
             sbThumbDrawable = new Drawable(wxT("sb_thumb.png"));
-            
+#endif
+
             noteTrackDrawable = new Drawable(wxT("notetrack.png"));
             
             // track header buttons
