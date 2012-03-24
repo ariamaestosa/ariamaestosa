@@ -41,7 +41,7 @@ namespace AriaMaestosa
     {
     public:
         
-#ifndef NDEBUG
+#ifdef _MORE_DEBUG_CHECKS
         bool m_performing_deletion;
 #endif
         
@@ -50,7 +50,7 @@ namespace AriaMaestosa
         
         ptr_vector()
         {
-#ifndef NDEBUG
+#ifdef _MORE_DEBUG_CHECKS
             m_performing_deletion = false;
 #endif
         }
@@ -264,7 +264,7 @@ namespace AriaMaestosa
         /** clears the vector and deletes the objects it contained */
         void clearAndDeleteAll()
         {        
-#ifndef NDEBUG
+#ifdef _MORE_DEBUG_CHECKS
             m_performing_deletion = true;
 #endif
             const unsigned int count = contentsVector.size();
@@ -277,7 +277,7 @@ namespace AriaMaestosa
             
             contentsVector.clear();
             
-#ifndef NDEBUG
+#ifdef _MORE_DEBUG_CHECKS
             m_performing_deletion = false;
 #endif
         }

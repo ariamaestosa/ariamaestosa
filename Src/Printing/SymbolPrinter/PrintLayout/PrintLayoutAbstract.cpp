@@ -546,7 +546,7 @@ void PrintLayoutAbstract::layInLinesAndPages(std::vector<LayoutElement>& layoutE
     ASSERT(current_height <= (current_page == 1 ? maxLevelsOnPage1 : maxLevelsOnOtherPages));
     
     
-#ifndef NDEBUG
+#ifdef _MORE_DEBUG_CHECKS
     // ---- DEBUG: print computed values and perform sanity checks
     for (int p=0; p<layoutPages.size(); p++)
     {

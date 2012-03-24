@@ -190,7 +190,7 @@ AriaPrintable* AriaPrintable::getCurrentPrintable()
 
 // -------------------------------------------------------------------------------------------------------------
 
-void AriaPrintable::printPage(const int pageNum, wxDC& dc,
+void AriaPrintable::printPage(const int pageNum, wxDC& dc, wxGraphicsContext* gc,
                               const int x0, const int y0, const int x1, const int y1)
 {    
     ASSERT( MAGIC_NUMBER_OK() );
@@ -199,19 +199,6 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc,
     ASSERT( y1 - y0 > 0 );
     
     ASSERT( m_seq != NULL );
-    
-    wxGraphicsContext* gc = NULL;
-    
-#if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
-    if (dynamic_cast<wxPrinterDC*>(&dc) != NULL)
-    {
-        gc = wxGraphicsContext::Create( dynamic_cast<wxPrinterDC&>(dc) );
-    }
-    else if (dynamic_cast<wxMemoryDC*>(&dc) != NULL)
-    {
-        gc = wxGraphicsContext::Create( dynamic_cast<wxMemoryDC&>(dc) );
-    }
-#endif
     
     const int h = y1 - y0;
 

@@ -6,6 +6,9 @@
 #include <wx/paper.h>
 #include <wx/printdlg.h>
 #include <wx/dc.h>
+#include <wx/graphics.h>
+#include <wx/dcprint.h>
+#include <wx/dcmemory.h>
 
 #ifdef __WXMAC__
 
@@ -18,6 +21,10 @@
 #endif
 
 using namespace AriaMaestosa;
+
+#if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
+#include <wx/dcgraph.h>
+#endif
 
 
 #if 0
@@ -323,7 +330,24 @@ bool wxEasyPrintWrapper::OnPrintPage(int pageNum)
     std::cout << "[OnBeginDocument] printable area : (" << x0 << ", " << y0 << ") to ("
               << x1 << ", " << y1 << ")" << std::endl;
 
-    m_print_callback->printPage(pageNum, dc, x0, y0, x1, y1);
+
+    wxGraphicsContext* gc = NULL;
+    
+#if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
+    if (dynamic_cast<wxPrinterDC*>(&dc) != NULL)
+    {
+        gc = wxGraphicsContext::Create( dynamic_cast<wxPrinterDC&>(dc) );
+    }
+    else if (dynamic_cast<wxMemoryDC*>(&dc) != NULL)
+    {
+        gc = wxGraphicsContext::Create( dynamic_cast<wxMemoryDC&>(dc) );
+    }
+    wxGCDC* gcdc = new wxGCDC(gc);
+    m_print_callback->printPage(pageNum, *gcdc, gc, x0, y0, x1, y1);
+#else
+    m_print_callback->printPage(pageNum, dc, NULL, x0, y0, x1, y1);
+#endif
+
     
     return true;
 }
