@@ -350,11 +350,6 @@ void PreferencesData::setValue(wxString entryName, wxString newValue)
 
 // FIXME: find why fonts are so different on OSX
 
-wxFont AriaMaestosa::getTabHeaderFont()
-{
-    return wxFont(100,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD);
-}
-
 wxFont AriaMaestosa::getDrumNamesFont()
 {
 #ifdef __WXMAC__
@@ -422,16 +417,37 @@ wxFont AriaMaestosa::getStringNameFont()
 
 wxFont AriaMaestosa::getTimeSigPrintFont()
 {
-#ifdef __WXMAC__
+#ifdef __WXMSW__
+    // FIXME: See http://trac.wxwidgets.org/ticket/14136
+    // fonts are too small on Windows
+    return wxFont(17,wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
+#elif defined(__WXMAC__)
     return wxFont(150,wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
 #else
     return wxFont(100,wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
 #endif
 }
 
+wxFont AriaMaestosa::getPrintTabHeaderFont()
+{
+#ifdef __WXMSW__
+    // FIXME: See http://trac.wxwidgets.org/ticket/14136
+    // fonts are too small on Windows
+    return wxFont(18, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#elif defined(__WXMAC__)
+    return wxFont(85, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#else
+    return wxFont(65,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#endif
+}
+
 wxFont AriaMaestosa::getPrintFont()
 {
-#ifdef __WXMAC__
+#ifdef __WXMSW__
+    // FIXME: See http://trac.wxwidgets.org/ticket/14136
+    // fonts are too small on Windows
+    return wxFont(11, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#elif defined(__WXMAC__)
     return wxFont(75, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 #else
     return wxFont(50,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
@@ -440,12 +456,22 @@ wxFont AriaMaestosa::getPrintFont()
 
 wxFont AriaMaestosa::getPrintTitleFont()
 {
+#ifdef __WXMSW__
+    // FIXME: See http://trac.wxwidgets.org/ticket/14136
+    // fonts are too small on Windows
+    return wxFont(20, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD  );
+#else
     return wxFont(130, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD  );
+#endif
 }
 
 wxFont AriaMaestosa::getPrintSubtitleFont()
 {
-#ifdef __WXMAC__
+#ifdef __WXMSW__
+    // FIXME: See http://trac.wxwidgets.org/ticket/14136
+    // fonts are too small on Windows
+    return wxFont(13, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#elif defined(__WXMAC__)
     return wxFont (90,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 #else
     return wxFont (60,  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);

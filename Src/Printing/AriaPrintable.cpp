@@ -286,6 +286,7 @@ void AriaPrintable::printPage(const int pageNum, wxDC& dc, wxGraphicsContext* gc
         
         const Sequence* seq = m_seq->getSequence();
         const int tempo = seq->getTempo();
+        dc.SetFont( getPrintFont() );
         dc.DrawText( wxString::Format(wxT(" = %i"), tempo),
                      tempo_x+HEAD_RADIUS*2,
                      subtitle_y );
