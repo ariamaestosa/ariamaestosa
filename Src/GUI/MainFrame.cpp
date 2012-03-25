@@ -649,8 +649,27 @@ void MainFrame::on_close(wxCloseEvent& evt)
 {
     wxLogVerbose(wxT("MainFrame::on_close"));
     
-    wxCommandEvent dummy;
-    menuEvent_quit(dummy);
+    //wxCommandEvent dummy;
+    //menuEvent_quit(dummy);
+    
+    // the quit menu is greyed out in playback mode, but there are other ways to get this code called
+    // (like closing the frame)
+    if (m_playback_mode)
+    {
+        m_main_pane->exitPlayLoop();
+    }
+    
+    // close all open sequences
+    while (getSequenceAmount() > 0)
+    {
+        if (not closeSequence())
+        {
+            // user canceled, don't quit
+            return;
+        }
+    }
+    
+    evt.Skip();
     //closeSequence();
 }
 
@@ -1525,6 +1544,7 @@ Sequence* MainFrame::getCurrentSequence()
 
 GraphicalSequence* MainFrame::getCurrentGraphicalSequence()
 {
+    if (m_current_sequence < 0 or m_current_sequence >= m_sequences.size()) return NULL;
     return m_sequences.get(m_current_sequence);
 }
 
@@ -1532,6 +1552,7 @@ GraphicalSequence* MainFrame::getCurrentGraphicalSequence()
 
 const GraphicalSequence* MainFrame::getCurrentGraphicalSequence() const
 {
+    if (m_current_sequence < 0 or m_current_sequence >= m_sequences.size()) return NULL;
     return m_sequences.getConst(m_current_sequence);
 }
 
