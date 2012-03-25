@@ -154,6 +154,8 @@ bool WriteOutputFile (const char*       outputFilePath,
         return false;
     }
     
+    if (nodeCount == 0) printf("[CoreAudioOutput] WARNING : 0 nodes??\n");
+    
 	for (UInt32 i = 0; i < nodeCount; ++i) 
 	{
 		AUNode node;
@@ -209,6 +211,9 @@ bool WriteOutputFile (const char*       outputFilePath,
             fprintf(stderr, "ExtAudioFileSetProperty Error %i at %s:%i\n", (int)result, __FILE__, __LINE__);
             return false;
         }
+        
+        printf("Everything is set up for export, will start the loop. Saving to <%s>\n",
+               outfile);
         
 		int percentage = 0;
 		{
@@ -632,7 +637,11 @@ bool AudioUnitOutput::outputToDisk(const char* outputFilePath,
     bool success = WriteOutputFile(outputFilePath, dataFormat, sample_rate, sequenceLength,
                                    false /* print */, graph, numFrames, player);
     
-    if (not success) return false;
+    if (not success)
+    {
+        fprintf(stderr, "[AudioUnitOutput] ERROR: WriteOutputFile returned false\n");
+        return false;
+    }
     
     result = MusicPlayerStop(player);
     if (result != 0)
