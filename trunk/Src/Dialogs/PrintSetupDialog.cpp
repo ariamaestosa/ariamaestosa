@@ -284,7 +284,7 @@ namespace AriaMaestosa
     }        
     
     /** TODO: to be replaced with wxDataViewControl when switching to wxWidgets 3.0 */
-    class wxTempList : public wxPanel
+    class wxTempList : public wxScrolledWindow
     {
         wxFlexGridSizer* m_sizer;
         int m_col_count;
@@ -293,8 +293,9 @@ namespace AriaMaestosa
         
     public:
         
-        wxTempList(wxWindow* parent, const int columnCount, const wxString colNames[], const bool growable[]) :
-        wxPanel(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER)
+        wxTempList(wxWindow* parent, const int columnCount, const wxString colNames[],
+                   const bool growable[]) :
+            wxScrolledWindow(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER)
         {
             SetBackgroundColour(*wxWHITE);
             m_sizer = new wxFlexGridSizer(columnCount);
@@ -306,12 +307,24 @@ namespace AriaMaestosa
                 
                 const int h = wxRendererNative::GetDefault().GetHeaderButtonHeight(this);
                 
+#ifdef __WXMSW__
+                // our little native header hack doesn't seem to work on Windows.
+                wxStaticText* header = new wxStaticText(this, wxID_ANY, wxT(" ") + colNames[n] + wxT("  "),
+                                                        wxDefaultPosition, wxDefaultSize, wxBORDER_RAISED);
+#else
                 wxStaticText* header = new wxStaticText(this, wxID_ANY, wxT(" ") + colNames[n] + wxT("  "));
+#endif
+
                 header->SetMinSize( wxSize(-1, h) );
                 header->SetMaxSize( wxSize(999, h) );
-                //header->SetBackgroundColour( wxColour(220, 220, 220) );
+#ifdef __WXMSW__
+                // our little native header hack doesn't seem to work on Windows.
+                header->SetBackgroundColour( wxColour(220, 220, 220) );
+#endif
                 m_sizer->Add(header, 1, wxEXPAND);
             }
+            
+            SetMinSize(wxSize(300, 400));
         }
         
         void addRowWidgets(wxWindow** widgets)
@@ -328,7 +341,8 @@ namespace AriaMaestosa
         void done()
         {
             SetSizer(m_sizer);
-            Layout();
+            FitInside(); // ask the sizer about the needed size
+            SetScrollRate(5, 5);
         }
         
         std::vector<wxWindow*>& getRow(const int rowId)
@@ -359,6 +373,8 @@ namespace AriaMaestosa
         {
             wxPaintDC dc(this);
             //const int h = wxRendererNative::GetDefault().GetHeaderButtonHeight(this);
+            
+            dc.Clear();
             
             wxSizerItemList& items = m_sizer->GetChildren();
             //#if wxCHECK_VERSION(2,9,2)
@@ -410,10 +426,14 @@ namespace AriaMaestosa
             editorTypeSizer->Add(m_editor_score, 0, wxALIGN_CENTER_VERTICAL);
             editorTypeSizer->Add(new wxStaticBitmap(this, wxID_ANY, score));
             
+            editorTypeSizer->AddSpacer(5);
+            
             m_editor_tab = new wxCheckBox(this, wxID_ANY, wxT(""));
             m_editor_tab->SetValue(track->isNotationTypeEnabled(GUITAR));
             editorTypeSizer->Add(m_editor_tab, 0, wxALIGN_CENTER_VERTICAL);
             editorTypeSizer->Add(new wxStaticBitmap(this, wxID_ANY, guitar));
+            
+            editorTypeSizer->AddSpacer(5);
             
             m_editor_key_roll = new wxCheckBox(this, wxID_ANY, wxT(""));
             m_editor_key_roll->SetValue(track->isNotationTypeEnabled(KEYBOARD));
@@ -483,10 +503,11 @@ namespace AriaMaestosa
         
         LEAK_CHECK();
         
-        PrintSetupDialog(wxWindow *parent, Sequence* sequence) : wxFrame(parent, wxID_ANY,
-                                                                         //I18N: - title of the notation-print dialog
-                                                                         _("Print musical notation"),
-                                                                         wxPoint(200,200), wxSize(500, 400), wxCAPTION | wxFRAME_FLOAT_ON_PARENT | wxRESIZE_BORDER)
+        PrintSetupDialog(wxWindow *parent, Sequence* sequence) :
+            wxFrame(parent, wxID_ANY,
+                    //I18N: - title of the notation-print dialog
+                    _("Print musical notation"), wxPoint(200,200), wxSize(500, 400),
+                    wxCAPTION | wxFRAME_FLOAT_ON_PARENT | wxRESIZE_BORDER)
         {
             m_current_sequence = sequence;
             //m_detect_repetitions = false;
