@@ -167,7 +167,7 @@ bool WriteOutputFile (const char*       outputFilePath,
         }
         
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
-        AudioComponentDescription descs;
+        AudioComponentDescription desc;
 #else
         ComponentDescription desc;
 #endif
@@ -303,7 +303,7 @@ OSStatus SetUpGraph (AUGraph &inGraph, UInt32 numFrames, Float64 &sampleRate, bo
         
         
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
-        AudioComponentDescription descs;
+        AudioComponentDescription desc;
 #else
         ComponentDescription desc;
 #endif
@@ -426,7 +426,7 @@ OSStatus GetSynthFromGraph (AUGraph& inGraph, AudioUnit& outSynth)
 		require_noerr (result = AUGraphGetIndNode(inGraph, i, &node), fail);
         
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
-        AudioComponentDescription descs;
+        AudioComponentDescription desc;
 #else
         ComponentDescription desc;
 #endif
