@@ -21,6 +21,8 @@
 #include "Utils.h"
 #include <wx/print.h>
 
+class wxGraphicsContext;
+
 namespace AriaMaestosa
 {
     const int MARGIN_UNDER_PAGE_HEADER = 200;
