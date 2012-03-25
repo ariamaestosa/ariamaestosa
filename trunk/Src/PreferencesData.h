@@ -139,7 +139,6 @@ namespace AriaMaestosa
         ptr_vector<Setting>& getSettings() { return m_settings; }
     };
     
-    wxFont getTabHeaderFont();
     wxFont getDrumNamesFont();
     wxFont getInstrumentNameFont();
     wxFont getWelcomeMenuFont();
@@ -152,6 +151,7 @@ namespace AriaMaestosa
     wxFont getPrintSubtitleFont();
     wxFont getNumberFont();
     wxFont getStringNameFont();
+    wxFont getPrintTabHeaderFont();
     
 }
 

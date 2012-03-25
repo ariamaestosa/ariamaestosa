@@ -226,8 +226,6 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
     ASSERT_E(trackCoords->y0,<,50000);
     ASSERT_E(trackCoords->y1,<,50000);
     
-    wxFont oldfont = dc.GetFont();
-    
     // draw tab background (guitar strings)
     dc.SetPen(  wxPen( wxColour(125,125,125), 5 ) );
     
@@ -268,7 +266,7 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
         }
         if (currentElement->getType() == LINE_HEADER)
         {
-            dc.SetFont( getTabHeaderFont() );
+            dc.SetFont( getPrintTabHeaderFont() );
             dc.SetTextForeground( wxColour(0,0,0) );
             
             const int h4 = (trackCoords->y1 - trackCoords->y0)/3 - 2;    
@@ -278,8 +276,9 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
             dc.DrawText( wxT("A") , currentElement->getXFrom()+20, textY + h4  );
             dc.DrawText( wxT("B") , currentElement->getXFrom()+20, textY + h4*2 );
             
-            dc.SetFont(oldfont);
             wxSize textSize2 = dc.GetTextExtent( wxT("T") );
+            
+            dc.SetFont( getPrintFont() );
             
             // draw tuning
             const int tuning_x = currentElement->getXFrom()+140;
@@ -366,7 +365,7 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
             //dc.DrawLine( symbolArea.from, drawY, symbolArea.to, drawY );
         }
         
-        dc.SetFont(oldfont);
+        dc.SetFont( getPrintFont() );
     }//next element
     
     // ---- Silences
