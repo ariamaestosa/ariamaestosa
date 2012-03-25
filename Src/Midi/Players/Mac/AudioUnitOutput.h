@@ -18,6 +18,8 @@
 
 #include "Midi/Players/Mac/OutputBase.h"
 
+class wxArrayString;
+
 /**
   * @ingroup midi.players
   *

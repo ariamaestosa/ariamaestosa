@@ -137,7 +137,7 @@ namespace AriaMaestosa
     const int SHOW_WAIT_WINDOW_EVENT_ID = 100001;
     const int UPDT_WAIT_WINDOW_EVENT_ID = 100002;
     const int HIDE_WAIT_WINDOW_EVENT_ID = 100003;
-    const int ASYCN_ERR_MESSAGE_EVENT_ID = 100004;
+    const int ASYNC_ERR_MESSAGE_EVENT_ID = 100004;
 
 #define MAKE_SHOW_PROGRESSBAR_EVENT(eventname, message, time_known) wxCommandEvent eventname( wxEVT_SHOW_WAIT_WINDOW, SHOW_WAIT_WINDOW_EVENT_ID ); eventname.SetString(message); eventname.SetInt(time_known)
 #define MAKE_UPDATE_PROGRESSBAR_EVENT(eventname, progress) wxCommandEvent eventname( wxEVT_UPDATE_WAIT_WINDOW, UPDT_WAIT_WINDOW_EVENT_ID ); eventname.SetInt(progress)

@@ -213,7 +213,7 @@ bool WriteOutputFile (const char*       outputFilePath,
         }
         
         printf("Everything is set up for export, will start the loop. Saving to <%s>\n",
-               outfile);
+               outputFilePath);
         
 		int percentage = 0;
 		{
