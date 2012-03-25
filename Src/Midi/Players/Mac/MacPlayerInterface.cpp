@@ -117,6 +117,7 @@ namespace AriaMaestosa
         
         virtual ExitCode Entry()
         {
+            printf("Export thread started...\n");
             MeasureData* md = m_sequence->getMeasureData();
             
             bool success = ((AudioUnitOutput*)output)->outputToDisk(m_filepath.mb_str(),
