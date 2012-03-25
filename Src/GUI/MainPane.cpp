@@ -211,9 +211,13 @@ void MainPane::resized(wxSizeEvent& evt)
 {
     MainFrame* mf = getMainFrame();
     
-    if (mf->getSequenceAmount() > 0 and mf->getCurrentGraphicalSequence()->isTrackMaximized())
+    if (mf->getSequenceAmount() > 0)
     {
-        mf->getCurrentGraphicalSequence()->getCurrentTrack()->maximizeHeight();
+        GraphicalSequence* gs = mf->getCurrentGraphicalSequence();
+        if (gs != NULL and gs->isTrackMaximized())
+        {
+            mf->getCurrentGraphicalSequence()->getCurrentTrack()->maximizeHeight();
+        }
     }
     
     RenderPane::resized(evt);
