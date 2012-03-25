@@ -132,15 +132,17 @@ namespace AriaMaestosa
     DECLARE_LOCAL_EVENT_TYPE(wxEVT_HIDE_WAIT_WINDOW,   -1)
     DECLARE_LOCAL_EVENT_TYPE(wxEVT_EXTEND_TICK,        -1)
     DECLARE_LOCAL_EVENT_TYPE(wxEVT_NEW_VERSION_AVAILABLE, -1)
-
+    DECLARE_LOCAL_EVENT_TYPE(wxEVT_ASYNC_ERROR_MESSAGE, -1)
+    
     const int SHOW_WAIT_WINDOW_EVENT_ID = 100001;
     const int UPDT_WAIT_WINDOW_EVENT_ID = 100002;
     const int HIDE_WAIT_WINDOW_EVENT_ID = 100003;
-
+    const int ASYCN_ERR_MESSAGE_EVENT_ID = 100004;
 
 #define MAKE_SHOW_PROGRESSBAR_EVENT(eventname, message, time_known) wxCommandEvent eventname( wxEVT_SHOW_WAIT_WINDOW, SHOW_WAIT_WINDOW_EVENT_ID ); eventname.SetString(message); eventname.SetInt(time_known)
 #define MAKE_UPDATE_PROGRESSBAR_EVENT(eventname, progress) wxCommandEvent eventname( wxEVT_UPDATE_WAIT_WINDOW, UPDT_WAIT_WINDOW_EVENT_ID ); eventname.SetInt(progress)
 #define MAKE_HIDE_PROGRESSBAR_EVENT(eventname) wxCommandEvent eventname( wxEVT_HIDE_WAIT_WINDOW, HIDE_WAIT_WINDOW_EVENT_ID )
+#define MAKE_ASYNC_ERR_MESSAGE_EVENT(eventname) wxCommandEvent eventname( wxEVT_ASYNC_ERROR_MESSAGE, ASYNC_ERR_MESSAGE_EVENT_ID )
 
 #ifdef __WXGTK__
 #define NO_WX_TOOLBAR
@@ -469,6 +471,7 @@ namespace AriaMaestosa
         void evt_freeTimeSigPicker( wxCommandEvent& evt );
         void evt_extendTick(wxCommandEvent& evt );
         void evt_newVersionAvailable(wxCommandEvent& evt);
+        void evt_asyncErrMessage(wxCommandEvent& evt);
         
         void addIconItem(wxMenu* menu, int menuID, const wxString& label, const wxString& stockIconId);
 

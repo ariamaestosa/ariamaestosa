@@ -448,7 +448,8 @@ fail:		// didn't find the synth AU
 
 bool AudioUnitOutput::outputToDisk(const char* outputFilePath,
                                    const char* data,
-                                   const int data_size)
+                                   const int data_size,
+                                   wxArrayString& errorMessages)
 {
     OSStatus result;
     
@@ -457,43 +458,32 @@ bool AudioUnitOutput::outputToDisk(const char* outputFilePath,
     MusicSequence sequence;
     Float32 maxCPULoad = .8;
 
-    result = LoadSMF(data, data_size, sequence, 0 /* flags */);
-    if (result != 0)
-    {
-        fprintf(stderr, "LoadSMF failed\n");
-        return false;
+// const char* GetMacOSStatusErrorString(OSStatus err);
+// const char* GetMacOSStatusCommentString(OSStatus err);
+#define CHECK_RETURN_CODE(fn) if (result != 0) { \
+    wxString s = wxString::Format(fn " failed with error code %i", (int)result);\
+    fprintf(stderr, "%s\n", (const char*)s.utf8_str()); \
+    errorMessages.Add(s); \
+    return false; \
     }
+
+    result = LoadSMF(data, data_size, sequence, 0 /* flags */);
+    CHECK_RETURN_CODE("LoadSMF");
     
     result = MusicSequenceGetAUGraph (sequence, &graph);
-    if (result != 0)
-    {
-        fprintf(stderr, "MusicSequenceGetAUGraph failed\n");
-        return false;
-    }
+    CHECK_RETURN_CODE("MusicSequenceGetAUGraph");
     
     result = AUGraphOpen (graph);     
-    if (result != 0)
-    {
-        fprintf(stderr, "AUGraphOpen failed\n");
-        return false;
-    }
+    CHECK_RETURN_CODE("AUGraphOpen");
     
     result = GetSynthFromGraph (graph, theSynth);
-    if (result != 0)
-    {
-        fprintf(stderr, "GetSynthFromGraph failed\n");
-        return false;
-    }
+    CHECK_RETURN_CODE("GetSynthFromGraph");
     
     result = AudioUnitSetProperty (theSynth,
                                    kAudioUnitProperty_CPULoad,
                                    kAudioUnitScope_Global, 0,
                                    &maxCPULoad, sizeof(maxCPULoad));
-    if (result != 0)
-    {
-        fprintf(stderr, "AudioUnitSetProperty failed\n");
-        return false;
-    }
+    CHECK_RETURN_CODE("AudioUnitSetProperty");
     
     // if the user supplies a sound bank, we'll set that before we initialize and start playing
     if (m_custom_sound_font != NULL) 
@@ -501,39 +491,14 @@ bool AudioUnitOutput::outputToDisk(const char* outputFilePath,
         printf("setting soundfont <%s>\n", m_custom_sound_font);
         FSRef fsRef;
         result = FSPathMakeRef ((const UInt8*)m_custom_sound_font, &fsRef, 0);
-        if (result != 0)
-        {
-            wxMessageBox( _("Sorry, failed to set custom soundfont.") );
-            fprintf(stderr, "Failed to set custom sound font, location 1. Error code is %i\n", (int)result);
-        }
-        else
-        {
-            result = AudioUnitSetProperty (theSynth,
-                                           kMusicDeviceProperty_SoundBankFSRef,
-                                           kAudioUnitScope_Global, 0,
-                                           &fsRef, sizeof(fsRef));
-            if (result != 0)
-            {
-                fprintf(stderr, "Failed to set custom sound font, location 2. Error code is %i\n", (int)result);
-            }
-        }
-    }
-    
-    /*
-    // TODO
-    if (shouldSetBank) {      
-        CFURLRef soundBankURL = CFURLCreateFromFileSystemRepresentation(kCFAllocatorDefault, (const UInt8*)bankPath, strlen(bankPath), false);
-        
-        printf ("Setting Sound Bank:%s\n", bankPath);
-        
+        CHECK_RETURN_CODE("FSPathMakeRef");
+
         result = AudioUnitSetProperty (theSynth,
-                                       kMusicDeviceProperty_SoundBankURL,
+                                       kMusicDeviceProperty_SoundBankFSRef,
                                        kAudioUnitScope_Global, 0,
-                                       &soundBankURL, sizeof(soundBankURL));
-        CFRelease(soundBankURL);
-        require_noerr (result, fail);
+                                       &fsRef, sizeof(fsRef));
+        CHECK_RETURN_CODE("AudioUnitSetProperty[kMusicDeviceProperty_SoundBankFSRef]");
     }
-    */
     
     // need to tell synth that is going to render a file.
     UInt32 value = 1;
@@ -541,71 +506,43 @@ bool AudioUnitOutput::outputToDisk(const char* outputFilePath,
                                   kAudioUnitProperty_OfflineRender,
                                   kAudioUnitScope_Global, 0,
                                   &value, sizeof(value));
-    if (result != 0)
-    {
-        fprintf(stderr, "AudioUnitSetProperty failed\n");
-        return false;
-    }
+    CHECK_RETURN_CODE("AudioUnitSetProperty[kAudioUnitProperty_OfflineRender]");
     
     UInt32 numFrames = 512;
     Float64 sample_rate = 44000;
 
     result = SetUpGraph (graph, numFrames, sample_rate, (outputFilePath != NULL));
-    if (result != 0)
-    {
-        fprintf(stderr, "SetUpGraph failed\n");
-        return false;
-    }
-    
+    CHECK_RETURN_CODE("SetUpGraph");
+
     result = AUGraphInitialize (graph);
-    if (result != 0)
-    {
-        fprintf(stderr, "AUGraphInitialize failed\n");
-        return false;
-    }
+    CHECK_RETURN_CODE("AUGraphInitialize");
     
     MusicPlayer player;
     result = NewMusicPlayer (&player);
-    if (result != 0)
-    {
-        fprintf(stderr, "NewMusicPlayer failed\n");
-        return false;
-    }
+    CHECK_RETURN_CODE("NewMusicPlayer");
     
     result = MusicPlayerSetSequence (player, sequence);
-    if (result != 0)
-    {
-        fprintf(stderr, "MusicPlayerSetSequence failed\n");
-        return false;
-    }
+    CHECK_RETURN_CODE("MusicPlayerSetSequence");
     
     // figure out sequence length
     UInt32 ntracks;
     result = MusicSequenceGetTrackCount (sequence, &ntracks);
-    if (result != 0)
-    {
-        fprintf(stderr, "MusicSequenceGetTrackCount failed\n");
-        return false;
-    }
+    CHECK_RETURN_CODE("MusicSequenceGetTrackCount");
+    
     MusicTimeStamp sequenceLength = 0;
     
-    for (UInt32 i = 0; i < ntracks; ++i) {
+    for (UInt32 i = 0; i < ntracks; ++i)
+    {
         MusicTrack track;
         MusicTimeStamp trackLength;
         UInt32 propsize = sizeof(MusicTimeStamp);
         result = MusicSequenceGetIndTrack(sequence, i, &track);
-        if (result != 0)
-        {
-            fprintf(stderr, "MusicSequenceGetIndTrack failed\n");
-            return false;
-        }
+        CHECK_RETURN_CODE("MusicSequenceGetIndTrack");
+
         result = MusicTrackGetProperty(track, kSequenceTrackProperty_TrackLength,
                                                          &trackLength, &propsize);
-        if (result != 0)
-        {
-            fprintf(stderr, "MusicTrackGetProperty failed\n");
-            return false;
-        }
+        CHECK_RETURN_CODE("MusicTrackGetProperty[kSequenceTrackProperty_TrackLength]");
+       
         if (trackLength > sequenceLength)
             sequenceLength = trackLength;
         
@@ -625,12 +562,8 @@ bool AudioUnitOutput::outputToDisk(const char* outputFilePath,
     //startRunningTime = CAHostTimeBase::GetCurrentTime ();
      
     result = MusicPlayerStart(player);
-    if (result != 0)
-    {
-        fprintf(stderr, "MusicPlayerStart failed\n");
-        return false;
-    }
-    
+    CHECK_RETURN_CODE("MusicPlayerStart");
+
     OSType dataFormat = 0;
     str2OSType("lpcm", dataFormat); //0; //kAudioFormatLinearPCM;
 
@@ -646,7 +579,7 @@ bool AudioUnitOutput::outputToDisk(const char* outputFilePath,
     result = MusicPlayerStop(player);
     if (result != 0)
     {
-        fprintf(stderr, "MusicPlayerStop failed\n");
+        fprintf(stderr, "MusicPlayerStop failed with error code %i\n", (int)result);
         // ignore errors in cleanup
         return true;
     }
@@ -654,7 +587,7 @@ bool AudioUnitOutput::outputToDisk(const char* outputFilePath,
     result = DisposeMusicPlayer(player);
     if (result != 0)
     {
-        fprintf(stderr, "DisposeMusicPlayer failed\n");
+        fprintf(stderr, "DisposeMusicPlayer failed with error code %i\n", (int)result);
         // ignore errors in cleanup
         return true;
     }
@@ -662,7 +595,7 @@ bool AudioUnitOutput::outputToDisk(const char* outputFilePath,
     result = DisposeMusicSequence(sequence);
     if (result != 0)
     {
-        fprintf(stderr, "DisposeMusicSequence failed\n");
+        fprintf(stderr, "DisposeMusicSequence failed with error code %i\n", (int)result);
         // ignore errors in cleanup
         return true;
     }
@@ -670,7 +603,7 @@ bool AudioUnitOutput::outputToDisk(const char* outputFilePath,
     result = DisposeMusicSequence(sequence);
     if (result != 0)
     {
-        fprintf(stderr, "DisposeMusicSequence failed\n");
+        fprintf(stderr, "DisposeMusicSequence failed with error code %i\n", (int)result);
         // ignore errors in cleanup
         return true;
     }

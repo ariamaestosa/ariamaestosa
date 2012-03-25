@@ -89,6 +89,7 @@ namespace AriaMaestosa
     DEFINE_LOCAL_EVENT_TYPE(wxEVT_HIDE_WAIT_WINDOW)
     DEFINE_LOCAL_EVENT_TYPE(wxEVT_EXTEND_TICK)
     DEFINE_LOCAL_EVENT_TYPE(wxEVT_NEW_VERSION_AVAILABLE)
+    DEFINE_LOCAL_EVENT_TYPE(wxEVT_ASYNC_ERROR_MESSAGE)
 }
 
 
@@ -157,6 +158,8 @@ EVT_COMMAND  (HIDE_WAIT_WINDOW_EVENT_ID, wxEVT_HIDE_WAIT_WINDOW,   MainFrame::ev
 
 EVT_COMMAND  (wxID_ANY, wxEVT_EXTEND_TICK, MainFrame::evt_extendTick)
 EVT_COMMAND  (wxID_ANY, wxEVT_NEW_VERSION_AVAILABLE, MainFrame::evt_newVersionAvailable)
+
+EVT_COMMAND(ASYCN_ERR_MESSAGE_EVENT_ID, wxEVT_ASYNC_ERROR_MESSAGE, MainFrame::evt_asyncErrMessage)
 
 EVT_MOUSEWHEEL(MainFrame::onMouseWheel)
 
@@ -1764,6 +1767,13 @@ void MainFrame::evt_newVersionAvailable(wxCommandEvent& evt)
     m_notification_panel->GetSizer()->SetSizeHints(m_notification_panel);
     m_notification_panel->Show();
     Layout();
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void MainFrame::evt_asyncErrMessage(wxCommandEvent& evt)
+{
+    wxMessageBox(evt.GetString(), _("An error occurred"), wxOK | wxICON_ERROR);
 }
 
 // ----------------------------------------------------------------------------------------------------------

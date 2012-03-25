@@ -120,20 +120,39 @@ namespace AriaMaestosa
             printf("Export thread started...\n");
             MeasureData* md = m_sequence->getMeasureData();
             
+            wxArrayString errorMessages;
             bool success = ((AudioUnitOutput*)output)->outputToDisk(m_filepath.mb_str(),
-                                                                    m_data, m_length);
+                                                                    m_data, m_length,
+                                                                    errorMessages);
             /*
             bool success = QuickTimeExport::qtkit_exportToAiff( m_filepath.mb_str() );
             */
-            if (not success)
-            {
-                // FIXME - give visual message. warning this is a thread.
-                std::cerr << "EXPORTING FAILED" << std::endl;
-            }
-            
+
             // send hide progress window event
             MAKE_HIDE_PROGRESSBAR_EVENT(event);
             getMainFrame()->GetEventHandler()->AddPendingEvent(event);
+            
+            
+            // send hide progress window event
+            if (not success)
+            {
+                wxString msg = _("Sorry, exporting to audio could not complete successfully. Please include the following error code when reporting the issue :");
+                
+                if (errorMessages.size() == 0)
+                {
+                    msg << wxT("\n(unknown error)");
+                }
+                
+                for (int n=0; n<errorMessages.size(); n++)
+                {
+                    msg << wxT("\n");
+                    msg << errorMessages[n];
+                }
+                MAKE_ASYNC_ERR_MESSAGE_EVENT(errorNotification);
+                errorNotification.SetString(msg);
+                getMainFrame()->GetEventHandler()->AddPendingEvent(errorNotification);
+            }
+            
             
             
             free(m_data);

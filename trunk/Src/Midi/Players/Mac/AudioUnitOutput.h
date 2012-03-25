@@ -39,7 +39,8 @@ public:
     
     bool outputToDisk(const char* outputFilePath,
                       const char* data,
-                      const int data_size);
+                      const int data_size,
+                      wxArrayString& errorMessages);
 
     void note_on(const int note, const int volume, const int channel);
     void note_off(const int note, const int channel);
