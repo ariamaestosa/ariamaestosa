@@ -19,6 +19,8 @@
 #ifdef _MAC_QUICKTIME_COREAUDIO
 #include "Utils.h"
 
+#include "GUI/MainFrame.h"
+
 #include "Midi/Players/Mac/CAStreamBasicDescription.h"
 #include "Midi/Players/Mac/AudioUnitOutput.h"
 #include "Midi/Players/Mac/AUOutputBL.h"
@@ -184,18 +186,27 @@ bool WriteOutputFile (const char*       outputFilePath,
 			break;
 		}
 	}
-        
+    
 	{
 		CAStreamBasicDescription clientFormat = CAStreamBasicDescription();
+        
+        /*
+         double inSampleRate,		UInt32 inFormatID,
+         UInt32 inBytesPerPacket,	UInt32 inFramesPerPacket,
+         UInt32 inBytesPerFrame,		UInt32 inChannelsPerFrame,
+         UInt32 inBitsPerChannel,	UInt32 inFormatFlags)
+         */
+        
         result = AudioUnitGetProperty(outputUnit,
                                       kAudioUnitProperty_StreamFormat,
                                       kAudioUnitScope_Output, 0,
                                       &clientFormat, &size);
         CHECK_RETURN_CODE("AudioUnitGetProperty");
-    
+        
         
 		size = sizeof(clientFormat);
-		result = ExtAudioFileSetProperty(outfile, kExtAudioFileProperty_ClientDataFormat, size, &clientFormat);
+        result = ExtAudioFileSetProperty(outfile, kExtAudioFileProperty_ClientDataFormat,
+                                         size, &clientFormat);
         CHECK_RETURN_CODE("ExtAudioFileSetProperty");
         
         printf("Everything is set up for export, will start the loop. Saving to <%s>\n",
@@ -211,7 +222,8 @@ bool WriteOutputFile (const char*       outputFilePath,
 			do {
 				outputBuffer.Prepare();
 				AudioUnitRenderActionFlags actionFlags = 0;
-				result = AudioUnitRender (outputUnit, &actionFlags, &tStamp, 0, numFrames, outputBuffer.ABL());
+				result = AudioUnitRender (outputUnit, &actionFlags, &tStamp, 0, numFrames,
+                                          outputBuffer.ABL());
                 CHECK_RETURN_CODE("AudioUnitRender");
     
 				tStamp.mSampleTime += numFrames;
@@ -229,6 +241,9 @@ bool WriteOutputFile (const char*       outputFilePath,
                     {
                         printf("  --> %i%% done\n", new_percentage);
                         percentage = new_percentage;
+                        
+                        //MAKE_UPDATE_PROGRESSBAR_EVENT(evt, percentage);
+                        //getMainFrame()->GetEventHandler()->AddPendingEvent(evt);
                     }
                 }
                 
