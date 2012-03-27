@@ -2939,14 +2939,14 @@
 					"$(inherited)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				OTHER_LDFLAGS = "$(inherited)";
 				PREBINDING = NO;
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
 				PRODUCT_NAME = "Aria Maestosa";
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
+				SDKROOT = macosx10.6;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = "-Wmost";
 			};
@@ -2978,13 +2978,13 @@
 					"$(inherited)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				PREBINDING = NO;
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
 				PRODUCT_NAME = "Aria Maestosa";
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
+				SDKROOT = macosx10.6;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = "-Wmost";
 			};
@@ -2993,14 +2993,20 @@
 		EF49C66E0AC4A6240054F45D /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
+				ARCHS = "$(ONLY_ACTIVE_ARCH_PRE_XCODE_3_1)";
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				ONLY_ACTIVE_ARCH_PRE_XCODE_3_1 = "$(NATIVE_ARCH)";
+				SDKROOT = macosx10.6;
 			};
 			name = Development;
 		};
 		EF49C66F0AC4A6240054F45D /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
+				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				SDKROOT = macosx10.6;
 			};
 			name = Deployment;
 		};

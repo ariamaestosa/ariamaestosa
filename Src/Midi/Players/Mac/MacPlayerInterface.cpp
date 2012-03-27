@@ -143,7 +143,7 @@ namespace AriaMaestosa
                     msg << wxT("\n(unknown error)");
                 }
                 
-                for (int n=0; n<errorMessages.size(); n++)
+                for (unsigned int n=0; n<errorMessages.size(); n++)
                 {
                     msg << wxT("\n");
                     msg << errorMessages[n];
