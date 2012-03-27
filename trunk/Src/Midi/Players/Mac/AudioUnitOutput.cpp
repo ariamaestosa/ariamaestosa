@@ -242,8 +242,8 @@ bool WriteOutputFile (const char*       outputFilePath,
                         printf("  --> %i%% done\n", new_percentage);
                         percentage = new_percentage;
                         
-                        //MAKE_UPDATE_PROGRESSBAR_EVENT(evt, percentage);
-                        //getMainFrame()->GetEventHandler()->AddPendingEvent(evt);
+                        MAKE_UPDATE_PROGRESSBAR_EVENT(evt, percentage);
+                        getMainFrame()->GetEventHandler()->AddPendingEvent(evt);
                     }
                 }
                 
