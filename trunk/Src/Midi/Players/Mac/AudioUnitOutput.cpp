@@ -43,6 +43,15 @@ using namespace AriaMaestosa;
 #pragma mark Render to file
 #endif
 
+// const char* GetMacOSStatusErrorString(OSStatus err);
+// const char* GetMacOSStatusCommentString(OSStatus err);
+#define CHECK_RETURN_CODE(fn) if (result != 0) { \
+wxString s = wxString::Format(fn " failed with error code %i (line %i)", (int)result, __LINE__);\
+fprintf(stderr, "%s\n", (const char*)s.utf8_str()); \
+errorMessages.Add(s); \
+return false; \
+}
+
 // Code by Apple, from http://developer.apple.com/library/mac/#samplecode/PlaySequence/Introduction/Intro.html
 static void str2OSType (const char * inString, OSType &outType)
 {
@@ -85,7 +94,8 @@ bool WriteOutputFile (const char*       outputFilePath,
                       bool              shouldPrint,
                       AUGraph			inGraph,
                       UInt32			numFrames,
-                      MusicPlayer		player)
+                      MusicPlayer		player,
+                      wxArrayString&    errorMessages)
 {
     // delete existing output  file
     
@@ -104,20 +114,26 @@ bool WriteOutputFile (const char*       outputFilePath,
 	
 	AudioFileTypeID destFileType = kAudioFileAIFFType;
 	
-	if (dataFormat == kAudioFormatLinearPCM) {
+	if (dataFormat == kAudioFormatLinearPCM)
+    {
 		outputFormat.mBytesPerPacket = outputFormat.mChannelsPerFrame * 2;
 		outputFormat.mFramesPerPacket = 1;
 		outputFormat.mBytesPerFrame = outputFormat.mBytesPerPacket;
 		outputFormat.mBitsPerChannel = 16;
 		
 		if (destFileType == kAudioFileWAVEType)
-			outputFormat.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger
-            | kLinearPCMFormatFlagIsPacked;
+        {
+			outputFormat.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked;
+        }
 		else
+        {
 			outputFormat.mFormatFlags = kLinearPCMFormatFlagIsBigEndian
-            | kLinearPCMFormatFlagIsSignedInteger
-            | kLinearPCMFormatFlagIsPacked;
-	} else {
+                                      | kLinearPCMFormatFlagIsSignedInteger
+                                      | kLinearPCMFormatFlagIsPacked;
+        }
+	}
+    else
+    {
 		// use AudioFormat API to fill out the rest.
 		size = sizeof(outputFormat);
 		result = AudioFormatGetProperty(kAudioFormatProperty_FormatInfo, 0, NULL, &size, &outputFormat);
@@ -138,21 +154,12 @@ bool WriteOutputFile (const char*       outputFilePath,
 	ExtAudioFileRef outfile;
 	result = ExtAudioFileCreateWithURL(url, destFileType, &outputFormat, NULL, 0, &outfile);
 	CFRelease (url);
-	
-    if (result != 0)
-    {
-        fprintf(stderr, "ExtAudioFileCreateWithURL Error %i at %s:%i\n", (int)result, __FILE__, __LINE__);
-        return false;
-    }
+    CHECK_RETURN_CODE("ExtAudioFileCreateWithURL");
     
 	AudioUnit outputUnit;
 	UInt32 nodeCount;
     result = AUGraphGetNodeCount (inGraph, &nodeCount);
-    if (result != 0)
-    {
-        fprintf(stderr, "AUGraphGetNodeCount Error %i at %s:%i\n", (int)result, __FILE__, __LINE__);
-        return false;
-    }
+    CHECK_RETURN_CODE("AUGraphGetNodeCount");
     
     if (nodeCount == 0) printf("[CoreAudioOutput] WARNING : 0 nodes??\n");
     
@@ -160,11 +167,7 @@ bool WriteOutputFile (const char*       outputFilePath,
 	{
 		AUNode node;
 		result = AUGraphGetIndNode(inGraph, i, &node);
-        if (result != 0)
-        {
-            fprintf(stderr, "AUGraphGetIndNode Error %i at %s:%i\n", (int)result, __FILE__, __LINE__);
-            return false;
-        }
+        CHECK_RETURN_CODE("AUGraphGetNodeCount");
         
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
         AudioComponentDescription desc;
@@ -172,21 +175,12 @@ bool WriteOutputFile (const char*       outputFilePath,
         ComponentDescription desc;
 #endif
 		result = AUGraphNodeInfo(inGraph, node, &desc, NULL);
-        if (result != 0)
-        {
-            fprintf(stderr, "AUGraphNodeInfo Error %i at %s:%i\n", (int)result, __FILE__, __LINE__);
-            return false;
-        }
+        CHECK_RETURN_CODE("AUGraphNodeInfo");
         
 		if (desc.componentType == kAudioUnitType_Output) 
 		{
 			result = AUGraphNodeInfo(inGraph, node, 0, &outputUnit);
-            if (result != 0)
-            {
-                fprintf(stderr, "AUGraphNodeInfo Error %i at %s:%i\n", (int)result, __FILE__, __LINE__);
-                return false;
-            }
-            
+            CHECK_RETURN_CODE("AUGraphNodeInfo");
 			break;
 		}
 	}
@@ -197,20 +191,12 @@ bool WriteOutputFile (const char*       outputFilePath,
                                       kAudioUnitProperty_StreamFormat,
                                       kAudioUnitScope_Output, 0,
                                       &clientFormat, &size);
-        if (result != 0)
-        {
-            fprintf(stderr, "AudioUnitGetProperty Error %i at %s:%i\n", (int)result, __FILE__, __LINE__);
-            return false;
-        }
+        CHECK_RETURN_CODE("AudioUnitGetProperty");
     
         
 		size = sizeof(clientFormat);
 		result = ExtAudioFileSetProperty(outfile, kExtAudioFileProperty_ClientDataFormat, size, &clientFormat);
-        if (result != 0)
-        {
-            fprintf(stderr, "ExtAudioFileSetProperty Error %i at %s:%i\n", (int)result, __FILE__, __LINE__);
-            return false;
-        }
+        CHECK_RETURN_CODE("ExtAudioFileSetProperty");
         
         printf("Everything is set up for export, will start the loop. Saving to <%s>\n",
                outputFilePath);
@@ -226,28 +212,15 @@ bool WriteOutputFile (const char*       outputFilePath,
 				outputBuffer.Prepare();
 				AudioUnitRenderActionFlags actionFlags = 0;
 				result = AudioUnitRender (outputUnit, &actionFlags, &tStamp, 0, numFrames, outputBuffer.ABL());
-                if (result != 0)
-                {
-                    fprintf(stderr, "AudioUnitRender Error %i at %s:%i\n", (int)result, __FILE__, __LINE__);
-                    return false;
-                }
+                CHECK_RETURN_CODE("AudioUnitRender");
     
 				tStamp.mSampleTime += numFrames;
 				
 				result = ExtAudioFileWrite(outfile, numFrames, outputBuffer.ABL());
-                if (result != 0)
-                {
-                    fprintf(stderr, "ExtAudioFileWrite Error %i at %s:%i\n", (int)result, __FILE__, __LINE__);
-                    return false;
-                }
-                
+                CHECK_RETURN_CODE("ExtAudioFileWrite");
                 
 				result = MusicPlayerGetTime (player, &currentTime);
-                if (result != 0)
-                {
-                    fprintf(stderr, "MusicPlayerGetTime Error %i at %s:%i\n", (int)result, __FILE__, __LINE__);
-                    return false;
-                }
+                CHECK_RETURN_CODE("MusicPlayerGetTime");
                 
                 if ((int)currentTime % 20 == 0)
                 {
@@ -265,11 +238,7 @@ bool WriteOutputFile (const char*       outputFilePath,
 	
     // close
 	result = ExtAudioFileDispose(outfile);
-    if (result != 0)
-    {
-        fprintf(stderr, "ExtAudioFileDispose Error %i at %s:%i\n", (int)result, __FILE__, __LINE__);
-        return false;
-    }
+    CHECK_RETURN_CODE("ExtAudioFileDispose");
     
     return true;
 }
@@ -458,15 +427,6 @@ bool AudioUnitOutput::outputToDisk(const char* outputFilePath,
     MusicSequence sequence;
     Float32 maxCPULoad = .8;
 
-// const char* GetMacOSStatusErrorString(OSStatus err);
-// const char* GetMacOSStatusCommentString(OSStatus err);
-#define CHECK_RETURN_CODE(fn) if (result != 0) { \
-    wxString s = wxString::Format(fn " failed with error code %i", (int)result);\
-    fprintf(stderr, "%s\n", (const char*)s.utf8_str()); \
-    errorMessages.Add(s); \
-    return false; \
-    }
-
     result = LoadSMF(data, data_size, sequence, 0 /* flags */);
     CHECK_RETURN_CODE("LoadSMF");
     
@@ -562,13 +522,18 @@ bool AudioUnitOutput::outputToDisk(const char* outputFilePath,
     //startRunningTime = CAHostTimeBase::GetCurrentTime ();
      
     result = MusicPlayerStart(player);
-    CHECK_RETURN_CODE("MusicPlayerStart");
-
+    // FIXME: there is a bug under Mac OS X Lion where MusicPlayerStart will return a bogus error code. Nonetheless
+    // the export completes successfully by just ignoring the error code
+    if (result != -10852)
+    {
+        CHECK_RETURN_CODE("MusicPlayerStart");
+    }
+    
     OSType dataFormat = 0;
     str2OSType("lpcm", dataFormat); //0; //kAudioFormatLinearPCM;
 
     bool success = WriteOutputFile(outputFilePath, dataFormat, sample_rate, sequenceLength,
-                                   false /* print */, graph, numFrames, player);
+                                   false /* print */, graph, numFrames, player, errorMessages);
     
     if (not success)
     {
