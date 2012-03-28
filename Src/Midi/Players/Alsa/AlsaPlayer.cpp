@@ -174,8 +174,13 @@ public:
         int trackAmount = -1;
         m_start_tick = 0;
         makeJDKMidiSequence(g_sequence, *jdkmidiseq, selectionOnly, &songLengthInTicks,
-                        &m_start_tick, &trackAmount, true /* for playback */);
-        songLengthInTicks += g_sequence->ticksPerBeat();
+                            &m_start_tick, &trackAmount, true /* for playback */);
+                        
+        // add one beat at the end to leave some time for notes to ring off
+        if (not g_sequence->isLoopEnabled())
+        {
+            songLengthInTicks += m_sequence->ticksPerBeat();
+        }
 
         //std::cout << "trackAmount=" << trackAmount << " start_tick=" << m_start_tick<<
         //        " songLengthInTicks=" << songLengthInTicks << std::endl;
