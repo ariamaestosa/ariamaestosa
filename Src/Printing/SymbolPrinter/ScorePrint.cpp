@@ -1701,6 +1701,7 @@ namespace AriaMaestosa
                     const int orient = (noteRenderInfo.m_stem_type == STEM_UP ? 1 : -1 );
                     
                     RenderRoutines::drawFlag(&dc, grctx, flag_x_origin, flag_y, orient);
+                    dc.SetPen(*wxBLACK_PEN);
                 }
             }
             
