@@ -63,6 +63,7 @@ namespace AriaMaestosa
         PLAY_CLICKED,
         STOP_CLICKED,
         RECORD_CLICKED,
+        LOOP_CLICKED,
         TEMPO,
         ZOOM,
         LENGTH,
@@ -174,6 +175,7 @@ namespace AriaMaestosa
 #ifdef NO_WX_TOOLBAR
         void AddSeparator() {}
         void AddTool(const int id, wxString label, wxBitmap& bmp);
+        void AddCheckTool(const int id, wxString label, wxBitmap& bmp);
         void SetToolNormalBitmap(const int id, wxBitmap& bmp);
         void EnableTool(const int id, const bool enabled);
         void AddStretchableSpace();
@@ -379,6 +381,7 @@ namespace AriaMaestosa
         void playClicked(wxCommandEvent& evt);
         void stopClicked(wxCommandEvent& evt);
         void recordClicked(wxCommandEvent& evt);
+        void loopClicked(wxCommandEvent& evt);
         bool isPlaybackMode() const { return m_playback_mode; }
         
         // ---- Pickers

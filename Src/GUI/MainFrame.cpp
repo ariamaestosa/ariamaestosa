@@ -122,10 +122,12 @@ EVT_CLOSE(MainFrame::on_close)
 EVT_BUTTON(PLAY_CLICKED,   MainFrame::playClicked)
 EVT_BUTTON(STOP_CLICKED,   MainFrame::stopClicked)
 EVT_BUTTON(RECORD_CLICKED, MainFrame::recordClicked)
+EVT_BUTTON(LOOP_CLICKED,   MainFrame::loopClicked)
 #else
 EVT_TOOL(PLAY_CLICKED,   MainFrame::playClicked)
 EVT_TOOL(STOP_CLICKED,   MainFrame::stopClicked)
 EVT_TOOL(RECORD_CLICKED, MainFrame::recordClicked)
+EVT_TOOL(LOOP_CLICKED,   MainFrame::loopClicked)
 #endif
 
 EVT_TEXT(TEMPO, MainFrame::tempoChanged)
@@ -219,6 +221,25 @@ void CustomToolBar::AddTool(const int id, wxString label, wxBitmap& bmp)
     wxBitmapButton* btn = new wxBitmapButton(this, id, bmp);
     toolbarSizer->Add(btn, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
     labels.push_back(label);
+}
+
+void CustomToolBar::AddCheckTool(const int id, wxString label, wxBitmap& bmp)
+{
+    wxToggleButton* btn = new wxToggleButton(this, id, bmp);
+    toolbarSizer->Add(btn, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+    labels.push_back(label);
+}
+
+bool CustomToolBar::GetToolState(int toolId)
+{
+    wxToggleButton* btn = (wxToggleButton*)toolbarSizer->GetItemById(toolId)->GetWidget();
+    return btn->GetValue();
+}
+
+void CustomToolBar::ToggleTool(int toolId, bool pressed)
+{
+    wxToggleButton* btn = (wxToggleButton*)toolbarSizer->GetItemById(toolId)->GetWidget();
+    btn->SetValue(pressed);
 }
 
 void CustomToolBar::AddStretchableSpace()
@@ -376,6 +397,10 @@ void MainFrame::init()
         exit(1);
     }
     m_record_bitmap.LoadFile( getResourcePrefix()  + wxT("record.png") , wxBITMAP_TYPE_PNG);
+    
+    wxBitmap loopBitmap;
+    loopBitmap.LoadFile( getResourcePrefix()  + wxT("loop.png") , wxBITMAP_TYPE_PNG);
+    
     m_record_down_bitmap.LoadFile( getResourcePrefix()  + wxT("record_down.png") , wxBITMAP_TYPE_PNG);
     m_toolbar->AddTool(RECORD_CLICKED, _("Record"), m_record_bitmap);
 
@@ -387,6 +412,9 @@ void MainFrame::init()
     stopBitmap.LoadFile( getResourcePrefix()  + wxT("stop.png") , wxBITMAP_TYPE_PNG);
     m_toolbar->AddTool(STOP_CLICKED, _("Stop"), stopBitmap);
     m_toolbar->EnableTool(STOP_CLICKED, false);
+    
+    m_toolbar->AddCheckTool(LOOP_CLICKED, _("Loop"), loopBitmap);
+    m_toolbar->EnableTool(LOOP_CLICKED, false);
     
     m_toolbar->AddSeparator();
 
@@ -835,6 +863,14 @@ void MainFrame::recordClicked(wxCommandEvent& evt)
 
 // ----------------------------------------------------------------------------------------------------------
 
+void MainFrame::loopClicked(wxCommandEvent& evt)
+{
+    bool pressed = m_toolbar->GetToolState(LOOP_CLICKED);
+    getCurrentSequence()->setLoopEnabled(pressed);
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
 void MainFrame::onEnterPlaybackMode()
 {
     toolsEnterPlaybackMode();
@@ -949,6 +985,9 @@ void MainFrame::updateTopBarAndScrollbarsForSequence(const GraphicalSequence* se
     if (m_paused)             m_toolbar->SetToolNormalBitmap(PLAY_CLICKED, m_pause_down_bitmap);
     else if (m_playback_mode) m_toolbar->SetToolNormalBitmap(PLAY_CLICKED, m_pause_bitmap);
     else                      m_toolbar->SetToolNormalBitmap(PLAY_CLICKED, m_play_bitmap);
+    
+    m_toolbar->EnableTool(LOOP_CLICKED, true);
+    m_toolbar->ToggleTool(LOOP_CLICKED, seq->getModel()->isLoopEnabled());
     
 #if defined(__WXOSX_COCOA__)
     OSXSetModified(seq->getModel()->somethingToUndo());
@@ -1381,6 +1420,8 @@ void MainFrame::updateHorizontalScrollbar(int thumbPos)
 void MainFrame::updateVerticalScrollbar()
 {
     GraphicalSequence* gseq = getCurrentGraphicalSequence();
+    if (gseq == NULL) return;
+    
     int position = gseq->getYScroll();
 
     const int total_size = gseq->getTotalHeight()+25;
