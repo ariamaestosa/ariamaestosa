@@ -163,6 +163,8 @@ namespace AriaMaestosa
          */
         bool m_importing;
         
+        bool m_loop_enabled;
+        
      public:
         
         class Import
@@ -402,6 +404,9 @@ namespace AriaMaestosa
         bool isImportMode() const { return m_importing; }
         
         int getLastTickInSequence() const;
+        
+        bool isLoopEnabled() const { return m_loop_enabled; }
+        void setLoopEnabled(bool loop) { m_loop_enabled = loop; }
         
         // ---- serialization
         

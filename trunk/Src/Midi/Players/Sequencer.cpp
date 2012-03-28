@@ -64,6 +64,11 @@ public:
     {
         gettimeofday(&_init_time, 0);
     }
+    
+    void reset()
+    {
+        reset_and_start(); // in this timer implementation, both actions are the same
+    }    
 
     int get_elapsed_millis()
     {
@@ -81,8 +86,8 @@ typedef GetTimeOfDayTimer BasicTimer;
 class FtimeTimer
 {
     long initial_sec, initial_millis;
-    public:
-
+public:
+    
     void reset_and_start()
     {
         // FIXME - ftime is apparently obsolete (http://linux.die.net/man/3/ftime)
@@ -90,11 +95,16 @@ class FtimeTimer
 
         timeb tb;
         ftime(&tb);
-        initial_sec= tb.time;
+        initial_sec = tb.time;
         initial_millis = tb.millitm;
         //std::cout << "time = " << tb.time << " seconds " << tb.millitm << " millis" << std::endl;
     }
 
+    void reset()
+    {
+        reset_and_start(); // in this timer implementation, both actions are the same
+    }
+    
     int get_elapsed_millis()
     {
         timeb tb;
@@ -325,12 +335,45 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
 
             if ((long)tick > (long)songLengthInTicks)
             {
-                PlatformMidiManager::get()->seq_notify_current_tick(-1);
-                if (not PlatformMidiManager::get()->isRecording())
+                // looping when recording makes no sense
+                if (m_seq->isLoopEnabled() and not PlatformMidiManager::get()->isRecording())
                 {
-                    std::cout << "done, thread will exit" << std::endl;
-                    cleanup_sequencer();
-                    return;
+                    tick = 0;
+                    previous_tick = 0;
+                    
+                    jdksequencer->GoToTimeMs( 0 );
+                    if (not jdksequencer->GetNextEventTime(&tick))
+                    {
+                        std::cerr << "[AriaSequenceTimer] failed to get first event time, returning (did you try to play en empty sequence?)" << std::endl;
+                        cleanup_sequencer();
+                        return;
+                    }
+                    
+                    //jdksequencer->ResetAllTracks();
+                    
+                    long previous_tick = tick;
+                    
+                    next_event_time = tick / ticks_per_millis;
+                    
+                    timer->reset();
+                    
+                    total_millis = 0;
+                    last_millis = 0;
+                    
+                    next_metronome_beat = -1;
+                    played_metronome_tick = -1;
+                    
+                    next_beat = 0;
+                }
+                else
+                {
+                    PlatformMidiManager::get()->seq_notify_current_tick(-1);
+                    if (not PlatformMidiManager::get()->isRecording())
+                    {
+                        std::cout << "done, thread will exit" << std::endl;
+                        cleanup_sequencer();
+                        return;
+                    }
                 }
             }
 

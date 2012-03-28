@@ -386,8 +386,16 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
         substract_ticks = *startTick;
         
         if (trackLength == -1) return -1; // nothing to play in track (empty track - play nothing)
-        *songLengthInTicks = trackLength + sequence->ticksPerBeat()*2;
         
+        if (sequence->isLoopEnabled())
+        {
+            *songLengthInTicks = trackLength;
+        }
+        else
+        {
+            // Add some time at the end for notes to fade out
+            *songLengthInTicks = trackLength + sequence->ticksPerBeat()*2;
+        }
     }
     else
     {

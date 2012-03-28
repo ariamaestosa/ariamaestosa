@@ -1,4 +1,5 @@
 1.3 beta 6
+- Add basic loop feature
 - Fix exporting to audio on OSX Lion
 - Add option to check online for new versions of Aria
 - Add Russian and Portuguese translations from Transifex
