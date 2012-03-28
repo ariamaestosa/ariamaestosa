@@ -179,7 +179,7 @@ public:
         // add one beat at the end to leave some time for notes to ring off
         if (not g_sequence->isLoopEnabled())
         {
-            songLengthInTicks += m_sequence->ticksPerBeat();
+            songLengthInTicks += g_sequence->ticksPerBeat();
         }
 
         //std::cout << "trackAmount=" << trackAmount << " start_tick=" << m_start_tick<<
