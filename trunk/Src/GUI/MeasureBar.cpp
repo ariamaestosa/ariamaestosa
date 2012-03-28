@@ -609,16 +609,16 @@ void MeasureBar::mouseUp(int mousex_current, int mousey_current, int mousex_init
     const int measureAmount = m_data->getMeasureInfoAmount();
 
     // determine selection range in midi ticks
-    int minimal_tick = -1, maximal_tick = -1;
+    //int minimal_tick = -1, maximal_tick = -1;
     for (int n=0; n<measureAmount; n++)
     {
         // iterate through measures to find the first selected one
         if (m_data->getMeasureInfo(n).selected)
         {
             // we found a first selected measure, remember it as minimal tick
-            minimal_tick = m_data->firstTickInMeasure(n);
+            //minimal_tick = m_data->firstTickInMeasure(n);
             do{ n++; } while (m_data->getMeasureInfo(n).selected); // skip all uneslected measures
-            maximal_tick = m_data->firstTickInMeasure(n);
+            //maximal_tick = m_data->firstTickInMeasure(n);
             break;
         }
     }

@@ -351,7 +351,7 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
                     
                     //jdksequencer->ResetAllTracks();
                     
-                    long previous_tick = tick;
+                    previous_tick = tick;
                     
                     next_event_time = tick / ticks_per_millis;
                     
