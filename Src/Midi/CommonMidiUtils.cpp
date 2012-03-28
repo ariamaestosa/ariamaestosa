@@ -436,7 +436,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
             
             
             if (trackLength == -1) continue; // nothing to play in track (empty track - skip it)
-            if (trackLength > *songLengthInTicks) *songLengthInTicks=trackLength;
+            if (trackLength > *songLengthInTicks) *songLengthInTicks = trackLength;
             
             if (not drum_track)
             {
