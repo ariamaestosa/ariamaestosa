@@ -70,6 +70,7 @@
 #include <wx/notebook.h>
 #include <wx/imaglist.h>
 #include <wx/log.h>
+#include <wx/tglbtn.h>
 
 #ifdef __WXMAC__
 #include <ApplicationServices/ApplicationServices.h>
@@ -122,7 +123,7 @@ EVT_CLOSE(MainFrame::on_close)
 EVT_BUTTON(PLAY_CLICKED,   MainFrame::playClicked)
 EVT_BUTTON(STOP_CLICKED,   MainFrame::stopClicked)
 EVT_BUTTON(RECORD_CLICKED, MainFrame::recordClicked)
-EVT_BUTTON(LOOP_CLICKED,   MainFrame::loopClicked)
+EVT_TOGGLEBUTTON(LOOP_CLICKED,   MainFrame::loopClicked)
 #else
 EVT_TOOL(PLAY_CLICKED,   MainFrame::playClicked)
 EVT_TOOL(STOP_CLICKED,   MainFrame::stopClicked)
@@ -225,21 +226,32 @@ void CustomToolBar::AddTool(const int id, wxString label, wxBitmap& bmp)
 
 void CustomToolBar::AddCheckTool(const int id, wxString label, wxBitmap& bmp)
 {
-    wxToggleButton* btn = new wxToggleButton(this, id, bmp);
+    wxToggleButton* btn = new wxToggleButton(this, id, label);
     toolbarSizer->Add(btn, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
     labels.push_back(label);
 }
 
 bool CustomToolBar::GetToolState(int toolId)
 {
-    wxToggleButton* btn = (wxToggleButton*)toolbarSizer->GetItemById(toolId)->GetWidget();
-    return btn->GetValue();
+    wxWindow* window = FindWindow(toolId);
+    if (window == NULL)
+    {
+        fprintf(stderr, "[GetToolState] WARNING: Widget %i not found\n", toolId);
+        return false;
+    }
+    wxToggleButton* btn = (wxToggleButton*)toolbarSizer->GetItemById(toolId)->GetWindow();
+    return ((wxToggleButton*)window)->GetValue();
 }
 
 void CustomToolBar::ToggleTool(int toolId, bool pressed)
 {
-    wxToggleButton* btn = (wxToggleButton*)toolbarSizer->GetItemById(toolId)->GetWidget();
-    btn->SetValue(pressed);
+    wxWindow* window = FindWindow(toolId);
+    if (window == NULL)
+    {
+        fprintf(stderr, "[ToggleTool] WARNING: Widget %i not found\n", toolId);
+        return;
+    }
+    ((wxToggleButton*)window)->SetValue(pressed);
 }
 
 void CustomToolBar::AddStretchableSpace()

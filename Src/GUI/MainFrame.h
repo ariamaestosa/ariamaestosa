@@ -179,6 +179,8 @@ namespace AriaMaestosa
         void SetToolNormalBitmap(const int id, wxBitmap& bmp);
         void EnableTool(const int id, const bool enabled);
         void AddStretchableSpace();
+        bool GetToolState(int id);
+        void ToggleTool(int id, bool pressed);
 #endif
         CustomToolBar(wxWindow* parent);
         void add(wxControl* ctrl, wxString label=wxEmptyString);
