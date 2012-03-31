@@ -192,9 +192,13 @@ MainPane::MainPane(wxWindow* parent, int* args) :
 #endif
 }
 
+// -----------------------------------------------------------------------------------------------------------
+
 MainPane::~MainPane()
 {
 }
+
+// -----------------------------------------------------------------------------------------------------------
 
 /**
  * Called when frame has just been made visible. Does things that can't be done without display.
@@ -206,6 +210,8 @@ void MainPane::isNowVisible()
     //mf->getCurrentSequence()->addTrack();
     m_is_visible = true;
 }
+
+// -----------------------------------------------------------------------------------------------------------
 
 void MainPane::resized(wxSizeEvent& evt)
 {
@@ -223,7 +229,8 @@ void MainPane::resized(wxSizeEvent& evt)
     RenderPane::resized(evt);
 }
 
-// --------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
 #pragma mark Rendering
@@ -234,7 +241,7 @@ void MainPane::paintEvent(wxPaintEvent& evt)
     render(true);
 }
 
-// --------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 
 void MainPane::render(const bool isPaintEvent)
 {
@@ -258,7 +265,7 @@ void MainPane::render(const bool isPaintEvent)
 
 }
 
-// --------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 
 MainPane::WelcomeResult MainPane::drawWelcomeMenu()
 {
@@ -293,7 +300,8 @@ MainPane::WelcomeResult MainPane::drawWelcomeMenu()
     for (int n=0; n<6; n++)
     {
         strings[n]->bind(); // to make sure text width is available
-        int needed_width = IMAGE_MARGIN + icons[n]->getImageWidth() + IMAGE_MARGIN*2 + strings[n]->getWidth() + IMAGE_MARGIN;
+        int needed_width = IMAGE_MARGIN + icons[n]->getImageWidth() + IMAGE_MARGIN*2 +
+                           strings[n]->getWidth() + IMAGE_MARGIN;
 
         const int y = (n > 2 ? (int)(getHeight()/2.0f + (3 - 1.5f)/1.5f*(getHeight() - height*2)/2.0f) :
                        (int)(getHeight()/2.0f + (n - 1.5f)/1.5f*(getHeight() - height*2)/2.0f));
@@ -476,12 +484,13 @@ MainPane::WelcomeResult MainPane::drawWelcomeMenu()
         
         AriaRender::color(0,0,0);
         strings[n]->bind();
-        strings[n]->render(img_x + IMAGE_MARGIN*3 + menu_new->getImageWidth(), y + m_new_sequence_label.getHeight()/2);
+        strings[n]->render(img_x + IMAGE_MARGIN*3 + menu_new->getImageWidth(),
+                           y + m_new_sequence_label.getHeight()/2);
     }
     return returnValue;
 }
 
-// --------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 
 bool MainPane::do_render()
 {
@@ -748,7 +757,8 @@ bool MainPane::do_render()
 
 }
 
-// --------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
 #pragma mark Pop-ups events
@@ -762,14 +772,16 @@ void MainPane::instrumentPopupSelected(wxCommandEvent& evt)
 {
     Core::getInstrumentPicker()->menuSelected( evt );
 }
-// --------------------------------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------------------------------------
 
 void MainPane::drumPopupSelected(wxCommandEvent& evt)
 {
     Core::getDrumPicker()->menuSelected( evt );
 }
 
-// --------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
 #pragma mark Input
@@ -779,8 +791,7 @@ bool MainPane::isSelectMorePressed() { return wxGetKeyState(WXK_SHIFT);   }
 bool MainPane::isSelectLessPressed() { return wxGetKeyState(WXK_ALT);     }
 bool MainPane::isCommandDown      () { return wxGetKeyState(WXK_COMMAND); }
 
-
-// --------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 
 void MainPane::mouseHeldDown()
 {
@@ -799,7 +810,7 @@ void MainPane::mouseHeldDown()
     }// end if not on dock
 }
 
-// --------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 
 void MainPane::rightClick(wxMouseEvent& event)
 {
@@ -839,7 +850,7 @@ void MainPane::rightClick(wxMouseEvent& event)
     Display::render();
 }
 
-// --------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 
 void MainPane::mouseDown(wxMouseEvent& event)
 {
@@ -1006,7 +1017,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
     m_mouse_down_timer->start();
 }
 
-// --------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 
 void MainPane::mouseMoved(wxMouseEvent& event)
 {    
@@ -1120,7 +1131,7 @@ void MainPane::mouseMoved(wxMouseEvent& event)
 
 }
 
-// --------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 
 void MainPane::mouseLeftWindow(wxMouseEvent& event)
 {    
@@ -1151,7 +1162,7 @@ void MainPane::mouseLeftWindow(wxMouseEvent& event)
     }
 }
 
-// --------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 
 void MainPane::mouseReleased(wxMouseEvent& event)
 {
@@ -1177,7 +1188,7 @@ void MainPane::mouseReleased(wxMouseEvent& event)
         // check if user is clicking on red arrow that scrolls to current playback location
         if (m_left_arrow)
         {
-            if (m_mouse_x_current.getRelativeTo(WINDOW)>5 and m_mouse_x_current.getRelativeTo(WINDOW)<25)
+            if (m_mouse_x_current.getRelativeTo(WINDOW) > 5 and m_mouse_x_current.getRelativeTo(WINDOW) < 25)
             {
                 scrollNowToPlaybackPosition();
             }
@@ -1208,7 +1219,7 @@ void MainPane::mouseReleased(wxMouseEvent& event)
     Display::render();
 }
 
-// --------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 
 void MainPane::keyReleased(wxKeyEvent& evt)
 {
@@ -1218,7 +1229,7 @@ void MainPane::keyReleased(wxKeyEvent& evt)
     }
 }
 
-// --------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 
 void MainPane::keyPressed(wxKeyEvent& evt)
 {
@@ -1300,7 +1311,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
     editor->processKeyPress(evt.GetKeyCode(), commandDown, shiftDown);
 }
 
-// ----------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 
 void MainPane::mouseWheelMoved(wxMouseEvent& event)
 {
@@ -1384,7 +1395,8 @@ void MainPane::mouseWheelMoved(wxMouseEvent& event)
     }// end if not on dock
 }
 
-// ----------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
 #pragma mark Playback Loop
@@ -1414,7 +1426,7 @@ void MainPane::exitPlayLoop()
     render();
 }
 
-// --------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 
 void MainPane::playbackRenderLoop()
 {
@@ -1488,7 +1500,7 @@ void MainPane::playbackRenderLoop()
     wxMilliSleep(10);
 }
 
-// --------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 
 void MainPane::scrollNowToPlaybackPosition()
 {
@@ -1496,14 +1508,15 @@ void MainPane::scrollNowToPlaybackPosition()
     m_scroll_to_playback_position = true;
 }
 
-// --------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 
 void MainPane::setCurrentTick(int currentTick)
 {
     m_current_tick = currentTick;
 }
 
-// --------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 #if 0
 #pragma mark -
 #pragma mark Serialization
