@@ -97,13 +97,13 @@ namespace AriaMaestosa
     
     int tab_width = 145;
 
-    /** when this is set to 'true', the app will wait for a new click to be begun to process any mouse events
-      * (i.e. current click/drag is not valid anymore)
+    /** when this is set to 'true', the app will wait for a new click to be begun to process any mouse
+      * events (i.e. current click/drag is not valid anymore)
       */
     bool invalidateMouseEvents = false;
 
-    // ==========================================================================================
-    // ==========================================================================================
+    // =======================================================================================================
+    // =======================================================================================================
     class MouseDownTimer : public wxTimer
     {
         MainPane* main_pane;
@@ -133,8 +133,8 @@ namespace AriaMaestosa
     };
 }
 
-// ==========================================================================================================
-// ==========================================================================================================
+// ===========================================================================================================
+// ===========================================================================================================
 #if 0
 #pragma mark -
 #endif
@@ -462,17 +462,21 @@ MainPane::WelcomeResult MainPane::drawWelcomeMenu()
             whiteCornerDrawable->move(x + additional_margin, y - height/2);
             whiteCornerDrawable->render();
             
+            const int cornerW = whiteCornerDrawable->getImageWidth();
+            const int cornerH = whiteCornerDrawable->getImageHeight();
+            
             whiteCornerDrawable->setFlip(false, false);
-            whiteCornerDrawable->move(x + additional_margin, y + height/2 - whiteCornerDrawable->getImageHeight());
+            whiteCornerDrawable->move(x + additional_margin, y + height/2 - cornerH);
             whiteCornerDrawable->render();
             
             whiteCornerDrawable->setFlip(true, true);
-            whiteCornerDrawable->move(getWidth() - MARGIN - whiteCornerDrawable->getImageWidth() - additional_margin, y - height/2);
+            whiteCornerDrawable->move(getWidth() - MARGIN - cornerW - additional_margin,
+                                      y - height/2);
             whiteCornerDrawable->render();
             
             whiteCornerDrawable->setFlip(true, false);
-            whiteCornerDrawable->move(getWidth() - MARGIN - whiteCornerDrawable->getImageWidth() - additional_margin,
-                                      y + height/2 - whiteCornerDrawable->getImageHeight());
+            whiteCornerDrawable->move(getWidth() - MARGIN - cornerW - additional_margin,
+                                      y + height/2 - cornerH);
             whiteCornerDrawable->render();
         }
         
@@ -601,7 +605,8 @@ bool MainPane::do_render()
             if (m_mouse_hovering_tabs)
             {
                 wxPoint mouse = this->ScreenToClient(wxGetMousePosition());
-                if (mouse.x > start_at_x and mouse.x < start_at_x + TAB_SIDE_WIDTH + tab_width + TAB_SIDE_WIDTH)
+                if (mouse.x > start_at_x and
+                    mouse.x < start_at_x + TAB_SIDE_WIDTH + tab_width + TAB_SIDE_WIDTH)
                 {
                     // draw close button
                     tabCloseDrawable->move(start_at_x + tab_width + TAB_SIDE_WIDTH*2 -
@@ -833,7 +838,7 @@ void MainPane::rightClick(wxMouseEvent& event)
         for (int n=0; n<count; n++)
         {
             GraphicalTrack* gtrack = gseq->getGraphicsFor(seq->getTrack(n));
-            if (not gtrack->processRightMouseClick( RelativeXCoord(event.GetX(), WINDOW, gseq) , event.GetY()))
+            if (not gtrack->processRightMouseClick( RelativeXCoord(event.GetX(), WINDOW, gseq), event.GetY()))
             {
                 seq->setCurrentTrackID(n);
                 break;
@@ -976,12 +981,13 @@ void MainPane::mouseDown(wxMouseEvent& event)
 
         int start_at_x = 0;
         const int seqAmount = mf->getSequenceAmount();
+        const int closeBtnW = tabCloseDrawable->getImageWidth();
         for (int n=0; n<seqAmount; n++)
         {
             start_at_x += TAB_SIDE_WIDTH + tab_width + TAB_SIDE_WIDTH;
             if (event.GetX() < start_at_x)
             {
-                if (event.GetX() > start_at_x - tabCloseDrawable->getImageWidth() - CLOSE_BUTTON_SPACE_FROM_RIGHT and
+                if (event.GetX() > start_at_x - closeBtnW - CLOSE_BUTTON_SPACE_FROM_RIGHT and
                     event.GetX() < start_at_x - CLOSE_BUTTON_SPACE_FROM_RIGHT)
                 {
                     // click is on close button
@@ -999,7 +1005,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
     }//end if
 
     // ----------------------------------- click is in measure bar ----------------------------
-    if (event.GetY() > MEASURE_BAR_Y and event.GetY() < MEASURE_BAR_Y+measureBarHeight)
+    if (event.GetY() > MEASURE_BAR_Y and event.GetY() < MEASURE_BAR_Y + measureBarHeight)
     {
         m_click_area = CLICK_MEASURE_BAR;
 
@@ -1069,7 +1075,7 @@ void MainPane::mouseMoved(wxMouseEvent& event)
     } // end if dragging
     else
     {
-        const bool mouse_hovering_tabs =  (event.GetY() > TAB_BAR_Y and event.GetY() < TAB_BAR_Y+20);
+        const bool mouse_hovering_tabs =  (event.GetY() > TAB_BAR_Y and event.GetY() < TAB_BAR_Y + 20);
 
         if (mouse_hovering_tabs)
         {
@@ -1195,13 +1201,13 @@ void MainPane::mouseReleased(wxMouseEvent& event)
         }
         else if (m_right_arrow)
         {
-            if (m_mouse_x_current.getRelativeTo(WINDOW) > getWidth()-45 and
-                m_mouse_x_current.getRelativeTo(WINDOW) < getWidth()-20)
+            if (m_mouse_x_current.getRelativeTo(WINDOW) > getWidth() - 45 and
+                m_mouse_x_current.getRelativeTo(WINDOW) < getWidth() - 20)
                 scrollNowToPlaybackPosition();
         }
 
         // measure selection
-        if (not (m_current_tick!=-1 and (m_left_arrow or m_right_arrow)) ) // ignore when playing
+        if (not (m_current_tick != -1 and (m_left_arrow or m_right_arrow)) ) // ignore when playing
         {
             gseq->getMeasureBar()->mouseUp(m_mouse_x_current.getRelativeTo(WINDOW),
                                            m_mouse_y_current - MEASURE_BAR_Y,
@@ -1357,7 +1363,8 @@ void MainPane::mouseWheelMoved(wxMouseEvent& event)
                 const int ticks = gseq->getXScrollInMidiTicks();
                 
                 // FIXME(DESIGN): scrolling should not need to be manually changed when zoom is...
-                //                A possible solution is to store a midi tick scroll instead of the current pixel scroll
+                //                A possible solution is to store a midi tick scroll instead of the
+                //                current pixel scroll
                 gseq->setZoom(newZoom);
                 
                 // update scrolling to new zoom
@@ -1406,12 +1413,13 @@ void MainPane::enterPlayLoop()
 {
     m_left_arrow  = false;
     m_right_arrow = false;
-    m_follow_playback_time = getMainFrame()->getCurrentSequence()->getMeasureData()->defaultMeasureLengthInTicks();
+    Sequence* seq = getMainFrame()->getCurrentSequence();
+    m_follow_playback_time = seq->getMeasureData()->defaultMeasureLengthInTicks();
     m_last_tick = -1;
     Core::activateRenderLoop(true);
 }
 
-// ----------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 
 void MainPane::exitPlayLoop()
 {
@@ -1479,14 +1487,6 @@ void MainPane::playbackRenderLoop()
                 gseq->setXScrollInPixels(new_scroll_in_pixels);
                 DisplayFrame::updateHorizontalScrollbar( startTick + currentTick );
             }
-            
-            /*
-            int x_scroll_in_pixels = (int)( (m_playback_start_tick + currentTick - m_follow_playback_time) *
-                getCurrentSequence()->getZoom() );
-            if ( x_scroll_in_pixels < 0 ) x_scroll_in_pixels = 0;
-            getCurrentSequence()->setXScrollInPixels(x_scroll_in_pixels);
-            DisplayFrame::updateHorizontalScrollbar( m_playback_start_tick + currentTick - m_follow_playback_time );
-                 */
         }
         
         setCurrentTick( startTick + currentTick );
