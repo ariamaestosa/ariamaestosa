@@ -76,10 +76,6 @@
 #include <ApplicationServices/ApplicationServices.h>
 #endif
 
-#ifdef __WXMSW__
-#include "win32/Aria.xpm"
-#endif
-
 using namespace AriaMaestosa;
 
 namespace AriaMaestosa
