@@ -239,7 +239,6 @@ bool CustomToolBar::GetToolState(int toolId)
         fprintf(stderr, "[GetToolState] WARNING: Widget %i not found\n", toolId);
         return false;
     }
-    wxToggleButton* btn = (wxToggleButton*)toolbarSizer->GetItemById(toolId)->GetWindow();
     return ((wxToggleButton*)window)->GetValue();
 }
 
