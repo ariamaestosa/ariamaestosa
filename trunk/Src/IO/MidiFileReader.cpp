@@ -630,7 +630,7 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
 
     gseq->setZoom(100);
 
-    if (measureAmount_i < 10) measureAmount_i = 10;
+    if (measureAmount_i < 1) measureAmount_i = 1;
 
     {
         ScopedMeasureTransaction tr(md->startTransaction());
