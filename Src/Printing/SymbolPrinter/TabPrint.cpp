@@ -38,7 +38,7 @@ using namespace AriaMaestosa;
  
 const int CHAR_MARGIN = 35;
 
-// ------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 
 TablaturePrintable::TablaturePrintable(GraphicalTrack* track) : EditorPrintable(track->getTrack())
 {
@@ -46,13 +46,13 @@ TablaturePrintable::TablaturePrintable(GraphicalTrack* track) : EditorPrintable(
     m_editor        = track->getGuitarEditor();
 }
 
-// ------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 
 TablaturePrintable::~TablaturePrintable()
 {
 }
 
-// ------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 
 void TablaturePrintable::earlySetup(const int trackID, GraphicalTrack* gtrack)
 {
@@ -123,7 +123,8 @@ void TablaturePrintable::earlySetup(const int trackID, GraphicalTrack* gtrack)
          */
         virtual int getEndTick(const int noteID) const
         {
-            return m_analyser->m_note_render_info[noteID].getTick() + m_analyser->m_note_render_info[noteID].getTickLength();
+            return m_analyser->m_note_render_info[noteID].getTick() +
+                   m_analyser->m_note_render_info[noteID].getTickLength();
         }
     };
     
@@ -136,7 +137,7 @@ void TablaturePrintable::earlySetup(const int trackID, GraphicalTrack* gtrack)
     delete adapter;
 }
 
-// ------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
     
 void TablaturePrintable::addUsedTicks(const PrintLayoutMeasure& measure,  const int trackID,
                                       MeasureTrackReference& trackRef,
@@ -195,7 +196,7 @@ void TablaturePrintable::addUsedTicks(const PrintLayoutMeasure& measure,  const 
                                               firstTickInMeasure, lastTickInMeasure);
 }
 
-// ------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 
 int TablaturePrintable::calculateHeight(const int trackID, LineTrackRef& lineTrack, LayoutLine& line,
                                         bool* empty)
@@ -212,7 +213,7 @@ int TablaturePrintable::calculateHeight(const int trackID, LineTrackRef& lineTra
     return m_string_amount;
 }  
 
-// ------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 
 void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& currentTrack,
                                    LayoutLine& currentLine, wxDC& dc, wxGraphicsContext* gc,
@@ -276,7 +277,7 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
             dc.DrawText( wxT("A") , currentElement->getXFrom()+20, textY + h4  );
             dc.DrawText( wxT("B") , currentElement->getXFrom()+20, textY + h4*2 );
             
-            wxSize textSize2 = dc.GetTextExtent( wxT("T") );
+            //wxSize textSize2 = dc.GetTextExtent( wxT("T") );
             
             dc.SetFont( getPrintFont() );
             
@@ -301,7 +302,8 @@ void TablaturePrintable::drawTrack(const int trackID, const LineTrackRef& curren
                     case 10: label = wxT("C#"); break;
                     case 11: label = wxT("C");  break;
                 } // end switch
-                dc.DrawText( label, tuning_x, trackCoords->y0 + n*stringHeight - textSize2.y/2 );
+                dc.DrawText(label, tuning_x, trackCoords->y0 + n*stringHeight -
+                            AriaPrintable::getCurrentPrintable()->getCharacterHeight()/2 );
             }//next
             
             continue;
