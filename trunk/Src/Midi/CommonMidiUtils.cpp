@@ -389,7 +389,8 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
         
         if (sequence->isLoopEnabled())
         {
-            *songLengthInTicks = trackLength;
+            // when looping, stop at the end of the last measure
+            *songLengthInTicks = md->lastTickInMeasure(md->measureAtTick(trackLength)) - 1;
         }
         else
         {
@@ -454,6 +455,13 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
                 channel++; if (channel==9) channel++;
             }
         }
+        
+        if (sequence->isLoopEnabled())
+        {
+            // when looping, stop at the end of the last measure
+            *songLengthInTicks = md->lastTickInMeasure(md->measureAtTick(*songLengthInTicks)) - 1;
+        }
+        
         substract_ticks = *startTick;
         
     }
@@ -754,6 +762,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
                 }
             }
         }//next
+
     }
     else
     {
@@ -840,7 +849,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
             }
         }
     }
-    
+     
     return true;
 }
 

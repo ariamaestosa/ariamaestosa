@@ -331,9 +331,10 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
                     return;
                 }
             }
-            if ((long)tick <(long) previous_tick) continue; // something wrong about time order...
-
-            if ((long)tick > (long)songLengthInTicks)
+            
+            if ((long)tick < (long) previous_tick) continue; // something wrong about time order...
+            
+            if ((long)(total_millis*ticks_per_millis) > (long)songLengthInTicks)
             {
                 // looping when recording makes no sense
                 if (m_seq->isLoopEnabled() and not PlatformMidiManager::get()->isRecording())
