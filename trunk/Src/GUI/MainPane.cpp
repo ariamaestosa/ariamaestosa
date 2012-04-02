@@ -1321,8 +1321,12 @@ void MainPane::keyPressed(wxKeyEvent& evt)
 
 void MainPane::mouseWheelMoved(wxMouseEvent& event)
 {
+#ifdef __WXMSW__
+    const int value = (int)(event.GetWheelRotation() / event.GetWheelDelta() * 1.6f);
+#else
     const int value = event.GetWheelRotation() / event.GetWheelDelta();
-    
+#endif
+
     MainFrame* mf = getMainFrame();
     if (mf->getSequenceAmount() == 0) return;
     
