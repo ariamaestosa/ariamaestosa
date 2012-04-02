@@ -42,16 +42,22 @@ namespace AriaMaestosa
     }
     
     bool loadAriaFile(GraphicalSequence* sequence, wxString filepath)
-    {		
-        wxCSConv cs( wxFONTENCODING_UTF8 );
-        wxCharBuffer output = cs.cWC2MB(filepath.wc_str());
+    {
+        wxFFile file(filepath);
+        if (not file.IsOpened())
+        {
+            wxMessageBox(wxString::Format( _("Could not open file '%s' for reading"),
+                         (const char*)filepath.utf8_str() ) );
+            return false;
+        }
         
-        irr::io::IrrXMLReader* xml = irr::io::createIrrXMLReader( (char*)output.data() );
+        irr::io::IrrXMLReader* xml = irr::io::createIrrXMLReader(file.fp());
         
         if (xml == NULL)
         {
             wxMessageBox(wxString::Format( _("Could not open file '%s' for reading"),
-                         (const char*)output.data() ) );
+                         (const char*)filepath.utf8_str() ) );
+            return false;
         }
         
         if (not sequence->readFromFile(xml))
