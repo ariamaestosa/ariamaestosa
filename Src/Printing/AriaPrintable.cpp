@@ -65,17 +65,30 @@ AriaPrintable::AriaPrintable(wxString title, bool* success) :
     ASSERT(m_font_height     > 0);
     ASSERT(m_character_width > 0);
     
+    #ifdef __WXMSW__
+    m_font_height *= 5;
+    m_character_width *= 5;
+    #endif
+    
     txw = -1; txh = -1; descent = -1; externalLeading = -1;
     Display::getTextExtents(wxT("X"), m_title_font, &txw, &txh, &descent, &externalLeading);
     
     m_title_font_height = txh;
     ASSERT(m_title_font_height > 0);
 
+    #ifdef __WXMSW__
+    m_title_font_height *= 5;
+    #endif
+    
     txw = -1; txh = -1; descent = -1; externalLeading = -1;
     Display::getTextExtents(wxT("X"), m_subtitle_font, &txw, &txh, &descent, &externalLeading);
     
     m_subtitle_font_height = txh;
     ASSERT(m_subtitle_font_height > 0);
+    
+    #ifdef __WXMSW__
+    m_subtitle_font_height *= 5;
+    #endif
     
     // --------------------
     
