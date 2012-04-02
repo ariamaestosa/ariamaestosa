@@ -1330,7 +1330,7 @@ void MainPane::mouseWheelMoved(wxMouseEvent& event)
     
 #if wxCHECK_VERSION(2,9,1)
     // horizontal scrolling
-    if (event.GetWheelAxis() == 1)
+    if (event.GetWheelAxis() == 1 or wxGetKeyState(WXK_SHIFT))
     {
         int newval = gseq->getXScrollInPixels() - value*WHEEL_X_SPEED;
         if (newval < 0) newval = 0;
