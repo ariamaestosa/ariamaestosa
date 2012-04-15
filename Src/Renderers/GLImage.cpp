@@ -96,7 +96,7 @@ namespace AriaMaestosa
         (*imageWidth)  = img->GetWidth();
         (*imageHeight) = img->GetHeight();
         
-        printf("image size : %i %i\n", *imageWidth, *imageHeight);
+        //printf("image size : %i %i\n", *imageWidth, *imageHeight);
         
         glPixelStorei(GL_UNPACK_ALIGNMENT,   1   );
         

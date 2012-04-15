@@ -238,33 +238,35 @@ void MainPane::resized(wxSizeEvent& evt)
 
 void MainPane::paintEvent(wxPaintEvent& evt)
 {
-    render(true);
+    wxAutoBufferedPaintDC mydc(this);
+    
+    if (not m_is_visible) return;
+    if (not prepareFrame()) return;
+    
+    Display::renderDC = &mydc;
+
+    beginFrame();
+    if (do_render()) endFrame();
+    else { printf("***** do_render returned false!!\n"); }
+    Display::renderDC = NULL;
 }
 
 // -----------------------------------------------------------------------------------------------------------
 
-void MainPane::render(const bool isPaintEvent)
+void MainPane::renderNow()
 {
-    if (not prepareFrame()) return;
-    if (not m_is_visible) return;
-
-    if (isPaintEvent)
-    {
-        wxAutoBufferedPaintDC mydc(this);
-
-        Display::renderDC = &mydc;
-
-        beginFrame();
-        if (do_render()) endFrame();
-    }
-    else
-    {
-        Refresh();
-        return;
-    }
-
+    /*
+    wxClientDC dc(this);
+    wxBufferedDC bdc(&dc);
+    Display::renderDC = &bdc;
+    
+    beginFrame();
+    if (do_render()) endFrame();
+    Display::renderDC = NULL;
+     */
+    Refresh();
 }
-
+        
 // -----------------------------------------------------------------------------------------------------------
 
 MainPane::WelcomeResult MainPane::drawWelcomeMenu()
@@ -524,7 +526,7 @@ bool MainPane::do_render()
     
     if (mf->getCurrentSequence() == NULL) return false;
     if (mf->getCurrentSequence()->isImportMode()) return false;
-
+    
     AriaRender::images();
 
     GraphicalSequence* gseq = mf->getCurrentGraphicalSequence();
@@ -1435,7 +1437,7 @@ void MainPane::exitPlayLoop()
     getMainFrame()->toolsExitPlaybackMode();
     Core::activateRenderLoop(false);
     setCurrentTick( -1 );
-    render();
+    Refresh();
 }
 
 // -----------------------------------------------------------------------------------------------------------

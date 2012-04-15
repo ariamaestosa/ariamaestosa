@@ -128,7 +128,7 @@ namespace AriaMaestosa
         
         void render()
         {
-            mainPane->render();
+            mainPane->renderNow();
         }
         int getWidth()
         {
