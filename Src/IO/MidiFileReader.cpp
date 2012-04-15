@@ -591,10 +591,9 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                     // if not, use the one that is not 1 (since 1 is default value)
                     if (sequence->getTrack(n)->getChannel() != 9)
                     {
-                        // check that their instruments are different (ignore drum tracks)
-                        if (sequence->getTrack(n)->getInstrument() != sequence->getTrack(j)->getInstrument() and sequence->getTrack(j)->getChannel() != 9)
+                        if (sequence->getTrack(n)->getInstrument() != sequence->getTrack(j)->getInstrument() and
+                            sequence->getTrack(j)->getChannel() != 9)
                         {
-                            // FIXME: why the "1" below???
                             if (sequence->getTrack(n)->getInstrument() == 1)
                             {
                                 sequence->getTrack(n)->setInstrument( sequence->getTrack(j)->getInstrument() );
@@ -630,6 +629,11 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                                 std::cerr << "multiple program changes (drums) are not supported by Aria, sorry." << std::endl;
                                 sequence->getTrack(j)->setDrumKit( sequence->getTrack(n)->getDrumKit() ); // arbitrary
                             }
+                        }
+                        else
+                        {
+                            // force updating the label
+                            sequence->getTrack(n)->setDrumKit( sequence->getTrack(n)->getDrumKit() );
                         }
                     }
                 }
