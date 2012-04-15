@@ -59,8 +59,13 @@ void EditorPrintable::drawVerticalDivider(LayoutElement* el, const int y0, const
 
     const int elem_x_start = (atEnd ? el->getXTo() : el->getXFrom());
     
+    // work around bug #161
+    m_dc->SetPen(  wxPen( wxColour(rand() % 255, rand() % 255, rand() % 255), rand() % 255 ) );
+    
     // draw vertical line that starts measure
-    m_dc->SetPen(  wxPen( wxColour(0,0,0), 10 ) );
+    wxPen p( wxColour(0,0,0), 9 );
+    p.SetCap( wxCAP_BUTT );
+    m_dc->SetPen( p );
     m_dc->DrawLine( elem_x_start, y0, elem_x_start, y1);
 }
 
@@ -68,8 +73,13 @@ void EditorPrintable::drawVerticalDivider(LayoutElement* el, const int y0, const
 
 void EditorPrintable::drawVerticalDivider(const int x, const int y0, const int y1)
 {
+    // work around bug #161
+    m_dc->SetPen(  wxPen( wxColour(rand() % 255, rand() % 255, rand() % 255), rand() % 255 ) );
+    
     // draw vertical line that starts measure
-    m_dc->SetPen(  wxPen( wxColour(0,0,0), 10 ) );
+    wxPen p( wxColour(0,0,0), 9 );
+    p.SetCap( wxCAP_BUTT );
+    m_dc->SetPen( p );
     m_dc->DrawLine( x, y0, x, y1);
 }
 
