@@ -218,9 +218,10 @@ namespace AriaMaestosa
         
         virtual void resized(wxSizeEvent& evt);
         
+        void renderNow();
+        
         // ---- rendering
         bool isVisible() const { return m_is_visible; }
-        void render(const bool paintEvent = false);
         void paintEvent(wxPaintEvent& evt);
 
         // ---- serialization

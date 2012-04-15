@@ -35,6 +35,8 @@ using namespace AriaMaestosa;
 GLPane::GLPane(wxWindow* parent, int* args) :
     wxGLCanvas(parent, wxID_ANY,  wxDefaultPosition, wxDefaultSize, 0, wxT("GLCanvas"),  args)
 {
+    m_context = new wxGLContext(this);
+    /*
 #if wxCHECK_VERSION(2,9,1)
     SetBackgroundStyle(wxBG_STYLE_PAINT);
     #ifdef __WXMSW__
@@ -42,6 +44,7 @@ GLPane::GLPane(wxWindow* parent, int* args) :
     Bind(wxEVT_ERASE_BACKGROUND, &GLPane::OnEraseBackground, this);
     #endif
 #endif
+ */
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -54,7 +57,6 @@ GLPane::~GLPane()
 
 void GLPane::resized(wxSizeEvent& evt)
 {
-
     wxGLCanvas::OnSize(evt);
 
     initOpenGLFor2D();
@@ -69,7 +71,7 @@ void GLPane::resized(wxSizeEvent& evt)
 void GLPane::setCurrent()
 {
     if (!GetParent()->IsShown()) return;
-    wxGLCanvas::SetCurrent();
+    wxGLCanvas::SetCurrent(*m_context);
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -131,7 +133,7 @@ int GLPane::getHeight()
 bool GLPane::prepareFrame()
 {
     if (not GetParent()->IsShown()) return false;
-    wxGLCanvas::SetCurrent();
+    wxGLCanvas::SetCurrent(*m_context);
     return true;
 }
 

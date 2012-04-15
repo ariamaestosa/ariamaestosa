@@ -546,17 +546,14 @@ void MainFrame::init()
 
 #ifdef RENDERER_OPENGL
     
-    int args[3];
-    args[0]=WX_GL_RGBA;
-    args[1]=WX_GL_DOUBLEBUFFER;
-    args[2]=0;
+    int args[] = {WX_GL_RGBA, WX_GL_DOUBLEBUFFER, WX_GL_DEPTH_SIZE, 16, WX_GL_BUFFER_SIZE, 32, 0};
     m_main_pane = new MainPane(m_main_panel, args);
-    m_border_sizer->Add( static_cast<wxGLCanvas*>(m_main_pane), 1, wxEXPAND | wxTOP | wxLEFT, 1);
+    m_border_sizer->Add( dynamic_cast<wxGLCanvas*>(m_main_pane), 1, wxEXPAND | wxTOP | wxLEFT, 1);
     
 #elif defined(RENDERER_WXWIDGETS)
     
     m_main_pane = new MainPane(m_main_panel, NULL);
-    m_border_sizer->Add( static_cast<wxPanel*>(m_main_pane), 1, wxEXPAND | wxTOP | wxLEFT, 1);
+    m_border_sizer->Add( dynamic_cast<wxPanel*>(m_main_pane), 1, wxEXPAND | wxTOP | wxLEFT, 1);
     
 #endif
 
@@ -657,7 +654,7 @@ void MainFrame::init()
 
 
 #ifdef RENDERER_OPENGL
-    dynamic_cast<wxGLCanvas*>(m_main_pane)->SetCurrent();
+    m_main_pane->setCurrent();
 #endif
 
     wxLogVerbose( wxT("MainFrame::init (loading images)") );
@@ -1776,7 +1773,7 @@ void MainFrame::onActionStackChanged()
 
 void MainFrame::onSequenceDataChanged()
 {
-    m_main_pane->render();
+    m_main_pane->renderNow();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -1867,7 +1864,7 @@ void MainFrame::onMeasureDataChange(int change)
     
     updateTopBarAndScrollbarsForSequence( gseq );
     updateMenuBarToSequence();
-    m_main_pane->render();
+    m_main_pane->renderNow();
 }
 
 // ----------------------------------------------------------------------------------------------------------
