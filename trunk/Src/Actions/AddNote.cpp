@@ -85,6 +85,11 @@ void AddNote::perform()
         m_track->selectNote(ALL_NOTES, false, true /* ignoreModifiers */);
         tmp_note->setSelected(true);
     }
+    else
+    {
+        delete tmp_note;
+        return;
+    }
     
     relocator.rememberNote( *tmp_note );
     
