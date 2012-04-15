@@ -24,6 +24,8 @@
 
 using namespace AriaMaestosa;
 
+const static bool LOGGING = false;
+
 /**
   * The maximum height (in print units) a level can have. Having a maximum prevents vertical
   * stretching when there are few items in a page, because it would look ugly.
@@ -49,7 +51,7 @@ PrintLayoutNumeric::PrintLayoutNumeric()
 void PrintLayoutNumeric::placeTrackWithinCoords(const int trackID, LayoutLine& line,
                                                 int x0, const int y0, const int x1, const int y1)
 {
-    std::cout << "= placeTrackWithinCoords =\n";
+    if (LOGGING) std::cout << "= placeTrackWithinCoords =\n";
     
     ASSERT_E(x0, >=, 0);
     ASSERT_E(x1, >=, 0);
@@ -95,8 +97,11 @@ void PrintLayoutNumeric::placeElementsWithinCoords(LayoutLine& line, int x0, con
             xloc += line.getLayoutElement(currentLayoutElement-1).width_in_print_units*zoom + MARGIN_AT_MEASURE_BEGINNING;
         }
         
-        std::cout << "    - Setting coords of element " << currentLayoutElement
-                  << " of current line. xfrom = " << x0 + xloc << "\n";
+        if (LOGGING)
+        {
+            std::cout << "    - Setting coords of element " << currentLayoutElement
+                      << " of current line. xfrom = " << x0 + xloc << "\n";
+        }
         
         line.getLayoutElement(currentLayoutElement).setXFrom( x0 + xloc );
         
@@ -125,9 +130,12 @@ void PrintLayoutNumeric::setLineCoordsAndDivideItsSpace(LayoutLine& line, const 
 {
     const int trackAmount = line.getTrackAmount();
 
-    std::cout << "Line given coords " << x0 << ", " << y0 << " to " << x1 << ", " << y1 << std::endl;
-    std::cout << "==setLineCoordsAndDivideItsSpace==\n";
-    
+    if (LOGGING)
+    {
+        std::cout << "Line given coords " << x0 << ", " << y0 << " to " << x1 << ", " << y1 << std::endl;
+        std::cout << "==setLineCoordsAndDivideItsSpace==\n";
+    }
+
     line.m_line_coords = new LineCoords();
     line.m_line_coords->x0 = x0;
     line.m_line_coords->y0 = y0;
@@ -155,8 +163,11 @@ void PrintLayoutNumeric::setLineCoordsAndDivideItsSpace(LayoutLine& line, const 
                                x0, y0 + levelFrom*levelHeight,
                                x1, y0 + levelTo*levelHeight);
         
-        std::cout << "Track " << n << " in y [" << y0 + line.getLineTrackRef(n).getLevelFrom()*levelHeight
-                  << " .. " << y0 + line.getLineTrackRef(n).getLevelTo()*levelHeight << "]\n";
+        if (LOGGING)
+        {
+            std::cout << "Track " << n << " in y [" << y0 + line.getLineTrackRef(n).getLevelFrom()*levelHeight
+                      << " .. " << y0 + line.getLineTrackRef(n).getLevelTo()*levelHeight << "]\n";
+        }
     }
     
     placeElementsWithinCoords(line, x0, x1);
@@ -177,16 +188,20 @@ void PrintLayoutNumeric::placeLinesInPage(LayoutPage& page, float notation_area_
 
     const int level_y_amount = page.getLine(lineAmount-1).getLevelTo();
     
-    std::cout << "\n========\nplaceTracksInPage\n========\n";
-    std::cout << level_y_amount << " levels within " << notation_area_h << " units (vertically)\n";
+    if (LOGGING)
+    {
+        std::cout << "\n========\nplaceTracksInPage\n========\n";
+        std::cout << level_y_amount << " levels within " << notation_area_h << " units (vertically)\n";
+    }
     
     const float levelHeight = std::min(notation_area_h/(float)level_y_amount, (float)MAX_LEVEL_HEIGHT);
-    std::cout << "level height = " << levelHeight << "\n";
+    
+    if (LOGGING) std::cout << "level height = " << levelHeight << "\n";
     
     // ---- Lay out lines
     for (int l=0; l<lineAmount; l++)
     {
-        std::cout << "\n====\nLine " << l << "\n====\n";
+        if (LOGGING) std::cout << "\n====\nLine " << l << "\n====\n";
         
         LayoutLine& line = page.getLine(l);
         
