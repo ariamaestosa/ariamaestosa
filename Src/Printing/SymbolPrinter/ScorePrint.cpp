@@ -40,6 +40,7 @@
 #include <wx/graphics.h>
 #endif
 
+const bool LOGGING = false;
 #define BE_VERBOSE 0
 
 namespace AriaMaestosa
@@ -651,8 +652,11 @@ namespace AriaMaestosa
         ASSERT_E(trackCoords->y1,<,50000);
         setCurrentDC(&dc);
         
-        std::cout << "[ScorePrintable] ScorePrintable size : " << trackCoords->x0 << ", " << trackCoords->y0
-                  << " to " << trackCoords->x1 << ", " << trackCoords->y1 << std::endl;
+        if (LOGGING)
+        {
+            std::cout << "[ScorePrintable] ScorePrintable size : " << trackCoords->x0 << ", " << trackCoords->y0
+                      << " to " << trackCoords->x1 << ", " << trackCoords->y1 << std::endl;
+        }
         
         m_x_converter = new PrintXConverter(this, &currentLine, trackID);
         
@@ -1093,7 +1097,8 @@ namespace AriaMaestosa
         
         MeasureData* md = track->getSequence()->getMeasureData();
         
-        printf("[ScorePrintable] earlySetup (%s) : gathering note list\n", (const char*)track->getName().utf8_str());
+        if (LOGGING) printf("[ScorePrintable] earlySetup (%s) : gathering note list\n",
+                            (const char*)track->getName().utf8_str());
         for (int m=0; m<measureAmount; m++)
         {
             ASSERT(perMeasureInfo.find(trackID*5000+m) != perMeasureInfo.end());
@@ -1154,7 +1159,7 @@ namespace AriaMaestosa
         }
         
         // ---- Silences
-        std::cout << "[ScorePrintable] early setup : gathering silences\n";
+        if (LOGGING) std::cout << "[ScorePrintable] early setup : gathering silences\n";
         if (m_f_clef)
         {
             m_silences_ticks = SilenceAnalyser::findSilences(track->getSequence(),
@@ -1192,7 +1197,7 @@ namespace AriaMaestosa
         
         ASSERT(m_track == gtrack->getTrack());
                 
-        std::cout << "[ScorePrintable] ==== backgroundDrawing ==== \n";
+        if (LOGGING) std::cout << "[ScorePrintable] ==== backgroundDrawing ==== \n";
         
         analyser.putInTimeOrder();
         
@@ -1267,7 +1272,7 @@ namespace AriaMaestosa
         const int toTick   = md->lastTickInMeasure ( line.getLastMeasure () );
         
         const bool f_clef = (clefType == F_CLEF_ALONE or clefType == F_CLEF_FROM_GRAND_STAFF);
-        std::cout << "[ScorePrintable] ==== analyseAndDrawScore " << (f_clef ? "F" : "G") << " ==== \n";
+        if (LOGGING) std::cout << "[ScorePrintable] ==== analyseAndDrawScore " << (f_clef ? "F" : "G") << " ==== \n";
         
         const int lineAmount = abs(extra_lines_above) + abs(extra_lines_under) + 5;
         m_line_height = (float)(y1 - y0) / (float)(lineAmount-1);
@@ -1522,7 +1527,7 @@ namespace AriaMaestosa
             dc.SetPen(  wxPen( wxColour(0,0,0), 12 ) );
             dc.SetBrush( *wxBLACK_BRUSH );
             
-            std::cout << "[ScorePrintable] rendering note heads\n";
+            if (LOGGING) std::cout << "[ScorePrintable] rendering note heads\n";
             for (int i=0; i<noteAmount; i++)
             {
                 /*
@@ -1631,7 +1636,7 @@ namespace AriaMaestosa
         g_printable = this;
         
         // ---- render silences
-        std::cout << "[ScorePrintable] rendering silences\n";
+        if (LOGGING) std::cout << "[ScorePrintable] rendering silences\n";
         
         const int first_measure = line.getFirstMeasure();
         const int last_measure  = line.getLastMeasure();
@@ -1664,12 +1669,12 @@ namespace AriaMaestosa
         
         
         // ------------------ second part : intelligent drawing of the rest -----------------
-        std::cout << "[ScorePrintable] analyzing score\n";
+        if (LOGGING) std::cout << "[ScorePrintable] analyzing score\n";
         
         // analyse notes to know how to build the score
         lineAnalyser->analyseNoteInfo();
         
-        std::cout << "[ScorePrintable] rendering note ornaments\n";
+        if (LOGGING) std::cout << "[ScorePrintable] rendering note ornaments\n";
         // now that score was analysed, draw the remaining note bits
         const int noteAmount = lineAnalyser->m_note_render_info.size();
         for (int i=0; i<noteAmount; i++)

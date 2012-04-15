@@ -30,6 +30,8 @@
 
 using namespace AriaMaestosa;
 
+const static bool LOGGING = false;
+
 #define DEBUG_DRAW 0
 
 SymbolPrintableSequence::SymbolPrintableSequence(Sequence* parent) : AbstractPrintableSequence(parent)
@@ -180,11 +182,14 @@ void SymbolPrintableSequence::printLine(LayoutLine& line, wxDC& dc, wxGraphicsCo
         dc.DrawLine( lineCoords->x1-3, y0, lineCoords->x1-3, my1); // right-side line
     }
     
-    std::cout << "[SymbolPrintableSequence] ==== Printing Line (contains " << line.getLayoutElementCount()
-              << " layout elements), measures " << (line.getFirstMeasure()+1) << " to " << (line.getLastMeasure()+1)
-              << " (tick " << line.getMeasureForElement(0).getFirstTick() << " to "
-              << line.getMeasureForElement(line.getLayoutElementCount() - 1).getLastTick() << ")"
-              << "; from y=" << my0 << " to " << my1 << " ====" << std::endl;
+    if (LOGGING)
+    {
+        std::cout << "[SymbolPrintableSequence] ==== Printing Line (contains " << line.getLayoutElementCount()
+                  << " layout elements), measures " << (line.getFirstMeasure()+1) << " to " << (line.getLastMeasure()+1)
+                  << " (tick " << line.getMeasureForElement(0).getFirstTick() << " to "
+                  << line.getMeasureForElement(line.getLayoutElementCount() - 1).getLastTick() << ")"
+                  << "; from y=" << my0 << " to " << my1 << " ====" << std::endl;
+    }
     
     // ---- Debug guides
     if (PRINT_LAYOUT_HINTS)
@@ -203,14 +208,17 @@ void SymbolPrintableSequence::printLine(LayoutLine& line, wxDC& dc, wxGraphicsCo
         // skip empty tracks
         if (line.getLineTrackRef(n).empty()) continue;
         
-        std::cout << "[SymbolPrintableSequence] --- Printing track " << n << " ---\n";
+        if (LOGGING) std::cout << "[SymbolPrintableSequence] --- Printing track " << n << " ---\n";
         
         const LineTrackRef& sizing = line.getLineTrackRef(n);
         const TrackCoords* trackCoords = sizing.m_track_coords.raw_ptr;
         ASSERT(trackCoords != NULL);
         
-        std::cout << "[SymbolPrintableSequence] Coords : " << trackCoords->x0 << ", " << trackCoords->y0
-                  << " to " << trackCoords->x1 << ", " << trackCoords->y1 << std::endl;
+        if (LOGGING)
+        {
+            std::cout << "[SymbolPrintableSequence] Coords : " << trackCoords->x0 << ", " << trackCoords->y0
+                      << " to " << trackCoords->x1 << ", " << trackCoords->y1 << std::endl;
+        }
         
 #if DEBUG_DRAW
         dc.SetPen(  wxPen( wxColour(0,255,0), 12 ) );

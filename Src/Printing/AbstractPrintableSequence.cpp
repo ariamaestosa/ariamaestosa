@@ -45,6 +45,6 @@ wxString AbstractPrintableSequence::getTitle(const Sequence* seq)
         final_title += (wxT(", ") + track_title);
     }
     
-    std::cout << "Title = " << final_title.mb_str() << std::endl;
+    //std::cout << "Title = " << final_title.mb_str() << std::endl;
     return final_title;
 }
