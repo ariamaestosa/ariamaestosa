@@ -38,10 +38,34 @@ namespace AriaMaestosa
     
     GLuint* loadImage(wxString path, int* imageWidth, int* imageHeight, int* textureWidth, int* textureHeight)
     {
-        GLuint* ID=new GLuint[1];
+        GLuint* ID = new GLuint[1];
+        
+        glGetError(); // clear error
+        
         glGenTextures( 1, &ID[0] );
         
+        GLenum err = glGetError();
+        if (err != GL_NO_ERROR)
+        {
+            fprintf(stderr, "Failed to load image <%s> into OpenGL, glGenTextures error %i (%s)\n",
+                    (const char*)path.utf8_str(), err, gluErrorString(err));
+            wxMessageBox( _("Failed to load resource image") + wxString::FromUTF8(" (glGenTextures)") );
+            ASSERT(false);
+            return NULL;
+        }
+        
         glBindTexture( GL_TEXTURE_2D, *ID );
+        
+        err = glGetError();
+        if (err != GL_NO_ERROR)
+        {
+            fprintf(stderr, "Failed to load image <%s> into OpenGL, glBindTexture error %i (%s)\n",
+                    (const char*)path.utf8_str(), err, gluErrorString(err));
+            wxMessageBox( _("Failed to load resource image") + wxString::FromUTF8(" (glBindTexture)") );
+            ASSERT(FALSE);
+            return NULL;
+        }
+        
         
         // the first time, check resources are there
         static bool is_first_time = true;
@@ -50,15 +74,19 @@ namespace AriaMaestosa
             is_first_time = false;
             if (!wxFileExists(getResourcePrefix()  + path))
             {
-                wxMessageBox( _("Failed to load resource image") );
+                wxMessageBox( _("Failed to load resource image") + wxString::FromUTF8(" (wxFileExists)")  );
                 ASSERT(false);
+                return NULL;
             }
         }
         
         wxImage* img = new wxImage( getResourcePrefix() + path );
         if (not img->IsOk())
         {
-            fprintf(stderr, "WARNING: failed to load image '%s'\n", (const char*)(getResourcePrefix() + path).mb_str() );
+            fprintf(stderr, "WARNING: ***** failed to load image '%s'\n", (const char*)(getResourcePrefix() + path).mb_str() );
+            wxMessageBox( _("Failed to load resource image") + wxString::FromUTF8(" (new wxImage)") );
+            ASSERT(false);
+            return NULL;
         } 
 
         //std::cout << path.mb_str() << (img->HasAlpha() ? " has alpha" : " does NOT have alpha")
@@ -68,10 +96,22 @@ namespace AriaMaestosa
         (*imageWidth)  = img->GetWidth();
         (*imageHeight) = img->GetHeight();
         
+        printf("image size : %i %i\n", *imageWidth, *imageHeight);
+        
         glPixelStorei(GL_UNPACK_ALIGNMENT,   1   );
         
-        float power_of_two_that_gives_correct_width=std::log((float)(*imageWidth))/std::log(2.0);
-        float power_of_two_that_gives_correct_height=std::log((float)(*imageHeight))/std::log(2.0);
+        err = glGetError();
+        if (err != GL_NO_ERROR)
+        {
+            fprintf(stderr, "Failed to load image <%s> into OpenGL, glPixelStorei error %i (%s)\n",
+                    (const char*)path.utf8_str(), err, gluErrorString(err));
+            wxMessageBox( _("Failed to load resource image") + wxString::FromUTF8(" (glPixelStorei)")  );
+            ASSERT(false);
+            return NULL;
+        }
+        
+        float power_of_two_that_gives_correct_width  = std::log((float)(*imageWidth))/std::log(2.0);
+        float power_of_two_that_gives_correct_height = std::log((float)(*imageHeight))/std::log(2.0);
         
         
         // If the image is not a power-of-two, we need to copy it over to a larger power-of-2 image.
@@ -108,7 +148,7 @@ namespace AriaMaestosa
                     imageData[destArrayIndex+1] = bitmapData[srcArrayIndex + 1];
                     imageData[destArrayIndex+2] = bitmapData[srcArrayIndex + 2];
                     
-                    if (bytesPerPixel==4)
+                    if (bytesPerPixel == 4)
                     {
                         if (img->HasMask())
                         {
@@ -130,7 +170,7 @@ namespace AriaMaestosa
                     imageData[destArrayIndex+0] = 0;
                     imageData[destArrayIndex+1] = 0;
                     imageData[destArrayIndex+2] = 0;
-                    if (bytesPerPixel==4) imageData[destArrayIndex+3] = 0;
+                    if (bytesPerPixel == 4) imageData[destArrayIndex+3] = 0;
                 }
                 
             }//next
@@ -145,6 +185,16 @@ namespace AriaMaestosa
                      (img->HasAlpha() or img->HasMask() ?  GL_RGBA : GL_RGB),
                      GL_UNSIGNED_BYTE,
                      imageData);
+        
+        err = glGetError();
+        if (err != GL_NO_ERROR)
+        {
+            fprintf(stderr, "Failed to load image <%s> into OpenGL, error %i (%s)\n",
+                    (const char*)path.utf8_str(), err, gluErrorString(err));
+            wxMessageBox( _("Failed to load resource image") + wxString::FromUTF8(" (glTexImage2D)")  );
+            ASSERT(false);
+            return NULL;
+        }
         
         (*textureWidth)=newWidth;
         (*textureHeight)=newHeight;

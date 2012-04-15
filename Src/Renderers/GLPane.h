@@ -58,6 +58,7 @@ namespace AriaMaestosa
         void beginFrame();
         void endFrame();
 
+        void OnEraseBackground(wxEraseEvent& evt) {}
     };
 
     typedef GLPane RenderPane;
