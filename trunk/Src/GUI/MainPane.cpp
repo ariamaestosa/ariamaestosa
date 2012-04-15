@@ -238,7 +238,12 @@ void MainPane::resized(wxSizeEvent& evt)
 
 void MainPane::paintEvent(wxPaintEvent& evt)
 {
+    #ifdef RENDERER_OPENGL
+    wxPaintDC mydc(this); // OpenGL handles double-buffering on its own
+    #else
     wxAutoBufferedPaintDC mydc(this);
+    #endif
+    
     
     if (not m_is_visible) return;
     if (not prepareFrame()) return;
