@@ -35,6 +35,13 @@ using namespace AriaMaestosa;
 GLPane::GLPane(wxWindow* parent, int* args) :
     wxGLCanvas(parent, wxID_ANY,  wxDefaultPosition, wxDefaultSize, 0, wxT("GLCanvas"),  args)
 {
+#if wxCHECK_VERSION(2,9,1)
+    SetBackgroundStyle(wxBG_STYLE_PAINT);
+    #ifdef __WXMSW__
+    SetDoubleBuffered(true);
+    Bind(wxEVT_ERASE_BACKGROUND, &GLPane::OnEraseBackground, this);
+    #endif
+#endif
 }
 
 // -------------------------------------------------------------------------------------------------------

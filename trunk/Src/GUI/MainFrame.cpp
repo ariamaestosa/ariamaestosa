@@ -655,6 +655,11 @@ void MainFrame::init()
     m_instrument_picker   =  new InstrumentPicker();
     m_drumKit_picker      =  new DrumPicker();
 
+
+#ifdef RENDERER_OPENGL
+    dynamic_cast<wxGLCanvas*>(m_main_pane)->SetCurrent();
+#endif
+
     wxLogVerbose( wxT("MainFrame::init (loading images)") );
     ImageProvider::loadImages();
     
