@@ -68,6 +68,11 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
     
     int lastEventTick = 0; // last event tick for whole song, to find its duration
 
+    // Flooding the console can slow down imports a lot so avoid printing the same error message repeatedly
+    std::set<int> error_message_choker_note;
+    std::set<int> error_message_choker_evt;
+    bool lsb_message_printed = false;
+    
     {
         ScopedMeasureITransaction tr(sequence->getMeasureData()->startImportTransaction());
         
@@ -143,9 +148,14 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                 {
                     if (event->IsNoteOn())
                     {
-                        fprintf(stderr, "[MidiFileReader] WARNING: note from channel %i != previous channel %i\n",
-                                channel, last_channel);
-                        warnings.insert( _("This MIDI file has tracks that play on multiple MIDI channels. This is not supported by Aria Maestosa.") );
+                        if (error_message_choker_note.find(channel*100 + last_channel) == error_message_choker_note.end())
+                        {
+                            error_message_choker_note.insert(channel*100 + last_channel);
+                            fprintf(stderr, "[MidiFileReader] WARNING: note from channel %i != previous channel %i\n",
+                                    channel, last_channel);
+                            warnings.insert( _("This MIDI file has tracks that play on multiple MIDI channels. This is not supported by Aria Maestosa.") );
+                        }
+                        
                         //ariaTrack->setChannel(channel);
                         //last_channel = channel;
                     }
@@ -153,9 +163,13 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                              not event->IsTextEvent() and not event->IsTempo() and
                              not event->IsSystemMessage() and not event->IsSysEx())
                     {
-                        fprintf(stderr, "[MidiFileReader] WARNING: event from channel %i != previous channel %i\n",
-                                channel, last_channel);
-                        warnings.insert( _("This MIDI file has a track that sends events on multiple MIDI channels. This is not supported by Aria Maestosa.") );
+                        if (error_message_choker_evt.find(channel*100 + last_channel) == error_message_choker_evt.end())
+                        {
+                            error_message_choker_evt.insert(channel*100 + last_channel);
+                            fprintf(stderr, "[MidiFileReader] WARNING: event from channel %i != previous channel %i\n",
+                                    channel, last_channel);
+                            warnings.insert( _("This MIDI file has a track that sends events on multiple MIDI channels. This is not supported by Aria Maestosa.") );
+                        }
                     }
                 }
 
@@ -220,9 +234,13 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                     if (controllerID > 31 and controllerID < 64)
                     {
                         // LSB... not supported by Aria ATM
-                        std::cerr << "[MidiFileReader] WARNING: This MIDI files contains LSB controller data."
-                                  << " Aria does not support fine control changes and will discard this info."
-                                  << std::endl;
+                        if (not lsb_message_printed)
+                        {
+                            std::cerr << "[MidiFileReader] WARNING: This MIDI files contains LSB controller data."
+                                      << " Aria does not support fine control changes and will discard this info."
+                                      << std::endl;
+                            lsb_message_printed = true;
+                        }
                         continue;
                     }
 
