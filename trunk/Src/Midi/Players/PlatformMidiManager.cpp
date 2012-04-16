@@ -189,6 +189,7 @@ void PlatformMidiManager::recordCallback( double deltatime, std::vector< unsigne
                         
                         if (self->m_record_action != NULL)
                         {
+                            // FIXME: this is a thread, and Sequence/Track are NOT thread-safe!!
                             self->m_record_action->action(new Action::AddNote(131 - value,
                                                                               n.m_note_on_tick,
                                                                               now_tick,
@@ -209,6 +210,7 @@ void PlatformMidiManager::recordCallback( double deltatime, std::vector< unsigne
                 
                 if (self->m_record_action != NULL)
                 {
+                     // FIXME: this is a thread, and Sequence/Track are NOT thread-safe!!
                     self->m_record_action->action(new Action::AddControlEvent(now_tick, val, PSEUDO_CONTROLLER_PITCH_BEND));
                 }
                 
@@ -221,6 +223,7 @@ void PlatformMidiManager::recordCallback( double deltatime, std::vector< unsigne
             case 0xB0:
                 if (self->m_record_action != NULL)
                 {
+                     // FIXME: this is a thread, and Sequence/Track are NOT thread-safe!!
                     self->m_record_action->action(new Action::AddControlEvent(now_tick, 127 - value2, value));
                 }
                 
