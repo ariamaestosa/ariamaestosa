@@ -79,11 +79,14 @@ void AddNote::perform()
     
     const bool success = m_track->addNote( tmp_note );
     
-    if (success and m_select)
+    if (success)
     {
-        // select last added note
-        m_track->selectNote(ALL_NOTES, false, true /* ignoreModifiers */);
-        tmp_note->setSelected(true);
+        if (m_select)
+        {
+            // select last added note
+            m_track->selectNote(ALL_NOTES, false, true /* ignoreModifiers */);
+            tmp_note->setSelected(true);
+        }
     }
     else
     {
