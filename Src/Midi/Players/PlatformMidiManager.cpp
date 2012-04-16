@@ -141,8 +141,11 @@ wxArrayString PlatformMidiManager::getInputChoices()
 
 // ----------------------------------------------------------------------------------------------------------
 
-void PlatformMidiManager::recordCallback( double deltatime, std::vector< unsigned char > *message, void *userData )
+void PlatformMidiManager::recordCallback(double deltatime, std::vector<unsigned char> *message,
+                                         void *userData)
 {
+    // ---- this function is invoked from a thread!!
+    
     PlatformMidiManager* self = (PlatformMidiManager*)userData;
     
     ASSERT( MAGIC_NUMBER_OK_FOR(*self) );
@@ -189,12 +192,12 @@ void PlatformMidiManager::recordCallback( double deltatime, std::vector< unsigne
                         
                         if (self->m_record_action != NULL)
                         {
-                            // FIXME: this is a thread, and Sequence/Track are NOT thread-safe!!
-                            self->m_record_action->action(new Action::AddNote(131 - value,
-                                                                              n.m_note_on_tick,
-                                                                              now_tick,
-                                                                              n.m_velocity,
-                                                                              false));
+                            wxMutexLocker lock(self->m_record_action_queue_lock);
+                            self->m_record_action_queue.push_back(new Action::AddNote(131 - value,
+                                                                                      n.m_note_on_tick,
+                                                                                      now_tick,
+                                                                                      n.m_velocity,
+                                                                                      false));
                         }
                     }
                 }
@@ -208,10 +211,12 @@ void PlatformMidiManager::recordCallback( double deltatime, std::vector< unsigne
             {
                 float val = ControllerEvent::fromPitchBendValue((value | (value2 << 7)) - 8192);
                 
+                // FIXME: when is m_record_action null?
                 if (self->m_record_action != NULL)
                 {
-                     // FIXME: this is a thread, and Sequence/Track are NOT thread-safe!!
-                    self->m_record_action->action(new Action::AddControlEvent(now_tick, val, PSEUDO_CONTROLLER_PITCH_BEND));
+                    wxMutexLocker lock(self->m_record_action_queue_lock);
+                    self->m_record_action_queue.push_back(new Action::AddControlEvent(now_tick, val,
+                                                                                      PSEUDO_CONTROLLER_PITCH_BEND));
                 }
                 
                 // FIXME: we are in a thread, not all players may be thread-safe!!
@@ -223,8 +228,10 @@ void PlatformMidiManager::recordCallback( double deltatime, std::vector< unsigne
             case 0xB0:
                 if (self->m_record_action != NULL)
                 {
-                     // FIXME: this is a thread, and Sequence/Track are NOT thread-safe!!
-                    self->m_record_action->action(new Action::AddControlEvent(now_tick, 127 - value2, value));
+                    wxMutexLocker lock(self->m_record_action_queue_lock);
+                    self->m_record_action_queue.push_back(new Action::AddControlEvent(now_tick,
+                                                                                      127 - value2 /* value */,
+                                                                                      value /* controller ID */));
                 }
                 
                 // FIXME: we are in a thread, not all players may be thread-safe!!
@@ -246,6 +253,22 @@ void PlatformMidiManager::recordCallback( double deltatime, std::vector< unsigne
     if ( nBytes > 0 )
         std::cout << "stamp = " << deltatime << std::endl;
      */
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void PlatformMidiManager::processRecordQueue()
+{
+    if (m_record_action == NULL) return;
+    
+    // FIXME: this is a thread, and Sequence/Track are NOT thread-safe!!
+    wxMutexLocker lock(m_record_action_queue_lock);
+    const int count = m_record_action_queue.size();
+    for (int n=0; n<count; n++)
+    {
+        m_record_action->action(m_record_action_queue.get(n));
+    }
+    m_record_action_queue.clearWithoutDeleting();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -335,6 +358,13 @@ void PlatformMidiManager::stopRecording()
     {
         fprintf(stderr, "[rtmidi] %s\n", e.what());
     }
+    
+    processRecordQueue();
+    
+    // it's supposed to have been emptied already but who knows...
+    if (m_record_action_queue.size() > 0) fprintf(stderr, "Why is m_record_action_queue not empty??\n");
+    m_record_action_queue.clearWithoutDeleting();
+    
     delete m_midi_input;
     m_midi_input = NULL;
     m_record_action = NULL;

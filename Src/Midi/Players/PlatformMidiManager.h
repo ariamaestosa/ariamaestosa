@@ -20,7 +20,11 @@
 #include <vector>
 #include <wx/string.h>
 #include <wx/arrstr.h>
+#include <wx/thread.h>
 #include <map>
+
+#include "Actions/EditAction.h"
+#include "ptr_vector.h"
 #include "Utils.h"
 
 class RtMidiIn;
@@ -86,7 +90,11 @@ namespace AriaMaestosa
         
         /** Used while recording */
         Action::Record* m_record_action;
-                
+        
+        ptr_vector<Action::SingleTrackAction> m_record_action_queue;
+        
+        wxMutex m_record_action_queue_lock;
+        
     public:
         
         DECLARE_MAGIC_NUMBER();
@@ -195,6 +203,12 @@ namespace AriaMaestosa
         virtual void stopRecording();
         
         bool isRecording() const { return m_recording; }
+        
+        /** This method should be called very regularly while recording, *from the main thread*,
+          * so that the PlatformMidiManager can perform tasks that otherwise could not have been done
+          * from the MIDI record thread
+          */
+        void processRecordQueue();
         
         // ---------- non-native sequencer interface ---------
         virtual void seq_note_on      (const int note, const int volume, const int channel)      { }
