@@ -68,6 +68,12 @@ void wxWidgetApp::onIdle(wxIdleEvent& evt)
         frame->getMainPane()->playbackRenderLoop();
         evt.RequestMore();
     }
+    
+    PlatformMidiManager* pmm = PlatformMidiManager::get();
+    if (pmm->isRecording())
+    {
+        pmm->processRecordQueue();
+    }
 }
 
 // ------------------------------------------------------------------------------------------------------
