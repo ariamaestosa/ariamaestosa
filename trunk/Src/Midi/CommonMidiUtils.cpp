@@ -773,7 +773,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
         if (tick > *songLengthInTicks)
         {
             jdkmidi::MIDITimedBigMessage m;
-            m.SetTime( tick );
+            m.SetTime( tick - 1 );
             m.SetControlChange(0, 127, 0);
             
             const int count = sequence->getTrackAmount();
