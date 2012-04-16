@@ -815,6 +815,8 @@ void MainFrame::stopClicked(wxCommandEvent& evt)
         if (not m_playback_mode) return;
         m_main_pane->exitPlayLoop();
     }
+    m_toolbar->Refresh();
+    
     
     setStatusText( wxT("") );
 }
