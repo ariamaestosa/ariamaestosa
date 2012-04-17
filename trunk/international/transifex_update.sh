@@ -1,4 +1,4 @@
 #!/bin/sh
-export PATH=$PATH:`cwd`
+export PATH=$PATH:`pwd`
 cd transifex
 tx pull --all

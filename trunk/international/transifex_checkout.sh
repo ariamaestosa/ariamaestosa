@@ -1,5 +1,5 @@
 #!/bin/sh
-export PATH=$PATH:`cwd`
+export PATH=$PATH:`pwd`
 mkdir transifex
 cd transifex
 tx init
