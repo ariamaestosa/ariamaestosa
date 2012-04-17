@@ -1,15 +1,15 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 msgid ""
 msgstr ""
 "Project-Id-Version: Aria Maestosa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-02-26 15:24-0500\n"
-"PO-Revision-Date: 2012-02-27 09:46-0500\n"
-"Last-Translator: Marianne Gagnon (Auria) <auria.mg@gmail.com>\n"
+"PO-Revision-Date: 2012-02-27 08:30+0000\n"
+"Last-Translator: Auria <auria.mg@gmail.com>\n"
 "Language-Team: Japanese (http://www.transifex.net/projects/p/ariamaestosa/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -63,8 +63,7 @@ msgid "move note(s)"
 msgstr "ノートを移動する"
 
 #. I18N: (undoable) action name
-#: Src/Actions/NumberPressed.cpp:29
-#: Src/Actions/ShiftFrets.cpp:28
+#: Src/Actions/NumberPressed.cpp:29 Src/Actions/ShiftFrets.cpp:28
 msgid "change note fret"
 msgstr "ノートのフレットを変更する"
 
@@ -191,8 +190,7 @@ msgstr ""
 msgid "Translations:"
 msgstr ""
 
-#: Src/Dialogs/AboutDialog.cpp:82
-#: Src/Dialogs/PresetEditor.cpp:66
+#: Src/Dialogs/AboutDialog.cpp:82 Src/Dialogs/PresetEditor.cpp:66
 #: Src/GUI/MainFrameMenuBar.cpp:1160
 msgid "Close"
 msgstr "閉じる"
@@ -212,8 +210,7 @@ msgstr "曲名"
 msgid "Copyright"
 msgstr "著作権"
 
-#: Src/Dialogs/CopyrightWindow.cpp:87
-#: Src/Dialogs/CopyrightWindow.cpp:110
+#: Src/Dialogs/CopyrightWindow.cpp:87 Src/Dialogs/CopyrightWindow.cpp:110
 msgid "Song duration :"
 msgstr "曲の長さ :"
 
@@ -253,25 +250,23 @@ msgstr ""
 
 #. I18N: in the key editor
 #: Src/Dialogs/CustomKeyDialog.cpp:155
-msgid "* Unchecked notes are excluded (for instance, they could be unplayable on your instrument)"
+msgid ""
+"* Unchecked notes are excluded (for instance, they could be unplayable on "
+"your instrument)"
 msgstr ""
 
 #: Src/Dialogs/CustomKeyDialog.cpp:161
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:171
-#: Src/Dialogs/PrintSetupDialog.cpp:105
-#: Src/Dialogs/PrintSetupDialog.cpp:703
-#: Src/Dialogs/ScaleDialog.cpp:147
-#: Src/Dialogs/TuningDialog.cpp:57
+#: Src/Dialogs/PrintSetupDialog.cpp:105 Src/Dialogs/PrintSetupDialog.cpp:703
+#: Src/Dialogs/ScaleDialog.cpp:147 Src/Dialogs/TuningDialog.cpp:57
 #: Src/Pickers/TimeSigPicker.cpp:181
 msgid "OK"
 msgstr "OK"
 
 #: Src/Dialogs/CustomKeyDialog.cpp:162
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:176
-#: Src/Dialogs/PrintSetupDialog.cpp:706
-#: Src/Dialogs/ScaleDialog.cpp:143
-#: Src/Dialogs/TrackPropertiesDialog.cpp:196
-#: Src/Dialogs/TuningDialog.cpp:61
+#: Src/Dialogs/PrintSetupDialog.cpp:706 Src/Dialogs/ScaleDialog.cpp:143
+#: Src/Dialogs/TrackPropertiesDialog.cpp:196 Src/Dialogs/TuningDialog.cpp:61
 msgid "Cancel"
 msgstr "キャンセル"
 
@@ -357,8 +352,7 @@ msgid "Illegal values"
 msgstr "不正な値"
 
 #. I18N: - title of the preferences dialog
-#: Src/Dialogs/Preferences.cpp:245
-#: Src/GUI/MainPane.cpp:149
+#: Src/Dialogs/Preferences.cpp:245 Src/GUI/MainPane.cpp:149
 msgid "Preferences"
 msgstr "環境設定"
 
@@ -375,8 +369,7 @@ msgstr "変更を有効にするためには再起動をしてください。"
 msgid "You will need to restart Aria Maestosa for changes to be effective."
 msgstr ""
 
-#: Src/Dialogs/Preferences.cpp:390
-#: Src/GUI/MainFrameMenuBar.cpp:565
+#: Src/Dialogs/Preferences.cpp:390 Src/GUI/MainFrameMenuBar.cpp:565
 msgid "Select file"
 msgstr "ファイルを選択"
 
@@ -405,14 +398,10 @@ msgstr "複製の名前を入力してください"
 msgid "Are you sure you want to delete this preset? This cannot be undone."
 msgstr "このプリセットを削除してもよろしいですか？これを取り消すことはできません。"
 
-#: Src/Dialogs/PresetEditor.cpp:118
-#: Src/GUI/MainFrameMenuBar.cpp:538
-#: Src/GUI/MainFrameMenuBar.cpp:597
-#: Src/GUI/MainFrameMenuBar.cpp:634
-#: Src/GUI/MainFrameMenuBar.cpp:852
-#: Src/GUI/MainFrameMenuBar.cpp:935
-#: Src/GUI/MainFrameMenuBar.cpp:1019
-#: Src/Pickers/TimeSigPicker.cpp:289
+#: Src/Dialogs/PresetEditor.cpp:118 Src/GUI/MainFrameMenuBar.cpp:538
+#: Src/GUI/MainFrameMenuBar.cpp:597 Src/GUI/MainFrameMenuBar.cpp:634
+#: Src/GUI/MainFrameMenuBar.cpp:852 Src/GUI/MainFrameMenuBar.cpp:935
+#: Src/GUI/MainFrameMenuBar.cpp:1019 Src/Pickers/TimeSigPicker.cpp:289
 msgid "Confirm"
 msgstr "確認"
 
@@ -438,7 +427,9 @@ msgid "Compact (print only key notes)"
 msgstr "コンパクト（キーノートのみ印刷）"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:192
-msgid "Keyroll tracks and tablature/score tracks cannot be mixed in the same printout"
+msgid ""
+"Keyroll tracks and tablature/score tracks cannot be mixed in the same "
+"printout"
 msgstr "キーロールトラックとタブ譜/スコアトラックを同じ印刷出力に混在させることはできません"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:197
@@ -455,9 +446,7 @@ msgstr "印刷レイアウトを計算..."
 msgid ""
 "Track '%s' could not be printed, since its current\n"
 "view (editor) does not support printing."
-msgstr ""
-"トラック '%s'の現在のビュー（エディタ）は\n"
-"印刷をサポートしていないため、印刷ができません。"
+msgstr "トラック '%s'の現在のビュー（エディタ）は\n印刷をサポートしていないため、印刷ができません。"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:273
 msgid "An error occurred during printing."
@@ -493,7 +482,9 @@ msgid "Omit instruments that play nothing on the current line"
 msgstr "カレントラインで何も演奏しない楽器を省略"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:635
-msgid "If some instrument plays nothing during a long part of the song, checking this option can make the printed score tighter by eliminating empty lines"
+msgid ""
+"If some instrument plays nothing during a long part of the song, checking "
+"this option can make the printed score tighter by eliminating empty lines"
 msgstr "いくつかの楽器が曲で長い間何も再生しない場合、このオプションをチェックし、空行をなくすことでタイトな印刷スコアを作成することができます"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:649
@@ -638,8 +629,7 @@ msgstr "開始小節"
 msgid "Zoom"
 msgstr "ズーム"
 
-#: Src/GUI/MainFrame.cpp:473
-#: Src/GUI/MainFrame.cpp:475
+#: Src/GUI/MainFrame.cpp:473 Src/GUI/MainFrame.cpp:475
 msgid "Tool"
 msgstr "ツール"
 
@@ -649,10 +639,8 @@ msgstr "ツール"
 msgid "Hide"
 msgstr "隠す"
 
-#: Src/GUI/MainFrame.cpp:766
-#: Src/GUI/MainFrameMenuBar.cpp:277
-#: Src/GUI/MainFrameMenuBar.cpp:279
-#: Src/PreferencesData.cpp:220
+#: Src/GUI/MainFrame.cpp:766 Src/GUI/MainFrameMenuBar.cpp:277
+#: Src/GUI/MainFrameMenuBar.cpp:279 Src/PreferencesData.cpp:220
 msgid "No MIDI input"
 msgstr ""
 
@@ -662,7 +650,9 @@ msgstr ""
 
 #: Src/GUI/MainFrame.cpp:1445
 #, c-format
-msgid "You have unsaved changes in sequence '%s'. Do you want to save them before proceeding?"
+msgid ""
+"You have unsaved changes in sequence '%s'. Do you want to save them before "
+"proceeding?"
 msgstr "シーケンス '%s'に保存されていない変更があります。続行する前に保存しますか？"
 
 #: Src/GUI/MainFrame.cpp:1447
@@ -699,7 +689,9 @@ msgid "Sorry, loading midi file failed."
 msgstr "MIDIファイルの読み込みに失敗しました。"
 
 #: Src/GUI/MainFrame.cpp:1657
-msgid "Loading the MIDI file completed successfully, but with the following warnings (the song may not sound as intended) :"
+msgid ""
+"Loading the MIDI file completed successfully, but with the following "
+"warnings (the song may not sound as intended) :"
 msgstr "MIDIファイルの読み込みは正常に終了しましたが、次の警告が出ています（曲が意図したとおりに聞こえない可能性があります） :"
 
 #: Src/GUI/MainFrame.cpp:1752
@@ -913,8 +905,7 @@ msgstr "&環境設定..."
 msgid "&Settings"
 msgstr "&設定"
 
-#: Src/GUI/MainFrameMenuBar.cpp:239
-#: Src/GUI/MainFrameMenuBar.cpp:1073
+#: Src/GUI/MainFrameMenuBar.cpp:239 Src/GUI/MainFrameMenuBar.cpp:1073
 msgid "No MIDI Output Available"
 msgstr ""
 
@@ -949,14 +940,12 @@ msgstr "&元に戻す %s"
 msgid "Can't Undo"
 msgstr "元に戻せません"
 
-#: Src/GUI/MainFrameMenuBar.cpp:528
-#: Src/GUI/MainFrameMenuBar.cpp:587
+#: Src/GUI/MainFrameMenuBar.cpp:528 Src/GUI/MainFrameMenuBar.cpp:587
 #: Src/GUI/MainFrameMenuBar.cpp:624
 msgid "Select destination file"
 msgstr "保存先のファイルを選択"
 
-#: Src/GUI/MainFrameMenuBar.cpp:538
-#: Src/GUI/MainFrameMenuBar.cpp:597
+#: Src/GUI/MainFrameMenuBar.cpp:538 Src/GUI/MainFrameMenuBar.cpp:597
 #: Src/GUI/MainFrameMenuBar.cpp:634
 msgid "The file already exists. Do you wish to overwrite it?"
 msgstr "ファイルは既に存在します。上書きしますか？"
@@ -969,8 +958,7 @@ msgstr ""
 msgid "Select midi file"
 msgstr "MIDIファイルを選択"
 
-#: Src/GUI/MainFrameMenuBar.cpp:576
-#: Src/GUI/MainFrameMenuBar.cpp:588
+#: Src/GUI/MainFrameMenuBar.cpp:576 Src/GUI/MainFrameMenuBar.cpp:588
 msgid "Midi file"
 msgstr ""
 
@@ -984,11 +972,7 @@ msgid ""
 "\n"
 "Depending on the length of your file,\n"
 "this can take several minutes."
-msgstr ""
-"オーディオファイルが生成されている間、しばらくお待ちください。\n"
-"\n"
-"ファイルの長さに応じて、\n"
-"これは数分かかる場合があります。"
+msgstr "オーディオファイルが生成されている間、しばらくお待ちください。\n\nファイルの長さに応じて、\nこれは数分かかる場合があります。"
 
 #: Src/GUI/MainFrameMenuBar.cpp:848
 msgid "You may not delete the last track"
@@ -1004,16 +988,12 @@ msgid ""
 "This cannot be undone.\n"
 "\n"
 "Do you really want to continue?"
-msgstr ""
-"複数のトラックが同一チャンネルで再生されている場合、\n"
-"それらは統合されます。\n"
-"これを取り消すことはできません。\n"
-"\n"
-"本当に続行しますか？"
+msgstr "複数のトラックが同一チャンネルで再生されている場合、\nそれらは統合されます。\nこれを取り消すことはできません。\n\n本当に続行しますか？"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1018
-#: Src/Pickers/TimeSigPicker.cpp:288
-msgid "Are you sure you want to go back to having a single time signature? Any time sig events you may have added will be lost. This cannot be undone."
+#: Src/GUI/MainFrameMenuBar.cpp:1018 Src/Pickers/TimeSigPicker.cpp:288
+msgid ""
+"Are you sure you want to go back to having a single time signature? Any time"
+" sig events you may have added will be lost. This cannot be undone."
 msgstr "本当に、単一の拍子に戻しますか？追加した拍子のイベントは失われます。これを取り消すことはできません。"
 
 #: Src/GUI/MainFrameMenuBar.cpp:1147
@@ -1082,47 +1062,59 @@ msgid "Could not open file '%s' for reading"
 msgstr "ファイル '%s'を読み取り用に開くことができません"
 
 #: Src/IO/MidiFileReader.cpp:147
-msgid "This MIDI file has tracks that play on multiple MIDI channels. This is not supported by Aria Maestosa."
+msgid ""
+"This MIDI file has tracks that play on multiple MIDI channels. This is not "
+"supported by Aria Maestosa."
 msgstr "このMIDIファイルは、複数のMIDIチャンネルで再生するトラックを含んでいます。これは、Aria Maestosaではサポートされていません。"
 
 #: Src/IO/MidiFileReader.cpp:157
-msgid "This MIDI file has a track that sends events on multiple MIDI channels. This is not supported by Aria Maestosa."
+msgid ""
+"This MIDI file has a track that sends events on multiple MIDI channels. This"
+" is not supported by Aria Maestosa."
 msgstr "このMIDIファイルは、複数のMIDIチャンネル上でイベントを送信するトラックを含んでいます。これは、Aria Maestosaではサポートされていません。"
 
 #: Src/IO/MidiFileReader.cpp:207
 #, c-format
-msgid "This MIDI file appears to be incorrect; a note at tick %i in channel %i does not appear to have an end"
+msgid ""
+"This MIDI file appears to be incorrect; a note at tick %i in channel %i does"
+" not appear to have an end"
 msgstr "このMIDIファイルは正しくない可能性があります; a note at tick %i in channel %i does not appear to have an end"
 
 #: Src/IO/MidiFileReader.cpp:233
 #, c-format
-msgid "This MIDI file uses controller #%i, which is not part of the MIDI standard. This information will be discarded."
+msgid ""
+"This MIDI file uses controller #%i, which is not part of the MIDI standard. "
+"This information will be discarded."
 msgstr "このMIDIファイルはMIDI規格の一部ではないコントローラ #%iを使用しています。この情報は破棄されます。"
 
 #: Src/IO/MidiFileReader.cpp:243
-msgid "This MIDI file uses Registered Parameters, which are currently not supported by Aria Maestosa."
+msgid ""
+"This MIDI file uses Registered Parameters, which are currently not supported"
+" by Aria Maestosa."
 msgstr "このMIDIファイルは、現在のAria Maestosaでサポートされていないレジスタードパラメーターを使用しています。"
 
 #: Src/IO/MidiFileReader.cpp:247
-msgid "This MIDI files uses NRPN (Non-Registered Parameters, i.e. non-standard controllers), which are currently not supported by Aria Maestosa."
+msgid ""
+"This MIDI files uses NRPN (Non-Registered Parameters, i.e. non-standard "
+"controllers), which are currently not supported by Aria Maestosa."
 msgstr "このMIDIファイルは、現在のAria MaestosaでサポートされいないNRPN（ノンレジスタードパラメータ、すなわち非標準コントローラ）を使用しています。"
 
 #: Src/IO/MidiFileReader.cpp:259
-msgid "This MIDI files uses Channel Mode Message, which are currently not supported by Aria Maestosa."
+msgid ""
+"This MIDI files uses Channel Mode Message, which are currently not supported"
+" by Aria Maestosa."
 msgstr "このMIDIファイルは、現在のAria Maestosaでサポートされていないチャンネルモードメッセージを使用しています。"
 
 #: Src/IO/MidiFileReader.cpp:263
 #, c-format
-msgid "This MIDI file uses unsupported MIDI controller #%i. Data related to this controller will be discarded."
+msgid ""
+"This MIDI file uses unsupported MIDI controller #%i. Data related to this "
+"controller will be discarded."
 msgstr "このMIDIファイルはサポートされていないMIDIコントローラ #%iを使用しています。このコントローラに関連したデータは破棄されます。"
 
-#: Src/IO/MidiFileReader.cpp:501
-#: Src/Midi/Sequence.cpp:66
-#: Src/Midi/Sequence.cpp:114
-#: Src/Midi/Sequence.cpp:136
-#: Src/Midi/Track.cpp:73
-#: Src/Midi/Track.cpp:920
-#: Src/Midi/Track.cpp:1868
+#: Src/IO/MidiFileReader.cpp:501 Src/Midi/Sequence.cpp:66
+#: Src/Midi/Sequence.cpp:114 Src/Midi/Sequence.cpp:136 Src/Midi/Track.cpp:73
+#: Src/Midi/Track.cpp:920 Src/Midi/Track.cpp:1868
 #: Src/Printing/AbstractPrintableSequence.cpp:39
 #: Src/Printing/AbstractPrintableSequence.cpp:43
 msgid "Untitled"
@@ -1132,22 +1124,21 @@ msgstr "無題"
 msgid "Unknown file type: "
 msgstr "不明なファイルタイプ: "
 
-#: Src/main.cpp:294
-#: Src/main.cpp:315
-msgid "Sorry an internal error occurred : an exception was caught unhandled : "
+#: Src/main.cpp:294 Src/main.cpp:315
+msgid ""
+"Sorry an internal error occurred : an exception was caught unhandled : "
 msgstr "内部エラーが発生しました : 未処理の例外がキャッチされました : "
 
-#: Src/Midi/CommonMidiUtils.cpp:415
-#: Src/Midi/CommonMidiUtils.cpp:440
+#: Src/Midi/CommonMidiUtils.cpp:415 Src/Midi/CommonMidiUtils.cpp:440
 msgid ""
 "WARNING: this song has too many\n"
 "channels, expect unpredictable output"
-msgstr ""
-"警告: この曲はチャンネル数が多すぎます\n"
-"予期不能な出力をします"
+msgstr "警告: この曲はチャンネル数が多すぎます\n予期不能な出力をします"
 
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:232
-msgid "Failed to open ALSA device, sound will be unavailable (you can try selecting another output device from the 'Output' menu)"
+msgid ""
+"Failed to open ALSA device, sound will be unavailable (you can try selecting"
+" another output device from the 'Output' menu)"
 msgstr "ALSAデバイスのオープンに失敗しました。音は使用できません。（ '出力'メニューから別の出力デバイスを選択することができます。）"
 
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:414
@@ -1183,7 +1174,9 @@ msgstr ""
 #: Src/Midi/Players/Mac/AudioUnitOutput.cpp:901
 #: Src/Midi/Players/Mac/AudioUnitOutput.cpp:912
 #: Src/Midi/Players/Mac/AudioUnitOutput.cpp:922
-msgid "An error has occurred when connecting to the MIDI output device with AudioUnit; audio playback may be unavailable"
+msgid ""
+"An error has occurred when connecting to the MIDI output device with "
+"AudioUnit; audio playback may be unavailable"
 msgstr "AudioUnitでMIDI出力デバイスに接続するときにエラーが発生しました。; オーディオ再生は利用できない可能性があります。"
 
 #: Src/Midi/Players/Mac/MacPlayerInterface.cpp:256
@@ -1228,10 +1221,7 @@ msgid ""
 "Warning : you are opening a file saved with a version of\n"
 "Aria Maestosa more recent than the version you currently have.\n"
 "It may not open correctly."
-msgstr ""
-"警告 : 現在持っているバージョンより新しい\n"
-"Aria Maestosaで保存されたファイルを開いています。\n"
-"正しく開かないことがあります。"
+msgstr "警告 : 現在持っているバージョンより新しい\nAria Maestosaで保存されたファイルを開いています。\n正しく開かないことがあります。"
 
 #. I18N: - in controller, when a controller can only be on/off
 #: Src/Pickers/ControllerChoice.cpp:194
@@ -1456,4 +1446,3 @@ msgstr "キーボードエディタ"
 #: Src/Editors/ScoreEditor.h:260
 msgid "Score Editor"
 msgstr "スコアエディタ"
-
