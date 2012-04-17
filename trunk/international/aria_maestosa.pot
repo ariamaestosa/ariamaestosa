@@ -8,10 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-26 15:24-0500\n"
+"POT-Creation-Date: 2012-04-17 14:33-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -141,18 +142,18 @@ msgid "About Aria Maestosa"
 msgstr ""
 
 #. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:49
+#: Src/Dialogs/AboutDialog.cpp:50
 #, c-format
 msgid "version %s"
 msgstr ""
 
 #. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:51
+#: Src/Dialogs/AboutDialog.cpp:52
 msgid "Thanks to:"
 msgstr ""
 
 #. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:53
+#: Src/Dialogs/AboutDialog.cpp:54
 #, c-format
 msgid ""
 "Ergonis Software and %s for making EasyBeat,\n"
@@ -160,37 +161,37 @@ msgid ""
 msgstr ""
 
 #. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:55
+#: Src/Dialogs/AboutDialog.cpp:56
 msgid "J.D. Koftinoff Software for libjdkmidi"
 msgstr ""
 
 #. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:57
+#: Src/Dialogs/AboutDialog.cpp:58
 msgid "The irrXML team for their XML parser"
 msgstr ""
 
 #. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:59
+#: Src/Dialogs/AboutDialog.cpp:60
 msgid "The wxWidgets team"
 msgstr ""
 
 #. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:61
+#: Src/Dialogs/AboutDialog.cpp:62
 msgid "The Tango icon set"
 msgstr ""
 
 #. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:63
+#: Src/Dialogs/AboutDialog.cpp:64
 msgid "Windows port by Alexis Archambault"
 msgstr ""
 
 #. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:65
+#: Src/Dialogs/AboutDialog.cpp:66
 msgid "Translations:"
 msgstr ""
 
-#: Src/Dialogs/AboutDialog.cpp:82 Src/Dialogs/PresetEditor.cpp:66
-#: Src/GUI/MainFrameMenuBar.cpp:1160
+#: Src/Dialogs/AboutDialog.cpp:85 Src/Dialogs/PresetEditor.cpp:66
+#: Src/GUI/MainFrameMenuBar.cpp:1204
 msgid "Close"
 msgstr ""
 
@@ -253,7 +254,7 @@ msgstr ""
 
 #: Src/Dialogs/CustomKeyDialog.cpp:161
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:171
-#: Src/Dialogs/PrintSetupDialog.cpp:105 Src/Dialogs/PrintSetupDialog.cpp:703
+#: Src/Dialogs/PrintSetupDialog.cpp:105 Src/Dialogs/PrintSetupDialog.cpp:724
 #: Src/Dialogs/ScaleDialog.cpp:147 Src/Dialogs/TuningDialog.cpp:57
 #: Src/Pickers/TimeSigPicker.cpp:181
 msgid "OK"
@@ -261,7 +262,7 @@ msgstr ""
 
 #: Src/Dialogs/CustomKeyDialog.cpp:162
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:176
-#: Src/Dialogs/PrintSetupDialog.cpp:706 Src/Dialogs/ScaleDialog.cpp:143
+#: Src/Dialogs/PrintSetupDialog.cpp:727 Src/Dialogs/ScaleDialog.cpp:143
 #: Src/Dialogs/TrackPropertiesDialog.cpp:196 Src/Dialogs/TuningDialog.cpp:61
 msgid "Cancel"
 msgstr ""
@@ -349,7 +350,7 @@ msgstr ""
 msgid "You will need to restart Aria Maestosa for changes to be effective."
 msgstr ""
 
-#: Src/Dialogs/Preferences.cpp:390 Src/GUI/MainFrameMenuBar.cpp:565
+#: Src/Dialogs/Preferences.cpp:390 Src/GUI/MainFrameMenuBar.cpp:576
 msgid "Select file"
 msgstr ""
 
@@ -378,10 +379,10 @@ msgstr ""
 msgid "Are you sure you want to delete this preset? This cannot be undone."
 msgstr ""
 
-#: Src/Dialogs/PresetEditor.cpp:118 Src/GUI/MainFrameMenuBar.cpp:538
-#: Src/GUI/MainFrameMenuBar.cpp:597 Src/GUI/MainFrameMenuBar.cpp:634
-#: Src/GUI/MainFrameMenuBar.cpp:852 Src/GUI/MainFrameMenuBar.cpp:935
-#: Src/GUI/MainFrameMenuBar.cpp:1019 Src/Pickers/TimeSigPicker.cpp:289
+#: Src/Dialogs/PresetEditor.cpp:118 Src/GUI/MainFrameMenuBar.cpp:549
+#: Src/GUI/MainFrameMenuBar.cpp:608 Src/GUI/MainFrameMenuBar.cpp:645
+#: Src/GUI/MainFrameMenuBar.cpp:863 Src/GUI/MainFrameMenuBar.cpp:979
+#: Src/GUI/MainFrameMenuBar.cpp:1063 Src/Pickers/TimeSigPicker.cpp:289
 msgid "Confirm"
 msgstr ""
 
@@ -433,57 +434,57 @@ msgid "An error occurred during printing."
 msgstr ""
 
 #. I18N: - title of the notation-print dialog
-#: Src/Dialogs/PrintSetupDialog.cpp:488
+#: Src/Dialogs/PrintSetupDialog.cpp:509
 msgid "Print musical notation"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:500
+#: Src/Dialogs/PrintSetupDialog.cpp:521
 msgid "An error occurred while preparing to print."
 msgstr ""
 
 #. I18N: - in print setup dialog.
-#: Src/Dialogs/PrintSetupDialog.cpp:518
+#: Src/Dialogs/PrintSetupDialog.cpp:539
 msgid "Print..."
 msgstr ""
 
 #. I18N: - in print setup dialog.
-#: Src/Dialogs/PrintSetupDialog.cpp:521
+#: Src/Dialogs/PrintSetupDialog.cpp:542
 msgid "Current track only"
 msgstr ""
 
 #. I18N: - in print setup dialog.
-#: Src/Dialogs/PrintSetupDialog.cpp:526
+#: Src/Dialogs/PrintSetupDialog.cpp:547
 msgid "This list of tracks"
 msgstr ""
 
 #. I18N: in printing dialog
-#: Src/Dialogs/PrintSetupDialog.cpp:633
+#: Src/Dialogs/PrintSetupDialog.cpp:654
 msgid "Omit instruments that play nothing on the current line"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:635
+#: Src/Dialogs/PrintSetupDialog.cpp:656
 msgid ""
 "If some instrument plays nothing during a long part of the song, checking "
 "this option can make the printed score tighter by eliminating empty lines"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:649
+#: Src/Dialogs/PrintSetupDialog.cpp:670
 msgid "Page Setup"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:655
+#: Src/Dialogs/PrintSetupDialog.cpp:676
 msgid "Paper :"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:663
+#: Src/Dialogs/PrintSetupDialog.cpp:684
 msgid "Edit Page Setup"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:669
+#: Src/Dialogs/PrintSetupDialog.cpp:690
 msgid "Margins :"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:677
+#: Src/Dialogs/PrintSetupDialog.cpp:698
 msgid "Margins"
 msgstr ""
 
@@ -570,108 +571,116 @@ msgstr ""
 msgid "Channel choice"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:377
+#: Src/GUI/MainFrame.cpp:412
 msgid "Record"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:381
+#: Src/GUI/MainFrame.cpp:416
 msgid "Play"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:385
+#: Src/GUI/MainFrame.cpp:420
 msgid "Stop"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:398
+#: Src/GUI/MainFrame.cpp:423
+msgid "Loop"
+msgstr ""
+
+#: Src/GUI/MainFrame.cpp:436
 msgid "Duration"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:406
+#: Src/GUI/MainFrame.cpp:444
 msgid "Tempo"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:418
+#: Src/GUI/MainFrame.cpp:456
 msgid "Time Sig"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:426
+#: Src/GUI/MainFrame.cpp:464
 msgid "Start"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:442
+#: Src/GUI/MainFrame.cpp:480
 msgid "Zoom"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:473 Src/GUI/MainFrame.cpp:475
+#: Src/GUI/MainFrame.cpp:511 Src/GUI/MainFrame.cpp:513
 msgid "Tool"
 msgstr ""
 
 #. I18N: to hide the panel that is shown when a file could not be imported successfully
-#: Src/GUI/MainFrame.cpp:496
+#: Src/GUI/MainFrame.cpp:534
 msgid "Hide"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:766 Src/GUI/MainFrameMenuBar.cpp:277
-#: Src/GUI/MainFrameMenuBar.cpp:279 Src/PreferencesData.cpp:220
+#: Src/GUI/MainFrame.cpp:836 Src/GUI/MainFrameMenuBar.cpp:288
+#: Src/GUI/MainFrameMenuBar.cpp:290 Src/PreferencesData.cpp:231
 msgid "No MIDI input"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:768
+#: Src/GUI/MainFrame.cpp:838
 msgid "Please select an input port from the 'input' menu before recording"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1445
+#: Src/GUI/MainFrame.cpp:1528
 #, c-format
 msgid ""
 "You have unsaved changes in sequence '%s'. Do you want to save them before "
 "proceeding?"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1447
+#: Src/GUI/MainFrame.cpp:1530
 msgid "Selecting 'Yes' will save your document before closing"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1448
+#: Src/GUI/MainFrame.cpp:1531
 msgid "Selecting 'No' will discard unsaved changes"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1449
+#: Src/GUI/MainFrame.cpp:1532
 msgid "Selecting 'Cancel' will cancel exiting the application"
 msgstr ""
 
 #. I18N: title of dialog shown when exiting without saving
-#: Src/GUI/MainFrame.cpp:1454
+#: Src/GUI/MainFrame.cpp:1537
 msgid "Unsaved changes in sequence"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1582
+#: Src/GUI/MainFrame.cpp:1667
 msgid "Please wait while .aria file is loading."
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1589
+#: Src/GUI/MainFrame.cpp:1674
 msgid "Sorry, loading .aria file failed."
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1628
+#: Src/GUI/MainFrame.cpp:1713
 msgid "Please wait while midi file is loading."
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1635
+#: Src/GUI/MainFrame.cpp:1720
 msgid "Sorry, loading midi file failed."
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1657
+#: Src/GUI/MainFrame.cpp:1742
 msgid ""
 "Loading the MIDI file completed successfully, but with the following "
 "warnings (the song may not sound as intended) :"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1752
+#: Src/GUI/MainFrame.cpp:1837
 msgid "A new version of Aria Maestosa is now available!"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1753
+#: Src/GUI/MainFrame.cpp:1838
 msgid "Visit http://ariamaestosa.sourceforge.net/ to download it"
+msgstr ""
+
+#: Src/GUI/MainFrame.cpp:1849
+msgid "An error occurred"
 msgstr ""
 
 #. I18N: menu item in the "file" menu
@@ -811,127 +820,146 @@ msgstr ""
 msgid "&Tracks"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:187
+#. I18N: In the playback menu
+#: Src/GUI/MainFrameMenuBar.cpp:188
+msgid "&Play / Pause"
+msgstr ""
+
+#. I18N: In the playback menu
+#: Src/GUI/MainFrameMenuBar.cpp:190
+msgid "&Stop"
+msgstr ""
+
+#. I18N: In the playback menu
+#: Src/GUI/MainFrameMenuBar.cpp:192
+msgid "&Record"
+msgstr ""
+
+#: Src/GUI/MainFrameMenuBar.cpp:194
+msgid "&Playback"
+msgstr ""
+
+#: Src/GUI/MainFrameMenuBar.cpp:198
 msgid "&Follow Playback"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:188
+#: Src/GUI/MainFrameMenuBar.cpp:199
 msgid "E&xpanded time sig management"
 msgstr ""
 
 #. I18N: - the channel setting. full context : Channel management\n\n* Automatic\n* Manual
-#: Src/GUI/MainFrameMenuBar.cpp:195
+#: Src/GUI/MainFrameMenuBar.cpp:206
 msgid "&Channel management"
 msgstr ""
 
 #. I18N: - the channel setting. full context : Channel management\n\n* Automatic\n* Manual
-#: Src/GUI/MainFrameMenuBar.cpp:197
+#: Src/GUI/MainFrameMenuBar.cpp:208
 msgid "&Automatic"
 msgstr ""
 
 #. I18N: - the channel setting. full context : Channel management\n\n* Automatic\n* Manual
-#: Src/GUI/MainFrameMenuBar.cpp:200
+#: Src/GUI/MainFrameMenuBar.cpp:211
 msgid "&Manual"
 msgstr ""
 
 #. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-#: Src/GUI/MainFrameMenuBar.cpp:206
+#: Src/GUI/MainFrameMenuBar.cpp:217
 msgid "Play during &edit"
 msgstr ""
 
 #. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-#: Src/GUI/MainFrameMenuBar.cpp:208
+#: Src/GUI/MainFrameMenuBar.cpp:219
 msgid "&Always"
 msgstr ""
 
 #. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-#: Src/GUI/MainFrameMenuBar.cpp:210
+#: Src/GUI/MainFrameMenuBar.cpp:221
 msgid "On note &change"
 msgstr ""
 
 #. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-#: Src/GUI/MainFrameMenuBar.cpp:212
+#: Src/GUI/MainFrameMenuBar.cpp:223
 msgid "&Never"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:214
+#: Src/GUI/MainFrameMenuBar.cpp:225
 msgid "Play with &Metronome"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:216
+#: Src/GUI/MainFrameMenuBar.cpp:227
 msgid "&Playthrough when recording"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:219
+#: Src/GUI/MainFrameMenuBar.cpp:230
 msgid "&Preferences..."
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:229
+#: Src/GUI/MainFrameMenuBar.cpp:240
 msgid "&Settings"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:239 Src/GUI/MainFrameMenuBar.cpp:1073
+#: Src/GUI/MainFrameMenuBar.cpp:250 Src/GUI/MainFrameMenuBar.cpp:1117
 msgid "No MIDI Output Available"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:266
+#: Src/GUI/MainFrameMenuBar.cpp:277
 msgid "&Output"
 msgstr ""
 
 #. I18N: menu where the MIDI input source is selected
-#: Src/GUI/MainFrameMenuBar.cpp:294
+#: Src/GUI/MainFrameMenuBar.cpp:305
 msgid "&Input"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:300
+#: Src/GUI/MainFrameMenuBar.cpp:311
 msgid "&About Aria Maestosa"
 msgstr ""
 
 #. I18N: - in help menu - see the help files
-#: Src/GUI/MainFrameMenuBar.cpp:302
+#: Src/GUI/MainFrameMenuBar.cpp:313
 msgid "User's &Manual"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:308
+#: Src/GUI/MainFrameMenuBar.cpp:319
 msgid "&Help"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:431
+#: Src/GUI/MainFrameMenuBar.cpp:442
 #, c-format
 msgid "&Undo %s"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:442
+#: Src/GUI/MainFrameMenuBar.cpp:453
 msgid "Can't Undo"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:528 Src/GUI/MainFrameMenuBar.cpp:587
-#: Src/GUI/MainFrameMenuBar.cpp:624
+#: Src/GUI/MainFrameMenuBar.cpp:539 Src/GUI/MainFrameMenuBar.cpp:598
+#: Src/GUI/MainFrameMenuBar.cpp:635
 msgid "Select destination file"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:538 Src/GUI/MainFrameMenuBar.cpp:597
-#: Src/GUI/MainFrameMenuBar.cpp:634
+#: Src/GUI/MainFrameMenuBar.cpp:549 Src/GUI/MainFrameMenuBar.cpp:608
+#: Src/GUI/MainFrameMenuBar.cpp:645
 msgid "The file already exists. Do you wish to overwrite it?"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:566
+#: Src/GUI/MainFrameMenuBar.cpp:577
 msgid "Aria Maestosa file"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:575
+#: Src/GUI/MainFrameMenuBar.cpp:586
 msgid "Select midi file"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:576 Src/GUI/MainFrameMenuBar.cpp:588
+#: Src/GUI/MainFrameMenuBar.cpp:587 Src/GUI/MainFrameMenuBar.cpp:599
 msgid "Midi file"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:608
+#: Src/GUI/MainFrameMenuBar.cpp:619
 msgid "Sorry, failed to export midi file."
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:641
+#: Src/GUI/MainFrameMenuBar.cpp:652
 msgid ""
 "Please wait while audio file is being generated.\n"
 "\n"
@@ -939,15 +967,15 @@ msgid ""
 "this can take several minutes."
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:848
+#: Src/GUI/MainFrameMenuBar.cpp:859
 msgid "You may not delete the last track"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:852
+#: Src/GUI/MainFrameMenuBar.cpp:863
 msgid "Do you really want to delete this track?"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:934
+#: Src/GUI/MainFrameMenuBar.cpp:978
 msgid ""
 "If multiple tracks play on the same channel, they will be merged.\n"
 "This cannot be undone.\n"
@@ -955,13 +983,13 @@ msgid ""
 "Do you really want to continue?"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:1018 Src/Pickers/TimeSigPicker.cpp:288
+#: Src/GUI/MainFrameMenuBar.cpp:1062 Src/Pickers/TimeSigPicker.cpp:288
 msgid ""
 "Are you sure you want to go back to having a single time signature? Any time "
 "sig events you may have added will be lost. This cannot be undone."
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:1147
+#: Src/GUI/MainFrameMenuBar.cpp:1191
 msgid "Manual"
 msgstr ""
 
@@ -1021,91 +1049,91 @@ msgstr ""
 msgid "You can't remove the first time signature change."
 msgstr ""
 
-#: Src/IO/AriaFileWriter.cpp:53
+#: Src/IO/AriaFileWriter.cpp:49 Src/IO/AriaFileWriter.cpp:58
 #, c-format
 msgid "Could not open file '%s' for reading"
 msgstr ""
 
-#: Src/IO/MidiFileReader.cpp:147
+#: Src/IO/MidiFileReader.cpp:156
 msgid ""
 "This MIDI file has tracks that play on multiple MIDI channels. This is not "
 "supported by Aria Maestosa."
 msgstr ""
 
-#: Src/IO/MidiFileReader.cpp:157
+#: Src/IO/MidiFileReader.cpp:171
 msgid ""
 "This MIDI file has a track that sends events on multiple MIDI channels. This "
 "is not supported by Aria Maestosa."
 msgstr ""
 
-#: Src/IO/MidiFileReader.cpp:207
+#: Src/IO/MidiFileReader.cpp:222
 #, c-format
 msgid ""
 "This MIDI file appears to be incorrect; a note at tick %i in channel %i does "
 "not appear to have an end"
 msgstr ""
 
-#: Src/IO/MidiFileReader.cpp:233
+#: Src/IO/MidiFileReader.cpp:252
 #, c-format
 msgid ""
 "This MIDI file uses controller #%i, which is not part of the MIDI standard. "
 "This information will be discarded."
 msgstr ""
 
-#: Src/IO/MidiFileReader.cpp:243
+#: Src/IO/MidiFileReader.cpp:262
 msgid ""
 "This MIDI file uses Registered Parameters, which are currently not supported "
 "by Aria Maestosa."
 msgstr ""
 
-#: Src/IO/MidiFileReader.cpp:247
+#: Src/IO/MidiFileReader.cpp:266
 msgid ""
 "This MIDI files uses NRPN (Non-Registered Parameters, i.e. non-standard "
 "controllers), which are currently not supported by Aria Maestosa."
 msgstr ""
 
-#: Src/IO/MidiFileReader.cpp:259
+#: Src/IO/MidiFileReader.cpp:278
 msgid ""
 "This MIDI files uses Channel Mode Message, which are currently not supported "
 "by Aria Maestosa."
 msgstr ""
 
-#: Src/IO/MidiFileReader.cpp:263
+#: Src/IO/MidiFileReader.cpp:282
 #, c-format
 msgid ""
 "This MIDI file uses unsupported MIDI controller #%i. Data related to this "
 "controller will be discarded."
 msgstr ""
 
-#: Src/IO/MidiFileReader.cpp:501 Src/Midi/Sequence.cpp:66
-#: Src/Midi/Sequence.cpp:114 Src/Midi/Sequence.cpp:136 Src/Midi/Track.cpp:73
-#: Src/Midi/Track.cpp:920 Src/Midi/Track.cpp:1868
+#: Src/IO/MidiFileReader.cpp:522 Src/Midi/Sequence.cpp:67
+#: Src/Midi/Sequence.cpp:115 Src/Midi/Sequence.cpp:137 Src/Midi/Track.cpp:87
+#: Src/Midi/Track.cpp:934 Src/Midi/Track.cpp:1882
 #: Src/Printing/AbstractPrintableSequence.cpp:39
 #: Src/Printing/AbstractPrintableSequence.cpp:43
 msgid "Untitled"
 msgstr ""
 
-#: Src/main.cpp:272
+#: Src/main.cpp:199
 msgid "Unknown file type: "
 msgstr ""
 
-#: Src/main.cpp:294 Src/main.cpp:315
+#: Src/main.cpp:221 Src/main.cpp:242
 msgid "Sorry an internal error occurred : an exception was caught unhandled : "
 msgstr ""
 
-#: Src/Midi/CommonMidiUtils.cpp:415 Src/Midi/CommonMidiUtils.cpp:440
+#: Src/Midi/CommonMidiUtils.cpp:424 Src/Midi/CommonMidiUtils.cpp:449
 msgid ""
 "WARNING: this song has too many\n"
 "channels, expect unpredictable output"
 msgstr ""
 
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:232
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:237
 msgid ""
 "Failed to open ALSA device, sound will be unavailable (you can try selecting "
 "another output device from the 'Output' menu)"
 msgstr ""
 
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:414
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:419
 #: Src/Midi/Players/Example/ExamplePlayer.cpp:179
 msgid "WAV file"
 msgstr ""
@@ -1127,29 +1155,34 @@ msgstr ""
 msgid "Jack"
 msgstr ""
 
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:501
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:861
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:872
-msgid "Sorry, failed to set custom soundfont."
-msgstr ""
-
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:850
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:883
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:901
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:912
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:922
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:772
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:805
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:823
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:834
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:844
 msgid ""
 "An error has occurred when connecting to the MIDI output device with "
 "AudioUnit; audio playback may be unavailable"
 msgstr ""
 
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:256
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:260
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:309
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:783
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:794
+msgid "Sorry, failed to set custom soundfont."
+msgstr ""
+
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:139
+msgid ""
+"Sorry, exporting to audio could not complete successfully. Please include "
+"the following error code when reporting the issue :"
+msgstr ""
+
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:281
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:285
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:334
 msgid "OSX Software Synthesizer"
 msgstr ""
 
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:292
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:317
 msgid "AIFF file"
 msgstr ""
 
@@ -1161,12 +1194,12 @@ msgstr ""
 msgid "Bad binary, no MIDI driver was compiled in!"
 msgstr ""
 
-#: Src/Midi/Players/PlatformMidiManager.cpp:259
+#: Src/Midi/Players/PlatformMidiManager.cpp:285
 msgid "Sorry, no MIDI input port is available"
 msgstr ""
 
-#: Src/Midi/Players/PlatformMidiManager.cpp:287
-#: Src/Midi/Players/PlatformMidiManager.cpp:306
+#: Src/Midi/Players/PlatformMidiManager.cpp:313
+#: Src/Midi/Players/PlatformMidiManager.cpp:332
 msgid "Sorry, failed to open the selected MIDI input port"
 msgstr ""
 
@@ -1180,7 +1213,7 @@ msgstr ""
 msgid "Failed to initialize MIDI out device"
 msgstr ""
 
-#: Src/Midi/Sequence.cpp:763
+#: Src/Midi/Sequence.cpp:764
 msgid ""
 "Warning : you are opening a file saved with a version of\n"
 "Aria Maestosa more recent than the version you currently have.\n"
@@ -1299,55 +1332,74 @@ msgstr ""
 msgid "MIDI Driver"
 msgstr ""
 
-#: Src/PreferencesData.cpp:157
+#. I18N: In preferences
+#: Src/PreferencesData.cpp:158
 msgid "Play during edit (default value)"
 msgstr ""
 
-#: Src/PreferencesData.cpp:159
+#: Src/PreferencesData.cpp:160
 msgid "Always"
 msgstr ""
 
-#: Src/PreferencesData.cpp:160
+#: Src/PreferencesData.cpp:161
 msgid "On note change"
 msgstr ""
 
-#: Src/PreferencesData.cpp:161
+#: Src/PreferencesData.cpp:162
 msgid "Never"
 msgstr ""
 
-#: Src/PreferencesData.cpp:165
+#. I18N: In preferences
+#: Src/PreferencesData.cpp:167
 msgid "Default Score View"
 msgstr ""
 
-#: Src/PreferencesData.cpp:167
+#: Src/PreferencesData.cpp:169
 msgid "Both Musical and Linear"
 msgstr ""
 
-#: Src/PreferencesData.cpp:168
+#: Src/PreferencesData.cpp:170
 msgid "Musical Only"
 msgstr ""
 
-#: Src/PreferencesData.cpp:169
+#: Src/PreferencesData.cpp:171
 msgid "Linear Only"
 msgstr ""
 
-#: Src/PreferencesData.cpp:174
+#. I18N: In preferences
+#: Src/PreferencesData.cpp:176
+msgid "Default Editor View"
+msgstr ""
+
+#: Src/PreferencesData.cpp:178
+msgid "Keyboard"
+msgstr ""
+
+#: Src/PreferencesData.cpp:179
+msgid "Score"
+msgstr ""
+
+#: Src/PreferencesData.cpp:180
+msgid "Tablature"
+msgstr ""
+
+#: Src/PreferencesData.cpp:185
 msgid "Soundfont"
 msgstr ""
 
-#: Src/PreferencesData.cpp:181
+#: Src/PreferencesData.cpp:192
 msgid "Follow playback by default"
 msgstr ""
 
-#: Src/PreferencesData.cpp:186
+#: Src/PreferencesData.cpp:197
 msgid "Enable playthrough when recording by default"
 msgstr ""
 
-#: Src/PreferencesData.cpp:191
+#: Src/PreferencesData.cpp:202
 msgid "Check online for new versions"
 msgstr ""
 
-#: Src/PreferencesData.cpp:207
+#: Src/PreferencesData.cpp:218
 msgid "Automatically launch TiMidity if needed"
 msgstr ""
 
@@ -1361,26 +1413,28 @@ msgid "Aria Maestosa song"
 msgstr ""
 
 #. I18N: for printing (page orientation)
-#: Src/Printing/wxEasyPrintWrapper.cpp:225
+#: Src/Printing/wxEasyPrintWrapper.cpp:232
 msgid "Portrait"
 msgstr ""
 
-#: Src/Printing/wxEasyPrintWrapper.cpp:225
+#: Src/Printing/wxEasyPrintWrapper.cpp:232
 msgid "Landscape"
 msgstr ""
 
 #. I18N: for printing (page setup)
-#: Src/Printing/wxEasyPrintWrapper.cpp:227
+#: Src/Printing/wxEasyPrintWrapper.cpp:234
 #, c-format
 msgid "left = %i mm, right = %i mm,"
 msgstr ""
 
-#: Src/Printing/wxEasyPrintWrapper.cpp:228
+#: Src/Printing/wxEasyPrintWrapper.cpp:235
 #, c-format
 msgid "top = %i mm, bottom = %i mm"
 msgstr ""
 
-#: Src/Renderers/GLImage.cpp:53
+#: Src/Renderers/GLImage.cpp:52 Src/Renderers/GLImage.cpp:64
+#: Src/Renderers/GLImage.cpp:77 Src/Renderers/GLImage.cpp:87
+#: Src/Renderers/GLImage.cpp:108 Src/Renderers/GLImage.cpp:194
 msgid "Failed to load resource image"
 msgstr ""
 
