@@ -1,3 +1,6 @@
+#ifndef HEADER_1C358EAA5E03729E
+#define HEADER_1C358EAA5E03729E
+
 /*
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -75,11 +78,11 @@ namespace AriaMaestosa
 
         TIME_SIGNATURE
     };
-    
-    
+
+
     enum MenuIDs
     {
-        
+
         MENU_FILE_NEW = wxID_HIGHEST+1,
         MENU_FILE_OPEN,
         MENU_FILE_SAVE,
@@ -90,7 +93,7 @@ namespace AriaMaestosa
         MENU_FILE_EXPORT_NOTATION,
         MENU_FILE_CLOSE,
         MENU_FILE_COPYRIGHT,
-        
+
         MENU_EDIT_COPY,
         MENU_EDIT_PASTE,
         MENU_EDIT_SELECT_ALL,
@@ -101,7 +104,7 @@ namespace AriaMaestosa
         MENU_EDIT_SCALE,
         MENU_EDIT_REMOVE_OVERLAPPING,
         MENU_EDIT_UNDO,
-        
+
         MENU_SETTINGS_FOLLOW_PLAYBACK,
         MENU_SETTINGS_PLAY_ALWAYS,
         MENU_SETTINGS_PLAY_NEVER,
@@ -111,20 +114,20 @@ namespace AriaMaestosa
         MENU_SETTINGS_CHANNEL_MANUAL,
         MENU_SETTINGS_METRONOME,
         MENU_SETTINGS_PLAYTRHOUGH,
-        
+
         MENU_TRACK_ADD,
         MENU_TRACK_DUP,
         MENU_TRACK_REMOVE,
         MENU_TRACK_BACKG,
-        
+
         MENU_PLAY_PAUSE,
         MENU_STOP,
         MENU_RECORD,
-                                           
+
         MENU_OUTPUT_DEVICE = wxID_HIGHEST + 100,
         MENU_INPUT_DEVICE = wxID_HIGHEST + 200
     };
-    
+
 
     // events useful if you need to show a
     // progress bar from another thread
@@ -134,7 +137,7 @@ namespace AriaMaestosa
     DECLARE_LOCAL_EVENT_TYPE(wxEVT_EXTEND_TICK,        -1)
     DECLARE_LOCAL_EVENT_TYPE(wxEVT_NEW_VERSION_AVAILABLE, -1)
     DECLARE_LOCAL_EVENT_TYPE(wxEVT_ASYNC_ERROR_MESSAGE, -1)
-    
+
     const int SHOW_WAIT_WINDOW_EVENT_ID = 100001;
     const int UPDT_WAIT_WINDOW_EVENT_ID = 100002;
     const int HIDE_WAIT_WINDOW_EVENT_ID = 100003;
@@ -208,9 +211,9 @@ namespace AriaMaestosa
         wxSpinCtrl* m_song_length;
         wxSpinCtrl* m_display_zoom;
         wxTextCtrl* m_tempo_ctrl;
-        
+
         wxMenuBar* m_menu_bar;
-        
+
         wxMenu* m_file_menu;
         wxMenu* m_edit_menu;
         wxMenu* m_settings_menu;
@@ -219,7 +222,7 @@ namespace AriaMaestosa
         wxMenu* m_output_menu;
         wxMenu* m_input_menu;
         wxMenu* m_playback_menu;
-        
+
         wxBitmap m_play_bitmap;
         wxBitmap m_pause_bitmap;
         wxBitmap m_pause_down_bitmap;
@@ -237,23 +240,23 @@ namespace AriaMaestosa
         wxMenuItem* m_channel_management_automatic;
         wxMenuItem* m_channel_management_manual;
         wxMenuItem* m_expanded_measures_menu_item;
-        
+
         wxMenuItem* m_metronome;
         wxMenuItem* m_playthrough;
 
         wxPanel*      m_notification_panel;
         wxStaticText* m_notification_text;
-        
+
         wxBoxSizer* m_root_sizer;
-        
+
         int m_current_sequence;
-        
+
         /** Contains all open sequences */
         ptr_vector<GraphicalSequence> m_sequences;
 
         ptr_vector<wxMenuItem, REF>   m_output_device_menus;
         ptr_vector<wxMenuItem, REF>   m_input_device_menus;
-        
+
         int m_play_during_edit; // what is the user's preference for note preview during edits
         bool m_playback_mode;
         MainPane*                     m_main_pane;
@@ -262,21 +265,21 @@ namespace AriaMaestosa
         OwnerPtr<DrumPicker>          m_drumKit_picker;
         OwnerPtr<TuningPicker>        m_tuning_picker;
         OwnerPtr<KeyPicker>           m_key_picker;
-        
+
         bool m_disabled_for_welcome_screen;
         void doDisableMenusForWelcomeScreen(const bool disable);
-        
+
         wxStaticText* m_status_text;
-        
+
         bool m_paused;
         int  m_pause_location;
-        
+
 #if !defined(__WXOSX_CARBON__)
         wxStaticBitmap* m_tools_bitmap;
         void onToolsBitmapMousedown(wxMouseEvent& evt);
         void onToolsBitmapMouseup(wxMouseEvent& evt);
 #endif
-        
+
     public:
         LEAK_CHECK();
 
@@ -304,19 +307,19 @@ namespace AriaMaestosa
         void firstMeasureChanged(wxCommandEvent& evt);
         //void changeMeasureAmount(int i, bool throwEvent=true);
         void disableMenus(const bool disable);
-        
+
         void disableMenusForWelcomeScreen(const bool disable)
         {
             if (m_disabled_for_welcome_screen == disable) return;
             doDisableMenusForWelcomeScreen(disable);
         }
-        
+
         void onHideNotifBar(wxCommandEvent& evt);
 
         void enterPressedInTopBar(wxCommandEvent& evt);
 
         void setStatusText(wxString text);
-        
+
         // wait window events
         void evt_showWaitWindow(wxCommandEvent& evt);
         void evt_updateWaitWindow(wxCommandEvent& evt);
@@ -369,13 +372,11 @@ namespace AriaMaestosa
         void menuEvent_playpause(wxCommandEvent& evt);
         void menuEvent_stop(wxCommandEvent& evt);
         void menuEvent_record(wxCommandEvent& evt);
-        
-#ifdef __WXMSW__
+
         void onDropFile(wxDropFilesEvent& event);
-#endif
-        
+
         void onMouseWheel(wxMouseEvent& event);
-                
+
         // ---- playback
         void songHasFinishedPlaying();
         void toolsEnterPlaybackMode();
@@ -385,20 +386,20 @@ namespace AriaMaestosa
         void recordClicked(wxCommandEvent& evt);
         void loopClicked(wxCommandEvent& evt);
         bool isPlaybackMode() const { return m_playback_mode; }
-        
+
         // ---- Pickers
         InstrumentPicker* getInstrumentPicker() { return m_instrument_picker; }
         DrumPicker*       getDrumPicker      () { return m_drumKit_picker;    }
         TuningPicker*     getTuningPicker    ();
         KeyPicker*        getKeyPicker       () { return m_key_picker;        }
-        
+
         void updateTopBarAndScrollbarsForSequence(const GraphicalSequence* seq);
         void updateTopBarAndScrollbars()
         {
             updateTopBarAndScrollbarsForSequence( getCurrentGraphicalSequence() );
         }
         void updateMenuBarToSequence();
-        
+
         // ---- I/O
         /** Opens the .aria file in filepath, reads it and prepares the editor to display and edit it. */
         void loadAriaFile(wxString path);
@@ -414,7 +415,7 @@ namespace AriaMaestosa
         void updateHorizontalScrollbar(int thumbPos=-1);
 
         void disableScrollbars();
-        
+
         /**
          * User scrolled horizontally by dragging.
          * Just make sure to update the display to the new values.
@@ -459,14 +460,14 @@ namespace AriaMaestosa
         /** Returns the sequence (file) currently being active. */
         virtual Sequence*  getCurrentSequence();
         Sequence*          getSequence(int n);
-        
+
         GraphicalSequence* getCurrentGraphicalSequence();
         const GraphicalSequence* getCurrentGraphicalSequence() const;
 
         GraphicalSequence* getGraphicalSequence(int n);
-        
+
         MainPane*          getMainPane() { return m_main_pane; }
-        
+
         int  getCurrentSequenceID() const { return m_current_sequence; }
         void setCurrentSequence(int n, bool update=true);
 
@@ -477,7 +478,7 @@ namespace AriaMaestosa
         void evt_extendTick(wxCommandEvent& evt );
         void evt_newVersionAvailable(wxCommandEvent& evt);
         void evt_asyncErrMessage(wxCommandEvent& evt);
-        
+
         void addIconItem(wxMenu* menu, int menuID, const wxString& label, const wxString& stockIconId);
 
         /** @brief Implement callback from IPlaybackModeListener */
@@ -501,3 +502,5 @@ namespace AriaMaestosa
 }
 
 #endif
+
+#endif // header guard 
