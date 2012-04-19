@@ -1,6 +1,3 @@
-#ifndef HEADER_1C358EAA5E03729E
-#define HEADER_1C358EAA5E03729E
-
 /*
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -502,5 +499,3 @@ namespace AriaMaestosa
 }
 
 #endif
-
-#endif // header guard 
