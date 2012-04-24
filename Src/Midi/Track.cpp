@@ -53,15 +53,15 @@ Track::Track(Sequence* sequence)
     static int id = 1000;
     m_track_unique_ID = id++;
 #endif
-    
+
     m_magnetic_grid = new MagneticGrid();
     m_muted = false;
-    
+
     for (int n=0; n<NOTATION_TYPE_COUNT; n++)
     {
         m_editor_mode[n] = false;
     }
-    
+
     // set default editor
     switch (PreferencesData::getInstance()->getIntValue(SETTING_ID_DEFAULT_EDITOR))
     {
@@ -76,9 +76,9 @@ Track::Track(Sequence* sequence)
             m_editor_mode[KEYBOARD] = true;
             break;
     }
-    
+
     m_listener = NULL;
-    
+
     // init key data
     setKey(0, KEY_TYPE_C);
 
@@ -666,13 +666,13 @@ int Track::getControllerEventAmount(const int controller) const
     else
     {
         int occurrences = 0;
-        
+
         const int count = m_control_events.size();
         for (int n=0; n<count; n++)
         {
             if (m_control_events[n].getController() == controller) occurrences++;
         }
-        
+
         return occurrences;
     }
 }
@@ -682,13 +682,13 @@ int Track::getControllerEventAmount(const int controller) const
 ControllerEvent* Track::getControllerEvent(const int id, const int controllerTypeID)
 {
     ASSERT_E(id,>=,0);
-    if (controllerTypeID == PSEUDO_CONTROLLER_TEMPO) 
+    if (controllerTypeID == PSEUDO_CONTROLLER_TEMPO)
     {
         // FIXME: silly to access sequence events through Track!!
         ASSERT_E(id,<,m_sequence->getTempoEventAmount());
         return &m_sequence->m_tempo_events[id];
     }
-    else if (controllerTypeID == PSEUDO_CONTROLLER_LYRICS) 
+    else if (controllerTypeID == PSEUDO_CONTROLLER_LYRICS)
     {
         // FIXME: silly to access sequence events through Track!!
         ASSERT_E(id,<,m_sequence->m_text_events.size());
@@ -735,7 +735,7 @@ int Track::getFirstSelectedNote() const
 // ----------------------------------------------------------------------------------------------------------
 
 void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
-{    
+{
     ASSERT(id != SELECTED_NOTES); // not supported in this function
 
     if (not ignoreModifiers and not Display::isSelectMorePressed() and
@@ -778,10 +778,10 @@ void Track::selectNote(const int id, const bool selected, bool ignoreModifiers)
             m_notes[id].setSelected(selected);
         }
         else
-        { 
+        {
             // otherwise, check key modifiers and set value accordingly
             if (selected)
-            {                
+            {
                 if      (Display::isSelectMorePressed()) m_notes[id].setSelected(true);
                 else if (Display::isSelectLessPressed()) m_notes[id].setSelected(not selected);
             }
@@ -813,7 +813,7 @@ void Track::updateNotesForGuitarEditor()
 // ----------------------------------------------------------------------------------------------------------
 
 int Track::snapMidiTickToGrid(int tick, bool isNoteStart, bool is_ceil)
-{    
+{
     int origin_tick = 0;
     MeasureData* md = m_sequence->getMeasureData();
     if (not md->isMeasureLengthConstant())
@@ -821,11 +821,11 @@ int Track::snapMidiTickToGrid(int tick, bool isNoteStart, bool is_ceil)
         const int measure = md->measureAtTick(tick);
         origin_tick = md->firstTickInMeasure(measure);
     }
-    
+
     int divider = getMagneticGrid()->getDivider();
-    
+
     const bool dotted = getMagneticGrid()->isDotted();
-        
+
     float ticklen;
     if (dotted)
     {
@@ -845,12 +845,12 @@ int Track::snapMidiTickToGrid(int tick, bool isNoteStart, bool is_ceil)
         if (isNoteStart and divider < 4) divider = 4; // for note start, allow starting at every bea at least
         ticklen = (float)(m_sequence->ticksPerBeat()*4 / divider);
     }
-    
+
     if (is_ceil)
     {
         return origin_tick + (int)(ceil((float)(tick - origin_tick)/ticklen)*ticklen);
     }
-    
+
     return origin_tick + (int)(round((float)(tick - origin_tick)/ticklen)*ticklen);
 }
 
@@ -866,7 +866,7 @@ void Track::copy()
         return; // no copy/paste in controller mode
     }
      */
-    
+
     Clipboard::clear();
     Clipboard::setBeatLength(m_sequence->ticksPerBeat());
 
@@ -952,7 +952,7 @@ int Track::getChannel()
 void Track::setChannel(int i)
 {
     m_channel = i;
-    
+
     // check what is the instrument currently used in this channel, if any
     const int trackAmount = m_sequence->getTrackAmount();
     for (int n=0; n<trackAmount; n++) // find another track that has same channel and use the same instrument
@@ -983,7 +983,7 @@ void Track::doSetInstrument(int i, bool recursive)
         m_instrument->setInstrument(i, false);
         if (m_next_instrument_listener != NULL) m_next_instrument_listener->onInstrumentChanged( getInstrument() );
     }
-    
+
     // if we're in manual channel management mode, change all tracks of the same channel
     // to have the same instrument
     if (m_sequence->getChannelManagementType() == CHANNEL_MANUAL and not recursive)
@@ -1030,8 +1030,8 @@ void Track::doSetDrumKit(int i, bool recursive)
         m_drum_kit->setDrumkit(i, false);
         if (m_next_drumkit_listener != NULL) m_next_drumkit_listener->onDrumkitChanged( i );
     }
-    
-    
+
+
     // if we're in manual channel management mode, change all tracks of the same channel to
     // have the same instrument.
     // FIXME: we ignore when importing since the midi importing algorithm will make sure all tracks on
@@ -1068,7 +1068,7 @@ void Track::setKey(const int symbolAmount, const KeyType type)
     // This is to support older file formats. TODO: eventually remove compat.
     KeyType actualType = type;
     if (symbolAmount == 0) actualType = KEY_TYPE_C;
-    
+
     // ---- update "key_sharps_amnt" and "key_flats_amnt" members
     if (actualType == KEY_TYPE_SHARPS)
     {
@@ -1193,7 +1193,7 @@ void Track::onInstrumentChanged(const int newValue)
     {
         m_next_instrument_listener->onInstrumentChanged(newValue);
     }
-    
+
     doSetInstrument(newValue);
 }
 
@@ -1205,7 +1205,7 @@ void Track::onDrumkitChanged(const int newValue)
     {
         m_next_drumkit_listener->onDrumkitChanged(newValue);
     }
-    
+
     doSetDrumKit(newValue);
 }
 
@@ -1231,7 +1231,7 @@ void Track::setNotationType(NotationType t, bool enabled)
 {
     m_editor_mode[t] = enabled;
     if (m_listener != NULL) m_listener->onNotationTypeChange();
-    
+
     // TODO: move this code to the guitar editor
     if (t == GUITAR and enabled) updateNotesForGuitarEditor();
 }
@@ -1245,7 +1245,7 @@ int Track::getEnabledEditorCount() const
     {
         if (m_editor_mode[n]) count++;
     }
-    
+
     return count;
 }
 
@@ -1329,13 +1329,13 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
     {
         return -1;
     }
-    
+
     MeasureData* md = m_sequence->getMeasureData();
     const int lastTickInSong = md->firstTickInMeasure( md->getMeasureAmount() );
-    
+
     // if in manual mode, use the user-specified channel ID and not the stock one
     const bool manual_mode = (m_sequence->getChannelManagementType() == CHANNEL_MANUAL);
-    
+
     if (manual_mode) channel = getChannel();
 
     // drum tracks
@@ -1418,10 +1418,20 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         m.SetText( 3 );
         m.SetByte1( 3 );
 
-        // FIXME: if the track-name contains characters that take more than 1 byte, the size parameters will be wrong
+
         wxString track_name = m_track_name->getValue();
+
+        /* This doesn't work under Linux: no track name seen in MIDI track
         jdkmidi::MIDISystemExclusive sysex((unsigned char*)(const char*)track_name.mb_str(wxConvUTF8),
                                            track_name.size()+1, track_name.size()+1, false);
+        */
+
+        int size = track_name.size()+1;
+        char* charTrackName;
+        charTrackName = new char[size];
+        memcpy(charTrackName, track_name.mb_str(), size);
+        charTrackName[size-1] = '\0';
+        jdkmidi::MIDISystemExclusive sysex((unsigned char*)charTrackName, size, size, false);
 
         m.CopySysEx( &sysex );
         m.SetTime( 0 );
@@ -1430,6 +1440,8 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
             std::cout << "Error adding event" << std::endl;
             ASSERT(FALSE);
         }
+
+        delete[] charTrackName;
     }
 
     // set maximum volume
@@ -1560,7 +1572,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                 {
                     m.SetNoteOff( channel, 131 - m_note_off[note_off_id].getPitchID(), 0 );
                 }
-                
+
                 // find track end
                 if (time > last_event_tick) last_event_tick = time;
 
@@ -1581,7 +1593,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
             {
                 int time = m_control_events[control_evt_id].getTick() - firstNoteStartTick;
 
-                
+
                 // controller changes happens before the area we play
                 // but perhaps it still is affecting the area we want to play - check for that.
                 bool doAddControlEvent = true;
@@ -1591,7 +1603,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                     {
                         doAddControlEvent = false;
                         int checkEventID = control_evt_id+1;
-                        
+
                         // check if there are other controller events of the same type before the area we play.
                         while (true)
                         {
@@ -1639,12 +1651,12 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                 if (doAddControlEvent and (time + firstNoteStartTick) <= lastTickInSong)
                 {
                     m.SetTime( time );
-                                        
+
                     /** In range [-8192, 8191] */
                     const int pitchBendVal = m_control_events[control_evt_id].getPitchBendValue();
-                                        
+
                     m.SetPitchBend(channel, pitchBendVal);
-                    
+
                     if (not midiTrack->PutEvent(m)) { std::cout << "Error adding midi event!" << std::endl; }
                 }
                 control_evt_id++;
@@ -1658,7 +1670,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                     m.SetTime( time );
                     m.SetProgramChange(channel, (int)round(m_control_events[control_evt_id].getValue()));
                     control_evt_id++;
-                    
+
                     if (not midiTrack->PutEvent( m ))
                     {
                         std::cerr << "Error adding midi event!" << std::endl;
@@ -1679,7 +1691,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                     {
                         doAddControlEvent = false;
                         int checkEventID = control_evt_id+1;
-                        
+
                         // check if there are other controller events of the same type before the area we play.
                         while (true)
                         {
@@ -1749,7 +1761,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
 
     if (selectionOnly) startTick = firstNoteStartTick;
-    
+
     return last_event_tick - firstNoteStartTick;
 }
 
@@ -1858,7 +1870,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                             m_muted = false;
                             std::cerr << "Unknown keyword for attribute 'muted' in track: " << muted_c << std::endl;
                         }
-                        
+
                     }
                     else
                     {
@@ -1870,7 +1882,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                     {
                         m_default_volume = atoi(default_volume_c);
                     }
-                    
+
                     const char* name = xml->getAttributeValue("name");
                     if (name != NULL)
                     {
@@ -1881,7 +1893,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                         std::cerr << "Missing info from file: track name" << std::endl;
                         setName( wxString(_("Untitled")) );
                     }
-                    
+
                     const char* channel_c = xml->getAttributeValue("channel");
                     if (channel_c != NULL)
                     {
@@ -1922,13 +1934,13 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                 else if (strcmp("editor", xml->getNodeName()) == 0)
                 {
                     const char* mode_c = xml->getAttributeValue("mode");
-                                    
+
                     setNotationType(SCORE, false);
                     setNotationType(KEYBOARD, false);
                     setNotationType(DRUM, false);
                     setNotationType(GUITAR, false);
                     setNotationType(CONTROLLER, false);
-                    
+
                     // In support for old format (TODO: eventually remove)
                     if ( mode_c != NULL )
                     {
@@ -1939,21 +1951,21 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                         // New format
                         const char* mode_score = xml->getAttributeValue("score");
                         if ( mode_score != NULL ) setNotationType(SCORE, strcmp(mode_score, "true") == 0);
-                        
+
                         const char* mode_keyb = xml->getAttributeValue("keyboard");
                         if ( mode_keyb!= NULL ) setNotationType(KEYBOARD, strcmp(mode_keyb, "true") == 0);
-                        
+
                         const char* mode_guitar = xml->getAttributeValue("guitar");
                         if ( mode_guitar != NULL ) setNotationType(GUITAR, strcmp(mode_guitar, "true") == 0);
-                        
+
                         const char* mode_drum = xml->getAttributeValue("drum");
                         if ( mode_drum != NULL ) setNotationType(DRUM, strcmp(mode_drum, "true") == 0);
-                        
+
                         const char* mode_ctrl = xml->getAttributeValue("controller");
                         if ( mode_ctrl != NULL ) setNotationType(CONTROLLER, strcmp(mode_ctrl, "true") == 0);
                     }
-                    
-                    
+
+
                     if (not isNotationTypeEnabled(SCORE)  and not isNotationTypeEnabled(KEYBOARD) and
                         not isNotationTypeEnabled(GUITAR) and not isNotationTypeEnabled(DRUM) and
                         not isNotationTypeEnabled(CONTROLLER))
@@ -1961,11 +1973,11 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                         std::cerr << "Missing info from file: notation type" << std::endl;
                         setNotationType(KEYBOARD, true);
                     }
-                    
+
                     getGraphics()->readFromFile(xml);
                 }
                 else if (strcmp("editors", xml->getNodeName()) == 0)
-                {                   
+                {
                     setNotationType(SCORE, false);
                     setNotationType(KEYBOARD, false);
                     setNotationType(DRUM, false);
@@ -1976,24 +1988,24 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                 else if (strcmp("guitartuning", xml->getNodeName()) == 0)
                 {
                     GuitarTuning* tuning = getGuitarTuning();
-                    
+
                     std::vector<int> newTuning;
-                    
+
                     int n=0;
                     char* string_v = (char*)xml->getAttributeValue("string0");
-                    
+
                     while (string_v != NULL)
                     {
                         newTuning.push_back( atoi(string_v) );
-                        
+
                         n++;
                         wxString tmp = wxT("string") + to_wxString(n);
                         string_v = (char*)xml->getAttributeValue( tmp.mb_str() );
                     }
-                    
+
                     if (newTuning.size() < 3)
                     {
-                        std::cout << "FATAL ERROR: Invalid tuning!! only " << newTuning.size() 
+                        std::cout << "FATAL ERROR: Invalid tuning!! only " << newTuning.size()
                                   << " strings found" << std::endl;
                     }
                     else
@@ -2014,7 +2026,7 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                     {
                         std::cerr << "Missing info from file: drum ID" << std::endl;
                     }
-                    
+
                     const char* collapse = xml->getAttributeValue("collapseView");
                     if (collapse != NULL && strcmp(collapse, "true") == 0)
                     {
@@ -2182,14 +2194,14 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                 if (strcmp("track", xml->getNodeName()) == 0)
                 {
                     reorderNoteOffVector();
-                    
+
                     // now that we have the set of notes, we can collapse the view if needed
                     GraphicalTrack* gtrack = getGraphics();
                     if (gtrack->getDrumEditor()->showOnlyUsedDrums())
                     {
                         gtrack->getDrumEditor()->useCustomDrumSet();
                     }
-                    
+
                     return true;
                 }
             }
@@ -2199,11 +2211,11 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
         }//end switch
 
     } while (xml != NULL and xml->read());
-    
+
     // FIXME: this code is useless, will be never reached (see "return" above)
     reorderNoteOffVector();
 
-    
+
     return true;
 
 }
