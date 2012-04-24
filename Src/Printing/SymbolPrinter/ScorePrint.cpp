@@ -1390,7 +1390,9 @@ namespace AriaMaestosa
             }
         }
         
+        #if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
         grctx->PushState();
+        #endif
         
         // ------------ line header if any ------------
         if (line.getLayoutElement(0).getType() == LINE_HEADER)
@@ -1464,8 +1466,9 @@ namespace AriaMaestosa
             }
         }
         
-        
+        #if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
         grctx->PopState();        
+        #endif
         
         // ---- draw base  
         for (int el=0; el<elamount; el++)
@@ -1645,11 +1648,13 @@ namespace AriaMaestosa
         
         global_dc = &dc;
         
-#if wxCHECK_VERSION(2,9,1)
+#if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
         gc = grctx;
 #endif
         
+        #if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
         grctx->PushState();
+        #endif
         
         //FIXME: we already have collected all silence info in a vector... don't call the SilenceAnalyser again!
         if (f_clef)
@@ -1667,8 +1672,9 @@ namespace AriaMaestosa
                                           first_measure, last_measure, silences_y, m_x_converter);
         }
         
+        #if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
         grctx->PopState();
-        
+        #endif
         
         // ------------------ second part : intelligent drawing of the rest -----------------
         if (LOGGING) std::cout << "[ScorePrintable] analyzing score\n";
@@ -1681,7 +1687,9 @@ namespace AriaMaestosa
         const int noteAmount = lineAnalyser->m_note_render_info.size();
         for (int i=0; i<noteAmount; i++)
         {
+            #if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
             grctx->PushState();
+            #endif
             NoteRenderInfo& noteRenderInfo = lineAnalyser->m_note_render_info[i];
             
             dc.SetPen(  wxPen( wxColour(0,0,0), 15 ) );
@@ -1806,7 +1814,9 @@ namespace AriaMaestosa
                             base_y + (noteRenderInfo.m_triplet_show_above ? -75 : -20) );
             }
             
+            #if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
             grctx->PopState();
+            #endif
         } // next note
     }
 
