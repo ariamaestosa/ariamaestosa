@@ -38,6 +38,8 @@
 
 #if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
 #include <wx/graphics.h>
+#else
+class wxGraphicsContext;
 #endif
 
 const bool LOGGING = false;
@@ -312,7 +314,7 @@ namespace AriaMaestosa
     // FIXME: find cleaner way than globals
     wxDC* global_dc = NULL;
     
-#if wxCHECK_VERSION(2,9,1)
+#if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
     wxGraphicsContext* gc = NULL;
 #endif
     
