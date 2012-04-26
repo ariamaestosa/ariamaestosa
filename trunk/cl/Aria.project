@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeLite_Project Name="Aria" InternalType="GUI">
+  <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00020001N0011linux_debug0000000000000001N0013linux_release000000000000]]>
+    </Plugin>
+  </Plugins>
+  <VirtualDirectory Name="jdkmidi">
+    <File Name="../libjdkmidi/include/jdkmidi/showcontrol.h"/>
+    <File Name="../libjdkmidi/include/jdkmidi/process.h"/>
+    <File Name="../libjdkmidi/include/jdkmidi/fileread.h"/>
+    <File Name="../libjdkmidi/include/jdkmidi/fileshow.h"/>
+    <File Name="../libjdkmidi/include/jdkmidi/file.h"/>
+    <File Name="../libjdkmidi/include/jdkmidi/sysex.h"/>
+    <File Name="../libjdkmidi/include/jdkmidi/song.h"/>
+    <File Name="../libjdkmidi/include/jdkmidi/driverdump.h"/>
+    <File Name="../libjdkmidi/include/jdkmidi/midi.h"/>
+    <File Name="../libjdkmidi/include/jdkmidi/matrix.h"/>
+    <File Name="../libjdkmidi/include/jdkmidi/msg.h"/>
+    <File Name="../libjdkmidi/include/jdkmidi/tick.h"/>
+    <File Name="../libjdkmidi/include/jdkmidi/tempo.h"/>
+    <File Name="../libjdkmidi/include/jdkmidi/queue.h"/>
+    <File Name="../libjdkmidi/include/jdkmidi/manager.h"/>
+    <File Name="../libjdkmidi/include/jdkmidi/keysig.h"/>
+    <File Name="../libjdkmidi/include/jdkmidi/filewrite.h"/>
+    <File Name="../libjdkmidi/include/jdkmidi/filereadmultitrack.h"/>
+    <File Name="../libjdkmidi/include/jdkmidi/showcontrolhandler.h"/>
+    <File Name="../libjdkmidi/include/jdkmidi/edittrack.h"/>
+    <File Name="../libjdkmidi/include/jdkmidi/filewritemultitrack.h"/>
+    <File Name="../libjdkmidi/include/jdkmidi/smpte.h"/>
+    <File Name="../libjdkmidi/include/jdkmidi/multitrack.h"/>
+    <File Name="../libjdkmidi/include/jdkmidi/track.h"/>
+    <File Name="../libjdkmidi/include/jdkmidi/parser.h"/>
+    <File Name="../libjdkmidi/include/jdkmidi/world.h"/>
+    <File Name="../libjdkmidi/include/jdkmidi/driver.h"/>
+    <File Name="../libjdkmidi/include/jdkmidi/sequencer.h"/>
+    <File Name="../libjdkmidi/src/jdkmidi_edittrack.cpp"/>
+    <File Name="../libjdkmidi/src/jdkmidi_keysig.cpp"/>
+    <File Name="../libjdkmidi/src/jdkmidi_parser.cpp"/>
+    <File Name="../libjdkmidi/src/jdkmidi_fileread.cpp"/>
+    <File Name="../libjdkmidi/src/jdkmidi_track.cpp"/>
+    <File Name="../libjdkmidi/src/jdkmidi_smpte.cpp"/>
+    <File Name="../libjdkmidi/src/jdkmidi_driver.cpp"/>
+    <File Name="../libjdkmidi/src/jdkmidi_process.cpp"/>
+    <File Name="../libjdkmidi/src/jdkmidi_sysex.cpp"/>
+    <File Name="../libjdkmidi/src/jdkmidi_multitrack.cpp"/>
+    <File Name="../libjdkmidi/src/jdkmidi_filewritemultitrack.cpp"/>
+    <File Name="../libjdkmidi/src/jdkmidi_midi.cpp"/>
+    <File Name="../libjdkmidi/src/jdkmidi_filewrite.cpp"/>
+    <File Name="../libjdkmidi/src/jdkmidi_showcontrol.cpp"/>
+    <File Name="../libjdkmidi/src/jdkmidi_file.cpp"/>
+    <File Name="../libjdkmidi/src/jdkmidi_tempo.cpp"/>
+    <File Name="../libjdkmidi/src/jdkmidi_manager.cpp"/>
+    <File Name="../libjdkmidi/src/jdkmidi_sequencer.cpp"/>
+    <File Name="../libjdkmidi/src/jdkmidi_driverdump.cpp"/>
+    <File Name="../libjdkmidi/src/jdkmidi_filereadmultitrack.cpp"/>
+    <File Name="../libjdkmidi/src/jdkmidi_queue.cpp"/>
+    <File Name="../libjdkmidi/src/jdkmidi_fileshow.cpp"/>
+    <File Name="../libjdkmidi/src/jdkmidi_tick.cpp"/>
+    <File Name="../libjdkmidi/src/jdkmidi_advancedsequencer.cpp"/>
+    <File Name="../libjdkmidi/src/jdkmidi_msg.cpp"/>
+    <File Name="../libjdkmidi/src/jdkmidi_matrix.cpp"/>
+    <File Name="../libjdkmidi/src/jdkmidi_showcontrolhandler.cpp"/>
+    <File Name="../libjdkmidi/include/jdkmidi/advancedsequencer.h"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="Printing">
+    <VirtualDirectory Name="SymbolPrinter">
+      <VirtualDirectory Name="PrintLayout">
+        <File Name="../Src/Printing/SymbolPrinter/PrintLayout/LayoutElement.cpp"/>
+        <File Name="../Src/Printing/SymbolPrinter/PrintLayout/PrintLayoutMeasure.cpp"/>
+        <File Name="../Src/Printing/SymbolPrinter/PrintLayout/PrintLayoutLine.cpp"/>
+        <File Name="../Src/Printing/SymbolPrinter/PrintLayout/RelativePlacementManager.h"/>
+        <File Name="../Src/Printing/SymbolPrinter/PrintLayout/PrintLayoutAbstract.h"/>
+        <File Name="../Src/Printing/SymbolPrinter/PrintLayout/LayoutElement.h"/>
+        <File Name="../Src/Printing/SymbolPrinter/PrintLayout/PrintLayoutLine.h"/>
+        <File Name="../Src/Printing/SymbolPrinter/PrintLayout/PrintLayoutNumeric.cpp"/>
+        <File Name="../Src/Printing/SymbolPrinter/PrintLayout/LayoutPage.h"/>
+        <File Name="../Src/Printing/SymbolPrinter/PrintLayout/PrintLayoutMeasure.h"/>
+        <File Name="../Src/Printing/SymbolPrinter/PrintLayout/RelativePlacementManager.cpp"/>
+        <File Name="../Src/Printing/SymbolPrinter/PrintLayout/PrintLayoutAbstract.cpp"/>
+        <File Name="../Src/Printing/SymbolPrinter/PrintLayout/PrintLayoutNumeric.h"/>
+      </VirtualDirectory>
+      <File Name="../Src/Printing/SymbolPrinter/EditorPrintable.cpp"/>
+      <File Name="../Src/Printing/SymbolPrinter/SymbolPrintableSequence.cpp"/>
+      <File Name="../Src/Printing/SymbolPrinter/ScorePrint.cpp"/>
+      <File Name="../Src/Printing/SymbolPrinter/TabPrint.cpp"/>
+      <File Name="../Src/Printing/SymbolPrinter/ScorePrint.h"/>
+      <File Name="../Src/Printing/SymbolPrinter/SymbolPrintableSequence.h"/>
+      <File Name="../Src/Printing/SymbolPrinter/EditorPrintable.h"/>
+      <File Name="../Src/Printing/SymbolPrinter/TabPrint.h"/>
+    </VirtualDirectory>
+    <File Name="../Src/Printing/wxEasyPrintWrapper.cpp"/>
+    <File Name="../Src/Printing/AbstractPrintableSequence.h"/>
+    <File Name="../Src/Printing/KeyrollPrintableSequence.h"/>
+    <File Name="../Src/Printing/RenderRoutines.cpp"/>
+    <File Name="../Src/Printing/AriaPrintable.cpp"/>
+    <File Name="../Src/Printing/wxEasyPrintWrapper.h"/>
+    <File Name="../Src/Printing/RenderRoutines.h"/>
+    <File Name="../Src/Printing/KeyrollPrintableSequence.cpp"/>
+    <File Name="../Src/Printing/AbstractPrintableSequence.cpp"/>
+    <File Name="../Src/Printing/AriaPrintable.h"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="Midi">
+    <VirtualDirectory Name="Players">
+      <VirtualDirectory Name="Jack">
+        <File Name="../Src/Midi/Players/Jack/JackMidiManager.cpp"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="Mac">
+        <File Name="../Src/Midi/Players/Mac/OutputBase.h"/>
+        <File Name="../Src/Midi/Players/Mac/CoreMIDIOutput.h"/>
+        <File Name="../Src/Midi/Players/Mac/AUOutputBL.cpp"/>
+        <File Name="../Src/Midi/Players/Mac/CoreMIDIOutput.cpp"/>
+        <File Name="../Src/Midi/Players/Mac/CAStreamBasicDescription.cpp"/>
+        <File Name="../Src/Midi/Players/Mac/OutputBase.cpp"/>
+        <File Name="../Src/Midi/Players/Mac/AudioUnitOutput.h"/>
+        <File Name="../Src/Midi/Players/Mac/AUOutputBL.h"/>
+        <File Name="../Src/Midi/Players/Mac/QuickTimeExport.h"/>
+        <File Name="../Src/Midi/Players/Mac/CAStreamBasicDescription.h"/>
+        <File Name="../Src/Midi/Players/Mac/AudioUnitOutput.cpp"/>
+        <File Name="../Src/Midi/Players/Mac/MacPlayerInterface.cpp"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="Alsa">
+        <File Name="../Src/Midi/Players/Alsa/AlsaPort.cpp"/>
+        <File Name="../Src/Midi/Players/Alsa/AlsaNotePlayer.cpp"/>
+        <File Name="../Src/Midi/Players/Alsa/AlsaNotePlayer.h"/>
+        <File Name="../Src/Midi/Players/Alsa/AlsaPort.h"/>
+        <File Name="../Src/Midi/Players/Alsa/AlsaPlayer.cpp"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="Win">
+        <File Name="../Src/Midi/Players/Win/WinPlayer.cpp"/>
+      </VirtualDirectory>
+      <File Name="../Src/Midi/Players/NullDevice.cpp"/>
+      <File Name="../Src/Midi/Players/Sequencer.h"/>
+      <File Name="../Src/Midi/Players/Sequencer.cpp"/>
+      <File Name="../Src/Midi/Players/PlatformMidiManager.cpp"/>
+      <File Name="../Src/Midi/Players/PlatformMidiManager.h"/>
+    </VirtualDirectory>
+    <File Name="../Src/Midi/InstrumentChoice.cpp"/>
+    <File Name="../Src/Midi/Sequence.h"/>
+    <File Name="../Src/Midi/MeasureData.h"/>
+    <File Name="../Src/Midi/Track.cpp"/>
+    <File Name="../Src/Midi/MagneticGrid.cpp"/>
+    <File Name="../Src/Midi/GuitarTuning.h"/>
+    <File Name="../Src/Midi/DrumChoice.h"/>
+    <File Name="../Src/Midi/CommonMidiUtils.h"/>
+    <File Name="../Src/Midi/KeyPresets.h"/>
+    <File Name="../Src/Midi/Track.h"/>
+    <File Name="../Src/Midi/MeasureData.cpp"/>
+    <File Name="../Src/Midi/ControllerEvent.h"/>
+    <File Name="../Src/Midi/CommonMidiUtils.cpp"/>
+    <File Name="../Src/Midi/ControllerEvent.cpp"/>
+    <File Name="../Src/Midi/KeyPresets.cpp"/>
+    <File Name="../Src/Midi/DrumChoice.cpp"/>
+    <File Name="../Src/Midi/GuitarTuning.cpp"/>
+    <File Name="../Src/Midi/Note.h"/>
+    <File Name="../Src/Midi/InstrumentChoice.h"/>
+    <File Name="../Src/Midi/TimeSigChange.cpp"/>
+    <File Name="../Src/Midi/TimeSigChange.h"/>
+    <File Name="../Src/Midi/MagneticGrid.h"/>
+    <File Name="../Src/Midi/Sequence.cpp"/>
+    <File Name="../Src/Midi/Note.cpp"/>
+  </VirtualDirectory>
+  <Description/>
+  <Dependencies/>
+  <VirtualDirectory Name="GUI">
+    <File Name="../Src/GUI/MainFrameMenuBar.cpp"/>
+    <File Name="../Src/GUI/Machelper.h"/>
+    <File Name="../Src/GUI/MainFrame_old.h"/>
+    <File Name="../Src/GUI/GraphicalTrack.cpp"/>
+    <File Name="../Src/GUI/GraphicalTrack.h"/>
+    <File Name="../Src/GUI/GraphicalSequence.cpp"/>
+    <File Name="../Src/GUI/MeasureBar.cpp"/>
+    <File Name="../Src/GUI/ImageProvider.cpp"/>
+    <File Name="../Src/GUI/MainFrame.cpp"/>
+    <File Name="../Src/GUI/MeasureBar.h"/>
+    <File Name="../Src/GUI/MainPane.h"/>
+    <File Name="../Src/GUI/MainPane.cpp"/>
+    <File Name="../Src/GUI/GraphicalSequence.h"/>
+    <File Name="../Src/GUI/ImageProvider.h"/>
+    <File Name="../Src/GUI/MainFrame.h"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="Dialogs">
+    <File Name="../Src/Dialogs/PresetEditor.h"/>
+    <File Name="../Src/Dialogs/PresetEditor.cpp"/>
+    <File Name="../Src/Dialogs/CustomKeyDialog.cpp"/>
+    <File Name="../Src/Dialogs/CopyrightWindow.h"/>
+    <File Name="../Src/Dialogs/ScaleDialog.h"/>
+    <File Name="../Src/Dialogs/AboutDialog.h"/>
+    <File Name="../Src/Dialogs/Preferences.cpp"/>
+    <File Name="../Src/Dialogs/WaitWindow.cpp"/>
+    <File Name="../Src/Dialogs/CustomNoteSelectDialog.cpp"/>
+    <File Name="../Src/Dialogs/Preferences.h"/>
+    <File Name="../Src/Dialogs/PrintSetupDialog.cpp"/>
+    <File Name="../Src/Dialogs/CopyrightWindow.cpp"/>
+    <File Name="../Src/Dialogs/WaitWindow.h"/>
+    <File Name="../Src/Dialogs/ScaleDialog.cpp"/>
+    <File Name="../Src/Dialogs/TrackPropertiesDialog.h"/>
+    <File Name="../Src/Dialogs/CustomNoteSelectDialog.h"/>
+    <File Name="../Src/Dialogs/AboutDialog.cpp"/>
+    <File Name="../Src/Dialogs/PrintSetupDialog.h"/>
+    <File Name="../Src/Dialogs/CustomKeyDialog.h"/>
+    <File Name="../Src/Dialogs/TuningDialog.h"/>
+    <File Name="../Src/Dialogs/TrackPropertiesDialog.cpp"/>
+    <File Name="../Src/Dialogs/TuningDialog.cpp"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="Actions">
+    <File Name="../Src/Actions/AddNote.cpp"/>
+    <File Name="../Src/Actions/RemoveMeasures.cpp"/>
+    <File Name="../Src/Actions/MoveNotes.cpp"/>
+    <File Name="../Src/Actions/UpdateGuitarTuning.h"/>
+    <File Name="../Src/Actions/DeleteSelected.cpp"/>
+    <File Name="../Src/Actions/ResizeNotes.cpp"/>
+    <File Name="../Src/Actions/ShiftBySemiTone.cpp"/>
+    <File Name="../Src/Actions/AddControllerSlide.h"/>
+    <File Name="../Src/Actions/ResizeNotes.h"/>
+    <File Name="../Src/Actions/Record.h"/>
+    <File Name="../Src/Actions/AddTrack.h"/>
+    <File Name="../Src/Actions/Duplicate.cpp"/>
+    <File Name="../Src/Actions/Duplicate.h"/>
+    <File Name="../Src/Actions/ScaleSong.h"/>
+    <File Name="../Src/Actions/SnapNotesToGrid.cpp"/>
+    <File Name="../Src/Actions/SetNoteVolume.h"/>
+    <File Name="../Src/Actions/UpdateGuitarTuning.cpp"/>
+    <File Name="../Src/Actions/EditAction.h"/>
+    <File Name="../Src/Actions/AddControlEvent.cpp"/>
+    <File Name="../Src/Actions/NumberPressed.h"/>
+    <File Name="../Src/Actions/ScaleTrack.h"/>
+    <File Name="../Src/Actions/Paste.h"/>
+    <File Name="../Src/Actions/MoveNotes.h"/>
+    <File Name="../Src/Actions/Paste.cpp"/>
+    <File Name="../Src/Actions/ScaleTrack.cpp"/>
+    <File Name="../Src/Actions/RearrangeNotes.h"/>
+    <File Name="../Src/Actions/InsertEmptyMeasures.cpp"/>
+    <File Name="../Src/Actions/RearrangeNotes.cpp"/>
+    <File Name="../Src/Actions/EditAction.cpp"/>
+    <File Name="../Src/Actions/ScaleSong.cpp"/>
+    <File Name="../Src/Actions/AddControllerSlide.cpp"/>
+    <File Name="../Src/Actions/RemoveOverlapping.cpp"/>
+    <File Name="../Src/Actions/ShiftFrets.h"/>
+    <File Name="../Src/Actions/DeleteSelected.h"/>
+    <File Name="../Src/Actions/SetNoteVolume.cpp"/>
+    <File Name="../Src/Actions/RemoveMeasures.h"/>
+    <File Name="../Src/Actions/ShiftFrets.cpp"/>
+    <File Name="../Src/Actions/AddControlEvent.h"/>
+    <File Name="../Src/Actions/SnapNotesToGrid.h"/>
+    <File Name="../Src/Actions/DeleteTrack.h"/>
+    <File Name="../Src/Actions/ShiftString.cpp"/>
+    <File Name="../Src/Actions/AddNote.h"/>
+    <File Name="../Src/Actions/SetAccidentalSign.cpp"/>
+    <File Name="../Src/Actions/Record.cpp"/>
+    <File Name="../Src/Actions/SetAccidentalSign.h"/>
+    <File Name="../Src/Actions/ShiftBySemiTone.h"/>
+    <File Name="../Src/Actions/AddTrack.cpp"/>
+    <File Name="../Src/Actions/InsertEmptyMeasures.h"/>
+    <File Name="../Src/Actions/NumberPressed.cpp"/>
+    <File Name="../Src/Actions/ShiftString.h"/>
+    <File Name="../Src/Actions/RemoveOverlapping.h"/>
+    <File Name="../Src/Actions/DeleteTrack.cpp"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="IO">
+    <File Name="../Src/IO/MidiToMemoryStream.h"/>
+    <File Name="../Src/IO/IOUtils.h"/>
+    <File Name="../Src/IO/MidiToMemoryStream.cpp"/>
+    <File Name="../Src/IO/IOUtils.cpp"/>
+    <File Name="../Src/IO/AriaFileWriter.h"/>
+    <File Name="../Src/IO/MidiFileReader.h"/>
+    <File Name="../Src/IO/AriaFileWriter.cpp"/>
+    <File Name="../Src/IO/MidiFileReader.cpp"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="Pickers">
+    <File Name="../Src/Pickers/TimeSigPicker.cpp"/>
+    <File Name="../Src/Pickers/ControllerChoice.cpp"/>
+    <File Name="../Src/Pickers/TimeSigPicker.h"/>
+    <File Name="../Src/Pickers/DrumPicker.h"/>
+    <File Name="../Src/Pickers/MagneticGridPicker.h"/>
+    <File Name="../Src/Pickers/VolumeSlider.h"/>
+    <File Name="../Src/Pickers/TuningPicker.h"/>
+    <File Name="../Src/Pickers/DrumPicker.cpp"/>
+    <File Name="../Src/Pickers/InstrumentPicker.h"/>
+    <File Name="../Src/Pickers/NotePickerWidget.cpp"/>
+    <File Name="../Src/Pickers/VolumeSlider.cpp"/>
+    <File Name="../Src/Pickers/MagneticGridPicker.cpp"/>
+    <File Name="../Src/Pickers/TuningPicker.cpp"/>
+    <File Name="../Src/Pickers/NotePickerWidget.h"/>
+    <File Name="../Src/Pickers/InstrumentPicker.cpp"/>
+    <File Name="../Src/Pickers/KeyPicker.cpp"/>
+    <File Name="../Src/Pickers/KeyPicker.h"/>
+    <File Name="../Src/Pickers/ControllerChoice.h"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="Renderers">
+    <File Name="../Src/Renderers/wxImage.cpp"/>
+    <File Name="../Src/Renderers/GLPane.cpp"/>
+    <File Name="../Src/Renderers/GLPane.h"/>
+    <File Name="../Src/Renderers/wxDrawable.cpp"/>
+    <File Name="../Src/Renderers/wxRenderImp.cpp"/>
+    <File Name="../Src/Renderers/wxRenderPane.h"/>
+    <File Name="../Src/Renderers/wxImage.h"/>
+    <File Name="../Src/Renderers/GLDrawable.cpp"/>
+    <File Name="../Src/Renderers/wxDCString.h"/>
+    <File Name="../Src/Renderers/RenderAPI.h"/>
+    <File Name="../Src/Renderers/AbstractDrawable.cpp"/>
+    <File Name="../Src/Renderers/GLImage.h"/>
+    <File Name="../Src/Renderers/GLDrawable.h"/>
+    <File Name="../Src/Renderers/GLwxString.h"/>
+    <File Name="../Src/Renderers/wxDCString.cpp"/>
+    <File Name="../Src/Renderers/GLwxString.cpp"/>
+    <File Name="../Src/Renderers/GLImage.cpp"/>
+    <File Name="../Src/Renderers/wxDrawable.h"/>
+    <File Name="../Src/Renderers/Drawable.h"/>
+    <File Name="../Src/Renderers/ImageBase.h"/>
+    <File Name="../Src/Renderers/wxRenderPane.cpp"/>
+    <File Name="../Src/Renderers/AbstractDrawable.h"/>
+    <File Name="../Src/Renderers/GLRenderImp.cpp"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="Analysers">
+    <File Name="../Src/Analysers/ScoreAnalyser.h"/>
+    <File Name="../Src/Analysers/SilenceAnalyser.h"/>
+    <File Name="../Src/Analysers/SilenceAnalyser.cpp"/>
+    <File Name="../Src/Analysers/ScoreAnalyser.cpp"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="Editors">
+    <File Name="../Src/Editors/DrumEditor.h"/>
+    <File Name="../Src/Editors/DrumEditor.cpp"/>
+    <File Name="../Src/Editors/Editor.h"/>
+    <File Name="../Src/Editors/Editor.cpp"/>
+    <File Name="../Src/Editors/GuitarEditor.cpp"/>
+    <File Name="../Src/Editors/ControllerEditor.h"/>
+    <File Name="../Src/Editors/KeyboardEditor.cpp"/>
+    <File Name="../Src/Editors/RelativeXCoord.cpp"/>
+    <File Name="../Src/Editors/ScoreEditor.h"/>
+    <File Name="../Src/Editors/RelativeXCoord.h"/>
+    <File Name="../Src/Editors/ScoreEditor.cpp"/>
+    <File Name="../Src/Editors/KeyboardEditor.h"/>
+    <File Name="../Src/Editors/ControllerEditor.cpp"/>
+    <File Name="../Src/Editors/GuitarEditor.h"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="Main">
+    <File Name="../Src/Clipboard.h"/>
+    <File Name="../Src/LeakCheck.h"/>
+    <File Name="../Src/ptr_vector.h"/>
+    <File Name="../Src/UnitTestUtils.cpp"/>
+    <File Name="../Src/OpenGL.h"/>
+    <File Name="../Src/version.h"/>
+    <File Name="../Src/Singleton.h"/>
+    <File Name="../Src/UnitTestUtils.h"/>
+    <File Name="../Src/Singleton.cpp"/>
+    <File Name="../Src/main.h"/>
+    <File Name="../Src/PresetManager.cpp"/>
+    <File Name="../Src/ptr_vector.cpp"/>
+    <File Name="../Src/main.cpp"/>
+    <File Name="../Src/UnitTest.h"/>
+    <File Name="../Src/AriaCore.h"/>
+    <File Name="../Src/PreferencesData.h"/>
+    <File Name="../Src/PreferencesData.cpp"/>
+    <File Name="../Src/Utils.h"/>
+    <File Name="../Src/languages.cpp"/>
+    <File Name="../Src/Clipboard.cpp"/>
+    <File Name="../Src/Range.h"/>
+    <File Name="../Src/LeakCheck.cpp"/>
+    <File Name="../Src/languages.h"/>
+    <File Name="../Src/AriaCore.cpp"/>
+    <File Name="../Src/PresetManager.h"/>
+    <File Name="../Src/UnitTest.cpp"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="irrXML">
+    <File Name="../irrXML/fast_atof.h"/>
+    <File Name="../irrXML/irrXML.h"/>
+    <File Name="../irrXML/irrArray.h"/>
+    <File Name="../irrXML/irrTypes.h"/>
+    <File Name="../irrXML/heapsort.h"/>
+    <File Name="../irrXML/irrString.h"/>
+    <File Name="../irrXML/irrXML.cpp"/>
+    <File Name="../irrXML/CXMLReaderImpl.h"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="rtmidi">
+    <File Name="../rtmidi/RtError.h"/>
+    <File Name="../rtmidi/RtMidi.h"/>
+    <File Name="../rtmidi/RtMidi.cpp"/>
+  </VirtualDirectory>
+  <Settings Type="Executable">
+    <GlobalSettings>
+      <Compiler Options="" C_Options="">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="">
+        <LibraryPath Value="."/>
+      </Linker>
+      <ResourceCompiler Options=""/>
+    </GlobalSettings>
+    <Configuration Name="linux_debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g;-Wall;-O0;$(shell wx-config --cxxflags --unicode=yes --debug=yes);$(shell pkg-config --cflags glib-2.0)" C_Options="-g;-O0;linux_debug" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" UseDifferentPCHFlags="no" PCHFlags="">
+        <IncludePath Value="&quot;../Src&quot;"/>
+        <IncludePath Value="&quot;../libjdkmidi/include&quot;"/>
+        <IncludePath Value="&quot;../rtmidi&quot;"/>
+        <IncludePath Value="&quot;..&quot;"/>
+        <Preprocessor Value="_ALSA"/>
+        <Preprocessor Value="__WXDEBUG__"/>
+        <Preprocessor Value="_MORE_DEBUG_CHECKS"/>
+        <Preprocessor Value="_CHECK_FOR_LEAKS"/>
+        <Preprocessor Value="RENDERER_WXWIDGETS"/>
+        <Preprocessor Value="wxUSE_UNICODE"/>
+      </Compiler>
+      <Linker Options="$(shell wx-config --debug=yes --libs --unicode=yes);$(shell pkg-config --libs glib-2.0)" Required="yes">
+        <Library Value="asound"/>
+      </Linker>
+      <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
+      <General OutputFile="../bin/aria-dbg" IntermediateDirectory="../_build/linux_debug" Command="aria-dbg" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="../bin" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+    <Configuration Name="linux_release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-O2;-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=no);$(shell pkg-config --cflags glib-2.0)" C_Options="-O2;-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=no)" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" UseDifferentPCHFlags="no" PCHFlags="">
+        <IncludePath Value="&quot;../Src&quot;"/>
+        <IncludePath Value="&quot;../libjdkmidi/include&quot;"/>
+        <IncludePath Value="&quot;../rtmidi&quot;"/>
+        <IncludePath Value="&quot;..&quot;"/>
+        <Preprocessor Value="_ALSA"/>
+        <Preprocessor Value="NDEBUG"/>
+        <Preprocessor Value="RENDERER_WXWIDGETS"/>
+        <Preprocessor Value="wxUSE_UNICODE"/>
+      </Compiler>
+      <Linker Options="-mwindows;-s;$(shell wx-config --debug=no --libs --unicode=yes);$(shell pkg-config --libs glib-2.0)" Required="yes">
+        <Library Value="asound"/>
+      </Linker>
+      <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
+      <General OutputFile="../bin/aria" IntermediateDirectory="../_build/linux_release" Command="aria" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="../bin" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+  </Settings>
+</CodeLite_Project>
