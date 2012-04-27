@@ -1,3 +1,6 @@
+1.4.1
+- Use more standard 44100 Hz when exporting to sampled audio on OSX
+
 1.4.0
 - Fix shift + mouse wheel horizontal scrolling on windows
 - Fixed bug when looping drums
