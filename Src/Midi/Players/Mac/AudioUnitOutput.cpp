@@ -484,7 +484,7 @@ bool AudioUnitOutput::outputToDisk(const char* outputFilePath,
     CHECK_RETURN_CODE("AudioUnitSetProperty[kAudioUnitProperty_OfflineRender]");
     
     UInt32 numFrames = 512;
-    Float64 sample_rate = 44000;
+    Float64 sample_rate = 44100;
 
     result = SetUpGraph (graph, numFrames, sample_rate, (outputFilePath != NULL));
     CHECK_RETURN_CODE("SetUpGraph");
