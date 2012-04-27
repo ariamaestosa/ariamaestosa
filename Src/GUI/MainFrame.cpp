@@ -793,6 +793,8 @@ void MainFrame::playClicked(wxCommandEvent& evt)
 
     if (startTick == -1 or not success) m_main_pane->exitPlayLoop();
     else                                m_main_pane->enterPlayLoop();
+    
+    m_toolbar->Refresh();
 }
 
 // ----------------------------------------------------------------------------------------------------------
