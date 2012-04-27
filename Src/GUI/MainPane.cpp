@@ -810,16 +810,20 @@ void MainPane::mouseHeldDown()
     MainFrame* mf = getMainFrame();
     GraphicalSequence* gseq = mf->getCurrentGraphicalSequence();
     
-    // check click is within track area
-    if (m_mouse_y_current < getHeight() - gseq->getDockHeight() and
-        m_mouse_y_current > MEASURE_BAR_Y + gseq->getMeasureBar()->getMeasureBarHeight())
+    // gseq may be NULL when closing application
+    if (gseq!=NULL)
     {
+        // check click is within track area
+        if (m_mouse_y_current < getHeight() - gseq->getDockHeight() and
+            m_mouse_y_current > MEASURE_BAR_Y + gseq->getMeasureBar()->getMeasureBarHeight())
+        {
 
-        // dispatch event to sequence
-        gseq->mouseHeldDown(m_mouse_x_current, m_mouse_y_current,
-                            m_mouse_x_initial, m_mouse_y_initial);
+            // dispatch event to sequence
+            gseq->mouseHeldDown(m_mouse_x_current, m_mouse_y_current,
+                                m_mouse_x_initial, m_mouse_y_initial);
 
-    }// end if not on dock
+        }// end if not on dock
+    }
 }
 
 // -----------------------------------------------------------------------------------------------------------
