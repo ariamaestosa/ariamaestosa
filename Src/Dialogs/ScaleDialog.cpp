@@ -137,7 +137,9 @@ namespace AriaMaestosa
             second_box->Add( m_rel_begin, 0, wxALL, 5 );
 
             // --------------------------------------------------- bottom pane ------------------------------
-
+                
+        
+    
             wxBoxSizer* horizontalSizerBottom = new wxBoxSizer(wxHORIZONTAL);
 
             wxButton* cancelBtn = new wxButton( bottomPane, wxID_ANY,  _("Cancel"));
@@ -148,10 +150,19 @@ namespace AriaMaestosa
             horizontalSizerBottom->Add( okBtn, 0, wxALL, 5 );
 
             okBtn->SetDefault();
-
+            
+            wxStdDialogButtonSizer* stdDialogButtonSizer = new wxStdDialogButtonSizer();
+            stdDialogButtonSizer->AddButton(cancelBtn);
+            stdDialogButtonSizer->AddButton(okBtn);
+            stdDialogButtonSizer->Realize();
+            horizontalSizerBottom->Add(stdDialogButtonSizer, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+            
             bottomPane->SetSizer( horizontalSizerBottom );
+
             horizontalSizerBottom->Layout();
             horizontalSizerBottom->SetSizeHints( bottomPane );
+            
+            
 
             // ----------------------------------------------------------------------------------------------
 
