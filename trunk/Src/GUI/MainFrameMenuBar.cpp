@@ -90,31 +90,39 @@ void MainFrame::initMenuBar()
     Connect(MENU_FILE_SAVE, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_save));
 
     //I18N: menu item in the "file" menu
-    addIconItem(m_file_menu, MENU_FILE_SAVE_AS, wxString(_("Save &As..."))+wxT("\tCtrl-Shift-S"), wxART_FILE_SAVE_AS);
-    Connect(MENU_FILE_SAVE_AS, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_saveas));
+    addIconItem(m_file_menu, MENU_FILE_SAVE_AS, wxString(_("Save &As..."))+wxT("\tCtrl-Shift-S"),
+                wxART_FILE_SAVE_AS);
+    Connect(MENU_FILE_SAVE_AS, wxEVT_COMMAND_MENU_SELECTED,
+            wxCommandEventHandler(MainFrame::menuEvent_saveas));
 
     //I18N: menu item in the "file" menu
-    m_file_menu -> QUICK_ADD_MENU ( MENU_FILE_CLOSE, wxString(_("&Close"))+wxT("\tCtrl-W"), MainFrame::menuEvent_close);
+    m_file_menu -> QUICK_ADD_MENU ( MENU_FILE_CLOSE, wxString(_("&Close"))+wxT("\tCtrl-W"),
+                                    MainFrame::menuEvent_close);
 
     m_file_menu->AppendSeparator();
-    m_file_menu -> QUICK_ADD_MENU ( MENU_FILE_COPYRIGHT, wxString(_("Song &info..."))+wxT("\tCtrl-I"), MainFrame::menuEvent_copyright );
+    m_file_menu -> QUICK_ADD_MENU ( MENU_FILE_COPYRIGHT, wxString(_("Song &info..."))+wxT("\tCtrl-I"),
+                                    MainFrame::menuEvent_copyright );
     //fileMenu->AppendSeparator();
 
     addIconItem(m_file_menu, MENU_FILE_EXPORT_NOTATION, wxString(_("&Print musical notation..."))+wxT("\tCtrl-P"), wxART_PRINT);
-    Connect(MENU_FILE_EXPORT_NOTATION, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_exportNotation));
+    Connect(MENU_FILE_EXPORT_NOTATION, wxEVT_COMMAND_MENU_SELECTED,
+            wxCommandEventHandler(MainFrame::menuEvent_exportNotation));
 
 
     m_file_menu->AppendSeparator();
     //I18N: menu item in the "file" menu
-    m_file_menu -> QUICK_ADD_MENU ( MENU_FILE_IMPORT_MIDI, _("I&mport Midi File..."), MainFrame::menuEvent_importmidi );
+    m_file_menu -> QUICK_ADD_MENU ( MENU_FILE_IMPORT_MIDI, _("I&mport Midi File..."),
+                                    MainFrame::menuEvent_importmidi );
     //I18N: menu item in the "file" menu
-    m_file_menu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_MIDI, _("&Export to Midi..."), MainFrame::menuEvent_exportmidi );
+    m_file_menu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_MIDI, _("&Export to Midi..."),
+                                    MainFrame::menuEvent_exportmidi );
 
     // disable export to sampled audio if this feature is not supported by the current PlatformMidiManager
     if (not PlatformMidiManager::get()->getAudioExtension().IsEmpty())
     {
         //I18N: menu item in the "file" menu
-        m_file_menu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_SAMPLED_AUDIO, _("E&xport to Audio..."), MainFrame::menuEvent_exportSampledAudio );
+        m_file_menu -> QUICK_ADD_MENU ( MENU_FILE_EXPORT_SAMPLED_AUDIO, _("E&xport to Audio..."),
+                                        MainFrame::menuEvent_exportSampledAudio );
     }
 
     //I18N: menu item in the "file" menu
@@ -147,21 +155,27 @@ void MainFrame::initMenuBar()
 
 
     //I18N: menu item in the "edit" menu
-    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_PASTE_AT_CURSOR, wxString(_("Paste at Mouse Cu&rsor"))+wxT("\tCtrl-Shift-V"), MainFrame::menuEvent_pasteAtMouse );
+    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_PASTE_AT_CURSOR, wxString(_("Paste at Mouse Cu&rsor"))+wxT("\tCtrl-Shift-V"),
+                                    MainFrame::menuEvent_pasteAtMouse );
     m_edit_menu->AppendSeparator(); // ----- selection
     //I18N: menu item in the "edit" menu
-    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_SELECT_ALL, wxString(_("Select &All"))+wxT("\tCtrl-A"), MainFrame::menuEvent_selectAll );
+    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_SELECT_ALL, wxString(_("Select &All"))+wxT("\tCtrl-A"),
+                                    MainFrame::menuEvent_selectAll );
     //I18N: menu item in the "edit" menu
-    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_SELECT_NONE, wxString(_("Select &None"))+wxT("\tCtrl-Shift-A"), MainFrame::menuEvent_selectNone );
+    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_SELECT_NONE, wxString(_("Select &None"))+wxT("\tCtrl-Shift-A"),
+                                    MainFrame::menuEvent_selectNone );
     //I18N: menu item in the "edit" menu
-    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_SELECT_CUSTOM, wxString(_("Select N&otes..."))+wxT("\tCtrl-F"), MainFrame::menuEvent_customNoteSelect );
+    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_SELECT_CUSTOM, wxString(_("Select N&otes..."))+wxT("\tCtrl-F"),
+                                    MainFrame::menuEvent_customNoteSelect );
     m_edit_menu->AppendSeparator(); // ----- actions
     //I18N: menu item in the "edit" menu
-    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_SNAP_TO_GRID, _("Snap Notes to &Grid"), MainFrame::menuEvent_snapToGrid );
+    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_SNAP_TO_GRID, _("Snap Notes to &Grid"),
+                                    MainFrame::menuEvent_snapToGrid );
     //I18N: menu item in the "edit" menu
     m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_SCALE, _("&Scale..."), MainFrame::menuEvent_scale );
     //I18N: menu item in the "edit" menu
-    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_REMOVE_OVERLAPPING, _("Remove O&verlapping Notes"), MainFrame::menuEvent_removeOverlapping );
+    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_REMOVE_OVERLAPPING, _("Remove O&verlapping Notes"),
+                                    MainFrame::menuEvent_removeOverlapping );
 
     //I18N: name of a menu
     m_menu_bar->Append(m_edit_menu,  _("&Edit"));
@@ -171,32 +185,43 @@ void MainFrame::initMenuBar()
     m_track_menu = new wxMenu();
 
     //I18N: menu item in the "track" menu
-    m_track_menu -> QUICK_ADD_MENU ( MENU_TRACK_ADD, wxString(_("&Add Track"))+wxT("\tCtrl-Shift-N"), MainFrame::menuEvent_addTrack );
+    m_track_menu -> QUICK_ADD_MENU ( MENU_TRACK_ADD, wxString(_("&Add Track"))+wxT("\tCtrl-Shift-N"),
+                                    MainFrame::menuEvent_addTrack );
     //I18N: menu item in the "track" menu
-    m_track_menu -> QUICK_ADD_MENU ( MENU_TRACK_DUP, wxString(_("&Duplicate Track"))+wxT("\tCtrl-D"), MainFrame::menuEvent_dupTrack );
+    m_track_menu -> QUICK_ADD_MENU ( MENU_TRACK_DUP, wxString(_("&Duplicate Track"))+wxT("\tCtrl-D"),
+                                     MainFrame::menuEvent_dupTrack );
     //I18N: menu item in the "track" menu
-    m_track_menu -> QUICK_ADD_MENU ( MENU_TRACK_REMOVE, wxString(_("&Delete Track"))+wxT("\tCtrl-DEL"), MainFrame::menuEvent_deleteTrack );
+    m_track_menu -> QUICK_ADD_MENU ( MENU_TRACK_REMOVE, wxString(_("&Delete Track"))+wxT("\tCtrl-DEL"),
+                                     MainFrame::menuEvent_deleteTrack );
     m_track_menu->AppendSeparator();
     //I18N: - in the track menu, allows choosing the properties of a track
-    m_track_menu -> QUICK_ADD_MENU ( MENU_TRACK_BACKG, _("&Properties..."), MainFrame::menuEvent_trackBackground );
+    m_track_menu -> QUICK_ADD_MENU ( MENU_TRACK_BACKG, _("&Properties..."),
+                                     MainFrame::menuEvent_trackBackground );
 
     m_menu_bar->Append(m_track_menu,  _("&Tracks"));
 
     // ---- Playback menu
     m_playback_menu = new wxMenu();
     //I18N: In the playback menu
-    m_playback_menu -> QUICK_ADD_MENU ( MENU_PLAY_PAUSE, wxString(_("&Play / Pause"))+wxT("\tCtrl-Space"), MainFrame::menuEvent_playpause );
+    m_playback_menu -> QUICK_ADD_MENU ( MENU_PLAY_PAUSE, wxString(_("&Play / Pause"))+wxT("\tCtrl-Space"),
+                                        MainFrame::menuEvent_playpause );
     //I18N: In the playback menu
     m_playback_menu -> QUICK_ADD_MENU ( MENU_STOP, wxString(_("&Stop")), MainFrame::menuEvent_stop );
     //I18N: In the playback menu
-    m_playback_menu -> QUICK_ADD_MENU ( MENU_RECORD, wxString(_("&Record"))+wxT("\tCtrl-R"), MainFrame::menuEvent_record );
+    m_playback_menu -> QUICK_ADD_MENU ( MENU_RECORD, wxString(_("&Record"))+wxT("\tCtrl-R"),
+                                        MainFrame::menuEvent_record );
     
     m_menu_bar->Append(m_playback_menu,  _("&Playback"));
 
     // ---- Settings menu
     m_settings_menu = new wxMenu();
-    m_follow_playback_menu_item   = m_settings_menu -> QUICK_ADD_CHECK_MENU ( MENU_SETTINGS_FOLLOW_PLAYBACK, _("&Follow Playback"), MainFrame::menuEvent_followPlayback );
-    m_expanded_measures_menu_item = m_settings_menu -> QUICK_ADD_CHECK_MENU ( MENU_SETTINGS_MEASURE_EXPANDED, _("E&xpanded time sig management"), MainFrame::menuEvent_expandedMeasuresSelected );
+    m_follow_playback_menu_item =
+        m_settings_menu -> QUICK_ADD_CHECK_MENU(MENU_SETTINGS_FOLLOW_PLAYBACK, _("&Follow Playback"),
+                                                 MainFrame::menuEvent_followPlayback );
+    m_expanded_measures_menu_item =
+        m_settings_menu -> QUICK_ADD_CHECK_MENU(MENU_SETTINGS_MEASURE_EXPANDED,
+                                                _("E&xpanded time sig management"),
+                                                MainFrame::menuEvent_expandedMeasuresSelected );
 
     m_follow_playback_menu_item->Check( PreferencesData::getInstance()->getBoolValue("followPlayback") );
 
@@ -216,18 +241,26 @@ void MainFrame::initMenuBar()
     //I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
     m_settings_menu->AppendSubMenu(playDuringEdits_menu,  _("Play during &edit") );
     //I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-    m_play_during_edits_always = playDuringEdits_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAY_ALWAYS,  _("&Always"), MainFrame::menuEvent_playAlways);
+    m_play_during_edits_always = playDuringEdits_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAY_ALWAYS,  _("&Always"),
+                                                                            MainFrame::menuEvent_playAlways);
     //I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-    m_play_during_edits_onchange = playDuringEdits_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAY_ON_CHANGE,  _("On note &change"), MainFrame::menuEvent_playOnChange);
+    m_play_during_edits_onchange = playDuringEdits_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAY_ON_CHANGE,  _("On note &change"),
+                                                                              MainFrame::menuEvent_playOnChange);
     //I18N: - the note playback setting. full context :\n\nPlay during edit\n\n* Always\n* On note change\n* Never
-    m_play_during_edits_never = playDuringEdits_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAY_NEVER,  _("&Never"), MainFrame::menuEvent_playNever);
+    m_play_during_edits_never = playDuringEdits_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAY_NEVER, _("&Never"),
+                                                                           MainFrame::menuEvent_playNever);
 
-    m_metronome = m_settings_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_METRONOME, _("Play with &Metronome"), MainFrame::menuEvent_metronome );
+    m_metronome = m_settings_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_METRONOME,
+                                                        _("Play with &Metronome"),
+                                                        MainFrame::menuEvent_metronome );
 
-    m_playthrough = m_settings_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAYTRHOUGH, _("&Playthrough when recording"), MainFrame::menuEvent_playthrough );
+    m_playthrough = m_settings_menu->QUICK_ADD_CHECK_MENU(MENU_SETTINGS_PLAYTRHOUGH,
+                                                          _("&Playthrough when recording"),
+                                                          MainFrame::menuEvent_playthrough );
 
     
-    m_settings_menu->QUICK_ADD_MENU( wxID_PREFERENCES,   _("&Preferences..."), MainFrame::menuEvent_preferences );
+    m_settings_menu->QUICK_ADD_MENU(wxID_PREFERENCES, _("&Preferences..."),
+                                    MainFrame::menuEvent_preferences);
 
     const int playValue = PreferencesData::getInstance()->getIntValue("playDuringEdit");
     if (playValue == PLAY_ON_CHANGE)   m_play_during_edits_onchange->Check();
@@ -247,14 +280,17 @@ void MainFrame::initMenuBar()
 
     if (choices.size() == 0)
     {
-        wxMenuItem* item = m_output_menu->QUICK_ADD_CHECK_MENU(MENU_OUTPUT_DEVICE, _("No MIDI Output Available"), MainFrame::menuEvent_outputDevice);
+        wxMenuItem* item = m_output_menu->QUICK_ADD_CHECK_MENU(MENU_OUTPUT_DEVICE,
+                                                               _("No MIDI Output Available"),
+                                                               MainFrame::menuEvent_outputDevice);
         m_output_device_menus.push_back(item);
     }
     
     bool found = false;
     for (unsigned int n=0; n<choices.Count(); n++)
     {
-        wxMenuItem* item = m_output_menu->QUICK_ADD_CHECK_MENU(MENU_OUTPUT_DEVICE+n, choices[n], MainFrame::menuEvent_outputDevice);
+        wxMenuItem* item = m_output_menu->QUICK_ADD_CHECK_MENU(MENU_OUTPUT_DEVICE+n, choices[n],
+                                                               MainFrame::menuEvent_outputDevice);
         m_output_device_menus.push_back(item);
         
         if (choices[n] == output)
@@ -285,7 +321,8 @@ void MainFrame::initMenuBar()
     wxString input = PreferencesData::getInstance()->getValue(SETTING_ID_MIDI_INPUT);
 
     // NOTE: there is an identical string in PreferencesData that must be changed too if changed here
-    wxMenuItem* item = m_input_menu->QUICK_ADD_CHECK_MENU(MENU_INPUT_DEVICE, _("No MIDI input"), MainFrame::menuEvent_inputDevice);
+    wxMenuItem* item = m_input_menu->QUICK_ADD_CHECK_MENU(MENU_INPUT_DEVICE, _("No MIDI input"),
+                                                          MainFrame::menuEvent_inputDevice);
     m_input_device_menus.push_back(item);
     if (input == _("No MIDI input"))
     {
@@ -294,7 +331,8 @@ void MainFrame::initMenuBar()
     
     for (unsigned int n=0; n<choices.Count(); n++)
     {
-        item = m_input_menu->QUICK_ADD_CHECK_MENU(MENU_INPUT_DEVICE+n+1, choices[n], MainFrame::menuEvent_inputDevice);
+        item = m_input_menu->QUICK_ADD_CHECK_MENU(MENU_INPUT_DEVICE+n+1, choices[n],
+                                                  MainFrame::menuEvent_inputDevice);
         
         if (input == choices[n]) item->Check();
         
@@ -546,8 +584,8 @@ bool MainFrame::doSaveAs()
         // file dialog has a built-in replace dialog
         if (wxFileExists(givenPath))
         {
-            int answer = wxMessageBox(  _("The file already exists. Do you wish to overwrite it?"),  _("Confirm"),
-                                        wxYES_NO, this);
+            int answer = wxMessageBox(_("The file already exists. Do you wish to overwrite it?"), 
+                                      _("Confirm"), wxYES_NO, this);
             if (answer != wxYES) return true;
         }
 #endif
@@ -596,7 +634,8 @@ void MainFrame::menuEvent_exportmidi(wxCommandEvent& evt)
 
     // show file dialog
     wxString midiFilePath = showFileDialog(this, _("Select destination file"), wxT(""),
-                                           suggestedName, wxString(_("Midi file"))+wxT("|*.mid"), true /*save*/);
+                                           suggestedName, wxString(_("Midi file"))+wxT("|*.mid"),
+                                           true /*save*/);
 
     if (midiFilePath.IsEmpty()) return;
 
@@ -605,7 +644,7 @@ void MainFrame::menuEvent_exportmidi(wxCommandEvent& evt)
     // file dialog has a built-in replace dialog
     if ( wxFileExists(midiFilePath) )
     {
-        int answer = wxMessageBox(  _("The file already exists. Do you wish to overwrite it?"),  _("Confirm"),
+        int answer = wxMessageBox(  _("The file already exists. Do you wish to overwrite it?"), _("Confirm"),
                                     wxYES_NO, this);
         if (answer != wxYES) return;
     }
@@ -642,7 +681,7 @@ void MainFrame::menuEvent_exportSampledAudio(wxCommandEvent& evt)
     // file dialog has a built-in replace dialog
     if ( wxFileExists(audioFilePath) )
     {
-        int answer = wxMessageBox(  _("The file already exists. Do you wish to overwrite it?"),  _("Confirm"),
+        int answer = wxMessageBox(  _("The file already exists. Do you wish to overwrite it?"), _("Confirm"),
                                     wxYES_NO, this);
         if (answer != wxYES) return;
     }
@@ -1188,7 +1227,8 @@ class ManualView : public wxFrame
     wxBoxSizer* m_sizer;
 
 public:
-    ManualView(wxFrame* parent, wxString file) : wxFrame(parent, wxID_ANY, _("Manual"), wxDefaultPosition, wxSize(1000,600))
+    ManualView(wxFrame* parent, wxString file) : wxFrame(parent, wxID_ANY, _("Manual"),
+                                                         wxDefaultPosition, wxSize(1000,600))
     {
         m_sizer = new wxBoxSizer(wxHORIZONTAL);
         wxString filepath = wxT("file://") + file ;
