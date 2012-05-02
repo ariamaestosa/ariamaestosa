@@ -342,9 +342,6 @@ MainFrame::~MainFrame()
     CopyrightWindow::free();
     Clipboard::clear();
     SingletonBase::deleteAll();
-#if USE_WX_LOGGING
-    dynamic_cast<wxWidgetApp*>(wxTheApp)->closeLogWindow();
-#endif
 }
 
 // ----------------------------------------------------------------------------------------------------------
