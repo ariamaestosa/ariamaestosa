@@ -100,16 +100,16 @@ static const wxString g_drum_names[] =
     wxT("Snare"), // 38
     wxT("Clap"), // 39
     wxT("Snare 2"), // 40
-    wxT("Tom 1"), // 41
+    wxT("Tom 6"), // 41
     wxT("Closed hi-hat"), // 42
-    wxT("Tom 2"), // 43
+    wxT("Tom 5"), // 43
     wxT("Pedal hi-hat"), // 44
-    wxT("Tom 3"), // 45
+    wxT("Tom 4"), // 45
     wxT("Open hi-hat"), // 46
-    wxT("Tom 4"), // 47
-    wxT("Tom 5"), // 48
+    wxT("Tom 3"), // 47
+    wxT("Tom 2"), // 48
     wxT("Crash"), // 49
-    wxT("Tom 6"), // 50
+    wxT("Tom 1"), // 50
     wxT("Ride"), // 51
     wxT("Chinese"), // 52
     wxT("Ride bell"), // 53
