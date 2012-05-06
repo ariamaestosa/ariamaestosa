@@ -58,6 +58,12 @@ void RelativeXCoord::setValue(int i, RelativeType relativeTo)
     relativeToWindow = -1;
     relativeToMidi   = -1;
 
+    // -1 is used to mean there is no value so can't use that (FIXME: that's ugly)
+    if (i == -1)
+    {
+        i = 0;
+    }
+
     if (relativeTo == WINDOW)
     {
         relativeToWindow = i;
