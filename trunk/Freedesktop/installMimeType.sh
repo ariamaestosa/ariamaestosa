@@ -1,5 +1,5 @@
 # This is an attempt at installing Aria Maestosa in a Freedesktop-compliant way, with a .desktop file and correct file associations.
-# At the moment, file associations "sort of" work (the file icon does not show; opening works but if you open multiple files, multiple
+# At the moment, file associations "sort of" work (the file icon shows and opening works, but if you open multiple files, multiple
 # Aria processes will be launched).
 # This script will also install Aria in /usr/share/applications (path not configurable for now, sorry)
 
