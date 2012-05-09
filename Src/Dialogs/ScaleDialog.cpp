@@ -208,10 +208,12 @@ namespace AriaMaestosa
                 return;
             }
 
-            float factor = atof(
-                                factor_str.mb_str()
-                                ) / 100.0;
-
+            float factor = atof(factor_str.mb_str()) / 100.0;
+            if (factor <= 0.0f or factor > 10.0f)
+            {
+                wxBell();
+                return;
+            }
             //std::cout << "factor: " << factor << std::endl;
 
             m_sequence->scale(factor,
