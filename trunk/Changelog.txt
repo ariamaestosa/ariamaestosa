@@ -2,6 +2,7 @@
 - Use more standard 44100 Hz when exporting to sampled audio on OSX
 - Fixed exporting midi track names (Alexis Archambault)
 - Active dropping documents on the main frame on all OSes (Alexis Archambault)
+- Improve look of loop button on Linux when using wx 2.9
 
 1.4.0
 - Fix shift + mouse wheel horizontal scrolling on windows
