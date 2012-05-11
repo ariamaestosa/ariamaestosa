@@ -222,7 +222,11 @@ void CustomToolBar::AddTool(const int id, wxString label, wxBitmap& bmp)
 
 void CustomToolBar::AddCheckTool(const int id, wxString label, wxBitmap& bmp)
 {
+#if wxCHECK_VERSION(2,9,1)
+    wxBitmapToggleButton* btn = new wxBitmapToggleButton(this, id, bmp);
+#else
     wxToggleButton* btn = new wxToggleButton(this, id, label);
+#endif
     toolbarSizer->Add(btn, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
     labels.push_back(label);
 }
