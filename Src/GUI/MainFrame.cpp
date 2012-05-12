@@ -215,7 +215,8 @@ CustomToolBar::CustomToolBar(wxWindow* parent) : wxPanel(parent, wxID_ANY)
 
 void CustomToolBar::AddTool(const int id, wxString label, wxBitmap& bmp)
 {
-    wxBitmapButton* btn = new wxBitmapButton(this, id, bmp);
+    wxBitmapButton* btn = new wxBitmapButton(this, id, bmp, wxDefaultPosition, wxDefaultSize,
+                                             wxBU_AUTODRAW | wxBORDER_NONE);
     toolbarSizer->Add(btn, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
     labels.push_back(label);
 }
