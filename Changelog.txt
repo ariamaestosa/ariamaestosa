@@ -1,5 +1,6 @@
 1.4.1
 - Use more standard 44100 Hz when exporting to sampled audio on OSX
+- On Linux, allow exporting to sampled audio using Fluidsynth
 - Fixed exporting midi track names (Alexis Archambault)
 - Active dropping documents on the main frame on all OSes (Alexis Archambault)
 - Improve look of loop button on Linux when using wx 2.9

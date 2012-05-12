@@ -687,6 +687,11 @@ void MainFrame::menuEvent_exportSampledAudio(wxCommandEvent& evt)
     }
 #endif
 
+    if (not PlatformMidiManager::get()->audioExportSetup())
+    {
+        return;
+    }
+
     // show progress bar
     MAKE_SHOW_PROGRESSBAR_EVENT( event, _("Please wait while audio file is being generated.\n\nDepending on the length of your file,\nthis can take several minutes."), false );
     GetEventHandler()->AddPendingEvent(event);

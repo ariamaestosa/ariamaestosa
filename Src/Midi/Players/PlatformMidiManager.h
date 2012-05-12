@@ -210,6 +210,8 @@ namespace AriaMaestosa
           */
         void processRecordQueue();
         
+        virtual bool audioExportSetup() { return true; }
+        
         // ---------- non-native sequencer interface ---------
         virtual void seq_note_on      (const int note, const int volume, const int channel)      { }
         virtual void seq_note_off     (const int note, const int channel)                        { }
