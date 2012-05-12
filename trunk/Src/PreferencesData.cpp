@@ -203,6 +203,27 @@ void PreferencesData::fillSettingsVector()
                                        SETTING_BOOL, true /* show in preferences */, wxT("1") );
     m_settings.push_back( newversion );
     
+    // ---- Remember window location
+    Setting* windowloc = new Setting(fromCString(SETTING_ID_REMEMBER_WINDOW_POS), _("Remember window location"),
+                                     SETTING_BOOL, true /* show in preferences */, wxT("0") );
+    m_settings.push_back( windowloc );
+    
+    Setting* window_x = new Setting(fromCString(SETTING_ID_WINDOW_X), wxT("Window X"),
+                                     SETTING_INT, false /* show in preferences */, wxT("0") );
+    m_settings.push_back( window_x );
+    
+    Setting* window_y = new Setting(fromCString(SETTING_ID_WINDOW_Y), wxT("Window Y"),
+                                     SETTING_INT, false /* show in preferences */, wxT("0") );
+    m_settings.push_back( window_y );
+    
+    Setting* window_w = new Setting(fromCString(SETTING_ID_WINDOW_W), wxT("Window W"),
+                                     SETTING_INT, false /* show in preferences */, wxT("800") );
+    m_settings.push_back( window_w );
+    
+    Setting* window_h = new Setting(fromCString(SETTING_ID_WINDOW_H), wxT("Window H"),
+                                     SETTING_INT, false /* show in preferences */, wxT("600") );
+    m_settings.push_back( window_h );
+    
 #ifdef __WXGTK__
     /*
      Setting usePort(wxT("usePort"), _("Automatically use this Alsa port (format 'Client:Port')"),

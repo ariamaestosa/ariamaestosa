@@ -336,6 +336,16 @@ MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(1
 
 MainFrame::~MainFrame()
 {
+    PreferencesData* pd = PreferencesData::getInstance();
+    if (pd->getBoolValue(SETTING_ID_REMEMBER_WINDOW_POS))
+    {
+        pd->setValue(SETTING_ID_WINDOW_X, to_wxString(GetPosition().x));
+        pd->setValue(SETTING_ID_WINDOW_Y, to_wxString(GetPosition().y));
+        pd->setValue(SETTING_ID_WINDOW_W, to_wxString(GetSize().GetWidth()));
+        pd->setValue(SETTING_ID_WINDOW_H, to_wxString(GetSize().GetHeight()));
+        pd->save();
+    }
+    
     wxLogVerbose( wxT("MainFrame::~MainFrame") );
 
     m_border_sizer->Detach(m_main_panel);
@@ -626,7 +636,18 @@ void MainFrame::init()
 #endif
 
     wxLogVerbose( wxT("MainFrame::init (showing)") );
-    Maximize(true);
+    
+    PreferencesData* pd = PreferencesData::getInstance();
+    if (pd->getBoolValue(SETTING_ID_REMEMBER_WINDOW_POS))
+    {
+        SetPosition( wxPoint(pd->getIntValue(SETTING_ID_WINDOW_X), pd->getIntValue(SETTING_ID_WINDOW_Y)) );
+        SetSize( wxSize(pd->getIntValue(SETTING_ID_WINDOW_W), pd->getIntValue(SETTING_ID_WINDOW_H)) );
+    }
+    else
+    {
+        Maximize(true);
+    }
+    
     Layout();
     Show();
     //Maximize(true);
