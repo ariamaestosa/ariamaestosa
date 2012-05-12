@@ -637,11 +637,30 @@ void MainFrame::init()
 
     wxLogVerbose( wxT("MainFrame::init (showing)") );
     
+    wxSize s = wxGetDisplaySize();
+    printf("*** %i %i\n", s.GetWidth(), s.GetHeight());
+     
     PreferencesData* pd = PreferencesData::getInstance();
     if (pd->getBoolValue(SETTING_ID_REMEMBER_WINDOW_POS))
     {
-        SetPosition( wxPoint(pd->getIntValue(SETTING_ID_WINDOW_X), pd->getIntValue(SETTING_ID_WINDOW_Y)) );
-        SetSize( wxSize(pd->getIntValue(SETTING_ID_WINDOW_W), pd->getIntValue(SETTING_ID_WINDOW_H)) );
+        wxSize screenSize = wxGetDisplaySize();
+        
+        int x = pd->getIntValue(SETTING_ID_WINDOW_X);
+        int y = pd->getIntValue(SETTING_ID_WINDOW_Y);
+        if (x < 0) x = 0;
+        if (y < 0) y = 0;
+        
+        int w = pd->getIntValue(SETTING_ID_WINDOW_W);
+        if (w < 400) w = 400;
+        
+        int h = pd->getIntValue(SETTING_ID_WINDOW_H);
+        if (h < 400) h = 400;
+        
+        if (x >= screenSize.GetWidth()) x = 0;
+        if (y >= screenSize.GetHeight()) y = 0;
+        
+        SetPosition( wxPoint(x,y) );
+        SetSize( wxSize(w, h) );
     }
     else
     {
