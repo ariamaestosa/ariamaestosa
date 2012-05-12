@@ -72,6 +72,12 @@ namespace AriaMaestosa
 
     EXTERN const char* SETTING_ID_CHECK_NEW_VERSION DEFAULT("checkForNewVersion");
     
+    EXTERN const char* SETTING_ID_REMEMBER_WINDOW_POS DEFAULT("rememberWindowLocation");
+    EXTERN const char* SETTING_ID_WINDOW_X DEFAULT("window_x");
+    EXTERN const char* SETTING_ID_WINDOW_Y DEFAULT("window_y");
+    EXTERN const char* SETTING_ID_WINDOW_W DEFAULT("window_w");
+    EXTERN const char* SETTING_ID_WINDOW_H DEFAULT("window_h");
+    
 #ifdef __APPLE__
     EXTERN const char* SETTING_ID_SOUNDBANK        DEFAULT("soundbank");
 #endif

@@ -4,6 +4,7 @@
 - Fixed exporting midi track names (Alexis Archambault)
 - Active dropping documents on the main frame on all OSes (Alexis Archambault)
 - Improve look of loop button on Linux when using wx 2.9
+- Add setting to remember window location
 
 1.4.0
 - Fix shift + mouse wheel horizontal scrolling on windows
