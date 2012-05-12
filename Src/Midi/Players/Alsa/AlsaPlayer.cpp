@@ -545,7 +545,7 @@ public:
         
         ~AudioExportDialog()
         {
-            printf("m_textctrl = <%s>\n", (const char*)m_soundfont->GetValue().utf8_str());
+            g_fluisynth_soundfont = m_soundfont->GetValue();
         }
         
         void onChange(wxCommandEvent& evt)
