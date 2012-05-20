@@ -25,6 +25,8 @@
 #include <wx/settings.h>
 #include <wx/stdpaths.h>
 #include <wx/wfstream.h>
+#include <wx/filename.h>
+#include <wx/fileconf.h>
 
 #include "Midi/Players/PlatformMidiManager.h"
 
@@ -332,7 +334,7 @@ void PreferencesData::save()
     
     wxFileOutputStream fos(f);
     wxFileConfig* fc = (wxFileConfig*)prefs;
-    prefs->Save(fos);
+    fc->Save(fos);
     //prefs->Flush();
 }
 
