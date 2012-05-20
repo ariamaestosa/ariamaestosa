@@ -65,8 +65,8 @@ namespace AriaMaestosa
     public:
         LEAK_CHECK();
         
-        WaitWindowClass(wxString message, bool progressKnown) :
-            wxDialog( NULL, wxID_ANY,  _("Please wait..."), wxDefaultPosition, wxSize(400,200),
+        WaitWindowClass(wxWindow* parent, wxString message, bool progressKnown) :
+            wxDialog( parent, wxID_ANY,  _("Please wait..."), wxDefaultPosition, wxSize(400,200),
                       wxCAPTION | wxSTAY_ON_TOP )
         {
             boxSizer = new wxBoxSizer(wxVERTICAL);
@@ -139,14 +139,14 @@ namespace AriaMaestosa
     namespace WaitWindow
     {
         
-        void show(wxString message, bool progress_known)
+        void show(wxWindow* parent, wxString message, bool progress_known)
         {
             if (waitWindow != NULL)
             {
                 hide();
             }
             wxBeginBusyCursor();
-            waitWindow = new WaitWindowClass(message, progress_known);
+            waitWindow = new WaitWindowClass(parent, message, progress_known);
             waitWindow->show();
         }
         
