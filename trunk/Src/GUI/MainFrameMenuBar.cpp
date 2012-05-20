@@ -1219,7 +1219,7 @@ void MainFrame::menuEvent_inputDevice(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_about(wxCommandEvent& evt)
 {
-    AboutDialog* aboutDialog = new AboutDialog();
+    AboutDialog* aboutDialog = new AboutDialog(this);
     aboutDialog->show();
 }
 
