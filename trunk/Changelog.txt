@@ -6,6 +6,7 @@
 - Improve look of loop button on Linux when using wx 2.9
 - Add setting to remember window location
 - Make Aria work correctly in OpenGL mode on Linux
+- Move config : on linux, to ~/.config, on Windows, out of the registry
 
 1.4.0
 - Fix shift + mouse wheel horizontal scrolling on windows

@@ -23,6 +23,8 @@
 #include <wx/intl.h>
 #include <wx/font.h>
 #include <wx/settings.h>
+#include <wx/stdpaths.h>
+#include <wx/wfstream.h>
 
 #include "Midi/Players/PlatformMidiManager.h"
 
@@ -72,8 +74,34 @@ void Setting::setChoices(wxArrayString choices)
 
 DEFINE_SINGLETON(AriaMaestosa::PreferencesData);
 
+wxString prefsFile; 
+wxString prefsDir;
+
 PreferencesData::PreferencesData()
 {
+#ifdef __WXGTK__
+    prefsDir = wxStandardPaths::Get().GetUserConfigDir() + wxT("/.config/ariamaestosa/");
+#else
+    prefsDir = wxStandardPaths::Get().GetUserConfigDir() + wxFileName::GetPathSeparator() +
+                        wxT("AriaMaestosa") + wxFileName::GetPathSeparator();
+#endif
+
+    prefsFile = prefsDir + wxT("preferences.txt");
+    printf("<%s>\n", (const char*)prefsFile.utf8_str());
+    wxFile f(prefsFile, wxFile::read_write);
+    if (not wxFileExists(prefsFile))
+    {
+        if (not wxMkdir(prefsDir))
+        {
+            fprintf(stderr, "Cannot create <%s>\n", (const char*)prefsDir.utf8_str());
+        }
+        f.Create(prefsFile);
+    }
+    
+    wxFileInputStream fis(f);
+    wxConfig::Set(new wxFileConfig(fis));
+    
+    
     m_inited = false;
 }
 
@@ -288,7 +316,24 @@ void PreferencesData::save()
         prefs->Write( m_settings[i].m_name, m_settings[i].m_value );
     }
     
-    prefs->Flush();
+
+    wxFile f(prefsFile, wxFile::read_write);
+    if (not wxFileExists(prefsFile))
+    {
+        if (not wxMkdir(prefsDir))
+        {
+            fprintf(stderr, "Cannot create <%s>\n", (const char*)prefsDir.utf8_str());
+        }
+        f.Create(prefsFile);
+        f.Open(prefsFile, wxFile::read_write);
+    }
+    
+    ASSERT(f.IsOpened());
+    
+    wxFileOutputStream fos(f);
+    wxFileConfig* fc = (wxFileConfig*)prefs;
+    prefs->Save(fos);
+    //prefs->Flush();
 }
 
 // ----------------------------------------------------------------------------------------------------------
