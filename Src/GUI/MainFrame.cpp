@@ -668,8 +668,11 @@ void MainFrame::init()
         Maximize(true);
     }
     
-    Connect(wxEVT_SHOW, wxShowEventHandler(MainFrame::onShow));
-    
+#ifndef __WXMSW__
+    // FIXME: workaround for show event not working on Windows, see below
+    Connect(GetId(), wxEVT_SHOW, wxShowEventHandler(MainFrame::onShow));
+#endif
+
     Layout();
     Show();
     //Maximize(true);
@@ -690,11 +693,17 @@ void MainFrame::init()
     m_key_picker          =  new KeyPicker();
     m_instrument_picker   =  new InstrumentPicker();
     m_drumKit_picker      =  new DrumPicker();
+    
+#ifdef __WXMSW__
+    // FIXME: workaround for show event not working on Windows
+    wxShowEvent evt;
+    onShow(evt);
+#endif
 }
 
 void MainFrame::onShow(wxShowEvent& evt)
 {
-    Disconnect(wxEVT_SHOW, wxShowEventHandler(MainFrame::onShow)); // This callback is for initialisation so never call it again
+    Disconnect(GetId(), wxEVT_SHOW, wxShowEventHandler(MainFrame::onShow)); // This callback is for initialisation so never call it again
     
 #ifdef RENDERER_OPENGL
     m_main_pane->setCurrent();
