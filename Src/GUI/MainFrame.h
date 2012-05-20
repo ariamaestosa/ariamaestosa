@@ -374,6 +374,8 @@ namespace AriaMaestosa
 
         void onMouseWheel(wxMouseEvent& event);
 
+        void onShow(wxShowEvent& evt);
+
         // ---- playback
         void songHasFinishedPlaying();
         void toolsEnterPlaybackMode();

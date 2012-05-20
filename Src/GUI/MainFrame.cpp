@@ -668,6 +668,8 @@ void MainFrame::init()
         Maximize(true);
     }
     
+    Connect(wxEVT_SHOW, wxShowEventHandler(MainFrame::onShow));
+    
     Layout();
     Show();
     //Maximize(true);
@@ -688,8 +690,12 @@ void MainFrame::init()
     m_key_picker          =  new KeyPicker();
     m_instrument_picker   =  new InstrumentPicker();
     m_drumKit_picker      =  new DrumPicker();
+}
 
-
+void MainFrame::onShow(wxShowEvent& evt)
+{
+    Disconnect(wxEVT_SHOW, wxShowEventHandler(MainFrame::onShow)); // This callback is for initialisation so never call it again
+    
 #ifdef RENDERER_OPENGL
     m_main_pane->setCurrent();
 #endif
@@ -699,9 +705,7 @@ void MainFrame::init()
 
     wxLogVerbose( wxT("MainFrame::init (main pane now visible)") );
     m_main_pane->isNowVisible();
-
-    //ImageProvider::loadImages();
-
+    
 #ifdef _show_dialog_on_startup
     if (aboutDialog.raw_ptr == NULL) aboutDialog = new AboutDialog();
     aboutDialog->show();
