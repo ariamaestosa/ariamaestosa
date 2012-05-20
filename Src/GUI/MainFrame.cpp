@@ -622,7 +622,9 @@ void MainFrame::init()
     }
     else
     {
+        wxAssertHandler_t assertHandler = wxSetAssertHandler(NULL); // on XP this tends to assert
         SetIcon(ariaIcon);
+        wxSetAssertHandler(assertHandler);
     }
 #elif defined(__WXGTK__)
     wxIcon ariaIcon(getResourcePrefix()+wxT("/aria64.png"), wxBITMAP_TYPE_PNG);
@@ -668,8 +670,11 @@ void MainFrame::init()
         Maximize(true);
     }
     
+#ifndef __WXMSW__
+    // FIXME: work around wxMSW bug (see below)
     Connect(wxEVT_SHOW, wxShowEventHandler(MainFrame::onShow));
-    
+#endif
+
     Layout();
     Show();
     //Maximize(true);
@@ -690,6 +695,13 @@ void MainFrame::init()
     m_key_picker          =  new KeyPicker();
     m_instrument_picker   =  new InstrumentPicker();
     m_drumKit_picker      =  new DrumPicker();
+    
+#ifdef __WXMSW__
+    // FIXME: work around wxMSW bug
+    wxShowEvent evt;
+    onShow(evt);
+#endif
+    
 }
 
 void MainFrame::onShow(wxShowEvent& evt)
