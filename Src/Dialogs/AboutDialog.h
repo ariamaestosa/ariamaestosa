@@ -42,7 +42,7 @@ namespace AriaMaestosa
     public:
         LEAK_CHECK();
         
-        AboutDialog();
+        AboutDialog(wxWindow* parent);
         void show();
         
         void onClose(wxCloseEvent& evt);

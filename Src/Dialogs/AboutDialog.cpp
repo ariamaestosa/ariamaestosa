@@ -38,8 +38,8 @@ using namespace AriaMaestosa;
 
 // ----------------------------------------------------------------------------------------------------------
 
-AboutDialog::AboutDialog() : wxFrame(NULL, wxID_ANY,  _("About Aria Maestosa"),
-                                     wxDefaultPosition, wxSize(517, 600) )
+AboutDialog::AboutDialog(wxWindow* parent) : wxFrame(parent, wxID_ANY,  _("About Aria Maestosa"),
+                                                     wxDefaultPosition, wxSize(517, 600) )
 {
     wxBitmap titleBitmap;
     titleBitmap.LoadFile( getResourcePrefix()  + wxT("title.jpg") , wxBITMAP_TYPE_JPEG );
