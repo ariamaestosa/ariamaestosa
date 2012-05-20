@@ -231,7 +231,7 @@ namespace AriaMaestosa
         if (keepGoingOn)
         {
             printable->setSequence(printableSeq);
-            WaitWindow::show(_("Calculating print layout...") );
+            WaitWindow::show(getMainFrame(), _("Calculating print layout...") );
             
             for (unsigned int n=0; n<trackCount; n++)
             {

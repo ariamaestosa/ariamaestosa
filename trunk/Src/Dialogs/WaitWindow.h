@@ -20,6 +20,7 @@
 #define __WAIT_WINDOW_H__
 
 #include <wx/string.h>
+class wxWindow;
 
 namespace AriaMaestosa
 {
@@ -29,7 +30,7 @@ namespace AriaMaestosa
       */
     namespace WaitWindow
     {
-        void show(wxString message, bool progress_known = false);
+        void show(wxWindow* parent, wxString message, bool progress_known = false);
         void setProgress(int progress); // in percent
         void hide();
         bool isShown();

@@ -668,11 +668,8 @@ void MainFrame::init()
         Maximize(true);
     }
     
-#ifndef __WXMSW__
-    // FIXME: workaround for show event not working on Windows, see below
-    Connect(GetId(), wxEVT_SHOW, wxShowEventHandler(MainFrame::onShow));
-#endif
-
+    Connect(wxEVT_SHOW, wxShowEventHandler(MainFrame::onShow));
+    
     Layout();
     Show();
     //Maximize(true);
@@ -693,17 +690,11 @@ void MainFrame::init()
     m_key_picker          =  new KeyPicker();
     m_instrument_picker   =  new InstrumentPicker();
     m_drumKit_picker      =  new DrumPicker();
-    
-#ifdef __WXMSW__
-    // FIXME: workaround for show event not working on Windows
-    wxShowEvent evt;
-    onShow(evt);
-#endif
 }
 
 void MainFrame::onShow(wxShowEvent& evt)
 {
-    Disconnect(GetId(), wxEVT_SHOW, wxShowEventHandler(MainFrame::onShow)); // This callback is for initialisation so never call it again
+    Disconnect(wxEVT_SHOW, wxShowEventHandler(MainFrame::onShow)); // This callback is for initialisation so never call it again
     
 #ifdef RENDERER_OPENGL
     m_main_pane->setCurrent();
@@ -1715,7 +1706,7 @@ void MainFrame::loadAriaFile(wxString filePath)
     setCurrentSequence( getSequenceAmount()-1 );
     getCurrentSequence()->setFilepath( filePath );
 
-    WaitWindow::show(_("Please wait while .aria file is loading.") );
+    WaitWindow::show(this, _("Please wait while .aria file is loading.") );
 
     const bool success = AriaMaestosa::loadAriaFile(getCurrentGraphicalSequence(), getCurrentSequence()->getFilepath());
     if (not success)
@@ -1761,7 +1752,7 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
     addSequence();
     setCurrentSequence( getSequenceAmount()-1 );
 
-    WaitWindow::show( _("Please wait while midi file is loading."));
+    WaitWindow::show(this, _("Please wait while midi file is loading."));
 
     std::set<wxString> warnings;
     if (not AriaMaestosa::loadMidiFile( getCurrentGraphicalSequence(), midiFilePath, warnings ) )
@@ -1856,7 +1847,7 @@ void MainFrame::evt_freeTimeSigPicker( wxCommandEvent& evt )
 
 void MainFrame::evt_showWaitWindow(wxCommandEvent& evt)
 {
-    WaitWindow::show( evt.GetString(), evt.GetInt() );
+    WaitWindow::show( this, evt.GetString(), evt.GetInt() );
 }
 
 // ----------------------------------------------------------------------------------------------------------
