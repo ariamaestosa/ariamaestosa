@@ -1,3 +1,6 @@
+1.4.2
+- Fixed playback and export issues that could ensue when a note was placed just before the playback start
+
 1.4.1
 - Use more standard 44100 Hz when exporting to sampled audio on OSX
 - On Linux, allow exporting to sampled audio using Fluidsynth
