@@ -1275,11 +1275,11 @@ void Track::playNote(const int id, const bool noteChange)
 // ----------------------------------------------------------------------------------------------------------
 
 /** @return Smallest values, ignoring -1, a being prioritary to b (returns -1 for none, 0 for a, 1 for b) */
-int getActiveMin(int a, int b)
+int getActiveMin(bool have_a, int a, bool have_b, int b)
 {
-    if (a==-1 and b==-1) return -1;
-    if (a==-1) return 1;//b
-    if (b==-1) return 0;//a
+    if (not have_a and not have_b) return -1;
+    if (not have_a) return 1;//b
+    if (not have_b) return 0;//a
 
     if (a <= b) return 0;//a
     else return 1;//b
@@ -1292,23 +1292,28 @@ int getActiveMin(int a, int b)
   *         if some are equal, 'a' is prioritary to 'b', and 'b' prioritary to 'c'
   *         (returns -1 for none, 0 for a, 1 for b, 2 for c)
   */
-int getActiveMin(int a, int b, int c)
+int getActiveMin(bool have_a, int a, bool have_b, int b, bool have_c, int c)
 {
 
-    const int result1 = getActiveMin(b,c);
+    const int result1 = getActiveMin(have_b, b, have_c, c);
 
+    bool have_passnumber = true;
     int passnumber;
-    if (result1==0) passnumber = b;
-    else if (result1==1) passnumber = c;
-    else if (result1==-1) passnumber =-1;
+    if (result1 == 0) passnumber = b;
+    else if (result1 == 1) passnumber = c;
+    else if (result1 == -1)
+    {
+        passnumber = -1;
+        have_passnumber = false;
+    }
 
-    const int result2 = getActiveMin( a, passnumber );
+    const int result2 = getActiveMin( have_a, a, have_passnumber, passnumber );
 
-    if (result2==0) return 0;
+    if (result2 == 0) return 0;
     else
     {
-        if (result1==-1) return -1;
-        return result1+1;
+        if (result1 == -1) return -1;
+        return result1 + 1;
     }
 
 }
@@ -1503,19 +1508,30 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
             }
         }
 
-        const int tick_on  = (note_on_id < noteOnAmount)   ?
-                              m_notes[note_on_id].getTick() - firstNoteStartTick   :  -1;
-        const int tick_off = (note_off_id < noteOffAmount) ?
-                              m_note_off[note_off_id].getEndTick() - firstNoteStartTick :  -1;
+        bool have_tick_on = (note_on_id < noteOnAmount);
+        bool have_tick_off = (note_off_id < noteOffAmount);
 
+        const int tick_on  = have_tick_on   ?
+                              m_notes[note_on_id].getTick() - firstNoteStartTick   :  -1;
+        const int tick_off = have_tick_off ?
+                              m_note_off[note_off_id].getEndTick() - firstNoteStartTick :  -1;
+        
         // ignore control events when only playing selection
-        const int tick_control = (control_evt_id < controllerAmount and not selectionOnly) ?
+        bool have_tick_control = (control_evt_id < controllerAmount and not selectionOnly);
+        const int tick_control = have_tick_control ?
                                   m_control_events[control_evt_id].getTick() - firstNoteStartTick : -1;
 
-        const int activeMin = getActiveMin( tick_off, tick_control, tick_on );
 
-        if (activeMin == -1) break; // all events have been added
-
+        if (not have_tick_control and not have_tick_off and not have_tick_on)
+        {
+            // all events have been added
+            break;
+        }
+        
+        const int activeMin = getActiveMin(have_tick_off, tick_off,
+                                           have_tick_control, tick_control,
+                                           have_tick_on, tick_on );
+        
         jdkmidi::MIDITimedBigMessage m;
 
         //  ------------------------ add note on event ------------------------
@@ -1524,9 +1540,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
             const int time = m_notes[note_on_id].getTick() - firstNoteStartTick;
             if (time >= 0 and (time + firstNoteStartTick) <= lastTickInSong)
             {
-
                 m.SetTime( time );
-
 
                 if (m_editor_mode[DRUM])
                 {
