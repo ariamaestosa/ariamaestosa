@@ -71,13 +71,13 @@ namespace AriaMaestosa
 
             wxPanel* contentPane = new wxPanel(this);
             wxBoxSizer* contentPaneSizer = new wxBoxSizer(wxHORIZONTAL);
-            contentPaneSizer->Add(contentPane, 0, wxLEFT | wxRIGHT | wxTOP, 10);
+            contentPaneSizer->Add(contentPane, 0, wxLEFT | wxRIGHT | wxTOP|wxEXPAND, 10);
 
             wxPanel* topPane = new wxPanel(contentPane);
             wxPanel* bottomPane = new wxPanel(contentPane);
 
             wxBoxSizer* verticalSizer = new wxBoxSizer(wxVERTICAL);
-            verticalSizer->Add(topPane, 0, wxALL, 8);
+            verticalSizer->Add(topPane, 0, wxALL|wxEXPAND, 8);
 
             // --------------------------------------------------- percent ---------------------------------------------------
 
@@ -92,11 +92,11 @@ namespace AriaMaestosa
             choices.Add(wxT("200"));
             choices.Add(wxT("400"));
             m_text_input = new wxComboBox( topPane, wxID_ANY, wxString(wxT("100")), wxDefaultPosition, wxDefaultSize, choices);
-            horizontalSizerTop->Add( m_text_input, 0, wxALIGN_CENTER_VERTICAL | wxALL, 3 );
+            horizontalSizerTop->Add( m_text_input, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 3 );
 
             // label
             wxStaticText* label = new wxStaticText( topPane, wxID_ANY, wxString(wxT("%")), wxPoint(25,25) );
-            horizontalSizerTop->Add( label, 0, wxALIGN_CENTER_VERTICAL | wxALL, 2 );
+            horizontalSizerTop->Add( label, 0, wxALIGN_CENTER_VERTICAL | wxALL |wxEXPAND , 2 );
 
             topPane->SetSizer( horizontalSizerTop );
             horizontalSizerTop->Layout();
@@ -106,63 +106,63 @@ namespace AriaMaestosa
 
             //I18N: - in the scale dialog. full context : "Scale notes in...\n\n* selection\n* track\n* song"
             wxStaticBoxSizer* first_box = new wxStaticBoxSizer(wxVERTICAL, contentPane, _("Scale notes in..."));
-            verticalSizer->Add(first_box, 0, wxALL, 5);
+            verticalSizer->Add(first_box, 0, wxALL|wxEXPAND, 5);
 
             //I18N: - in the scale dialog. full context : "Scale notes in...\n\n* selection\n* track\n* song"
             m_affect_selection = new wxRadioButton( contentPane, wxID_ANY,  _("selection"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
-            first_box->Add( m_affect_selection, 0, wxALL, 5 );
+            first_box->Add( m_affect_selection, 0, wxALL|wxEXPAND, 5 );
             m_affect_selection->SetValue(contentPane);
 
             //I18N: - in the scale dialog. full context : "Scale notes in...\n\n* selection\n* track\n* song"
             m_affect_track = new wxRadioButton( contentPane, wxID_ANY,  _("track"));
-            first_box->Add( m_affect_track, 0, wxALL, 5 );
+            first_box->Add( m_affect_track, 0, wxALL|wxEXPAND, 5 );
 
             //I18N: - in the scale dialog. full context : "Scale notes in...\n\n* selection\n* track\n* song"
             m_affect_song = new wxRadioButton( contentPane, wxID_ANY,  _("song"));
-            first_box->Add( m_affect_song, 0, wxALL, 5 );
+            first_box->Add( m_affect_song, 0, wxALL|wxEXPAND, 5 );
 
             // relative to...
 
             //I18N: - in the scale dialog. full context : "relative to...\n\n* first affected note\n* song beginning"
             wxStaticBoxSizer* second_box = new wxStaticBoxSizer(wxVERTICAL, contentPane, _("relative to..."));
-            verticalSizer->Add(second_box, 0, wxALL, 5);
+            verticalSizer->Add(second_box, 0, wxALL|wxEXPAND, 5);
 
             //I18N: - in the scale dialog. full context : "relative to...\n\n* first affected note\n* song beginning"
             m_rel_first_note = new wxRadioButton( contentPane, wxID_ANY,  _("first affected note"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
-            second_box->Add( m_rel_first_note, 0, wxALL, 5 );
+            second_box->Add( m_rel_first_note, 0, wxALL|wxEXPAND, 5 );
             m_rel_first_note->SetValue(contentPane);
 
             //I18N: - in the scale dialog. full context : "relative to...\n\n* first affected note\n* song beginning"
             m_rel_begin = new wxRadioButton( contentPane, wxID_ANY,  _("song beginning"));
-            second_box->Add( m_rel_begin, 0, wxALL, 5 );
+            second_box->Add( m_rel_begin, 0, wxALL|wxEXPAND, 5 );
 
             // --------------------------------------------------- bottom pane ------------------------------
-                
-        
-    
+
+
+
             wxBoxSizer* horizontalSizerBottom = new wxBoxSizer(wxHORIZONTAL);
 
-            wxButton* cancelBtn = new wxButton( bottomPane, wxID_ANY,  _("Cancel"));
+            wxButton* cancelBtn = new wxButton( bottomPane, wxID_CANCEL,  _("Cancel"));
             horizontalSizerBottom->Add( cancelBtn, 0, wxALL, 5 );
 
 
-            wxButton* okBtn = new wxButton( bottomPane, wxID_ANY, _("OK"));
+            wxButton* okBtn = new wxButton( bottomPane, wxID_OK, _("OK"));
             horizontalSizerBottom->Add( okBtn, 0, wxALL, 5 );
 
             okBtn->SetDefault();
-            
+
             wxStdDialogButtonSizer* stdDialogButtonSizer = new wxStdDialogButtonSizer();
             stdDialogButtonSizer->AddButton(cancelBtn);
             stdDialogButtonSizer->AddButton(okBtn);
             stdDialogButtonSizer->Realize();
-            horizontalSizerBottom->Add(stdDialogButtonSizer, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
-            
+            horizontalSizerBottom->Add(stdDialogButtonSizer, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 0);
+
             bottomPane->SetSizer( horizontalSizerBottom );
 
             horizontalSizerBottom->Layout();
             horizontalSizerBottom->SetSizeHints( bottomPane );
-            
-            
+
+
 
             // ----------------------------------------------------------------------------------------------
 
@@ -175,7 +175,8 @@ namespace AriaMaestosa
             SetSizer( contentPaneSizer );
             contentPaneSizer->Layout();
             contentPaneSizer->SetSizeHints( this );
-            
+
+
             cancelBtn->Connect(cancelBtn->GetId(), wxEVT_COMMAND_BUTTON_CLICKED,
                                wxCommandEventHandler(ScalePickerFrame::cancel_clicked), NULL, this);
             okBtn->Connect(okBtn->GetId(), wxEVT_COMMAND_BUTTON_CLICKED,
@@ -242,7 +243,7 @@ namespace AriaMaestosa
             ScaleDialog::free();
         }
     };
-    
+
     namespace ScaleDialog
     {
 
