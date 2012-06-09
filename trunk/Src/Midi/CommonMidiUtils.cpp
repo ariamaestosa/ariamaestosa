@@ -372,7 +372,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
     
     bool tooManyChannelsMessageShown = false;
     
-    const int past_end_time = (playing ? sequence->ticksPerBeat()*4 : 0);
+    const int past_end_time = (playing && not sequence->isLoopEnabled() ? sequence->ticksPerBeat()*4 : 0);
     
     if (selectionOnly)
     {
@@ -390,7 +390,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
         if (sequence->isLoopEnabled())
         {
             // when looping, stop at the end of the last measure
-            *songLengthInTicks = md->lastTickInMeasure(md->measureAtTick(trackLength)) - 1;
+            *songLengthInTicks = md->lastTickInMeasure(md->measureAtTick(trackLength - 1)) - 1;
         }
         else
         {
@@ -459,7 +459,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
         if (sequence->isLoopEnabled())
         {
             // when looping, stop at the end of the last measure
-            *songLengthInTicks = md->lastTickInMeasure(md->measureAtTick(*songLengthInTicks)) - 1;
+            *songLengthInTicks = md->lastTickInMeasure(md->measureAtTick(*songLengthInTicks - 1)) - 1;
         }
         
         substract_ticks = *startTick;
@@ -545,181 +545,110 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
     // FIXME find real problem
     if (not playing)
     {
-        /*
-        if (md->isMeasureLengthConstant())
+        class TimeSigSource : public IMergeSource
         {
-            // time signature
-            jdkmidi::MIDITimedBigMessage m;
-            m.SetTime( 0 );
+            int i;
+            int m_count;
+            MeasureData* m_md;
+            jdkmidi::MIDIMultiTrack& m_tracks;
+            int m_substract_ticks;
             
-            float denom = (float)log(md->getTimeSigDenominator())/(float)log(2);
-            m.SetTimeSig( md->getTimeSigNumerator(), (int)denom );
+        public:
             
-            if (not tracks.GetTrack(0)->PutEvent( m ))
+            TimeSigSource(MeasureData* pmd, jdkmidi::MIDIMultiTrack& ptracks, int psubstract_ticks) : m_tracks(ptracks)
             {
-                std::cout << "Error adding event" << std::endl;
-                return false;
+                i = 0;
+                m_count = pmd->getTimeSigAmount();
+                m_md = pmd;
+                m_substract_ticks = psubstract_ticks;
             }
             
-            // add tempo changes straight away, there's nothing else in track 0 so time order is not a problem
-            const int amount = sequence->getTempoEventAmount();
-            for (int n=0; n<amount; n++)
+            virtual bool hasMore()
             {
-                addTempoEventFromSequenceVector(n, amount, sequence, tracks, substract_ticks);
+                return i < m_count;
             }
+            virtual int getNextTick()
+            {
+                return m_md->getTimeSig(i).getTick();
+            }
+            virtual void pop()
+            {
+                addTimeSigFromVector(i, m_count, m_md, m_tracks, m_substract_ticks);
+                i++;
+            }
+        };
+        class TempoEvtSource : public IMergeSource
+        {
+            int i;
+            int m_count;
+            Sequence* m_seq;
+            jdkmidi::MIDIMultiTrack& m_tracks;
+            int m_substract_ticks;
+            
+        public:
+            
+            TempoEvtSource(Sequence* seq, jdkmidi::MIDIMultiTrack& ptracks, int psubstract_ticks) : m_tracks(ptracks)
+            {
+                i = 0;
+                m_count = seq->getTempoEventAmount();
+                m_seq = seq;
+                m_substract_ticks = psubstract_ticks;
+            }
+            
+            virtual bool hasMore()
+            {
+                return i < m_count;
+            }
+            virtual int getNextTick()
+            {
+                return m_seq->getTempoEvent(i)->getTick();
+            }
+            virtual void pop()
+            {
+                addTempoEventFromSequenceVector(i, m_count, m_seq, m_tracks, m_substract_ticks);
+                i++;
+            }
+        };
+        class TextEvtSource : public IMergeSource
+        {
+            int i;
+            int m_count;
+            Sequence* m_seq;
+            jdkmidi::MIDIMultiTrack& m_tracks;
+            int m_substract_ticks;
+            
+        public:
+            
+            TextEvtSource(Sequence* seq, jdkmidi::MIDIMultiTrack& ptracks, int psubstract_ticks) : m_tracks(ptracks)
+            {
+                i = 0;
+                m_count = seq->getTextEvents().size();
+                m_seq = seq;
+                m_substract_ticks = psubstract_ticks;
+            }
+            
+            virtual bool hasMore()
+            {
+                return i < m_count;
+            }
+            virtual int getNextTick()
+            {
+                return m_seq->getTextEvents()[i].getTick();
+            }
+            virtual void pop()
+            {
+                addTextEventFromSequenceVector(i, m_seq, m_tracks, m_substract_ticks);
+                i++;
+            }
+        };
+        
+        {
+            ptr_vector<IMergeSource> sources;
+            sources.push_back( new TimeSigSource(md, tracks, substract_ticks) );
+            sources.push_back( new TempoEvtSource(sequence, tracks, substract_ticks) );
+            sources.push_back( new TextEvtSource(sequence, tracks, substract_ticks) );
+            merge( sources );
         }
-        else
-        {*/
-            // Closures would have been wonderful here but I need to support compilers that don't have C++0x support...
-            class TimeSigSource : public IMergeSource
-            {
-                int i;
-                int m_count;
-                MeasureData* m_md;
-                jdkmidi::MIDIMultiTrack& m_tracks;
-                int m_substract_ticks;
-                
-            public:
-                
-                TimeSigSource(MeasureData* pmd, jdkmidi::MIDIMultiTrack& ptracks, int psubstract_ticks) : m_tracks(ptracks)
-                {
-                    i = 0;
-                    m_count = pmd->getTimeSigAmount();
-                    m_md = pmd;
-                    m_substract_ticks = psubstract_ticks;
-                }
-                
-                virtual bool hasMore()
-                {
-                    return i < m_count;
-                }
-                virtual int getNextTick()
-                {
-                    return m_md->getTimeSig(i).getTick();
-                }
-                virtual void pop()
-                {
-                    addTimeSigFromVector(i, m_count, m_md, m_tracks, m_substract_ticks);
-                    i++;
-                }
-            };
-            class TempoEvtSource : public IMergeSource
-            {
-                int i;
-                int m_count;
-                Sequence* m_seq;
-                jdkmidi::MIDIMultiTrack& m_tracks;
-                int m_substract_ticks;
-                
-            public:
-                
-                TempoEvtSource(Sequence* seq, jdkmidi::MIDIMultiTrack& ptracks, int psubstract_ticks) : m_tracks(ptracks)
-                {
-                    i = 0;
-                    m_count = seq->getTempoEventAmount();
-                    m_seq = seq;
-                    m_substract_ticks = psubstract_ticks;
-                }
-                
-                virtual bool hasMore()
-                {
-                    return i < m_count;
-                }
-                virtual int getNextTick()
-                {
-                    return m_seq->getTempoEvent(i)->getTick();
-                }
-                virtual void pop()
-                {
-                    addTempoEventFromSequenceVector(i, m_count, m_seq, m_tracks, m_substract_ticks);
-                    i++;
-                }
-            };
-            class TextEvtSource : public IMergeSource
-            {
-                int i;
-                int m_count;
-                Sequence* m_seq;
-                jdkmidi::MIDIMultiTrack& m_tracks;
-                int m_substract_ticks;
-                
-            public:
-                
-                TextEvtSource(Sequence* seq, jdkmidi::MIDIMultiTrack& ptracks, int psubstract_ticks) : m_tracks(ptracks)
-                {
-                    i = 0;
-                    m_count = seq->getTextEvents().size();
-                    printf("(((( TextEvtSource m_count = %i ))))\n", m_count);
-                    m_seq = seq;
-                    m_substract_ticks = psubstract_ticks;
-                }
-                
-                virtual bool hasMore()
-                {
-                    return i < m_count;
-                }
-                virtual int getNextTick()
-                {
-                    return m_seq->getTextEvents()[i].getTick();
-                }
-                virtual void pop()
-                {
-                    addTextEventFromSequenceVector(i, m_seq, m_tracks, m_substract_ticks);
-                    i++;
-                }
-            };
-            
-            {
-                ptr_vector<IMergeSource> sources;
-                sources.push_back( new TimeSigSource(md, tracks, substract_ticks) );
-                sources.push_back( new TempoEvtSource(sequence, tracks, substract_ticks) );
-                sources.push_back( new TextEvtSource(sequence, tracks, substract_ticks) );
-                merge( sources );
-            }
-            
-            /*
-            // add both tempo changes and measures in time order
-            const int timesig_amount = md->getTimeSigAmount();
-            const int tempo_amount = sequence->getTempoEventAmount();
-            int timesig_id = 0; // which time sig event should be the next added
-            int tempo_id = 0; // which tempo event should be the next added
-            
-            // at each loop, check which event comes next, the time sig one or the tempo one.
-            while (true)
-            {
-                const int timesig_tick = (timesig_id < timesig_amount ?
-                                          md->getTimeSig(timesig_id).getTick() :
-                                          -1);
-                const int tempo_tick = (tempo_id < tempo_amount ? sequence->getTempoEvent(tempo_id)->getTick() : -1);
-                
-                if (timesig_tick == -1 and tempo_tick == -1)
-                {
-                    break; // all events added, done
-                }
-                else if (timesig_tick == -1)
-                {
-                    addTempoEventFromSequenceVector(tempo_id, tempo_amount, sequence, tracks, substract_ticks);
-                    tempo_id++;
-                }
-                else if (tempo_tick == -1)
-                {
-                    addTimeSigFromVector(timesig_id, timesig_amount, md, tracks, substract_ticks);
-                    timesig_id++;
-                }
-                else if (tempo_tick > timesig_tick)
-                {
-                    addTimeSigFromVector(timesig_id, timesig_amount, md, tracks, substract_ticks);
-                    timesig_id++;
-                }
-                else
-                {
-                    addTempoEventFromSequenceVector(tempo_id, tempo_amount, sequence, tracks, substract_ticks);
-                    tempo_id++;
-                }
-            }
-             */
-            
-        //}
     }
     else
     {
@@ -738,8 +667,10 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
     // (e.g. i had issues with Quicktime stopping playback too soon and never actually reaching end of song event)
     if (playing)
     {
+        *songLengthInTicks += past_end_time;
+        
         jdkmidi::MIDITimedBigMessage m;
-        m.SetTime( *songLengthInTicks + past_end_time );
+        m.SetTime( *songLengthInTicks );
         m.SetControlChange(0, 127, 0);
         
         const int count = sequence->getTrackAmount();

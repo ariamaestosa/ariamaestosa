@@ -1,5 +1,7 @@
 1.4.2
 - Fixed playback and export issues that could ensue when a note was placed just before the playback start
+- Fixed issues with loop
+- Fixed playback sometimes stopping very sharply, not leaving time for notes to ring
 
 1.4.1
 - Use more standard 44100 Hz when exporting to sampled audio on OSX

@@ -199,12 +199,6 @@ public:
         m_start_tick = 0;
         makeJDKMidiSequence(g_sequence, *jdkmidiseq, selectionOnly, &songLengthInTicks,
                             &m_start_tick, &trackAmount, true /* for playback */);
-                        
-        // add one beat at the end to leave some time for notes to ring off
-        if (not g_sequence->isLoopEnabled())
-        {
-            songLengthInTicks += g_sequence->ticksPerBeat();
-        }
 
         //std::cout << "trackAmount=" << trackAmount << " start_tick=" << m_start_tick<<
         //        " songLengthInTicks=" << songLengthInTicks << std::endl;
@@ -369,7 +363,10 @@ public:
     {
         if (not sound_available) return 0;
 
-    //std::cout << "trackPlaybackProgression ";
+        return currentTick;
+
+/*
+        //std::cout << "trackPlaybackProgression ";
         if (context->isPlaying() and currentTick != -1)
         {
             //std::cout << "returning " << currentTick << std::endl;
@@ -377,11 +374,12 @@ public:
         }
         else
         {
-            std::cout << "SONG DONE" << std::endl;
-            must_stop = true;
-            Core::songHasFinishedPlaying();
+            //std::cout << "SONG DONE" << std::endl;
+            //must_stop = true;
+            //Core::songHasFinishedPlaying();
             return -1;
         }
+         * */
     }
 
     virtual int getAccurateTick()
