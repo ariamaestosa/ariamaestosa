@@ -320,7 +320,9 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
 
             if (not jdksequencer->GetNextEventTime(&tick))
             {
-                if (PlatformMidiManager::get()->isRecording())
+                // if recording, continue as long as user doesn't press stop.
+                // if looping, continue until the loop point, wherever it may be
+                if (PlatformMidiManager::get()->isRecording() or m_seq->isLoopEnabled())
                 {
                     Sequence* seq = getMainFrame()->getCurrentSequence();
                     tick = previous_tick + seq->ticksPerBeat();
