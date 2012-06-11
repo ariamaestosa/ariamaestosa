@@ -367,6 +367,12 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
                     played_metronome_tick = -1;
                     
                     next_beat = 0;
+                    
+                    // all notes off on all channels
+                    for (int n = 0; n < 16; n++)
+                    {
+                        PlatformMidiManager::get()->seq_controlchange(0x7B /* all notes off */, 0, n);
+                    }
                 }
                 else
                 {
