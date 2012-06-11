@@ -710,20 +710,31 @@ bool MainPane::do_render()
 
 
     // -------------------------- red line that follows playback, red arrows --------------------------
-    if (m_current_tick != -1) // if playing
+    bool playing = (m_current_tick != -1);
+
+    int linetick;
+    
+    if (playing)
     {
+        linetick = m_current_tick;
+    }
+    else
+    {
+        MeasureData* md = gseq->getModel()->getMeasureData();
+        linetick = md->firstTickInMeasure( md->getFirstMeasure() );
+    }
+    RelativeXCoord tick(linetick, MIDI, gseq);
 
-        RelativeXCoord tick(m_current_tick, MIDI, gseq);
+    const int XStart = Editor::getEditorXStart();
+    const int XEnd = getWidth();
 
-        const int XStart = Editor::getEditorXStart();
-        const int XEnd = getWidth();
+    AriaRender::lineWidth(2);
+    AriaRender::color(0.8, 0, 0);
 
-        AriaRender::lineWidth(2);
-        AriaRender::color(0.8, 0, 0);
-
-        if (tick.getRelativeTo(WINDOW) < XStart) // current tick is before the visible area
+    if (tick.getRelativeTo(WINDOW) < XStart) // current tick is before the visible area
+    {
+        if (playing)
         {
-
             m_left_arrow  = true;
             m_right_arrow = false;
 
@@ -732,9 +743,11 @@ bool MainPane::do_render()
                                  15, MEASURE_BAR_Y + 5,
                                  15, MEASURE_BAR_Y + 15);
         }
-        else if (tick.getRelativeTo(WINDOW) > XEnd) // current tick is after the visible area
+    }
+    else if (tick.getRelativeTo(WINDOW) > XEnd) // current tick is after the visible area
+    {
+        if (playing)
         {
-
             m_left_arrow  = false;
             m_right_arrow = true;
 
@@ -745,22 +758,32 @@ bool MainPane::do_render()
                                  XEnd - 15 - 15, MEASURE_BAR_Y + 5,
                                  XEnd - 15 - 15, MEASURE_BAR_Y + 15);
         }
-        else // current tick is inside the visible area
-        {
-
-            m_left_arrow  = false;
-            m_right_arrow = false;
-
-            // red line in measure bar
-            AriaRender::line(tick.getRelativeTo(WINDOW), MEASURE_BAR_Y + 1,
-                             tick.getRelativeTo(WINDOW), MEASURE_BAR_Y + 20);
-        }
-
-        AriaRender::lineWidth(1);
-
     }
-    else
-    { // we're not playing, set arrows to false
+    else // current tick is inside the visible area
+    {
+
+        m_left_arrow  = false;
+        m_right_arrow = false;
+
+        // red line in measure bar
+        const int tick_x = tick.getRelativeTo(WINDOW);
+        AriaRender::line(tick_x, MEASURE_BAR_Y + 1,
+                         tick_x, MEASURE_BAR_Y + 20);
+        
+        if (not playing)
+        {
+            AriaRender::triangle(tick_x, MEASURE_BAR_Y + 14,
+                                 tick_x, MEASURE_BAR_Y + 19,
+                                 tick_x + 6, MEASURE_BAR_Y + 19);
+        }
+    }
+
+    AriaRender::lineWidth(1);
+    
+    
+    if (not playing)
+    {
+        // we're not playing, set arrows to false
         m_left_arrow  = false;
         m_right_arrow = true;
     }
