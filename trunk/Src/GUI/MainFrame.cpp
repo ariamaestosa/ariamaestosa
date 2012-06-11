@@ -1134,6 +1134,7 @@ void MainFrame::firstMeasureChanged(wxCommandEvent& evt)
         md->setFirstMeasure( start-1 );
     }
 
+    Display::render();
 }
 
 // ----------------------------------------------------------------------------------------------------------
