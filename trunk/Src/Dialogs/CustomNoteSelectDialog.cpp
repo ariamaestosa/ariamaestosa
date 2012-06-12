@@ -164,25 +164,6 @@ CustomNoteSelectDialog::CustomNoteSelectDialog() : wxDialog(NULL, wxID_ANY,
 
     // --------------------------------------
     {
-
-        /*
-        wxPanel* panel_ok_cancel=new wxPanel(this);
-        boxSizer->Add(panel_ok_cancel, 0, wxALL|wxEXPAND, 0);
-        wxStdDialogButtonSizer* stdDialogButtonSizer = new wxStdDialogButtonSizer();
-
-        wxButton* okbtn=new wxButton(panel_ok_cancel, wxID_OK, _("OK"));
-        stdDialogButtonSizer->Add(okbtn, 0, wxALL, 15);
-
-        okbtn->SetDefault();
-
-        wxButton* cancelbtn=new wxButton(panel_ok_cancel, wxID_CANCEL,  _("Cancel"));
-        stdDialogButtonSizer->Add(cancelbtn, 0, wxALL, 15);
-
-        panel_ok_cancel->SetAutoLayout(TRUE);
-        panel_ok_cancel->SetSizer(stdDialogButtonSizer);
-        stdDialogButtonSizer->Layout();
-        */
-
         wxButton* okbtn=new wxButton(this, wxID_OK, _("OK"));
         okbtn->SetDefault();
         wxButton* cancelbtn=new wxButton(this, wxID_CANCEL,  _("Cancel"));
@@ -191,7 +172,7 @@ CustomNoteSelectDialog::CustomNoteSelectDialog() : wxDialog(NULL, wxID_ANY,
         stdDialogButtonSizer->AddButton(okbtn);
         stdDialogButtonSizer->AddButton(cancelbtn);
         stdDialogButtonSizer->Realize();
-        boxSizer->Add(stdDialogButtonSizer, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 10);
+        boxSizer->Add(stdDialogButtonSizer, 0, wxALL|wxEXPAND, 10);
 
     }
     // --------------------------------------

@@ -41,6 +41,7 @@ namespace AriaMaestosa
 
         wxBoxSizer* vert_sizer;
         wxButton* ok_btn;
+        wxButton* cancel_btn;
         
         bool m_sound_font_selected;
         
@@ -54,6 +55,7 @@ namespace AriaMaestosa
         void show();
 
         void okClicked(wxCommandEvent& evt);
+        void onCancel(wxCommandEvent& evt);
         void onComboSelection(wxCommandEvent& evt);
 
         void updateValuesFromWidgets();

@@ -178,7 +178,7 @@ TimeSigPicker::TimeSigPicker() : wxMiniFrame(getMainFrame(), wxNewId(),  _("Time
     m_variable = new wxCheckBox(m_pane, wxNewId(), _("Varies throughout song"));
     vertical->Add(m_variable, 0, wxALL, 5);
     
-    m_ok_btn = new wxButton(m_pane, wxNewId(), _("OK"));
+    m_ok_btn = new wxButton(m_pane, wxID_OK, _("OK"));
     m_ok_btn->SetDefault();
     vertical->Add(m_ok_btn, 0, wxALL | wxALIGN_CENTER, 5);
 

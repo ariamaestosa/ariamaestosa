@@ -51,7 +51,7 @@ AboutDialog::AboutDialog(wxWindow* parent) : wxFrame(parent, wxID_ANY,  _("About
     //I18N: - in about dialog
     wxString(_("Thanks to:")) + wxT("\n\n\t") +
     //I18N: - in about dialog
-    wxString::Format(_("Ergonis Software and %s for making EasyBeat,\n\t\ta great app that inspired Aria (www.ergonis.com)."), wxT(" G\u00FCnther Blaschek "))  +
+    wxString::Format(_("Ergonis Software and %s for making EasyBeat,\n\ta great app that inspired Aria (www.ergonis.com)."), wxT(" G\u00FCnther Blaschek "))  +
     //I18N: - in about dialog
     wxT("\n\t") + wxString(_("J.D. Koftinoff Software for libjdkmidi")) +
     //I18N: - in about dialog
@@ -72,9 +72,9 @@ AboutDialog::AboutDialog(wxWindow* parent) : wxFrame(parent, wxID_ANY,  _("About
              wxString(wxT("\n\t")) + wxString( wxT("ru : Ruslan Tertyshny & Artem Krosheninnikov") )
              );
     
-    wxTextCtrl* text_area = new wxTextCtrl(this, 1, about_text, wxPoint(0,174), wxSize(517,600-174),
-                                 wxTE_MULTILINE | wxTE_READONLY);
-    
+    wxTextCtrl* text_area = new wxTextCtrl(this, 0, about_text, wxPoint(5,179), wxSize(507,396),
+                                 wxTE_MULTILINE | wxTE_READONLY | wxNO_BORDER);
+
 #ifdef __WXMAC__
     text_area->MacCheckSpelling(false);
 #endif
@@ -86,6 +86,8 @@ AboutDialog::AboutDialog(wxWindow* parent) : wxFrame(parent, wxID_ANY,  _("About
     
     menuBar->Append(window, wxT("Window"));
     SetMenuBar(menuBar);
+
+    SetBackgroundColour(*wxWHITE);
     
     Connect(wxID_CLOSE, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(AboutDialog::onCloseMenu));
     Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(AboutDialog::onClose));

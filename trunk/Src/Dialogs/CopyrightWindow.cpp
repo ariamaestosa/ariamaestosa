@@ -48,6 +48,7 @@ namespace AriaMaestosa
         wxTextCtrl* copyrightInput;
         wxTextCtrl* nameInput;
         wxButton* okBtn;
+        wxButton* cancelBtn;
         
         Sequence* sequence;
         
@@ -61,37 +62,48 @@ namespace AriaMaestosa
         CopyrightWindowClass(Sequence* seq) : wxDialog( NULL, wxID_ANY,
                                                        //I18N: - title of the copyright/info dialog
                                                        _("Copyright and song info"),
-                                                       wxDefaultPosition, wxSize(400,400), wxCAPTION )
+                                                       wxDefaultPosition, wxSize(400,400), wxCAPTION | wxCLOSE_BOX | wxRESIZE_BORDER )
         {
             sequence = seq;
             
             boxSizer=new wxBoxSizer(wxVERTICAL);
             
             //I18N: - title of the copyright/info dialog
-            boxSizer->Add( new wxStaticText(this, wxID_ANY,  _("Song name") ) , 0, wxALL, 2 );
+            boxSizer->Add( new wxStaticText(this, wxID_ANY,  _("Song name") ) , 0, wxLEFT|wxTOP|wxEXPAND, 10 );
             
             // song name
             wxSize size_horz = wxDefaultSize;
             size_horz.x = 400;
             nameInput = new wxTextCtrl( this, wxID_ANY,  sequence->getInternalName(), wxDefaultPosition, size_horz);
-            boxSizer->Add( nameInput, 0, wxALL, 10 );
+            boxSizer->Add( nameInput, 0, wxALL|wxEXPAND, 10 );
             
             //I18N: - title of the copyright/info dialog
-            boxSizer->Add( new wxStaticText(this, wxID_ANY,  _("Copyright") ) , 0, wxALL, 2 );
+            boxSizer->Add( new wxStaticText(this, wxID_ANY,  _("Copyright") ) , 0, wxLEFT|wxTOP|wxEXPAND, 10  );
             
             // text area
             copyrightInput = new wxTextCtrl( this, wxID_ANY, sequence->getCopyright(), wxDefaultPosition, wxSize(400,75), wxTE_MULTILINE );
-            boxSizer->Add( copyrightInput, 0, wxALL, 10 );
+            boxSizer->Add( copyrightInput, 1, wxALL|wxEXPAND, 10 );
             
             // song length
             songLength = new wxStaticText(this, wxID_ANY, wxString(_("Song duration :"))+wxT(" ??:??"));
-            boxSizer->Add( songLength, 0, wxALL, 10 );
+            boxSizer->Add( songLength, 0, wxLEFT|wxTOP|wxEXPAND, 10 );
             
             // ok button
-            okBtn = new wxButton( this, 1, wxT("OK"));
+            okBtn = new wxButton( this, wxID_OK, _("OK"));
             okBtn->SetDefault();
-            boxSizer->Add( okBtn, 0, wxALL, 10 );
-            
+            boxSizer->Add( okBtn, 0, wxALL, 0 );
+
+            // ok button
+            cancelBtn = new wxButton( this, wxID_CANCEL, _("Cancel"));
+            cancelBtn->SetDefault();
+            boxSizer->Add( cancelBtn, 0, wxALL, 0 );
+
+            wxStdDialogButtonSizer* stdDialogButtonSizer = new wxStdDialogButtonSizer();
+            stdDialogButtonSizer->AddButton(okBtn);
+            stdDialogButtonSizer->AddButton(cancelBtn);
+            stdDialogButtonSizer->Realize();
+            boxSizer->Add(stdDialogButtonSizer, 0, wxALL|wxEXPAND, 10);
+
             SetSizer( boxSizer );
             boxSizer->Layout();
             boxSizer->SetSizeHints( this );
@@ -147,7 +159,8 @@ namespace AriaMaestosa
     
     BEGIN_EVENT_TABLE( CopyrightWindowClass, wxDialog )
     
-    EVT_BUTTON( 1, CopyrightWindowClass::okClicked )
+    EVT_BUTTON( wxID_OK, CopyrightWindowClass::okClicked )
+    EVT_BUTTON( wxID_CANCEL, CopyrightWindowClass::onCancel )
     EVT_COMMAND(wxID_CANCEL, wxEVT_COMMAND_BUTTON_CLICKED, CopyrightWindowClass::onCancel )
     
     END_EVENT_TABLE()

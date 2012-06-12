@@ -155,7 +155,7 @@ namespace AriaMaestosa
             stdDialogButtonSizer->AddButton(cancelBtn);
             stdDialogButtonSizer->AddButton(okBtn);
             stdDialogButtonSizer->Realize();
-            horizontalSizerBottom->Add(stdDialogButtonSizer, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 0);
+            horizontalSizerBottom->Add(stdDialogButtonSizer, 1, wxALL|wxEXPAND, 0);
 
             bottomPane->SetSizer( horizontalSizerBottom );
 
