@@ -39,29 +39,30 @@ using namespace AriaMaestosa;
 // ---------------------------------------------------------------------------------------------------------
 
 TuningDialog::TuningDialog() :
-wxFrame(NULL, wxID_ANY,  _("Custom Tuning Editor"), wxPoint(100,100), wxSize(500,300), wxCAPTION )
+wxFrame(NULL, wxID_ANY,  _("Custom Tuning Editor"), wxPoint(100,100), wxSize(500,300), wxCAPTION | wxCLOSE_BOX)
 {
     wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
     
     for (int n=0; n<10; n++)
     {
         m_note_pickers[n] = new NotePickerWidget(this, true);
-        sizer->Add(m_note_pickers[n], 0, wxALL, 5);
+        sizer->Add(m_note_pickers[n], 0, wxALL|wxEXPAND, 5);
     }
-    
-    wxPanel* buttonPane = new wxPanel(this);
-    sizer->Add(buttonPane, 0, wxALL, 5);
     
     wxBoxSizer* buttonsizer = new wxBoxSizer(wxHORIZONTAL);
     
-    m_ok_btn = new wxButton(buttonPane, wxID_ANY, _("OK"));
+    m_ok_btn = new wxButton(this, wxID_OK, _("OK"));
     m_ok_btn->SetDefault();
-    buttonsizer->Add(m_ok_btn, 0, wxALL, 5);
-    
-    m_cancel_btn = new wxButton(buttonPane, wxID_ANY,  _("Cancel"));
-    buttonsizer->Add(m_cancel_btn, 0, wxALL, 5);
-    
-    buttonPane->SetSizer(buttonsizer);
+
+    m_cancel_btn = new wxButton(this, wxID_CANCEL,  _("Cancel"));
+
+    wxStdDialogButtonSizer* stdDialogButtonSizer = new wxStdDialogButtonSizer();
+    stdDialogButtonSizer->AddButton(m_ok_btn);
+    stdDialogButtonSizer->AddButton(m_cancel_btn);
+    stdDialogButtonSizer->Realize();
+    buttonsizer->Add(stdDialogButtonSizer, 0, wxALL|wxEXPAND, 10);
+    sizer->Add(buttonsizer, 0, wxALL|wxEXPAND, 0);
+
     m_model = NULL;
     
     SetAutoLayout(true);

@@ -234,7 +234,8 @@ namespace AriaMaestosa
 #endif
 
 BEGIN_EVENT_TABLE(PreferencesDialog, wxDialog)
-EVT_BUTTON(2, PreferencesDialog::okClicked)
+EVT_BUTTON(wxID_OK, PreferencesDialog::okClicked)
+EVT_BUTTON(wxID_CANCEL, PreferencesDialog::onCancel)
 END_EVENT_TABLE()
 
 // ---------------------------------------------------------------------------------------------------------
@@ -242,7 +243,7 @@ END_EVENT_TABLE()
 PreferencesDialog::PreferencesDialog(wxWindow* parent, PreferencesData* data) :
 wxDialog(parent, wxID_ANY,
          //I18N: - title of the preferences dialog
-         _("Preferences"), wxDefaultPosition, wxDefaultSize, wxCAPTION | wxRESIZE_BORDER)
+         _("Preferences"), wxDefaultPosition, wxDefaultSize, wxCAPTION | wxCLOSE_BOX | wxRESIZE_BORDER)
 {
     m_data = data;
     m_sound_font_selected = false;
@@ -326,11 +327,20 @@ wxDialog(parent, wxID_ANY,
     updateWidgetsFromValues();
     
     vert_sizer->AddStretchSpacer();
-    
+
+
+
     // -----------------------------------
-    ok_btn = new wxButton(this, 2, wxT("OK"));
-    vert_sizer->Add( ok_btn, 0, wxALL, 10 );
-    
+    ok_btn = new wxButton(this, wxID_OK, _("OK"));
+    cancel_btn = new wxButton(this, wxID_CANCEL, _("Cancel"));
+
+    wxStdDialogButtonSizer* stdDialogButtonSizer = new wxStdDialogButtonSizer();
+    stdDialogButtonSizer->AddButton(ok_btn);
+    stdDialogButtonSizer->AddButton(cancel_btn);
+    stdDialogButtonSizer->Realize();
+    vert_sizer->Add(stdDialogButtonSizer, 0, wxALL|wxEXPAND, 10);
+
+
     //I18N: - in the preferences dialog
     wxStaticText* effect_label = new wxStaticText(this, wxID_ANY,  _("Changes will take effect next time you open the app."));
     effect_label->SetFont( wxFont(wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_NORMAL) );
@@ -379,6 +389,17 @@ void PreferencesDialog::okClicked(wxCommandEvent& evt)
         m_sound_font_selected = false;
     }
 }
+
+
+
+// ---------------------------------------------------------------------------------------------------------
+
+void PreferencesDialog::onCancel(wxCommandEvent& evt)
+{
+    wxDialog::EndModal(modalCode);
+}
+
+
 
 // ---------------------------------------------------------------------------------------------------------
 
