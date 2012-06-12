@@ -285,9 +285,7 @@ namespace AriaMaestosa
             }
             else
             {
-                //output = new CoreMIDIOutput();
-                fprintf(stderr, "Unknown midi driver <%s>\n", (const char*)driver.utf8_str());
-                output = new AudioUnitOutput(NULL);
+                output = new CoreMidiOutput(driver);
             }
         }
         
