@@ -178,6 +178,7 @@ MainPane::MainPane(wxWindow* parent, int* args) :
     m_scroll_to_playback_position = false;
     
     m_have_plus_cursor = false;
+
     
 #ifdef __WXOSX_COCOA__
     wxString file = wxT("/System/Library/Frameworks/WebKit.framework/Versions/A/Frameworks/WebCore.framework/Versions/A/Resources/copyCursor.png");
@@ -1060,10 +1061,10 @@ void MainPane::mouseDown(wxMouseEvent& event)
 // -----------------------------------------------------------------------------------------------------------
 
 void MainPane::mouseMoved(wxMouseEvent& event)
-{    
+{
     m_mouse_x_current.setValue(event.GetX(),WINDOW);
     m_mouse_y_current = event.GetY();
-    
+
     MainFrame* mf = getMainFrame();
     if (mf->getSequenceAmount() == 0)
     {
@@ -1113,6 +1114,8 @@ void MainPane::mouseMoved(wxMouseEvent& event)
 
         if (mouse_hovering_tabs)
         {
+            handleTooltip(event);
+
             if (not m_mouse_hovering_tabs)
             {
                 m_mouse_hovering_tabs = true;
@@ -1135,6 +1138,8 @@ void MainPane::mouseMoved(wxMouseEvent& event)
         }
         else
         {
+            SetToolTip(NULL);
+
             if (m_mouse_hovering_tabs)
             {
                 m_mouse_hovering_tabs = false;
@@ -1563,5 +1568,29 @@ void MainPane::setCurrentTick(int currentTick)
 void MainPane::saveToFile(wxFileOutputStream& fileout)
 {
     getMainFrame()->getCurrentGraphicalSequence()->saveToFile(fileout);
+}
+
+
+void MainPane::handleTooltip(wxMouseEvent& event)
+{
+    int start_at_x = 0;
+    bool found = false;
+    MainFrame* mf = getMainFrame();
+    const int seqAmount = mf->getSequenceAmount();
+
+    for (int n=0 ; n<seqAmount && !found; n++)
+    {
+        start_at_x += TAB_SIDE_WIDTH + tab_width + TAB_SIDE_WIDTH;
+        if (event.GetX() < start_at_x)
+        {
+            SetToolTip(mf->getSequence(n)->getFilepath());
+            found = true;
+        }
+    }
+
+    if (!found)
+    {
+        SetToolTip(NULL);
+    }
 }
 
