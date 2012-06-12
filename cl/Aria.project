@@ -165,7 +165,6 @@
   <VirtualDirectory Name="GUI">
     <File Name="../Src/GUI/MainFrameMenuBar.cpp"/>
     <File Name="../Src/GUI/Machelper.h"/>
-    <File Name="../Src/GUI/MainFrame_old.h"/>
     <File Name="../Src/GUI/GraphicalTrack.cpp"/>
     <File Name="../Src/GUI/GraphicalTrack.h"/>
     <File Name="../Src/GUI/GraphicalSequence.cpp"/>
@@ -388,7 +387,7 @@
       <ResourceCompiler Options=""/>
     </GlobalSettings>
     <Configuration Name="linux_debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g;-Wall;-O0;$(shell wx-config --cxxflags --unicode=yes --debug=yes);$(shell pkg-config --cflags glib-2.0)" C_Options="-g;-O0;linux_debug" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" UseDifferentPCHFlags="no" PCHFlags="">
+      <Compiler Options="-g;-Wall;-O0;$(shell wx-config --cxxflags --unicode=yes --debug=yes);$(shell pkg-config --cflags glib-2.0)" C_Options="-g;-O0" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" UseDifferentPCHFlags="no" PCHFlags="">
         <IncludePath Value="&quot;../Src&quot;"/>
         <IncludePath Value="&quot;../libjdkmidi/include&quot;"/>
         <IncludePath Value="&quot;../rtmidi&quot;"/>
@@ -452,6 +451,8 @@
       <General OutputFile="../bin/aria" IntermediateDirectory="../_build/linux_release" Command="../bin/aria" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="../bin" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
+      
+      
       ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
