@@ -31,14 +31,14 @@
   * An OS X MIDI output port that uses CoreMIDI. This output device is used to send output
   * to external devices, not for playing with the built-in software synthesizer.
   */
-class CoreMidiOutput //: public OutputBase
+class CoreMidiOutput : public OutputBase
 {
     MIDIPortRef m_port;
-    MIDIClientRef m_client;
+    //MIDIClientRef m_client;
 
 public:
     
-    CoreMidiOutput();
+    CoreMidiOutput(wxString driver);
     virtual ~CoreMidiOutput();
     
     struct Destination
@@ -48,13 +48,14 @@ public:
     };
     static const std::vector<Destination>& getDestinations();
     
-    /*
+    MIDIEndpointRef selectedOutput;
+    
+    
     virtual void note_on(const int note, const int volume, const int channel);
     virtual void note_off(const int note, const int channel);
     virtual void prog_change(const int instrument, const int channel);
     virtual void controlchange(const int controller, const int value, const int channel);
     virtual void pitch_bend(const int value, const int channel);
-     */
 };
 
 #endif

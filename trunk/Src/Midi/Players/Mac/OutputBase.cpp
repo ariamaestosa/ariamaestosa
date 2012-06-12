@@ -19,6 +19,12 @@
 #include <wx/timer.h>
 #include "Midi/Players/Mac/OutputBase.h"
 
+#include <CoreFoundation/CoreFoundation.h>
+#include <AudioToolbox/AudioToolbox.h>
+#include <CoreServices/CoreServices.h> //for file stuff
+#include <AudioUnit/AudioUnit.h>
+#include <AudioToolbox/AudioToolbox.h> //for AUGraph
+#include <CoreMIDI/CoreMIDI.h>
 
 const int PITCH_BEND_LOWEST = 0;
 const int PITCH_BEND_CENTER = 8192;
@@ -55,7 +61,12 @@ StopNoteTimer* stopNoteTimer = NULL;
 
 OutputBase::OutputBase()
 {
-    MIDIClientCreate(CFSTR("MidiOutput"), NULL, NULL, &m_client);
+    OSStatus returnval = MIDIClientCreate(CFSTR("AriaOutput"), NULL, NULL, &m_client);
+    if (returnval != 0)
+    {
+        fprintf(stderr, "MIDIClientCreate failed with error code %i (%s, %s)\n", (int)returnval,
+                GetMacOSStatusErrorString(returnval), GetMacOSStatusCommentString(returnval));
+    }
     
     stopNoteTimer = new StopNoteTimer(this);
     m_playing = false;

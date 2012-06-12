@@ -18,6 +18,7 @@
 
 #include "CoreMIDIOutput.h"
 #include <wx/utils.h>
+#include <wx/msgdlg.h>
 
 // The following is copied from: http://developer.apple.com/qa/qa2004/qa1374.html
 static CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal)
@@ -140,6 +141,8 @@ std::vector<CoreMidiOutput::Destination> g_destinations;
 
 const std::vector<CoreMidiOutput::Destination>& CoreMidiOutput::getDestinations()
 {
+    g_destinations.clear();
+    
     ItemCount destCount = MIDIGetNumberOfDestinations();
     printf("[AUNotePlayer] %i MIDI destinations\n", (int)destCount);
     for (int n=0; n<(int)destCount; n++)
@@ -148,7 +151,7 @@ const std::vector<CoreMidiOutput::Destination>& CoreMidiOutput::getDestinations(
         CFStringRef nameCStr = ConnectedEndpointName(ref);
         char buffer[256];
         CFStringGetCString(nameCStr, buffer, 256, kCFStringEncodingISOLatin1);
-        printf("[AUNotePlayer]   - '%s'\n", buffer);
+        printf("[AUNotePlayer]  %i - '%s'\n", n, buffer);
         
         Destination d;
         d.m_ref = ref;
@@ -161,12 +164,31 @@ const std::vector<CoreMidiOutput::Destination>& CoreMidiOutput::getDestinations(
 
 // ------------------------------------------------------------------------------------------------------
 
-CoreMidiOutput::CoreMidiOutput()
+CoreMidiOutput::CoreMidiOutput(wxString driver) : OutputBase()
 {    
     OSStatus result = MIDIOutputPortCreate(m_client, 
-                                           CFSTR("myport"), 
+                                           CFSTR("ariaport"), 
                                            &m_port);
-    if (result != 0) fprintf(stderr, "MIDIInputPortCreate failed!!\n");
+    if (result != 0) fprintf(stderr, "MIDIOutputPortCreate failed with code %i (%s, %s)\n", (int)result,
+                             GetMacOSStatusErrorString(result), GetMacOSStatusCommentString(result));
+    
+    bool found = false;
+    getDestinations();
+    for (unsigned int n = 0; n < g_destinations.size(); n++)
+    {
+        if (g_destinations[n].m_name == driver)
+        {
+            selectedOutput = g_destinations[n].m_ref;
+            found = true;
+            return;
+        }
+    }
+    
+    if (not found)
+    {
+        wxMessageBox(_("Unknown MIDI port : ") + driver);
+        selectedOutput = MIDIGetDestination(0);
+    }
 }
 
 // ------------------------------------------------------------------------------------------------------
@@ -178,7 +200,6 @@ CoreMidiOutput::~CoreMidiOutput()
 
 // ------------------------------------------------------------------------------------------------------
 
-#if 0
 void CoreMidiOutput::note_on(const int note, const int volume, const int channel)
 {
     MIDITimeStamp timestamp = 0;   // 0 will mean play now. 
@@ -192,7 +213,7 @@ void CoreMidiOutput::note_on(const int note, const int volume, const int channel
     currentpacket = MIDIPacketListAdd(packetlist, sizeof(buffer), 
                                       currentpacket, timestamp, MESSAGESIZE, noteon);
     
-    OSStatus result = MIDISend(m_port, MIDIGetDestination(0), packetlist);
+    OSStatus result = MIDISend(m_port, selectedOutput, packetlist);
     if (result != 0) fprintf(stderr, "MIDISend failed!!\n");
     
      
@@ -215,7 +236,7 @@ void CoreMidiOutput::note_off(const int note, const int channel)
                                       currentpacket, timestamp, MESSAGESIZE, noteoff);
     
     
-    OSStatus result = MIDISend(m_port, MIDIGetDestination(0), packetlist);
+    OSStatus result = MIDISend(m_port, selectedOutput, packetlist);
     if (result != 0) fprintf(stderr, "MIDISend failed!!\n");
 
 }
@@ -237,7 +258,7 @@ void CoreMidiOutput::prog_change(const int instrument, const int channel)
                                       currentpacket, timestamp, MESSAGESIZE, noteoff);
     
     
-    OSStatus result = MIDISend(m_port, MIDIGetDestination(0), packetlist);
+    OSStatus result = MIDISend(m_port, selectedOutput, packetlist);
     if (result != 0) fprintf(stderr, "MIDISend failed!!\n");
 }
 
@@ -258,7 +279,7 @@ void CoreMidiOutput::controlchange(const int controller, const int value, const 
                                       currentpacket, timestamp, MESSAGESIZE, noteoff);
     
     
-    OSStatus result = MIDISend(m_port, MIDIGetDestination(0), packetlist);
+    OSStatus result = MIDISend(m_port, selectedOutput, packetlist);
     if (result != 0) fprintf(stderr, "MIDISend failed!!\n");
 }
 
@@ -279,10 +300,10 @@ void CoreMidiOutput::pitch_bend(const int value, const int channel)
                                       currentpacket, timestamp, MESSAGESIZE, noteoff);
     
     
-    OSStatus result = MIDISend(m_port, MIDIGetDestination(0), packetlist);
+    OSStatus result = MIDISend(m_port, selectedOutput, packetlist);
     if (result != 0) fprintf(stderr, "MIDISend failed!!\n");
 }
-#endif
+
 // ------------------------------------------------------------------------------------------------------
 
 #endif
