@@ -3,8 +3,8 @@
 
 [Setup]
 AppName=Aria Maestosa
-AppVerName=Aria Maestosa 1.4.1
-VersionInfoVersion=1.4.1
+AppVerName=Aria Maestosa 1.4.2
+VersionInfoVersion=1.4.2
 AppPublisher=
 AppPublisherURL=http://ariamaestosa.sourceforge.net/
 AppSupportURL=
