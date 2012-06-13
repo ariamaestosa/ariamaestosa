@@ -86,7 +86,8 @@ namespace AriaMaestosa
             boxSizer->Add( copyrightInput, 1, wxALL|wxEXPAND, 10 );
             
             // song length
-            songLength = new wxStaticText(this, wxID_ANY, wxString(_("Song duration :"))+wxT(" ??:??"));
+            songLength = new wxStaticText(this, wxID_ANY, wxString(_("Song duration :"))+wxT(" ??:??"),
+                                          wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE);
             boxSizer->Add( songLength, 0, wxLEFT|wxTOP|wxEXPAND, 10 );
             
             // ok button
@@ -103,7 +104,7 @@ namespace AriaMaestosa
             stdDialogButtonSizer->AddButton(okBtn);
             stdDialogButtonSizer->AddButton(cancelBtn);
             stdDialogButtonSizer->Realize();
-            boxSizer->Add(stdDialogButtonSizer, 0, wxALL|wxEXPAND, 10);
+            boxSizer->Add(stdDialogButtonSizer, 0, wxALL|wxEXPAND, 5);
 
             SetSizer( boxSizer );
             boxSizer->Layout();

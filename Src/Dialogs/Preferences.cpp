@@ -336,15 +336,17 @@ wxDialog(parent, wxID_ANY,
 
     wxStdDialogButtonSizer* stdDialogButtonSizer = new wxStdDialogButtonSizer();
     stdDialogButtonSizer->AddButton(ok_btn);
-    stdDialogButtonSizer->AddButton(cancel_btn);
+    //stdDialogButtonSizer->AddButton(cancel_btn);
     stdDialogButtonSizer->Realize();
-    vert_sizer->Add(stdDialogButtonSizer, 0, wxALL|wxEXPAND, 10);
+    vert_sizer->Add(stdDialogButtonSizer, 0, wxALL|wxEXPAND, 5);
 
 
     //I18N: - in the preferences dialog
-    wxStaticText* effect_label = new wxStaticText(this, wxID_ANY,  _("Changes will take effect next time you open the app."));
+    wxStaticText* effect_label = new wxStaticText(this, wxID_ANY, _("Changes will take effect next time you open the app."),
+                                                  wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE);
     effect_label->SetFont( wxFont(wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_NORMAL) );
-    vert_sizer->Add( effect_label, 0, wxALL, 10 );
+    vert_sizer->Add( effect_label, 0, wxEXPAND | wxALL, 10 );
+    
     
     ok_btn -> SetDefault();
     
