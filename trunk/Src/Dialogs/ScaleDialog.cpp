@@ -19,6 +19,8 @@
 #include "Dialogs/ScaleDialog.h"
 #include "Midi/Sequence.h"
 
+#include "AriaCore.h"
+#include "GUI/MainFrame.h"
 #include "Utils.h"
 
 #include <iostream>
@@ -31,6 +33,7 @@
 #include <wx/combobox.h>
 #include <wx/sizer.h>
 #include <wx/button.h>
+
 
 namespace AriaMaestosa
 {
@@ -62,7 +65,7 @@ namespace AriaMaestosa
     public:
         LEAK_CHECK();
 
-        ScalePickerFrame(Sequence* seq) : wxDialog( NULL, wxID_ANY,
+        ScalePickerFrame(Sequence* seq) : wxDialog(getMainFrame(), wxID_ANY,
                                                    //I18N: - title of the scale dialog
                                                    _("Scale"),
                                                    wxDefaultPosition, wxSize(400,200), wxCAPTION | wxCLOSE_BOX | wxSTAY_ON_TOP)

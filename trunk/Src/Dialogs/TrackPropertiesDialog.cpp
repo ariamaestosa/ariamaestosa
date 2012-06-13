@@ -19,6 +19,7 @@
 #include "Editors/Editor.h"
 #include "GUI/GraphicalSequence.h"
 #include "GUI/GraphicalTrack.h"
+#include "GUI/MainFrame.h"
 #include "Midi/DrumChoice.h"
 #include "Midi/InstrumentChoice.h"
 #include "Midi/Sequence.h"
@@ -112,7 +113,7 @@ namespace AriaMaestosa
         }
         
         TrackPropertiesDialog(GraphicalTrack* parent) :
-        wxDialog(NULL, wxID_ANY,  wxString::Format(_("Track '%s' Properties"),
+        wxDialog(getMainFrame(), wxID_ANY, wxString::Format(_("Track '%s' Properties"),
                                                    (const char*)parent->getTrack()->getName().c_str()),
                  wxPoint(100,100), wxSize(700,300), wxCAPTION | wxCLOSE_BOX | wxSTAY_ON_TOP )
         {

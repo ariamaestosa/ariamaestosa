@@ -17,6 +17,7 @@
 
 
 #include "Dialogs/CopyrightWindow.h"
+#include "GUI/MainFrame.h"
 #include "Midi/Sequence.h"
 #include "Midi/CommonMidiUtils.h"
 
@@ -59,7 +60,7 @@ namespace AriaMaestosa
     public:
         LEAK_CHECK();
         
-        CopyrightWindowClass(Sequence* seq) : wxDialog( NULL, wxID_ANY,
+        CopyrightWindowClass(Sequence* seq) : wxDialog(getMainFrame(), wxID_ANY,
                                                        //I18N: - title of the copyright/info dialog
                                                        _("Copyright and song info"),
                                                        wxDefaultPosition, wxSize(400,400), wxCAPTION | wxCLOSE_BOX | wxRESIZE_BORDER )
