@@ -1,4 +1,5 @@
 1.4.2
+- Fixed bug that could cause Aria to stop playing prematurely in a song using varying tempo
 - Fixed sending playback to external device on OSX
 - Fixed playback and export issues that could ensue when a note was placed just before the playback start
 - Fixed issues with loop
