@@ -4,6 +4,7 @@
 - Fixed issues with loop
 - Fixed playback sometimes stopping very sharply, not leaving time for notes to ring
 - Mark the measure where the song starts in the measure bar
+- Fix some dialogs appearing on the wrong screen in multi-monitor setups, especially on linux
 
 1.4.1
 - Use more standard 44100 Hz when exporting to sampled audio on OSX
