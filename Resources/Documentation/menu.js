@@ -20,7 +20,7 @@ tabs[0] = ["About", "index.html"];
 tabs[1] = ["Downloads", "download.html"];
 tabs[2] = ["Manual", "man.html"];
 tabs[3] = ["Support", "contact.html"];
-tabs[4] = ["Blog", "https://sourceforge.net/apps/wordpress/ariamaestosa/"];
+tabs[4] = ["Blog", "http://ariamaestosa.blogspot.com/"];
 tabs[5] = ["Building from source", "building.html"];
 
 document.write('<div style="text-align: center; min-height: 100%"><div style="text-align: center;">');
