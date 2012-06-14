@@ -442,7 +442,8 @@ void MainFrame::init()
 #endif
                               , wxTE_PROCESS_ENTER);
     m_song_length->SetRange(1, 9999);
-    m_toolbar->add(m_song_length, _("Duration"));
+    //I18N: song length (number of measures)
+    m_toolbar->add(m_song_length, _("Length"));
 
 #if defined(__WXMSW__)
     m_toolbar->AddSeparator();

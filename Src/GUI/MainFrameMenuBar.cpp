@@ -188,7 +188,7 @@ void MainFrame::initMenuBar()
     m_track_menu -> QUICK_ADD_MENU ( MENU_TRACK_ADD, wxString(_("&Add Track"))+wxT("\tCtrl-Shift-N"),
                                     MainFrame::menuEvent_addTrack );
     //I18N: menu item in the "track" menu
-    m_track_menu -> QUICK_ADD_MENU ( MENU_TRACK_DUP, wxString(_("&Duplicate Track"))+wxT("\tCtrl-D"),
+    m_track_menu -> QUICK_ADD_MENU ( MENU_TRACK_DUP, wxString(_("&Duplicate Track Settings"))+wxT("\tCtrl-D"),
                                      MainFrame::menuEvent_dupTrack );
     //I18N: menu item in the "track" menu
     m_track_menu -> QUICK_ADD_MENU ( MENU_TRACK_REMOVE, wxString(_("&Delete Track"))+wxT("\tCtrl-DEL"),
