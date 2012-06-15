@@ -104,7 +104,7 @@ void MainFrame::initMenuBar()
                                     MainFrame::menuEvent_copyright );
     //fileMenu->AppendSeparator();
 
-    addIconItem(m_file_menu, MENU_FILE_EXPORT_NOTATION, wxString(_("&Print musical notation..."))+wxT("\tCtrl-P"), wxART_PRINT);
+    addIconItem(m_file_menu, MENU_FILE_EXPORT_NOTATION, wxString(_("&Print..."))+wxT("\tCtrl-P"), wxART_PRINT);
     Connect(MENU_FILE_EXPORT_NOTATION, wxEVT_COMMAND_MENU_SELECTED,
             wxCommandEventHandler(MainFrame::menuEvent_exportNotation));
 
