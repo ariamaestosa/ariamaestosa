@@ -565,7 +565,6 @@ bool GraphicalSequence::readFromFile(irr::io::IrrXMLReader* xml)
                     if (zoom_c != NULL)
                     {
                         int zoom_i = atoi(zoom_c);
-                        printf(">>>> Zoom : %i\n", zoom_i);
                         if (zoom_i > 0 and zoom_i < 501) zoom = zoom_i;
                         else return false;
                     }
@@ -607,7 +606,11 @@ bool GraphicalSequence::readFromFile(irr::io::IrrXMLReader* xml)
     {
         setZoom( zoom );
     }
-    
+    else
+    {
+        setZoom(100);
+    }
+
     DisplayFrame::updateHorizontalScrollbar( m_x_scroll_in_pixels );
     
     if (not foundSequenceNode)
