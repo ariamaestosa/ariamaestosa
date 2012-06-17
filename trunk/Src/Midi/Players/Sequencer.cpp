@@ -229,7 +229,7 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
         {
             if (not jdksequencer->GetNextEvent( &ev_track, &ev ))
             {
-                if (not PlatformMidiManager::get()->isRecording())
+                if (not PlatformMidiManager::get()->isRecording() and not m_seq->isLoopEnabled())
                 {
                     std::cerr << "error, failed to retrieve next event, returning" << std::endl;
                     cleanup_sequencer();
@@ -413,6 +413,7 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
         
         total_millis += delta;
         
+        // FIXME; this will not play well with tempo changes
         PlatformMidiManager::get()->seq_notify_accurate_current_tick(total_millis*ticks_per_millis);
         
         if (PlatformMidiManager::get()->isRecording())
