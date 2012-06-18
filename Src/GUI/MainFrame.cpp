@@ -71,6 +71,7 @@
 #include <wx/imaglist.h>
 #include <wx/log.h>
 #include <wx/tglbtn.h>
+#include <wx/hyperlink.h>
 
 #ifdef __WXMAC__
 #include <ApplicationServices/ApplicationServices.h>
@@ -541,7 +542,20 @@ void MainFrame::init()
                                                     wxArtProvider::GetBitmap(wxART_WARNING, wxART_OTHER , wxSize(48, 48)));
         notification_sizer->Add(m_notification_icon,
                                 0, wxALIGN_CENTER_VERTICAL | wxALL, 5 );
-        notification_sizer->Add(m_notification_text, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+        
+        
+        wxBoxSizer* subsizer = new wxBoxSizer(wxVERTICAL);
+        subsizer->Add(m_notification_text, 0);
+        notification_sizer->Add(subsizer, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+        
+        m_notification_link = new wxGenericHyperlinkCtrl(m_notification_panel, wxID_ANY,
+                                                  wxT("http://ariamaestosa.sourceforge.net/download.html"),
+                                                  wxT("http://ariamaestosa.sourceforge.net/download.html"));
+        m_notification_link->SetForegroundColour(wxColor(0, 44, 166));
+        m_notification_link->SetBackgroundColour(wxColor(170,214,250));
+        subsizer->Add(m_notification_link, 0, wxALIGN_CENTER_VERTICAL);
+        m_notification_link->Hide();
+        
         //I18N: to hide the panel that is shown when a file could not be imported successfully
         wxButton* hideNotif = new wxButton(m_notification_panel, wxID_ANY, _("Hide"));
         notification_sizer->Add(hideNotif, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
@@ -1819,6 +1833,7 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
         }
 
         setNotificationWarning();
+        m_notification_link->Hide();
         m_notification_text->SetLabel(wxString(full.str().c_str(), wxConvUTF8));
         m_notification_panel->Layout();
         m_notification_panel->GetSizer()->SetSizeHints(m_notification_panel);
@@ -1906,8 +1921,8 @@ void MainFrame::evt_extendTick(wxCommandEvent& evt )
 void MainFrame::evt_newVersionAvailable(wxCommandEvent& evt)
 {
     setNotificationInfo();
-    m_notification_text->SetLabel(wxString(_("A new version of Aria Maestosa is now available!")) +
-                                  wxT("\n") + _("Visit http://ariamaestosa.sourceforge.net/ to download it"));
+    m_notification_link->Show();
+    m_notification_text->SetLabel(wxString(_("A new version of Aria Maestosa is now available! Vist the following link to download it :")));
     m_notification_panel->Layout();
     m_notification_panel->GetSizer()->SetSizeHints(m_notification_panel);
     m_notification_panel->Show();
