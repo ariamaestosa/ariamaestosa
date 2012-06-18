@@ -102,9 +102,13 @@ namespace AriaMaestosa
             m_compact_cb = new wxCheckBox(this, wxID_ANY, _("Compact (print only key notes)"));
             sizer->Add(m_compact_cb, 0, wxALL, 5);
             
-            wxButton* okBtn = new wxButton(this, wxID_ANY, _("OK"));
-            sizer->Add(okBtn, 0 , wxALL, 5);
+            wxButton* okBtn = new wxButton(this, wxID_OK, _("OK"));
             okBtn->SetDefault();
+
+            wxStdDialogButtonSizer* stdDialogButtonSizer = new wxStdDialogButtonSizer();
+            stdDialogButtonSizer->AddButton(okBtn);
+            stdDialogButtonSizer->Realize();
+            sizer->Add(stdDialogButtonSizer, 1, wxALL|wxEXPAND, 5);
             
             SetSizerAndFit(sizer);
             
