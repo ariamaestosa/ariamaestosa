@@ -545,7 +545,7 @@ void MainFrame::init()
         
         
         wxBoxSizer* subsizer = new wxBoxSizer(wxVERTICAL);
-        subsizer->Add(m_notification_text, 0);
+        subsizer->Add(m_notification_text, 0, wxEXPAND);
         notification_sizer->Add(subsizer, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
         
         m_notification_link = new wxGenericHyperlinkCtrl(m_notification_panel, wxID_ANY,
