@@ -45,6 +45,7 @@ class wxFlexGridSizer;
 class wxTextCtrl;
 class wxBoxSizer;
 class wxStaticBitmap;
+class wxGenericHyperlinkCtrl;
 
 namespace AriaMaestosa
 {
@@ -241,9 +242,10 @@ namespace AriaMaestosa
         wxMenuItem* m_metronome;
         wxMenuItem* m_playthrough;
 
-        wxPanel*        m_notification_panel;
-        wxStaticText*   m_notification_text;
-        wxStaticBitmap* m_notification_icon;
+        wxPanel*         m_notification_panel;
+        wxStaticText*    m_notification_text;
+        wxStaticBitmap*  m_notification_icon;
+        wxGenericHyperlinkCtrl* m_notification_link;
 
         void setNotificationWarning();
         void setNotificationInfo();
