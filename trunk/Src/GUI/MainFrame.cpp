@@ -537,8 +537,9 @@ void MainFrame::init()
         m_notification_panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_SIMPLE);
         m_notification_text = new wxStaticText(m_notification_panel, wxID_ANY, wxT("[No message]"),
                                                wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE);
-        notification_sizer->Add( new wxStaticBitmap(m_notification_panel, wxID_ANY,
-                                                    wxArtProvider::GetBitmap(wxART_WARNING, wxART_OTHER , wxSize(48, 48))),
+        m_notification_icon = new wxStaticBitmap(m_notification_panel, wxID_ANY,
+                                                    wxArtProvider::GetBitmap(wxART_WARNING, wxART_OTHER , wxSize(48, 48)));
+        notification_sizer->Add(m_notification_icon,
                                 0, wxALIGN_CENTER_VERTICAL | wxALL, 5 );
         notification_sizer->Add(m_notification_text, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
         //I18N: to hide the panel that is shown when a file could not be imported successfully
@@ -704,6 +705,18 @@ void MainFrame::init()
     onShow(evt);
 #endif
     
+}
+
+void MainFrame::setNotificationWarning()
+{
+    m_notification_icon->SetBitmap(wxArtProvider::GetBitmap(wxART_WARNING, wxART_OTHER , wxSize(48, 48)));
+    m_notification_panel->SetBackgroundColour(wxColor(255,225,110));
+}
+
+void MainFrame::setNotificationInfo()
+{
+    m_notification_icon->SetBitmap(wxArtProvider::GetBitmap(wxART_INFORMATION, wxART_OTHER , wxSize(48, 48)));
+    m_notification_panel->SetBackgroundColour(wxColor(170,214,250));
 }
 
 void MainFrame::onShow(wxShowEvent& evt)
@@ -1805,6 +1818,7 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
             full << "    " << (*it).utf8_str();
         }
 
+        setNotificationWarning();
         m_notification_text->SetLabel(wxString(full.str().c_str(), wxConvUTF8));
         m_notification_panel->Layout();
         m_notification_panel->GetSizer()->SetSizeHints(m_notification_panel);
@@ -1891,6 +1905,7 @@ void MainFrame::evt_extendTick(wxCommandEvent& evt )
 
 void MainFrame::evt_newVersionAvailable(wxCommandEvent& evt)
 {
+    setNotificationInfo();
     m_notification_text->SetLabel(wxString(_("A new version of Aria Maestosa is now available!")) +
                                   wxT("\n") + _("Visit http://ariamaestosa.sourceforge.net/ to download it"));
     m_notification_panel->Layout();
