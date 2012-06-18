@@ -241,8 +241,12 @@ namespace AriaMaestosa
         wxMenuItem* m_metronome;
         wxMenuItem* m_playthrough;
 
-        wxPanel*      m_notification_panel;
-        wxStaticText* m_notification_text;
+        wxPanel*        m_notification_panel;
+        wxStaticText*   m_notification_text;
+        wxStaticBitmap* m_notification_icon;
+
+        void setNotificationWarning();
+        void setNotificationInfo();
 
         wxBoxSizer* m_root_sizer;
 
