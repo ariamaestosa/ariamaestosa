@@ -969,8 +969,8 @@ void MainFrame::menuEvent_record(wxCommandEvent& evt)
 
 void MainFrame::menuEvent_preferences(wxCommandEvent& evt)
 {
-    if (m_preferences == NULL) m_preferences = new PreferencesDialog(this, wxGetApp().prefs);
-    m_preferences->show();
+    PreferencesDialog preferencesDlg(this, wxGetApp().prefs);
+    preferencesDlg.ShowModal();
 }
 
 // -----------------------------------------------------------------------------------------------------------
