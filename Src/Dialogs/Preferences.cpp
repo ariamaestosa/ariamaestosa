@@ -336,7 +336,7 @@ wxDialog(parent, wxID_ANY,
 
     wxStdDialogButtonSizer* stdDialogButtonSizer = new wxStdDialogButtonSizer();
     stdDialogButtonSizer->AddButton(ok_btn);
-    //stdDialogButtonSizer->AddButton(cancel_btn);
+    stdDialogButtonSizer->AddButton(cancel_btn);
     stdDialogButtonSizer->Realize();
     vert_sizer->Add(stdDialogButtonSizer, 0, wxALL|wxEXPAND, 5);
 
