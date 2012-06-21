@@ -513,7 +513,7 @@ public:
                                                   wxDefaultSize, choices, wxRA_SPECIFY_ROWS);
             m_radioBox->SetSelection(g_export_engine);
             sizer->AddStretchSpacer();
-            sizer->Add(m_radioBox, 1, wxALL, 5);
+            sizer->Add(m_radioBox, 0, wxEXPAND | wxALL, 5);
             sizer->AddStretchSpacer();
             
             wxStaticText* soundfontLbl = new wxStaticText(this, wxID_ANY, _("Fluidsynth Soundfont"));
@@ -525,16 +525,14 @@ public:
             
             m_soundfont->Enable(g_export_engine == FLUIDSYNTH);
             
-            wxButton* ok = new wxButton(this, wxID_OK, _("OK"));
-            wxButton* cancel = new wxButton(this, wxID_CANCEL, _("Cancel"));
-            wxSizer* subsizer = new wxBoxSizer(wxHORIZONTAL);
-            subsizer->AddStretchSpacer();
-            subsizer->Add(ok);
-            subsizer->AddSpacer(10);
-            subsizer->Add(cancel);
-            subsizer->AddStretchSpacer();
-            
-            sizer->Add(subsizer, 0, wxEXPAND | wxALL, 5);
+            wxButton* okBtn = new wxButton(this, wxID_OK, _("OK"));
+            wxButton* cancelBtn = new wxButton(this, wxID_CANCEL, _("Cancel"));
+
+            wxStdDialogButtonSizer* stdDialogButtonSizer = new wxStdDialogButtonSizer();
+            stdDialogButtonSizer->AddButton(okBtn);
+            stdDialogButtonSizer->AddButton(cancelBtn);
+            stdDialogButtonSizer->Realize();
+            sizer->Add(stdDialogButtonSizer, 0, wxALL|wxEXPAND, 5);
             SetSizer(sizer);
             
             m_radioBox->Connect(m_radioBox->GetId(), wxEVT_COMMAND_RADIOBOX_SELECTED,
