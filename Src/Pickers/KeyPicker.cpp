@@ -91,7 +91,7 @@ KeyPicker::KeyPicker() : wxMenu()
 
     score_items_added = true;
 
-    AppendSeparator();
+    key_separator = Append(wxID_SEPARATOR, wxEmptyString);
     key_c = AppendCheckItem(KEY_C_AM, wxT("C, Am"));
     key_c->Check(true);
 
@@ -188,6 +188,7 @@ void KeyPicker::setParent(GraphicalTrack* parent_arg)
             Remove(gclef);
             Remove(octave_above);
             Remove(octave_below);
+            Remove(key_separator);
             score_items_added = false;
         }
     }
@@ -195,6 +196,7 @@ void KeyPicker::setParent(GraphicalTrack* parent_arg)
     {
         if (not score_items_added)
         {
+            Prepend(key_separator);
             Prepend(octave_below);
             Prepend(octave_above);
             Prepend(gclef);
