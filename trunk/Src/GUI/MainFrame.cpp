@@ -366,6 +366,7 @@ void MainFrame::init()
 {
     wxLogVerbose( wxT("MainFrame::init") );
     changingValues = true;
+    m_current_dir = ::wxGetCwd();
 
     Centre();
 
@@ -547,7 +548,7 @@ void MainFrame::init()
         wxBoxSizer* subsizer = new wxBoxSizer(wxVERTICAL);
         subsizer->Add(m_notification_text, 0, wxEXPAND);
         notification_sizer->Add(subsizer, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-        
+
         m_notification_link = new wxGenericHyperlinkCtrl(m_notification_panel, wxID_ANY,
                                                   wxT("http://ariamaestosa.sourceforge.net/download.html"),
                                                   wxT("http://ariamaestosa.sourceforge.net/download.html"));
@@ -1922,7 +1923,7 @@ void MainFrame::evt_newVersionAvailable(wxCommandEvent& evt)
 {
     setNotificationInfo();
     m_notification_link->Show();
-    m_notification_text->SetLabel(wxString(_("A new version of Aria Maestosa is now available! Vist the following link to download it :")));
+    m_notification_text->SetLabel(wxString(_("A new version of Aria Maestosa is now available! Visit the following link to download it :")));
     m_notification_panel->Layout();
     m_notification_panel->GetSizer()->SetSizeHints(m_notification_panel);
     m_notification_panel->Show();
