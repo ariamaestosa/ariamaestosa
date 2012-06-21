@@ -47,6 +47,8 @@ namespace AriaMaestosa
         wxMenuItem* octave_above;
         wxMenuItem* octave_below;
 
+        wxMenuItem* key_separator;
+
         wxMenuItem* key_c;
 
         bool score_items_added;
