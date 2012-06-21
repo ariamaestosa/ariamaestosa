@@ -263,7 +263,6 @@ namespace AriaMaestosa
         int m_play_during_edit; // what is the user's preference for note preview during edits
         bool m_playback_mode;
         MainPane*                     m_main_pane;
-        WxOwnerPtr<PreferencesDialog> m_preferences;
         OwnerPtr<InstrumentPicker>    m_instrument_picker;
         OwnerPtr<DrumPicker>          m_drumKit_picker;
         OwnerPtr<TuningPicker>        m_tuning_picker;
@@ -276,12 +275,14 @@ namespace AriaMaestosa
 
         bool m_paused;
         int  m_pause_location;
+        wxString m_current_dir;
 
 #if !defined(__WXOSX_CARBON__)
         wxStaticBitmap* m_tools_bitmap;
         void onToolsBitmapMousedown(wxMouseEvent& evt);
         void onToolsBitmapMouseup(wxMouseEvent& evt);
 #endif
+        void updateCurrentDir(wxString& path);
 
     public:
         LEAK_CHECK();

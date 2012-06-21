@@ -574,9 +574,9 @@ bool MainFrame::doSaveAs()
 {
     wxString suggestedName = getCurrentSequence()->suggestFileName() + wxT(".aria");
 
-    wxString givenPath = showFileDialog(this, _("Select destination file"), wxT(""), suggestedName,
+    wxString givenPath = showFileDialog(this, _("Select destination file"), m_current_dir, suggestedName,
                                         wxT("Aria Maestosa file|*.aria"), true /*save*/);
-
+    updateCurrentDir(givenPath);
     if (not givenPath.IsEmpty())
     {
 #ifndef __WXOSX_COCOA__
@@ -611,8 +611,9 @@ bool MainFrame::doSaveAs()
 void MainFrame::menuEvent_open(wxCommandEvent& evt)
 {
     m_main_pane->forgetClickData();
-    wxString filePath = showFileDialog(this, _("Select file"), wxT(""), wxT(""),
+    wxString filePath = showFileDialog(this, _("Select file"), m_current_dir, wxT(""),
                                        wxString(_("Aria Maestosa file"))+wxT("|*.aria"), false /*open*/);
+    updateCurrentDir(filePath);
     MainFrame::loadAriaFile(filePath);
 }
 
@@ -621,8 +622,9 @@ void MainFrame::menuEvent_open(wxCommandEvent& evt)
 void MainFrame::menuEvent_importmidi(wxCommandEvent& evt)
 {
     m_main_pane->forgetClickData();
-    wxString midiFilePath = showFileDialog(this, _("Select midi file"), wxT(""), wxT(""),
+    wxString midiFilePath = showFileDialog(this, _("Select midi file"), m_current_dir, wxT(""),
                                            wxString(_("Midi file"))+wxT("|*.mid;*.midi"), false /*open*/);
+    updateCurrentDir(midiFilePath);
     MainFrame::loadMidiFile(midiFilePath);
 }
 
@@ -633,10 +635,10 @@ void MainFrame::menuEvent_exportmidi(wxCommandEvent& evt)
     wxString suggestedName = getCurrentSequence()->suggestFileName() + wxT(".mid");
 
     // show file dialog
-    wxString midiFilePath = showFileDialog(this, _("Select destination file"), wxT(""),
+    wxString midiFilePath = showFileDialog(this, _("Select destination file"), m_current_dir,
                                            suggestedName, wxString(_("Midi file"))+wxT("|*.mid"),
                                            true /*save*/);
-
+    updateCurrentDir(midiFilePath);
     if (midiFilePath.IsEmpty()) return;
 
 #ifndef __WXOSX_COCOA__
@@ -671,9 +673,9 @@ void MainFrame::menuEvent_exportSampledAudio(wxCommandEvent& evt)
     wxString suggestedName = getCurrentSequence()->suggestFileName() + extension;
 
     // show file dialog
-    wxString audioFilePath = showFileDialog(this, _("Select destination file"), wxT(""),
+    wxString audioFilePath = showFileDialog(this, _("Select destination file"), m_current_dir,
                                             suggestedName, wildcard, true /*save*/);
-
+    updateCurrentDir(audioFilePath);
     if (audioFilePath.IsEmpty()) return;
 
 #ifndef __WXOSX_COCOA__
@@ -1291,6 +1293,14 @@ void MainFrame::menuEvent_manual(wxCommandEvent& evt)
                      wxT(" does not appear to exist).\nTry visiting ariamaestosa.sf.net instead."));
     }
 #endif
+}
+
+void MainFrame::updateCurrentDir(wxString& path)
+{
+    if (!path.IsEmpty())
+    {
+        m_current_dir = extract_path(path);
+    }
 }
 
 // -----------------------------------------------------------------------------------------------------------
