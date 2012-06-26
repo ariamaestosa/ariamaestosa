@@ -383,7 +383,7 @@ void PreferencesDialog::okClicked(wxCommandEvent& evt)
 {
     updateValuesFromWidgets();
     m_data->save();
-    wxDialog::EndModal(modalCode);
+    wxDialog::EndModal(wxID_OK);
     
     if (m_sound_font_selected)
     {
@@ -398,7 +398,7 @@ void PreferencesDialog::okClicked(wxCommandEvent& evt)
 
 void PreferencesDialog::onCancel(wxCommandEvent& evt)
 {
-    wxDialog::EndModal(modalCode);
+    wxDialog::EndModal(wxID_CANCEL);
 }
 
 

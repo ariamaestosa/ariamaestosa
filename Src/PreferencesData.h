@@ -70,6 +70,8 @@ namespace AriaMaestosa
 
     EXTERN const char* SETTING_ID_DEFAULT_EDITOR   DEFAULT("defaultEditor");
 
+    EXTERN const char* SETTING_ID_INSTRUMENT_CLASSIFICATION   DEFAULT("instrumentClassification");
+
     EXTERN const char* SETTING_ID_CHECK_NEW_VERSION DEFAULT("checkForNewVersion");
     
     EXTERN const char* SETTING_ID_REMEMBER_WINDOW_POS DEFAULT("rememberWindowLocation");

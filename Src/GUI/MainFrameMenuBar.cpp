@@ -45,6 +45,7 @@
 #include "Midi/CommonMidiUtils.h"
 #include "Pickers/KeyPicker.h"
 #include "Pickers/TuningPicker.h"
+#include "Pickers/InstrumentPicker.h"
 
 #include "Utils.h"
 #include <iostream>
@@ -972,7 +973,10 @@ void MainFrame::menuEvent_record(wxCommandEvent& evt)
 void MainFrame::menuEvent_preferences(wxCommandEvent& evt)
 {
     PreferencesDialog preferencesDlg(this, wxGetApp().prefs);
-    preferencesDlg.ShowModal();
+    if (preferencesDlg.ShowModal()==wxID_OK)
+    {
+        m_instrument_picker->updateClassification();
+    }
 }
 
 // -----------------------------------------------------------------------------------------------------------

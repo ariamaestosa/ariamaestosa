@@ -549,6 +549,7 @@ void MainFrame::init()
         subsizer->Add(m_notification_text, 0, wxEXPAND);
         notification_sizer->Add(subsizer, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
+#if (wxMAJOR_VERSION == 3)
         m_notification_link = new wxGenericHyperlinkCtrl(m_notification_panel, wxID_ANY,
                                                   wxT("http://ariamaestosa.sourceforge.net/download.html"),
                                                   wxT("http://ariamaestosa.sourceforge.net/download.html"));
@@ -556,6 +557,7 @@ void MainFrame::init()
         m_notification_link->SetBackgroundColour(wxColor(170,214,250));
         subsizer->Add(m_notification_link, 0, wxALIGN_CENTER_VERTICAL);
         m_notification_link->Hide();
+#endif
         
         //I18N: to hide the panel that is shown when a file could not be imported successfully
         wxButton* hideNotif = new wxButton(m_notification_panel, wxID_ANY, _("Hide"));
@@ -1834,7 +1836,11 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
         }
 
         setNotificationWarning();
+
+#if (wxMAJOR_VERSION == 3)
         m_notification_link->Hide();
+#endif
+
         m_notification_text->SetLabel(wxString(full.str().c_str(), wxConvUTF8));
         m_notification_panel->Layout();
         m_notification_panel->GetSizer()->SetSizeHints(m_notification_panel);
@@ -1922,7 +1928,11 @@ void MainFrame::evt_extendTick(wxCommandEvent& evt )
 void MainFrame::evt_newVersionAvailable(wxCommandEvent& evt)
 {
     setNotificationInfo();
+
+#if (wxMAJOR_VERSION == 3)
     m_notification_link->Show();
+#endif
+
     m_notification_text->SetLabel(wxString(_("A new version of Aria Maestosa is now available! Visit the following link to download it :")));
     m_notification_panel->Layout();
     m_notification_panel->GetSizer()->SetSizeHints(m_notification_panel);
