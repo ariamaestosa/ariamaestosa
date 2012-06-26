@@ -31,36 +31,29 @@
 
 #include "Utils.h"
 
+
+
 namespace AriaMaestosa
 {
-    
     class InstrumentChoice;
-    
+
+    struct PickerMenu
+    {
+        wxString name;
+        const int* inst_array;
+        int inst_array_size;
+    };
+
+
     /**
       * @ingroup pickers
       * @brief menu where a MIDI instrument can be selected
       */
     class InstrumentPicker : public wxMenu
     {
-        wxMenuItem* inst_menus[128];
-        
-        wxMenu* submenu_1_piano;
-        wxMenu* submenu_2_chromatic;
-        wxMenu* submenu_3_organ;
-        wxMenu* submenu_4_guitar;
-        wxMenu* submenu_5_bass;
-        wxMenu* submenu_6_orchestra;
-        wxMenu* submenu_7_choirs_pads;
-        wxMenu* submenu_8_brass;
-        wxMenu* submenu_9_reed;
-        wxMenu* submenu_10_pipe;
-        wxMenu* submenu_11_synths;
-        wxMenu* submenu_12_ethnic;
-        wxMenu* submenu_13_percussion;
-        wxMenu* submenu_14_sound_fx;
-        wxMenu* submenu_15_drums;
-                
+        wxMenuItem* m_inst_menus[128];
         InstrumentChoice* m_model;
+        int m_current_classification_id;
         
     public:
         
@@ -70,15 +63,18 @@ namespace AriaMaestosa
         ~InstrumentPicker();
                 
         void setModel(InstrumentChoice* choice);
-        
+        void updateClassification();
         InstrumentChoice* getModel() { return m_model; }
-        
         void menuSelected(wxCommandEvent& evt);
-        
-        
-        DECLARE_EVENT_TABLE();
+
+    private:
+
+        void buildNewPicker();
+        void buildPicker(const PickerMenu pickerMenuArray[], int size);
+        void deleteCurrentPicker();
+        void deletePicker(const PickerMenu pickerMenuArray[], int size);
     };
-    
+
 }
 
 #endif

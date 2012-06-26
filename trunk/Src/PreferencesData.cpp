@@ -209,6 +209,19 @@ void PreferencesData::fillSettingsVector()
     defaultEditor->addChoice(_("Score"));     // 1
     defaultEditor->addChoice(_("Tablature")); // 2
     m_settings.push_back( defaultEditor );
+
+
+    // ---- default editor
+    //I18N: In preferences
+    Setting* instrumentClassification = new Setting(fromCString(SETTING_ID_INSTRUMENT_CLASSIFICATION), _("Instrument Classification"),
+                                         SETTING_ENUM, true /* show in preferences */, wxT("0") );
+    instrumentClassification->addChoice(_("MIDI Standard"));  // 0
+    instrumentClassification->addChoice(wxT("Aria"));     // 1
+    instrumentClassification->addChoice(wxT("Buzzwood"));     // 2
+    m_settings.push_back( instrumentClassification );
+
+
+
     
 #ifdef __APPLE__
     // ---- soundbank

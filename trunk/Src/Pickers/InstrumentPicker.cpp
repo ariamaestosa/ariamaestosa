@@ -23,212 +23,141 @@
 
 #include "AriaCore.h"
 #include "Utils.h"
+#include "PreferencesData.h"
 
 using namespace AriaMaestosa;
 
-BEGIN_EVENT_TABLE(InstrumentPicker, wxMenu)
+#define SIZE(x) sizeof(x)/sizeof(x[0])
 
-//EVT_MENU_RANGE(0,127,InstrumentPicker::menuSelected)
+static const int MENU_REF_ID = 100;
+static const int SUB_MENU_REF_ID = 10000;
+static const int MIDI_INSTR_START_ID = 0;
+static const int MIDI_INSTR_STOP_ID = 127;
+static const int STANDARD_MIDI_SIZE = 8;
 
-END_EVENT_TABLE()
 
-    
+// Standard MIDI classes
+static const int g_piano_insts[] = { 0, 1, 2, 3, 4, 5, 6, 7 };
+static const int g_chromatic_percussion_insts[] = { 8, 9, 10, 11, 12, 13 ,14, 15 };
+static const int g_organ_insts[] = { 16, 17, 18, 19, 20, 21, 22, 23 };
+static const int g_guitar_insts[] = { 24, 25, 26, 27, 28, 29, 30, 31 };
+static const int g_bass_insts[] = { 32, 33, 34, 35, 36, 37, 38, 39 };
+static const int g_strings_insts[] = { 40, 41, 42, 43, 44, 45, 46, 47 };
+static const int g_ensemble_insts[] = { 48, 49, 50, 51, 52, 53, 54, 55 };
+static const int g_brass_insts[] = { 56, 57, 58, 59, 60, 61, 62, 63 };
+static const int g_reed_insts[] = { 64, 65, 66, 67, 68, 69, 70, 71 };
+static const int g_pipe_insts[] = { 72, 73, 74, 75, 76, 77, 78, 79 };
+static const int g_synth_lead_insts[] = { 80, 81, 82, 83, 84, 85, 86, 87 };
+static const int g_synth_pad_insts[] = { 88, 89, 90, 91, 92, 93, 94, 95 };
+static const int g_synth_effects_insts[] = { 96, 97, 98, 99, 100, 101, 102, 103 };
+static const int g_ethnic_insts[] = { 104, 105, 106, 107, 108, 109, 110, 111 };
+static const int g_percussive_insts[] = { 112, 113, 114, 115, 116, 117, 118, 119 };
+static const int g_sound_effects_insts[] = { 120, 121, 122, 123, 124, 125, 126, 127 };
+
+
+// Aria classes
+static const int g_aria_guitar_insts[] = { 24, 25, 26, 27, 28, 29, 30, 31, 120 };
+static const int g_aria_strings_and_orchestra_insts[] = { 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 55 };
+static const int g_aria_choirs_pads_voices_insts[] = { 52, 53, 89, 91, 94, 92, 95, 54, 85, 98, 100, 101, 102, 93, 88, 96};
+static const int g_aria_synth_lead_insts[] = { 80, 81, 82, 83, 84, 85, 86, 87, 90, 97, 99, 103 };
+static const int g_aria_percussion_insts[] = { 112, 113, 114, 115, 116, 117, 118, 119, 47 };
+static const int g_aria_sound_effects_insts[] = { 121, 122, 123, 124, 125, 126, 127 };
+
+
+// Buzzwood classes
+static const int g_buzzwood_piano_insts[] = { 0, 1, 2, 3, 4, 5, 6, 7, 15 };
+static const int g_buzzwood_pads_insts[] = { 52, 53, 54, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103 };
+static const int g_buzzwood_reed_insts[] = { 64, 65, 66, 67, 68, 69, 70, 71, 109, 111 };
+static const int g_buzzwood_guitar_insts[] = { 24, 25, 26, 27, 28, 29, 30, 31, 120 };
+static const int g_buzzwood_plucked_insts[] = { 45, 46, 104, 105, 106, 107, 108 };
+static const int g_buzzwood_bowed_insts[] = { 110, 40, 41, 42, 43, 44, 48, 49, 50, 51, 55};
+static const int g_buzzwood_bass_insts[] = { 32, 33, 34, 35, 36, 37, 38, 39, 43 };
+static const int g_buzzwood_percussion_insts[] = { 8, 9, 10, 11, 12, 13, 47, 108, 112, 113, 114, 115, 116, 117, 118, 119 };
+
+
+
+
+// See http://www.zikinf.com/articles/mao/tablemidi.php
+static const PickerMenu g_standard_midi_picker[] =
+{
+    { _("Piano"), g_piano_insts, STANDARD_MIDI_SIZE },
+    { _("Chromatic Percussion"), g_chromatic_percussion_insts, STANDARD_MIDI_SIZE },
+    { _("Organ"), g_organ_insts, STANDARD_MIDI_SIZE },
+    { _("Guitar"), g_guitar_insts, STANDARD_MIDI_SIZE },
+    { _("Bass"), g_bass_insts, STANDARD_MIDI_SIZE },
+    { _("Strings"), g_strings_insts, STANDARD_MIDI_SIZE },
+    { _("Ensemble"), g_ensemble_insts, STANDARD_MIDI_SIZE },
+    { _("Brass"), g_brass_insts, STANDARD_MIDI_SIZE },
+    { _("Reed"), g_reed_insts, STANDARD_MIDI_SIZE },
+    { _("Pipe"), g_pipe_insts, STANDARD_MIDI_SIZE },
+    { _("Synth Lead"), g_synth_lead_insts, STANDARD_MIDI_SIZE },
+    { _("Synth Pad"), g_synth_pad_insts, STANDARD_MIDI_SIZE },
+    { _("Synth Effects"), g_synth_effects_insts, STANDARD_MIDI_SIZE },
+    { _("Ethnic"), g_ethnic_insts, STANDARD_MIDI_SIZE },
+    { _("Percussive"), g_percussive_insts, STANDARD_MIDI_SIZE },
+    { _("Sound Effects"), g_sound_effects_insts, STANDARD_MIDI_SIZE }
+};
+
+
+static const PickerMenu g_aria_picker[] =
+{
+    { _("Piano"), g_piano_insts, SIZE(g_piano_insts) },
+    { _("Chromatic"), g_chromatic_percussion_insts, SIZE(g_chromatic_percussion_insts) },
+    { _("Organ"), g_organ_insts, SIZE(g_organ_insts) },
+    { _("Guitar"), g_aria_guitar_insts, SIZE(g_aria_guitar_insts) },
+    { _("Bass"), g_bass_insts, SIZE(g_bass_insts) },
+    { _("Strings and Orchestra"), g_aria_strings_and_orchestra_insts, SIZE(g_aria_strings_and_orchestra_insts) },
+    { _("Choirs, Pads and Voices"), g_aria_choirs_pads_voices_insts, SIZE(g_aria_choirs_pads_voices_insts) },
+    { _("Brass"), g_brass_insts, SIZE(g_brass_insts) },
+    { _("Reed"), g_reed_insts, SIZE(g_reed_insts) },
+    { _("Flutes and Pipe"), g_pipe_insts, SIZE(g_pipe_insts) },
+    { _("Synth Lead"), g_aria_synth_lead_insts, SIZE(g_aria_synth_lead_insts) },
+    { _("Ethnic"), g_ethnic_insts, SIZE(g_ethnic_insts) },
+    { _("Percussion"), g_aria_percussion_insts, SIZE(g_aria_percussion_insts) },
+    { _("Sound Effects"), g_aria_sound_effects_insts, SIZE(g_aria_sound_effects_insts) }
+};
+
+
+// See http://www.buzzwood.com/midtest.htm
+static const PickerMenu g_buzzwood_picker[] =
+{
+    { _("Piano"), g_buzzwood_piano_insts, SIZE(g_buzzwood_piano_insts) },
+    { _("Organ"), g_organ_insts, SIZE(g_organ_insts) },
+    { _("Brass"), g_brass_insts, SIZE(g_brass_insts) },
+    { _("Pads"), g_buzzwood_pads_insts, SIZE(g_buzzwood_pads_insts) },
+    { _("Synth Lead"), g_synth_lead_insts, SIZE(g_synth_lead_insts) },
+    { _("Reed"), g_buzzwood_reed_insts, SIZE(g_buzzwood_reed_insts) },
+    { _("Pipe"), g_pipe_insts, SIZE(g_pipe_insts) },
+    { _("Guitar"), g_buzzwood_guitar_insts, SIZE(g_buzzwood_guitar_insts) },
+    { _("Plucked"), g_buzzwood_plucked_insts, SIZE(g_buzzwood_plucked_insts) },
+    { _("Bowed"), g_buzzwood_bowed_insts, SIZE(g_buzzwood_bowed_insts) },
+    { _("Bass"), g_buzzwood_bass_insts, SIZE(g_buzzwood_bass_insts) },
+    { _("Percussion"), g_buzzwood_percussion_insts, SIZE(g_buzzwood_percussion_insts) },
+    { _("Sound Effects"), g_sound_effects_insts, SIZE(g_sound_effects_insts) }
+};
+
+
+
 InstrumentPicker::InstrumentPicker() : wxMenu()
 {
     m_model = NULL;
-    
-    submenu_1_piano       = new wxMenu();
-    submenu_2_chromatic   = new wxMenu();
-    submenu_3_organ       = new wxMenu();
-    submenu_4_guitar      = new wxMenu();
-    submenu_5_bass        = new wxMenu();
-    submenu_6_orchestra   = new wxMenu();
-    submenu_7_choirs_pads = new wxMenu();
-    submenu_8_brass       = new wxMenu();
-    submenu_9_reed        = new wxMenu();
-    submenu_10_pipe       = new wxMenu();
-    submenu_11_synths     = new wxMenu();
-    submenu_12_ethnic     = new wxMenu();
-    submenu_13_percussion = new wxMenu();
-    submenu_14_sound_fx   = new wxMenu();
-    submenu_15_drums      = new wxMenu();
-
-    // TODO: get the structure from the 'InstrumentChoice' model instead of hardcoding it there
-#define _ADD_INSTR(id, parent) inst_menus[ id ]= parent -> Append( id+10000, InstrumentChoice::getInstrumentName( id ));
-
-    Append(wxID_ANY,wxT("Piano"), submenu_1_piano);
-    _ADD_INSTR(0, submenu_1_piano);
-    _ADD_INSTR(1, submenu_1_piano);
-    _ADD_INSTR(2, submenu_1_piano);
-    _ADD_INSTR(3, submenu_1_piano);
-    _ADD_INSTR(4, submenu_1_piano);
-    _ADD_INSTR(5, submenu_1_piano);
-    _ADD_INSTR(6, submenu_1_piano);
-    _ADD_INSTR(7, submenu_1_piano);
-
-    Append(wxID_ANY,wxT("Chromatic"), submenu_2_chromatic);
-    _ADD_INSTR(8, submenu_2_chromatic);
-    _ADD_INSTR(9, submenu_2_chromatic);
-    _ADD_INSTR(10, submenu_2_chromatic);
-    _ADD_INSTR(11, submenu_2_chromatic);
-    _ADD_INSTR(12, submenu_2_chromatic);
-    _ADD_INSTR(13, submenu_2_chromatic);
-    _ADD_INSTR(14, submenu_2_chromatic);
-    _ADD_INSTR(15, submenu_2_chromatic);
-
-    Append(wxID_ANY,wxT("Organ"), submenu_3_organ);
-    _ADD_INSTR(16, submenu_3_organ);
-    _ADD_INSTR(17, submenu_3_organ);
-    _ADD_INSTR(18, submenu_3_organ);
-    _ADD_INSTR(19, submenu_3_organ);
-    _ADD_INSTR(20, submenu_3_organ);
-    _ADD_INSTR(21, submenu_3_organ);
-    _ADD_INSTR(22, submenu_3_organ);
-    _ADD_INSTR(23, submenu_3_organ);
-
-    Append(wxID_ANY,wxT("Guitar"), submenu_4_guitar);
-    _ADD_INSTR(24, submenu_4_guitar);
-    _ADD_INSTR(25, submenu_4_guitar);
-    _ADD_INSTR(26, submenu_4_guitar);
-    _ADD_INSTR(27, submenu_4_guitar);
-    _ADD_INSTR(28, submenu_4_guitar);
-    _ADD_INSTR(29, submenu_4_guitar);
-    _ADD_INSTR(30, submenu_4_guitar);
-    _ADD_INSTR(31, submenu_4_guitar);
-    _ADD_INSTR(120, submenu_4_guitar);
-
-    Append(wxID_ANY,wxT("Bass"), submenu_5_bass);
-    _ADD_INSTR(32, submenu_5_bass);
-    _ADD_INSTR(33, submenu_5_bass);
-    _ADD_INSTR(34, submenu_5_bass);
-    _ADD_INSTR(35, submenu_5_bass);
-    _ADD_INSTR(36, submenu_5_bass);
-    _ADD_INSTR(37, submenu_5_bass);
-    _ADD_INSTR(38, submenu_5_bass);
-    _ADD_INSTR(39, submenu_5_bass);
-
-    Append(wxID_ANY,wxT("Strings and Orchestra"), submenu_6_orchestra);
-    _ADD_INSTR(40, submenu_6_orchestra);
-    _ADD_INSTR(41, submenu_6_orchestra);
-    _ADD_INSTR(42, submenu_6_orchestra);
-    _ADD_INSTR(43, submenu_6_orchestra);
-    _ADD_INSTR(44, submenu_6_orchestra);
-    _ADD_INSTR(45, submenu_6_orchestra);
-    _ADD_INSTR(46, submenu_6_orchestra);
-    _ADD_INSTR(47, submenu_6_orchestra);
-    _ADD_INSTR(48, submenu_6_orchestra);
-    _ADD_INSTR(49, submenu_6_orchestra);
-    _ADD_INSTR(50, submenu_6_orchestra);
-    _ADD_INSTR(51, submenu_6_orchestra);
-    _ADD_INSTR(55, submenu_6_orchestra);
-
-    Append(wxID_ANY,wxT("Choirs, Pads and Voices"), submenu_7_choirs_pads);
-    _ADD_INSTR(52, submenu_7_choirs_pads);
-    _ADD_INSTR(53, submenu_7_choirs_pads);
-    _ADD_INSTR(89, submenu_7_choirs_pads);
-    _ADD_INSTR(91, submenu_7_choirs_pads);
-    _ADD_INSTR(94, submenu_7_choirs_pads);
-    _ADD_INSTR(92, submenu_7_choirs_pads);
-    _ADD_INSTR(95, submenu_7_choirs_pads);
-    _ADD_INSTR(54, submenu_7_choirs_pads);
-    _ADD_INSTR(85, submenu_7_choirs_pads);
-    _ADD_INSTR(98, submenu_7_choirs_pads);
-    _ADD_INSTR(100, submenu_7_choirs_pads);
-    _ADD_INSTR(101, submenu_7_choirs_pads);
-    _ADD_INSTR(102, submenu_7_choirs_pads);
-    _ADD_INSTR(93, submenu_7_choirs_pads);
-    _ADD_INSTR(88, submenu_7_choirs_pads);
-    _ADD_INSTR(96, submenu_7_choirs_pads);
-
-    Append(wxID_ANY,wxT("Brass"), submenu_8_brass);
-    _ADD_INSTR(56, submenu_8_brass);
-    _ADD_INSTR(57, submenu_8_brass);
-    _ADD_INSTR(58, submenu_8_brass);
-    _ADD_INSTR(59, submenu_8_brass);
-    _ADD_INSTR(60, submenu_8_brass);
-    _ADD_INSTR(61, submenu_8_brass);
-    _ADD_INSTR(62, submenu_8_brass);
-    _ADD_INSTR(63, submenu_8_brass);
-
-    Append(wxID_ANY,wxT("Reed"), submenu_9_reed);
-    _ADD_INSTR(64, submenu_9_reed);
-    _ADD_INSTR(65, submenu_9_reed);
-    _ADD_INSTR(66, submenu_9_reed);
-    _ADD_INSTR(67, submenu_9_reed);
-    _ADD_INSTR(68, submenu_9_reed);
-    _ADD_INSTR(69, submenu_9_reed);
-    _ADD_INSTR(70, submenu_9_reed);
-    _ADD_INSTR(71, submenu_9_reed);
-
-    Append(wxID_ANY,wxT("Flutes and Pipe"), submenu_10_pipe);
-    _ADD_INSTR(72, submenu_10_pipe);
-    _ADD_INSTR(73, submenu_10_pipe);
-    _ADD_INSTR(74, submenu_10_pipe);
-    _ADD_INSTR(75, submenu_10_pipe);
-    _ADD_INSTR(76, submenu_10_pipe);
-    _ADD_INSTR(77, submenu_10_pipe);
-    _ADD_INSTR(78, submenu_10_pipe);
-    _ADD_INSTR(79, submenu_10_pipe);
-
-    Append(wxID_ANY,wxT("Synth Lead"), submenu_11_synths);
-    _ADD_INSTR(80, submenu_11_synths);
-    _ADD_INSTR(81, submenu_11_synths);
-    _ADD_INSTR(82, submenu_11_synths);
-    _ADD_INSTR(83, submenu_11_synths);
-    _ADD_INSTR(84, submenu_11_synths);
-    _ADD_INSTR(86, submenu_11_synths);
-    _ADD_INSTR(87, submenu_11_synths);
-    _ADD_INSTR(90, submenu_11_synths);
-    _ADD_INSTR(97, submenu_11_synths);
-    _ADD_INSTR(99, submenu_11_synths);
-    _ADD_INSTR(103, submenu_11_synths);
-
-    Append(wxID_ANY,wxT("Ethnic"), submenu_12_ethnic);
-    _ADD_INSTR(104, submenu_12_ethnic);
-    _ADD_INSTR(105, submenu_12_ethnic);
-    _ADD_INSTR(106, submenu_12_ethnic);
-    _ADD_INSTR(107, submenu_12_ethnic);
-    _ADD_INSTR(108, submenu_12_ethnic);
-    _ADD_INSTR(109, submenu_12_ethnic);
-    _ADD_INSTR(110, submenu_12_ethnic);
-    _ADD_INSTR(111, submenu_12_ethnic);
-
-    Append(wxID_ANY,wxT("Percussion"), submenu_13_percussion);
-    _ADD_INSTR(112, submenu_13_percussion);
-    _ADD_INSTR(113, submenu_13_percussion);
-    _ADD_INSTR(114, submenu_13_percussion);
-    _ADD_INSTR(115, submenu_13_percussion);
-    _ADD_INSTR(116, submenu_13_percussion);
-    _ADD_INSTR(117, submenu_13_percussion);
-    _ADD_INSTR(118, submenu_13_percussion);
-    _ADD_INSTR(119, submenu_13_percussion);
-    _ADD_INSTR(47 , submenu_13_percussion);
-
-    Append(wxID_ANY,wxT("Sound Effects"), submenu_14_sound_fx);
-    _ADD_INSTR(121, submenu_14_sound_fx);
-    _ADD_INSTR(122, submenu_14_sound_fx);
-    _ADD_INSTR(123, submenu_14_sound_fx);
-    _ADD_INSTR(124, submenu_14_sound_fx);
-    _ADD_INSTR(125, submenu_14_sound_fx);
-    _ADD_INSTR(126, submenu_14_sound_fx);
-    _ADD_INSTR(127, submenu_14_sound_fx);
-
-#undef _ADD_INSTR
-
-
+    m_current_classification_id = -1;
+    buildNewPicker();
 }
 
 InstrumentPicker::~InstrumentPicker()
 {
-    // FIMXE - this should maybe delete the menus
+    deleteCurrentPicker();
+    m_current_classification_id = -1;
 }
-    
+
+
 void InstrumentPicker::menuSelected(wxCommandEvent& evt)
 {
-    int instrumentID = evt.GetId() - 10000;
+    int instrumentID = evt.GetId() - SUB_MENU_REF_ID;
 
-    ASSERT_E(instrumentID, <,  128);
-    ASSERT_E(instrumentID, >=, 0);
+    ASSERT_E(instrumentID, <=, MIDI_INSTR_STOP_ID);
+    ASSERT_E(instrumentID, >=, MIDI_INSTR_START_ID);
 
     m_model->setInstrument(instrumentID);
     Display::render();
@@ -238,4 +167,66 @@ void InstrumentPicker::menuSelected(wxCommandEvent& evt)
 void InstrumentPicker::setModel(InstrumentChoice* model)
 {
     m_model = model;
+}
+
+
+void InstrumentPicker::updateClassification()
+{
+    buildNewPicker();
+}
+
+
+void InstrumentPicker::buildNewPicker()
+{
+    deleteCurrentPicker();
+
+    m_current_classification_id = PreferencesData::getInstance()->getIntValue(SETTING_ID_INSTRUMENT_CLASSIFICATION);
+
+    switch (m_current_classification_id)
+    {
+        case 0  : buildPicker(g_standard_midi_picker, SIZE(g_standard_midi_picker)); break;
+        case 1  : buildPicker(g_aria_picker, SIZE(g_aria_picker)); break;
+        case 2  : buildPicker(g_buzzwood_picker, SIZE(g_buzzwood_picker)); break;
+        default : buildPicker(g_standard_midi_picker, SIZE(g_standard_midi_picker)); break;
+    }
+}
+
+
+void InstrumentPicker::buildPicker(const PickerMenu pickerMenuArray[], int size)
+{
+    for( int i = 0; i< size ; i++ )
+    {
+        wxMenu* menu = new wxMenu();
+        const PickerMenu pickerMenu = pickerMenuArray[i];
+        Append(MENU_REF_ID+i, pickerMenu.name, menu);
+
+        for( int j = 0; j< pickerMenu.inst_array_size ; j++ )
+        {
+            int id = pickerMenu.inst_array[j];
+            m_inst_menus[id] = menu->Append(id + SUB_MENU_REF_ID, InstrumentChoice::getInstrumentName(id));
+        }
+    }
+}
+
+
+void InstrumentPicker::deleteCurrentPicker()
+{
+    if (m_current_classification_id != -1)
+    {
+        switch (m_current_classification_id)
+        {
+            case 0 : deletePicker(g_standard_midi_picker, SIZE(g_standard_midi_picker)); break;
+            case 1 : deletePicker(g_aria_picker, SIZE(g_aria_picker)); break;
+            case 2 : deletePicker(g_buzzwood_picker, SIZE(g_buzzwood_picker)); break;
+        }
+    }
+}
+
+
+void InstrumentPicker::deletePicker(const PickerMenu pickerMenuArray[], int size)
+{
+    for(int i = 0; i< size ; i++ )
+    {
+        Destroy(MENU_REF_ID+i);
+    }
 }

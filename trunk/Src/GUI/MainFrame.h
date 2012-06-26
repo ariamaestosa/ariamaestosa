@@ -45,7 +45,11 @@ class wxFlexGridSizer;
 class wxTextCtrl;
 class wxBoxSizer;
 class wxStaticBitmap;
-class wxGenericHyperlinkCtrl;
+
+#if (wxMAJOR_VERSION == 3)
+    class wxGenericHyperlinkCtrl;
+#endif
+
 
 namespace AriaMaestosa
 {
@@ -245,7 +249,10 @@ namespace AriaMaestosa
         wxPanel*         m_notification_panel;
         wxStaticText*    m_notification_text;
         wxStaticBitmap*  m_notification_icon;
+
+#if (wxMAJOR_VERSION == 3)
         wxGenericHyperlinkCtrl* m_notification_link;
+#endif
 
         void setNotificationWarning();
         void setNotificationInfo();
