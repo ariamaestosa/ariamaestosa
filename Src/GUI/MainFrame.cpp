@@ -549,7 +549,7 @@ void MainFrame::init()
         subsizer->Add(m_notification_text, 0, wxEXPAND);
         notification_sizer->Add(subsizer, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-#if (wxMAJOR_VERSION == 3)
+#if wxCHECK_VERSION(2,9,1)
         m_notification_link = new wxGenericHyperlinkCtrl(m_notification_panel, wxID_ANY,
                                                   wxT("http://ariamaestosa.sourceforge.net/download.html"),
                                                   wxT("http://ariamaestosa.sourceforge.net/download.html"));
@@ -1837,7 +1837,7 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
 
         setNotificationWarning();
 
-#if (wxMAJOR_VERSION == 3)
+#if wxCHECK_VERSION(2,9,1)
         m_notification_link->Hide();
 #endif
 
@@ -1929,7 +1929,7 @@ void MainFrame::evt_newVersionAvailable(wxCommandEvent& evt)
 {
     setNotificationInfo();
 
-#if (wxMAJOR_VERSION == 3)
+#if wxCHECK_VERSION(2,9,1)
     m_notification_link->Show();
 #endif
 
