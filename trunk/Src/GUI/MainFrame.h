@@ -46,7 +46,7 @@ class wxTextCtrl;
 class wxBoxSizer;
 class wxStaticBitmap;
 
-#if (wxMAJOR_VERSION == 3)
+#if wxCHECK_VERSION(2,9,1)
     class wxGenericHyperlinkCtrl;
 #endif
 
@@ -250,7 +250,7 @@ namespace AriaMaestosa
         wxStaticText*    m_notification_text;
         wxStaticBitmap*  m_notification_icon;
 
-#if (wxMAJOR_VERSION == 3)
+#if wxCHECK_VERSION(2,9,1)
         wxGenericHyperlinkCtrl* m_notification_link;
 #endif
 
