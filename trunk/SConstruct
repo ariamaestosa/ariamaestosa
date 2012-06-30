@@ -274,14 +274,14 @@ def compile_Aria(which_os):
         is_wx_3 = (wxversion[0] == '3' or (wxversion[0] == '2' and wxversion[2] == '9'))
         if is_wx_3:
             if renderer == "opengl":
-                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,gl,net,webview'])
+                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,adv,gl,net,webview'])
             else:
-                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,net,webview'])
+                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,adv,net,webview'])
         else:
             if renderer == "opengl":
-                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,net,gl'])
+                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,adv,net,gl'])
             else:
-                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,net,base'])
+                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,net,adv,base'])
             
     # check build type and init build flags
     if build_type == "debug":
