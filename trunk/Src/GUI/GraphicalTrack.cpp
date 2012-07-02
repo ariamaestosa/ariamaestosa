@@ -435,7 +435,7 @@ GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq, MagneticGri
     m_sharp_flat_picker->addItem( (new BitmapButton( 14, 21, naturalSign, true ))->setImageState(AriaRender::STATE_NOTE), 0 );
     m_components->addFromLeft(m_sharp_flat_picker);
     
-    m_instrument_field = new BlankField(155);
+    m_instrument_field = new BlankField(195);
     m_components->addFromRight(m_instrument_field);
 	m_instrument_name.setMaxWidth( m_instrument_field->getUsableWidth() );
     
@@ -448,7 +448,7 @@ GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq, MagneticGri
     }
     else
     {
-        m_instrument_string->setValue(InstrumentChoice::getInstrumentName( m_track->getInstrument() ));
+        m_instrument_string->setValue(getInstrumentName(m_track->getInstrument()));
     }
     
     m_instrument_name.setFont( getInstrumentNameFont() );
@@ -581,6 +581,14 @@ bool GraphicalTrack::handleEditorChanges(int x, BitmapButton* button, Editor* ed
     }
     return false;
 }
+
+
+wxString GraphicalTrack::getInstrumentName(int instId)
+{
+    return ::wxGetTranslation(InstrumentChoice::getInstrumentName(instId));
+}
+
+
 
 // ----------------------------------------------------------------------------------------------------------
 
@@ -1071,7 +1079,7 @@ void GraphicalTrack::onDrumkitChanged(const int newInstrument)
 
 void GraphicalTrack::onInstrumentChanged(const int newInstrument)
 {
-    m_instrument_string->setValue(InstrumentChoice::getInstrumentName( newInstrument ));
+    m_instrument_string->setValue(getInstrumentName(newInstrument));
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -1176,7 +1184,7 @@ void GraphicalTrack::onNotationTypeChange()
     {
         // only call 'set' if the string really changed, the OpenGL implementation of 'set' involves
         // RTT and is quite expensive.
-        wxString name = InstrumentChoice::getInstrumentName( m_track->getInstrument() );
+        wxString name = getInstrumentName(m_track->getInstrument());
         if (m_instrument_string->getValue() != name)
         {
             m_instrument_string->setValue(name);
