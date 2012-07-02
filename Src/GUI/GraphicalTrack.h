@@ -125,6 +125,7 @@ namespace AriaMaestosa
         void evenlyDistributeSpace();
         
         bool handleEditorChanges(int x, BitmapButton* button, Editor* editor, NotationType type);
+        wxString getInstrumentName(int instId);
         
     public:
         LEAK_CHECK();

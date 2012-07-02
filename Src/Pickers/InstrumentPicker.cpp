@@ -80,60 +80,60 @@ static const int g_buzzwood_percussion_insts[] = { 8, 9, 10, 11, 12, 13, 47, 108
 // See http://www.zikinf.com/articles/mao/tablemidi.php
 static const PickerMenu g_standard_midi_picker[] =
 {
-    { _("Piano"), g_piano_insts, STANDARD_MIDI_SIZE },
-    { _("Chromatic Percussion"), g_chromatic_percussion_insts, STANDARD_MIDI_SIZE },
-    { _("Organ"), g_organ_insts, STANDARD_MIDI_SIZE },
-    { _("Guitar"), g_guitar_insts, STANDARD_MIDI_SIZE },
-    { _("Bass"), g_bass_insts, STANDARD_MIDI_SIZE },
-    { _("Strings"), g_strings_insts, STANDARD_MIDI_SIZE },
-    { _("Ensemble"), g_ensemble_insts, STANDARD_MIDI_SIZE },
-    { _("Brass"), g_brass_insts, STANDARD_MIDI_SIZE },
-    { _("Reed"), g_reed_insts, STANDARD_MIDI_SIZE },
-    { _("Pipe"), g_pipe_insts, STANDARD_MIDI_SIZE },
-    { _("Synth Lead"), g_synth_lead_insts, STANDARD_MIDI_SIZE },
-    { _("Synth Pad"), g_synth_pad_insts, STANDARD_MIDI_SIZE },
-    { _("Synth Effects"), g_synth_effects_insts, STANDARD_MIDI_SIZE },
-    { _("Ethnic"), g_ethnic_insts, STANDARD_MIDI_SIZE },
-    { _("Percussive"), g_percussive_insts, STANDARD_MIDI_SIZE },
-    { _("Sound Effects"), g_sound_effects_insts, STANDARD_MIDI_SIZE }
+    { wxT("Piano"), g_piano_insts, STANDARD_MIDI_SIZE },
+    { wxT("Chromatic Percussion"), g_chromatic_percussion_insts, STANDARD_MIDI_SIZE },
+    { wxT("Organ"), g_organ_insts, STANDARD_MIDI_SIZE },
+    { wxT("Guitar"), g_guitar_insts, STANDARD_MIDI_SIZE },
+    { wxT("Bass"), g_bass_insts, STANDARD_MIDI_SIZE },
+    { wxT("Strings"), g_strings_insts, STANDARD_MIDI_SIZE },
+    { wxT("Ensemble"), g_ensemble_insts, STANDARD_MIDI_SIZE },
+    { wxT("Brass"), g_brass_insts, STANDARD_MIDI_SIZE },
+    { wxT("Reed"), g_reed_insts, STANDARD_MIDI_SIZE },
+    { wxT("Pipe"), g_pipe_insts, STANDARD_MIDI_SIZE },
+    { wxT("Synth Lead"), g_synth_lead_insts, STANDARD_MIDI_SIZE },
+    { wxT("Synth Pad"), g_synth_pad_insts, STANDARD_MIDI_SIZE },
+    { wxT("Synth Effects"), g_synth_effects_insts, STANDARD_MIDI_SIZE },
+    { wxT("Ethnic"), g_ethnic_insts, STANDARD_MIDI_SIZE },
+    { wxT("Percussive"), g_percussive_insts, STANDARD_MIDI_SIZE },
+    { wxT("Sound Effects"), g_sound_effects_insts, STANDARD_MIDI_SIZE }
 };
 
 
 static const PickerMenu g_aria_picker[] =
 {
-    { _("Piano"), g_piano_insts, SIZE(g_piano_insts) },
-    { _("Chromatic"), g_chromatic_percussion_insts, SIZE(g_chromatic_percussion_insts) },
-    { _("Organ"), g_organ_insts, SIZE(g_organ_insts) },
-    { _("Guitar"), g_aria_guitar_insts, SIZE(g_aria_guitar_insts) },
-    { _("Bass"), g_bass_insts, SIZE(g_bass_insts) },
-    { _("Strings and Orchestra"), g_aria_strings_and_orchestra_insts, SIZE(g_aria_strings_and_orchestra_insts) },
-    { _("Choirs, Pads and Voices"), g_aria_choirs_pads_voices_insts, SIZE(g_aria_choirs_pads_voices_insts) },
-    { _("Brass"), g_brass_insts, SIZE(g_brass_insts) },
-    { _("Reed"), g_reed_insts, SIZE(g_reed_insts) },
-    { _("Flutes and Pipe"), g_pipe_insts, SIZE(g_pipe_insts) },
-    { _("Synth Lead"), g_aria_synth_lead_insts, SIZE(g_aria_synth_lead_insts) },
-    { _("Ethnic"), g_ethnic_insts, SIZE(g_ethnic_insts) },
-    { _("Percussion"), g_aria_percussion_insts, SIZE(g_aria_percussion_insts) },
-    { _("Sound Effects"), g_aria_sound_effects_insts, SIZE(g_aria_sound_effects_insts) }
+    { wxT("Piano"), g_piano_insts, SIZE(g_piano_insts) },
+    { wxT("Chromatic"), g_chromatic_percussion_insts, SIZE(g_chromatic_percussion_insts) },
+    { wxT("Organ"), g_organ_insts, SIZE(g_organ_insts) },
+    { wxT("Guitar"), g_aria_guitar_insts, SIZE(g_aria_guitar_insts) },
+    { wxT("Bass"), g_bass_insts, SIZE(g_bass_insts) },
+    { wxT("Strings and Orchestra"), g_aria_strings_and_orchestra_insts, SIZE(g_aria_strings_and_orchestra_insts) },
+    { wxT("Choirs, Pads and Voices"), g_aria_choirs_pads_voices_insts, SIZE(g_aria_choirs_pads_voices_insts) },
+    { wxT("Brass"), g_brass_insts, SIZE(g_brass_insts) },
+    { wxT("Reed"), g_reed_insts, SIZE(g_reed_insts) },
+    { wxT("Flutes and Pipe"), g_pipe_insts, SIZE(g_pipe_insts) },
+    { wxT("Synth Lead"), g_aria_synth_lead_insts, SIZE(g_aria_synth_lead_insts) },
+    { wxT("Ethnic"), g_ethnic_insts, SIZE(g_ethnic_insts) },
+    { wxT("Percussion"), g_aria_percussion_insts, SIZE(g_aria_percussion_insts) },
+    { wxT("Sound Effects"), g_aria_sound_effects_insts, SIZE(g_aria_sound_effects_insts) }
 };
 
 
 // See http://www.buzzwood.com/midtest.htm
 static const PickerMenu g_buzzwood_picker[] =
 {
-    { _("Piano"), g_buzzwood_piano_insts, SIZE(g_buzzwood_piano_insts) },
-    { _("Organ"), g_organ_insts, SIZE(g_organ_insts) },
-    { _("Brass"), g_brass_insts, SIZE(g_brass_insts) },
-    { _("Pads"), g_buzzwood_pads_insts, SIZE(g_buzzwood_pads_insts) },
-    { _("Synth Lead"), g_synth_lead_insts, SIZE(g_synth_lead_insts) },
-    { _("Reed"), g_buzzwood_reed_insts, SIZE(g_buzzwood_reed_insts) },
-    { _("Pipe"), g_pipe_insts, SIZE(g_pipe_insts) },
-    { _("Guitar"), g_buzzwood_guitar_insts, SIZE(g_buzzwood_guitar_insts) },
-    { _("Plucked"), g_buzzwood_plucked_insts, SIZE(g_buzzwood_plucked_insts) },
-    { _("Bowed"), g_buzzwood_bowed_insts, SIZE(g_buzzwood_bowed_insts) },
-    { _("Bass"), g_buzzwood_bass_insts, SIZE(g_buzzwood_bass_insts) },
-    { _("Percussion"), g_buzzwood_percussion_insts, SIZE(g_buzzwood_percussion_insts) },
-    { _("Sound Effects"), g_sound_effects_insts, SIZE(g_sound_effects_insts) }
+    { wxT("Piano"), g_buzzwood_piano_insts, SIZE(g_buzzwood_piano_insts) },
+    { wxT("Organ"), g_organ_insts, SIZE(g_organ_insts) },
+    { wxT("Brass"), g_brass_insts, SIZE(g_brass_insts) },
+    { wxT("Pads"), g_buzzwood_pads_insts, SIZE(g_buzzwood_pads_insts) },
+    { wxT("Synth Lead"), g_synth_lead_insts, SIZE(g_synth_lead_insts) },
+    { wxT("Reed"), g_buzzwood_reed_insts, SIZE(g_buzzwood_reed_insts) },
+    { wxT("Pipe"), g_pipe_insts, SIZE(g_pipe_insts) },
+    { wxT("Guitar"), g_buzzwood_guitar_insts, SIZE(g_buzzwood_guitar_insts) },
+    { wxT("Plucked"), g_buzzwood_plucked_insts, SIZE(g_buzzwood_plucked_insts) },
+    { wxT("Bowed"), g_buzzwood_bowed_insts, SIZE(g_buzzwood_bowed_insts) },
+    { wxT("Bass"), g_buzzwood_bass_insts, SIZE(g_buzzwood_bass_insts) },
+    { wxT("Percussion"), g_buzzwood_percussion_insts, SIZE(g_buzzwood_percussion_insts) },
+    { wxT("Sound Effects"), g_sound_effects_insts, SIZE(g_sound_effects_insts) }
 };
 
 
@@ -198,12 +198,12 @@ void InstrumentPicker::buildPicker(const PickerMenu pickerMenuArray[], int size)
     {
         wxMenu* menu = new wxMenu();
         const PickerMenu pickerMenu = pickerMenuArray[i];
-        Append(MENU_REF_ID+i, pickerMenu.name, menu);
+        Append(MENU_REF_ID+i, ::wxGetTranslation(pickerMenu.name), menu);
 
         for( int j = 0; j< pickerMenu.inst_array_size ; j++ )
         {
             int id = pickerMenu.inst_array[j];
-            m_inst_menus[id] = menu->Append(id + SUB_MENU_REF_ID, InstrumentChoice::getInstrumentName(id));
+            m_inst_menus[id] = menu->Append(id + SUB_MENU_REF_ID, ::wxGetTranslation(InstrumentChoice::getInstrumentName(id)));
         }
     }
 }
