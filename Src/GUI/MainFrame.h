@@ -89,6 +89,7 @@ namespace AriaMaestosa
         MENU_FILE_OPEN,
         MENU_FILE_SAVE,
         MENU_FILE_SAVE_AS,
+        MENU_FILE_RELOAD,
         MENU_FILE_IMPORT_MIDI,
         MENU_FILE_EXPORT_MIDI,
         MENU_FILE_EXPORT_SAMPLED_AUDIO,
@@ -349,6 +350,7 @@ namespace AriaMaestosa
         void menuEvent_save(wxCommandEvent& evt);
         bool doSave();
         void menuEvent_saveas(wxCommandEvent& evt);
+        void menuEvent_reload(wxCommandEvent& evt);
         bool doSaveAs();
         void menuEvent_selectNone(wxCommandEvent& evt);
         void menuEvent_selectAll(wxCommandEvent& evt);
@@ -419,6 +421,9 @@ namespace AriaMaestosa
 
         /** Opens the .mid file in filepath, reads it and prepares the editor to display and edit it. */
         void loadMidiFile(wxString path);
+
+        /** Updates file from disk */
+        void reloadFile();
 
 
         // ---- scrollbars

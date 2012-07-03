@@ -97,6 +97,10 @@ void MainFrame::initMenuBar()
             wxCommandEventHandler(MainFrame::menuEvent_saveas));
 
     //I18N: menu item in the "file" menu
+    m_file_menu -> QUICK_ADD_MENU ( MENU_FILE_RELOAD, wxString(_("&Reload"))+wxT("\tCtrl-Shift-O"),
+                                    MainFrame::menuEvent_reload);
+
+    //I18N: menu item in the "file" menu
     m_file_menu -> QUICK_ADD_MENU ( MENU_FILE_CLOSE, wxString(_("&Close"))+wxT("\tCtrl-W"),
                                     MainFrame::menuEvent_close);
 
@@ -567,6 +571,14 @@ bool MainFrame::doSave()
 void MainFrame::menuEvent_saveas(wxCommandEvent& evt)
 {
     doSaveAs();
+}
+
+
+// -----------------------------------------------------------------------------------------------------------
+
+void MainFrame::menuEvent_reload(wxCommandEvent& evt)
+{
+    MainFrame::reloadFile();
 }
 
 // -----------------------------------------------------------------------------------------------------------
