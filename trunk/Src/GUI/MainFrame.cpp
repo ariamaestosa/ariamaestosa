@@ -1796,6 +1796,7 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
 
     addSequence();
     setCurrentSequence( getSequenceAmount()-1 );
+    getCurrentSequence()->setFilepath(midiFilePath);
 
     WaitWindow::show(this, _("Please wait while midi file is loading."));
 
@@ -1844,9 +1845,57 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
         m_notification_text->SetLabel(wxString(full.str().c_str(), wxConvUTF8));
         m_notification_panel->Layout();
         m_notification_panel->GetSizer()->SetSizeHints(m_notification_panel);
-		m_notification_panel->Show();
-		Layout();
+        m_notification_panel->Show();
+        Layout();
 
+    }
+}
+
+
+// ----------------------------------------------------------------------------------------------------------
+void MainFrame::reloadFile()
+{
+    wxString filePath;
+    Sequence* seq;
+
+    wxLogVerbose( wxT("MainFrame::reloadFile") );
+
+    seq = getCurrentSequence();
+    filePath = seq->getFilepath();
+
+    if (wxFileExists(filePath))
+    {
+        WaitWindow::show(this, _("Please wait while file is reloaded."));
+
+        if (filePath.EndsWith(wxT("aria")))
+        {
+            const bool success = AriaMaestosa::loadAriaFile(getCurrentGraphicalSequence(), filePath);
+            if (not success)
+            {
+                std::cout << "Loading .aria file failed." << std::endl;
+                WaitWindow::hide();
+                wxMessageBox(  _("Sorry, loading .aria file failed.") );
+                closeSequence();
+                return;
+            }
+        }
+        else if (filePath.EndsWith(wxT("mid")) or filePath.EndsWith(wxT("midi")))
+        {
+            std::set<wxString> warnings;
+            if ( not AriaMaestosa::loadMidiFile(getCurrentGraphicalSequence(), filePath, warnings) )
+            {
+                std::cout << "Loading midi file failed." << std::endl;
+                WaitWindow::hide();
+                wxMessageBox(  _("Sorry, loading midi file failed.") );
+                closeSequence();
+                return;
+            }
+        }
+
+        WaitWindow::hide();
+        updateVerticalScrollbar();
+
+        Display::render();
     }
 }
 
