@@ -585,7 +585,7 @@ bool GraphicalTrack::handleEditorChanges(int x, BitmapButton* button, Editor* ed
 
 wxString GraphicalTrack::getInstrumentName(int instId)
 {
-    return ::wxGetTranslation(InstrumentChoice::getInstrumentName(instId));
+    return InstrumentChoice::getInstrumentName(instId);
 }
 
 

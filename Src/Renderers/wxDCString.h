@@ -112,7 +112,8 @@ namespace AriaMaestosa
         wxDCString& get(const int id);
         
         void bind();
-        
+
+        void addStrings(const wxString strings_arg[], int amount);
         void addString(wxString string);
         int getStringAmount() const { return m_strings.size(); }
         

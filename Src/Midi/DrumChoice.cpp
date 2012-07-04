@@ -15,24 +15,29 @@
  */
 
 #include "Midi/DrumChoice.h"
+
 #include <wx/string.h>
+
+// Necessary to handle translations
+#include <wx/wx.h>
+
 #include <iostream>
 
 using namespace AriaMaestosa;
 
 static const std::pair<int, wxString> g_drumkit_names[] =
 {
-    std::pair<int, wxString>(0, wxT("Standard")),
-    std::pair<int, wxString>(8, wxT("Room kit")),
-    std::pair<int, wxString>(16, wxT("Power kit")),
-    std::pair<int, wxString>(24, wxT("Electronic")),
-    std::pair<int, wxString>(25, wxT("Analog")),
-    std::pair<int, wxString>(32, wxT("Jazz")),
-    std::pair<int, wxString>(40, wxT("Brush")),
-    std::pair<int, wxString>(48, wxT("Orchestral")),
-    std::pair<int, wxString>(56, wxT("Special Effects")),
+    std::pair<int, wxString>(0, _("Standard")),
+    std::pair<int, wxString>(8, _("Room kit")),
+    std::pair<int, wxString>(16, _("Power kit")),
+    std::pair<int, wxString>(24, _("Electronic")),
+    std::pair<int, wxString>(25, _("Analog")),
+    std::pair<int, wxString>(32, _("Jazz")),
+    std::pair<int, wxString>(40, _("Brush")),
+    std::pair<int, wxString>(48, _("Orchestral")),
+    std::pair<int, wxString>(56, _("Special Effects")),
     /** End sentinel */
-    std::pair<int, wxString>(-1, wxT("Invalid Drumkit"))
+    std::pair<int, wxString>(-1, _("Invalid Drumkit"))
 };
 
 
@@ -49,14 +54,18 @@ void DrumChoice::setDrumkit(const int drumkit, const bool generateEvent)
     if (generateEvent and m_listener != NULL) m_listener->onDrumkitChanged(drumkit);
 }
 
-const wxString& DrumChoice::getDrumkitName(int id)
+
+const wxString DrumChoice::getDrumkitName(int id)
 {
     int n;
     for (n=0; g_drumkit_names[n].first != -1; n++)
     {
-        if (g_drumkit_names[n].first == id) return g_drumkit_names[n].second;
+        if (g_drumkit_names[n].first == id)
+        {
+            return ::wxGetTranslation(g_drumkit_names[n].second);
+        }
     }
     
     std::cerr << "wrong drumset ID: " << id << std::endl;
-    return g_drumkit_names[n].second;
+    return ::wxGetTranslation(g_drumkit_names[n].second);
 }

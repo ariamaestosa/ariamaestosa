@@ -188,11 +188,7 @@ namespace AriaMaestosa
     }
     wxDCStringArray::wxDCStringArray(const wxString strings_arg[], int amount)
     {
-        for (int n=0; n<amount; n++)
-        {
-            m_strings.push_back( new wxDCString( new Model<wxString>(strings_arg[n]), true ) );
-        }
-        m_consolidated = false;
+        addStrings(strings_arg, amount);
     }
     
     wxDCStringArray::~wxDCStringArray(){}
@@ -201,7 +197,17 @@ namespace AriaMaestosa
     {
         return m_strings[id];
     }
-    
+
+    void wxDCStringArray::addStrings(const wxString strings_arg[], int amount)
+    {
+        for (int n=0; n<amount; n++)
+        {
+            m_strings.push_back( new wxDCString( new Model<wxString>(strings_arg[n]), true ) );
+        }
+        m_consolidated = false;
+    }
+
+
     void wxDCStringArray::addString(wxString newstring)
     {
         m_strings.push_back( new wxDCString( new Model<wxString>(newstring), true ) );

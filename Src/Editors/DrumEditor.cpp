@@ -30,7 +30,6 @@
 #include "Midi/Track.h"
 #include "Midi/Sequence.h"
 #include "Pickers/DrumPicker.h"
-//#include "Pickers/MagneticGrid.h"
 #include "PreferencesData.h"
 #include "Renderers/Drawable.h"
 #include "Renderers/RenderAPI.h"
@@ -39,7 +38,10 @@
 
 using namespace AriaMaestosa;
 
-const int Y_STEP = 10;
+static const int Y_STEP = 10;
+static const int DRUM_NAMES_COUNT = 96-27;
+static const int DRUM_NAME_MAX_LENGTH = 12;
+
 
 // ----------------------------------------------------------------------------------------------------------
 
@@ -58,136 +60,138 @@ DrumEditor::DrumInfo::DrumInfo(int midiKey, const bool section)
 static const wxString g_drum_names[] =
 {
     /*
-    wxT(" "), // 0
-    wxT(" "), // 1
-    wxT(" "), // 2
-    wxT(" "), // 3
-    wxT(" "), // 4
-    wxT(" "), // 5
-    wxT(" "), // 6
-    wxT(" "), // 7
-    wxT(" "), // 8
-    wxT(" "), // 9
-    wxT(" "), // 10
-    wxT(" "), // 11
-    wxT(" "), // 12
-    wxT(" "), // 13
-    wxT(" "), // 14
-    wxT(" "), // 15
-    wxT(" "), // 16
-    wxT(" "), // 17
-    wxT(" "), // 18
-    wxT(" "), // 19
-    wxT(" "), // 20
-    wxT(" "), // 21
-    wxT(" "), // 22
-    wxT(" "), // 23
-    wxT(" "), // 24
-    wxT(" "), // 25
-    wxT(" "), // 26
+    _(" "), // 0
+    _(" "), // 1
+    _(" "), // 2
+    _(" "), // 3
+    _(" "), // 4
+    _(" "), // 5
+    _(" "), // 6
+    _(" "), // 7
+    _(" "), // 8
+    _(" "), // 9
+    _(" "), // 10
+    _(" "), // 11
+    _(" "), // 12
+    _(" "), // 13
+    _(" "), // 14
+    _(" "), // 15
+    _(" "), // 16
+    _(" "), // 17
+    _(" "), // 18
+    _(" "), // 19
+    _(" "), // 20
+    _(" "), // 21
+    _(" "), // 22
+    _(" "), // 23
+    _(" "), // 24
+    _(" "), // 25
+    _(" "), // 26
      */
-    wxT("High Q"), // 27
-    wxT("Slap"), // 28
-    wxT("Push"), // 29
-    wxT("Pull"), // 30
-    wxT("Stick"), // 31
-    wxT("Square"), // 32
-    wxT("Metro"), // 33
-    wxT("Metro bell"), // 34
-    wxT("Bass drum 2"), // 35
-    wxT("Bass drum 1"), // 36
-    wxT("Stick"), // 37
-    wxT("Snare"), // 38
-    wxT("Clap"), // 39
-    wxT("Snare 2"), // 40
-    wxT("Tom 6"), // 41
-    wxT("Closed hi-hat"), // 42
-    wxT("Tom 5"), // 43
-    wxT("Pedal hi-hat"), // 44
-    wxT("Tom 4"), // 45
-    wxT("Open hi-hat"), // 46
-    wxT("Tom 3"), // 47
-    wxT("Tom 2"), // 48
-    wxT("Crash"), // 49
-    wxT("Tom 1"), // 50
-    wxT("Ride"), // 51
-    wxT("Chinese"), // 52
-    wxT("Ride bell"), // 53
-    wxT("Tambourine"), // 54
-    wxT("Splash"), // 55
-    wxT("Cowbell"), // 56
-    wxT("Crash 2"), // 57
-    wxT("Vibraslap"), // 58
-    wxT("Ride 2"), // 59
-    wxT("Hi bongo"), // 60
-    wxT("Low bongo"), // 61
-    wxT("Mute hi conga"), // 62
-    wxT("Open hi conga"), // 63
-    wxT("Low conga"), // 64
-    wxT("High timbale"), // 65
-    wxT("Low timbale"), // 66
-    wxT("High agogo"), // 67
-    wxT("Low agogo"), // 68
-    wxT("Cabasa"), // 69
-    wxT("Maracas"), // 70
-    wxT("Short whistle"), // 71
-    wxT("Long whistle"), // 72
-    wxT("Short guiro"), // 73
-    wxT("Long guiro"), // 74
-    wxT("Claves"), // 75
-    wxT("Hi wood block"), // 76
-    wxT("Lo wood block"), // 77
-    wxT("Mute cuica"), // 78
-    wxT("Open cuica"), // 79
-    wxT("Mute triangle"), // 80
-    wxT("Open triangle"), // 81
-    wxT("Shaker"), // 82
-    wxT("Jingle Bell"), // 83
-    wxT("Bell Tree"), // 84
-    wxT("Castanets"), // 85
-    wxT("Mute surdo"), // 86
-    wxT("Open surdo"), // 87
+    _("High Q"), // 27
+    _("Slap"), // 28
+    _("Push"), // 29
+    _("Pull"), // 30
+    _("Stick"), // 31
+    _("Square"), // 32
+    _("Metro"), // 33
+    _("Metro bell"), // 34
+    _("Bass drum 2"), // 35
+    _("Bass drum 1"), // 36
+    _("Stick"), // 37
+    _("Snare"), // 38
+    _("Clap"), // 39
+    _("Snare 2"), // 40
+    _("Tom 6"), // 41
+    _("Closed hi-hat"), // 42
+    _("Tom 5"), // 43
+    _("Pedal hi-hat"), // 44
+    _("Tom 4"), // 45
+    _("Open hi-hat"), // 46
+    _("Tom 3"), // 47
+    _("Tom 2"), // 48
+    _("Crash"), // 49
+    _("Tom 1"), // 50
+    _("Ride"), // 51
+    _("Chinese"), // 52
+    _("Ride bell"), // 53
+    _("Tambourine"), // 54
+    _("Splash"), // 55
+    _("Cowbell"), // 56
+    _("Crash 2"), // 57
+    _("Vibraslap"), // 58
+    _("Ride 2"), // 59
+    _("Hi bongo"), // 60
+    _("Low bongo"), // 61
+    _("Mute hi conga"), // 62
+    _("Open hi conga"), // 63
+    _("Low conga"), // 64
+    _("High timbale"), // 65
+    _("Low timbale"), // 66
+    _("High agogo"), // 67
+    _("Low agogo"), // 68
+    _("Cabasa"), // 69
+    _("Maracas"), // 70
+    _("Short whistle"), // 71
+    _("Long whistle"), // 72
+    _("Short guiro"), // 73
+    _("Long guiro"), // 74
+    _("Claves"), // 75
+    _("Hi wood block"), // 76
+    _("Lo wood block"), // 77
+    _("Mute cuica"), // 78
+    _("Open cuica"), // 79
+    _("Mute triangle"), // 80
+    _("Open triangle"), // 81
+    _("Shaker"), // 82
+    _("Jingle Bell"), // 83
+    _("Bell Tree"), // 84
+    _("Castanets"), // 85
+    _("Mute surdo"), // 86
+    _("Open surdo"), // 87
 
     // sections (using unused instrument slots for these, so they be
     // put in the same string array, improving performance)
-    wxT("Drumkit"), // 88
-    wxT("Hi-hat"), // 89
-    wxT("Cymbal"), // 90
-    wxT("Toms"), // 91
-    wxT("African"), // 92
-    wxT("Latin"), // 93
-    wxT("Others"), // 94
-    wxT("Sound Effects"), // 95
+    _("Drumkit"), // 88
+    _("Hi-hat"), // 89
+    _("Cymbal"), // 90
+    _("Toms"), // 91
+    _("African"), // 92
+    _("Latin"), // 93
+    _("Others"), // 94
+    _("Sound Effects"), // 95
     /*
-    wxT(" "), // 96
-    wxT(" "), // 97
-    wxT(" "), // 98
-    wxT(" "), // 99
-    wxT(" "), // 100
-    wxT(" "), // 101
-    wxT(" "), // 102
-    wxT(" "), // 103
-    wxT(" "), // 104
-    wxT(" "), // 105
-    wxT(" "), // 106
-    wxT(" "), // 107
-    wxT(" "), // 108
-    wxT(" "), // 109
-    wxT(" "), // 110
-    wxT(" "), // 111
-    wxT(" "), // 112
-    wxT(" "), // 113
-    wxT(" "), // 114
-    wxT(" "), // 115
-    wxT(" "), // 116
-    wxT(" "), // 117
-    wxT(" "), // 118
-    wxT(" "), // 119*/
+    _(" "), // 96
+    _(" "), // 97
+    _(" "), // 98
+    _(" "), // 99
+    _(" "), // 100
+    _(" "), // 101
+    _(" "), // 102
+    _(" "), // 103
+    _(" "), // 104
+    _(" "), // 105
+    _(" "), // 106
+    _(" "), // 107
+    _(" "), // 108
+    _(" "), // 109
+    _(" "), // 110
+    _(" "), // 111
+    _(" "), // 112
+    _(" "), // 113
+    _(" "), // 114
+    _(" "), // 115
+    _(" "), // 116
+    _(" "), // 117
+    _(" "), // 118
+    _(" "), // 119*/
 };
 
 // ----------------------------------------------------------------------------------------------------------
-DrumEditor::DrumEditor(GraphicalTrack* track) : Editor(track), m_drum_names_renderer( g_drum_names, 96-27 )
+DrumEditor::DrumEditor(GraphicalTrack* track) : Editor(track)
 {
+    wxString* i18nDrumNames;
+
     m_sb_position          = 0;
     m_mouse_is_in_editor   = false;
     m_clicked_on_note      = false;
@@ -197,17 +201,26 @@ DrumEditor::DrumEditor(GraphicalTrack* track) : Editor(track), m_drum_names_rend
     useDefaultDrumSet();
     Editor::useInstantNotes();
 
+    i18nDrumNames = new wxString[DRUM_NAMES_COUNT];
+    for (int i = 0 ; i<DRUM_NAMES_COUNT ; i++)
+    {
+        i18nDrumNames[i] = ::wxGetTranslation(g_drum_names[i]);
+        i18nDrumNames[i].Truncate(DRUM_NAME_MAX_LENGTH);
+    }
+    m_drum_names_renderer.addStrings(i18nDrumNames, DRUM_NAMES_COUNT);
+    delete[] i18nDrumNames;
+
     m_drum_names_renderer.setFont(getDrumNamesFont());
 }
 
-// ----------------------------------------------------------------------------------------------------------
 
+// ----------------------------------------------------------------------------------------------------------
 DrumEditor::~DrumEditor()
 {
 }
 
-// ----------------------------------------------------------------------------------------------------------
 
+// ----------------------------------------------------------------------------------------------------------
 void DrumEditor::useCustomDrumSet()
 {
 
