@@ -45,7 +45,7 @@ namespace AriaMaestosa
         InstrumentChoice(const int defaultInstrument, IInstrumentChoiceListener* listener);
         int getSelectedInstrument() const { return m_selected_instrument; }
         void setInstrument(const int instrument, const bool generateEvent=true);
-        static const wxString& getInstrumentName(int id);
+        static const wxString getInstrumentName(int id);
 
     };
 

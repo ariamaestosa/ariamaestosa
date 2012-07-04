@@ -47,7 +47,7 @@ namespace AriaMaestosa
         int getSelectedDrumkit() const { return m_selected_drumkit; }
         void setDrumkit(const int drumkit, const bool generateEvent=true);
         
-        static const wxString& getDrumkitName(int id);
+        static const wxString getDrumkitName(int id);
         
     };
     

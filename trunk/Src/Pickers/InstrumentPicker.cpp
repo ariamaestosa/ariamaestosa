@@ -203,7 +203,7 @@ void InstrumentPicker::buildPicker(const PickerMenu pickerMenuArray[], int size)
         for( int j = 0; j< pickerMenu.inst_array_size ; j++ )
         {
             int id = pickerMenu.inst_array[j];
-            m_inst_menus[id] = menu->Append(id + SUB_MENU_REF_ID, ::wxGetTranslation(InstrumentChoice::getInstrumentName(id)));
+            m_inst_menus[id] = menu->Append(id + SUB_MENU_REF_ID, InstrumentChoice::getInstrumentName(id));
         }
     }
 }
