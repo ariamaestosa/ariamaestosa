@@ -18,6 +18,7 @@
 #include <wx/config.h>
 #include <wx/msgdlg.h>
 #include <wx/log.h>
+#include <wx/snglinst.h>
 
 #include "GUI/MainFrame.h"
 #include "GUI/MainPane.h"
@@ -91,14 +92,14 @@ void wxWidgetApp::onActivate(wxActivateEvent& evt)
 // ------------------------------------------------------------------------------------------------------
 
 bool wxWidgetApp::OnInit()
-{   
-    wxLogVerbose( wxT("wxWidgetsApp::OnInit (enter)") );
+{
+    wxLog::SetActiveTarget(new wxLogStderr());
+    ::wxLogVerbose( wxT("wxWidgetsApp::OnInit (enter)") );
+
     m_render_loop_on = false;
-    
+    m_single_instance_checker = NULL;
     frame = NULL;
     
-    wxLog::SetActiveTarget( new wxLogStderr() );
-
     for (int n=0; n<argc; n++)
     {
         if (wxString(argv[n]) == wxT("--utest"))
@@ -118,10 +119,25 @@ bool wxWidgetApp::OnInit()
         }
     }
     
-    wxLogVerbose( wxT("[main] init preferences") );
+    ::wxLogVerbose( wxT("[main] init preferences") );
     prefs = PreferencesData::getInstance();
     prefs->init();
-    
+
+    if (prefs->getBoolValue(SETTING_ID_SINGLE_INSTANCE_APPLICATION))
+    {
+        m_single_instance_checker = new wxSingleInstanceChecker;
+        m_single_instance_checker->Create(GetAppName() + wxGetUserId());
+        if (m_single_instance_checker->IsAnotherRunning())
+        {
+            ::wxLogError(_("Another program instance is already running, aborting."));
+
+            delete m_single_instance_checker; // OnExit() won't be called if we return false
+            m_single_instance_checker = NULL;
+
+            return false;
+        }
+    }
+
     if (prefs->getBoolValue(SETTING_ID_CHECK_NEW_VERSION))
     {
         checkVersionOnline();
@@ -132,15 +148,15 @@ bool wxWidgetApp::OnInit()
     //read presets
     KeyPresetGroup::getInstance();
     
-    wxLogVerbose( wxT("[main] init midi player") );
+    ::wxLogVerbose( wxT("[main] init midi player") );
     PlatformMidiManager::get()->initMidiPlayer();
 
-    wxLogVerbose( wxT("[main] init main frame") );
+    ::wxLogVerbose( wxT("[main] init main frame") );
     frame = new MainFrame();
     AriaMaestosa::setCurrentSequenceProvider(frame);
     frame->init();
 
-    wxLogVerbose( wxT("[main] init main frame 2") );
+    ::wxLogVerbose( wxT("[main] init main frame 2") );
 
     frame->updateHorizontalScrollbar(0);
 
@@ -148,7 +164,7 @@ bool wxWidgetApp::OnInit()
 
     SetTopWindow(frame);
 
-    wxLogVerbose( wxT("[main] init main frame 3") );
+    ::wxLogVerbose( wxT("[main] init main frame 3") );
     
     // check if filenames to open were given on the command-line
     for (int n=0; n<argc; n++)
@@ -164,7 +180,7 @@ bool wxWidgetApp::OnInit()
         }
     }
 
-    wxLogVerbose( wxT("wxWidgetsApp::OnInit (leave)") );
+    ::wxLogVerbose( wxT("wxWidgetsApp::OnInit (leave)") );
     return true;
 }
     
@@ -173,6 +189,8 @@ bool wxWidgetApp::OnInit()
 int wxWidgetApp::OnExit()
 {
     wxLogVerbose( wxT("wxWidgetsApp::OnExit") );
+
+    wxDELETE(m_single_instance_checker);
     
 #ifdef _MORE_DEBUG_CHECKS
     MemoryLeaks::checkForLeaks();

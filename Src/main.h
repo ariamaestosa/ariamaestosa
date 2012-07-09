@@ -24,6 +24,7 @@
 class wxString;
 class wxIdleEvent;
 class wxActivateEvent;
+class wxSingleInstanceChecker;
 
 namespace AriaMaestosa
 {
@@ -67,6 +68,8 @@ namespace AriaMaestosa
         DECLARE_EVENT_TABLE();
         
     private:
+
+        wxSingleInstanceChecker* m_single_instance_checker;
     };
     
 }
