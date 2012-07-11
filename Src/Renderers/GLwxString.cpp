@@ -3,12 +3,12 @@
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
  (at your option) any later version.
- 
+
  This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
- 
+
  You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -110,12 +110,12 @@ TextGLDrawable::TextGLDrawable(TextTexture* image_arg)
     m_y_scale = 1;
 
     y_offset = 0;
-    
+
     m_max_width = -1;
-    
+
     m_x_flip=false;
     m_y_flip=false;
-    
+
     m_w = -1;
     m_h = -1;
 
@@ -160,7 +160,7 @@ void TextGLDrawable::scale(float k)
 void TextGLDrawable::setImage(TextTexture* image, bool giveUpOwnership)
 {
     m_image = image;
-    
+
     if (giveUpOwnership)
     {
         m_image.owner = false;
@@ -175,38 +175,38 @@ void TextGLDrawable::rotate(int angle)
 void TextGLDrawable::render()
 {
     ASSERT(m_image != NULL);
-    
+
     ASSERT_E(m_w, >=, 0);
     ASSERT_E(m_h, >=, 0);
     ASSERT_E(m_w, <, 90000);
     ASSERT_E(m_h, <, 90000);
-    
+
     if (m_w == 0) fprintf(stderr, "[TextGLDrawable] WARNING: empty width image\n");
     if (m_h == 0) fprintf(stderr, "[TextGLDrawable] WARNING: empty height image\n");
-    
+
     glPushMatrix();
     glTranslatef(m_x*10,(m_y - m_h - y_offset)*10,0);
-    
+
     if (m_x_scale != 1 or m_y_scale != 1) glScalef(m_x_scale, m_y_scale, 1);
     if (m_angle != 0) glRotatef(m_angle, 0,0,1);
-    
+
     if (m_max_width != -1 and getWidth() > m_max_width)
     {
         const float ratio = (float)m_max_width/(float)getWidth();
         glBegin(GL_QUADS);
-        
+
         glTexCoord2f(m_x_flip? tex_coord_x2*ratio : tex_coord_x1,
                      m_y_flip? tex_coord_y2 : tex_coord_y1);
         glVertex2f( 0, 0 );
-        
+
         glTexCoord2f(m_x_flip? tex_coord_x1 : tex_coord_x2*ratio,
                      m_y_flip? tex_coord_y2 : tex_coord_y1);
         glVertex2f( m_max_width*10, 0 );
-        
+
         glTexCoord2f(m_x_flip? tex_coord_x1 : tex_coord_x2*ratio,
                      m_y_flip? tex_coord_y1 : tex_coord_y2);
         glVertex2f( m_max_width*10, m_h*10 );
-        
+
         glTexCoord2f(m_x_flip? tex_coord_x2*ratio : tex_coord_x1,
                      m_y_flip? tex_coord_y1 : tex_coord_y2);
         glVertex2f( 0, m_h*10 );
@@ -272,13 +272,13 @@ TextTexture::~TextTexture()
 #pragma mark -
 #pragma mark wxGLString implementation
 #endif
-    
+
 wxGLString::wxGLString(Model<wxString>* model, bool ownModel) : TextGLDrawable()
 {
     m_model = model;
     m_consolidated = false;
     m_warp_after = -1;
-    
+
     if (not ownModel) m_model.owner = false;
     model->setListener(this);
 }
@@ -286,10 +286,10 @@ wxGLString::wxGLString(Model<wxString>* model, bool ownModel) : TextGLDrawable()
 void wxGLString::bind()
 {
     if (not m_consolidated) consolidate(Display::renderDC);
-    
+
     glBindTexture(GL_TEXTURE_2D, m_image->getID()[0] );
 }
-    
+
 void wxGLString::calculateSize(wxDC* dc, const bool ignore_font /* when from array */)
 {
     if (not ignore_font)
@@ -314,13 +314,13 @@ void wxGLString::consolidate(wxDC* dc)
         val.Replace(wxT(" "),wxT("\n"));
         val.Replace(wxT("/"),wxT("/\n"));
         m_model->setValue(val);
-        
+
         singleLineHeight = m_h;
         dc->GetMultiLineTextExtent(val, &m_w, &m_h);
         //std::cout << "new size: " << m_w << ", " << m_h << std::endl;
         multiLine = true;
     }
-    
+
     const int power_of_2_w = std::max(32, (int)pow( 2, (int)ceil((float)log(m_w)/log(2.0)) ));
     const int power_of_2_h = std::max(32, (int)pow( 2, (int)ceil((float)log(m_h)/log(2.0)) ));
 
@@ -356,7 +356,7 @@ void wxGLString::consolidate(wxDC* dc)
     TextTexture* img = new TextTexture(bmp);
 
     //bmp.SaveFile(wxT("/tmp/test.png"), wxBITMAP_TYPE_PNG);
-    
+
     TextGLDrawable::texw = power_of_2_w;
     TextGLDrawable::texh = power_of_2_h;
     TextGLDrawable::tex_coord_x2 = (float)m_w / (float)power_of_2_w;
@@ -367,7 +367,7 @@ void wxGLString::consolidate(wxDC* dc)
 
     m_consolidated = true;
 }
-    
+
 void wxGLString::consolidateFromArray(wxDC* dc, int x, int y)
 {
     dc->DrawText(m_model->getValue(), x, y);
@@ -385,7 +385,7 @@ void wxGLString::render(const int x, const int y)
     TextGLDrawable::move(x, y);
     TextGLDrawable::render();
 }
-    
+
 void wxGLString::setMaxWidth(const int w, const bool warp /*false: truncate. true: warp.*/)
 {
    // std::cout << "wxGLString::setMaxWidth " << w << ", " << warp << std::endl;
@@ -398,7 +398,7 @@ void wxGLString::setMaxWidth(const int w, const bool warp /*false: truncate. tru
         m_warp_after = w;
     }
 }
- 
+
 wxGLString::~wxGLString()
 {
 }
@@ -467,7 +467,7 @@ void wxGLNumberRenderer::renderNumber(const char* s, int x, int y)
     //       within the same glBegin...glEnd
     ASSERT_E(space_w, >=, 0);
     ASSERT_E(space_w, <, 90000);
-    
+
     const int full_string_w = TextGLDrawable::texw;
 
     for (int c=0; c[s] != 0; c++)
@@ -524,15 +524,9 @@ wxGLStringArray::wxGLStringArray()
 }
 wxGLStringArray::wxGLStringArray(const wxString strings_arg[], int amount)
 {
-    img = NULL;
-    consolidated = false;
-
-    for (int n=0; n<amount; n++)
-    {
-        strings.push_back( new wxGLString( new Model<wxString>(strings_arg[n]), true) );
-    }
+   addStrings(strings_arg, amount);
 }
-    
+
 wxGLStringArray::~wxGLStringArray()
 {
 }
@@ -547,6 +541,18 @@ void wxGLStringArray::bind()
 
     glBindTexture(GL_TEXTURE_2D, img->getID()[0] );
 }
+
+void wxGLStringArray::addStrings(const wxString strings_arg[], int amount)
+{
+    img = NULL;
+    consolidated = false;
+
+    for (int n=0; n<amount; n++)
+    {
+        strings.push_back( new wxGLString( new Model<wxString>(strings_arg[n]), true) );
+    }
+}
+
 void wxGLStringArray::addString(wxString string)
 {
     strings.push_back( new wxGLString( new Model<wxString>(string), true) );
@@ -570,7 +576,7 @@ void wxGLStringArray::consolidate(wxDC* dc)
     for (int n=0; n<amount; n++)
     {
         if (strings[n].getModel()->getValue().IsEmpty()) continue;
-        
+
         strings[n].calculateSize(dc, true);
         y += strings[n].m_h;
         if (strings[n].m_w > longest_string) longest_string = strings[n].m_w;
@@ -584,7 +590,7 @@ void wxGLStringArray::consolidate(wxDC* dc)
     {
         column_amount ++;
     }
-    
+
     const int power_of_2_w = pow( 2, (int)ceil((float)log(longest_string*column_amount)/log(2.0)) );
     const int power_of_2_h = pow( 2, (int)ceil((float)log(y/column_amount)/log(2.0)) );
 
