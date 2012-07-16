@@ -416,11 +416,14 @@ namespace AriaMaestosa
         void updateMenuBarToSequence();
 
         // ---- I/O
+        /** Opens the file in filepath, or sets sequence current, if file already open */
+        void loadFile(const wxString& filePath);
+        
         /** Opens the .aria file in filepath, reads it and prepares the editor to display and edit it. */
-        void loadAriaFile(wxString path);
+        void loadAriaFile(const wxString& filePath);
 
         /** Opens the .mid file in filepath, reads it and prepares the editor to display and edit it. */
-        void loadMidiFile(wxString path);
+        void loadMidiFile(const wxString& filePath);
 
         /** Updates file from disk */
         void reloadFile();
