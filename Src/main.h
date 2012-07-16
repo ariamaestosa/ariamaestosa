@@ -25,6 +25,7 @@ class wxString;
 class wxIdleEvent;
 class wxActivateEvent;
 class wxSingleInstanceChecker;
+class AppIPCServer;
 
 namespace AriaMaestosa
 {
@@ -32,6 +33,7 @@ namespace AriaMaestosa
     class MainFrame;
     class MeasureBar;
     class PreferencesData;
+    
     
     class wxWidgetApp : public wxApp
     {
@@ -65,11 +67,17 @@ namespace AriaMaestosa
         /** callback from wxApp */
         virtual void OnUnhandledException();
         
+        void loadFile(const wxString& fileName);
+        
         DECLARE_EVENT_TABLE();
         
     private:
 
         wxSingleInstanceChecker* m_single_instance_checker;
+        AppIPCServer* m_IPC_server;
+        
+        bool handleSingleInstance();
+        
     };
     
 }
