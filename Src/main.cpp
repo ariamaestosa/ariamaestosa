@@ -243,7 +243,7 @@ bool wxWidgetApp::OnInit()
     ::wxLogVerbose( wxT("[main] init main frame 3") );
     
     // check if filenames to open were given on the command-line
-    for (int n=0; n<argc; n++)
+    for (int n=1 ; n<argc ; n++)
     {
         wxString fileName = wxString(argv[n]);
         loadFile(fileName);
@@ -273,19 +273,7 @@ void wxWidgetApp::MacOpenFile(const wxString &fileName)
 {
     wxLogVerbose( wxT("wxWidgetsApp::MacOpenFile") );
     
-    if (fileName.EndsWith(wxT("aria")))
-    {
-        frame->loadAriaFile( fileName );
-    }
-    else if (fileName.EndsWith(wxT("mid")) or fileName.EndsWith(wxT("midi")))
-    {
-        frame->loadMidiFile( fileName );
-    }
-    else
-    {
-        wxMessageBox(_("Unknown file type: ") + fileName);
-    }
-
+    loadFile(fileName);
 }
 
 // ------------------------------------------------------------------------------------------------------
@@ -362,12 +350,5 @@ bool wxWidgetApp::handleSingleInstance()
 
 void wxWidgetApp::loadFile(const wxString& fileName)
 {
-    if (fileName.EndsWith(wxT("aria")))
-    {
-        frame->loadAriaFile(fileName);
-    }
-    else if (fileName.EndsWith(wxT("mid")) or fileName.EndsWith(wxT("midi")))
-    {
-        frame->loadMidiFile(fileName);
-    }
+    frame->loadFile(fileName);
 }

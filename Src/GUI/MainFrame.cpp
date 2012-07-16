@@ -1739,7 +1739,58 @@ void MainFrame::setCurrentSequence(int n, bool updateView)
 #pragma mark I/O
 #endif
 
-void MainFrame::loadAriaFile(wxString filePath)
+
+// ----------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------
+void MainFrame::loadFile(const wxString& filePath)
+{
+    wxString existingFilePath;
+    wxString inputLowerFilePath;
+    int size;
+    bool found;
+    
+    size = m_sequences.size();
+    found = false;
+    inputLowerFilePath = filePath;
+    inputLowerFilePath.MakeLower();
+    
+    for (int i=0 ; i<size && !found ; i++)
+    {
+        existingFilePath = m_sequences[i].getModel()->getFilepath().MakeLower();
+        
+        // @todo : handle case where a path is relative and the other one is absolute (for the same file)
+        if (existingFilePath == inputLowerFilePath)
+        {
+            setCurrentSequence(i);
+            found = true;
+        }
+    }
+    
+    if (found)
+    {
+        // @todo : Should stop playing curent sequence ?
+        Display::render();
+    }
+    else
+    {
+        if (filePath.EndsWith(wxT("aria")))
+        {
+            loadAriaFile(filePath);
+        }
+        else if (filePath.EndsWith(wxT("mid")) or filePath.EndsWith(wxT("midi")))
+        {
+            loadMidiFile(filePath);
+        }
+        else
+        {
+            wxMessageBox(_("Unknown file type: ") + filePath);
+        }
+    }
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void MainFrame::loadAriaFile(const wxString& filePath)
 {
     wxLogVerbose( wxT("MainFrame::loadAriaFile") );
 
@@ -1785,23 +1836,24 @@ void MainFrame::loadAriaFile(wxString filePath)
     Display::render();
 }
 
+
 // ----------------------------------------------------------------------------------------------------------
 
-void MainFrame::loadMidiFile(wxString midiFilePath)
+void MainFrame::loadMidiFile(const wxString& filePath)
 {
     wxLogVerbose( wxT("MainFrame::loadMidiFile") );
-    if (midiFilePath.IsEmpty()) return;
+    if (filePath.IsEmpty()) return;
 
     const int old_currentSequence = m_current_sequence;
 
     addSequence();
     setCurrentSequence( getSequenceAmount()-1 );
-    getCurrentSequence()->setFilepath(midiFilePath);
+    getCurrentSequence()->setFilepath(filePath);
 
     WaitWindow::show(this, _("Please wait while midi file is loading."));
 
     std::set<wxString> warnings;
-    if (not AriaMaestosa::loadMidiFile( getCurrentGraphicalSequence(), midiFilePath, warnings ) )
+    if (not AriaMaestosa::loadMidiFile( getCurrentGraphicalSequence(), filePath, warnings ) )
     {
         std::cout << "Loading midi file failed." << std::endl;
         WaitWindow::hide();
@@ -1815,7 +1867,7 @@ void MainFrame::loadMidiFile(wxString midiFilePath)
     updateVerticalScrollbar();
 
     // change song name
-    getCurrentSequence()->setSequenceFilename( extractTitle(midiFilePath) );
+    getCurrentSequence()->setSequenceFilename( extractTitle(filePath) );
 
     // if a song is currently playing, it needs to stay on top
     if (PlatformMidiManager::get()->isPlaying() or m_paused) setCurrentSequence(old_currentSequence);
