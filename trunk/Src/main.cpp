@@ -19,6 +19,9 @@
 #include <wx/msgdlg.h>
 #include <wx/log.h>
 #include <wx/snglinst.h>
+#include <wx/ipc.h>      // IPC support
+#include <wx/filename.h>
+#include <wx/tokenzr.h>
 
 #include "GUI/MainFrame.h"
 #include "GUI/MainPane.h"
@@ -33,7 +36,13 @@
 
 #include "main.h"
 
+
 IMPLEMENT_APP(AriaMaestosa::wxWidgetApp)
+
+static const wxString IPC_START = wxT("StartOther");
+static const wxString IPC_APP_PORT = wxT("4242");
+static const wxString CONNECTION_FILE_SEPARATOR = wxT("|");
+
 
 using namespace AriaMaestosa;
 
@@ -41,6 +50,62 @@ BEGIN_EVENT_TABLE(wxWidgetApp,wxApp)
 EVT_ACTIVATE_APP(wxWidgetApp::onActivate)
 EVT_IDLE(wxWidgetApp::onIdle)
 END_EVENT_TABLE()
+
+
+
+//----------------------------------------------------------------------------
+//! IPC connection
+class AppIPCConnection : public wxConnection
+{
+
+public:
+        
+   bool OnExecute(const wxString& WXUNUSED(topic),
+                            wxChar *data,
+                            int size,
+                            wxIPCFormat WXUNUSED(format))
+    {
+        wxString concatenatedPaths(data, wxConvUTF8);
+        wxString path;
+        
+        std::cout << "[AppIPCConnection] OnExecute : " << size << " : " << concatenatedPaths.mb_str() << std::endl;
+        
+        wxStringTokenizer tokenizer(concatenatedPaths, CONNECTION_FILE_SEPARATOR);
+        while ( tokenizer.HasMoreTokens() )
+        {
+            path = tokenizer.GetNextToken();
+            wxGetApp().loadFile(path);
+        }
+    
+        return true;
+    }
+
+};
+
+
+
+
+//----------------------------------------------------------------------------
+//! IPC server
+class AppIPCServer : public wxServer
+{
+public:
+        
+    //! accept connection handler
+    virtual wxConnectionBase *OnAcceptConnection (const wxString& topic)
+    {
+        if (topic != IPC_START)
+        {
+             return NULL;
+        }
+        else
+        {
+            return new AppIPCConnection;
+        }
+    }
+};
+
+
 
 // ------------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------
@@ -93,12 +158,15 @@ void wxWidgetApp::onActivate(wxActivateEvent& evt)
 
 bool wxWidgetApp::OnInit()
 {
+    wxString appName;
+    
     wxLog::SetActiveTarget(new wxLogStderr());
     ::wxLogVerbose( wxT("wxWidgetsApp::OnInit (enter)") );
+    std::cout << "[main] wxWidgetsApp::OnInit (enter)" << std::endl;
 
     m_render_loop_on = false;
-    m_single_instance_checker = NULL;
     frame = NULL;
+    appName = GetAppName();
     
     for (int n=0; n<argc; n++)
     {
@@ -122,20 +190,28 @@ bool wxWidgetApp::OnInit()
     ::wxLogVerbose( wxT("[main] init preferences") );
     prefs = PreferencesData::getInstance();
     prefs->init();
-
-    if (prefs->getBoolValue(SETTING_ID_SINGLE_INSTANCE_APPLICATION))
+    
+    m_single_instance_checker = new wxSingleInstanceChecker(appName + wxGetUserId());
+    
+    if ( prefs->getBoolValue(SETTING_ID_SINGLE_INSTANCE_APPLICATION) &&
+        m_single_instance_checker->IsAnotherRunning() )
     {
-        m_single_instance_checker = new wxSingleInstanceChecker;
-        m_single_instance_checker->Create(GetAppName() + wxGetUserId());
-        if (m_single_instance_checker->IsAnotherRunning())
+        std::cout << "[main] detected another Aria instance" << std::endl;
+        if (!handleSingleInstance())
         {
-            ::wxLogError(_("Another program instance is already running, aborting."));
-
-            delete m_single_instance_checker; // OnExit() won't be called if we return false
-            m_single_instance_checker = NULL;
-
             return false;
         }
+    }
+    
+      // IPC server
+    m_IPC_server = new AppIPCServer();
+    if ( m_IPC_server->Create(IPC_APP_PORT) )
+    {
+        std::cout << "[main] AppIPCServer created" << std::endl;
+    }
+    else
+    {
+        wxDELETE(m_IPC_server);
     }
 
     if (prefs->getBoolValue(SETTING_ID_CHECK_NEW_VERSION))
@@ -170,14 +246,7 @@ bool wxWidgetApp::OnInit()
     for (int n=0; n<argc; n++)
     {
         wxString fileName = wxString(argv[n]);
-        if (fileName.EndsWith(wxT("aria")))
-        {
-            frame->loadAriaFile( fileName );
-        }
-        else if (fileName.EndsWith(wxT("mid")) or fileName.EndsWith(wxT("midi")))
-        {
-            frame->loadMidiFile( fileName );
-        }
+        loadFile(fileName);
     }
 
     ::wxLogVerbose( wxT("wxWidgetsApp::OnInit (leave)") );
@@ -258,4 +327,47 @@ void wxWidgetApp::OnUnhandledException()
     std::cerr << "/!\\ An internal error occurred : an exception was caught unhandled\n" << what.mb_str()
               << std::endl;
     wxMessageBox(_("Sorry an internal error occurred : an exception was caught unhandled : ") + what);
+}
+
+
+bool wxWidgetApp::handleSingleInstance()
+{
+    wxClient client;
+    wxConnectionBase* conn = client.MakeConnection(wxEmptyString, IPC_APP_PORT, IPC_START);
+    
+    if (conn!=NULL)
+    {
+        wxString path;
+    
+        for (int i = 1; i < argc; ++i)
+        {
+            path += wxString(argv[i]);
+            path += CONNECTION_FILE_SEPARATOR;
+        }
+        
+        if (conn->Execute(path))
+        {
+            std::cout << "Another program instance is already running, aborting" << std::endl;
+            std::cout << "Passing " << path.c_str() << " : " << path.Length() << std::endl;
+            wxDELETE(m_single_instance_checker); // OnExit() won't be called if we return false
+            return false;
+        }
+    }
+    
+    wxDELETE(conn);
+    
+    return true;
+}
+
+
+void wxWidgetApp::loadFile(const wxString& fileName)
+{
+    if (fileName.EndsWith(wxT("aria")))
+    {
+        frame->loadAriaFile(fileName);
+    }
+    else if (fileName.EndsWith(wxT("mid")) or fileName.EndsWith(wxT("midi")))
+    {
+        frame->loadMidiFile(fileName);
+    }
 }
