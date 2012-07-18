@@ -292,6 +292,8 @@ namespace AriaMaestosa
 #endif
         void updateCurrentDir(wxString& path);
 
+        wxArrayString m_files_to_open;
+
     public:
         LEAK_CHECK();
 
@@ -299,7 +301,7 @@ namespace AriaMaestosa
         bool changingValues; // set this to true when modifying the controls in the top bar, this allows to ignore all events thrown by their modification.
 
         MainFrame();
-        void init();
+        void init(wxArrayString filesToOpen);
         void initMenuBar();
         ~MainFrame();
 

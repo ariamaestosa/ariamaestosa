@@ -362,10 +362,11 @@ MainFrame::~MainFrame()
 
 // ----------------------------------------------------------------------------------------------------------
 
-void MainFrame::init()
+void MainFrame::init(wxArrayString filesToOpen)
 {
     wxLogVerbose( wxT("MainFrame::init") );
     changingValues = true;
+    m_files_to_open = filesToOpen;
     m_current_dir = ::wxGetCwd();
 
     Centre();
@@ -755,6 +756,12 @@ void MainFrame::onShow(wxShowEvent& evt)
     aboutDialog->show();
 #endif
     wxLogVerbose( wxT("MainFrame::init (done)") );
+    
+    
+    for (int n = 0; n < m_files_to_open.Count(); n++)
+    {
+        loadFile(m_files_to_open[n]);
+    }
 }
 
 // ----------------------------------------------------------------------------------------------------------
