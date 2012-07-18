@@ -284,12 +284,12 @@ void PreferencesData::fillSettingsVector()
     m_settings.push_back( launchTim );
 #endif
 
-
+#ifdef __WXMAC__
     Setting* singleInstance = new Setting(fromCString(SETTING_ID_SINGLE_INSTANCE_APPLICATION),
                                      _("Single-instance application"),
                                      SETTING_BOOL, true /* show in preferences */, wxT("1") );
     m_settings.push_back( singleInstance );
-
+#endif
 
     // TODO: make default value paltform-specific
     Setting* output = new Setting(fromCString(SETTING_ID_MIDI_OUTPUT), wxT(""),
