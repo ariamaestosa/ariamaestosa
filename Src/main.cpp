@@ -230,7 +230,17 @@ bool wxWidgetApp::OnInit()
     wxLogVerbose( wxT("[main] init main frame") );
     frame = new MainFrame();
     AriaMaestosa::setCurrentSequenceProvider(frame);
-    frame->init();
+    
+    // check if filenames to open were given on the command-line
+    wxArrayString filesToOpen;
+    for (int n=1 ; n<argc ; n++)
+    {
+        wxString fileName = wxString(argv[n]);
+        filesToOpen.Add(fileName);
+        //loadFile(fileName);
+    }
+    
+    frame->init(filesToOpen);
 
     wxLogVerbose( wxT("[main] init main frame 2") );
 
@@ -241,13 +251,6 @@ bool wxWidgetApp::OnInit()
     SetTopWindow(frame);
 
     wxLogVerbose( wxT("[main] init main frame 3") );
-    
-    // check if filenames to open were given on the command-line
-    for (int n=1 ; n<argc ; n++)
-    {
-        wxString fileName = wxString(argv[n]);
-        loadFile(fileName);
-    }
 
     wxLogVerbose( wxT("wxWidgetsApp::OnInit (leave)") );
     return true;
