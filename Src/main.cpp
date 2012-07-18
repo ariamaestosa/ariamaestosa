@@ -161,7 +161,7 @@ bool wxWidgetApp::OnInit()
     wxString appName;
     
     wxLog::SetActiveTarget(new wxLogStderr());
-    ::wxLogVerbose( wxT("wxWidgetsApp::OnInit (enter)") );
+    wxLogVerbose( wxT("wxWidgetsApp::OnInit (enter)") );
     std::cout << "[main] wxWidgetsApp::OnInit (enter)" << std::endl;
 
     m_render_loop_on = false;
@@ -187,7 +187,7 @@ bool wxWidgetApp::OnInit()
         }
     }
     
-    ::wxLogVerbose( wxT("[main] init preferences") );
+    wxLogVerbose( wxT("[main] init preferences") );
     prefs = PreferencesData::getInstance();
     prefs->init();
     
@@ -224,15 +224,15 @@ bool wxWidgetApp::OnInit()
     //read presets
     KeyPresetGroup::getInstance();
     
-    ::wxLogVerbose( wxT("[main] init midi player") );
+    wxLogVerbose( wxT("[main] init midi player") );
     PlatformMidiManager::get()->initMidiPlayer();
 
-    ::wxLogVerbose( wxT("[main] init main frame") );
+    wxLogVerbose( wxT("[main] init main frame") );
     frame = new MainFrame();
     AriaMaestosa::setCurrentSequenceProvider(frame);
     frame->init();
 
-    ::wxLogVerbose( wxT("[main] init main frame 2") );
+    wxLogVerbose( wxT("[main] init main frame 2") );
 
     frame->updateHorizontalScrollbar(0);
 
@@ -240,7 +240,7 @@ bool wxWidgetApp::OnInit()
 
     SetTopWindow(frame);
 
-    ::wxLogVerbose( wxT("[main] init main frame 3") );
+    wxLogVerbose( wxT("[main] init main frame 3") );
     
     // check if filenames to open were given on the command-line
     for (int n=1 ; n<argc ; n++)
@@ -249,7 +249,7 @@ bool wxWidgetApp::OnInit()
         loadFile(fileName);
     }
 
-    ::wxLogVerbose( wxT("wxWidgetsApp::OnInit (leave)") );
+    wxLogVerbose( wxT("wxWidgetsApp::OnInit (leave)") );
     return true;
 }
     
