@@ -59,13 +59,24 @@ class AppIPCConnection : public wxConnection
 {
 
 public:
-        
+
+#if wxCHECK_VERSION(2,9,1)
    bool OnExecute(const wxString& WXUNUSED(topic),
-                            wxChar *data,
-                            int size,
-                            wxIPCFormat WXUNUSED(format))
+                  const void* data,
+                  size_t size,
+                  wxIPCFormat WXUNUSED(format))
+#else
+   bool OnExecute(const wxString& WXUNUSED(topic),
+                  wxChar *data,
+                  int size,
+                  wxIPCFormat WXUNUSED(format))
+#endif
     {
+#if wxCHECK_VERSION(2,9,1)
+        wxString concatenatedPaths((char*)data, wxConvUTF8);
+#else
         wxString concatenatedPaths(data, wxConvUTF8);
+#endif
         wxString path;
         
         std::cout << "[AppIPCConnection] OnExecute : " << size << " : " << concatenatedPaths.mb_str() << std::endl;
