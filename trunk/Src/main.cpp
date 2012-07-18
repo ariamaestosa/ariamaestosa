@@ -202,6 +202,7 @@ bool wxWidgetApp::OnInit()
     prefs = PreferencesData::getInstance();
     prefs->init();
     
+#ifndef __WXMAC__
     m_single_instance_checker = new wxSingleInstanceChecker(appName + wxGetUserId());
     
     if ( prefs->getBoolValue(SETTING_ID_SINGLE_INSTANCE_APPLICATION) &&
@@ -229,7 +230,8 @@ bool wxWidgetApp::OnInit()
     {
         checkVersionOnline();
     }
-    
+#endif
+
     Core::setPlayDuringEdit((PlayDuringEditMode)PreferencesData::getInstance()->getIntValue("playDuringEdit"));
     
     //read presets

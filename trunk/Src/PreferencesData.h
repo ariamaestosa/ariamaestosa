@@ -56,7 +56,11 @@ namespace AriaMaestosa
     EXTERN const char* SETTING_ID_PLAY_DURING_EDIT DEFAULT("playDuringEdit");
     EXTERN const char* SETTING_ID_LANGUAGE         DEFAULT("lang");
     EXTERN const char* SETTING_ID_LAUNCH_TIMIDITY  DEFAULT("launchTimidity");
+    
+#ifdef __WXMAC__
     EXTERN const char* SETTING_ID_SINGLE_INSTANCE_APPLICATION  DEFAULT("singleInstanceApplication");
+#endif
+    
     EXTERN const char* SETTING_ID_PLAYTHROUGH      DEFAULT("playthrough");
 
     EXTERN const char* SETTING_ID_MARGIN_LEFT      DEFAULT("marginLeft");
