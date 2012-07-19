@@ -279,6 +279,10 @@ void merge( ptr_vector<IMergeSource>& sources )
     }
 }
 
+const int* MergeTestData = (int[]){1,2,4,6,8,12,14,17,19,23}; 
+const int* MergeTestData2 = (int[]){5,8,12,15,25,46,48,70,71,72}; 
+const int* MergeTestData3 = (int[]){3,3,4,5,6,6,7,8,9,10};
+
 UNIT_TEST( MergeTest )
 {
     std::vector<int> output;
@@ -290,8 +294,8 @@ UNIT_TEST( MergeTest )
     public:
         A(std::vector<int>& poutput) : m_output(poutput) { i = 0; }
         virtual bool hasMore() { return i < 10; }
-        virtual int  getNextTick() { const int* v = (int[]){1,2,4,6,8,12,14,17,19,23}; return v[i]; }
-        virtual void pop() { const int* v = (int[]){1,2,4,6,8,12,14,17,19,23}; m_output.push_back(v[i]); i++; }
+        virtual int  getNextTick() { return MergeTestData[i]; }
+        virtual void pop() { m_output.push_back(MergeTestData[i]); i++; }
     };
     class B : public IMergeSource
     {
@@ -300,8 +304,8 @@ UNIT_TEST( MergeTest )
     public:
         B(std::vector<int>& poutput) : m_output(poutput) { i = 0; }
         virtual bool hasMore() { return i < 10; }
-        virtual int  getNextTick() { const int* v = (int[]){5,8,12,15,25,46,48,70,71,72}; return v[i]; }
-        virtual void pop() { const int* v = (int[]){5,8,12,15,25,46,48,70,71,72}; m_output.push_back(v[i]); i++; }
+        virtual int  getNextTick() { return MergeTestData2[i]; }
+        virtual void pop() { m_output.push_back(MergeTestData2[i]); i++; }
     };
     class C : public IMergeSource
     {
@@ -310,8 +314,8 @@ UNIT_TEST( MergeTest )
     public:
         C(std::vector<int>& poutput) : m_output(poutput) { i = 0; }
         virtual bool hasMore() { return i < 10; }
-        virtual int  getNextTick() { const int* v = (int[]){3,3,4,5,6,6,7,8,9,10}; return v[i]; }
-        virtual void pop() { const int* v = (int[]){3,3,4,5,6,6,7,8,9,10}; m_output.push_back(v[i]); i++; }
+        virtual int  getNextTick() { return MergeTestData3[i]; }
+        virtual void pop() { m_output.push_back(MergeTestData3[i]); i++; }
     };
     
     ptr_vector<IMergeSource> sources;
