@@ -339,7 +339,7 @@ MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(1
 MainFrame::~MainFrame()
 {
     PreferencesData* pd = PreferencesData::getInstance();
-    if (pd->getBoolValue(SETTING_ID_REMEMBER_WINDOW_POS))
+    if (pd->getBoolValue(SETTING_ID_REMEMBER_WINDOW_POS, false))
     {
         pd->setValue(SETTING_ID_WINDOW_X, to_wxString(GetPosition().x));
         pd->setValue(SETTING_ID_WINDOW_Y, to_wxString(GetPosition().y));
@@ -665,7 +665,7 @@ void MainFrame::init(wxArrayString filesToOpen)
     printf("*** %i %i\n", s.GetWidth(), s.GetHeight());
      
     PreferencesData* pd = PreferencesData::getInstance();
-    if (pd->getBoolValue(SETTING_ID_REMEMBER_WINDOW_POS))
+    if (pd->getBoolValue(SETTING_ID_REMEMBER_WINDOW_POS, false))
     {
         wxSize screenSize = wxGetDisplaySize();
         

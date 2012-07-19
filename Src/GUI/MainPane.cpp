@@ -1048,7 +1048,7 @@ void MainPane::mouseDown(wxMouseEvent& event)
         {
             gseq->getMeasureBar()->mouseDown(m_mouse_x_current.getRelativeTo(WINDOW),
                                              m_mouse_y_current - MEASURE_BAR_Y,
-                                             event.ShiftDown());
+                                             event.ShiftDown(), event.AltDown() or event.ControlDown());
         }
 
     }

@@ -493,8 +493,15 @@ void MeasureBar::unselect()
 /**
   * @brief When mouse button is pushed on Measure Bar
   */
-void MeasureBar::mouseDown(int x, int y, bool shiftPressed)
+void MeasureBar::mouseDown(int x, int y, bool shiftPressed, bool altPressed)
 {    
+    if (altPressed)
+    {
+        m_data->setFirstMeasure(measureAtPixel(x));
+        getMainFrame()->updateTopBarAndScrollbars();
+        return;
+    }
+    
     // if click is in time sig change areas
     if (y > MEASURE_BAR_Y)
     {

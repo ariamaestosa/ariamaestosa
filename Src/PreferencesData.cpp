@@ -392,10 +392,10 @@ long PreferencesData::getIntValue(wxString entryName) const
 
 // ----------------------------------------------------------------------------------------------------------
 
-bool PreferencesData::getBoolValue(const char* entryName) const
+bool PreferencesData::getBoolValue(const char* entryName, bool defaultVal) const
 {
     wxString asString = getValue(entryName);
-    ASSERT(not asString.IsEmpty());
+    if (asString.IsEmpty()) return defaultVal;
     
     if (asString == wxT("true")) return true;
     else if (asString == wxT("false")) return false;

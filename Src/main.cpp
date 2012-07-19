@@ -205,7 +205,7 @@ bool wxWidgetApp::OnInit()
 #ifndef __WXMAC__
     m_single_instance_checker = new wxSingleInstanceChecker(appName + wxGetUserId());
     
-    if ( prefs->getBoolValue(SETTING_ID_SINGLE_INSTANCE_APPLICATION) &&
+    if ( prefs->getBoolValue(SETTING_ID_SINGLE_INSTANCE_APPLICATION, true) &&
         m_single_instance_checker->IsAnotherRunning() )
     {
         std::cout << "[main] detected another Aria instance" << std::endl;
@@ -226,7 +226,7 @@ bool wxWidgetApp::OnInit()
         wxDELETE(m_IPC_server);
     }
 
-    if (prefs->getBoolValue(SETTING_ID_CHECK_NEW_VERSION))
+    if (prefs->getBoolValue(SETTING_ID_CHECK_NEW_VERSION, true))
     {
         checkVersionOnline();
     }
