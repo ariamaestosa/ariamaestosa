@@ -135,7 +135,7 @@ namespace AriaMaestosa
         void init();
         
         long getIntValue(const char* entryName) const { return getIntValue(wxString(entryName, wxConvUTF8)); }
-        bool getBoolValue(const char* entryName) const;
+        bool getBoolValue(const char* entryName, bool defaultValue) const;
         wxString getValue(const char* entryName) const { return getValue(wxString(entryName, wxConvUTF8)); }
         wxString getValue(wxString entryName) const;
         long getIntValue(wxString entryName) const;

@@ -4,6 +4,7 @@
 - Fix a case where looping would fail
 - Fix more truncated texts on linux
 - Fix opening files with double-click on Linux
+- Allow setting song start with Ctrl-Click or Alt-Click in the measure bar
 
 1.4.2
 - Fixed bug that could cause Aria to stop playing prematurely in a song using varying tempo

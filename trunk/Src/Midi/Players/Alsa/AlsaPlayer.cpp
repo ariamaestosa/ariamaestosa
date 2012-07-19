@@ -248,7 +248,7 @@ public:
         
         context = new MidiContext();
         
-        const bool launchTimidity = (PreferencesData::getInstance()->getBoolValue("launchTimidity"));
+        const bool launchTimidity = (PreferencesData::getInstance()->getBoolValue("launchTimidity", false));
         
         if (not context->openDevice(launchTimidity))
         {

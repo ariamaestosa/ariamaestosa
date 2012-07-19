@@ -228,7 +228,7 @@ void MainFrame::initMenuBar()
                                                 _("E&xpanded time sig management"),
                                                 MainFrame::menuEvent_expandedMeasuresSelected );
 
-    m_follow_playback_menu_item->Check( PreferencesData::getInstance()->getBoolValue("followPlayback") );
+    m_follow_playback_menu_item->Check( PreferencesData::getInstance()->getBoolValue("followPlayback", false) );
 
     wxMenu* channelMode_menu = new wxMenu();
 

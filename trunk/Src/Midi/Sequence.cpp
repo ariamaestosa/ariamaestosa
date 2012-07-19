@@ -57,7 +57,7 @@ Sequence::Sequence(IPlaybackModeListener* playbackListener, IActionStackListener
     m_tempo                 = 120;
     m_importing             = false;
     m_loop_enabled          = false;
-    m_follow_playback       = PreferencesData::getInstance()->getBoolValue("followPlayback");
+    m_follow_playback       = PreferencesData::getInstance()->getBoolValue("followPlayback", false);
     m_playback_listener     = playbackListener;
     m_action_stack_listener = actionStackListener;
     m_seq_data_listener     = sequenceDataListener;

@@ -60,7 +60,7 @@ namespace AriaMaestosa
         ~MeasureBar();
         
         void render(int from_y);
-        void mouseDown(int x, int y, bool shiftPressed);
+        void mouseDown(int x, int y, bool shiftPressed, bool altPressed);
         void mouseDrag(int mousex_current, int mousey_current, int mousex_initial, int mousey_initial);
         void mouseUp(int mousex_current, int mousey_current, int mousex_initial, int mousey_initial);
         void rightClick(int x, int y);
