@@ -284,7 +284,7 @@ void PreferencesData::fillSettingsVector()
     m_settings.push_back( launchTim );
 #endif
 
-#ifdef __WXMAC__
+#ifndef __WXMAC__
     Setting* singleInstance = new Setting(fromCString(SETTING_ID_SINGLE_INSTANCE_APPLICATION),
                                      _("Single-instance application"),
                                      SETTING_BOOL, true /* show in preferences */, wxT("1") );
