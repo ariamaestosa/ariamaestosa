@@ -203,7 +203,7 @@ bool wxWidgetApp::OnInit()
     prefs->init();
     
 #ifndef __WXMAC__
-    m_single_instance_checker = new wxSingleInstanceChecker(appName + wxGetUserId());
+    m_single_instance_checker = new wxSingleInstanceChecker(appName + wxGetUserId(), wxT("/tmp/"));
     
     if ( prefs->getBoolValue(SETTING_ID_SINGLE_INSTANCE_APPLICATION, true) &&
         m_single_instance_checker->IsAnotherRunning() )
