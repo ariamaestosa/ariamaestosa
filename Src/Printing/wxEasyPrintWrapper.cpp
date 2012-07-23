@@ -330,10 +330,10 @@ bool wxEasyPrintWrapper::OnPrintPage(int pageNum)
     std::cout << "[OnBeginDocument] printable area : (" << x0 << ", " << y0 << ") to ("
               << x1 << ", " << y1 << ")" << std::endl;
 
-
-    wxGraphicsContext* gc = NULL;
     
 #if wxCHECK_VERSION(2,9,1) && wxUSE_GRAPHICS_CONTEXT
+    wxGraphicsContext* gc = NULL;
+    
     if (dynamic_cast<wxPrinterDC*>(&dc) != NULL)
     {
         gc = wxGraphicsContext::Create( dynamic_cast<wxPrinterDC&>(dc) );
