@@ -758,7 +758,7 @@ void MainFrame::onShow(wxShowEvent& evt)
     wxLogVerbose( wxT("MainFrame::init (done)") );
     
     
-    for (int n = 0; n < m_files_to_open.Count(); n++)
+    for (unsigned int n = 0; n < m_files_to_open.Count(); n++)
     {
         loadFile(m_files_to_open[n]);
     }

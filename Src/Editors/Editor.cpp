@@ -36,6 +36,8 @@
 #include "UnitTest.h"
 #include "Utils.h"
 
+#include <wx/tokenzr.h>
+
 namespace AriaMaestosa
 {
     EditTool g_current_edit_tool = EDIT_TOOL_PENCIL;
@@ -326,6 +328,73 @@ void Editor::trackDeleted(Track* track)
 
     m_background_tracks.removeMarked();
 }
+
+// ------------------------------------------------------------------------------------------------------------
+
+
+bool Editor::isBackgroundTrack() const
+{
+    return m_background_tracks.size()>0;
+}
+ 
+
+void Editor::setBackgroundTracks(const wxString& backgroundTracks)
+{
+    m_background_tracks_temp_string = backgroundTracks;
+}
+
+ 
+// ------------------------------------------------------------------------------------------------------------
+
+
+wxString Editor::getBackgroundTracks()
+{
+    wxString tracks;
+    const int bgTrackAmount = m_background_tracks.size();
+
+    for (int m=0; m<bgTrackAmount; m++)
+    {
+        tracks += wxString::Format(wxT("%i"), m_background_tracks.get(m)->getId());
+        
+        if (m<bgTrackAmount-1)
+        {
+            tracks += wxT(",");
+        }
+    }
+    
+    return tracks;
+}
+
+
+// ------------------------------------------------------------------------------------------------------------
+
+
+void Editor::addBackgroundTracks()
+{
+    if (!m_background_tracks_temp_string.IsEmpty())
+    {
+        int trackCount;
+        int trackId;
+        bool found;
+        wxStringTokenizer tokenizer(m_background_tracks_temp_string, wxT(","));
+        trackCount = m_sequence->getTrackAmount();
+        while ( tokenizer.HasMoreTokens() )
+        {
+            trackId = wxAtoi(tokenizer.GetNextToken());
+            found = false;
+            for (int i=0 ; i<trackCount && !found; i++)
+            {
+                Track* track = m_sequence->getTrack(i);
+                if (track->getId()==trackId)
+                {
+                    addBackgroundTrack(track);
+                    found = true;
+                }
+            }
+        }
+    }
+}
+
 
 // ------------------------------------------------------------------------------------------------------------
 // ------------------------------------------- mouse events ---------------------------------------------------
@@ -946,4 +1015,8 @@ void Editor::setEditTool(EditTool tool)
 }
 
 // ------------------------------------------------------------------------------------------------------------
+
+
+
+
 

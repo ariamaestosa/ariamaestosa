@@ -108,6 +108,8 @@ namespace AriaMaestosa
          */
         void  addTempoEvent_import( ControllerEvent* evt );
         
+        void parseBackgroundTracks();
+        
         int m_tempo;
         int beatResolution;
 
