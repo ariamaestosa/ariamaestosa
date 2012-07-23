@@ -36,6 +36,7 @@ const int CURRENT_FILE_VERSION = 4;
 #include "Midi/MeasureData.h"
 #include "Midi/Players/PlatformMidiManager.h"
 #include "Midi/Track.h"
+#include "GUI/GraphicalTrack.h"
 #include "PreferencesData.h"
 #include "Utils.h"
 
@@ -983,7 +984,23 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
     m_importing = false;
     if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
 
+    parseBackgroundTracks();
+
     return true;
 
 }
 
+void Sequence::parseBackgroundTracks()
+{
+    GraphicalTrack* graphicalTrack;
+ 
+    for (int n=0; n<tracks.size(); n++)
+    {
+        graphicalTrack = tracks[n].getGraphics();
+        graphicalTrack->getEditorFor(SCORE)->addBackgroundTracks();
+        graphicalTrack->getEditorFor(GUITAR)->addBackgroundTracks();
+        graphicalTrack->getEditorFor(DRUM)->addBackgroundTracks();
+        graphicalTrack->getEditorFor(KEYBOARD)->addBackgroundTracks();
+        graphicalTrack->getEditorFor(CONTROLLER)->addBackgroundTracks();
+    }
+}

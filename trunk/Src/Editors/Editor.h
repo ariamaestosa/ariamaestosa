@@ -111,6 +111,10 @@ namespace AriaMaestosa
         bool m_is_duplicating_note;
         
         ptr_vector<Track, REF> m_background_tracks;
+        
+        /** Only used upon loading aria file */
+        wxString m_background_tracks_temp_string;
+        
                 
         /** 
           * @brief Considering the vertical step, the current scrolling, etc.
@@ -146,6 +150,8 @@ namespace AriaMaestosa
         static EditTool getCurrentTool();
         static void setEditTool(EditTool tool);
         
+       
+        
         Track*          getTrack         () { return m_track;           }
         Sequence*       getSequence      () { return m_sequence;        }
         GraphicalTrack* getGraphicalTrack() { return m_graphical_track; }
@@ -170,6 +176,15 @@ namespace AriaMaestosa
           * @return is the Track passed as argument a background of this?
           */
         bool hasAsBackground(Track* track);
+        
+        
+        bool isBackgroundTrack() const;
+        
+        void setBackgroundTracks(const wxString& backgroundTracks);
+        wxString getBackgroundTracks();
+        void addBackgroundTracks();
+        
+        
         
         /** @brief method called by GraphicalTrack to let the Editor know about its position */
         void updatePosition(int from_y, int to_y, int width, int height);

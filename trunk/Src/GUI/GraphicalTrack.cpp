@@ -1865,29 +1865,44 @@ void GraphicalTrack::saveToFile(wxFileOutputStream& fileout)
               (m_track->isNotationTypeEnabled(SCORE) ? 
                wxT("\" proportion=\"") + to_wxString(m_score_editor->getRelativeHeight()) :
                wxT("")) +
+              (m_score_editor->isBackgroundTrack() ? 
+               wxT("\" background_tracks=\"") + m_score_editor->getBackgroundTracks() :
+               wxT(""))+
               wxT("\"/>\n"), fileout);
     writeData(wxT("    <keyboard enabled=\"") + wxString(m_track->isNotationTypeEnabled(KEYBOARD) ? wxT("true") : wxT("false")) +
               wxT("\" scroll=\"") + to_wxString(m_keyboard_editor->getScrollbarPosition()) +
               (m_track->isNotationTypeEnabled(KEYBOARD) ? 
                wxT("\" proportion=\"") + to_wxString(m_keyboard_editor->getRelativeHeight()) :
                wxT("")) +
+              (m_keyboard_editor->isBackgroundTrack() ? 
+               wxT("\" background_tracks=\"") + m_keyboard_editor->getBackgroundTracks() :
+               wxT(""))+
               wxT("\"/>\n"), fileout);
     writeData(wxT("    <guitar enabled=\"") + wxString(m_track->isNotationTypeEnabled(GUITAR) ? wxT("true") : wxT("false")) +
               (m_track->isNotationTypeEnabled(GUITAR) ? 
                wxT("\" proportion=\"") + to_wxString(m_guitar_editor->getRelativeHeight()) :
                wxT("")) +
+              (m_guitar_editor->isBackgroundTrack() ? 
+               wxT("\" background_tracks=\"") + m_guitar_editor->getBackgroundTracks() :
+               wxT(""))+
               wxT("\"/>\n"), fileout);
     writeData(wxT("    <drum enabled=\"") + wxString(m_track->isNotationTypeEnabled(DRUM) ? wxT("true") : wxT("false")) +
               wxT("\" scroll=\"") + to_wxString(m_drum_editor->getScrollbarPosition()) +
               (m_track->isNotationTypeEnabled(DRUM) ? 
                wxT("\" proportion=\"") + to_wxString(m_drum_editor->getRelativeHeight()) :
                wxT("")) +
+              (m_drum_editor->isBackgroundTrack() ? 
+               wxT("\" background_tracks=\"") + m_drum_editor->getBackgroundTracks() :
+               wxT(""))+
               wxT("\"/>\n"), fileout);
     writeData(wxT("    <controller enabled=\"") + wxString(m_track->isNotationTypeEnabled(CONTROLLER) ? wxT("true") : wxT("false")) +
               wxT("\" controller=\"") + to_wxString(m_controller_editor->getCurrentControllerType()) +
               (m_track->isNotationTypeEnabled(CONTROLLER) ? 
                wxT("\" proportion=\"") + to_wxString(m_controller_editor->getRelativeHeight()) :
                wxT("")) +
+              (m_controller_editor->isBackgroundTrack() ? 
+               wxT("\" background_tracks=\"") + m_controller_editor->getBackgroundTracks() :
+               wxT(""))+
               wxT("\"/>\n"), fileout);
     writeData(wxT("  </editors>\n"), fileout );
     
@@ -2105,10 +2120,14 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
                         missingProportions = true;
                     }
                     
+    
+                    wxString backgroundTracks = wxString::FromUTF8(xml->getAttributeValue("background_tracks"));
+                   
                     if (strcmp("score", xml->getNodeName()) == 0)
                     {
                         m_track->setNotationType(SCORE, enabled);
                         m_score_editor->setScrollbarPosition(scroll);
+                        m_score_editor->setBackgroundTracks(backgroundTracks);
                         if (enabled) m_score_editor->setRelativeHeight(proportion);
                         
                         const char* g_clef_c = xml->getAttributeValue("g_clef");
@@ -2157,22 +2176,26 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
                     {
                         m_track->setNotationType(KEYBOARD, enabled);
                         m_keyboard_editor->setScrollbarPosition(scroll);
+                        m_keyboard_editor->setBackgroundTracks(backgroundTracks);
                         if (enabled) m_keyboard_editor->setRelativeHeight(proportion);
                     }
                     else if (strcmp("guitar", xml->getNodeName()) == 0)
                     {
                         m_track->setNotationType(GUITAR, enabled);
+                        m_guitar_editor->setBackgroundTracks(backgroundTracks);
                         if (enabled) m_guitar_editor->setRelativeHeight(proportion);
                     }
                     else if (strcmp("drum", xml->getNodeName()) == 0)
                     {
                         m_track->setNotationType(DRUM, enabled);
+                        m_drum_editor->setBackgroundTracks(backgroundTracks);
                         m_drum_editor->setScrollbarPosition(scroll);
                         if (enabled) m_drum_editor->setRelativeHeight(proportion);
                     }
                     else if (strcmp("controller", xml->getNodeName()) == 0)
                     {
                         m_track->setNotationType(CONTROLLER, enabled);
+                        m_controller_editor->setBackgroundTracks(backgroundTracks);
                         if (enabled) m_controller_editor->setRelativeHeight(proportion);
                         
                         const char* id = xml->getAttributeValue("controller");

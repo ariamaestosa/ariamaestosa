@@ -1793,6 +1793,7 @@ void Track::saveToFile(wxFileOutputStream& fileout)
     reorderNoteOffVector();
 
     writeData(wxT("\n<track name=\"") + m_track_name->getValue() +
+              wxT("\" id=\"") + to_wxString(m_track_id) +
               wxT("\" channel=\"") + to_wxString(m_channel) +
               (m_muted ? wxT("\" muted=\"true") : wxT("") )  +
               wxT("\" default_volume=\"") + to_wxString(m_default_volume) +
@@ -1889,6 +1890,12 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                     else
                     {
                         m_muted = false;
+                    }
+                    
+                    const char* track_id_c = xml->getAttributeValue("id");
+                    if (track_id_c != NULL)
+                    {
+                        m_track_id = atoi(track_id_c);
                     }
 
                     const char* default_volume_c = xml->getAttributeValue("default_volume");
