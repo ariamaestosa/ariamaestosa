@@ -8,6 +8,7 @@
 - Instrument names may now be translated
 - Fix opening a new file when one is already playing on OSX
 - Save the background tracks settings
+- Make note length detection in score editor stricter to avoid notes being incorrectly detected as triplets
 
 1.4.2
 - Fixed bug that could cause Aria to stop playing prematurely in a song using varying tempo
