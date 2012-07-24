@@ -1809,13 +1809,13 @@ void MainFrame::loadAriaFile(const wxString& filePath)
     setCurrentSequence( getSequenceAmount()-1 );
     getCurrentSequence()->setFilepath( filePath );
 
-    WaitWindow::show(this, _("Please wait while .aria file is loading.") );
+    //WaitWindow::show(this, _("Please wait while .aria file is loading.") );
 
     const bool success = AriaMaestosa::loadAriaFile(getCurrentGraphicalSequence(), getCurrentSequence()->getFilepath());
     if (not success)
     {
         std::cout << "Loading .aria file failed." << std::endl;
-        WaitWindow::hide();
+        //WaitWindow::hide();
         wxMessageBox(  _("Sorry, loading .aria file failed.") );
 
         closeSequence();
@@ -1823,7 +1823,7 @@ void MainFrame::loadAriaFile(const wxString& filePath)
         return;
     }
 
-    WaitWindow::hide();
+    //WaitWindow::hide();
     updateVerticalScrollbar();
 
     // change song name
