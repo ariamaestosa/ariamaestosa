@@ -389,6 +389,7 @@ void MainFrame::disableMenus(const bool disable)
     m_file_menu->Enable(MENU_FILE_OPEN, on);
     m_file_menu->Enable(MENU_FILE_SAVE, on);
     m_file_menu->Enable(MENU_FILE_SAVE_AS, on);
+    m_file_menu->Enable(MENU_FILE_RELOAD, on);
     m_file_menu->Enable(MENU_FILE_CLOSE, on);
     m_file_menu->Enable(MENU_FILE_IMPORT_MIDI, on);
     m_file_menu->Enable(MENU_FILE_EXPORT_MIDI, on);
