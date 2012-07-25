@@ -771,11 +771,30 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
         // make sure we start on a beat
         const int shift = (*startTick % beat);
         
+        double timeBetweenMetronomeHits = beat;
+
         // add the events
-        for (int tick = shift; tick <= *songLengthInTicks + past_end_time; tick += beat)
+        for (double tick = shift; tick <= *songLengthInTicks + past_end_time; tick += timeBetweenMetronomeHits)
         {
+            int measure = sequence->getMeasureData()->measureAtTick((int)tick);
+            if (sequence->getMeasureData()->getTimeSigDenominator(measure) == 8)
+            {
+                if (sequence->getMeasureData()->getTimeSigNumerator(measure) % 3 == 0)
+                {
+                    timeBetweenMetronomeHits = beat*1.5;
+                }
+                else if (sequence->getMeasureData()->getTimeSigNumerator(measure) % 2 == 1)
+                {
+                    timeBetweenMetronomeHits = beat/2.0;
+                }
+            }
+            else
+            {
+                timeBetweenMetronomeHits = beat;
+            }
+        
             jdkmidi::MIDITimedBigMessage m;
-            m.SetTime(tick);
+            m.SetTime((int)tick);
             m.SetNoteOn( 9 /* channel */, metronomeInstrument, metronomeVolume );
             
             if (not metronomeTrack->PutEvent( m ))

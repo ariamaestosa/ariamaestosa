@@ -227,7 +227,7 @@ int MeasureData::measureAtTick(int tick) const
         {
             // verify that we're within song bounds. except if importing, since the song length
             // might not have been set yet.
-            ASSERT_E(answer, <=, m_measure_amount);
+            ASSERT_E(answer, <=, m_measure_amount + 10); // allow some bounds at end to let ring, etc.
         }
         
         return answer;
