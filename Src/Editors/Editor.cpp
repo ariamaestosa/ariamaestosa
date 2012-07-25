@@ -819,6 +819,11 @@ void Editor::rightClick(RelativeXCoord x, int y)
         Display::clientToScreen(x.getRelativeTo(WINDOW),y, &screen_x, &screen_y);
         showVolumeSlider(screen_x, screen_y, noteID, m_track);
     }
+    else
+    {
+        wxCommandEvent evt(wxEVT_SHOW_TRACK_CONTEXTUAL_MENU, wxID_ANY);
+        getMainFrame()->GetEventHandler()->AddPendingEvent(evt);
+    }
 
 }
 
