@@ -88,6 +88,9 @@ void recursivelyAnalyzeSilence(const Sequence* seq, RenderSilenceCallback render
     const int  remaining      = beatLen - (tick_from_measure_start % beatLen);
     const bool starts_on_beat = aboutEqual(remaining, 0) or aboutEqual(remaining, beatLen);
     
+    int measureId = md->measureAtTick(tick);
+    bool isFour = md->getTimeSigDenominator(measureId) == 4;
+    
     if (aboutEqual(relativeLength, 1.0))
     {
         type = 1;
@@ -96,7 +99,10 @@ void recursivelyAnalyzeSilence(const Sequence* seq, RenderSilenceCallback render
     {
         type = 1; dotted = true; dot_delta_x = 5; dot_delta_y = 2;
     }
-    else if (aboutEqual(relativeLength, 1.0/2.0))
+    else if (aboutEqual(relativeLength, 1.0/2.0) and
+             // TODO: a similar check (to prevent a silence in the middle of a measure)
+             //       should be added for other time signatures than */4
+             (not isFour or (tick_from_measure_start % (beatLen*2)) < beatLen/10))
     {
         type = 2;
     }

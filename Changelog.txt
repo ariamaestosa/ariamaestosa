@@ -11,6 +11,7 @@
 - Make note length detection in score editor stricter to avoid notes being incorrectly detected as triplets
 - Improve metronome when using time signatures like 6/8
 - Improve score editor note beaming in time signatures like 6/8
+- Improve scores : try to avoid showing 1/2 silences on beats not multiples of 2
 
 1.4.2
 - Fixed bug that could cause Aria to stop playing prematurely in a song using varying tempo
