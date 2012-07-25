@@ -186,8 +186,6 @@ namespace AriaMaestosa
             props_sizer->SetSizeHints(properties_panel);
             
             // ------ bottom OK/cancel buttons ----
-            wxBoxSizer* buttonsizer = new wxBoxSizer(wxHORIZONTAL);
-            
             ok_btn = new wxButton(this, wxID_OK, wxT("OK"));
             ok_btn->SetDefault();
             
@@ -197,9 +195,8 @@ namespace AriaMaestosa
             stdDialogButtonSizer->AddButton(ok_btn);
             stdDialogButtonSizer->AddButton(cancel_btn);
             stdDialogButtonSizer->Realize();
-            buttonsizer->Add(stdDialogButtonSizer, 0, wxALL|wxEXPAND, 0);
 
-            sizer->Add(buttonsizer, 0, wxALL | wxEXPAND, 5);
+            sizer->Add(stdDialogButtonSizer, 0, wxALL | wxEXPAND, 5);
 
             SetSizer(sizer);
             sizer->Layout();
