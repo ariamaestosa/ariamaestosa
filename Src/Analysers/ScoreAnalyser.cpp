@@ -104,7 +104,11 @@ public:
         {
             max_amount_of_notes_beamed_toghether = 2 * (int)(std::pow(2.0,flag_amount-1));
         }
-        else if ((num == 6 and denom == 4) or (num == 6 and denom == 8))
+        else if (num == 6 and denom == 4)
+        {
+            max_amount_of_notes_beamed_toghether = 3 * (int)(std::pow(2.0,flag_amount-1));
+        }
+        else if (denom == 8 and num % 3 == 0)
         {
             max_amount_of_notes_beamed_toghether = 3 * (int)(std::pow(2.0,flag_amount-1));
         }
