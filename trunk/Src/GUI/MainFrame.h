@@ -140,6 +140,7 @@ namespace AriaMaestosa
     DECLARE_LOCAL_EVENT_TYPE(wxEVT_EXTEND_TICK,        -1)
     DECLARE_LOCAL_EVENT_TYPE(wxEVT_NEW_VERSION_AVAILABLE, -1)
     DECLARE_LOCAL_EVENT_TYPE(wxEVT_ASYNC_ERROR_MESSAGE, -1)
+    DECLARE_LOCAL_EVENT_TYPE(wxEVT_SHOW_TRACK_CONTEXTUAL_MENU, -1)
 
     const int SHOW_WAIT_WINDOW_EVENT_ID = 100001;
     const int UPDT_WAIT_WINDOW_EVENT_ID = 100002;
@@ -501,6 +502,7 @@ namespace AriaMaestosa
         void evt_extendTick(wxCommandEvent& evt );
         void evt_newVersionAvailable(wxCommandEvent& evt);
         void evt_asyncErrMessage(wxCommandEvent& evt);
+        void evt_showTrackContextualMenu(wxCommandEvent& evt);
 
         void addIconItem(wxMenu* menu, int menuID, const wxString& label, const wxString& stockIconId);
 

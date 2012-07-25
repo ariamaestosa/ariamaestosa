@@ -88,6 +88,7 @@ namespace AriaMaestosa
     DEFINE_LOCAL_EVENT_TYPE(wxEVT_EXTEND_TICK)
     DEFINE_LOCAL_EVENT_TYPE(wxEVT_NEW_VERSION_AVAILABLE)
     DEFINE_LOCAL_EVENT_TYPE(wxEVT_ASYNC_ERROR_MESSAGE)
+    DEFINE_LOCAL_EVENT_TYPE(wxEVT_SHOW_TRACK_CONTEXTUAL_MENU)
 }
 
 
@@ -160,6 +161,9 @@ EVT_COMMAND  (wxID_ANY, wxEVT_EXTEND_TICK, MainFrame::evt_extendTick)
 EVT_COMMAND  (wxID_ANY, wxEVT_NEW_VERSION_AVAILABLE, MainFrame::evt_newVersionAvailable)
 
 EVT_COMMAND(ASYNC_ERR_MESSAGE_EVENT_ID, wxEVT_ASYNC_ERROR_MESSAGE, MainFrame::evt_asyncErrMessage)
+
+EVT_COMMAND(wxID_ANY, wxEVT_SHOW_TRACK_CONTEXTUAL_MENU, MainFrame::evt_showTrackContextualMenu)
+
 
 EVT_MOUSEWHEEL(MainFrame::onMouseWheel)
 
@@ -2053,6 +2057,13 @@ void MainFrame::evt_newVersionAvailable(wxCommandEvent& evt)
 void MainFrame::evt_asyncErrMessage(wxCommandEvent& evt)
 {
     wxMessageBox(evt.GetString(), _("An error occurred"), wxOK | wxICON_ERROR);
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void MainFrame::evt_showTrackContextualMenu(wxCommandEvent& evt)
+{
+    PopupMenu(m_track_menu);
 }
 
 // ----------------------------------------------------------------------------------------------------------
