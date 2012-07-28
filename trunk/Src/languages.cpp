@@ -72,6 +72,7 @@ namespace AriaMaestosa
         languages.push_back( AriaLanguage(wxLANGUAGE_SPANISH) );               // 6
         languages.push_back( AriaLanguage(wxLANGUAGE_PORTUGUESE_BRAZILIAN) );  // 7
         languages.push_back( AriaLanguage(wxLANGUAGE_RUSSIAN) );               // 8
+        languages.push_back( AriaLanguage(wxLANGUAGE_CHINESE) );               // 9
         
         /*
 #if defined(__WXMAC__)

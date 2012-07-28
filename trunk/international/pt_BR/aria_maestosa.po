@@ -3,216 +3,1264 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+#   <alexisarcham@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: Aria Maestosa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-26 15:24-0500\n"
-"PO-Revision-Date: 2012-02-27 08:30+0000\n"
-"Last-Translator: guiagge <guiagge@hotmail.com>\n"
-"Language-Team: Portuguese (Brazil) (http://www.transifex.net/projects/p/ariamaestosa/language/pt_BR/)\n"
+"POT-Creation-Date: 2012-07-26 12:20+0200\n"
+"PO-Revision-Date: 2012-07-27 08:24+0000\n"
+"Last-Translator: AlexisA <alexis.archambault@libertysurf.fr>\n"
+"Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/ariamaestosa/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 
-#. I18N: (undoable) action name
-#: Src/Actions/AddControlEvent.cpp:32
-msgid "add control event"
-msgstr "adicionar evento de efeito"
-
-#. I18N: (undoable) action name
-#: Src/Actions/AddControllerSlide.cpp:33
-msgid "add control slide"
-msgstr "adicionar slide de efeito"
-
-#. I18N: (undoable) action name
-#: Src/Actions/AddNote.cpp:38
-msgid "add note"
-msgstr "adicionar nota"
-
-#. I18N: (undoable) action name
-#: Src/Actions/AddTrack.cpp:36
-msgid "add track"
-msgstr "adicionar faixa"
-
-#. I18N: (undoable) action name
-#: Src/Actions/DeleteSelected.cpp:40
-msgid "delete note(s)"
-msgstr "deletar nota(s)"
-
-#. I18N: (undoable) action name
-#: Src/Actions/DeleteTrack.cpp:32
-msgid "delete track"
-msgstr "deletar faixa"
-
-#. I18N: (undoable) action name
-#: Src/Actions/Duplicate.cpp:43
-msgid "duplicate"
+#: Src/Midi/InstrumentChoice.cpp:29
+msgid "Acoustic Grand Piano"
 msgstr ""
 
-#. I18N: (undoable) action name
-#: Src/Actions/InsertEmptyMeasures.cpp:35
-msgid "insert measures"
-msgstr "inserir compassos"
-
-#. I18N: (undoable) action name
-#: Src/Actions/MoveNotes.cpp:38
-msgid "move note(s)"
-msgstr "mover nota(s)"
-
-#. I18N: (undoable) action name
-#: Src/Actions/NumberPressed.cpp:29 Src/Actions/ShiftFrets.cpp:28
-msgid "change note fret"
-msgstr "mudar traste da nota"
-
-#. I18N: (undoable) action name
-#: Src/Actions/Paste.cpp:42
-msgid "paste"
-msgstr "colar"
-
-#. I18N: (undoable) action name
-#: Src/Actions/RearrangeNotes.cpp:29
-msgid "rearrange notes"
-msgstr "arrumar notas"
-
-#. I18N: (undoable) action name
-#: Src/Actions/Record.cpp:32
-msgid "record from MIDI instrument"
-msgstr "gravar do instrumento MIDI"
-
-#. I18N: (undoable) action name
-#: Src/Actions/RemoveMeasures.cpp:37
-msgid "remove measure(s)"
-msgstr "remover compasso(s)"
-
-#. I18N: (undoable) action name
-#: Src/Actions/RemoveOverlapping.cpp:31
-msgid "remove overlapping notes"
-msgstr "remover notas sobrepostas"
-
-#. I18N: (undoable) action name
-#: Src/Actions/ResizeNotes.cpp:31
-msgid "resize note(s)"
-msgstr "redimensionar nota(s)"
-
-#. I18N: (undoable) action name
-#: Src/Actions/ScaleSong.cpp:30
-msgid "scale song"
-msgstr "redimensionar música"
-
-#. I18N: (undoable) action name
-#: Src/Actions/ScaleTrack.cpp:30
-msgid "scale note(s)"
-msgstr "redimensionar notas"
-
-#. I18N: (undoable) action name
-#: Src/Actions/SetAccidentalSign.cpp:34
-msgid "accidental change"
-msgstr "mudança de acidente"
-
-#. I18N: (undoable) action name
-#: Src/Actions/SetNoteVolume.cpp:27
-msgid "change note(s) volume"
-msgstr "mudar volume da(s) nota(s)"
-
-#. I18N: (undoable) action name
-#: Src/Actions/ShiftBySemiTone.cpp:30
-msgid "change pitch"
-msgstr "mudar altura"
-
-#. I18N: (undoable) action name
-#: Src/Actions/ShiftString.cpp:27
-msgid "string change"
-msgstr "mudar corda"
-
-#. I18N: (undoable) action name
-#: Src/Actions/SnapNotesToGrid.cpp:28
-msgid "snap notes to grid"
-msgstr "alinhar notas à grade"
-
-#. I18N: (undoable) action name
-#: Src/Actions/UpdateGuitarTuning.cpp:29
-msgid "change guitar tuning"
-msgstr "mudar afinação"
-
-#: Src/Dialogs/AboutDialog.cpp:41
-msgid "About Aria Maestosa"
-msgstr "Sobre o Aria Maestosa"
-
-#. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:49
-#, c-format
-msgid "version %s"
-msgstr "versão %s"
-
-#. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:51
-msgid "Thanks to:"
+#: Src/Midi/InstrumentChoice.cpp:30
+msgid "Bright Acoustic Piano"
 msgstr ""
 
-#. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:53
-#, c-format
+#: Src/Midi/InstrumentChoice.cpp:31
+msgid "Electric Grand Piano"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:32
+msgid "Honky-Tonk Piano"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:33
+msgid "Electric Piano 1"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:34
+msgid "Electric Piano 2"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:35
+msgid "Harpsichord"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:36
+msgid "Clavinet"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:37
+msgid "Celesta"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:38
+msgid "Glockenspiel"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:39
+msgid "Music Box"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:40
+msgid "Vibraphone"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:41
+msgid "Marimba"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:42
+msgid "Xylophone"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:43
+msgid "Tubular Bells"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:44
+msgid "Dulcimer"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:45
+msgid "Drawbar Organ"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:46
+msgid "Percussive Organ"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:47
+msgid "Rock Organ"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:48
+msgid "Church Organ"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:49
+msgid "Reed Organ"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:50
+msgid "Accordion"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:51
+msgid "Harmonica"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:52
+msgid "Tango Accordion"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:53
+msgid "Nylon String Guitar"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:54
+msgid "Steel String Guitar"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:55
+msgid "Jazz Guitar"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:56
+msgid "Clean Electric Guitar"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:57
+msgid "Muted Electric Guitar"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:58
+msgid "Overdrive Guitar"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:59
+msgid "Distortion Guitar"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:60
+msgid "Guitar Harmonics"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:61
+msgid "Acoustic Bass"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:62
+msgid "Fingered Bass"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:63
+msgid "Picked Bass"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:64
+msgid "Fretless Bass"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:65
+msgid "Slap Bass 1"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:66
+msgid "Slap Bass 2"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:67
+msgid "Synth Bass 1"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:68
+msgid "Synth Bass 2"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:69
+msgid "Violin"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:70
+msgid "Viola"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:71
+msgid "Cello"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:72
+msgid "Contrabass"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:73
+msgid "Tremolo Strings"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:74
+msgid "Pizzicato Strings"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:75
+msgid "Orchestral Harp"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:76
+msgid "Timpani"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:77
+msgid "String Ensemble 1"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:78
+msgid "String Ensemble 2"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:79
+msgid "Synth Strings 1"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:80
+msgid "Synth Strings 2"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:81
+msgid "Choir (ahh)"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:82
+msgid "Choir (ooh)"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:83
+msgid "Synth Voice"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:84
+msgid "Orchestral Hit"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:85
+msgid "Trumpet"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:86
+msgid "Trombone"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:87
+msgid "Tuba"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:88
+msgid "Muted Trumpet"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:89
+msgid "French Horn"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:90
+msgid "Brass Section"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:91
+msgid "Synth Brass 1"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:92
+msgid "Synth Brass 2"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:93
+msgid "Soprano Sax"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:94
+msgid "Alto Sax"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:95
+msgid "Tenor Sax"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:96
+msgid "Baritone Sax"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:97
+msgid "Oboe"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:98
+msgid "English Horn"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:99
+msgid "Bassoon"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:100
+msgid "Clarinet"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:101
+msgid "Piccolo"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:102
+msgid "Flute"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:103
+msgid "Recorder"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:104
+msgid "Pan Flute"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:105
+msgid "Blown Bottle"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:106
+msgid "Shakuachi"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:107
+msgid "Whistle"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:108
+msgid "Ocarina"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:109
+msgid "Square Wave"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:110
+msgid "Sawtooth wave"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:111
+msgid "Caliope"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:112
+msgid "Chiff"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:113
+msgid "Charang"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:114
+msgid "Synth Voice 2"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:115
+msgid "Fifths"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:116
+msgid "Bass and Lead"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:117
+msgid "New Age"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:118
+msgid "Warm"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:119
+msgid "Polysynth"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:120
+msgid "Choir"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:121 Src/Pickers/InstrumentPicker.cpp:133
+msgid "Bowed"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:122
+msgid "Metallic"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:123
+msgid "Halo"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:124
+msgid "Sweep"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:125
+msgid "Rain"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:126
+msgid "Sound Track"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:127
+msgid "Crystal"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:128
+msgid "Atmosphere"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:129
+msgid "Brightness"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:130
+msgid "Goblins"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:131
+msgid "Drops"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:132
+msgid "Star Theme"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:133
+msgid "Sitar"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:134
+msgid "Banjo"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:135
+msgid "Shamisen"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:136
+msgid "Koto"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:137
+msgid "Kalimba"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:138
+msgid "Bagpipe"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:139
+msgid "Fiddle"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:140
+msgid "Shanai"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:141
+msgid "Tinkle Bell"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:142
+msgid "Agogo"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:143
+msgid "Steel Drums"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:144
+msgid "Woodblock"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:145
+msgid "Taiko Drum"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:146
+msgid "Melodic Drum"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:147
+msgid "Synth Drum"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:148
+msgid "Reverse Cymbal"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:149
+msgid "Guitar Fret Noise"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:150
+msgid "Breath Noise"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:151
+msgid "Seashore"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:152
+msgid "Bird Tweet"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:153
+msgid "Telephone Ring"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:154
+msgid "Helicopter"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:155
+msgid "Applause"
+msgstr ""
+
+#: Src/Midi/InstrumentChoice.cpp:156
+msgid "Gunshot"
+msgstr ""
+
+#: Src/Midi/Track.cpp:87 Src/Midi/Track.cpp:934 Src/Midi/Track.cpp:1915
+#: Src/Midi/Sequence.cpp:68 Src/Midi/Sequence.cpp:116
+#: Src/Midi/Sequence.cpp:138 Src/Printing/AbstractPrintableSequence.cpp:39
+#: Src/Printing/AbstractPrintableSequence.cpp:43 Src/IO/MidiFileReader.cpp:522
+msgid "Untitled"
+msgstr "Sem Título"
+
+#: Src/Midi/CommonMidiUtils.cpp:428 Src/Midi/CommonMidiUtils.cpp:453
 msgid ""
-"Ergonis Software and %s for making EasyBeat,\n"
-"\t\ta great app that inspired Aria (www.ergonis.com)."
+"WARNING: this song has too many\n"
+"channels, expect unpredictable output"
+msgstr "AVISO: esta música tem muitos \ncanais, sua reprodução será imprevisível"
+
+#: Src/Midi/DrumChoice.cpp:30
+msgid "Standard"
 msgstr ""
 
-#. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:55
-msgid "J.D. Koftinoff Software for libjdkmidi"
+#: Src/Midi/DrumChoice.cpp:31
+msgid "Room kit"
 msgstr ""
 
-#. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:57
-msgid "The irrXML team for their XML parser"
+#: Src/Midi/DrumChoice.cpp:32
+msgid "Power kit"
 msgstr ""
 
-#. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:59
-msgid "The wxWidgets team"
+#: Src/Midi/DrumChoice.cpp:33
+msgid "Electronic"
 msgstr ""
 
-#. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:61
-msgid "The Tango icon set"
+#: Src/Midi/DrumChoice.cpp:34
+msgid "Analog"
 msgstr ""
 
-#. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:63
-msgid "Windows port by Alexis Archambault"
+#: Src/Midi/DrumChoice.cpp:35
+msgid "Jazz"
 msgstr ""
 
-#. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:65
-msgid "Translations:"
+#: Src/Midi/DrumChoice.cpp:36
+msgid "Brush"
 msgstr ""
 
-#: Src/Dialogs/AboutDialog.cpp:82 Src/Dialogs/PresetEditor.cpp:66
-#: Src/GUI/MainFrameMenuBar.cpp:1160
+#: Src/Midi/DrumChoice.cpp:37
+msgid "Orchestral"
+msgstr ""
+
+#: Src/Midi/DrumChoice.cpp:38
+msgid "Special Effects"
+msgstr ""
+
+#: Src/Midi/DrumChoice.cpp:40
+msgid "Invalid Drumkit"
+msgstr ""
+
+#: Src/Midi/Sequence.cpp:765
+msgid ""
+"Warning : you are opening a file saved with a version of\n"
+"Aria Maestosa more recent than the version you currently have.\n"
+"It may not open correctly."
+msgstr "Atenção : você está abrindo um arquivo salvo com uma versão do\nAria Maestosa mais recente do que a que você tem.\nEle pode não abrir corretamente."
+
+#: Src/Midi/Players/Jack/JackMidiManager.cpp:231
+msgid "Jack"
+msgstr "Jack"
+
+#: Src/Midi/Players/NullDevice.cpp:65
+msgid "No sound available"
+msgstr "Som não disponível"
+
+#: Src/Midi/Players/Example/ExamplePlayer.cpp:179
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:441
+msgid "WAV file"
+msgstr "Arquivo WAV"
+
+#: Src/Midi/Players/PlatformMidiManager.cpp:65
+msgid "Bad binary, no MIDI driver was compiled in!"
+msgstr "Binário corrompido, nenhum MIDI driver foi compilado!"
+
+#: Src/Midi/Players/PlatformMidiManager.cpp:285
+msgid "Sorry, no MIDI input port is available"
+msgstr "Desculpe, nenhuma porta de entrada MIDI está disponível"
+
+#: Src/Midi/Players/PlatformMidiManager.cpp:313
+#: Src/Midi/Players/PlatformMidiManager.cpp:332
+msgid "Sorry, failed to open the selected MIDI input port"
+msgstr "Desculpe, falha ao abrir a porta de entrada MIDI"
+
+#: Src/Midi/Players/Mac/CoreMIDIOutput.cpp:189
+msgid "Unknown MIDI port : "
+msgstr ""
+
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:772
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:805
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:823
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:834
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:844
+msgid ""
+"An error has occurred when connecting to the MIDI output device with "
+"AudioUnit; audio playback may be unavailable"
+msgstr "Um erro quando conectou-se com a saída de MIDI pelo AudioUnit; a reprodução de MIDI pode estar indisponível"
+
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:783
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:794
+msgid "Sorry, failed to set custom soundfont."
+msgstr ""
+
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:139
+msgid ""
+"Sorry, exporting to audio could not complete successfully. Please include "
+"the following error code when reporting the issue :"
+msgstr ""
+
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:275
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:279
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:328
+msgid "OSX Software Synthesizer"
+msgstr "Software Sintetizador OSX"
+
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:311
+msgid "AIFF file"
+msgstr "Arquivo AIFF"
+
+#: Src/Midi/Players/Alsa/AlsaPort.cpp:35
+msgid "Failed to open ALSA port."
+msgstr "Falha ao abrir a porta ALSA."
+
+#: Src/Midi/Players/Alsa/AlsaPort.cpp:137
+msgid "No midi port found, no sound will be available."
+msgstr "Nenhuma porta MIDI foi encontrada, o som não estará disponível."
+
+#: Src/Midi/Players/Alsa/AlsaPort.cpp:183
+#, c-format
+msgid "The selected ALSA device (%s) could not be opened."
+msgstr "O dispositivo ALSA (%s) não pode ser aberto."
+
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:255
+msgid ""
+"Failed to open ALSA device, sound will be unavailable (you can try selecting"
+" another output device from the 'Output' menu)"
+msgstr "Falh ao abrir o dispositivo ALSA,  o som não estará disponível (você pode tentar escolher outra saída de audio no menu 'Output')"
+
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:502
+msgid "Settings"
+msgstr ""
+
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:506
+msgid "Choose the MIDI engine to use to render the file"
+msgstr ""
+
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:512
+msgid "MIDI Engine"
+msgstr ""
+
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:519
+msgid "Fluidsynth Soundfont"
+msgstr ""
+
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:528
+#: Src/Dialogs/CustomKeyDialog.cpp:161 Src/Dialogs/Preferences.cpp:334
+#: Src/Dialogs/CustomNoteSelectDialog.cpp:167
+#: Src/Dialogs/PrintSetupDialog.cpp:105 Src/Dialogs/PrintSetupDialog.cpp:728
+#: Src/Dialogs/CopyrightWindow.cpp:94 Src/Dialogs/ScaleDialog.cpp:152
+#: Src/Dialogs/TuningDialog.cpp:54 Src/Pickers/TimeSigPicker.cpp:181
+msgid "OK"
+msgstr "OK"
+
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:529
+#: Src/Dialogs/CustomKeyDialog.cpp:162 Src/Dialogs/Preferences.cpp:335
+#: Src/Dialogs/CustomNoteSelectDialog.cpp:169
+#: Src/Dialogs/PrintSetupDialog.cpp:731 Src/Dialogs/CopyrightWindow.cpp:99
+#: Src/Dialogs/ScaleDialog.cpp:148 Src/Dialogs/TrackPropertiesDialog.cpp:192
+#: Src/Dialogs/TuningDialog.cpp:57
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: Src/Midi/Players/Win/WinPlayer.cpp:299
+#: Src/Midi/Players/Win/WinPlayer.cpp:330
+#: Src/Midi/Players/Win/WinPlayer.cpp:334
+msgid "Windows Software Synthesizer"
+msgstr "Software Sintetizador do Windows"
+
+#: Src/Midi/Players/Win/WinPlayer.cpp:361
+msgid "Failed to initialize MIDI out device"
+msgstr "Falha ao iniciar o dispositivo de reprodução de MIDI"
+
+#. I18N: menu item in the "file" menu
+#: Src/GUI/MainFrameMenuBar.cpp:80
+msgid "&New"
+msgstr "&Novo"
+
+#. I18N: menu item in the "file" menu
+#: Src/GUI/MainFrameMenuBar.cpp:85
+msgid "&Open..."
+msgstr "&Abrir..."
+
+#. I18N: menu item in the "file" menu
+#: Src/GUI/MainFrameMenuBar.cpp:90
+msgid "&Save"
+msgstr "&Salvar"
+
+#. I18N: menu item in the "file" menu
+#: Src/GUI/MainFrameMenuBar.cpp:94
+msgid "Save &As..."
+msgstr "Salvar &Como..."
+
+#. I18N: menu item in the "file" menu
+#: Src/GUI/MainFrameMenuBar.cpp:100
+msgid "&Reload"
+msgstr ""
+
+#. I18N: menu item in the "file" menu
+#: Src/GUI/MainFrameMenuBar.cpp:104
+msgid "&Close"
+msgstr "&Fechar"
+
+#: Src/GUI/MainFrameMenuBar.cpp:108
+msgid "Song &info..."
+msgstr "&Informações da música..."
+
+#: Src/GUI/MainFrameMenuBar.cpp:112
+msgid "&Print..."
+msgstr ""
+
+#. I18N: menu item in the "file" menu
+#: Src/GUI/MainFrameMenuBar.cpp:119
+msgid "I&mport Midi File..."
+msgstr "I&mportar Arquivo Midi..."
+
+#. I18N: menu item in the "file" menu
+#: Src/GUI/MainFrameMenuBar.cpp:122
+msgid "&Export to Midi..."
+msgstr "&Exportar para Midi..."
+
+#. I18N: menu item in the "file" menu
+#: Src/GUI/MainFrameMenuBar.cpp:129
+msgid "E&xport to Audio..."
+msgstr "E&xportar para Audio..."
+
+#. I18N: menu item in the "file" menu
+#: Src/GUI/MainFrameMenuBar.cpp:134
+msgid "&Quit"
+msgstr "&Sair"
+
+#. I18N: name of a menu
+#: Src/GUI/MainFrameMenuBar.cpp:140
+msgid "&File"
+msgstr "&Arquivo"
+
+#. I18N: menu item in the "edit" menu
+#: Src/GUI/MainFrameMenuBar.cpp:146
+msgid "&Undo"
+msgstr "&Desfazer"
+
+#. I18N: menu item in the "edit" menu
+#: Src/GUI/MainFrameMenuBar.cpp:153
+msgid "&Copy"
+msgstr "&Copiar"
+
+#. I18N: menu item in the "edit" menu
+#: Src/GUI/MainFrameMenuBar.cpp:158
+msgid "&Paste"
+msgstr "&Colar"
+
+#. I18N: menu item in the "edit" menu
+#: Src/GUI/MainFrameMenuBar.cpp:163
+msgid "Paste at Mouse Cu&rsor"
+msgstr "&Colar no Cursor do Mouse"
+
+#. I18N: menu item in the "edit" menu
+#: Src/GUI/MainFrameMenuBar.cpp:167
+msgid "Select &All"
+msgstr "Selecionar &Tudo"
+
+#. I18N: menu item in the "edit" menu
+#: Src/GUI/MainFrameMenuBar.cpp:170
+msgid "Select &None"
+msgstr "Selecionar &Nada"
+
+#. I18N: menu item in the "edit" menu
+#: Src/GUI/MainFrameMenuBar.cpp:173
+msgid "Select N&otes..."
+msgstr "Selecionar N&otas..."
+
+#. I18N: menu item in the "edit" menu
+#: Src/GUI/MainFrameMenuBar.cpp:177
+msgid "Snap Notes to &Grid"
+msgstr "Alinhar Notas à &Grade"
+
+#. I18N: menu item in the "edit" menu
+#: Src/GUI/MainFrameMenuBar.cpp:180
+msgid "&Scale..."
+msgstr "&Redimensionar..."
+
+#. I18N: menu item in the "edit" menu
+#: Src/GUI/MainFrameMenuBar.cpp:182
+msgid "Remove O&verlapping Notes"
+msgstr "Remover Notas S&obrepostas"
+
+#. I18N: name of a menu
+#: Src/GUI/MainFrameMenuBar.cpp:186
+msgid "&Edit"
+msgstr "&Editar"
+
+#. I18N: menu item in the "track" menu
+#: Src/GUI/MainFrameMenuBar.cpp:193
+msgid "&Add Track"
+msgstr "&Adicionar Faixa"
+
+#. I18N: menu item in the "track" menu
+#: Src/GUI/MainFrameMenuBar.cpp:196
+msgid "&Duplicate Track Settings"
+msgstr ""
+
+#. I18N: menu item in the "track" menu
+#: Src/GUI/MainFrameMenuBar.cpp:199
+msgid "&Delete Track"
+msgstr "&Deletar Faixa"
+
+#. I18N: - in the track menu, allows choosing the properties of a track
+#: Src/GUI/MainFrameMenuBar.cpp:203
+msgid "&Properties..."
+msgstr "&Propriedades..."
+
+#: Src/GUI/MainFrameMenuBar.cpp:206
+msgid "&Tracks"
+msgstr "&Faixas"
+
+#. I18N: In the playback menu
+#: Src/GUI/MainFrameMenuBar.cpp:211
+msgid "&Play / Pause"
+msgstr ""
+
+#. I18N: In the playback menu
+#: Src/GUI/MainFrameMenuBar.cpp:214
+msgid "&Stop"
+msgstr ""
+
+#. I18N: In the playback menu
+#: Src/GUI/MainFrameMenuBar.cpp:216
+msgid "&Record"
+msgstr ""
+
+#: Src/GUI/MainFrameMenuBar.cpp:219
+msgid "&Playback"
+msgstr ""
+
+#: Src/GUI/MainFrameMenuBar.cpp:224
+msgid "&Follow Playback"
+msgstr "&Seguir a Reprodução"
+
+#: Src/GUI/MainFrameMenuBar.cpp:228
+msgid "E&xpanded time sig management"
+msgstr "Manejo de compassos e&xpandidos"
+
+#. I18N: - the channel setting. full context : Channel management\n\n*
+#. Automatic\n* Manual
+#: Src/GUI/MainFrameMenuBar.cpp:236
+msgid "&Channel management"
+msgstr "&Manejo dos Canais"
+
+#. I18N: - the channel setting. full context : Channel management\n\n*
+#. Automatic\n* Manual
+#: Src/GUI/MainFrameMenuBar.cpp:238
+msgid "&Automatic"
+msgstr "&Automático"
+
+#. I18N: - the channel setting. full context : Channel management\n\n*
+#. Automatic\n* Manual
+#: Src/GUI/MainFrameMenuBar.cpp:241
+msgid "&Manual"
+msgstr "&Manual"
+
+#. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n*
+#. Always\n* On note change\n* Never
+#: Src/GUI/MainFrameMenuBar.cpp:247
+msgid "Play during &edit"
+msgstr "Tocar enquanto &editando"
+
+#. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n*
+#. Always\n* On note change\n* Never
+#: Src/GUI/MainFrameMenuBar.cpp:249
+msgid "&Always"
+msgstr "&Sempre"
+
+#. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n*
+#. Always\n* On note change\n* Never
+#: Src/GUI/MainFrameMenuBar.cpp:252
+msgid "On note &change"
+msgstr "Ao mudar &nota"
+
+#. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n*
+#. Always\n* On note change\n* Never
+#: Src/GUI/MainFrameMenuBar.cpp:255
+msgid "&Never"
+msgstr "&Nunca"
+
+#: Src/GUI/MainFrameMenuBar.cpp:259
+msgid "Play with &Metronome"
+msgstr "Tocar com &Metrônomo"
+
+#: Src/GUI/MainFrameMenuBar.cpp:263
+msgid "&Playthrough when recording"
+msgstr "&Tocar enquanto gravando"
+
+#: Src/GUI/MainFrameMenuBar.cpp:267
+msgid "&Preferences..."
+msgstr "&Preferências..."
+
+#: Src/GUI/MainFrameMenuBar.cpp:278
+msgid "&Settings"
+msgstr "&Configurações"
+
+#: Src/GUI/MainFrameMenuBar.cpp:289 Src/GUI/MainFrameMenuBar.cpp:1180
+msgid "No MIDI Output Available"
+msgstr ""
+
+#: Src/GUI/MainFrameMenuBar.cpp:318
+msgid "&Output"
+msgstr "&Output"
+
+#: Src/GUI/MainFrameMenuBar.cpp:329 Src/GUI/MainFrameMenuBar.cpp:332
+#: Src/GUI/MainFrame.cpp:933 Src/PreferencesData.cpp:307
+msgid "No MIDI input"
+msgstr "Sem input de MIDI "
+
+#. I18N: menu where the MIDI input source is selected
+#: Src/GUI/MainFrameMenuBar.cpp:348
+msgid "&Input"
+msgstr "&Input"
+
+#: Src/GUI/MainFrameMenuBar.cpp:354
+msgid "&About Aria Maestosa"
+msgstr "&Sobre o Aria Maestosa"
+
+#. I18N: - in help menu - see the help files
+#: Src/GUI/MainFrameMenuBar.cpp:356
+msgid "User's &Manual"
+msgstr "&Manual do Usuário"
+
+#: Src/GUI/MainFrameMenuBar.cpp:362
+msgid "&Help"
+msgstr "&Ajuda"
+
+#: Src/GUI/MainFrameMenuBar.cpp:486
+#, c-format
+msgid "&Undo %s"
+msgstr "&Desfazer %s"
+
+#: Src/GUI/MainFrameMenuBar.cpp:497
+msgid "Can't Undo"
+msgstr "Impossível Desfazer"
+
+#: Src/GUI/MainFrameMenuBar.cpp:591 Src/GUI/MainFrameMenuBar.cpp:652
+#: Src/GUI/MainFrameMenuBar.cpp:690
+msgid "Select destination file"
+msgstr "Selecione o destino do arquivo"
+
+#: Src/GUI/MainFrameMenuBar.cpp:601 Src/GUI/MainFrameMenuBar.cpp:663
+#: Src/GUI/MainFrameMenuBar.cpp:700
+msgid "The file already exists. Do you wish to overwrite it?"
+msgstr "Esse arquivo já existe. Você quer sobrescreve-lo?"
+
+#: Src/GUI/MainFrameMenuBar.cpp:602 Src/GUI/MainFrameMenuBar.cpp:663
+#: Src/GUI/MainFrameMenuBar.cpp:700 Src/GUI/MainFrameMenuBar.cpp:923
+#: Src/GUI/MainFrameMenuBar.cpp:1042 Src/GUI/MainFrameMenuBar.cpp:1126
+#: Src/Dialogs/PresetEditor.cpp:118 Src/Pickers/TimeSigPicker.cpp:289
+msgid "Confirm"
+msgstr "Comfirmar"
+
+#: Src/GUI/MainFrameMenuBar.cpp:628 Src/Dialogs/Preferences.cpp:413
+msgid "Select file"
+msgstr "Selecionar arquivo"
+
+#: Src/GUI/MainFrameMenuBar.cpp:629
+msgid "Aria Maestosa file"
+msgstr "Arquivo do Aria Maestosa"
+
+#: Src/GUI/MainFrameMenuBar.cpp:639
+msgid "Select midi file"
+msgstr "Selecione arquivo Midi"
+
+#: Src/GUI/MainFrameMenuBar.cpp:640 Src/GUI/MainFrameMenuBar.cpp:653
+msgid "Midi file"
+msgstr "Arquivo Midi"
+
+#: Src/GUI/MainFrameMenuBar.cpp:674
+msgid "Sorry, failed to export midi file."
+msgstr "Desculpe, falha ao exportar arquivo midi."
+
+#: Src/GUI/MainFrameMenuBar.cpp:712
+msgid ""
+"Please wait while audio file is being generated.\n"
+"\n"
+"Depending on the length of your file,\n"
+"this can take several minutes."
+msgstr "Por favor, espere enquanto o arquivo de audio é gerado.\n\nDependendo do tamanhao do arquivo,\nisso pode levar vários minutos."
+
+#: Src/GUI/MainFrameMenuBar.cpp:919
+msgid "You may not delete the last track"
+msgstr ""
+
+#: Src/GUI/MainFrameMenuBar.cpp:923
+msgid "Do you really want to delete this track?"
+msgstr "Você realmente quer deletar essa faixa?"
+
+#: Src/GUI/MainFrameMenuBar.cpp:1041
+msgid ""
+"If multiple tracks play on the same channel, they will be merged.\n"
+"This cannot be undone.\n"
+"\n"
+"Do you really want to continue?"
+msgstr "Se várias faixas estiverem no mesmo canal, elas serão unidas.\nIsso não pode ser desfeito.\n\nGostaria de continuar?"
+
+#: Src/GUI/MainFrameMenuBar.cpp:1125 Src/Pickers/TimeSigPicker.cpp:288
+msgid ""
+"Are you sure you want to go back to having a single time signature? Any time"
+" sig events you may have added will be lost. This cannot be undone."
+msgstr "Tem certeza que quer voltar a ter um único compasso? Todas as mudanças de compasso serão perdidas. Isso não pode ser desfeito."
+
+#: Src/GUI/MainFrameMenuBar.cpp:1254
+msgid "Manual"
+msgstr "Manual"
+
+#: Src/GUI/MainFrameMenuBar.cpp:1268 Src/Dialogs/PresetEditor.cpp:66
+#: Src/Dialogs/AboutDialog.cpp:85
 msgid "Close"
 msgstr "Fechar"
 
-#. I18N: - title of the copyright/info dialog
-#: Src/Dialogs/CopyrightWindow.cpp:63
-msgid "Copyright and song info"
-msgstr "Copyright and informações da música"
+#: Src/GUI/GraphicalTrack.cpp:717
+msgid "Choose a new track title."
+msgstr "Escolha um novo título para a faixa."
 
-#. I18N: - title of the copyright/info dialog
-#: Src/Dialogs/CopyrightWindow.cpp:71
-msgid "Song name"
-msgstr "Nome da música"
+#: Src/GUI/GraphicalTrack.cpp:774
+msgid "Enter the ID of the channel this track should play in"
+msgstr "Coloque a ID do canal em que está faixa deve tocar"
 
-#. I18N: - title of the copyright/info dialog
-#: Src/Dialogs/CopyrightWindow.cpp:80
-msgid "Copyright"
-msgstr "Copyright"
+#: Src/GUI/GraphicalTrack.cpp:776
+msgid "Channel choice"
+msgstr "Escolha de canal"
 
-#: Src/Dialogs/CopyrightWindow.cpp:87 Src/Dialogs/CopyrightWindow.cpp:110
-msgid "Song duration :"
-msgstr "Duração da música"
+#: Src/GUI/MeasureBar.cpp:69
+msgid "Remove selected measures"
+msgstr "Remover compassos selecionados"
+
+#: Src/GUI/MeasureBar.cpp:79
+msgid "Do you really want to remove selected measures?"
+msgstr "Tem certeza que deseja remover os compassos selecionados?"
+
+#: Src/GUI/MeasureBar.cpp:129
+msgid "Insert measures"
+msgstr "Inserir compassos"
+
+#: Src/GUI/MeasureBar.cpp:131
+msgid "Remove time sig change"
+msgstr "Remover mudança de compasso"
+
+#: Src/GUI/MeasureBar.cpp:137
+msgid "Insert empty measures between measures "
+msgstr "Inserir compassos vazios entre dois compassos"
+
+#: Src/GUI/MeasureBar.cpp:139
+msgid " and "
+msgstr " e "
+
+#: Src/GUI/MeasureBar.cpp:140
+msgid "Amount: "
+msgstr "Quantidade: "
+
+#: Src/GUI/MeasureBar.cpp:159
+msgid "Do you really want to remove this time sig change?"
+msgstr "Você realmente deseja remover esta mudança de compasso?"
+
+#: Src/GUI/MeasureBar.cpp:165
+msgid "You can't remove the first time signature change."
+msgstr "Você não pode remover esta mudança de compasso."
+
+#: Src/GUI/MainFrame.cpp:428
+msgid "Record"
+msgstr "Gravar"
+
+#: Src/GUI/MainFrame.cpp:432
+msgid "Play"
+msgstr "Tocar"
+
+#: Src/GUI/MainFrame.cpp:436
+msgid "Stop"
+msgstr "Parar"
+
+#: Src/GUI/MainFrame.cpp:439
+msgid "Loop"
+msgstr ""
+
+#. I18N: song length (number of measures)
+#: Src/GUI/MainFrame.cpp:453
+msgid "Length"
+msgstr ""
+
+#: Src/GUI/MainFrame.cpp:461
+msgid "Tempo"
+msgstr "Tempo"
+
+#: Src/GUI/MainFrame.cpp:473
+msgid "Time Sig"
+msgstr "Compasso"
+
+#: Src/GUI/MainFrame.cpp:481
+msgid "Start"
+msgstr "Início"
+
+#: Src/GUI/MainFrame.cpp:497
+msgid "Zoom"
+msgstr "Zoom"
+
+#: Src/GUI/MainFrame.cpp:528 Src/GUI/MainFrame.cpp:530
+msgid "Tool"
+msgstr "Ferramenta"
+
+#. I18N: to hide the panel that is shown when a file could not be imported
+#. successfully
+#: Src/GUI/MainFrame.cpp:568
+msgid "Hide"
+msgstr "Esonder"
+
+#: Src/GUI/MainFrame.cpp:935
+msgid "Please select an input port from the 'input' menu before recording"
+msgstr ""
+
+#: Src/GUI/MainFrame.cpp:1626
+#, c-format
+msgid ""
+"You have unsaved changes in sequence '%s'. Do you want to save them before "
+"proceeding?"
+msgstr "Você tem mudanças não salvas na música '%s'. Você quer salva-las antes de sair?"
+
+#: Src/GUI/MainFrame.cpp:1628
+msgid "Selecting 'Yes' will save your document before closing"
+msgstr "Selecionar 'Sim' irá salvar as mudanças antes de fechar"
+
+#: Src/GUI/MainFrame.cpp:1629
+msgid "Selecting 'No' will discard unsaved changes"
+msgstr "Selecionar 'Não' irá descartar as mudanças feitas"
+
+#: Src/GUI/MainFrame.cpp:1630
+msgid "Selecting 'Cancel' will cancel exiting the application"
+msgstr "Selecione 'Cancelar' para não sair do aplicativo"
+
+#. I18N: title of dialog shown when exiting without saving
+#: Src/GUI/MainFrame.cpp:1635
+msgid "Unsaved changes in sequence"
+msgstr "Mudanças não salvas na música"
+
+#: Src/GUI/MainFrame.cpp:1797
+msgid "Unknown file type: "
+msgstr "Tipo de arquivo desconhecido: "
+
+#: Src/GUI/MainFrame.cpp:1823 Src/GUI/MainFrame.cpp:1940
+msgid "Sorry, loading .aria file failed."
+msgstr "Desculpe, falha ao carregar arquivo .aria."
+
+#: Src/GUI/MainFrame.cpp:1864
+msgid "Please wait while midi file is loading."
+msgstr "Por favor espere enquanto o arquivo MIDI está carregando."
+
+#: Src/GUI/MainFrame.cpp:1871 Src/GUI/MainFrame.cpp:1952
+msgid "Sorry, loading midi file failed."
+msgstr "Desculpe, falha ao carregar arquivo MIDI."
+
+#: Src/GUI/MainFrame.cpp:1893
+msgid ""
+"Loading the MIDI file completed successfully, but with the following "
+"warnings (the song may not sound as intended) :"
+msgstr "O arquivo MIDI foi carregado, mas com os seguintes problemas (a música não deve soar como severia) :"
+
+#: Src/GUI/MainFrame.cpp:1931
+msgid "Please wait while file is reloaded."
+msgstr ""
+
+#: Src/GUI/MainFrame.cpp:2048
+msgid ""
+"A new version of Aria Maestosa is now available! Visit the following link to"
+" download it :"
+msgstr ""
+
+#: Src/GUI/MainFrame.cpp:2059
+msgid "An error occurred"
+msgstr ""
+
+#: Src/GUI/MainPane.cpp:146
+msgid "Create a new sequence"
+msgstr "Criar nova música"
+
+#: Src/GUI/MainPane.cpp:147
+msgid "Open a saved sequence"
+msgstr "Abrir uma música salva"
+
+#: Src/GUI/MainPane.cpp:148
+msgid "Import a MIDI file"
+msgstr "Importar arquivo Midi..."
+
+#. I18N: - title of the preferences dialog
+#: Src/GUI/MainPane.cpp:149 Src/Dialogs/Preferences.cpp:246
+msgid "Preferences"
+msgstr "Preferências"
+
+#: Src/GUI/MainPane.cpp:150
+msgid "Help"
+msgstr "Ajuda"
+
+#: Src/GUI/MainPane.cpp:151
+msgid "Exit"
+msgstr "Sair"
+
+#: Src/Dialogs/PresetEditor.cpp:33
+msgid "Presets"
+msgstr "Padrões"
+
+#: Src/Dialogs/PresetEditor.cpp:60
+msgid "Duplicate"
+msgstr "Duplicar"
+
+#: Src/Dialogs/PresetEditor.cpp:62
+msgid "Delete"
+msgstr "Deletar"
+
+#. I18N: when duplicating a preset
+#: Src/Dialogs/PresetEditor.cpp:97
+msgid "Enter the name of the duplicate"
+msgstr "Coloque o nome da cópia"
+
+#: Src/Dialogs/PresetEditor.cpp:117
+msgid "Are you sure you want to delete this preset? This cannot be undone."
+msgstr "Tem certeza que quer deletar esse padrão? Isso não pode ser desfeito."
 
 #: Src/Dialogs/CustomKeyDialog.cpp:38
 msgid "Custom Key Editor"
@@ -255,21 +1303,6 @@ msgid ""
 "your instrument)"
 msgstr "* Notas não marcadas são deletadas (por exemplo, elas não poderiam ser tocadas no seu instrumento)"
 
-#: Src/Dialogs/CustomKeyDialog.cpp:161
-#: Src/Dialogs/CustomNoteSelectDialog.cpp:171
-#: Src/Dialogs/PrintSetupDialog.cpp:105 Src/Dialogs/PrintSetupDialog.cpp:703
-#: Src/Dialogs/ScaleDialog.cpp:147 Src/Dialogs/TuningDialog.cpp:57
-#: Src/Pickers/TimeSigPicker.cpp:181
-msgid "OK"
-msgstr "OK"
-
-#: Src/Dialogs/CustomKeyDialog.cpp:162
-#: Src/Dialogs/CustomNoteSelectDialog.cpp:176
-#: Src/Dialogs/PrintSetupDialog.cpp:706 Src/Dialogs/ScaleDialog.cpp:143
-#: Src/Dialogs/TrackPropertiesDialog.cpp:196 Src/Dialogs/TuningDialog.cpp:61
-msgid "Cancel"
-msgstr "Cancelar"
-
 #: Src/Dialogs/CustomKeyDialog.cpp:163
 msgid "Save as preset..."
 msgstr "Salvar como padrão..."
@@ -277,6 +1310,27 @@ msgstr "Salvar como padrão..."
 #: Src/Dialogs/CustomKeyDialog.cpp:262
 msgid "Enter the name of the preset"
 msgstr "Digite o nome do padrão"
+
+#: Src/Dialogs/Preferences.cpp:303
+msgid "Browse..."
+msgstr ""
+
+#. I18N: - in the preferences dialog
+#: Src/Dialogs/Preferences.cpp:345
+msgid "Changes will take effect next time you open the app."
+msgstr "As mudanças teram efeito na próxima vez que o aplicativo for aberto"
+
+#: Src/Dialogs/Preferences.cpp:390
+msgid "You will need to restart Aria Maestosa for changes to be effective."
+msgstr ""
+
+#: Src/Dialogs/Preferences.cpp:414
+msgid "Sound Font"
+msgstr ""
+
+#: Src/Dialogs/WaitWindow.cpp:69
+msgid "Please wait..."
+msgstr "Por favor espere..."
 
 #. I18N: - title of the custom note select dialog
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:63
@@ -347,63 +1401,9 @@ msgstr "estão entre (e em) os compassos"
 msgid " to "
 msgstr "para"
 
-#: Src/Dialogs/CustomNoteSelectDialog.cpp:276
+#: Src/Dialogs/CustomNoteSelectDialog.cpp:271
 msgid "Illegal values"
 msgstr "Valores ilegais"
-
-#. I18N: - title of the preferences dialog
-#: Src/Dialogs/Preferences.cpp:245 Src/GUI/MainPane.cpp:149
-msgid "Preferences"
-msgstr "Preferências"
-
-#: Src/Dialogs/Preferences.cpp:302
-msgid "Browse..."
-msgstr ""
-
-#. I18N: - in the preferences dialog
-#: Src/Dialogs/Preferences.cpp:335
-msgid "Changes will take effect next time you open the app."
-msgstr "As mudanças teram efeito na próxima vez que o aplicativo for aberto"
-
-#: Src/Dialogs/Preferences.cpp:378
-msgid "You will need to restart Aria Maestosa for changes to be effective."
-msgstr ""
-
-#: Src/Dialogs/Preferences.cpp:390 Src/GUI/MainFrameMenuBar.cpp:565
-msgid "Select file"
-msgstr "Selecionar arquivo"
-
-#: Src/Dialogs/Preferences.cpp:391
-msgid "Sound Font"
-msgstr ""
-
-#: Src/Dialogs/PresetEditor.cpp:33
-msgid "Presets"
-msgstr "Padrões"
-
-#: Src/Dialogs/PresetEditor.cpp:60
-msgid "Duplicate"
-msgstr "Duplicar"
-
-#: Src/Dialogs/PresetEditor.cpp:62
-msgid "Delete"
-msgstr "Deletar"
-
-#. I18N: when duplicating a preset
-#: Src/Dialogs/PresetEditor.cpp:97
-msgid "Enter the name of the duplicate"
-msgstr "Coloque o nome da cópia"
-
-#: Src/Dialogs/PresetEditor.cpp:117
-msgid "Are you sure you want to delete this preset? This cannot be undone."
-msgstr "Tem certeza que quer deletar esse padrão? Isso não pode ser desfeito."
-
-#: Src/Dialogs/PresetEditor.cpp:118 Src/GUI/MainFrameMenuBar.cpp:538
-#: Src/GUI/MainFrameMenuBar.cpp:597 Src/GUI/MainFrameMenuBar.cpp:634
-#: Src/GUI/MainFrameMenuBar.cpp:852 Src/GUI/MainFrameMenuBar.cpp:935
-#: Src/GUI/MainFrameMenuBar.cpp:1019 Src/Pickers/TimeSigPicker.cpp:289
-msgid "Confirm"
-msgstr "Comfirmar"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:48
 msgid "Keyroll Printing Options"
@@ -426,144 +1426,216 @@ msgstr "Cores"
 msgid "Compact (print only key notes)"
 msgstr "Compacto (imprimir apenas notas do tom)"
 
-#: Src/Dialogs/PrintSetupDialog.cpp:192
+#: Src/Dialogs/PrintSetupDialog.cpp:196
 msgid ""
 "Keyroll tracks and tablature/score tracks cannot be mixed in the same "
 "printout"
 msgstr "Faixas em teclado e tablatura/partitura não podem ser misturadas na mesma impressão"
 
-#: Src/Dialogs/PrintSetupDialog.cpp:197
+#: Src/Dialogs/PrintSetupDialog.cpp:201
 msgid "No printable track selected"
 msgstr "Nenhuma faixa imprimível selecionada"
 
-#: Src/Dialogs/PrintSetupDialog.cpp:234
+#: Src/Dialogs/PrintSetupDialog.cpp:238
 msgid "Calculating print layout..."
 msgstr "Calculando o layout de impressão..."
 
 #. I18N: - %s is the name of the track
-#: Src/Dialogs/PrintSetupDialog.cpp:245
+#: Src/Dialogs/PrintSetupDialog.cpp:249
 #, c-format
 msgid ""
 "Track '%s' could not be printed, since its current\n"
 "view (editor) does not support printing."
 msgstr "A faixa '%s' não pode ser imprimida, já que a atual\nvisualização (modo de edição) não suporta impressão."
 
-#: Src/Dialogs/PrintSetupDialog.cpp:273
+#: Src/Dialogs/PrintSetupDialog.cpp:277
 msgid "An error occurred during printing."
 msgstr "Um erro ocorreu enquanto imprimindo"
 
 #. I18N: - title of the notation-print dialog
-#: Src/Dialogs/PrintSetupDialog.cpp:488
+#: Src/Dialogs/PrintSetupDialog.cpp:513
 msgid "Print musical notation"
 msgstr "Imprimir notação musical"
 
-#: Src/Dialogs/PrintSetupDialog.cpp:500
+#: Src/Dialogs/PrintSetupDialog.cpp:525
 msgid "An error occurred while preparing to print."
 msgstr "Um erro ocorreu enquanto preparando para impressão"
 
 #. I18N: - in print setup dialog.
-#: Src/Dialogs/PrintSetupDialog.cpp:518
+#: Src/Dialogs/PrintSetupDialog.cpp:543
 msgid "Print..."
 msgstr "Imprimir..."
 
 #. I18N: - in print setup dialog.
-#: Src/Dialogs/PrintSetupDialog.cpp:521
+#: Src/Dialogs/PrintSetupDialog.cpp:546
 msgid "Current track only"
 msgstr "Apenas a faixa atual"
 
 #. I18N: - in print setup dialog.
-#: Src/Dialogs/PrintSetupDialog.cpp:526
+#: Src/Dialogs/PrintSetupDialog.cpp:551
 msgid "This list of tracks"
 msgstr "A lista de faixas"
 
 #. I18N: in printing dialog
-#: Src/Dialogs/PrintSetupDialog.cpp:633
+#: Src/Dialogs/PrintSetupDialog.cpp:658
 msgid "Omit instruments that play nothing on the current line"
 msgstr "Ocultar instrumentos que não tocam na linha atual"
 
-#: Src/Dialogs/PrintSetupDialog.cpp:635
+#: Src/Dialogs/PrintSetupDialog.cpp:660
 msgid ""
 "If some instrument plays nothing during a long part of the song, checking "
 "this option can make the printed score tighter by eliminating empty lines"
 msgstr "Se algum instrumento não toca nada durante uma longa parte da música, cheque esta opção para imprimir apenas as parte em que ele toca"
 
-#: Src/Dialogs/PrintSetupDialog.cpp:649
+#: Src/Dialogs/PrintSetupDialog.cpp:674
 msgid "Page Setup"
 msgstr "Configuração da Página"
 
-#: Src/Dialogs/PrintSetupDialog.cpp:655
+#: Src/Dialogs/PrintSetupDialog.cpp:680
 msgid "Paper :"
 msgstr "Papel :"
 
-#: Src/Dialogs/PrintSetupDialog.cpp:663
+#: Src/Dialogs/PrintSetupDialog.cpp:688
 msgid "Edit Page Setup"
 msgstr "Editar Configuração da Página"
 
-#: Src/Dialogs/PrintSetupDialog.cpp:669
+#: Src/Dialogs/PrintSetupDialog.cpp:694
 msgid "Margins :"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:677
+#: Src/Dialogs/PrintSetupDialog.cpp:702
 msgid "Margins"
 msgstr "Margens"
 
+#. I18N: - title of the copyright/info dialog
+#: Src/Dialogs/CopyrightWindow.cpp:65
+msgid "Copyright and song info"
+msgstr "Copyright and informações da música"
+
+#. I18N: - title of the copyright/info dialog
+#: Src/Dialogs/CopyrightWindow.cpp:73
+msgid "Song name"
+msgstr "Nome da música"
+
+#. I18N: - title of the copyright/info dialog
+#: Src/Dialogs/CopyrightWindow.cpp:82
+msgid "Copyright"
+msgstr "Copyright"
+
+#: Src/Dialogs/CopyrightWindow.cpp:89 Src/Dialogs/CopyrightWindow.cpp:124
+msgid "Song duration :"
+msgstr "Duração da música"
+
 #. I18N: - title of the scale dialog
-#: Src/Dialogs/ScaleDialog.cpp:67
+#: Src/Dialogs/ScaleDialog.cpp:70
 msgid "Scale"
 msgstr "Redimensionar"
 
 #. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
 #. selection\n* track\n* song"
-#: Src/Dialogs/ScaleDialog.cpp:108
+#: Src/Dialogs/ScaleDialog.cpp:111
 msgid "Scale notes in..."
 msgstr "Redimensionar notas em..."
 
 #. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
 #. selection\n* track\n* song"
-#: Src/Dialogs/ScaleDialog.cpp:112
+#: Src/Dialogs/ScaleDialog.cpp:115
 msgid "selection"
 msgstr "seleção"
 
 #. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
 #. selection\n* track\n* song"
-#: Src/Dialogs/ScaleDialog.cpp:117
+#: Src/Dialogs/ScaleDialog.cpp:120
 msgid "track"
 msgstr "faixa"
 
 #. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
 #. selection\n* track\n* song"
-#: Src/Dialogs/ScaleDialog.cpp:121
+#: Src/Dialogs/ScaleDialog.cpp:124
 msgid "song"
 msgstr "música"
 
 #. I18N: - in the scale dialog. full context : "relative to...\n\n* first
 #. affected note\n* song beginning"
-#: Src/Dialogs/ScaleDialog.cpp:127
+#: Src/Dialogs/ScaleDialog.cpp:130
 msgid "relative to..."
 msgstr "relativo a..."
 
 #. I18N: - in the scale dialog. full context : "relative to...\n\n* first
 #. affected note\n* song beginning"
-#: Src/Dialogs/ScaleDialog.cpp:131
+#: Src/Dialogs/ScaleDialog.cpp:134
 msgid "first affected note"
 msgstr "primeira nota afetada"
 
 #. I18N: - in the scale dialog. full context : "relative to...\n\n* first
 #. affected note\n* song beginning"
-#: Src/Dialogs/ScaleDialog.cpp:136
+#: Src/Dialogs/ScaleDialog.cpp:139
 msgid "song beginning"
 msgstr "começo da música"
 
-#: Src/Dialogs/TrackPropertiesDialog.cpp:115
+#: Src/Dialogs/AboutDialog.cpp:41
+msgid "About Aria Maestosa"
+msgstr "Sobre o Aria Maestosa"
+
+#. I18N: - in about dialog
+#: Src/Dialogs/AboutDialog.cpp:50
+#, c-format
+msgid "version %s"
+msgstr "versão %s"
+
+#. I18N: - in about dialog
+#: Src/Dialogs/AboutDialog.cpp:52
+msgid "Thanks to:"
+msgstr ""
+
+#. I18N: - in about dialog
+#: Src/Dialogs/AboutDialog.cpp:54
+#, c-format
+msgid ""
+"Ergonis Software and %s for making EasyBeat,\n"
+"\ta great app that inspired Aria (www.ergonis.com)."
+msgstr ""
+
+#. I18N: - in about dialog
+#: Src/Dialogs/AboutDialog.cpp:56
+msgid "J.D. Koftinoff Software for libjdkmidi"
+msgstr ""
+
+#. I18N: - in about dialog
+#: Src/Dialogs/AboutDialog.cpp:58
+msgid "The irrXML team for their XML parser"
+msgstr ""
+
+#. I18N: - in about dialog
+#: Src/Dialogs/AboutDialog.cpp:60
+msgid "The wxWidgets team"
+msgstr ""
+
+#. I18N: - in about dialog
+#: Src/Dialogs/AboutDialog.cpp:62
+msgid "The Tango icon set"
+msgstr ""
+
+#. I18N: - in about dialog
+#: Src/Dialogs/AboutDialog.cpp:64
+msgid "Windows port by Alexis Archambault"
+msgstr ""
+
+#. I18N: - in about dialog
+#: Src/Dialogs/AboutDialog.cpp:66
+msgid "Translations:"
+msgstr ""
+
+#: Src/Dialogs/TrackPropertiesDialog.cpp:116
 #, c-format
 msgid "Track '%s' Properties"
 msgstr ""
 
-#: Src/Dialogs/TrackPropertiesDialog.cpp:141
+#: Src/Dialogs/TrackPropertiesDialog.cpp:140
 msgid "Track Background"
 msgstr "Faixa de Fundo"
 
-#: Src/Dialogs/TrackPropertiesDialog.cpp:165
+#: Src/Dialogs/TrackPropertiesDialog.cpp:164
 msgid "Default volume for new notes"
 msgstr "Volume padrão para novas notas"
 
@@ -571,657 +1643,225 @@ msgstr "Volume padrão para novas notas"
 msgid "Custom Tuning Editor"
 msgstr "Editor de Afinação"
 
-#: Src/Dialogs/WaitWindow.cpp:69
-msgid "Please wait..."
-msgstr "Por favor espere..."
+#. I18N: for printing (page orientation)
+#: Src/Printing/wxEasyPrintWrapper.cpp:232
+msgid "Portrait"
+msgstr "Retrato"
 
-#. I18N: beats per minute (tempo)
-#: Src/Editors/ControllerEditor.cpp:81
-msgid "bpm"
-msgstr "bpm"
+#: Src/Printing/wxEasyPrintWrapper.cpp:232
+msgid "Landscape"
+msgstr "Paisagem"
 
-#. I18N: as in "+2 semitones"
-#: Src/Editors/ControllerEditor.cpp:86
-msgid "semitones"
-msgstr "semitons"
-
-#: Src/GUI/GraphicalTrack.cpp:709
-msgid "Choose a new track title."
-msgstr "Escolha um novo título para a faixa."
-
-#: Src/GUI/GraphicalTrack.cpp:766
-msgid "Enter the ID of the channel this track should play in"
-msgstr "Coloque a ID do canal em que está faixa deve tocar"
-
-#: Src/GUI/GraphicalTrack.cpp:768
-msgid "Channel choice"
-msgstr "Escolha de canal"
-
-#: Src/GUI/MainFrame.cpp:377
-msgid "Record"
-msgstr "Gravar"
-
-#: Src/GUI/MainFrame.cpp:381
-msgid "Play"
-msgstr "Tocar"
-
-#: Src/GUI/MainFrame.cpp:385
-msgid "Stop"
-msgstr "Parar"
-
-#: Src/GUI/MainFrame.cpp:398
-msgid "Duration"
-msgstr "Duração"
-
-#: Src/GUI/MainFrame.cpp:406
-msgid "Tempo"
-msgstr "Tempo"
-
-#: Src/GUI/MainFrame.cpp:418
-msgid "Time Sig"
-msgstr "Compasso"
-
-#: Src/GUI/MainFrame.cpp:426
-msgid "Start"
-msgstr "Início"
-
-#: Src/GUI/MainFrame.cpp:442
-msgid "Zoom"
-msgstr "Zoom"
-
-#: Src/GUI/MainFrame.cpp:473 Src/GUI/MainFrame.cpp:475
-msgid "Tool"
-msgstr "Ferramenta"
-
-#. I18N: to hide the panel that is shown when a file could not be imported
-#. successfully
-#: Src/GUI/MainFrame.cpp:496
-msgid "Hide"
-msgstr "Esonder"
-
-#: Src/GUI/MainFrame.cpp:766 Src/GUI/MainFrameMenuBar.cpp:277
-#: Src/GUI/MainFrameMenuBar.cpp:279 Src/PreferencesData.cpp:220
-msgid "No MIDI input"
-msgstr "Sem input de MIDI "
-
-#: Src/GUI/MainFrame.cpp:768
-msgid "Please select an input port from the 'input' menu before recording"
-msgstr ""
-
-#: Src/GUI/MainFrame.cpp:1445
+#. I18N: for printing (page setup)
+#: Src/Printing/wxEasyPrintWrapper.cpp:234
 #, c-format
-msgid ""
-"You have unsaved changes in sequence '%s'. Do you want to save them before "
-"proceeding?"
-msgstr "Você tem mudanças não salvas na música '%s'. Você quer salva-las antes de sair?"
-
-#: Src/GUI/MainFrame.cpp:1447
-msgid "Selecting 'Yes' will save your document before closing"
-msgstr "Selecionar 'Sim' irá salvar as mudanças antes de fechar"
-
-#: Src/GUI/MainFrame.cpp:1448
-msgid "Selecting 'No' will discard unsaved changes"
-msgstr "Selecionar 'Não' irá descartar as mudanças feitas"
-
-#: Src/GUI/MainFrame.cpp:1449
-msgid "Selecting 'Cancel' will cancel exiting the application"
-msgstr "Selecione 'Cancelar' para não sair do aplicativo"
-
-#. I18N: title of dialog shown when exiting without saving
-#: Src/GUI/MainFrame.cpp:1454
-msgid "Unsaved changes in sequence"
-msgstr "Mudanças não salvas na música"
-
-#: Src/GUI/MainFrame.cpp:1582
-msgid "Please wait while .aria file is loading."
-msgstr "Por favor espere enquanto o arquivo .aria está carregando."
-
-#: Src/GUI/MainFrame.cpp:1589
-msgid "Sorry, loading .aria file failed."
-msgstr "Desculpe, falha ao carregar arquivo .aria."
-
-#: Src/GUI/MainFrame.cpp:1628
-msgid "Please wait while midi file is loading."
-msgstr "Por favor espere enquanto o arquivo MIDI está carregando."
-
-#: Src/GUI/MainFrame.cpp:1635
-msgid "Sorry, loading midi file failed."
-msgstr "Desculpe, falha ao carregar arquivo MIDI."
-
-#: Src/GUI/MainFrame.cpp:1657
-msgid ""
-"Loading the MIDI file completed successfully, but with the following "
-"warnings (the song may not sound as intended) :"
-msgstr "O arquivo MIDI foi carregado, mas com os seguintes problemas (a música não deve soar como severia) :"
-
-#: Src/GUI/MainFrame.cpp:1752
-msgid "A new version of Aria Maestosa is now available!"
+msgid "left = %i mm, right = %i mm,"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1753
-msgid "Visit http://ariamaestosa.sourceforge.net/ to download it"
-msgstr ""
-
-#. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:79
-msgid "&New"
-msgstr "&Novo"
-
-#. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:84
-msgid "&Open..."
-msgstr "&Abrir..."
-
-#. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:89
-msgid "&Save"
-msgstr "&Salvar"
-
-#. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:93
-msgid "Save &As..."
-msgstr "Salvar &Como..."
-
-#. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:97
-msgid "&Close"
-msgstr "&Fechar"
-
-#: Src/GUI/MainFrameMenuBar.cpp:100
-msgid "Song &info..."
-msgstr "&Informações da música..."
-
-#: Src/GUI/MainFrameMenuBar.cpp:103
-msgid "&Print musical notation..."
-msgstr "&Imprimir partitura..."
-
-#. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:109
-msgid "I&mport Midi File..."
-msgstr "I&mportar Arquivo Midi..."
-
-#. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:111
-msgid "&Export to Midi..."
-msgstr "&Exportar para Midi..."
-
-#. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:117
-msgid "E&xport to Audio..."
-msgstr "E&xportar para Audio..."
-
-#. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:121
-msgid "&Quit"
-msgstr "&Sair"
-
-#. I18N: name of a menu
-#: Src/GUI/MainFrameMenuBar.cpp:127
-msgid "&File"
-msgstr "&Arquivo"
-
-#. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:133
-msgid "&Undo"
-msgstr "&Desfazer"
-
-#. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:140
-msgid "&Copy"
-msgstr "&Copiar"
-
-#. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:145
-msgid "&Paste"
-msgstr "&Colar"
-
-#. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:150
-msgid "Paste at Mouse Cu&rsor"
-msgstr "&Colar no Cursor do Mouse"
-
-#. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:153
-msgid "Select &All"
-msgstr "Selecionar &Tudo"
-
-#. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:155
-msgid "Select &None"
-msgstr "Selecionar &Nada"
-
-#. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:157
-msgid "Select N&otes..."
-msgstr "Selecionar N&otas..."
-
-#. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:160
-msgid "Snap Notes to &Grid"
-msgstr "Alinhar Notas à &Grade"
-
-#. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:162
-msgid "&Scale..."
-msgstr "&Redimensionar..."
-
-#. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:164
-msgid "Remove O&verlapping Notes"
-msgstr "Remover Notas S&obrepostas"
-
-#. I18N: name of a menu
-#: Src/GUI/MainFrameMenuBar.cpp:167
-msgid "&Edit"
-msgstr "&Editar"
-
-#. I18N: menu item in the "track" menu
-#: Src/GUI/MainFrameMenuBar.cpp:174
-msgid "&Add Track"
-msgstr "&Adicionar Faixa"
-
-#. I18N: menu item in the "track" menu
-#: Src/GUI/MainFrameMenuBar.cpp:176
-msgid "&Duplicate Track"
-msgstr ""
-
-#. I18N: menu item in the "track" menu
-#: Src/GUI/MainFrameMenuBar.cpp:178
-msgid "&Delete Track"
-msgstr "&Deletar Faixa"
-
-#. I18N: - in the track menu, allows choosing the properties of a track
-#: Src/GUI/MainFrameMenuBar.cpp:181
-msgid "&Properties..."
-msgstr "&Propriedades..."
-
-#: Src/GUI/MainFrameMenuBar.cpp:183
-msgid "&Tracks"
-msgstr "&Faixas"
-
-#: Src/GUI/MainFrameMenuBar.cpp:187
-msgid "&Follow Playback"
-msgstr "&Seguir a Reprodução"
-
-#: Src/GUI/MainFrameMenuBar.cpp:188
-msgid "E&xpanded time sig management"
-msgstr "Manejo de compassos e&xpandidos"
-
-#. I18N: - the channel setting. full context : Channel management\n\n*
-#. Automatic\n* Manual
-#: Src/GUI/MainFrameMenuBar.cpp:195
-msgid "&Channel management"
-msgstr "&Manejo dos Canais"
-
-#. I18N: - the channel setting. full context : Channel management\n\n*
-#. Automatic\n* Manual
-#: Src/GUI/MainFrameMenuBar.cpp:197
-msgid "&Automatic"
-msgstr "&Automático"
-
-#. I18N: - the channel setting. full context : Channel management\n\n*
-#. Automatic\n* Manual
-#: Src/GUI/MainFrameMenuBar.cpp:200
-msgid "&Manual"
-msgstr "&Manual"
-
-#. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n*
-#. Always\n* On note change\n* Never
-#: Src/GUI/MainFrameMenuBar.cpp:206
-msgid "Play during &edit"
-msgstr "Tocar enquanto &editando"
-
-#. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n*
-#. Always\n* On note change\n* Never
-#: Src/GUI/MainFrameMenuBar.cpp:208
-msgid "&Always"
-msgstr "&Sempre"
-
-#. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n*
-#. Always\n* On note change\n* Never
-#: Src/GUI/MainFrameMenuBar.cpp:210
-msgid "On note &change"
-msgstr "Ao mudar &nota"
-
-#. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n*
-#. Always\n* On note change\n* Never
-#: Src/GUI/MainFrameMenuBar.cpp:212
-msgid "&Never"
-msgstr "&Nunca"
-
-#: Src/GUI/MainFrameMenuBar.cpp:214
-msgid "Play with &Metronome"
-msgstr "Tocar com &Metrônomo"
-
-#: Src/GUI/MainFrameMenuBar.cpp:216
-msgid "&Playthrough when recording"
-msgstr "&Tocar enquanto gravando"
-
-#: Src/GUI/MainFrameMenuBar.cpp:219
-msgid "&Preferences..."
-msgstr "&Preferências..."
-
-#: Src/GUI/MainFrameMenuBar.cpp:229
-msgid "&Settings"
-msgstr "&Configurações"
-
-#: Src/GUI/MainFrameMenuBar.cpp:239 Src/GUI/MainFrameMenuBar.cpp:1073
-msgid "No MIDI Output Available"
-msgstr ""
-
-#: Src/GUI/MainFrameMenuBar.cpp:266
-msgid "&Output"
-msgstr "&Output"
-
-#. I18N: menu where the MIDI input source is selected
-#: Src/GUI/MainFrameMenuBar.cpp:294
-msgid "&Input"
-msgstr "&Input"
-
-#: Src/GUI/MainFrameMenuBar.cpp:300
-msgid "&About Aria Maestosa"
-msgstr "&Sobre o Aria Maestosa"
-
-#. I18N: - in help menu - see the help files
-#: Src/GUI/MainFrameMenuBar.cpp:302
-msgid "User's &Manual"
-msgstr "&Manual do Usuário"
-
-#: Src/GUI/MainFrameMenuBar.cpp:308
-msgid "&Help"
-msgstr "&Ajuda"
-
-#: Src/GUI/MainFrameMenuBar.cpp:431
+#: Src/Printing/wxEasyPrintWrapper.cpp:235
 #, c-format
-msgid "&Undo %s"
-msgstr "&Desfazer %s"
-
-#: Src/GUI/MainFrameMenuBar.cpp:442
-msgid "Can't Undo"
-msgstr "Impossível Desfazer"
-
-#: Src/GUI/MainFrameMenuBar.cpp:528 Src/GUI/MainFrameMenuBar.cpp:587
-#: Src/GUI/MainFrameMenuBar.cpp:624
-msgid "Select destination file"
-msgstr "Selecione o destino do arquivo"
-
-#: Src/GUI/MainFrameMenuBar.cpp:538 Src/GUI/MainFrameMenuBar.cpp:597
-#: Src/GUI/MainFrameMenuBar.cpp:634
-msgid "The file already exists. Do you wish to overwrite it?"
-msgstr "Esse arquivo já existe. Você quer sobrescreve-lo?"
-
-#: Src/GUI/MainFrameMenuBar.cpp:566
-msgid "Aria Maestosa file"
-msgstr "Arquivo do Aria Maestosa"
-
-#: Src/GUI/MainFrameMenuBar.cpp:575
-msgid "Select midi file"
-msgstr "Selecione arquivo Midi"
-
-#: Src/GUI/MainFrameMenuBar.cpp:576 Src/GUI/MainFrameMenuBar.cpp:588
-msgid "Midi file"
-msgstr "Arquivo Midi"
-
-#: Src/GUI/MainFrameMenuBar.cpp:608
-msgid "Sorry, failed to export midi file."
-msgstr "Desculpe, falha ao exportar arquivo midi."
-
-#: Src/GUI/MainFrameMenuBar.cpp:641
-msgid ""
-"Please wait while audio file is being generated.\n"
-"\n"
-"Depending on the length of your file,\n"
-"this can take several minutes."
-msgstr "Por favor, espere enquanto o arquivo de audio é gerado.\n\nDependendo do tamanhao do arquivo,\nisso pode levar vários minutos."
-
-#: Src/GUI/MainFrameMenuBar.cpp:848
-msgid "You may not delete the last track"
+msgid "top = %i mm, bottom = %i mm"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:852
-msgid "Do you really want to delete this track?"
-msgstr "Você realmente quer deletar essa faixa?"
+#: Src/Printing/AbstractPrintableSequence.cpp:39
+msgid "Aria Maestosa song"
+msgstr "Música do Aria Maestosa"
 
-#: Src/GUI/MainFrameMenuBar.cpp:934
-msgid ""
-"If multiple tracks play on the same channel, they will be merged.\n"
-"This cannot be undone.\n"
-"\n"
-"Do you really want to continue?"
-msgstr "Se várias faixas estiverem no mesmo canal, elas serão unidas.\nIsso não pode ser desfeito.\n\nGostaria de continuar?"
+#. I18N: (undoable) action name
+#: Src/Actions/AddNote.cpp:38
+msgid "add note"
+msgstr "adicionar nota"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1018 Src/Pickers/TimeSigPicker.cpp:288
-msgid ""
-"Are you sure you want to go back to having a single time signature? Any time"
-" sig events you may have added will be lost. This cannot be undone."
-msgstr "Tem certeza que quer voltar a ter um único compasso? Todas as mudanças de compasso serão perdidas. Isso não pode ser desfeito."
+#. I18N: (undoable) action name
+#: Src/Actions/RemoveMeasures.cpp:37
+msgid "remove measure(s)"
+msgstr "remover compasso(s)"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1147
-msgid "Manual"
-msgstr "Manual"
+#. I18N: (undoable) action name
+#: Src/Actions/MoveNotes.cpp:38
+msgid "move note(s)"
+msgstr "mover nota(s)"
 
-#: Src/GUI/MainPane.cpp:146
-msgid "Create a new sequence"
-msgstr "Criar nova música"
+#. I18N: (undoable) action name
+#: Src/Actions/DeleteSelected.cpp:40
+msgid "delete note(s)"
+msgstr "deletar nota(s)"
 
-#: Src/GUI/MainPane.cpp:147
-msgid "Open a saved sequence"
-msgstr "Abrir uma música salva"
+#. I18N: (undoable) action name
+#: Src/Actions/ResizeNotes.cpp:31
+msgid "resize note(s)"
+msgstr "redimensionar nota(s)"
 
-#: Src/GUI/MainPane.cpp:148
-msgid "Import a MIDI file"
-msgstr "Importar arquivo Midi"
+#. I18N: (undoable) action name
+#: Src/Actions/ShiftBySemiTone.cpp:30
+msgid "change pitch"
+msgstr "mudar altura"
 
-#: Src/GUI/MainPane.cpp:150
-msgid "Help"
-msgstr "Ajuda"
+#. I18N: (undoable) action name
+#: Src/Actions/Duplicate.cpp:43
+msgid "duplicate"
+msgstr ""
 
-#: Src/GUI/MainPane.cpp:151
-msgid "Exit"
-msgstr "Sair"
+#. I18N: (undoable) action name
+#: Src/Actions/SnapNotesToGrid.cpp:28
+msgid "snap notes to grid"
+msgstr "alinhar notas à grade"
 
-#: Src/GUI/MeasureBar.cpp:69
-msgid "Remove selected measures"
-msgstr "Remover compassos selecionados"
+#. I18N: (undoable) action name
+#: Src/Actions/UpdateGuitarTuning.cpp:29
+msgid "change guitar tuning"
+msgstr "mudar afinação"
 
-#: Src/GUI/MeasureBar.cpp:79
-msgid "Do you really want to remove selected measures?"
-msgstr "Tem certeza que deseja remover os compassos selecionados?"
+#. I18N: (undoable) action name
+#: Src/Actions/AddControlEvent.cpp:32
+msgid "add control event"
+msgstr "adicionar evento de efeito"
 
-#: Src/GUI/MeasureBar.cpp:129
-msgid "Insert measures"
-msgstr "Inserir compassos"
+#. I18N: (undoable) action name
+#: Src/Actions/Paste.cpp:42
+msgid "paste"
+msgstr "colar"
 
-#: Src/GUI/MeasureBar.cpp:131
-msgid "Remove time sig change"
-msgstr "Remover mudança de compasso"
+#. I18N: (undoable) action name
+#: Src/Actions/ScaleTrack.cpp:30
+msgid "scale note(s)"
+msgstr "redimensionar notas"
 
-#: Src/GUI/MeasureBar.cpp:137
-msgid "Insert empty measures between measures "
-msgstr "Inserir compassos vazios entre dois compassos"
+#. I18N: (undoable) action name
+#: Src/Actions/InsertEmptyMeasures.cpp:35
+msgid "insert measures"
+msgstr "inserir compassos"
 
-#: Src/GUI/MeasureBar.cpp:139
-msgid " and "
-msgstr " e "
+#. I18N: (undoable) action name
+#: Src/Actions/RearrangeNotes.cpp:29
+msgid "rearrange notes"
+msgstr "arrumar notas"
 
-#: Src/GUI/MeasureBar.cpp:140
-msgid "Amount: "
-msgstr "Quantidade: "
+#. I18N: (undoable) action name
+#: Src/Actions/ScaleSong.cpp:30
+msgid "scale song"
+msgstr "redimensionar música"
 
-#: Src/GUI/MeasureBar.cpp:159
-msgid "Do you really want to remove this time sig change?"
-msgstr "Você realmente deseja remover esta mudança de compasso?"
+#. I18N: (undoable) action name
+#: Src/Actions/AddControllerSlide.cpp:33
+msgid "add control slide"
+msgstr "adicionar slide de efeito"
 
-#: Src/GUI/MeasureBar.cpp:165
-msgid "You can't remove the first time signature change."
-msgstr "Você não pode remover esta mudança de compasso."
+#. I18N: (undoable) action name
+#: Src/Actions/RemoveOverlapping.cpp:31
+msgid "remove overlapping notes"
+msgstr "remover notas sobrepostas"
 
-#: Src/IO/AriaFileWriter.cpp:53
+#. I18N: (undoable) action name
+#: Src/Actions/SetNoteVolume.cpp:27
+msgid "change note(s) volume"
+msgstr "mudar volume da(s) nota(s)"
+
+#. I18N: (undoable) action name
+#: Src/Actions/ShiftFrets.cpp:28 Src/Actions/NumberPressed.cpp:29
+msgid "change note fret"
+msgstr "mudar traste da nota"
+
+#. I18N: (undoable) action name
+#: Src/Actions/ShiftString.cpp:27
+msgid "string change"
+msgstr "mudar corda"
+
+#. I18N: (undoable) action name
+#: Src/Actions/SetAccidentalSign.cpp:34
+msgid "accidental change"
+msgstr "mudança de acidente"
+
+#. I18N: (undoable) action name
+#: Src/Actions/Record.cpp:32
+msgid "record from MIDI instrument"
+msgstr "gravar do instrumento MIDI"
+
+#. I18N: (undoable) action name
+#: Src/Actions/AddTrack.cpp:36
+msgid "add track"
+msgstr "adicionar faixa"
+
+#. I18N: (undoable) action name
+#: Src/Actions/DeleteTrack.cpp:32
+msgid "delete track"
+msgstr "deletar faixa"
+
+#: Src/IO/AriaFileWriter.cpp:49 Src/IO/AriaFileWriter.cpp:58
 #, c-format
 msgid "Could not open file '%s' for reading"
 msgstr "Não foi possível abrir o arquivo '%s' para leitura"
 
-#: Src/IO/MidiFileReader.cpp:147
+#: Src/IO/MidiFileReader.cpp:156
 msgid ""
 "This MIDI file has tracks that play on multiple MIDI channels. This is not "
 "supported by Aria Maestosa."
 msgstr "Este arquivo MIDI tem faixas que tocam em múltiplos canais. Isso não é suportado pelo Aria Maestosa."
 
-#: Src/IO/MidiFileReader.cpp:157
+#: Src/IO/MidiFileReader.cpp:171
 msgid ""
 "This MIDI file has a track that sends events on multiple MIDI channels. This"
 " is not supported by Aria Maestosa."
 msgstr "Este arquivo MIDI tem uma faixa que manda eventos para múltiplos canais. Isso não é suportado pelo Aria Maestosa."
 
-#: Src/IO/MidiFileReader.cpp:207
+#: Src/IO/MidiFileReader.cpp:222
 #, c-format
 msgid ""
 "This MIDI file appears to be incorrect; a note at tick %i in channel %i does"
 " not appear to have an end"
 msgstr "Este arquivo MIDI parece estar incorreto; uma nota no  tempo %i no canal %i não parece ter fim."
 
-#: Src/IO/MidiFileReader.cpp:233
+#: Src/IO/MidiFileReader.cpp:252
 #, c-format
 msgid ""
 "This MIDI file uses controller #%i, which is not part of the MIDI standard. "
 "This information will be discarded."
 msgstr "Este arquivo MIDI usa um controlador #%i, que não faz parte do padrão MIDI. Esta informação será descartada."
 
-#: Src/IO/MidiFileReader.cpp:243
+#: Src/IO/MidiFileReader.cpp:262
 msgid ""
 "This MIDI file uses Registered Parameters, which are currently not supported"
 " by Aria Maestosa."
 msgstr "Este arquivo MIDI usa Parâmetros Registrados, que ainda não são suportados pelo Aria Maestosa."
 
-#: Src/IO/MidiFileReader.cpp:247
+#: Src/IO/MidiFileReader.cpp:266
 msgid ""
 "This MIDI files uses NRPN (Non-Registered Parameters, i.e. non-standard "
 "controllers), which are currently not supported by Aria Maestosa."
 msgstr "Este arquivo MIDI usa NRPN (Parâmetros Não-Registrados), que ainda não são suportados pelo Aria Maestosa."
 
-#: Src/IO/MidiFileReader.cpp:259
+#: Src/IO/MidiFileReader.cpp:278
 msgid ""
 "This MIDI files uses Channel Mode Message, which are currently not supported"
 " by Aria Maestosa."
 msgstr "Este arquivo MIDI usa Mensagem em Modo Canal, o que ainda não é suportado pelo Aria Maestosa."
 
-#: Src/IO/MidiFileReader.cpp:263
+#: Src/IO/MidiFileReader.cpp:282
 #, c-format
 msgid ""
 "This MIDI file uses unsupported MIDI controller #%i. Data related to this "
 "controller will be discarded."
 msgstr "Este arquivo MIDI usa um controlador MIDI não suportado nº%i. Dados relaciodos a este serão descartados."
 
-#: Src/IO/MidiFileReader.cpp:501 Src/Midi/Sequence.cpp:66
-#: Src/Midi/Sequence.cpp:114 Src/Midi/Sequence.cpp:136 Src/Midi/Track.cpp:73
-#: Src/Midi/Track.cpp:920 Src/Midi/Track.cpp:1868
-#: Src/Printing/AbstractPrintableSequence.cpp:39
-#: Src/Printing/AbstractPrintableSequence.cpp:43
-msgid "Untitled"
-msgstr "Sem Título"
-
-#: Src/main.cpp:272
-msgid "Unknown file type: "
-msgstr "Tipo de arquivo desconhecido: "
-
-#: Src/main.cpp:294 Src/main.cpp:315
-msgid ""
-"Sorry an internal error occurred : an exception was caught unhandled : "
-msgstr "Desculpe, um erro interno ocorreu: uma exceção não foi controlada:"
-
-#: Src/Midi/CommonMidiUtils.cpp:415 Src/Midi/CommonMidiUtils.cpp:440
-msgid ""
-"WARNING: this song has too many\n"
-"channels, expect unpredictable output"
-msgstr "AVISO: esta música tem muitos \ncanais, sua reprodução será imprevisível"
-
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:232
-msgid ""
-"Failed to open ALSA device, sound will be unavailable (you can try selecting"
-" another output device from the 'Output' menu)"
-msgstr "Falh ao abrir o dispositivo ALSA,  o som não estará disponível (você pode tentar escolher outra saída de audio no menu 'Output')"
-
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:414
-#: Src/Midi/Players/Example/ExamplePlayer.cpp:179
-msgid "WAV file"
-msgstr "Arquivo WAV"
-
-#: Src/Midi/Players/Alsa/AlsaPort.cpp:35
-msgid "Failed to open ALSA port."
-msgstr "Falha ao abrir a porta ALSA."
-
-#: Src/Midi/Players/Alsa/AlsaPort.cpp:137
-msgid "No midi port found, no sound will be available."
-msgstr "Nenhuma porta MIDI foi encontrada, o som não estará disponível."
-
-#: Src/Midi/Players/Alsa/AlsaPort.cpp:183
+#: Src/PresetManager.cpp:133
 #, c-format
-msgid "The selected ALSA device (%s) could not be opened."
-msgstr "O dispositivo ALSA (%s) não pode ser aberto."
+msgid "Sorry, an error occurred : could not create %s"
+msgstr "Desculpe, um erro ocorreu : não foi possível criar %s"
 
-#: Src/Midi/Players/Jack/JackMidiManager.cpp:231
-msgid "Jack"
-msgstr "Jack"
+#: Src/Pickers/TimeSigPicker.cpp:139
+msgid "Time Signature"
+msgstr "Compasso"
 
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:501
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:861
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:872
-msgid "Sorry, failed to set custom soundfont."
-msgstr ""
+#. I18N: - when setting time signature, to indicate it's not constant through
+#. song
+#: Src/Pickers/TimeSigPicker.cpp:178
+msgid "Varies throughout song"
+msgstr "Varia durante a canção"
 
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:850
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:883
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:901
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:912
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:922
-msgid ""
-"An error has occurred when connecting to the MIDI output device with "
-"AudioUnit; audio playback may be unavailable"
-msgstr "Um erro quando conectou-se com a saída de MIDI pelo AudioUnit; a reprodução de MIDI pode estar indisponível"
-
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:256
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:260
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:309
-msgid "OSX Software Synthesizer"
-msgstr "Software Sintetizador OSX"
-
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:292
-msgid "AIFF file"
-msgstr "Arquivo AIFF"
-
-#: Src/Midi/Players/NullDevice.cpp:65
-msgid "No sound available"
-msgstr "Som não disponível"
-
-#: Src/Midi/Players/PlatformMidiManager.cpp:65
-msgid "Bad binary, no MIDI driver was compiled in!"
-msgstr "Binário corrompido, nenhum MIDI driver foi compilado!"
-
-#: Src/Midi/Players/PlatformMidiManager.cpp:259
-msgid "Sorry, no MIDI input port is available"
-msgstr "Desculpe, nenhuma porta de entrada MIDI está disponível"
-
-#: Src/Midi/Players/PlatformMidiManager.cpp:287
-#: Src/Midi/Players/PlatformMidiManager.cpp:306
-msgid "Sorry, failed to open the selected MIDI input port"
-msgstr "Desculpe, falha ao abrir a porta de entrada MIDI"
-
-#: Src/Midi/Players/Win/WinPlayer.cpp:299
-#: Src/Midi/Players/Win/WinPlayer.cpp:330
-#: Src/Midi/Players/Win/WinPlayer.cpp:334
-msgid "Windows Software Synthesizer"
-msgstr "Software Sintetizador do Windows"
-
-#: Src/Midi/Players/Win/WinPlayer.cpp:361
-msgid "Failed to initialize MIDI out device"
-msgstr "Falha ao iniciar o dispositivo de reprodução de MIDI"
-
-#: Src/Midi/Sequence.cpp:763
-msgid ""
-"Warning : you are opening a file saved with a version of\n"
-"Aria Maestosa more recent than the version you currently have.\n"
-"It may not open correctly."
-msgstr "Atenção : você está abrindo um arquivo salvo com uma versão do\nAria Maestosa mais recente do que a que você tem.\nEle pode não abrir corretamente."
+#. I18N: - when setting a wrong time signature
+#: Src/Pickers/TimeSigPicker.cpp:280
+msgid "Denominator must be a power of 2"
+msgstr "O denominador deve ser uma potência de 2"
 
 #. I18N: - in controller, when a controller can only be on/off
 #: Src/Pickers/ControllerChoice.cpp:194
@@ -1252,6 +1892,122 @@ msgstr "Esquerda"
 #: Src/Pickers/ControllerChoice.cpp:204
 msgid "Right"
 msgstr "Direita"
+
+#: Src/Pickers/VolumeSlider.cpp:108
+msgid "volume"
+msgstr "volume"
+
+#: Src/Pickers/MagneticGridPicker.cpp:43
+msgid "Triplet"
+msgstr ""
+
+#: Src/Pickers/MagneticGridPicker.cpp:44
+msgid "Dotted"
+msgstr ""
+
+#: Src/Pickers/TuningPicker.cpp:62
+msgid "Rearrange selected notes"
+msgstr "Arrumar notas selecionadas"
+
+#: Src/Pickers/InstrumentPicker.cpp:83 Src/Pickers/InstrumentPicker.cpp:104
+#: Src/Pickers/InstrumentPicker.cpp:124
+msgid "Piano"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:84
+msgid "Chromatic Percussion"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:85 Src/Pickers/InstrumentPicker.cpp:106
+#: Src/Pickers/InstrumentPicker.cpp:125
+msgid "Organ"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:86 Src/Pickers/InstrumentPicker.cpp:107
+#: Src/Pickers/InstrumentPicker.cpp:131
+msgid "Guitar"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:87 Src/Pickers/InstrumentPicker.cpp:108
+#: Src/Pickers/InstrumentPicker.cpp:134
+msgid "Bass"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:88
+msgid "Strings"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:89
+msgid "Ensemble"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:90 Src/Pickers/InstrumentPicker.cpp:111
+#: Src/Pickers/InstrumentPicker.cpp:126
+msgid "Brass"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:91 Src/Pickers/InstrumentPicker.cpp:112
+#: Src/Pickers/InstrumentPicker.cpp:129
+msgid "Reed"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:92 Src/Pickers/InstrumentPicker.cpp:130
+msgid "Pipe"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:93 Src/Pickers/InstrumentPicker.cpp:114
+#: Src/Pickers/InstrumentPicker.cpp:128
+msgid "Synth Lead"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:94
+msgid "Synth Pad"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:95
+msgid "Synth Effects"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:96 Src/Pickers/InstrumentPicker.cpp:115
+msgid "Ethnic"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:97
+msgid "Percussive"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:98 Src/Pickers/InstrumentPicker.cpp:117
+#: Src/Pickers/InstrumentPicker.cpp:136 Src/Editors/DrumEditor.cpp:162
+msgid "Sound Effects"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:105
+msgid "Chromatic"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:109
+msgid "Strings and Orchestra"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:110
+msgid "Choirs, Pads and Voices"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:113
+msgid "Flutes and Pipe"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:116 Src/Pickers/InstrumentPicker.cpp:135
+msgid "Percussion"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:127
+msgid "Pads"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:132
+msgid "Plucked"
+msgstr ""
 
 #. I18N: - in the view settings for score editor. whether to show notes in a
 #. traditional musical way.
@@ -1299,150 +2055,415 @@ msgstr "Preferências do usuário"
 msgid "Edit Presets..."
 msgstr "Editar Preferências..."
 
-#: Src/Pickers/MagneticGridPicker.cpp:43
-msgid "Triplet"
-msgstr ""
-
-#: Src/Pickers/MagneticGridPicker.cpp:44
-msgid "Dotted"
-msgstr ""
-
-#: Src/Pickers/TimeSigPicker.cpp:139
-msgid "Time Signature"
-msgstr "Compasso"
-
-#. I18N: - when setting time signature, to indicate it's not constant through
-#. song
-#: Src/Pickers/TimeSigPicker.cpp:178
-msgid "Varies throughout song"
-msgstr "Varia durante a canção"
-
-#. I18N: - when setting a wrong time signature
-#: Src/Pickers/TimeSigPicker.cpp:280
-msgid "Denominator must be a power of 2"
-msgstr "O denominador deve ser uma potência de 2"
-
-#: Src/Pickers/TuningPicker.cpp:62
-msgid "Rearrange selected notes"
-msgstr "Arrumar notas selecionadas"
-
-#: Src/Pickers/VolumeSlider.cpp:108
-msgid "volume"
-msgstr "volume"
-
-#: Src/PreferencesData.cpp:120
-msgid "Language"
-msgstr "Linguagem"
-
-#: Src/PreferencesData.cpp:146
-msgid "MIDI Driver"
-msgstr "Senquênciador de MIDI"
-
-#: Src/PreferencesData.cpp:157
-msgid "Play during edit (default value)"
-msgstr "Tocar enquanto editando (padrão)"
-
-#: Src/PreferencesData.cpp:159
-msgid "Always"
-msgstr "Sempre"
-
-#: Src/PreferencesData.cpp:160
-msgid "On note change"
-msgstr "Ao modificar notas"
-
-#: Src/PreferencesData.cpp:161
-msgid "Never"
-msgstr "Nunca"
-
-#: Src/PreferencesData.cpp:165
-msgid "Default Score View"
-msgstr "Exibição de Partitura Padrão"
-
-#: Src/PreferencesData.cpp:167
-msgid "Both Musical and Linear"
-msgstr "Ambos Musical e Linear"
-
-#: Src/PreferencesData.cpp:168
-msgid "Musical Only"
-msgstr "Apenas Musical"
-
-#: Src/PreferencesData.cpp:169
-msgid "Linear Only"
-msgstr "Apenas Linear"
-
-#: Src/PreferencesData.cpp:174
-msgid "Soundfont"
-msgstr ""
-
-#: Src/PreferencesData.cpp:181
-msgid "Follow playback by default"
-msgstr "Seguir o que está sendo tocado automaticamente"
-
-#: Src/PreferencesData.cpp:186
-msgid "Enable playthrough when recording by default"
-msgstr "Tocar a música automaticamente durante gravações"
-
-#: Src/PreferencesData.cpp:191
-msgid "Check online for new versions"
-msgstr ""
-
-#: Src/PreferencesData.cpp:207
-msgid "Automatically launch TiMidity if needed"
-msgstr "Executar TiMidity automaticamente se necessário"
-
-#: Src/PresetManager.cpp:133
-#, c-format
-msgid "Sorry, an error occurred : could not create %s"
-msgstr "Desculpe, um erro ocorreu : não foi possível criar %s"
-
-#: Src/Printing/AbstractPrintableSequence.cpp:39
-msgid "Aria Maestosa song"
-msgstr "Música do Aria Maestosa"
-
-#. I18N: for printing (page orientation)
-#: Src/Printing/wxEasyPrintWrapper.cpp:225
-msgid "Portrait"
-msgstr "Retrato"
-
-#: Src/Printing/wxEasyPrintWrapper.cpp:225
-msgid "Landscape"
-msgstr "Paisagem"
-
-#. I18N: for printing (page setup)
-#: Src/Printing/wxEasyPrintWrapper.cpp:227
-#, c-format
-msgid "left = %i mm, right = %i mm,"
-msgstr ""
-
-#: Src/Printing/wxEasyPrintWrapper.cpp:228
-#, c-format
-msgid "top = %i mm, bottom = %i mm"
-msgstr ""
-
-#: Src/Renderers/GLImage.cpp:53
-msgid "Failed to load resource image"
-msgstr "Falha ao carregar gráficos"
+#: Src/main.cpp:312 Src/main.cpp:333
+msgid ""
+"Sorry an internal error occurred : an exception was caught unhandled : "
+msgstr "Desculpe, um erro interno ocorreu: uma exceção não foi controlada:"
 
 #: Src/Renderers/wxImage.cpp:53
 msgid "Failed to load "
 msgstr "Falha ao carregar "
 
-#: Src/Editors/ControllerEditor.h:168
-msgid "Controller Editor"
-msgstr "Efeitos"
+#: Src/Renderers/GLImage.cpp:52 Src/Renderers/GLImage.cpp:64
+#: Src/Renderers/GLImage.cpp:77 Src/Renderers/GLImage.cpp:87
+#: Src/Renderers/GLImage.cpp:108 Src/Renderers/GLImage.cpp:194
+msgid "Failed to load resource image"
+msgstr "Falha ao carregar gráficos"
+
+#: Src/PreferencesData.cpp:150
+msgid "Language"
+msgstr "Linguagem"
+
+#: Src/PreferencesData.cpp:176
+msgid "MIDI Driver"
+msgstr "Senquênciador de MIDI"
+
+#. I18N: In preferences
+#: Src/PreferencesData.cpp:188
+msgid "Play during edit (default value)"
+msgstr "Tocar enquanto editando (padrão)"
+
+#: Src/PreferencesData.cpp:190
+msgid "Always"
+msgstr "Sempre"
+
+#: Src/PreferencesData.cpp:191
+msgid "On note change"
+msgstr "Ao modificar notas"
+
+#: Src/PreferencesData.cpp:192
+msgid "Never"
+msgstr "Nunca"
+
+#. I18N: In preferences
+#: Src/PreferencesData.cpp:197
+msgid "Default Score View"
+msgstr "Exibição de Partitura Padrão"
+
+#: Src/PreferencesData.cpp:199
+msgid "Both Musical and Linear"
+msgstr "Ambos Musical e Linear"
+
+#: Src/PreferencesData.cpp:200
+msgid "Musical Only"
+msgstr "Apenas Musical"
+
+#: Src/PreferencesData.cpp:201
+msgid "Linear Only"
+msgstr "Apenas Linear"
+
+#. I18N: In preferences
+#: Src/PreferencesData.cpp:206
+msgid "Default Editor View"
+msgstr ""
+
+#: Src/PreferencesData.cpp:208
+msgid "Keyboard"
+msgstr ""
+
+#: Src/PreferencesData.cpp:209
+msgid "Score"
+msgstr ""
+
+#: Src/PreferencesData.cpp:210
+msgid "Tablature"
+msgstr ""
+
+#. I18N: In preferences
+#: Src/PreferencesData.cpp:216
+msgid "Instrument Classification"
+msgstr ""
+
+#: Src/PreferencesData.cpp:218
+msgid "MIDI Standard"
+msgstr ""
+
+#: Src/PreferencesData.cpp:228
+msgid "Soundfont"
+msgstr ""
+
+#: Src/PreferencesData.cpp:235
+msgid "Follow playback by default"
+msgstr "Seguir o que está sendo tocado automaticamente"
+
+#: Src/PreferencesData.cpp:240
+msgid "Enable playthrough when recording by default"
+msgstr "Tocar a música automaticamente durante gravações"
+
+#: Src/PreferencesData.cpp:245
+msgid "Check online for new versions"
+msgstr ""
+
+#: Src/PreferencesData.cpp:250
+msgid "Remember window location"
+msgstr ""
+
+#: Src/PreferencesData.cpp:282
+msgid "Automatically launch TiMidity if needed"
+msgstr "Executar TiMidity automaticamente se necessário"
+
+#: Src/PreferencesData.cpp:289
+msgid "Single-instance application"
+msgstr ""
+
+#: Src/PreferencesData.cpp:295
+msgid "Show note names in piano-roll"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:91
+msgid "High Q"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:92
+msgid "Slap"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:93
+msgid "Push"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:94
+msgid "Pull"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:95 Src/Editors/DrumEditor.cpp:101
+msgid "Stick"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:96
+msgid "Square"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:97
+msgid "Metro"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:98
+msgid "Metro bell"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:99
+msgid "Bass drum 2"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:100
+msgid "Bass drum 1"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:102
+msgid "Snare"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:103
+msgid "Clap"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:104
+msgid "Snare 2"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:105
+msgid "Tom 6"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:106
+msgid "Closed hi-hat"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:107
+msgid "Tom 5"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:108
+msgid "Pedal hi-hat"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:109
+msgid "Tom 4"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:110
+msgid "Open hi-hat"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:111
+msgid "Tom 3"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:112
+msgid "Tom 2"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:113
+msgid "Crash"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:114
+msgid "Tom 1"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:115
+msgid "Ride"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:116
+msgid "Chinese"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:117
+msgid "Ride bell"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:118
+msgid "Tambourine"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:119
+msgid "Splash"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:120
+msgid "Cowbell"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:121
+msgid "Crash 2"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:122
+msgid "Vibraslap"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:123
+msgid "Ride 2"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:124
+msgid "Hi bongo"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:125
+msgid "Low bongo"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:126
+msgid "Mute hi conga"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:127
+msgid "Open hi conga"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:128
+msgid "Low conga"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:129
+msgid "High timbale"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:130
+msgid "Low timbale"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:131
+msgid "High agogo"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:132
+msgid "Low agogo"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:133
+msgid "Cabasa"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:134
+msgid "Maracas"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:135
+msgid "Short whistle"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:136
+msgid "Long whistle"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:137
+msgid "Short guiro"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:138
+msgid "Long guiro"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:139
+msgid "Claves"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:140
+msgid "Hi wood block"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:141
+msgid "Lo wood block"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:142
+msgid "Mute cuica"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:143
+msgid "Open cuica"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:144
+msgid "Mute triangle"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:145
+msgid "Open triangle"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:146
+msgid "Shaker"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:147
+msgid "Jingle Bell"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:148
+msgid "Bell Tree"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:149
+msgid "Castanets"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:150
+msgid "Mute surdo"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:151
+msgid "Open surdo"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:155
+msgid "Drumkit"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:156
+msgid "Hi-hat"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:157
+msgid "Cymbal"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:158
+msgid "Toms"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:159
+msgid "African"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:160
+msgid "Latin"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:161
+msgid "Others"
+msgstr ""
+
+#. I18N: beats per minute (tempo)
+#: Src/Editors/ControllerEditor.cpp:81
+msgid "bpm"
+msgstr "bpm"
+
+#. I18N: as in "+2 semitones"
+#: Src/Editors/ControllerEditor.cpp:86
+msgid "semitones"
+msgstr "semitons"
 
 #: Src/Editors/DrumEditor.h:103
 msgid "Drum Editor"
 msgstr "Bateria"
 
-#: Src/Editors/GuitarEditor.h:63
-msgid "Tablature Editor"
-msgstr "Tablatura"
+#: Src/Editors/ControllerEditor.h:168
+msgid "Controller Editor"
+msgstr "Efeitos"
+
+#: Src/Editors/ScoreEditor.h:260
+msgid "Score Editor"
+msgstr "Partitura"
 
 #: Src/Editors/KeyboardEditor.h:74
 msgid "Keyboard Editor"
 msgstr "Teclado"
 
-#: Src/Editors/ScoreEditor.h:260
-msgid "Score Editor"
-msgstr "Partitura"
+#: Src/Editors/GuitarEditor.h:63
+msgid "Tablature Editor"
+msgstr "Tablatura"
