@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 #   <alexis.archambault@libertysurf.fr>, 2012.
 #   <alexisarcham@gmail.com>, 2012.
@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Aria Maestosa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-03 14:41+0200\n"
-"PO-Revision-Date: 2012-07-04 12:27+0100\n"
-"Last-Translator: Alexis Archambault <alexis.archambault@twenga.com>\n"
+"POT-Creation-Date: 2012-07-26 12:20+0200\n"
+"PO-Revision-Date: 2012-07-28 18:32+0000\n"
+"Last-Translator: Auria <auria.mg@gmail.com>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/ariamaestosa/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -388,7 +388,7 @@ msgstr "Polysynthé"
 msgid "Choir"
 msgstr "Chœur"
 
-#: Src/Midi/InstrumentChoice.cpp:121
+#: Src/Midi/InstrumentChoice.cpp:121 Src/Pickers/InstrumentPicker.cpp:133
 msgid "Bowed"
 msgstr "Archet"
 
@@ -532,26 +532,18 @@ msgstr "Applaudissements"
 msgid "Gunshot"
 msgstr "Coup de feu"
 
-#: Src/Midi/Track.cpp:87
-#: Src/Midi/Track.cpp:934
-#: Src/Midi/Track.cpp:1908
-#: Src/Midi/Sequence.cpp:67
-#: Src/Midi/Sequence.cpp:115
-#: Src/Midi/Sequence.cpp:137
-#: Src/Printing/AbstractPrintableSequence.cpp:39
-#: Src/Printing/AbstractPrintableSequence.cpp:43
-#: Src/IO/MidiFileReader.cpp:522
+#: Src/Midi/Track.cpp:87 Src/Midi/Track.cpp:934 Src/Midi/Track.cpp:1915
+#: Src/Midi/Sequence.cpp:68 Src/Midi/Sequence.cpp:116
+#: Src/Midi/Sequence.cpp:138 Src/Printing/AbstractPrintableSequence.cpp:39
+#: Src/Printing/AbstractPrintableSequence.cpp:43 Src/IO/MidiFileReader.cpp:522
 msgid "Untitled"
 msgstr "Sans titre"
 
-#: Src/Midi/CommonMidiUtils.cpp:424
-#: Src/Midi/CommonMidiUtils.cpp:449
+#: Src/Midi/CommonMidiUtils.cpp:428 Src/Midi/CommonMidiUtils.cpp:453
 msgid ""
 "WARNING: this song has too many\n"
 "channels, expect unpredictable output"
-msgstr ""
-"ATTENTION: cette séquence a trop de\n"
-"canaux, les résultats pourraient être faussés."
+msgstr "ATTENTION: cette séquence a trop de\ncanaux, les résultats pourraient être faussés."
 
 #: Src/Midi/DrumChoice.cpp:30
 msgid "Standard"
@@ -593,15 +585,12 @@ msgstr "Effets spéciaux"
 msgid "Invalid Drumkit"
 msgstr "Kit de batterie invalide"
 
-#: Src/Midi/Sequence.cpp:764
+#: Src/Midi/Sequence.cpp:765
 msgid ""
 "Warning : you are opening a file saved with a version of\n"
 "Aria Maestosa more recent than the version you currently have.\n"
 "It may not open correctly."
-msgstr ""
-"Attention : ce fichier a été sauvegardé avec une version d'Aria Maestosa\n"
-"ultérieure à la version présentement utilisée.\n"
-"Il est possible que le fichier ne s'ouvre pas correctement."
+msgstr "Attention : ce fichier a été sauvegardé avec une version d'Aria Maestosa\nultérieure à la version présentement utilisée.\nIl est possible que le fichier ne s'ouvre pas correctement."
 
 #: Src/Midi/Players/Jack/JackMidiManager.cpp:231
 msgid "Jack"
@@ -638,7 +627,9 @@ msgstr "Port MIDI inconnu :"
 #: Src/Midi/Players/Mac/AudioUnitOutput.cpp:823
 #: Src/Midi/Players/Mac/AudioUnitOutput.cpp:834
 #: Src/Midi/Players/Mac/AudioUnitOutput.cpp:844
-msgid "An error has occurred when connecting to the MIDI output device with AudioUnit; audio playback may be unavailable"
+msgid ""
+"An error has occurred when connecting to the MIDI output device with "
+"AudioUnit; audio playback may be unavailable"
 msgstr "Une erreur est survenue lors de la connectin à la sortie MIDI avec AudioUnit; la sortie audio pourrait ne pas être disponible"
 
 #: Src/Midi/Players/Mac/AudioUnitOutput.cpp:783
@@ -647,7 +638,9 @@ msgid "Sorry, failed to set custom soundfont."
 msgstr "Désolé, initialiser la SoundFont à échoué."
 
 #: Src/Midi/Players/Mac/MacPlayerInterface.cpp:139
-msgid "Sorry, exporting to audio could not complete successfully. Please include the following error code when reporting the issue :"
+msgid ""
+"Sorry, exporting to audio could not complete successfully. Please include "
+"the following error code when reporting the issue :"
 msgstr "Désolé, exporter vers un format audio n'a pas pu être complété avec succès. Veuillez inclure le code d'erreur suivant en rapportant le problème :"
 
 #: Src/Midi/Players/Mac/MacPlayerInterface.cpp:275
@@ -674,7 +667,9 @@ msgid "The selected ALSA device (%s) could not be opened."
 msgstr "Le port ALSA sélectionné (%s) n'a pu être ouvert."
 
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:255
-msgid "Failed to open ALSA device, sound will be unavailable (you can try selecting another output device from the 'Output' menu)"
+msgid ""
+"Failed to open ALSA device, sound will be unavailable (you can try selecting"
+" another output device from the 'Output' menu)"
 msgstr "Le port ALSA sélectionné n'a pu être ouvert, aucun son ne sera disponible (vous pouvez tenter de sélectionner un autre port de sortie sous le menu correspondant)"
 
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:502
@@ -694,26 +689,19 @@ msgid "Fluidsynth Soundfont"
 msgstr "Fonte sonore Fluidsynth"
 
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:528
-#: Src/Dialogs/CustomKeyDialog.cpp:161
-#: Src/Dialogs/Preferences.cpp:334
+#: Src/Dialogs/CustomKeyDialog.cpp:161 Src/Dialogs/Preferences.cpp:334
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:167
-#: Src/Dialogs/PrintSetupDialog.cpp:105
-#: Src/Dialogs/PrintSetupDialog.cpp:728
-#: Src/Dialogs/CopyrightWindow.cpp:94
-#: Src/Dialogs/ScaleDialog.cpp:152
-#: Src/Dialogs/TuningDialog.cpp:54
-#: Src/Pickers/TimeSigPicker.cpp:181
+#: Src/Dialogs/PrintSetupDialog.cpp:105 Src/Dialogs/PrintSetupDialog.cpp:728
+#: Src/Dialogs/CopyrightWindow.cpp:94 Src/Dialogs/ScaleDialog.cpp:152
+#: Src/Dialogs/TuningDialog.cpp:54 Src/Pickers/TimeSigPicker.cpp:181
 msgid "OK"
 msgstr "OK"
 
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:529
-#: Src/Dialogs/CustomKeyDialog.cpp:162
-#: Src/Dialogs/Preferences.cpp:335
+#: Src/Dialogs/CustomKeyDialog.cpp:162 Src/Dialogs/Preferences.cpp:335
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:169
-#: Src/Dialogs/PrintSetupDialog.cpp:731
-#: Src/Dialogs/CopyrightWindow.cpp:99
-#: Src/Dialogs/ScaleDialog.cpp:148
-#: Src/Dialogs/TrackPropertiesDialog.cpp:194
+#: Src/Dialogs/PrintSetupDialog.cpp:731 Src/Dialogs/CopyrightWindow.cpp:99
+#: Src/Dialogs/ScaleDialog.cpp:148 Src/Dialogs/TrackPropertiesDialog.cpp:192
 #: Src/Dialogs/TuningDialog.cpp:57
 msgid "Cancel"
 msgstr "Annuler"
@@ -955,8 +943,7 @@ msgstr "&Préférences..."
 msgid "&Settings"
 msgstr "&Options"
 
-#: Src/GUI/MainFrameMenuBar.cpp:289
-#: Src/GUI/MainFrameMenuBar.cpp:1179
+#: Src/GUI/MainFrameMenuBar.cpp:289 Src/GUI/MainFrameMenuBar.cpp:1180
 msgid "No MIDI Output Available"
 msgstr "Aucune sortie MIDI disponible"
 
@@ -964,10 +951,8 @@ msgstr "Aucune sortie MIDI disponible"
 msgid "&Output"
 msgstr "&Sortie"
 
-#: Src/GUI/MainFrameMenuBar.cpp:329
-#: Src/GUI/MainFrameMenuBar.cpp:332
-#: Src/GUI/MainFrame.cpp:922
-#: Src/PreferencesData.cpp:295
+#: Src/GUI/MainFrameMenuBar.cpp:329 Src/GUI/MainFrameMenuBar.cpp:332
+#: Src/GUI/MainFrame.cpp:933 Src/PreferencesData.cpp:307
 msgid "No MIDI input"
 msgstr "Aucune entrée MIDI"
 
@@ -989,103 +974,87 @@ msgstr "&Manuel de l'utilisateur"
 msgid "&Help"
 msgstr "&Aide"
 
-#: Src/GUI/MainFrameMenuBar.cpp:485
+#: Src/GUI/MainFrameMenuBar.cpp:486
 #, c-format
 msgid "&Undo %s"
 msgstr "&Annuler %s"
 
-#: Src/GUI/MainFrameMenuBar.cpp:496
+#: Src/GUI/MainFrameMenuBar.cpp:497
 msgid "Can't Undo"
 msgstr "Rien à annuler"
 
-#: Src/GUI/MainFrameMenuBar.cpp:590
-#: Src/GUI/MainFrameMenuBar.cpp:651
-#: Src/GUI/MainFrameMenuBar.cpp:689
+#: Src/GUI/MainFrameMenuBar.cpp:591 Src/GUI/MainFrameMenuBar.cpp:652
+#: Src/GUI/MainFrameMenuBar.cpp:690
 msgid "Select destination file"
 msgstr "Veuillez sélectionner l'emplacement du fichier"
 
-#: Src/GUI/MainFrameMenuBar.cpp:600
-#: Src/GUI/MainFrameMenuBar.cpp:662
-#: Src/GUI/MainFrameMenuBar.cpp:699
+#: Src/GUI/MainFrameMenuBar.cpp:601 Src/GUI/MainFrameMenuBar.cpp:663
+#: Src/GUI/MainFrameMenuBar.cpp:700
 msgid "The file already exists. Do you wish to overwrite it?"
 msgstr "Le fichier existe deja. Voulez-vous l'écraser?"
 
-#: Src/GUI/MainFrameMenuBar.cpp:601
-#: Src/GUI/MainFrameMenuBar.cpp:662
-#: Src/GUI/MainFrameMenuBar.cpp:699
-#: Src/GUI/MainFrameMenuBar.cpp:922
-#: Src/GUI/MainFrameMenuBar.cpp:1041
-#: Src/GUI/MainFrameMenuBar.cpp:1125
-#: Src/Dialogs/PresetEditor.cpp:118
-#: Src/Pickers/TimeSigPicker.cpp:289
+#: Src/GUI/MainFrameMenuBar.cpp:602 Src/GUI/MainFrameMenuBar.cpp:663
+#: Src/GUI/MainFrameMenuBar.cpp:700 Src/GUI/MainFrameMenuBar.cpp:923
+#: Src/GUI/MainFrameMenuBar.cpp:1042 Src/GUI/MainFrameMenuBar.cpp:1126
+#: Src/Dialogs/PresetEditor.cpp:118 Src/Pickers/TimeSigPicker.cpp:289
 msgid "Confirm"
 msgstr "Veuillez confirmer"
 
-#: Src/GUI/MainFrameMenuBar.cpp:627
-#: Src/Dialogs/Preferences.cpp:413
+#: Src/GUI/MainFrameMenuBar.cpp:628 Src/Dialogs/Preferences.cpp:413
 msgid "Select file"
 msgstr "Veuillez sélectionner un fichier"
 
-#: Src/GUI/MainFrameMenuBar.cpp:628
+#: Src/GUI/MainFrameMenuBar.cpp:629
 msgid "Aria Maestosa file"
 msgstr "Fichier Aria Maestosa"
 
-#: Src/GUI/MainFrameMenuBar.cpp:638
+#: Src/GUI/MainFrameMenuBar.cpp:639
 msgid "Select midi file"
 msgstr "Veuillez sélectionner un fichier midi"
 
-#: Src/GUI/MainFrameMenuBar.cpp:639
-#: Src/GUI/MainFrameMenuBar.cpp:652
+#: Src/GUI/MainFrameMenuBar.cpp:640 Src/GUI/MainFrameMenuBar.cpp:653
 msgid "Midi file"
 msgstr "Fichier Midi"
 
-#: Src/GUI/MainFrameMenuBar.cpp:673
+#: Src/GUI/MainFrameMenuBar.cpp:674
 msgid "Sorry, failed to export midi file."
 msgstr "Désolé, le fichier midi n'a pas pu être sauvegardé."
 
-#: Src/GUI/MainFrameMenuBar.cpp:711
+#: Src/GUI/MainFrameMenuBar.cpp:712
 msgid ""
 "Please wait while audio file is being generated.\n"
 "\n"
 "Depending on the length of your file,\n"
 "this can take several minutes."
-msgstr ""
-"Veuillez patienter pendant la création du fichier audio.\n"
-"\n"
-"Dépendemment de la taille du fichier,\n"
-"cela peut prendre plusieurs minutes."
+msgstr "Veuillez patienter pendant la création du fichier audio.\n\nDépendemment de la taille du fichier,\ncela peut prendre plusieurs minutes."
 
-#: Src/GUI/MainFrameMenuBar.cpp:918
+#: Src/GUI/MainFrameMenuBar.cpp:919
 msgid "You may not delete the last track"
 msgstr "Il n'est pas possible de supprimer la dernière piste"
 
-#: Src/GUI/MainFrameMenuBar.cpp:922
+#: Src/GUI/MainFrameMenuBar.cpp:923
 msgid "Do you really want to delete this track?"
 msgstr "Voulez-vous vraiment supprimer cette piste?"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1040
+#: Src/GUI/MainFrameMenuBar.cpp:1041
 msgid ""
 "If multiple tracks play on the same channel, they will be merged.\n"
 "This cannot be undone.\n"
 "\n"
 "Do you really want to continue?"
-msgstr ""
-"Si plusieurs pistes jouent sur le même canal, elles seront combinées.\n"
-"Ce changement ne peut être annulé.\n"
-"\n"
-"Voulez-vous continuer?"
+msgstr "Si plusieurs pistes jouent sur le même canal, elles seront combinées.\nCe changement ne peut être annulé.\n\nVoulez-vous continuer?"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1124
-#: Src/Pickers/TimeSigPicker.cpp:288
-msgid "Are you sure you want to go back to having a single time signature? Any time sig events you may have added will be lost. This cannot be undone."
+#: Src/GUI/MainFrameMenuBar.cpp:1125 Src/Pickers/TimeSigPicker.cpp:288
+msgid ""
+"Are you sure you want to go back to having a single time signature? Any time"
+" sig events you may have added will be lost. This cannot be undone."
 msgstr "Désirez-vous vraiment éliminer tous les changements de mesure ajoutés? Cette opération ne peut pas être annulée une fois effectuée."
 
-#: Src/GUI/MainFrameMenuBar.cpp:1253
+#: Src/GUI/MainFrameMenuBar.cpp:1254
 msgid "Manual"
 msgstr "Manuel"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1267
-#: Src/Dialogs/PresetEditor.cpp:66
+#: Src/GUI/MainFrameMenuBar.cpp:1268 Src/Dialogs/PresetEditor.cpp:66
 #: Src/Dialogs/AboutDialog.cpp:85
 msgid "Close"
 msgstr "Fermer"
@@ -1138,111 +1107,114 @@ msgstr "Voulez-vous vraiment supprimer ce changement de mesure?"
 msgid "You can't remove the first time signature change."
 msgstr "Vous ne pouvez pas supprimer les premiers chiffres indicateurs"
 
-#: Src/GUI/MainFrame.cpp:423
+#: Src/GUI/MainFrame.cpp:428
 msgid "Record"
 msgstr "Enregistrer"
 
-#: Src/GUI/MainFrame.cpp:427
+#: Src/GUI/MainFrame.cpp:432
 msgid "Play"
 msgstr "Jouer"
 
-#: Src/GUI/MainFrame.cpp:431
+#: Src/GUI/MainFrame.cpp:436
 msgid "Stop"
 msgstr "Stop"
 
-#: Src/GUI/MainFrame.cpp:434
+#: Src/GUI/MainFrame.cpp:439
 msgid "Loop"
 msgstr "Boucle"
 
 #. I18N: song length (number of measures)
-#: Src/GUI/MainFrame.cpp:448
+#: Src/GUI/MainFrame.cpp:453
 msgid "Length"
 msgstr "Durée"
 
-#: Src/GUI/MainFrame.cpp:456
+#: Src/GUI/MainFrame.cpp:461
 msgid "Tempo"
 msgstr "Tempo"
 
-#: Src/GUI/MainFrame.cpp:468
+#: Src/GUI/MainFrame.cpp:473
 msgid "Time Sig"
 msgstr "Mesure"
 
-#: Src/GUI/MainFrame.cpp:476
+#: Src/GUI/MainFrame.cpp:481
 msgid "Start"
 msgstr "Début"
 
-#: Src/GUI/MainFrame.cpp:492
+#: Src/GUI/MainFrame.cpp:497
 msgid "Zoom"
 msgstr "Zoom"
 
-#: Src/GUI/MainFrame.cpp:523
-#: Src/GUI/MainFrame.cpp:525
+#: Src/GUI/MainFrame.cpp:528 Src/GUI/MainFrame.cpp:530
 msgid "Tool"
 msgstr "Outil"
 
 #. I18N: to hide the panel that is shown when a file could not be imported
 #. successfully
-#: Src/GUI/MainFrame.cpp:563
+#: Src/GUI/MainFrame.cpp:568
 msgid "Hide"
 msgstr "Fermer"
 
-#: Src/GUI/MainFrame.cpp:924
+#: Src/GUI/MainFrame.cpp:935
 msgid "Please select an input port from the 'input' menu before recording"
 msgstr "Veuillez sélectionner un port d'entrée dans le menu correspondant avant de commencer à enregistrer"
 
-#: Src/GUI/MainFrame.cpp:1615
+#: Src/GUI/MainFrame.cpp:1626
 #, c-format
-msgid "You have unsaved changes in sequence '%s'. Do you want to save them before proceeding?"
+msgid ""
+"You have unsaved changes in sequence '%s'. Do you want to save them before "
+"proceeding?"
 msgstr "Vous avez des changements non sauvegardés à la séquence '%s'. Voulez-vous les sauvegarder avant de continuer?"
 
-#: Src/GUI/MainFrame.cpp:1617
+#: Src/GUI/MainFrame.cpp:1628
 msgid "Selecting 'Yes' will save your document before closing"
 msgstr "'Oui' sauvegardera vos modifications avant de quitter"
 
-#: Src/GUI/MainFrame.cpp:1618
+#: Src/GUI/MainFrame.cpp:1629
 msgid "Selecting 'No' will discard unsaved changes"
 msgstr "'Non' fermera sans sauvegarder les changements"
 
-#: Src/GUI/MainFrame.cpp:1619
+#: Src/GUI/MainFrame.cpp:1630
 msgid "Selecting 'Cancel' will cancel exiting the application"
 msgstr "Choisir 'Annuler'  laissera l'application ouverte"
 
 #. I18N: title of dialog shown when exiting without saving
-#: Src/GUI/MainFrame.cpp:1624
+#: Src/GUI/MainFrame.cpp:1635
 msgid "Unsaved changes in sequence"
 msgstr "Changements non sauvegardés"
 
-#: Src/GUI/MainFrame.cpp:1754
-msgid "Please wait while .aria file is loading."
-msgstr "Veuillez patienter, ouverture en cours..."
+#: Src/GUI/MainFrame.cpp:1797
+msgid "Unknown file type: "
+msgstr "Type de fichier inconnu: "
 
-#: Src/GUI/MainFrame.cpp:1761
-#: Src/GUI/MainFrame.cpp:1877
+#: Src/GUI/MainFrame.cpp:1823 Src/GUI/MainFrame.cpp:1940
 msgid "Sorry, loading .aria file failed."
 msgstr "Désolé, le fichier n'a pas pu être ouvert."
 
-#: Src/GUI/MainFrame.cpp:1801
+#: Src/GUI/MainFrame.cpp:1864
 msgid "Please wait while midi file is loading."
 msgstr "Veuillez patienter, ouverture en cours..."
 
-#: Src/GUI/MainFrame.cpp:1808
-#: Src/GUI/MainFrame.cpp:1889
+#: Src/GUI/MainFrame.cpp:1871 Src/GUI/MainFrame.cpp:1952
 msgid "Sorry, loading midi file failed."
 msgstr "Désolé, le fichier midi n'a pas pu être ouvert."
 
-#: Src/GUI/MainFrame.cpp:1830
-msgid "Loading the MIDI file completed successfully, but with the following warnings (the song may not sound as intended) :"
+#: Src/GUI/MainFrame.cpp:1893
+msgid ""
+"Loading the MIDI file completed successfully, but with the following "
+"warnings (the song may not sound as intended) :"
 msgstr "L'import du fichier MIDI s'est complété sans erreurs, toutefois ces problèmes mineurs ont été recontrées (la séquence pourrait donc différer de son interprétation originale) :"
 
-#: Src/GUI/MainFrame.cpp:1868
+#: Src/GUI/MainFrame.cpp:1931
 msgid "Please wait while file is reloaded."
 msgstr "Attendez que le fichier soit rechargé."
 
-#: Src/GUI/MainFrame.cpp:1985
-msgid "A new version of Aria Maestosa is now available! Visit the following link to download it :"
+#: Src/GUI/MainFrame.cpp:2048
+msgid ""
+"A new version of Aria Maestosa is now available! Visit the following link to"
+" download it :"
 msgstr "Une nouvelle version d'Aria Maestosa est désormais disponible ! Cliquez sur le lien suivant pour la télécharger :"
 
-#: Src/GUI/MainFrame.cpp:1996
+#: Src/GUI/MainFrame.cpp:2059
 msgid "An error occurred"
 msgstr "Une erreur est survenue"
 
@@ -1259,8 +1231,7 @@ msgid "Import a MIDI file"
 msgstr "Importer un fichier MIDI..."
 
 #. I18N: - title of the preferences dialog
-#: Src/GUI/MainPane.cpp:149
-#: Src/Dialogs/Preferences.cpp:246
+#: Src/GUI/MainPane.cpp:149 Src/Dialogs/Preferences.cpp:246
 msgid "Preferences"
 msgstr "Préférences"
 
@@ -1329,7 +1300,9 @@ msgstr "* Les notes \"à-demi cochées\" sont inclues comme accidentelles"
 
 #. I18N: in the key editor
 #: Src/Dialogs/CustomKeyDialog.cpp:155
-msgid "* Unchecked notes are excluded (for instance, they could be unplayable on your instrument)"
+msgid ""
+"* Unchecked notes are excluded (for instance, they could be unplayable on "
+"your instrument)"
 msgstr "* Les notes décochées sont exclues (e.g. une note que votre instrument est incapable de jouer)"
 
 #: Src/Dialogs/CustomKeyDialog.cpp:163
@@ -1456,7 +1429,9 @@ msgid "Compact (print only key notes)"
 msgstr "Compact (imprimer uniquement les notes de la tonalité)"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:196
-msgid "Keyroll tracks and tablature/score tracks cannot be mixed in the same printout"
+msgid ""
+"Keyroll tracks and tablature/score tracks cannot be mixed in the same "
+"printout"
 msgstr "Les pistes en rouleaux de notes ne peuvent être combinées avec des pistes de type partition ou tablature"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:201
@@ -1473,9 +1448,7 @@ msgstr "Disposition des pistes sur la page..."
 msgid ""
 "Track '%s' could not be printed, since its current\n"
 "view (editor) does not support printing."
-msgstr ""
-"La piste '%s' n'a pas pu être imprimée, car elle est dans\n"
-"un mode d'affichage qui ne supporte pas l'impression."
+msgstr "La piste '%s' n'a pas pu être imprimée, car elle est dans\nun mode d'affichage qui ne supporte pas l'impression."
 
 #: Src/Dialogs/PrintSetupDialog.cpp:277
 msgid "An error occurred during printing."
@@ -1511,7 +1484,9 @@ msgid "Omit instruments that play nothing on the current line"
 msgstr "Omettre les instruments qui ne jouent pas sur une ligne"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:660
-msgid "If some instrument plays nothing during a long part of the song, checking this option can make the printed score tighter by eliminating empty lines"
+msgid ""
+"If some instrument plays nothing during a long part of the song, checking "
+"this option can make the printed score tighter by eliminating empty lines"
 msgstr "Si un instrument ne joue rien pendant plusieurs mesures, activer cette option peut optimiser le nombre de pages requises pour l'impression en éliminant les lignes vides"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:674
@@ -1549,8 +1524,7 @@ msgstr "Nom de la chanson"
 msgid "Copyright"
 msgstr "Copyright"
 
-#: Src/Dialogs/CopyrightWindow.cpp:89
-#: Src/Dialogs/CopyrightWindow.cpp:124
+#: Src/Dialogs/CopyrightWindow.cpp:89 Src/Dialogs/CopyrightWindow.cpp:124
 msgid "Song duration :"
 msgstr "Durée de la chansons :"
 
@@ -1622,9 +1596,7 @@ msgstr "Merci à :"
 msgid ""
 "Ergonis Software and %s for making EasyBeat,\n"
 "\ta great app that inspired Aria (www.ergonis.com)."
-msgstr ""
-"Ergonis Software et %s pour Easy Beat,\n"
-"\\tun logiciel qui a grandement inspiré Aria (www.ergonis.com)"
+msgstr "Ergonis Software et %s pour Easy Beat,\n\\tun logiciel qui a grandement inspiré Aria (www.ergonis.com)"
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:56
@@ -1788,8 +1760,7 @@ msgid "change note(s) volume"
 msgstr "changement de volume"
 
 #. I18N: (undoable) action name
-#: Src/Actions/ShiftFrets.cpp:28
-#: Src/Actions/NumberPressed.cpp:29
+#: Src/Actions/ShiftFrets.cpp:28 Src/Actions/NumberPressed.cpp:29
 msgid "change note fret"
 msgstr "changement de fret"
 
@@ -1818,45 +1789,60 @@ msgstr "Ajouter une piste"
 msgid "delete track"
 msgstr "Supprimer la piste"
 
-#: Src/IO/AriaFileWriter.cpp:49
-#: Src/IO/AriaFileWriter.cpp:58
+#: Src/IO/AriaFileWriter.cpp:49 Src/IO/AriaFileWriter.cpp:58
 #, c-format
 msgid "Could not open file '%s' for reading"
 msgstr "Impossible de lire le fichier '%s'"
 
 #: Src/IO/MidiFileReader.cpp:156
-msgid "This MIDI file has tracks that play on multiple MIDI channels. This is not supported by Aria Maestosa."
+msgid ""
+"This MIDI file has tracks that play on multiple MIDI channels. This is not "
+"supported by Aria Maestosa."
 msgstr "Ce fichier MIDI contient des pistes qui jouent des notes sur plusieurs canaux MIDI, ce qui n'est pas supporté par Aria Maestosa."
 
 #: Src/IO/MidiFileReader.cpp:171
-msgid "This MIDI file has a track that sends events on multiple MIDI channels. This is not supported by Aria Maestosa."
+msgid ""
+"This MIDI file has a track that sends events on multiple MIDI channels. This"
+" is not supported by Aria Maestosa."
 msgstr "Ce fichier MIDI contient des pistes qui jouent sur plusieurs canaux MIDI, ce qui n'est pas supporté par Aria Maestosa."
 
 #: Src/IO/MidiFileReader.cpp:222
 #, c-format
-msgid "This MIDI file appears to be incorrect; a note at tick %i in channel %i does not appear to have an end"
+msgid ""
+"This MIDI file appears to be incorrect; a note at tick %i in channel %i does"
+" not appear to have an end"
 msgstr "Ce fichier MIDI semble incorrect; une note à l'instant %i dans le canal %i semble ne pas avoir de fin"
 
 #: Src/IO/MidiFileReader.cpp:252
 #, c-format
-msgid "This MIDI file uses controller #%i, which is not part of the MIDI standard. This information will be discarded."
+msgid ""
+"This MIDI file uses controller #%i, which is not part of the MIDI standard. "
+"This information will be discarded."
 msgstr "Ce fichier MIDI utilise le contrôleur #%i, qui ne fait pas partie du standard MIDI. Cette information sera perdue."
 
 #: Src/IO/MidiFileReader.cpp:262
-msgid "This MIDI file uses Registered Parameters, which are currently not supported by Aria Maestosa."
+msgid ""
+"This MIDI file uses Registered Parameters, which are currently not supported"
+" by Aria Maestosa."
 msgstr "Ce fichier MIDI utilise des \"Registered Parameters\", qui ne sont pas supportés par Aria Maestosa."
 
 #: Src/IO/MidiFileReader.cpp:266
-msgid "This MIDI files uses NRPN (Non-Registered Parameters, i.e. non-standard controllers), which are currently not supported by Aria Maestosa."
+msgid ""
+"This MIDI files uses NRPN (Non-Registered Parameters, i.e. non-standard "
+"controllers), which are currently not supported by Aria Maestosa."
 msgstr "Ce fichier contient des paramètres non-enregistrés (NRPN), i.e. des contrôleurs non standards, qui ne sont pas pris en charge par Aira Maestosa."
 
 #: Src/IO/MidiFileReader.cpp:278
-msgid "This MIDI files uses Channel Mode Message, which are currently not supported by Aria Maestosa."
+msgid ""
+"This MIDI files uses Channel Mode Message, which are currently not supported"
+" by Aria Maestosa."
 msgstr "Ce fichier MIDI contient des \"Channel mode messages\", qui ne sont pas pris en charge par Aria Maestosa."
 
 #: Src/IO/MidiFileReader.cpp:282
 #, c-format
-msgid "This MIDI file uses unsupported MIDI controller #%i. Data related to this controller will be discarded."
+msgid ""
+"This MIDI file uses unsupported MIDI controller #%i. Data related to this "
+"controller will be discarded."
 msgstr "Ce fichier MIDI utilise le contrôleur #%i, qui n'est pas supporté par Aria Maestosa"
 
 #: Src/PresetManager.cpp:133
@@ -1925,6 +1911,106 @@ msgstr "Pointée"
 msgid "Rearrange selected notes"
 msgstr "Réarranger les notes sélectionnées"
 
+#: Src/Pickers/InstrumentPicker.cpp:83 Src/Pickers/InstrumentPicker.cpp:104
+#: Src/Pickers/InstrumentPicker.cpp:124
+msgid "Piano"
+msgstr "Piano"
+
+#: Src/Pickers/InstrumentPicker.cpp:84
+msgid "Chromatic Percussion"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:85 Src/Pickers/InstrumentPicker.cpp:106
+#: Src/Pickers/InstrumentPicker.cpp:125
+msgid "Organ"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:86 Src/Pickers/InstrumentPicker.cpp:107
+#: Src/Pickers/InstrumentPicker.cpp:131
+msgid "Guitar"
+msgstr "Guitare"
+
+#: Src/Pickers/InstrumentPicker.cpp:87 Src/Pickers/InstrumentPicker.cpp:108
+#: Src/Pickers/InstrumentPicker.cpp:134
+msgid "Bass"
+msgstr "Basse"
+
+#: Src/Pickers/InstrumentPicker.cpp:88
+msgid "Strings"
+msgstr "Cordes"
+
+#: Src/Pickers/InstrumentPicker.cpp:89
+msgid "Ensemble"
+msgstr "Ensemble"
+
+#: Src/Pickers/InstrumentPicker.cpp:90 Src/Pickers/InstrumentPicker.cpp:111
+#: Src/Pickers/InstrumentPicker.cpp:126
+msgid "Brass"
+msgstr "Cuivres"
+
+#: Src/Pickers/InstrumentPicker.cpp:91 Src/Pickers/InstrumentPicker.cpp:112
+#: Src/Pickers/InstrumentPicker.cpp:129
+msgid "Reed"
+msgstr "Anches"
+
+#: Src/Pickers/InstrumentPicker.cpp:92 Src/Pickers/InstrumentPicker.cpp:130
+msgid "Pipe"
+msgstr "Flutes"
+
+#: Src/Pickers/InstrumentPicker.cpp:93 Src/Pickers/InstrumentPicker.cpp:114
+#: Src/Pickers/InstrumentPicker.cpp:128
+msgid "Synth Lead"
+msgstr "Instruments synthétiques"
+
+#: Src/Pickers/InstrumentPicker.cpp:94
+msgid "Synth Pad"
+msgstr "Sons feutrés synthétiques"
+
+#: Src/Pickers/InstrumentPicker.cpp:95
+msgid "Synth Effects"
+msgstr "Effets sonores"
+
+#: Src/Pickers/InstrumentPicker.cpp:96 Src/Pickers/InstrumentPicker.cpp:115
+msgid "Ethnic"
+msgstr "Ethnique"
+
+#: Src/Pickers/InstrumentPicker.cpp:97
+msgid "Percussive"
+msgstr "Percussion"
+
+#: Src/Pickers/InstrumentPicker.cpp:98 Src/Pickers/InstrumentPicker.cpp:117
+#: Src/Pickers/InstrumentPicker.cpp:136 Src/Editors/DrumEditor.cpp:162
+msgid "Sound Effects"
+msgstr "Bruitages"
+
+#: Src/Pickers/InstrumentPicker.cpp:105
+msgid "Chromatic"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:109
+msgid "Strings and Orchestra"
+msgstr "Cordes et orchestre"
+
+#: Src/Pickers/InstrumentPicker.cpp:110
+msgid "Choirs, Pads and Voices"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:113
+msgid "Flutes and Pipe"
+msgstr "Flutes et vents"
+
+#: Src/Pickers/InstrumentPicker.cpp:116 Src/Pickers/InstrumentPicker.cpp:135
+msgid "Percussion"
+msgstr "Percussion"
+
+#: Src/Pickers/InstrumentPicker.cpp:127
+msgid "Pads"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:132
+msgid "Plucked"
+msgstr ""
+
 #. I18N: - in the view settings for score editor. whether to show notes in a
 #. traditional musical way.
 #: Src/Pickers/KeyPicker.cpp:80
@@ -1971,25 +2057,18 @@ msgstr "Préréglages utilisateur"
 msgid "Edit Presets..."
 msgstr "Éditer les préréglages"
 
-#: Src/main.cpp:199
-msgid "Unknown file type: "
-msgstr "Type de fichier inconnu: "
-
-#: Src/main.cpp:221
-#: Src/main.cpp:242
-msgid "Sorry an internal error occurred : an exception was caught unhandled : "
+#: Src/main.cpp:312 Src/main.cpp:333
+msgid ""
+"Sorry an internal error occurred : an exception was caught unhandled : "
 msgstr "Désolé, une interne interne est survenue (une exception n'a pas été gérée correctement) :"
 
 #: Src/Renderers/wxImage.cpp:53
 msgid "Failed to load "
 msgstr "Erreur de chargement"
 
-#: Src/Renderers/GLImage.cpp:52
-#: Src/Renderers/GLImage.cpp:64
-#: Src/Renderers/GLImage.cpp:77
-#: Src/Renderers/GLImage.cpp:87
-#: Src/Renderers/GLImage.cpp:108
-#: Src/Renderers/GLImage.cpp:194
+#: Src/Renderers/GLImage.cpp:52 Src/Renderers/GLImage.cpp:64
+#: Src/Renderers/GLImage.cpp:77 Src/Renderers/GLImage.cpp:87
+#: Src/Renderers/GLImage.cpp:108 Src/Renderers/GLImage.cpp:194
 msgid "Failed to load resource image"
 msgstr "Erreur lors de la lecture des images ressource"
 
@@ -2085,278 +2164,281 @@ msgstr "Se rappeler l'emplacement de la fenêtre"
 msgid "Automatically launch TiMidity if needed"
 msgstr "Automatiquement lancer TiMidity"
 
-#: Src/Editors/DrumEditor.cpp:88
+#: Src/PreferencesData.cpp:289
+msgid "Single-instance application"
+msgstr ""
+
+#: Src/PreferencesData.cpp:295
+msgid "Show note names in piano-roll"
+msgstr ""
+
+#: Src/Editors/DrumEditor.cpp:91
 msgid "High Q"
 msgstr "High Q"
 
-#: Src/Editors/DrumEditor.cpp:89
+#: Src/Editors/DrumEditor.cpp:92
 msgid "Slap"
 msgstr "Slap"
 
-#: Src/Editors/DrumEditor.cpp:90
+#: Src/Editors/DrumEditor.cpp:93
 msgid "Push"
 msgstr "Push"
 
-#: Src/Editors/DrumEditor.cpp:91
+#: Src/Editors/DrumEditor.cpp:94
 msgid "Pull"
 msgstr "Pull"
 
-#: Src/Editors/DrumEditor.cpp:92
-#: Src/Editors/DrumEditor.cpp:98
+#: Src/Editors/DrumEditor.cpp:95 Src/Editors/DrumEditor.cpp:101
 msgid "Stick"
 msgstr "Stick"
 
-#: Src/Editors/DrumEditor.cpp:93
+#: Src/Editors/DrumEditor.cpp:96
 msgid "Square"
 msgstr "Square"
 
-#: Src/Editors/DrumEditor.cpp:94
+#: Src/Editors/DrumEditor.cpp:97
 msgid "Metro"
 msgstr "Métronome"
 
-#: Src/Editors/DrumEditor.cpp:95
+#: Src/Editors/DrumEditor.cpp:98
 msgid "Metro bell"
 msgstr "Coup de métronome"
 
-#: Src/Editors/DrumEditor.cpp:96
+#: Src/Editors/DrumEditor.cpp:99
 msgid "Bass drum 2"
 msgstr "Grosse caisse 2"
 
-#: Src/Editors/DrumEditor.cpp:97
+#: Src/Editors/DrumEditor.cpp:100
 msgid "Bass drum 1"
 msgstr "Grosse caisse 1"
 
-#: Src/Editors/DrumEditor.cpp:99
+#: Src/Editors/DrumEditor.cpp:102
 msgid "Snare"
 msgstr "Caisse claire"
 
-#: Src/Editors/DrumEditor.cpp:100
+#: Src/Editors/DrumEditor.cpp:103
 msgid "Clap"
 msgstr "Claquement de main"
 
-#: Src/Editors/DrumEditor.cpp:101
+#: Src/Editors/DrumEditor.cpp:104
 msgid "Snare 2"
 msgstr "Caisse claire 2"
 
-#: Src/Editors/DrumEditor.cpp:102
+#: Src/Editors/DrumEditor.cpp:105
 msgid "Tom 6"
 msgstr "Tom basse grave 6"
 
-#: Src/Editors/DrumEditor.cpp:103
+#: Src/Editors/DrumEditor.cpp:106
 msgid "Closed hi-hat"
 msgstr "Charley frappé"
 
-#: Src/Editors/DrumEditor.cpp:104
+#: Src/Editors/DrumEditor.cpp:107
 msgid "Tom 5"
 msgstr "Tom basse aigu 5"
 
-#: Src/Editors/DrumEditor.cpp:105
+#: Src/Editors/DrumEditor.cpp:108
 msgid "Pedal hi-hat"
 msgstr "Charley au pied"
 
-#: Src/Editors/DrumEditor.cpp:106
+#: Src/Editors/DrumEditor.cpp:109
 msgid "Tom 4"
 msgstr "Tom médium 4"
 
-#: Src/Editors/DrumEditor.cpp:107
+#: Src/Editors/DrumEditor.cpp:110
 msgid "Open hi-hat"
 msgstr "Charley ouvert"
 
-#: Src/Editors/DrumEditor.cpp:108
+#: Src/Editors/DrumEditor.cpp:111
 msgid "Tom 3"
 msgstr "Tom médium 3"
 
-#: Src/Editors/DrumEditor.cpp:109
+#: Src/Editors/DrumEditor.cpp:112
 msgid "Tom 2"
 msgstr "Tom médium 2"
 
-#: Src/Editors/DrumEditor.cpp:110
+#: Src/Editors/DrumEditor.cpp:113
 msgid "Crash"
 msgstr "Cymbale crash"
 
-#: Src/Editors/DrumEditor.cpp:111
+#: Src/Editors/DrumEditor.cpp:114
 msgid "Tom 1"
 msgstr "Tom aigu"
 
-#: Src/Editors/DrumEditor.cpp:112
+#: Src/Editors/DrumEditor.cpp:115
 msgid "Ride"
 msgstr "Ride"
 
-#: Src/Editors/DrumEditor.cpp:113
+#: Src/Editors/DrumEditor.cpp:116
 msgid "Chinese"
 msgstr "Cymbale china"
 
-#: Src/Editors/DrumEditor.cpp:114
+#: Src/Editors/DrumEditor.cpp:117
 msgid "Ride bell"
 msgstr "Cymbale ride/cup"
 
-#: Src/Editors/DrumEditor.cpp:115
+#: Src/Editors/DrumEditor.cpp:118
 msgid "Tambourine"
 msgstr "Tambourin"
 
-#: Src/Editors/DrumEditor.cpp:116
+#: Src/Editors/DrumEditor.cpp:119
 msgid "Splash"
-msgstr " Cymbale splash"
+msgstr "Cymbale splash"
 
-#: Src/Editors/DrumEditor.cpp:117
+#: Src/Editors/DrumEditor.cpp:120
 msgid "Cowbell"
 msgstr "Cencerro"
 
-#: Src/Editors/DrumEditor.cpp:118
+#: Src/Editors/DrumEditor.cpp:121
 msgid "Crash 2"
 msgstr "Crash 2"
 
-#: Src/Editors/DrumEditor.cpp:119
+#: Src/Editors/DrumEditor.cpp:122
 msgid "Vibraslap"
 msgstr "Vibraslap"
 
-#: Src/Editors/DrumEditor.cpp:120
+#: Src/Editors/DrumEditor.cpp:123
 msgid "Ride 2"
 msgstr "Cymbale ride aigue"
 
-#: Src/Editors/DrumEditor.cpp:121
+#: Src/Editors/DrumEditor.cpp:124
 msgid "Hi bongo"
 msgstr "Bongo aigu"
 
-#: Src/Editors/DrumEditor.cpp:122
+#: Src/Editors/DrumEditor.cpp:125
 msgid "Low bongo"
 msgstr "Bongo grave"
 
-#: Src/Editors/DrumEditor.cpp:123
+#: Src/Editors/DrumEditor.cpp:126
 msgid "Mute hi conga"
 msgstr "Congas aigu sourd"
 
-#: Src/Editors/DrumEditor.cpp:124
+#: Src/Editors/DrumEditor.cpp:127
 msgid "Open hi conga"
 msgstr "Congas aigu ouvert"
 
-#: Src/Editors/DrumEditor.cpp:125
+#: Src/Editors/DrumEditor.cpp:128
 msgid "Low conga"
 msgstr "Congas grave"
 
-#: Src/Editors/DrumEditor.cpp:126
+#: Src/Editors/DrumEditor.cpp:129
 msgid "High timbale"
 msgstr "Timbale aigüe"
 
-#: Src/Editors/DrumEditor.cpp:127
+#: Src/Editors/DrumEditor.cpp:130
 msgid "Low timbale"
 msgstr "Timbale grave"
 
-#: Src/Editors/DrumEditor.cpp:128
+#: Src/Editors/DrumEditor.cpp:131
 msgid "High agogo"
 msgstr "Agogo aigüe"
 
-#: Src/Editors/DrumEditor.cpp:129
+#: Src/Editors/DrumEditor.cpp:132
 msgid "Low agogo"
 msgstr "Agogo grave"
 
-#: Src/Editors/DrumEditor.cpp:130
+#: Src/Editors/DrumEditor.cpp:133
 msgid "Cabasa"
 msgstr "Cabasa"
 
-#: Src/Editors/DrumEditor.cpp:131
+#: Src/Editors/DrumEditor.cpp:134
 msgid "Maracas"
 msgstr "Maracas"
 
-#: Src/Editors/DrumEditor.cpp:132
+#: Src/Editors/DrumEditor.cpp:135
 msgid "Short whistle"
 msgstr "Sifflet aigu"
 
-#: Src/Editors/DrumEditor.cpp:133
+#: Src/Editors/DrumEditor.cpp:136
 msgid "Long whistle"
 msgstr "Sifflet grave"
 
-#: Src/Editors/DrumEditor.cpp:134
+#: Src/Editors/DrumEditor.cpp:137
 msgid "Short guiro"
 msgstr "Güiro court"
 
-#: Src/Editors/DrumEditor.cpp:135
+#: Src/Editors/DrumEditor.cpp:138
 msgid "Long guiro"
 msgstr "Güiro long"
 
-#: Src/Editors/DrumEditor.cpp:136
+#: Src/Editors/DrumEditor.cpp:139
 msgid "Claves"
 msgstr "Claves"
 
-#: Src/Editors/DrumEditor.cpp:137
+#: Src/Editors/DrumEditor.cpp:140
 msgid "Hi wood block"
 msgstr "Woodblock aigu"
 
-#: Src/Editors/DrumEditor.cpp:138
+#: Src/Editors/DrumEditor.cpp:141
 msgid "Lo wood block"
 msgstr "Woodblock grave"
 
-#: Src/Editors/DrumEditor.cpp:139
+#: Src/Editors/DrumEditor.cpp:142
 msgid "Mute cuica"
 msgstr "Cuica assourdie"
 
-#: Src/Editors/DrumEditor.cpp:140
+#: Src/Editors/DrumEditor.cpp:143
 msgid "Open cuica"
 msgstr "Cuica ouverte"
 
-#: Src/Editors/DrumEditor.cpp:141
+#: Src/Editors/DrumEditor.cpp:144
 msgid "Mute triangle"
 msgstr "Triangle tenu"
 
-#: Src/Editors/DrumEditor.cpp:142
+#: Src/Editors/DrumEditor.cpp:145
 msgid "Open triangle"
 msgstr "Triangle libre"
 
-#: Src/Editors/DrumEditor.cpp:143
+#: Src/Editors/DrumEditor.cpp:146
 msgid "Shaker"
 msgstr "Shaker"
 
-#: Src/Editors/DrumEditor.cpp:144
+#: Src/Editors/DrumEditor.cpp:147
 msgid "Jingle Bell"
 msgstr "Grappe de clochettes"
 
-#: Src/Editors/DrumEditor.cpp:145
+#: Src/Editors/DrumEditor.cpp:148
 msgid "Bell Tree"
 msgstr "Arbre à cloches"
 
-#: Src/Editors/DrumEditor.cpp:146
+#: Src/Editors/DrumEditor.cpp:149
 msgid "Castanets"
 msgstr "Castagnettes"
 
-#: Src/Editors/DrumEditor.cpp:147
+#: Src/Editors/DrumEditor.cpp:150
 msgid "Mute surdo"
 msgstr "Surdo sourd"
 
-#: Src/Editors/DrumEditor.cpp:148
+#: Src/Editors/DrumEditor.cpp:151
 msgid "Open surdo"
 msgstr "Surdo ouvert"
 
-#: Src/Editors/DrumEditor.cpp:152
+#: Src/Editors/DrumEditor.cpp:155
 msgid "Drumkit"
 msgstr "Kit de batterie"
 
-#: Src/Editors/DrumEditor.cpp:153
+#: Src/Editors/DrumEditor.cpp:156
 msgid "Hi-hat"
 msgstr "Charley"
 
-#: Src/Editors/DrumEditor.cpp:154
+#: Src/Editors/DrumEditor.cpp:157
 msgid "Cymbal"
 msgstr "Cymbale"
 
-#: Src/Editors/DrumEditor.cpp:155
+#: Src/Editors/DrumEditor.cpp:158
 msgid "Toms"
 msgstr "Toms"
 
-#: Src/Editors/DrumEditor.cpp:156
+#: Src/Editors/DrumEditor.cpp:159
 msgid "African"
 msgstr "Africain"
 
-#: Src/Editors/DrumEditor.cpp:157
+#: Src/Editors/DrumEditor.cpp:160
 msgid "Latin"
 msgstr "Latin"
 
-#: Src/Editors/DrumEditor.cpp:158
+#: Src/Editors/DrumEditor.cpp:161
 msgid "Others"
 msgstr "Autres"
-
-#: Src/Editors/DrumEditor.cpp:159
-msgid "Sound Effects"
-msgstr "Bruitages"
 
 #. I18N: beats per minute (tempo)
 #: Src/Editors/ControllerEditor.cpp:81
@@ -2387,4 +2469,3 @@ msgstr "Éditeur de clavier"
 #: Src/Editors/GuitarEditor.h:63
 msgid "Tablature Editor"
 msgstr "Éditeur de tablature"
-

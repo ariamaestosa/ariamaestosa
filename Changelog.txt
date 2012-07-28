@@ -12,6 +12,7 @@
 - Improve metronome when using time signatures like 6/8
 - Improve score editor note beaming in time signatures like 6/8
 - Improve scores : try to avoid showing 1/2 silences on beats not multiples of 2
+- Add chinese translation
 
 1.4.2
 - Fixed bug that could cause Aria to stop playing prematurely in a song using varying tempo
