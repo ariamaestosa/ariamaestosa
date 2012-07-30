@@ -291,6 +291,12 @@ void PreferencesData::fillSettingsVector()
     m_settings.push_back( singleInstance );
 #endif
 
+    Setting* showNoteNames = new Setting(fromCString(SETTING_ID_SHOW_NOTE_NAMES),
+                                     _("Show note names in piano-roll"),
+                                     SETTING_BOOL, true /* show in preferences */, wxT("1") );
+    m_settings.push_back(showNoteNames);
+    
+
     // TODO: make default value paltform-specific
     Setting* output = new Setting(fromCString(SETTING_ID_MIDI_OUTPUT), wxT(""),
                                   SETTING_STRING, false /* show in preferences */, wxT("default") );
@@ -447,6 +453,20 @@ wxFont AriaMaestosa::getDrumNamesFont()
     return wxFont(7, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 #endif
 }
+
+
+wxFont AriaMaestosa::getNoteNamesFont()
+{
+#ifdef __WXMAC__
+    return wxFont(9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#elif defined(__WXMSW__)
+    return wxFont(7, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#else
+    return wxFont(6, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#endif
+}
+
+
 
 wxFont AriaMaestosa::getInstrumentNameFont()
 {

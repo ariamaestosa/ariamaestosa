@@ -35,10 +35,19 @@
 #include "Renderers/Drawable.h"
 #include "Renderers/RenderAPI.h"
 #include "Utils.h"
+#include "PreferencesData.h"
 
 #define SHOW_MIDI_PITCH 0
 
 using namespace AriaMaestosa;
+
+
+static const float DARKEN_OFFSET = -0.5f;
+static const float LIGHTEN_OFFSET = +0.85f;
+
+static const float WHITE_THRESHOLD = 0.15f;
+static const float DARKEN_THRESHOLD = 0.5f;
+static const float BLACK_THRESHOLD = 0.85f;
 
 
 // ************************************************************************************************************
@@ -99,37 +108,9 @@ void KeyboardEditor::mouseDown(RelativeXCoord x, const int y)
 
 void KeyboardEditor::processMouseMove(RelativeXCoord x, int y)
 {
-    const int note = getLevelAtY(y);
-    
-    Note12 note12;
-    int octave;
-    
     if (not PlatformMidiManager::get()->isPlaying())
     {
-        if (Note::findNoteName(note, &note12 /* out */, &octave /* out */))
-        {
-            wxString status;
-            
-            switch (m_track->getKeyType())
-            {
-                case KEY_TYPE_SHARPS:
-                case KEY_TYPE_C:
-                    status << NOTE_12_NAME[note12];
-                    break;
-                    
-                case KEY_TYPE_FLATS:
-                default:
-                    status << NOTE_12_NAME_FLATS[note12];
-                    break;
-            }
-            
-            status << octave;
-            getMainFrame()->setStatusText(status);
-        }
-        else 
-        {
-            getMainFrame()->setStatusText(wxT(""));
-        }
+        getMainFrame()->setStatusText(getNoteName(getLevelAtY(y)));
     }
 }
 
@@ -273,7 +254,13 @@ void KeyboardEditor::processKeyPress(int keycode, bool commandDown, bool shiftDo
 void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
                             RelativeXCoord mousex_initial, int mousey_initial, bool focus)
 {
+    FloatColor floatColor;
+    bool showNoteNames;
+    
     if (not ImageProvider::imagesLoaded()) return;
+    
+    // Get preferences here
+    showNoteNames = PreferencesData::getInstance()->getBoolValue(SETTING_ID_SHOW_NOTE_NAMES, true);
 
     AriaRender::beginScissors(LEFT_EDGE_X, getEditorYStart(), m_width - RIGHT_SCISSOR, m_height);
 
@@ -317,12 +304,11 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
         AriaRender::color(0,0,0);
         
         AriaRender::renderNumber(midiID, 100, levelToY(levelid+1));
-
+        
         AriaRender::primitives();
         AriaRender::color(0.94, 0.94, 0.94, 1);
 #endif
-        
-        
+
         levelid++;
     }
 
@@ -346,18 +332,21 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             // pick a color
             switch (color)
             {
-                case 0: AriaRender::color(1, 0.85, 0,    0.5); break;
-                case 1: AriaRender::color(0, 1,    0,    0.5); break;
-                case 2: AriaRender::color(1, 0,    0.85, 0.5); break;
-                case 3: AriaRender::color(1, 0,    0,    0.5); break;
-                case 4: AriaRender::color(0, 0.85, 1,    0.5); break;
+                case 0: floatColor.set(1, 0.85, 0,    0.5); break;
+                case 1: floatColor.set(0, 1,    0,    0.5); break;
+                case 2: floatColor.set(1, 0,    0.85, 0.5); break;
+                case 3: floatColor.set(1, 0,    0,    0.5); break;
+                case 4: floatColor.set(0, 0.85, 1,    0.5); break;
             }
             color++; if (color > 4) color = 0;
+            
+            AriaRender::primitives();
+            applyColor(floatColor);
 
             // render the notes
             for (int n=0; n<noteAmount; n++)
             {
-
+                int x,y;
                 int x1 = otherGTrack->getNoteStartInPixels(n) - m_gsequence->getXScrollInPixels();
                 int x2 = otherGTrack->getNoteEndInPixels(n)   - m_gsequence->getXScrollInPixels();
 
@@ -366,11 +355,19 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
                 if (x1 > m_width) break;
 
                 const int pitch = otherTrack->getNotePitchID(n);
+                
+                x = x1 + getEditorXStart();
+                y = levelToY(pitch+1);
 
-                AriaRender::rect(x1 + getEditorXStart(),   levelToY(pitch),
-                                 x2 + getEditorXStart()-1, levelToY(pitch+1));
+                AriaRender::rect(x, levelToY(pitch), x2 + getEditorXStart()-1, y);
+                                 
+                if (showNoteNames)
+                {
+                    AriaRender::images();
+                    applyInvertedColor(floatColor);
+                    AriaRender::renderString(getNoteName(pitch), x+1, y, x2 + getEditorXStart()-1 - x);
+                }
             }
-
         }
     }
 
@@ -389,6 +386,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     const int noteAmount = m_track->getNoteAmount();
     for (int n=0; n<noteAmount; n++)
     {
+        int x;
         const int x1 = m_graphical_track->getNoteStartInPixels(n) - pscroll;
         const int x2 = m_graphical_track->getNoteEndInPixels(n)   - pscroll;
 
@@ -405,25 +403,35 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
         
         if (key_notes[pitch] == KEY_INCLUSION_NONE)
         {
-            AriaRender::color(1.0f, 0.0f, 0.0f);
+            floatColor.set(1.0f, 0.0f, 0.0f, 1.0f);
         }
         else if (m_selecting and x1 > mouse_x_min and x2 < mouse_x_max and
                  y1 + Y_STEP_HEIGHT/2 > mouse_y_min and y1 + Y_STEP_HEIGHT/2 < mouse_y_max)
         {
-            AriaRender::color(0.94f, 1.0f, 0.0f);
+            floatColor.set(0.94f, 1.0f, 0.0f, 1.0f);
         }
         else if (m_track->isNoteSelected(n) and focus)
         {
-            AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
+            floatColor.set((1-volume)*1, (1-(volume/2))*1, 0, 1.0f);
         }
         else
         {
-            AriaRender::color((1-volume)*0.9, (1-volume)*0.9,  (1-volume)*0.9);
+            floatColor.set((1-volume)*0.9, (1-volume)*0.9,  (1-volume)*0.9, 1.0f);
         }
 
+        AriaRender::primitives();
+        applyColor(floatColor);
+
+        x = x1 + getEditorXStart() + 1;
         
-        AriaRender::bordered_rect(x1 + getEditorXStart() + 1, y1,
-                                  x2 + getEditorXStart() - 1, y2);
+        AriaRender::bordered_rect(x, y1, x2 + getEditorXStart() - 1, y2);
+        
+        if (showNoteNames)
+        {
+            AriaRender::images();
+            applyInvertedColor(floatColor);
+            AriaRender::renderString(getNoteName(pitch), x+1, y2, x2 + getEditorXStart() - x);
+        }
     }
 
 
@@ -471,8 +479,8 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     // ------------------------- move note (preview) -----------------------
     if (m_clicked_on_note)
     {
-        AriaRender::color(1, 0.85, 0, 0.5);
-
+        floatColor.set(1, 0.85, 0, 0.5);
+        
         int x_difference = mousex_current.getRelativeTo(MIDI) - mousex_initial.getRelativeTo(MIDI);
         int y_difference = mousey_current - mousey_initial;
 
@@ -487,7 +495,24 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             int x2 = m_graphical_track->getNoteEndInPixels  (m_last_clicked_note) -
                      m_gsequence->getXScrollInPixels();
             int y  = m_track->getNotePitchID(m_last_clicked_note);
+            
+            /* @todo
+            if (showNoteNames)
+            {
+                AriaRender::images();
+                applyInvertedColor(floatColor);
+                
+                AriaRender::renderString(getNoteName(y), x1 + x_step_move + getEditorXStart(), 
+                                     (y + y_step_move + 1)*Y_STEP_HEIGHT + 1 + getEditorYStart() - getYScrollInPixels(),
+                                     (y + y_step_move + 1)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels()-
+                                     ((y + y_step_move)*Y_STEP_HEIGHT + 1 + getEditorYStart() - getYScrollInPixels()));
 
+            }
+            */
+            
+            AriaRender::primitives();
+            applyColor(floatColor);
+           
             AriaRender::rect(x1 + x_step_move + getEditorXStart(),
                              (y + y_step_move)*Y_STEP_HEIGHT + 1 + getEditorYStart() - getYScrollInPixels(),
                              x2 - 1 + x_step_move + getEditorXStart(),
@@ -566,6 +591,104 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
 }
 
+wxString KeyboardEditor::getNoteName(int pitchID)
+{
+    wxString noteName;
+    Note12 note12;
+    int octave;
+    
+    if (Note::findNoteName(pitchID, &note12 /* out */, &octave /* out */))
+    {
+        switch (m_track->getKeyType())
+        {
+            case KEY_TYPE_SHARPS:
+            case KEY_TYPE_C:
+                noteName << NOTE_12_NAME[note12];
+                break;
+                
+            case KEY_TYPE_FLATS:
+            default:
+                noteName << NOTE_12_NAME_FLATS[note12];
+                break;
+        }
+        
+        noteName << octave;
+    }
+    else 
+    {
+        noteName = wxT("");
+    }
+    
+    return noteName;
+}
 
+
+void KeyboardEditor::applyColor(FloatColor color)
+{
+    AriaRender::color(color.r, color.g ,color.b, color.a);
+}
+
+
+/** Makes color lighter when input color is dark
+* and makes color darker when input color is light
+*/
+void KeyboardEditor::applyInvertedColor(FloatColor input)
+{
+    float average;
+    FloatColor output;
+  
+    average = (input.r+input.g+input.b)/3.0f;
+    
+    if (average<WHITE_THRESHOLD )
+    {
+        output.set(0.95f, 0.95f, 0.95f, input.a);
+    }
+    else
+    {
+        if (average>BLACK_THRESHOLD)
+        {
+            output.set(0.05f, 0.05f, 0.05f, input.a);
+        }
+        else
+        {
+            if (average>DARKEN_THRESHOLD)
+            {
+                output.set(changeComponent(input.r, DARKEN_OFFSET),
+                              changeComponent(input.g, DARKEN_OFFSET),
+                              changeComponent(input.b, DARKEN_OFFSET),
+                              input.a);
+            }
+            else
+            {
+                output.set(changeComponent(input.r, LIGHTEN_OFFSET),
+                              changeComponent(input.g, LIGHTEN_OFFSET),
+                              changeComponent(input.b, LIGHTEN_OFFSET),
+                              input.a);
+            }
+        }
+    }
+    
+    AriaRender::color(output.r, output.g, output.b, output.a);
+   
+}
+
+
+float KeyboardEditor::changeComponent(float component, float offset)
+{
+    float output;
+    
+    output = component + offset;
+    
+    if (output > 1.0f)
+    {
+        output = 1.0f;
+    }
+    else if (output < 0.0f)
+    {
+        output = 0.0f;
+    }
+    
+    return output;
+}
 
 

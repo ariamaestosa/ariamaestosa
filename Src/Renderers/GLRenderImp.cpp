@@ -317,12 +317,27 @@ void renderNumber(const float number, const int x, const int y)
 {
     renderNumber( to_wxString(number).mb_str(), x, y );
 }
+
+
 void renderNumber(const char* number, const int x, const int y)
 {
     NumberRendererSingleton* singleton = NumberRendererSingleton::getInstance();
     singleton->bind();
     singleton->renderNumber(number, x, y-1);
 }
+
+
+void renderString(const wxString& string, const int x, const int y, const int maxWidth)
+{
+    // @todo : validate me
+    Model<wxString> model(string);
+    GLwxString glString(&model, false);
+    glString.setMaxWidth(maxWidth, false);
+    glString.bind();
+    glString.render(x, y);
+}
+
+
     
 void beginScissors(const int x, const int y, const int width, const int height)
 {

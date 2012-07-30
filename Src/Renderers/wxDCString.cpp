@@ -45,7 +45,7 @@ namespace AriaMaestosa
         m_warp = warp;
     }
     
-    void wxDCString::setFont(wxFont font)
+    void wxDCString::setFont(const wxFont& font)
     {
         m_font = font;
     }
@@ -208,7 +208,7 @@ namespace AriaMaestosa
     }
 
 
-    void wxDCStringArray::addString(wxString newstring)
+    void wxDCStringArray::addString(const wxString& newstring)
     {
         m_strings.push_back( new wxDCString( new Model<wxString>(newstring), true ) );
     }
@@ -229,7 +229,7 @@ namespace AriaMaestosa
         }
     }
     
-    void wxDCStringArray::setFont(wxFont font)
+    void wxDCStringArray::setFont(const wxFont& font)
     {
         m_font = font;
         m_consolidated = false;

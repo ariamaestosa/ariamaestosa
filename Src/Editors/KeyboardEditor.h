@@ -82,6 +82,29 @@ namespace AriaMaestosa
         virtual NotationType getNotationType() const { return KEYBOARD; }
         
         virtual void processKeyPress(int keycode, bool commandDown, bool shiftDown);
+        
+    private:
+        
+        struct FloatColor
+        {
+            void set(float rp, float gp, float bp, float ap)
+            {
+                r = rp;
+                g = gp;
+                b = bp;
+                a = ap;
+            }
+            
+            float r;
+            float g;
+            float b;
+            float a;
+        };
+        
+        wxString getNoteName(int pitchID);
+        void applyColor(FloatColor color);
+        void applyInvertedColor(FloatColor color);
+        float changeComponent(float component, float factor);
     };
 }
 
