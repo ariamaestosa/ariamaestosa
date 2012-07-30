@@ -50,7 +50,7 @@ namespace AriaMaestosa
         
         /** set how to draw string for next consolidate() - has no immediate effect,
          you need to call consolidate() to get results  */
-        void setFont(wxFont font);
+        void setFont(const wxFont& font);
         
         void consolidate(wxDC* dc);
         
@@ -114,10 +114,10 @@ namespace AriaMaestosa
         void bind();
 
         void addStrings(const wxString strings_arg[], int amount);
-        void addString(wxString string);
+        void addString(const wxString& string);
         int getStringAmount() const { return m_strings.size(); }
         
-        void setFont(wxFont font);
+        void setFont(const wxFont& font);
         
         void consolidate(wxDC* dc){}
     };

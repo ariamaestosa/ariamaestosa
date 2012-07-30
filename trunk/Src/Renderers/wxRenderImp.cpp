@@ -19,8 +19,9 @@
 #include "Utils.h"
 #include "AriaCore.h"
 #include <wx/wx.h>
-#include "Renderers/RenderAPI.h"
 
+#include "PreferencesData.h"
+#include "Renderers/RenderAPI.h"
 #include "Renderers/Drawable.h"
 
 namespace AriaMaestosa
@@ -86,10 +87,13 @@ void renderNumber(const int number, const int x, const int y)
         renderNumber( to_wxString(number).mb_str(), x, y );
     }
 }
+
+
 void renderNumber(const float number, const int x, const int y)
 {
     renderNumber( to_wxString(number).mb_str(), x, y );
 }
+
 void renderNumber(const char* number, const int x, const int y)
 {
     wxDCNumberRenderer* renderer = wxDCNumberRenderer::getInstance();
@@ -97,8 +101,17 @@ void renderNumber(const char* number, const int x, const int y)
     renderer->renderNumber(wxString(number, wxConvUTF8), x, y);
 }
 
-    
-    
+void renderString(const wxString& string, const int x, const int y, const int maxWidth)
+{
+    Model<wxString> model(string);
+    wxDCString dcString(&model, false);
+    dcString.setFont(getNoteNamesFont());
+    dcString.setMaxWidth(maxWidth, false);
+    dcString.bind();
+    dcString.render(x, y);
+}
+
+
 void setImageState(const ImageState imgst)
 {
     current_state = imgst;

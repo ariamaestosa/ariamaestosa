@@ -153,6 +153,11 @@ namespace AriaMaestosa
         void renderNumber(const char* number, const int x, const int y);
         
         /**
+         * @brief renders a string at the given coordinate
+         */
+        void renderString(const wxString& string, const int x, const int y, const int maxWidth);
+        
+        /**
          * @brief renders a triangle within the specified 3 points
          */
         void triangle(const int x1, const int y1, const int x2, const int y2, const int x3, const int y3);
