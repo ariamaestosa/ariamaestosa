@@ -80,7 +80,7 @@ wxImage* Image::getImageForState(AriaRender::ImageState s)
 
     static const int MODE_MULTIPLY = 0;
     static const int MODE_FADE_TO = 1;
-    
+
     int mode = MODE_MULTIPLY;
 
     float r = 1, g = 1, b = 1;

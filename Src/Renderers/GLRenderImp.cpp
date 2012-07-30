@@ -19,8 +19,8 @@
 #include "Utils.h"
 #include "AriaCore.h"
 #include "Singleton.h"
+#include "PreferencesData.h"
 #include "Renderers/RenderAPI.h"
-
 #include "OpenGL.h"
 #include <cmath>
 #include <iostream>
@@ -71,7 +71,7 @@ void setImageState(const ImageState imgst)
         default: ASSERT(false);
     }
 }
-    
+
 void color(const float r, const float g, const float b)
 {
     glColor3f(r,g,b);
@@ -189,34 +189,34 @@ void hollow_rect(const int x1, const int y1, const int x2, const int y2)
     glEnd();
 }
 
-    
+
 void select_rect(const int x1, const int y1, const int x2, const int y2)
 {
     glColor4f(0.0f, 0.83f, 0.16f, 0.3f);
-    
+
     glBegin(GL_QUADS);
     glVertex2f(x1*10.0, y1*10.0);
     glVertex2f(x2*10.0, y1*10.0);
     glVertex2f(x2*10.0, y2*10.0);
     glVertex2f(x1*10.0, y2*10.0);
     glEnd();
-    
+
     glColor4f(0.0f, 0.83f, 0.16, 1.0f);
 
     glBegin(GL_LINES);
-    
+
     glVertex2f(x1*10.0, y1*10.0);
     glVertex2f(x1*10.0, y2*10.0);
-    
+
     glVertex2f(round(x1-1.0)*10.0, y2*10.0);
     glVertex2f(x2*10.0, y2*10.0);
-    
+
     glVertex2f(x2*10.0, y2*10.0);
     glVertex2f(x2*10.0, y1*10.0);
-    
+
     glVertex2f(round(x1-1.0)*10.0, y1*10.0);
     glVertex2f(x2*10.0, y1*10.0);
-    
+
     glEnd();
 }
 
@@ -263,18 +263,18 @@ void quad(const int x1, const int y1,
 }
 
 class NumberRendererSingleton : public wxGLNumberRenderer, public Singleton<NumberRendererSingleton>
-{   
+{
 public:
     NumberRendererSingleton() : wxGLNumberRenderer()
     {
     }
-    
+
     virtual ~NumberRendererSingleton()
     {
     }
 };
     DEFINE_SINGLETON( NumberRendererSingleton );
- 
+
 void renderNumber(const int number, const int x, const int y)
 {
     const char* number_c;
@@ -301,7 +301,7 @@ void renderNumber(const int number, const int x, const int y)
         case 17: number_c = "17"; break;
         case 18: number_c = "18"; break;
         case 19: number_c = "19"; break;
-        
+
         default:
         {
             char buffer[32];
@@ -329,16 +329,16 @@ void renderNumber(const char* number, const int x, const int y)
 
 void renderString(const wxString& string, const int x, const int y, const int maxWidth)
 {
-    // @todo : validate me
     Model<wxString> model(string);
-    GLwxString glString(&model, false);
+    wxGLString glString(&model, false);
+    glString.setFont(getNoteNamesFont());
     glString.setMaxWidth(maxWidth, false);
     glString.bind();
     glString.render(x, y);
 }
 
 
-    
+
 void beginScissors(const int x, const int y, const int width, const int height)
 {
     glEnable(GL_SCISSOR_TEST);
