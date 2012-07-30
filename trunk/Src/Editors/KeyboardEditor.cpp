@@ -340,8 +340,6 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             }
             color++; if (color > 4) color = 0;
             
-            AriaRender::primitives();
-            applyColor(floatColor);
 
             // render the notes
             for (int n=0; n<noteAmount; n++)
@@ -359,6 +357,8 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
                 x = x1 + getEditorXStart();
                 y = levelToY(pitch+1);
 
+                AriaRender::primitives();
+                applyColor(floatColor);
                 AriaRender::rect(x, levelToY(pitch), x2 + getEditorXStart()-1, y);
                                  
                 if (showNoteNames)
@@ -496,12 +496,19 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
                      m_gsequence->getXScrollInPixels();
             int y  = m_track->getNotePitchID(m_last_clicked_note);
             
-            /* @todo
+    
+            AriaRender::primitives();
+            applyColor(floatColor);
+            AriaRender::rect(x1 + x_step_move + getEditorXStart(),
+                             (y + y_step_move)*Y_STEP_HEIGHT + 1 + getEditorYStart() - getYScrollInPixels(),
+                             x2 - 1 + x_step_move + getEditorXStart(),
+                             (y + y_step_move + 1)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels());
+        
+             /* @todo
             if (showNoteNames)
             {
                 AriaRender::images();
                 applyInvertedColor(floatColor);
-                
                 AriaRender::renderString(getNoteName(y), x1 + x_step_move + getEditorXStart(), 
                                      (y + y_step_move + 1)*Y_STEP_HEIGHT + 1 + getEditorYStart() - getYScrollInPixels(),
                                      (y + y_step_move + 1)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels()-
@@ -509,14 +516,6 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
             }
             */
-            
-            AriaRender::primitives();
-            applyColor(floatColor);
-           
-            AriaRender::rect(x1 + x_step_move + getEditorXStart(),
-                             (y + y_step_move)*Y_STEP_HEIGHT + 1 + getEditorYStart() - getYScrollInPixels(),
-                             x2 - 1 + x_step_move + getEditorXStart(),
-                             (y + y_step_move + 1)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels());
         }
         else
         {
