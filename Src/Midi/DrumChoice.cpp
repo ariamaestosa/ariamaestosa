@@ -62,10 +62,10 @@ const wxString DrumChoice::getDrumkitName(int id)
     {
         if (g_drumkit_names[n].first == id)
         {
-            return ::wxGetTranslation(g_drumkit_names[n].second);
+            return wxGetTranslation(g_drumkit_names[n].second);
         }
     }
     
     std::cerr << "wrong drumset ID: " << id << std::endl;
-    return ::wxGetTranslation(g_drumkit_names[n].second);
+    return wxGetTranslation(g_drumkit_names[n].second);
 }

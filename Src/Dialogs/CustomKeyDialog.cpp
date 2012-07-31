@@ -68,7 +68,7 @@ wxDialog(parent, wxID_ANY, _("Custom Key Editor"), wxDefaultPosition,
         {
             const bool success = Note::findNoteName(pitch, &note, &octave);
             ASSERT(success);
-            wxString label = NOTE_12_NAME[note];
+            wxString label = wxGetTranslation(NOTE_12_NAME[note]);
             wxCheckBox* cb = new wxCheckBox(page, wxID_ANY, label, 
                                             wxDefaultPosition, wxDefaultSize,
                                             wxCHK_3STATE | wxCHK_ALLOW_3RD_STATE_FOR_USER);
@@ -104,13 +104,15 @@ wxDialog(parent, wxID_ANY, _("Custom Key Editor"), wxDefaultPosition,
         
         Note12 note;
         int    octave;
+        wxString translatedNoteName;
         
         for (int pitch=4; pitch<=131; pitch++)
         {
             const bool success = Note::findNoteName(pitch, &note, &octave);
             ASSERT(success);
             
-            wxString label = NOTE_12_NAME[note] + wxT(" ") + wxString::Format(wxT("%i"), octave);
+            translatedNoteName = wxGetTranslation(NOTE_12_NAME[note]);
+            wxString label = translatedNoteName + wxT(" ") + wxString::Format(wxT("%i"), octave);
             wxCheckBox* cb = new wxCheckBox(scrollpane, wxID_ANY, label,
                                             wxDefaultPosition, wxDefaultSize, 
                                             wxCHK_3STATE | wxCHK_ALLOW_3RD_STATE_FOR_USER);

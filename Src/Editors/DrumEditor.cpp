@@ -204,7 +204,7 @@ DrumEditor::DrumEditor(GraphicalTrack* track) : Editor(track)
     i18nDrumNames = new wxString[DRUM_NAMES_COUNT];
     for (int i = 0 ; i<DRUM_NAMES_COUNT ; i++)
     {
-        i18nDrumNames[i] = ::wxGetTranslation(g_drum_names[i]);
+        i18nDrumNames[i] = wxGetTranslation(g_drum_names[i]);
         i18nDrumNames[i].Truncate(DRUM_NAME_MAX_LENGTH);
     }
     m_drum_names_renderer.addStrings(i18nDrumNames, DRUM_NAMES_COUNT);

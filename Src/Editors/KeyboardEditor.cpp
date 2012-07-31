@@ -504,11 +504,14 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
                              x2 - 1 + x_step_move + getEditorXStart(),
                              (y + y_step_move + 1)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels());
         
-             /* @todo
+        
+            /* @todo - buggy - disabled for now
             if (showNoteNames)
             {
                 AriaRender::images();
                 applyInvertedColor(floatColor);
+                
+                // @todo : simplifies
                 AriaRender::renderString(getNoteName(y), x1 + x_step_move + getEditorXStart(), 
                                      (y + y_step_move + 1)*Y_STEP_HEIGHT + 1 + getEditorYStart() - getYScrollInPixels(),
                                      (y + y_step_move + 1)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels()-
@@ -516,6 +519,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
             }
             */
+            
         }
         else
         {
@@ -602,15 +606,15 @@ wxString KeyboardEditor::getNoteName(int pitchID)
         {
             case KEY_TYPE_SHARPS:
             case KEY_TYPE_C:
-                noteName << NOTE_12_NAME[note12];
+                noteName = NOTE_12_NAME[note12];
                 break;
                 
             case KEY_TYPE_FLATS:
             default:
-                noteName << NOTE_12_NAME_FLATS[note12];
+                noteName = NOTE_12_NAME_FLATS[note12];
                 break;
         }
-        
+        noteName = wxGetTranslation(noteName);
         noteName << octave;
     }
     else 

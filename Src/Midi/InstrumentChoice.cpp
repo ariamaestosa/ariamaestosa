@@ -171,7 +171,7 @@ const wxString InstrumentChoice::getInstrumentName(int instrumentID)
     ASSERT_E(instrumentID,<,128);
     ASSERT_E(instrumentID,>=,0);
 
-    return ::wxGetTranslation(g_inst_names[instrumentID].second);
+    return wxGetTranslation(g_inst_names[instrumentID].second);
 }
 
 // ----------------------------------------------------------------------------------------------------------

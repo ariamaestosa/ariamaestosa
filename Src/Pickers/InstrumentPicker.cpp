@@ -198,7 +198,7 @@ void InstrumentPicker::buildPicker(const PickerMenu pickerMenuArray[], int size)
     {
         wxMenu* menu = new wxMenu();
         const PickerMenu pickerMenu = pickerMenuArray[i];
-        Append(MENU_REF_ID+i, ::wxGetTranslation(pickerMenu.name), menu);
+        Append(MENU_REF_ID+i, wxGetTranslation(pickerMenu.name), menu);
 
         for( int j = 0; j< pickerMenu.inst_array_size ; j++ )
         {

@@ -18,6 +18,7 @@
 #define _note_h_
 
 #include "Utils.h"
+#include <wx/intl.h>
 
 class wxFileOutputStream;
 
@@ -92,37 +93,37 @@ namespace AriaMaestosa
     /** synonym; @see Note12 */
     const Note12 NOTE_12_G_FLAT = NOTE_12_F_SHARP;
     
-    //FIXME: what about flats?
+    
     static const wxString NOTE_12_NAME[] =
     {
-        wxT("A"),
-        wxT("A#"),
-        wxT("B"),
-        wxT("C"),
-        wxT("C#"),
-        wxT("D"),
-        wxT("D#"),
-        wxT("E"),
-        wxT("F"),
-        wxT("F#"),
-        wxT("G"),
-        wxT("G#")
+        _("A"),
+        _("A#"),
+        _("B"),
+        _("C"),
+        _("C#"),
+        _("D"),
+        _("D#"),
+        _("E"),
+        _("F"),
+        _("F#"),
+        _("G"),
+        _("G#")
     };
     
     static const wxString NOTE_12_NAME_FLATS[] =
     {
-        wxT("A"),
-        wxT("Bb"),
-        wxT("B"),
-        wxT("C"),
-        wxT("Db"),
-        wxT("D"),
-        wxT("Eb"),
-        wxT("E"),
-        wxT("F"),
-        wxT("Gb"),
-        wxT("G"),
-        wxT("Ab")
+        _("A"),
+        _("Bb"),
+        _("B"),
+        _("C"),
+        _("Db"),
+        _("D"),
+        _("Eb"),
+        _("E"),
+        _("F"),
+        _("Gb"),
+        _("G"),
+        _("Ab")
     };
     
     /**

@@ -176,7 +176,8 @@ void KeyrollPrintableSequence::printLinesInArea(wxDC& dc, wxGraphicsContext* grc
             const bool success = Note::findNoteName(m_min_pitch+n, &noteName, &octave);
             if (success)
             {
-                dc.DrawText( NOTE_12_NAME[noteName] + wxString::Format(wxT("%i"), octave), x0 + 15, y );
+                dc.DrawText( wxGetTranslation(NOTE_12_NAME[noteName])
+                            + wxString::Format(wxT("%i"), octave), x0 + 15, y );
             }
             //count++;
         }
@@ -194,7 +195,8 @@ void KeyrollPrintableSequence::printLinesInArea(wxDC& dc, wxGraphicsContext* grc
             const bool success = Note::findNoteName(note, &noteName, &octave);
             if (success)
             {
-                dc.DrawText( NOTE_12_NAME[noteName] + wxString::Format(wxT("%i"), octave), x0 + 15, y );
+                dc.DrawText( wxGetTranslation(NOTE_12_NAME[noteName])
+                            + wxString::Format(wxT("%i"), octave), x0 + 15, y );
             }
         }
         dc.DrawLine(usableX0, notationAreaY0 + notationAreaHeight, x1, notationAreaY0 + notationAreaHeight);
