@@ -1529,15 +1529,16 @@ void ScoreEditor::processMouseMove(RelativeXCoord x, int y)
         {
             case KEY_TYPE_SHARPS:
             case KEY_TYPE_C:
-                status << NOTE_12_NAME[note12];
+                status = NOTE_12_NAME[note12];
                 break;
                 
             case KEY_TYPE_FLATS:
             default:
-                status << NOTE_12_NAME_FLATS[note12];
+                status = NOTE_12_NAME_FLATS[note12];
                 break;
         }
         
+        status = wxGetTranslation(status);
         status << octave;
         if (not PlatformMidiManager::get()->isPlaying())
         {

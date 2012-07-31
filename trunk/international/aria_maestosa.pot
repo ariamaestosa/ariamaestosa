@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-26 12:20+0200\n"
+"POT-Creation-Date: 2012-07-31 16:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2407,6 +2407,74 @@ msgstr ""
 #. I18N: as in "+2 semitones"
 #: Src/Editors/ControllerEditor.cpp:86
 msgid "semitones"
+msgstr ""
+
+#: Src/Midi/Note.h:98 Src/Midi/Note.h:114
+msgid "A"
+msgstr ""
+
+#: Src/Midi/Note.h:99
+msgid "A#"
+msgstr ""
+
+#: Src/Midi/Note.h:100 Src/Midi/Note.h:116
+msgid "B"
+msgstr ""
+
+#: Src/Midi/Note.h:101 Src/Midi/Note.h:117
+msgid "C"
+msgstr ""
+
+#: Src/Midi/Note.h:102
+msgid "C#"
+msgstr ""
+
+#: Src/Midi/Note.h:103 Src/Midi/Note.h:119
+msgid "D"
+msgstr ""
+
+#: Src/Midi/Note.h:104
+msgid "D#"
+msgstr ""
+
+#: Src/Midi/Note.h:105 Src/Midi/Note.h:121
+msgid "E"
+msgstr ""
+
+#: Src/Midi/Note.h:106 Src/Midi/Note.h:122
+msgid "F"
+msgstr ""
+
+#: Src/Midi/Note.h:107
+msgid "F#"
+msgstr ""
+
+#: Src/Midi/Note.h:108 Src/Midi/Note.h:124
+msgid "G"
+msgstr ""
+
+#: Src/Midi/Note.h:109
+msgid "G#"
+msgstr ""
+
+#: Src/Midi/Note.h:115
+msgid "Bb"
+msgstr ""
+
+#: Src/Midi/Note.h:118
+msgid "Db"
+msgstr ""
+
+#: Src/Midi/Note.h:120
+msgid "Eb"
+msgstr ""
+
+#: Src/Midi/Note.h:123
+msgid "Gb"
+msgstr ""
+
+#: Src/Midi/Note.h:125
+msgid "Ab"
 msgstr ""
 
 #: Src/Editors/DrumEditor.h:103
