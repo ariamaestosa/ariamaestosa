@@ -153,7 +153,8 @@ namespace AriaMaestosa
         void renderNumber(const char* number, const int x, const int y);
         
         /**
-         * @brief renders a string at the given coordinate
+         * @brief renders a string at the given coordinates {x,y} 
+         * and truncates the string to maxWidth if necessary
          */
         void renderString(const wxString& string, const int x, const int y, const int maxWidth);
         
