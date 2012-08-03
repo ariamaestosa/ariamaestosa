@@ -101,10 +101,11 @@ namespace AriaMaestosa
             float a;
         };
         
-        wxString getNoteName(int pitchID);
+        wxString getNoteName(int pitchID, bool addOctave = true);
         void applyColor(FloatColor color);
         void applyInvertedColor(FloatColor color);
         float changeComponent(float component, float factor);
+        void drawNoteTrack(int x, int y, bool focus);
     };
 }
 
