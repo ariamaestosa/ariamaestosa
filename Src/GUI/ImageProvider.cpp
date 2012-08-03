@@ -49,8 +49,7 @@ namespace AriaMaestosa
             sbThumbDrawable = new Drawable(wxT("sb_thumb.png"));
 #endif
 
-            noteTrackDrawable = new Drawable(wxT("notetrack.png"));
-            
+    
             // track header buttons
             collapseImg      = new Image(wxT("collapse.jpg"));
             expandImg        = new Image(wxT("expand.jpg"));
@@ -135,8 +134,7 @@ namespace AriaMaestosa
             delete sbArrowImg;
             delete sbArrowDownImg;
             
-            
-            delete noteTrackDrawable;
+    
             delete sbArrowDrawable;
             delete sbBackgDrawable;
             delete sbThumbDrawable;

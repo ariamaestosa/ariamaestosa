@@ -34,9 +34,6 @@ namespace AriaMaestosa
       * @{
       */
 
-    // note display
-    IMG_DEC Drawable* noteTrackDrawable;
-
     // scrollbar
     IMG_DEC Image* sbArrowImg;
     IMG_DEC Image* sbArrowDownImg;

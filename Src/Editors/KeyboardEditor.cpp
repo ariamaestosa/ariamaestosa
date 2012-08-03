@@ -42,12 +42,20 @@
 using namespace AriaMaestosa;
 
 
+// background task color computation 
 static const float DARKEN_OFFSET = -0.5f;
 static const float LIGHTEN_OFFSET = +0.85f;
-
 static const float WHITE_THRESHOLD = 0.15f;
 static const float DARKEN_THRESHOLD = 0.5f;
 static const float BLACK_THRESHOLD = 0.85f;
+
+
+// note track
+static const int NOTE_TRACK_WIDTH = 30;
+static const int NOTE_TRACK_HEIGHT = 121;
+static const int NOTE_COUNT = 12;
+static const int NOTE_HEIGHT = NOTE_TRACK_HEIGHT/NOTE_COUNT;
+static const int NOTE_X_PADDING = 2;
 
 
 // ************************************************************************************************************
@@ -557,14 +565,9 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
         
         if (g_octave_y > -120 and g_octave_y < m_height + 20)
         {
-            AriaRender::images();
+            const int keyboard_image_x = getEditorXStart() - NOTE_TRACK_WIDTH;
             
-            if (not focus) AriaRender::setImageState(AriaRender::STATE_NO_FOCUS);
-            else           AriaRender::setImageState(AriaRender::STATE_NORMAL);
-            
-            const int keyboard_image_x = getEditorXStart()-noteTrackDrawable->getImageWidth();
-            noteTrackDrawable->move(keyboard_image_x, getEditorYStart() + g_octave_y);
-            noteTrackDrawable->render();
+            drawNoteTrack(keyboard_image_x, getEditorYStart() + g_octave_y + 1, focus);
             
             AriaRender::primitives();
             AriaRender::color(0,0,0);
@@ -594,7 +597,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
 }
 
-wxString KeyboardEditor::getNoteName(int pitchID)
+wxString KeyboardEditor::getNoteName(int pitchID, bool addOctave)
 {
     wxString noteName;
     Note12 note12;
@@ -615,7 +618,11 @@ wxString KeyboardEditor::getNoteName(int pitchID)
                 break;
         }
         noteName = wxGetTranslation(noteName);
-        noteName << octave;
+        
+        if (addOctave)
+        {
+            noteName << octave;
+        }
     }
     else 
     {
@@ -695,3 +702,57 @@ float KeyboardEditor::changeComponent(float component, float offset)
 }
 
 
+void KeyboardEditor::drawNoteTrack(int x, int y, bool focus)
+{
+    FloatColor naturalNotesColor;
+    int alteredNotesIt;
+    bool isNoteAltered;
+    FloatColor whiteColor;
+    FloatColor blackColor;
+    
+    whiteColor.set(1.0, 1.0, 1.0, 1.0);
+    blackColor.set(0.0, 0.0, 0.0, 1.0);
+    if (focus)
+    {
+        naturalNotesColor = whiteColor;
+    }
+    else
+    {
+        naturalNotesColor.set(0.5, 0.5, 0.5, 1.0);
+    }
+    
+    AriaRender::primitives();
+    applyColor(naturalNotesColor);
+    AriaRender::bordered_rect(x, y, x + NOTE_TRACK_WIDTH, y + NOTE_TRACK_HEIGHT);
+    
+    alteredNotesIt = 1;
+    applyColor(blackColor);
+    while (alteredNotesIt<NOTE_COUNT)
+    {
+        AriaRender::rect(x, y + alteredNotesIt*NOTE_HEIGHT, 
+                         x + NOTE_TRACK_WIDTH+1, y + (alteredNotesIt+1)*NOTE_HEIGHT);
+        alteredNotesIt+=2;
+        if (alteredNotesIt==7)
+        {
+            AriaRender::line(x, y + alteredNotesIt*NOTE_HEIGHT-1, 
+                         x + NOTE_TRACK_WIDTH+1, y + alteredNotesIt*NOTE_HEIGHT-1);
+           
+            alteredNotesIt = 8;
+        }
+    }
+    
+    AriaRender::images();
+    applyColor(blackColor);
+    isNoteAltered = false;
+    for (int i=60 ; i< 60 + NOTE_COUNT ; i++)
+    {
+        AriaRender::renderString(getNoteName(i, false), x + NOTE_X_PADDING, y + (i-59)*NOTE_HEIGHT, NOTE_TRACK_WIDTH + 1);
+        isNoteAltered = !isNoteAltered;
+        if (i==66)
+        {
+            isNoteAltered = false;
+        }
+        applyColor(isNoteAltered ? whiteColor: blackColor);
+    }
+    
+}
