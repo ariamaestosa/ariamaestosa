@@ -243,11 +243,11 @@ def compile_Aria(which_os):
     if which_os == 'windows':
         # work around bugs in scons 'ParseConfig' on Windows...
         if renderer == "opengl":
-            winCppFlags=subprocess.check_output(WXCONFIG.split() + ["--cppflags","core,base,net,gl"])
-            winLdFlags=subprocess.check_output(WXCONFIG.split() + ["--libs", "core,base,net,gl"])
+            winCppFlags=subprocess.check_output(WXCONFIG.split() + ["--cppflags","core,base,net,adv,gl"])
+            winLdFlags=subprocess.check_output(WXCONFIG.split() + ["--libs", "core,base,net,adv,gl"])
         else:
-            winCppFlags=subprocess.check_output(WXCONFIG.split() + ["--cppflags","core,net,base"])
-            winLdFlags=subprocess.check_output(WXCONFIG.split() + ["--libs", "core,net,base"])
+            winCppFlags=subprocess.check_output(WXCONFIG.split() + ["--cppflags","core,net,adv,base"])
+            winLdFlags=subprocess.check_output(WXCONFIG.split() + ["--libs", "core,net,adv,base"])
         print "Build flags :", winCppFlags
         print "Link flags :", winLdFlags
         
