@@ -278,6 +278,7 @@ int wxWidgetApp::OnExit()
     wxLogVerbose( wxT("wxWidgetsApp::OnExit") );
 
     wxDELETE(m_single_instance_checker);
+    delete m_IPC_server;
     
 #ifdef _MORE_DEBUG_CHECKS
     MemoryLeaks::checkForLeaks();
