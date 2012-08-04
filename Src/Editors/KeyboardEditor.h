@@ -34,7 +34,9 @@ namespace AriaMaestosa
     class KeyboardEditor : public Editor
     {
         static const int Y_STEP_HEIGHT = 10;
-                
+        
+        AriaRenderArray m_notes_names;
+        
     public:
         KeyboardEditor(GraphicalTrack* data);
         virtual ~KeyboardEditor();
