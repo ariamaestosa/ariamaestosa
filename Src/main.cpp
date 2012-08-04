@@ -202,6 +202,8 @@ bool wxWidgetApp::OnInit()
     prefs = PreferencesData::getInstance();
     prefs->init();
     
+    m_single_instance_checker = NULL;
+    
 #ifndef __WXMAC__
     m_single_instance_checker = new wxSingleInstanceChecker(appName + wxGetUserId(), wxT("/tmp/"));
     
