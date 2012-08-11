@@ -59,7 +59,7 @@ AboutDialog::AboutDialog(wxWindow* parent) : wxFrame(parent, wxID_ANY,  _("About
     wxString about_text = wxString(wxT("[h1]") + wxString::Format(_("version %s"), VERSION_STRING ) +
                           wxT("[/h1]\n\n") + 
     //I18N: - in about dialog
-    wxString("[h1]") + _("Thanks to:") + wxT("[/h1]\n\n\t") +
+    wxString(wxT("[h1]") + _("Thanks to:") + wxT("[/h1]\n\n\t") +
     //I18N: - in about dialog
     wxString::Format(_("Ergonis Software and %s for making EasyBeat,\n\ta great app that inspired Aria (www.ergonis.com)."), wxT(" G\u00FCnther Blaschek "))  +
     //I18N: - in about dialog
