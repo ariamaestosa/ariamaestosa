@@ -56,7 +56,7 @@ AboutDialog::AboutDialog(wxWindow* parent) : wxFrame(parent, wxID_ANY,  _("About
     sizer->Add(img, 0, wxEXPAND);
     
     //I18N: - in about dialog
-    wxString about_text = wxString("[h1]") + wxString::Format(_("version %s"), VERSION_STRING ) +
+    wxString about_text = wxString(wxT("[h1]") + wxString::Format(_("version %s"), VERSION_STRING ) +
                           wxT("[/h1]\n\n") + 
     //I18N: - in about dialog
     wxString("[h1]") + _("Thanks to:") + wxT("[/h1]\n\n\t") +
