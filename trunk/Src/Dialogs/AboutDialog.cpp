@@ -93,8 +93,8 @@ AboutDialog::AboutDialog(wxWindow* parent) : wxFrame(parent, wxID_ANY,  _("About
                        about_text + wxString("</body></html>"), "file://");
     sizer->Add(text_area, 1, wxEXPAND);
 #else
-    about_text.Replace(wxT("[h1]"),"");
-    about_text.Replace(wxT("[/h1]"),"");
+    about_text.Replace(wxT("[h1]"), wxT(""));
+    about_text.Replace(wxT("[/h1]"), wxT(""));
     wxTextCtrl* text_area = new wxTextCtrl(this, 0, about_text, wxPoint(5,179), wxSize(507,396),
                                            wxTE_MULTILINE | wxTE_READONLY | wxNO_BORDER);
     sizer->Add(text_area, 1, wxEXPAND);
