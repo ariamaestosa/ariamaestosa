@@ -56,10 +56,10 @@ AboutDialog::AboutDialog(wxWindow* parent) : wxFrame(parent, wxID_ANY,  _("About
     sizer->Add(img, 0, wxEXPAND);
     
     //I18N: - in about dialog
-    wxString about_text = wxString(wxT("[h1]") + wxString::Format(_("version %s"), VERSION_STRING ) +
+    wxString about_text = wxString(wxT("[h1]")) + wxString::Format(_("version %s"), VERSION_STRING ) +
                           wxT("[/h1]\n\n") + 
     //I18N: - in about dialog
-    wxString(wxT("[h1]") + _("Thanks to:") + wxT("[/h1]\n\n\t") +
+    wxString(wxT("[h1]")) + _("Thanks to:") + wxT("[/h1]\n\n\t") +
     //I18N: - in about dialog
     wxString::Format(_("Ergonis Software and %s for making EasyBeat,\n\ta great app that inspired Aria (www.ergonis.com)."), wxT(" G\u00FCnther Blaschek "))  +
     //I18N: - in about dialog
@@ -93,8 +93,8 @@ AboutDialog::AboutDialog(wxWindow* parent) : wxFrame(parent, wxID_ANY,  _("About
                        about_text + wxString("</body></html>"), "file://");
     sizer->Add(text_area, 1, wxEXPAND);
 #else
-    about_text.Replace("[h1]","");
-    about_text.Replace("[/h1]","");
+    about_text.Replace(wxT("[h1]"),"");
+    about_text.Replace(wxT("[/h1]"),"");
     wxTextCtrl* text_area = new wxTextCtrl(this, 0, about_text, wxPoint(5,179), wxSize(507,396),
                                            wxTE_MULTILINE | wxTE_READONLY | wxNO_BORDER);
     sizer->Add(text_area, 1, wxEXPAND);
