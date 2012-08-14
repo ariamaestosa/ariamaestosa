@@ -32,7 +32,7 @@
 #include "PreferencesData.h"
 #include "Renderers/RenderAPI.h"
 #include "Singleton.h"
-
+#include <cstddef>
 
 namespace AriaMaestosa
 {
