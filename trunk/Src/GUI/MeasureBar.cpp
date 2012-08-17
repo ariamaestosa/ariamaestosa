@@ -637,6 +637,11 @@ void MeasureBar::mouseUp(int mousex_current, int mousey_current, int mousex_init
 
 void MeasureBar::rightClick(int x, int y)
 {
+    if (PlatformMidiManager::get()->isPlaying())
+    {
+        wxBell();
+        return;
+    }
 
     if (y > MEASURE_BAR_Y)
     {

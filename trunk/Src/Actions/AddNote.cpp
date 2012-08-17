@@ -19,9 +19,10 @@
 #include "Actions/EditAction.h"
 //#include "GUI/GraphicalTrack.h"
 //#include "Editors/GuitarEditor.h"
-#include "Midi/Track.h"
+#include "Midi/MeasureData.h"
 #include "Midi/Note.h"
 #include "Midi/Sequence.h"
+#include "Midi/Track.h"
 
 #include "UnitTest.h"
 #include "UnitTestUtils.h"
@@ -77,6 +78,9 @@ void AddNote::perform()
     if (m_string == -1) tmp_note = new Note(m_track, m_pitch_ID, m_start_tick, m_end_tick, m_volume);
     else                tmp_note = new Note(m_track, m_pitch_ID, m_start_tick, m_end_tick, m_volume, m_string, 0);
     
+    MeasureData* md = m_track->getSequence()->getMeasureData();
+    const int len = md->getTotalTickAmount();
+    
     const bool success = m_track->addNote( tmp_note );
     
     if (success)
@@ -97,6 +101,11 @@ void AddNote::perform()
     relocator.rememberNote( *tmp_note );
     
     tmp_note->play(true);
+    
+    if (m_end_tick > len)
+    {        
+        md->extendToTick(m_end_tick);
+    }
     
     // FIXME: maybe this should be automatic?
     if (m_track->isNotationTypeEnabled(GUITAR)) m_track->updateNotesForGuitarEditor();
