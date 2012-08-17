@@ -29,7 +29,7 @@ MagneticGridPicker::MagneticGridPicker(GraphicalTrack* parent, MagneticGrid* mod
 {
     m_model = model;
     m_parent = parent;
-
+    
     grid1   = AppendCheckItem(wxID_ANY, wxT("1/1"));
     grid2   = AppendCheckItem(wxID_ANY, wxT("1/2"));
     grid4   = AppendCheckItem(wxID_ANY, wxT("1/4"));
@@ -47,17 +47,17 @@ MagneticGridPicker::MagneticGridPicker(GraphicalTrack* parent, MagneticGrid* mod
     
     grid8->Check(true);
 
-    Connect(grid1->GetId(), wxCommandEventHandler(MagneticGridPicker::grid1selected), NULL, this);
-    Connect(grid2->GetId(), wxCommandEventHandler(MagneticGridPicker::grid2selected), NULL, this);
-    Connect(grid4->GetId(), wxCommandEventHandler(MagneticGridPicker::grid4selected), NULL, this);
-    Connect(grid8->GetId(), wxCommandEventHandler(MagneticGridPicker::grid8selected), NULL, this);
-    Connect(grid16->GetId(), wxCommandEventHandler(MagneticGridPicker::grid16selected), NULL, this);
-    Connect(grid32->GetId(), wxCommandEventHandler(MagneticGridPicker::grid32selected), NULL, this);
-    Connect(grid64->GetId(), wxCommandEventHandler(MagneticGridPicker::grid64selected), NULL, this);
-    Connect(grid128->GetId(), wxCommandEventHandler(MagneticGridPicker::grid128selected), NULL, this);
+    Connect(grid1->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MagneticGridPicker::grid1selected), NULL, this);
+    Connect(grid2->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MagneticGridPicker::grid2selected), NULL, this);
+    Connect(grid4->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MagneticGridPicker::grid4selected), NULL, this);
+    Connect(grid8->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MagneticGridPicker::grid8selected), NULL, this);
+    Connect(grid16->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MagneticGridPicker::grid16selected), NULL, this);
+    Connect(grid32->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MagneticGridPicker::grid32selected), NULL, this);
+    Connect(grid64->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MagneticGridPicker::grid64selected), NULL, this);
+    Connect(grid128->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MagneticGridPicker::grid128selected), NULL, this);
     
-    Connect(gridTriplet->GetId(), wxCommandEventHandler(MagneticGridPicker::tripletChanged), NULL, this);
-    Connect(gridDotted->GetId(), wxCommandEventHandler(MagneticGridPicker::dottedChanged), NULL, this);
+    Connect(gridTriplet->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MagneticGridPicker::tripletChanged), NULL, this);
+    Connect(gridDotted->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MagneticGridPicker::dottedChanged), NULL, this);
 }
 
 // ----------------------------------------------------------------------------------------------------------
