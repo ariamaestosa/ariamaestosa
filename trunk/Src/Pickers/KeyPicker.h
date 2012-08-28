@@ -74,6 +74,8 @@ namespace AriaMaestosa
         
         std::map< int, KeyPreset* > m_custom_keys;
         
+        wxString buildKeyLabel(const wxString& majorKey, const wxString& minorKey);
+        
 public:
         LEAK_CHECK();
 

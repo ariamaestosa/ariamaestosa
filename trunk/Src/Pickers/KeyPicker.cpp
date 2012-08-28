@@ -92,26 +92,26 @@ KeyPicker::KeyPicker() : wxMenu()
     score_items_added = true;
 
     key_separator = Append(wxID_SEPARATOR, wxEmptyString);
-    key_c = AppendCheckItem(KEY_C_AM, wxT("C, Am"));
+    key_c = AppendCheckItem(KEY_C_AM, buildKeyLabel( _("C"), _("A")) );
     key_c->Check(true);
 
     AppendSeparator();
-    key_sharps_1 = AppendCheckItem( KEY_SHARPS_1, wxT("G, Em"));
-    key_sharps_2 = AppendCheckItem( KEY_SHARPS_2, wxT("D, Bm"));
-    key_sharps_3 = AppendCheckItem( KEY_SHARPS_3, wxT("A, F#m"));
-    key_sharps_4 = AppendCheckItem( KEY_SHARPS_4, wxT("E, C#m"));
-    key_sharps_5 = AppendCheckItem( KEY_SHARPS_5, wxT("B, G#m"));
-    key_sharps_6 = AppendCheckItem( KEY_SHARPS_6, wxT("F#, D#m"));
-    key_sharps_7 = AppendCheckItem( KEY_SHARPS_7, wxT("C#, A#m"));
+    key_sharps_1 = AppendCheckItem( KEY_SHARPS_1, buildKeyLabel( _("G"), _("E")) );
+    key_sharps_2 = AppendCheckItem( KEY_SHARPS_2, buildKeyLabel( _("D"), _("B")) );
+    key_sharps_3 = AppendCheckItem( KEY_SHARPS_3, buildKeyLabel( _("A"), _("F#")) );
+    key_sharps_4 = AppendCheckItem( KEY_SHARPS_4, buildKeyLabel( _("E"), _("C#")) );
+    key_sharps_5 = AppendCheckItem( KEY_SHARPS_5, buildKeyLabel( _("B"), _("G#")) );
+    key_sharps_6 = AppendCheckItem( KEY_SHARPS_6, buildKeyLabel( _("F#"), _("D#")) );
+    key_sharps_7 = AppendCheckItem( KEY_SHARPS_7, buildKeyLabel( _("C#"), _("A#")) );
 
     AppendSeparator();
-    key_flats_1 = AppendCheckItem( KEY_FLATS_1, wxT("F, Dm"));
-    key_flats_2 = AppendCheckItem( KEY_FLATS_2, wxT("Bb, Gm"));
-    key_flats_3 = AppendCheckItem( KEY_FLATS_3, wxT("Eb, Cm"));
-    key_flats_4 = AppendCheckItem( KEY_FLATS_4, wxT("Ab, Fm"));
-    key_flats_5 = AppendCheckItem( KEY_FLATS_5, wxT("Db, Bbm"));
-    key_flats_6 = AppendCheckItem( KEY_FLATS_6, wxT("Gb, Ebm"));
-    key_flats_7 = AppendCheckItem( KEY_FLATS_7, wxT("Cb, Abm"));
+    key_flats_1 = AppendCheckItem( KEY_FLATS_1, buildKeyLabel( _("F"), _("D")) );
+    key_flats_2 = AppendCheckItem( KEY_FLATS_2, buildKeyLabel( _("Bb"), _("G")) );
+    key_flats_3 = AppendCheckItem( KEY_FLATS_3, buildKeyLabel( _("Eb"), _("C")) );
+    key_flats_4 = AppendCheckItem( KEY_FLATS_4, buildKeyLabel( _("Ab"), _("F")) );
+    key_flats_5 = AppendCheckItem( KEY_FLATS_5, buildKeyLabel( _("Db"), _("Bb")) );
+    key_flats_6 = AppendCheckItem( KEY_FLATS_6, buildKeyLabel( _("Gb"), _("Eb")) );
+    key_flats_7 = AppendCheckItem( KEY_FLATS_7, buildKeyLabel( _("Cb"), _("Ab")) );
 
     AppendSeparator();
     
@@ -514,6 +514,12 @@ void KeyPicker::onUserPresetSelected(wxCommandEvent& evt)
 void KeyPicker::onEditPresets(wxCommandEvent& evt)
 {
     PresetEditor presetEditor((wxWindow*)getMainFrame(), (PresetGroup*)KeyPresetGroup::getInstance());
+}
+
+
+wxString KeyPicker::buildKeyLabel(const wxString& majorKey, const wxString& minorKey)
+{
+    return majorKey + wxT(" ") + _("Major") + wxT(", ") + minorKey + wxT(" ") + _("minor");
 }
 
 // ----------------------------------------------------------------------------------------------------------
