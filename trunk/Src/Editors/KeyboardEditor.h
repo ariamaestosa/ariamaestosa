@@ -108,6 +108,10 @@ namespace AriaMaestosa
         void applyInvertedColor(FloatColor color);
         float changeComponent(float component, float factor);
         void drawNoteTrack(int x, int y, bool focus);
+        
+        FloatColor m_white_color;
+        FloatColor m_black_color;
+        FloatColor m_gray_color;
     };
 }
 

@@ -68,6 +68,10 @@ static const int NOTE_X_PADDING = 2;
 KeyboardEditor::KeyboardEditor(GraphicalTrack* track) : Editor(track)
 {
     m_sb_position = 0.5;
+
+    m_white_color.set(1.0, 1.0, 1.0, 1.0);
+    m_black_color.set(0.0, 0.0, 0.0, 1.0);
+    m_gray_color.set(0.5, 0.5, 0.5, 1.0);
     
     for (int i=60 ; i < 60+NOTE_COUNT ; i++)
     {
@@ -716,29 +720,21 @@ float KeyboardEditor::changeComponent(float component, float offset)
 
 void KeyboardEditor::drawNoteTrack(int x, int y, bool focus)
 {
-    FloatColor naturalNotesColor;
+    FloatColor naturalNotesBackgroundColor;
+    FloatColor alteredNotesTextColor;
     int alteredNotesIt;
     bool isNoteAltered;
-    FloatColor whiteColor;
-    FloatColor blackColor;
-    
-    whiteColor.set(1.0, 1.0, 1.0, 1.0);
-    blackColor.set(0.0, 0.0, 0.0, 1.0);
-    if (focus)
-    {
-        naturalNotesColor = whiteColor;
-    }
-    else
-    {
-        naturalNotesColor.set(0.5, 0.5, 0.5, 1.0);
-    }
-    
+   
+  
+    // Draw global rectangle 
+    naturalNotesBackgroundColor = focus ? m_white_color : m_gray_color;
     AriaRender::primitives();
-    applyColor(naturalNotesColor);
+    applyColor(naturalNotesBackgroundColor);
     AriaRender::bordered_rect(x, y, x + NOTE_TRACK_WIDTH, y + NOTE_TRACK_HEIGHT);
     
+    // Draw key rectangles
     alteredNotesIt = 1;
-    applyColor(blackColor);
+    applyColor(m_black_color);
     while (alteredNotesIt<NOTE_COUNT)
     {
         AriaRender::rect(x, y + alteredNotesIt*NOTE_HEIGHT, 
@@ -753,8 +749,10 @@ void KeyboardEditor::drawNoteTrack(int x, int y, bool focus)
         }
     }
     
+    // Display note names
     AriaRender::images();
-    applyColor(blackColor);
+    applyColor(m_black_color);
+    alteredNotesTextColor = focus ? m_white_color : m_gray_color;
     isNoteAltered = false;
     m_notes_names.bind();
     for (int i=60 ; i < 60+NOTE_COUNT ; i++)
@@ -767,7 +765,7 @@ void KeyboardEditor::drawNoteTrack(int x, int y, bool focus)
         {
             isNoteAltered = false;
         }
-        applyColor(isNoteAltered ? whiteColor: blackColor);
+        applyColor(isNoteAltered ? alteredNotesTextColor: m_black_color);
     }
     
 }
