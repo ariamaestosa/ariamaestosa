@@ -170,6 +170,9 @@ void SymbolPrintableSequence::printLine(LayoutLine& line, wxDC& dc, wxGraphicsCo
     {
         const LineTrackRef& currentTrack = line.getLineTrackRef(0);
         const TrackCoords* trackCoords = currentTrack.m_track_coords.raw_ptr;
+        
+        if (trackCoords == NULL) return; // empty track
+        
         ASSERT(trackCoords != NULL);
         EditorPrintable* editorPrintable = this->getEditorPrintable(0);
         const int y0 = editorPrintable->getFirstLineY(currentTrack);
