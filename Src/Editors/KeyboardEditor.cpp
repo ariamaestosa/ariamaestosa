@@ -757,7 +757,11 @@ void KeyboardEditor::drawNoteTrack(int x, int y, bool focus)
     m_notes_names.bind();
     for (int i=60 ; i < 60+NOTE_COUNT ; i++)
     {
+        #ifdef __WXMSW__
+        m_notes_names.get(i - 60).render(x + NOTE_X_PADDING, y + (i-59)*NOTE_HEIGHT + 2);
+        #else
         m_notes_names.get(i - 60).render(x + NOTE_X_PADDING, y + (i-59)*NOTE_HEIGHT + 1);
+        #endif
         //AriaRender::renderString(getNoteName(i, false), x + NOTE_X_PADDING, y + (i-59)*NOTE_HEIGHT,
         //                         NOTE_TRACK_WIDTH + 1);
         isNoteAltered = not isNoteAltered;
