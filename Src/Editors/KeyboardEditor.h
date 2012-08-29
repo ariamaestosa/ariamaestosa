@@ -35,7 +35,8 @@ namespace AriaMaestosa
     {
         static const int Y_STEP_HEIGHT = 10;
         
-        AriaRenderArray m_notes_names;
+        AriaRenderArray m_sharp_notes_names;
+        AriaRenderArray m_flat_notes_names;
         
     public:
         KeyboardEditor(GraphicalTrack* data);

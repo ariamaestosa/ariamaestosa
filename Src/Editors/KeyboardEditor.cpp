@@ -57,6 +57,12 @@ static const int NOTE_COUNT = 12;
 static const int NOTE_HEIGHT = NOTE_TRACK_HEIGHT/NOTE_COUNT;
 static const int NOTE_X_PADDING = 2;
 
+#ifdef __WXMSW__
+    static const int NOTE_NAME_Y_POS_OFFSET = 2;
+#else
+    static const int NOTE_NAME_Y_POS_OFFSET = 1;
+#endif
+
 
 // ************************************************************************************************************
 // *********************************************    CTOR/DTOR      ********************************************
@@ -67,6 +73,10 @@ static const int NOTE_X_PADDING = 2;
 
 KeyboardEditor::KeyboardEditor(GraphicalTrack* track) : Editor(track)
 {
+    Note12 note12;
+    int octave;
+    wxFont drumFont = getDrumNamesFont();
+    
     m_sb_position = 0.5;
 
     m_white_color.set(1.0, 1.0, 1.0, 1.0);
@@ -75,9 +85,21 @@ KeyboardEditor::KeyboardEditor(GraphicalTrack* track) : Editor(track)
     
     for (int i=60 ; i < 60+NOTE_COUNT ; i++)
     {
-        m_notes_names.addString(getNoteName(i, false));
+        if (Note::findNoteName(i, &note12, &octave))
+        {
+            m_sharp_notes_names.addString(wxGetTranslation(NOTE_12_NAME[note12]));
+            m_flat_notes_names.addString(wxGetTranslation(NOTE_12_NAME_FLATS[note12]));
+        }
+        else
+        {
+            // Should never happen
+            m_sharp_notes_names.addString(wxT(""));
+            m_flat_notes_names.addString(wxT(""));
+        }
     }
-    m_notes_names.setFont(getDrumNamesFont());
+    
+    m_sharp_notes_names.setFont(drumFont);
+    m_flat_notes_names.setFont(drumFont);
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -724,7 +746,7 @@ void KeyboardEditor::drawNoteTrack(int x, int y, bool focus)
     FloatColor alteredNotesTextColor;
     int alteredNotesIt;
     bool isNoteAltered;
-   
+    bool displayFlatNotes;
   
     // Draw global rectangle 
     naturalNotesBackgroundColor = focus ? m_white_color : m_gray_color;
@@ -754,14 +776,28 @@ void KeyboardEditor::drawNoteTrack(int x, int y, bool focus)
     applyColor(m_black_color);
     alteredNotesTextColor = focus ? m_white_color : m_gray_color;
     isNoteAltered = false;
-    m_notes_names.bind();
+    displayFlatNotes = (m_track->getKeyType() == KEY_TYPE_FLATS);
+    
+    if (displayFlatNotes)
+    {
+        m_flat_notes_names.bind();
+    }
+    else
+    {
+        m_sharp_notes_names.bind();
+    }
+    
     for (int i=60 ; i < 60+NOTE_COUNT ; i++)
     {
-        #ifdef __WXMSW__
-        m_notes_names.get(i - 60).render(x + NOTE_X_PADDING, y + (i-59)*NOTE_HEIGHT + 2);
-        #else
-        m_notes_names.get(i - 60).render(x + NOTE_X_PADDING, y + (i-59)*NOTE_HEIGHT + 1);
-        #endif
+        if (displayFlatNotes)
+        {
+            m_flat_notes_names.get(i - 60).render(x + NOTE_X_PADDING, y + (i-59)*NOTE_HEIGHT + NOTE_NAME_Y_POS_OFFSET);
+        }
+        else
+        {
+            m_sharp_notes_names.get(i - 60).render(x + NOTE_X_PADDING, y + (i-59)*NOTE_HEIGHT + NOTE_NAME_Y_POS_OFFSET);
+        }
+    
         //AriaRender::renderString(getNoteName(i, false), x + NOTE_X_PADDING, y + (i-59)*NOTE_HEIGHT,
         //                         NOTE_TRACK_WIDTH + 1);
         isNoteAltered = not isNoteAltered;
