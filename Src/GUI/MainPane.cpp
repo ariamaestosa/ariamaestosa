@@ -774,8 +774,8 @@ bool MainPane::do_render()
         if (not playing)
         {
             AriaRender::triangle(tick_x, MEASURE_BAR_Y + 14,
-                                 tick_x, MEASURE_BAR_Y + 19,
-                                 tick_x + 6, MEASURE_BAR_Y + 19);
+                                 tick_x, MEASURE_BAR_Y + 20,
+                                 tick_x + 6, MEASURE_BAR_Y + 20);
         }
     }
 
