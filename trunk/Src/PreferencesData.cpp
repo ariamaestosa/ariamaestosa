@@ -354,6 +354,10 @@ void PreferencesData::save()
         f.Create(prefsFile);
         f.Open(prefsFile, wxFile::read_write);
     }
+    else
+    {
+        f.Create(prefsFile, true); /* overwrite previous content */
+    }
     
     ASSERT(f.IsOpened());
     
