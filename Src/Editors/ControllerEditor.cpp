@@ -114,6 +114,8 @@ public:
                          wxCommandEventHandler(ControlChangeInput::onEnter), NULL, this);
         m_input->Connect(m_input->GetId(), wxEVT_CHAR,
                          wxKeyEventHandler(ControlChangeInput::onChar), NULL, this);
+                         
+        m_input->SetFocus();
     }
     
     void onChar(wxKeyEvent& evt)
