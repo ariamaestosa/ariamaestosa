@@ -187,24 +187,28 @@ void MainFrame::initMenuBar()
 
 
     // ---- Tracks menu
-    m_track_menu = new wxMenu();
+    // Create one for the menu bar and one for contextual menu
+    for (int n = 0; n < 2; n++)
+    {
+        m_track_menu = new wxMenu();
 
-    //I18N: menu item in the "track" menu
-    m_track_menu -> QUICK_ADD_MENU ( MENU_TRACK_ADD, wxString(_("&Add Track"))+wxT("\tCtrl-Shift-N"),
-                                    MainFrame::menuEvent_addTrack );
-    //I18N: menu item in the "track" menu
-    m_track_menu -> QUICK_ADD_MENU ( MENU_TRACK_DUP, wxString(_("&Duplicate Track Settings"))+wxT("\tCtrl-D"),
-                                     MainFrame::menuEvent_dupTrack );
-    //I18N: menu item in the "track" menu
-    m_track_menu -> QUICK_ADD_MENU ( MENU_TRACK_REMOVE, wxString(_("&Delete Track"))+wxT("\tCtrl-DEL"),
-                                     MainFrame::menuEvent_deleteTrack );
-    m_track_menu->AppendSeparator();
-    //I18N: - in the track menu, allows choosing the properties of a track
-    m_track_menu -> QUICK_ADD_MENU ( MENU_TRACK_BACKG, _("&Properties..."),
-                                     MainFrame::menuEvent_trackBackground );
+        //I18N: menu item in the "track" menu
+        m_track_menu -> QUICK_ADD_MENU ( MENU_TRACK_ADD, wxString(_("&Add Track"))+wxT("\tCtrl-Shift-N"),
+                                        MainFrame::menuEvent_addTrack );
+        //I18N: menu item in the "track" menu
+        m_track_menu -> QUICK_ADD_MENU ( MENU_TRACK_DUP, wxString(_("&Duplicate Track Settings"))+wxT("\tCtrl-D"),
+                                         MainFrame::menuEvent_dupTrack );
+        //I18N: menu item in the "track" menu
+        m_track_menu -> QUICK_ADD_MENU ( MENU_TRACK_REMOVE, wxString(_("&Delete Track"))+wxT("\tCtrl-DEL"),
+                                         MainFrame::menuEvent_deleteTrack );
+        m_track_menu->AppendSeparator();
+        //I18N: - in the track menu, allows choosing the properties of a track
+        m_track_menu -> QUICK_ADD_MENU ( MENU_TRACK_BACKG, _("&Properties..."),
+                                         MainFrame::menuEvent_trackBackground );
 
-    m_menu_bar->Append(m_track_menu,  _("&Tracks"));
-
+        if (n == 0) m_menu_bar->Append(m_track_menu,  _("&Tracks"));
+    }
+    
     // ---- Playback menu
     m_playback_menu = new wxMenu();
     //I18N: In the playback menu

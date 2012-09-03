@@ -310,7 +310,7 @@ void wxGLString::consolidate(wxDC* dc)
     int singleLineHeight = 0;
     if (m_warp_after != -1 and m_w > m_warp_after)
     {
-        wxString val;
+        wxString val = m_model->getValue();
         val.Replace(wxT(" "),wxT("\n"));
         val.Replace(wxT("/"),wxT("/\n"));
         m_model->setValue(val);
