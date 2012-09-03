@@ -60,7 +60,13 @@ public:
     
     LEAK_CHECK();
     
-    ControlChangeInput(ControllerEditor* parent, int tick, wxPoint where) : wxMiniFrame(NULL, wxID_ANY, wxT(""), where, wxDefaultSize, wxCAPTION | wxCLOSE_BOX)
+    ControlChangeInput(ControllerEditor* parent, int tick, wxPoint where) : wxMiniFrame(NULL, wxID_ANY, wxT(""), where, wxDefaultSize,
+#ifdef __WXGTK__
+    wxCAPTION | wxCLOSE_BOX | wxSTAY_ON_TOP
+#else
+    wxCAPTION | wxCLOSE_BOX
+#endif
+    )
     {
         m_parent = parent;
         m_tick = tick;
@@ -69,7 +75,7 @@ public:
         wxPanel* panel = new wxPanel(this);
         wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
                 
-        m_input = new wxTextCtrl(panel, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
+        m_input = new wxTextCtrl(panel, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER | wxWANTS_CHARS);
         m_input->SetMinSize( wxSize(100, -1) );
         sizer->Add(m_input, 0, wxALL, 3);
         
@@ -106,6 +112,16 @@ public:
         
         m_input->Connect(m_input->GetId(), wxEVT_COMMAND_TEXT_ENTER,
                          wxCommandEventHandler(ControlChangeInput::onEnter), NULL, this);
+        m_input->Connect(m_input->GetId(), wxEVT_CHAR,
+                         wxKeyEventHandler(ControlChangeInput::onChar), NULL, this);
+    }
+    
+    void onChar(wxKeyEvent& evt)
+    {
+        if (evt.GetKeyCode() == WXK_ESCAPE)
+        {
+            Destroy();
+        }
     }
     
     void onEnter(wxCommandEvent& evt)
