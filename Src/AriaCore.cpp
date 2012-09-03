@@ -312,6 +312,7 @@ namespace AriaMaestosa
             long version = -1;
             if (version_info.ToLong(&version))
             {
+                printf("You have aria %i, latest version is %i\n", VERSION_INT, (int)version);
                 if ((int)version > VERSION_INT)
                 {
                     printf("You have aria %i, but version %i is now available\n", VERSION_INT, (int)version);

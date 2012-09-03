@@ -227,12 +227,12 @@ bool wxWidgetApp::OnInit()
     {
         wxDELETE(m_IPC_server);
     }
+#endif
 
     if (prefs->getBoolValue(SETTING_ID_CHECK_NEW_VERSION, true))
     {
         checkVersionOnline();
     }
-#endif
 
     Core::setPlayDuringEdit((PlayDuringEditMode)PreferencesData::getInstance()->getIntValue("playDuringEdit"));
     
