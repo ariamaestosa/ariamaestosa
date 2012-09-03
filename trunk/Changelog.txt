@@ -4,6 +4,7 @@
 - Fix bug preventing the name of the tempo controller from showing up
 - Fix assertion failure on right-click
 - Fix bug where the config file could get corrupted
+- Use GDI+ in Windows builds to correct printing
 
 1.4.3
 - Improve 'new version' notification (no more a warning look, include link to website)
