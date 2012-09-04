@@ -255,6 +255,8 @@
     <File Name="../Src/Actions/ShiftString.h"/>
     <File Name="../Src/Actions/RemoveOverlapping.h"/>
     <File Name="../Src/Actions/DeleteTrack.cpp"/>
+    <File Name="../Src/Actions/RearrangeVertically.cpp"/>
+    <File Name="../Src/Actions/RearrangeVertically.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="IO">
     <File Name="../Src/IO/MidiToMemoryStream.h"/>
@@ -360,6 +362,8 @@
     <File Name="../Src/AriaCore.cpp"/>
     <File Name="../Src/PresetManager.h"/>
     <File Name="../Src/UnitTest.cpp"/>
+    <File Name="../Src/AppIPCConnection.cpp"/>
+    <File Name="../Src/AppIPCConnection.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="irrXML">
     <File Name="../irrXML/fast_atof.h"/>
@@ -405,7 +409,10 @@
       <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
       <General OutputFile="../bin/aria-dbg" IntermediateDirectory="../_build/linux_debug" Command="../bin/aria-dbg" CommandArguments="../data/Riff.aria" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="../bin" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
-        <![CDATA[]]>
+        <![CDATA[
+      
+      
+      ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
@@ -453,6 +460,9 @@
         <![CDATA[
       
       
+      
+      
+      
       ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -482,4 +492,6 @@
       </Completion>
     </Configuration>
   </Settings>
+  <Dependencies Name="linux_debug"/>
+  <Dependencies Name="linux_release"/>
 </CodeLite_Project>

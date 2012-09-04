@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CodeLite_Workspace Name="Aria" Database="./Aria.tags">
   <Project Name="Aria" Path="Aria.project" Active="Yes"/>
+  <Project Name="wx28" Path="/home/aarchambault/Perso/dev/wx28/make/wx28.project" Active="No"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
+      <Project Name="wx28" ConfigName="Debug"/>
       <Project Name="Aria" ConfigName="linux_debug"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Release" Selected="yes">
+    <WorkspaceConfiguration Name="Release" Selected="no">
+      <Project Name="wx28" ConfigName="Release"/>
       <Project Name="Aria" ConfigName="linux_release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>

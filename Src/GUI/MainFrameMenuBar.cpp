@@ -23,6 +23,7 @@
 #include "Actions/DeleteTrack.h"
 #include "Actions/EditAction.h"
 #include "Actions/RemoveOverlapping.h"
+#include "Actions/RearrangeVertically.h"
 
 #include "Dialogs/AboutDialog.h"
 #include "Dialogs/CopyrightWindow.h"
@@ -181,6 +182,14 @@ void MainFrame::initMenuBar()
     //I18N: menu item in the "edit" menu
     m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_REMOVE_OVERLAPPING, _("Remove O&verlapping Notes"),
                                     MainFrame::menuEvent_removeOverlapping );
+                                    
+                                    
+    m_edit_menu->AppendSeparator();
+    
+    //I18N: menu item in the "edit" menu
+    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_REARRANGE_VERTICALLY, _("Rearrange ver&tically"),
+                                    MainFrame::menuEvent_rearrangeVertically );
+    
 
     //I18N: name of a menu
     m_menu_bar->Append(m_edit_menu,  _("&Edit"));
@@ -842,6 +851,12 @@ void MainFrame::menuEvent_scale(wxCommandEvent& evt)
 void MainFrame::menuEvent_removeOverlapping(wxCommandEvent& evt)
 {
     getCurrentSequence()->getCurrentTrack()->action( new Action::RemoveOverlapping() );
+}
+
+
+void MainFrame::menuEvent_rearrangeVertically(wxCommandEvent& evt)
+{
+    getCurrentSequence()->action( new Action::RearrangeVertically() );
 }
 
 // -----------------------------------------------------------------------------------------------------------

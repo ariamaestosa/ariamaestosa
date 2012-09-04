@@ -107,6 +107,7 @@ namespace AriaMaestosa
         MENU_EDIT_SCALE,
         MENU_EDIT_REMOVE_OVERLAPPING,
         MENU_EDIT_UNDO,
+        MENU_EDIT_REARRANGE_VERTICALLY,
 
         MENU_SETTINGS_FOLLOW_PLAYBACK,
         MENU_SETTINGS_PLAY_ALWAYS,
@@ -371,6 +372,7 @@ namespace AriaMaestosa
         void menuEvent_preferences(wxCommandEvent& evt);
         void menuEvent_followPlayback(wxCommandEvent& evt);
         void menuEvent_removeOverlapping(wxCommandEvent& evt);
+        void menuEvent_rearrangeVertically(wxCommandEvent& evt);
         void menuEvent_playAlways(wxCommandEvent& evt);
         void menuEvent_playOnChange(wxCommandEvent& evt);
         void menuEvent_playNever(wxCommandEvent& evt);
