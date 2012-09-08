@@ -198,8 +198,9 @@ def compile_Aria(which_os):
     
     env.Decider('MD5-timestamp')
     
-    env.Append(PATH = os.environ['PATH'])
-
+    #env.Append(PATH = os.environ['PATH'])
+    env['ENV']['PATH'] = os.environ.get('PATH')
+    
     if 'CXX' in os.environ:
         print ">> Using compiler " + os.environ['CXX']
         env.Replace(CXX = os.environ['CXX'])
