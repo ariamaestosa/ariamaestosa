@@ -64,7 +64,7 @@ void RearrangeVertically::perform()
 {
     KeyboardEditor* keyboardEditor;
     Track* track;
-    int minNotePitch;
+    int maxNotePitch;
     int trackCount;
     int noteCount;
     float sbPosition;
@@ -86,13 +86,13 @@ void RearrangeVertically::perform()
         // Computes maximum pitch in track (the higher MIDI pitch, 
         // the lower the value returned by Track::getNotePitchID()
         noteCount = track->getNoteAmount();
-        minNotePitch = 0;
+        maxNotePitch = 0;
         for (int j=0 ; j<noteCount ; j++)
         {
-            minNotePitch = std::max(minNotePitch, track->getNotePitchID(j));
+            maxNotePitch = std::max(maxNotePitch, track->getNotePitchID(j));
         }
         
-        float pos =((float)minNotePitch/131.0);
+        float pos = (float)maxNotePitch/131.0;
         
         // Sets position according to min pitch
         keyboardEditor->setScrollbarPosition(pos);
@@ -101,7 +101,7 @@ void RearrangeVertically::perform()
     wxEndBusyCursor();
     
     Display::render();
-}
+}  
 
 // --------------------------------------------------------------------------------------------------------
 
