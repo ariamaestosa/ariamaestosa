@@ -243,6 +243,8 @@ namespace AriaMaestosa
         virtual void onNotationTypeChange();
         
         void selectNote(const int id, const bool selected, bool ignoreModifiers=false);
+        
+        void switchDivider(bool forward);
 
         // serialization
         void saveToFile(wxFileOutputStream& fileout);

@@ -912,6 +912,11 @@ void Editor::processKeyPress(int keycode, bool commandDown, bool shiftDown)
             }
             return;
         }
+        else if (keycode==WXK_TAB)
+        {
+            m_graphical_track->switchDivider(false);
+            return;
+        }
     }
     
     if (not commandDown and not shiftDown)
@@ -927,8 +932,7 @@ void Editor::processKeyPress(int keycode, bool commandDown, bool shiftDown)
                    );
             Display::render();
         }
-        
-        if (keycode == WXK_RIGHT)
+        else if (keycode == WXK_RIGHT)
         {
             m_track->
             action( new Action::MoveNotes(this,
@@ -937,14 +941,12 @@ void Editor::processKeyPress(int keycode, bool commandDown, bool shiftDown)
                    );
             Display::render();
         }
-        
-        if (keycode == WXK_UP)
+        else if (keycode == WXK_UP)
         {
             m_track->action( new Action::MoveNotes(this, 0, -1, SELECTED_NOTES) );
             Display::render();
         }
-        
-        if (keycode == WXK_DOWN)
+        else if (keycode == WXK_DOWN)
         {
             m_track->action( new Action::MoveNotes(this, 0, 1, SELECTED_NOTES) );
             Display::render();
@@ -952,13 +954,16 @@ void Editor::processKeyPress(int keycode, bool commandDown, bool shiftDown)
         
         // ------------------------ delete notes ---------------------
         
-        if (keycode == WXK_BACK or keycode == WXK_DELETE)
+        else if (keycode == WXK_BACK or keycode == WXK_DELETE)
         {
             m_track->action( new Action::DeleteSelected(this) );
             Display::render();
         }
         
-        
+        else if (keycode==WXK_TAB)
+        {
+            m_graphical_track->switchDivider(true);
+        }
     }
 }
 
