@@ -1842,6 +1842,58 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
     return m_to_y;
 }
 
+
+// Handles TAB keyboard shortcut 
+void GraphicalTrack::switchDivider(bool forward)
+{
+    wxCommandEvent fake_event;
+    int divider;
+    
+    divider = m_grid->getModel()->getDivider();
+    
+    if (m_grid->getModel()->isTriplet())
+    {
+        divider -= divider/3;
+    }
+
+    if (forward)
+    {
+        if (divider==128)
+        {
+            divider = 1;
+        }
+        else
+        {
+            divider *= 2;
+        }
+    }
+    else
+    {
+        if (divider==1)
+        {
+            divider = 128;
+        }
+        else
+        {
+            divider /= 2;
+        }
+    }
+    
+    switch (divider)
+    {
+        case   1 : m_grid->grid1selected(fake_event); break;
+        case   2 : m_grid->grid2selected(fake_event); break;
+        case   4 : m_grid->grid4selected(fake_event); break;
+        case   8 : m_grid->grid8selected(fake_event); break;
+        case  16 : m_grid->grid16selected(fake_event); break;
+        case  32 : m_grid->grid32selected(fake_event); break;
+        case  64 : m_grid->grid64selected(fake_event); break;
+        case 128 : m_grid->grid128selected(fake_event); break;
+    }
+}
+
+
+
 // ----------------------------------------------------------------------------------------------------------
 // ----------------------------------------------------------------------------------------------------------
 #if 0
