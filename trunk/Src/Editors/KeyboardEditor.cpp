@@ -244,6 +244,15 @@ int KeyboardEditor::getYScrollInPixels()
 }
 
 // -----------------------------------------------------------------------------------------------------------
+    
+void KeyboardEditor::setYScrollInPixels(int y)
+{
+    m_sb_position = float(y) / float(120*11 - m_height - 20);
+    if (m_sb_position > 1.0f) m_sb_position = 1.0f;
+    else if (m_sb_position < 0.0f) m_sb_position = 0.0f;
+}
+
+// -----------------------------------------------------------------------------------------------------------
 
 void KeyboardEditor::moveNote(Note& note, const int relativeX, const int relativeY)
 {

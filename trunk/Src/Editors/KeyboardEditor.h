@@ -50,6 +50,10 @@ namespace AriaMaestosa
                             RelativeXCoord mousex_initial, int mousey_initial, bool focus=false);
 
 
+        int levelToLocalY(const int level)
+        {
+            return level*Y_STEP_HEIGHT+1;
+        }
         
         int levelToY(const int level)
         {
@@ -58,6 +62,8 @@ namespace AriaMaestosa
         
         /** implemented from base class Editor's required interface */
         virtual int getYScrollInPixels();
+        
+        void setYScrollInPixels(int y);
         
         /** implemented from base class Editor's required interface */
         virtual NoteSearchResult noteAt(RelativeXCoord x, const int y, int& noteID);

@@ -184,8 +184,6 @@ namespace AriaMaestosa
         wxString getBackgroundTracks();
         void addBackgroundTracks();
         
-        
-        
         /** @brief method called by GraphicalTrack to let the Editor know about its position */
         void updatePosition(int from_y, int to_y, int width, int height);
         
