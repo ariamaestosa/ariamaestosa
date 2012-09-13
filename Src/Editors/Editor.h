@@ -289,6 +289,7 @@ namespace AriaMaestosa
         int getEditorYStart() const { return m_from_y;                }
         int getYEnd        () const { return m_to_y;                  }
         int getWidth       () const { return m_width;                 }
+        int getHeight      () const { return m_height;                }
         
         float getRelativeHeight() const { return m_relative_height;                }
 
