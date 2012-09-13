@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-12 21:52-0400\n"
+"POT-Creation-Date: 2012-09-13 18:33-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -625,8 +625,9 @@ msgid "add control event"
 msgstr ""
 
 #. I18N: (undoable) action name
-#: Src/Actions/RearrangeVertically.cpp:37
-msgid "Rearrange ver&tically"
+#. I18N: menu item in the "edit" menu
+#: Src/Actions/RearrangeVertically.cpp:37 Src/GUI/MainFrameMenuBar.cpp:190
+msgid "Scroll notes into view"
 msgstr ""
 
 #. I18N: (undoable) action name
@@ -1160,11 +1161,6 @@ msgstr ""
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:183
 msgid "Remove O&verlapping Notes"
-msgstr ""
-
-#. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:190
-msgid "Scroll notes into view"
 msgstr ""
 
 #. I18N: name of a menu
@@ -2517,7 +2513,7 @@ msgstr ""
 msgid "Score Editor"
 msgstr ""
 
-#: Src/Editors/KeyboardEditor.h:77
+#: Src/Editors/KeyboardEditor.h:83
 msgid "Keyboard Editor"
 msgstr ""
 
