@@ -187,7 +187,7 @@ void MainFrame::initMenuBar()
     m_edit_menu->AppendSeparator();
     
     //I18N: menu item in the "edit" menu
-    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_REARRANGE_VERTICALLY, _("Rearrange ver&tically"),
+    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_REARRANGE_VERTICALLY, _("Scroll notes into view"),
                                     MainFrame::menuEvent_rearrangeVertically );
     
 
