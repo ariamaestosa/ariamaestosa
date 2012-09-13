@@ -34,7 +34,7 @@ using namespace AriaMaestosa::Action;
 
 RearrangeVertically::RearrangeVertically() :
     //I18N: (undoable) action name
-    MultiTrackAction( _("Rearrange ver&tically") )
+    MultiTrackAction( _("Scroll notes into view") )
 {
     
 }
@@ -92,31 +92,8 @@ void RearrangeVertically::perform()
             maxNotePitch = std::max(maxNotePitch, track->getNotePitchID(j));
         }
         
-        int editorYStart = keyboardEditor->getEditorYStart();
-        int yScrollInPixels = keyboardEditor->getYScrollInPixels();
-        int Y = keyboardEditor->levelToY(maxNotePitch);
-        
-        /* Reference formulas
-        int levelToY(const int level)
-        {
-            return level*Y_STEP_HEIGHT+1 + getEditorYStart() - getYScrollInPixels();
-        }
-
-        int KeyboardEditor::getYScrollInPixels()
-        {
-            return (int)( m_sb_position*(120*11 - m_height - 20) );
-        }
-        */
-
-        
-        // Buggy
-        int Y_STEP_HEIGHT = 5;
-        float pos = (float)(maxNotePitch * Y_STEP_HEIGHT) / (float)(120*11 - keyboardEditor->getHeight() - 20);
-        
-        //pos = (-Y + maxNotePitch*Y_STEP_HEIGHT+1 + keyboardEditor->getEditorYStart()) / (120*11 - keyboardEditor->getHeight() - 20);
-        
-        // Sets position according to min pitch
-        keyboardEditor->setScrollbarPosition(pos);
+        int localY = keyboardEditor->levelToLocalY(maxNotePitch);
+        keyboardEditor->setYScrollInPixels(std::max(0, localY - 5));
     }
 
     wxEndBusyCursor();
