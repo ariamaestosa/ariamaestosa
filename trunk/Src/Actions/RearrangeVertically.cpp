@@ -92,7 +92,28 @@ void RearrangeVertically::perform()
             maxNotePitch = std::max(maxNotePitch, track->getNotePitchID(j));
         }
         
-        float pos = (float)maxNotePitch/131.0;
+        int editorYStart = keyboardEditor->getEditorYStart();
+        int yScrollInPixels = keyboardEditor->getYScrollInPixels();
+        int Y = keyboardEditor->levelToY(maxNotePitch);
+        
+        /* Reference formulas
+        int levelToY(const int level)
+        {
+            return level*Y_STEP_HEIGHT+1 + getEditorYStart() - getYScrollInPixels();
+        }
+
+        int KeyboardEditor::getYScrollInPixels()
+        {
+            return (int)( m_sb_position*(120*11 - m_height - 20) );
+        }
+        */
+
+        
+        // Buggy
+        int Y_STEP_HEIGHT = 5;
+        float pos = (float)(maxNotePitch * Y_STEP_HEIGHT) / (float)(120*11 - keyboardEditor->getHeight() - 20);
+        
+        //pos = (-Y + maxNotePitch*Y_STEP_HEIGHT+1 + keyboardEditor->getEditorYStart()) / (120*11 - keyboardEditor->getHeight() - 20);
         
         // Sets position according to min pitch
         keyboardEditor->setScrollbarPosition(pos);
@@ -101,60 +122,4 @@ void RearrangeVertically::perform()
     wxEndBusyCursor();
     
     Display::render();
-}  
-
-// --------------------------------------------------------------------------------------------------------
-
-namespace TestRearrangeVertically
-{
-    using namespace AriaMaestosa;
-    
-    UNIT_TEST( TestAction )
-    {
-        /*
-        Sequence* seq = new Sequence(NULL, NULL, NULL, NULL, false);
-        
-        TestSequenceProvider provider(seq);
-        AriaMaestosa::setCurrentSequenceProvider(&provider);
-        
-        Track* t = new Track(seq);
-        t->setName(wxT("TestTrack"));
-        seq->addTrack(t);
-        
-        t = new Track(seq);
-        t->setName(wxT("TestTrack2"));
-        seq->addTrack(t);
-        
-        // test the action
-        seq->action(new RearrangeVertically());
-        
-        require(seq->getTrackAmount() == 3, "track amount increased after performing action");
-        bool foundFirst = false, foundSecond = false, foundNew = false;
-        for (int n=0; n<3; n++)
-        {
-            if (seq->getTrack(n)->getName() == wxT("TestTrack")) foundFirst  = true;
-            else if (seq->getTrack(n)->getName() == wxT("TestTrack2")) foundSecond = true;
-            else foundNew = true;
-        }
-        
-        require(foundFirst and foundSecond and foundNew, "The right tracks are found in the sequence");
-        
-        // test undo
-        seq->undo();
-        
-        require(seq->getTrackAmount() == 2, "track amount decreased after undoing action");
-        
-        foundFirst = false; foundSecond = false; foundNew = false;
-        for (int n=0; n<2; n++)
-        {
-            if (seq->getTrack(n)->getName() == wxT("TestTrack")) foundFirst  = true;
-            else if (seq->getTrack(n)->getName() == wxT("TestTrack2")) foundSecond = true;
-            else foundNew = true;
-        }
-        require(foundFirst and foundSecond and not foundNew, "The right tracks are found in the sequence after undoing");
-        
-        delete seq;
-        */
-    }
 }
-
