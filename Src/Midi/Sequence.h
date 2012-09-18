@@ -167,6 +167,11 @@ namespace AriaMaestosa
         
         bool m_loop_enabled;
         
+        KeyType m_default_key_type;
+        
+        int m_default_key_symbol_amount;
+        
+        
      public:
         
         class Import
@@ -409,6 +414,12 @@ namespace AriaMaestosa
         
         bool isLoopEnabled() const { return m_loop_enabled; }
         void setLoopEnabled(bool loop) { m_loop_enabled = loop; }
+    
+        KeyType getDefaultKeyType() const { return m_default_key_type; }
+        void setDefaultKeyType(KeyType keyType) { m_default_key_type = keyType; };
+        
+        int getDefaultKeySymbolAmount() { return m_default_key_symbol_amount; }
+        void setDefaultKeySymbolAmount(int symbolAmount) { m_default_key_symbol_amount = symbolAmount; }
         
         // ---- serialization
         

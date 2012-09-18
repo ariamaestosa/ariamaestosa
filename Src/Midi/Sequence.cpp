@@ -53,18 +53,20 @@ Sequence::Sequence(IPlaybackModeListener* playbackListener, IActionStackListener
                    ISequenceDataListener* sequenceDataListener,
                    IMeasureDataListener* measureListener, bool addDefautTrack)
 {
-    beatResolution          = 960;
-    currentTrack            = 0;
-    m_tempo                 = 120;
-    m_importing             = false;
-    m_loop_enabled          = false;
-    m_follow_playback       = PreferencesData::getInstance()->getBoolValue("followPlayback", false);
-    m_playback_listener     = playbackListener;
-    m_action_stack_listener = actionStackListener;
-    m_seq_data_listener     = sequenceDataListener;
-    m_play_with_metronome   = false;
-    m_playback_start_tick   = 0;
-
+    beatResolution              = 960;
+    currentTrack                = 0;
+    m_tempo                     = 120;
+    m_importing                 = false;
+    m_loop_enabled              = false;
+    m_follow_playback           = PreferencesData::getInstance()->getBoolValue("followPlayback", false);
+    m_playback_listener         = playbackListener;
+    m_action_stack_listener     = actionStackListener;
+    m_seq_data_listener         = sequenceDataListener;
+    m_play_with_metronome       = false;
+    m_playback_start_tick       = 0;
+    m_default_key_type          = KEY_TYPE_C;
+    m_default_key_symbol_amount = 0;
+    
     m_sequence_filename     = new Model<wxString>( _("Untitled") );
     channelManagement = CHANNEL_AUTO;
     m_copyright = wxT("");
@@ -703,9 +705,19 @@ void Sequence::saveToFile(wxFileOutputStream& fileout)
     writeData(wxT("</text>\n"), fileout );
     
     // ---- copyright
-    writeData(wxT("<copyright>"), fileout );
+    writeData(wxT("<copyright>\n"), fileout );
     writeData(getCopyright(), fileout );
     writeData(wxT("</copyright>\n"), fileout );
+    
+    
+    // ---- defaut key signature 
+    writeData(wxT("<defaultkeysig "), fileout );
+    writeData(wxT("keytype=\""), fileout );
+    writeData(to_wxString(m_default_key_type), fileout );
+    writeData(wxT("\" keysymbolamount=\""), fileout );
+    writeData(to_wxString(m_default_key_symbol_amount), fileout );
+    writeData(wxT("\" />\n\n"), fileout );
+    
     
     // ---- tracks
     for (int n=0; n<tracks.size(); n++)
@@ -850,6 +862,7 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
 
         
         bool copyright_mode = false;
+        bool default_key_sig = false;
         bool tempo_mode = false;
         bool text_mode = false;
         
@@ -864,6 +877,21 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                 case irr::io::EXN_TEXT:
                 {
                     if (copyright_mode) setCopyright( fromCString((char*)xml->getNodeData()) );
+                    
+                    if (default_key_sig)
+                    {
+                        const char* keytype = xml->getAttributeValue("keytype");
+                        if (keytype != NULL)
+                        {
+                            m_default_key_type = KeyType(atoi(keytype));
+                        }
+                        
+                        const char* keysymbolamount = xml->getAttributeValue("keysymbolamount");
+                        if (keysymbolamount != NULL)
+                        {
+                            m_default_key_symbol_amount = atoi(keysymbolamount);
+                        }
+                    }
 
                     break;
                 }
@@ -895,6 +923,12 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                     else if (strcmp("copyright", xml->getNodeName()) == 0)
                     {
                         copyright_mode=true;
+                    }
+                    
+                    // ---------- defaut key signature ------
+                    else if (strcmp("defaultkeysig", xml->getNodeName()) == 0)
+                    {
+                        default_key_sig=true;
                     }
 
                     // ---------- tempo events ------
@@ -959,6 +993,10 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                     else if (strcmp("copyright", xml->getNodeName()) == 0)
                     {
                         copyright_mode = false;
+                    }
+                    else if (strcmp("defaultkeysig", xml->getNodeName()) == 0)
+                    {
+                        default_key_sig = false;
                     }
                     else if (strcmp("tempo", xml->getNodeName()) == 0)
                     {

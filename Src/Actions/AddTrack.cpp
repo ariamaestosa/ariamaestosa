@@ -60,7 +60,12 @@ void AddTrack::perform()
 {
     m_added_track = m_sequence->addTrack();
     
-    if (m_model != NULL)
+    if (m_model == NULL)
+    {
+        m_added_track->setKey(m_sequence->getDefaultKeySymbolAmount(),
+                              m_sequence->getDefaultKeyType());
+    }
+    else 
     {
         m_added_track->setMuted(m_model->isMuted());
         m_added_track->setInstrument(m_model->getInstrument());
