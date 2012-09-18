@@ -16,7 +16,7 @@
 
 
 
-#include "Dialogs/CopyrightWindow.h"
+#include "Dialogs/SongPropertiesDialog.h"
 #include "GUI/MainFrame.h"
 #include "Midi/Sequence.h"
 #include "Midi/CommonMidiUtils.h"
@@ -48,7 +48,7 @@ namespace AriaMaestosa
   * @see CopyrightWindow::hide
   * @see CopyrightWindow::free
   */
-class CopyrightWindowClass : public wxDialog
+class SongPropertiesDialog : public wxDialog
 {
     long ID_KEY_SIG_RADIOBOX;
     
@@ -68,9 +68,9 @@ public:
     LEAK_CHECK();
     
     
-    CopyrightWindowClass(Sequence* seq) : wxDialog(getMainFrame(), wxID_ANY,
+    SongPropertiesDialog(Sequence* seq) : wxDialog(getMainFrame(), wxID_ANY,
                 //I18N: - title of the copyright/info dialog
-                _("Copyright and song info"),
+                _("Song Properties"),
                 wxDefaultPosition, wxSize(400,400), wxCAPTION | wxCLOSE_BOX | wxRESIZE_BORDER )
     {
         m_sequence = seq;
@@ -109,7 +109,7 @@ public:
         };
         
         m_keySigRadioBox = new wxRadioBox(this, ID_KEY_SIG_RADIOBOX, _("Symbols"), wxDefaultPosition, wxDefaultSize, 3, symbolTypeChoices, 1);
-        Connect(ID_KEY_SIG_RADIOBOX,wxEVT_COMMAND_RADIOBOX_SELECTED,(wxObjectEventFunction)&CopyrightWindowClass::OnKeySigRadioBoxSelect);
+        Connect(ID_KEY_SIG_RADIOBOX,wxEVT_COMMAND_RADIOBOX_SELECTED,(wxObjectEventFunction)&SongPropertiesDialog::OnKeySigRadioBoxSelect);
  
         keySymbolAmountBoxSizer->Add(m_keySigRadioBox, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
         
@@ -193,7 +193,7 @@ public:
         m_sequence->setDefaultKeyType(keyType);
         m_sequence->setDefaultKeySymbolAmount(m_keySymbolAmountSpinCtrl->GetValue());
 
-        CopyrightWindow::hide();
+        SongPropertiesDialog::hide();
     }
 
     void show()
@@ -238,37 +238,37 @@ public:
 
     void onCancel(wxCommandEvent& evt)
     {
-        CopyrightWindow::hide();
+        SongPropertiesDialog::hide();
     }
 
     DECLARE_EVENT_TABLE();
 
 };
 
-BEGIN_EVENT_TABLE( CopyrightWindowClass, wxDialog )
+BEGIN_EVENT_TABLE( SongPropertiesDialog, wxDialog )
 
-    EVT_BUTTON( wxID_OK, CopyrightWindowClass::okClicked )
-    EVT_BUTTON( wxID_CANCEL, CopyrightWindowClass::onCancel )
-    EVT_COMMAND(wxID_CANCEL, wxEVT_COMMAND_BUTTON_CLICKED, CopyrightWindowClass::onCancel )
+    EVT_BUTTON( wxID_OK, SongPropertiesDialog::okClicked )
+    EVT_BUTTON( wxID_CANCEL, SongPropertiesDialog::onCancel )
+    EVT_COMMAND(wxID_CANCEL, wxEVT_COMMAND_BUTTON_CLICKED, SongPropertiesDialog::onCancel )
 
 END_EVENT_TABLE()
 
 
-namespace CopyrightWindow
+namespace SongPropertiesDialogNamespace
 {
 
-CopyrightWindowClass* copyrightWindow=NULL;
+SongPropertiesDialog* songPropertiesDlg=NULL;
 
 void show(Sequence* seq)
 {
-    copyrightWindow = new CopyrightWindowClass(seq);
-    copyrightWindow->show();
+    songPropertiesDlg = new SongPropertiesDialog(seq);
+    songPropertiesDlg->show();
 }
 
 void hide()
 {
-    copyrightWindow->hide();
-    copyrightWindow->Destroy();
+    songPropertiesDlg->hide();
+    songPropertiesDlg->Destroy();
 }
 
 void free()

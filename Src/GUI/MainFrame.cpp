@@ -22,7 +22,7 @@
 #include "Actions/RemoveOverlapping.h"
 
 #include "Dialogs/AboutDialog.h"
-#include "Dialogs/CopyrightWindow.h"
+#include "Dialogs/SongPropertiesDialog.h"
 #include "Dialogs/CustomNoteSelectDialog.h"
 #include "Dialogs/Preferences.h"
 #include "Dialogs/ScaleDialog.h"
@@ -359,7 +359,7 @@ MainFrame::~MainFrame()
 
     ImageProvider::unloadImages();
     PlatformMidiManager::get()->freeMidiPlayer();
-    CopyrightWindow::free();
+    SongPropertiesDialogNamespace::free();
     Clipboard::clear();
     SingletonBase::deleteAll();
 }
