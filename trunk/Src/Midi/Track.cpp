@@ -80,7 +80,8 @@ Track::Track(Sequence* sequence)
     m_listener = NULL;
 
     // init key data
-    setKey(0, KEY_TYPE_C);
+    setKey(sequence->getDefaultKeySymbolAmount(),
+            sequence->getDefaultKeyType());
 
     m_tuning = new GuitarTuning(this);
 
@@ -1168,7 +1169,10 @@ void Track::setKey(const int symbolAmount, const KeyType type)
         }
     }
 
-    if (m_listener != NULL) m_listener->onKeyChange(symbolAmount, m_key_type);
+    if (m_listener != NULL) 
+    {
+        m_listener->onKeyChange(symbolAmount, m_key_type);
+    }
 }
 
 // ----------------------------------------------------------------------------------------------------------
