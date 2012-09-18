@@ -16,8 +16,8 @@
 
 
 
-#ifndef __COPYRIGHT_WINDOW_H__
-#define __COPYRIGHT_WINDOW_H__
+#ifndef __SONG_PROPERTIES_DIALOG_H__
+#define __SONG_PROPERTIES_DIALOG_H__
 
 namespace AriaMaestosa
 {
@@ -27,7 +27,7 @@ namespace AriaMaestosa
       * @ingroup dialogs
       * @brief Song information dialog (including song name, author name, etc...)
       */
-    namespace CopyrightWindow
+    namespace SongPropertiesDialogNamespace
     {
         void show(Sequence* seq);
         void hide();

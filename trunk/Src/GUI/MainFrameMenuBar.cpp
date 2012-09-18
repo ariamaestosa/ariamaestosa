@@ -26,7 +26,7 @@
 #include "Actions/RearrangeVertically.h"
 
 #include "Dialogs/AboutDialog.h"
-#include "Dialogs/CopyrightWindow.h"
+#include "Dialogs/SongPropertiesDialog.h"
 #include "Dialogs/CustomNoteSelectDialog.h"
 #include "Dialogs/Preferences.h"
 #include "Dialogs/PrintSetupDialog.h"
@@ -106,7 +106,7 @@ void MainFrame::initMenuBar()
                                     MainFrame::menuEvent_close);
 
     m_file_menu->AppendSeparator();
-    m_file_menu -> QUICK_ADD_MENU ( MENU_FILE_COPYRIGHT, wxString(_("Song &info..."))+wxT("\tCtrl-I"),
+    m_file_menu -> QUICK_ADD_MENU ( MENU_FILE_COPYRIGHT, wxString(_("Song Propert&ies..."))+wxT("\tCtrl-I"),
                                     MainFrame::menuEvent_copyright );
     //fileMenu->AppendSeparator();
 
@@ -736,7 +736,7 @@ void MainFrame::menuEvent_exportSampledAudio(wxCommandEvent& evt)
 void MainFrame::menuEvent_copyright(wxCommandEvent& evt)
 {
     if (getSequenceAmount() == 0) return;
-    CopyrightWindow::show( getCurrentSequence() );
+    SongPropertiesDialogNamespace::show( getCurrentSequence() );
 }
 
 // -----------------------------------------------------------------------------------------------------------
