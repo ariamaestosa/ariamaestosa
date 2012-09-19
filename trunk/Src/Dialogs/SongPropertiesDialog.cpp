@@ -57,6 +57,10 @@ class SongPropertiesDialog : public wxDialog
     wxTextCtrl* m_nameInput;
     wxSpinCtrl* m_keySymbolAmountSpinCtrl;
     wxRadioBox* m_keySigRadioBox;
+    wxSpinCtrl* tempoSpinCtrl;
+    wxSpinCtrl* numeratorSpinCtrl;
+    wxSpinCtrl* denominatorSpinCtrl;
+    wxStaticText* timeSignatureStaticText;
     wxStaticText* m_songLength;
     wxButton* m_okBtn;
     wxButton* m_cancelBtn;
@@ -71,7 +75,7 @@ public:
     SongPropertiesDialog(Sequence* seq) : wxDialog(getMainFrame(), wxID_ANY,
                 //I18N: - title of the copyright/info dialog
                 _("Song Properties"),
-                wxDefaultPosition, wxSize(400,400), wxCAPTION | wxCLOSE_BOX | wxRESIZE_BORDER )
+                wxDefaultPosition, wxDefaultSize, wxCAPTION | wxCLOSE_BOX | wxRESIZE_BORDER )
     {
         m_sequence = seq;
         
@@ -119,6 +123,29 @@ public:
 
         m_boxSizer->Add(keySymbolAmountBoxSizer, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     
+    
+        //I18N: - tempo
+        wxBoxSizer* tempoBoxSizer = new wxBoxSizer(wxHORIZONTAL);
+        wxStaticText* tempoStaticText = new wxStaticText(this, wxID_ANY, _("Tempo"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
+        tempoBoxSizer->Add(tempoStaticText, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+        tempoSpinCtrl = new wxSpinCtrl(this, wxID_ANY, _T("120"), wxDefaultPosition, wxDLG_UNIT(this,wxSize(35,-1)), 0, 10, 1000, 120, _T("ID_TEMPO_SPINCTRL"));
+        tempoBoxSizer->Add(tempoSpinCtrl, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+        m_boxSizer->Add(tempoBoxSizer, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+        
+        
+        //I18N: - time signature
+        wxBoxSizer* timeSignatureBoxSizer = new wxBoxSizer(wxHORIZONTAL);
+        timeSignatureStaticText = new wxStaticText(this, wxID_ANY, _("Time Signature"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_TIME_SIGNATURE_STATICTEXT"));
+        timeSignatureBoxSizer->Add(timeSignatureStaticText, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+        numeratorSpinCtrl = new wxSpinCtrl(this, wxID_ANY, _T("4"), wxDefaultPosition, wxDLG_UNIT(this,wxSize(25,-1)), 0, 1, 100, 4, _T("ID_TOP_SPINCTRL"));
+        timeSignatureBoxSizer->Add(numeratorSpinCtrl, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+        wxStaticText* slashStaticText = new wxStaticText(this, wxID_ANY, _("/"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
+        timeSignatureBoxSizer->Add(slashStaticText, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+        denominatorSpinCtrl = new wxSpinCtrl(this, wxID_ANY, _T("4"), wxDefaultPosition, wxDLG_UNIT(this,wxSize(25,-1)), 0, 1, 100, 4, _T("ID_BOTTOM_SPINCTRL"));
+        timeSignatureBoxSizer->Add(denominatorSpinCtrl, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+        m_boxSizer->Add(timeSignatureBoxSizer, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+
+    
         // song length
         m_songLength = new wxStaticText(this, wxID_ANY, wxString(_("Song duration :"))+wxT(" ??:??"),
                                       wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE);
@@ -129,7 +156,7 @@ public:
         m_okBtn->SetDefault();
         m_boxSizer->Add( m_okBtn, 0, wxALL, 0 );
 
-        // ok button
+        // cancel button
         m_cancelBtn = new wxButton( this, wxID_CANCEL, _("Cancel"));
         m_cancelBtn->SetDefault();
         m_boxSizer->Add( m_cancelBtn, 0, wxALL, 0 );
@@ -192,9 +219,21 @@ public:
         }
         m_sequence->setDefaultKeyType(keyType);
         m_sequence->setDefaultKeySymbolAmount(m_keySymbolAmountSpinCtrl->GetValue());
-
+        
+        // Tempo
+        m_sequence->setTempo(tempoSpinCtrl->GetValue());
+        
+        // Time signature
+        MeasureData* measures = m_sequence->getMeasureData();
+        if (!measures->isExpandedMode())
+        {
+            ScopedMeasureTransaction tr(measures->startTransaction());
+            tr->setTimeSig( numeratorSpinCtrl->GetValue(), denominatorSpinCtrl->GetValue() );
+        }
+        
         SongPropertiesDialog::hide();
     }
+
 
     void show()
     {
@@ -204,6 +243,7 @@ public:
         m_nameInput->SetValue( m_sequence->getInternalName() );
         m_copyrightInput->SetValue( m_sequence->getCopyright() );
         
+        // Key Signature
         keyType = m_sequence->getDefaultKeyType();
         switch (keyType)
         {
@@ -224,7 +264,25 @@ public:
         {
             m_keySymbolAmountSpinCtrl->SetValue(m_sequence->getDefaultKeySymbolAmount());
         }
-
+        
+        
+        // Tempo
+        tempoSpinCtrl->SetValue(m_sequence->getTempo());
+        
+        
+         // Time signature
+        MeasureData* measures = m_sequence->getMeasureData();
+        if (measures->isExpandedMode())
+        {
+            numeratorSpinCtrl->Enable(false);
+            denominatorSpinCtrl->Enable(false);
+        }
+        else
+        {
+            numeratorSpinCtrl->SetValue(measures->getTimeSigNumerator());
+            denominatorSpinCtrl->SetValue(measures->getTimeSigDenominator());
+        }
+        
         wxDialog::Center();
         m_code = wxDialog::ShowModal();
     }
@@ -233,7 +291,6 @@ public:
     void hide()
     {
         wxDialog::EndModal(m_code);
-        //wxDialog::Hide();
     }
 
     void onCancel(wxCommandEvent& evt)

@@ -368,7 +368,7 @@ namespace AriaMaestosa
         void menuEvent_customNoteSelect(wxCommandEvent& evt);
         void menuEvent_snapToGrid(wxCommandEvent& evt);
         void menuEvent_scale(wxCommandEvent& evt);
-        void menuEvent_copyright(wxCommandEvent& evt);
+        void menuEvent_songProperties(wxCommandEvent& evt);
         void menuEvent_preferences(wxCommandEvent& evt);
         void menuEvent_followPlayback(wxCommandEvent& evt);
         void menuEvent_removeOverlapping(wxCommandEvent& evt);
@@ -471,7 +471,7 @@ namespace AriaMaestosa
         // ---- sequences
 
         /** Add a new sequence. There can be multiple sequences if user opens or creates multiple files. */
-        void addSequence();
+        void addSequence(bool showSongPropertiesDialog);
 
         /** Returns the amount of open sequences (files). */
         int getSequenceAmount() const { return m_sequences.size(); }

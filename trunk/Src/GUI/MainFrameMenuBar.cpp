@@ -107,7 +107,7 @@ void MainFrame::initMenuBar()
 
     m_file_menu->AppendSeparator();
     m_file_menu -> QUICK_ADD_MENU ( MENU_FILE_COPYRIGHT, wxString(_("Song Propert&ies..."))+wxT("\tCtrl-I"),
-                                    MainFrame::menuEvent_copyright );
+                                    MainFrame::menuEvent_songProperties );
     //fileMenu->AppendSeparator();
 
     addIconItem(m_file_menu, MENU_FILE_EXPORT_NOTATION, wxString(_("&Print..."))+wxT("\tCtrl-P"), wxART_PRINT);
@@ -538,7 +538,7 @@ void MainFrame::updateUndoMenuLabel()
 void MainFrame::menuEvent_new(wxCommandEvent& evt)
 {
     m_main_pane->forgetClickData();
-    addSequence();
+    addSequence(true);
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -733,10 +733,16 @@ void MainFrame::menuEvent_exportSampledAudio(wxCommandEvent& evt)
 
 // -----------------------------------------------------------------------------------------------------------
 
-void MainFrame::menuEvent_copyright(wxCommandEvent& evt)
+void MainFrame::menuEvent_songProperties(wxCommandEvent& evt)
 {
-    if (getSequenceAmount() == 0) return;
-    SongPropertiesDialogNamespace::show( getCurrentSequence() );
+    if (getSequenceAmount() > 0)
+    {
+        SongPropertiesDialogNamespace::show(getCurrentSequence());
+
+        // to update tempo and time signature controls in top bar
+        updateTopBarAndScrollbarsForSequence(getCurrentGraphicalSequence());
+    }
+
 }
 
 // -----------------------------------------------------------------------------------------------------------
