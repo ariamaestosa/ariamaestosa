@@ -84,7 +84,7 @@
  void    SetText( unsigned short text_num, unsigned char type=META_GENERIC_TEXT );
  void    SetDataEnd();
  void    SetTimeSig( unsigned char numerator, unsigned char denominator );
- void   SetKeySig( signed char sharp_flats, unsigned char major_minor );
+ void    SetKeySig( signed char sharp_flats, unsigned char major_minor );
  void    SetBeatMarker();
  
  
@@ -487,6 +487,37 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
             return false;
         }
     }
+    
+    // ----- default key signature
+    {
+        jdkmidi::MIDITimedBigMessage m;
+        int amount;
+        KeyType keyType;
+        
+        m.SetTime(0);
+        
+        keyType = sequence->getDefaultKeyType();
+        amount = 0;
+        
+        if (keyType==KEY_TYPE_SHARPS)
+        {
+            amount = sequence->getDefaultKeySymbolAmount();
+        }
+        else if (keyType==KEY_TYPE_FLATS)
+        {
+            amount = -sequence->getDefaultKeySymbolAmount();
+        }
+            
+        // TODO : handle mode (major or minor)
+        m.SetKeySig(amount,0);
+   
+        if (not tracks.GetTrack(0)->PutEvent( m ))
+        {
+            std::cerr << "Error adding key signature event" << std::endl;
+            return false;
+        }
+    }
+        
     
     if (not playing)
     {
