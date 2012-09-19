@@ -381,15 +381,15 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                         if (amount > 0)
                         {
                             sequence->getTrack(trackn)->setKey(amount, KEY_TYPE_SHARPS);
-                            //sequence->getTrack(trackn)->graphics->scoreEditor->loadKey(SHARP, amount);
-                            //sequence->getTrack(trackn)->graphics->keyboardEditor->loadKey(SHARP, amount);
+                            sequence->setDefaultKeySymbolAmount(amount);
+                            sequence->setDefaultKeyType(KEY_TYPE_SHARPS);
                         }
                         else if (amount < 0)
                         {
                             sequence->getTrack(trackn)->setKey(-amount, KEY_TYPE_FLATS);
-                            //sequence->getTrack(trackn)->graphics->scoreEditor->loadKey(FLAT, -amount);
-                            //sequence->getTrack(trackn)->graphics->keyboardEditor->loadKey(FLAT, -amount);
-                        }
+                            sequence->setDefaultKeySymbolAmount(-amount);
+                            sequence->setDefaultKeyType(KEY_TYPE_FLATS);
+                        } 
                     }
                     // FIXME - does midi allow a different key for each track?
 
