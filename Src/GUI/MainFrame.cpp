@@ -1579,13 +1579,24 @@ void MainFrame::updateVerticalScrollbar()
 #endif
 
 
-void MainFrame::addSequence()
+void MainFrame::addSequence(bool showSongPropertiesDialog)
 {
     Sequence* s = new Sequence(this, this, this, this, Display::isVisible());
+    
+    if (showSongPropertiesDialog)
+    {
+        SongPropertiesDialogNamespace::show(s);
+    }
+  
     GraphicalSequence* gs = new GraphicalSequence(s);
     m_sequences.push_back( gs );
     setCurrentSequence( m_sequences.size() - 1, false /* update */ );
     gs->createViewForTracks(-1 /* all */);
+    
+    if (showSongPropertiesDialog)
+    {
+        s->getTrack(0)->setKey(s->getDefaultKeySymbolAmount(), s->getDefaultKeyType());
+    }
 
     m_paused = false;
     updateTopBarAndScrollbarsForSequence( getCurrentGraphicalSequence() );
@@ -1809,7 +1820,7 @@ void MainFrame::loadAriaFile(const wxString& filePath)
 
     const int old_currentSequence = m_current_sequence;
 
-    addSequence();
+    addSequence(false);
     setCurrentSequence( getSequenceAmount()-1 );
     getCurrentSequence()->setFilepath( filePath );
 
@@ -1857,7 +1868,7 @@ void MainFrame::loadMidiFile(const wxString& filePath)
 
     const int old_currentSequence = m_current_sequence;
 
-    addSequence();
+    addSequence(false);
     setCurrentSequence( getSequenceAmount()-1 );
     getCurrentSequence()->setFilepath(filePath);
 
