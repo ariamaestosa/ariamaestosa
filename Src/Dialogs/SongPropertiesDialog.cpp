@@ -34,11 +34,17 @@
 #include "Utils.h"
 
 
+static const int MAX_KEY_SYMBOL_AMOUNT = 7;
+static const int PERFECT_FITH_SEMITONE_NUMBER = 7;
+static const int PERFECT_FOURTH_SEMITONE_NUMBER = 5;
+static const int MINOR_THIRD_SEMITONE_NUMBER = 3;
+static const int CHROMATIC_SCALE_NOTE_NUMBER = 12;
 
 
 namespace AriaMaestosa
 {
     
+
 
 /**
   * @ingroup dialogs
@@ -51,16 +57,18 @@ namespace AriaMaestosa
 class SongPropertiesDialog : public wxDialog
 {
     long ID_KEY_SIG_RADIOBOX;
+    long ID_KEY_SYMBOL_AMOUNT_SPINCTRL;
     
     wxBoxSizer* m_boxSizer;
     wxTextCtrl* m_copyrightInput;
     wxTextCtrl* m_nameInput;
     wxSpinCtrl* m_keySymbolAmountSpinCtrl;
     wxRadioBox* m_keySigRadioBox;
-    wxSpinCtrl* tempoSpinCtrl;
-    wxSpinCtrl* numeratorSpinCtrl;
-    wxSpinCtrl* denominatorSpinCtrl;
-    wxStaticText* timeSignatureStaticText;
+    wxTextCtrl* m_tonalitiesTextCtrl;
+    wxSpinCtrl* m_tempoSpinCtrl;
+    wxSpinCtrl* m_numeratorSpinCtrl;
+    wxSpinCtrl* m_denominatorSpinCtrl;
+    wxStaticText* m_timeSignatureStaticText;
     wxStaticText* m_songLength;
     wxButton* m_okBtn;
     wxButton* m_cancelBtn;
@@ -80,6 +88,7 @@ public:
         m_sequence = seq;
         
         ID_KEY_SIG_RADIOBOX = wxNewId();
+        ID_KEY_SYMBOL_AMOUNT_SPINCTRL = wxNewId();
 
         m_boxSizer=new wxBoxSizer(wxVERTICAL);
 
@@ -114,12 +123,16 @@ public:
         
         m_keySigRadioBox = new wxRadioBox(this, ID_KEY_SIG_RADIOBOX, _("Symbols"), wxDefaultPosition, wxDefaultSize, 3, symbolTypeChoices, 1);
         Connect(ID_KEY_SIG_RADIOBOX,wxEVT_COMMAND_RADIOBOX_SELECTED,(wxObjectEventFunction)&SongPropertiesDialog::OnKeySigRadioBoxSelect);
- 
         keySymbolAmountBoxSizer->Add(m_keySigRadioBox, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
         
-        m_keySymbolAmountSpinCtrl = new wxSpinCtrl(this, wxID_ANY, _T("0"), wxDefaultPosition, wxSize(38,-1), 0, 0, 7, 0);
+        m_keySymbolAmountSpinCtrl = new wxSpinCtrl(this, ID_KEY_SYMBOL_AMOUNT_SPINCTRL, _T("0"), wxDefaultPosition, wxSize(38,-1), 0, 0, MAX_KEY_SYMBOL_AMOUNT, 0);
         m_keySymbolAmountSpinCtrl->SetValue(_T("0"));
+        Connect(ID_KEY_SYMBOL_AMOUNT_SPINCTRL,wxEVT_COMMAND_SPINCTRL_UPDATED,(wxObjectEventFunction)&SongPropertiesDialog::OnSpinCtrlChange);
         keySymbolAmountBoxSizer->Add(m_keySymbolAmountSpinCtrl, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+       
+	    m_tonalitiesTextCtrl = new wxTextCtrl(this, wxID_ANY, _("Tonalities"), wxDefaultPosition, wxDefaultSize,
+                                    wxTE_READONLY|wxTRANSPARENT_WINDOW, wxDefaultValidator, _T("ID_TEXTCTRL"));
+	    keySymbolAmountBoxSizer->Add(m_tonalitiesTextCtrl, 1, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 15);
 
         m_boxSizer->Add(keySymbolAmountBoxSizer, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     
@@ -128,21 +141,21 @@ public:
         wxBoxSizer* tempoBoxSizer = new wxBoxSizer(wxHORIZONTAL);
         wxStaticText* tempoStaticText = new wxStaticText(this, wxID_ANY, _("Tempo"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
         tempoBoxSizer->Add(tempoStaticText, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-        tempoSpinCtrl = new wxSpinCtrl(this, wxID_ANY, _T("120"), wxDefaultPosition, wxDLG_UNIT(this,wxSize(35,-1)), 0, 10, 1000, 120, _T("ID_TEMPO_SPINCTRL"));
-        tempoBoxSizer->Add(tempoSpinCtrl, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+        m_tempoSpinCtrl = new wxSpinCtrl(this, wxID_ANY, _T("120"), wxDefaultPosition, wxDLG_UNIT(this,wxSize(35,-1)), 0, 10, 1000, 120, _T("ID_TEMPO_SPINCTRL"));
+        tempoBoxSizer->Add(m_tempoSpinCtrl, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
         m_boxSizer->Add(tempoBoxSizer, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
         
         
         //I18N: - time signature
         wxBoxSizer* timeSignatureBoxSizer = new wxBoxSizer(wxHORIZONTAL);
-        timeSignatureStaticText = new wxStaticText(this, wxID_ANY, _("Time Signature"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_TIME_SIGNATURE_STATICTEXT"));
-        timeSignatureBoxSizer->Add(timeSignatureStaticText, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-        numeratorSpinCtrl = new wxSpinCtrl(this, wxID_ANY, _T("4"), wxDefaultPosition, wxDLG_UNIT(this,wxSize(25,-1)), 0, 1, 100, 4, _T("ID_TOP_SPINCTRL"));
-        timeSignatureBoxSizer->Add(numeratorSpinCtrl, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+        m_timeSignatureStaticText = new wxStaticText(this, wxID_ANY, _("Time Signature"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_TIME_SIGNATURE_STATICTEXT"));
+        timeSignatureBoxSizer->Add(m_timeSignatureStaticText, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+        m_numeratorSpinCtrl = new wxSpinCtrl(this, wxID_ANY, _T("4"), wxDefaultPosition, wxDLG_UNIT(this,wxSize(25,-1)), 0, 1, 100, 4, _T("ID_TOP_SPINCTRL"));
+        timeSignatureBoxSizer->Add(m_numeratorSpinCtrl, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
         wxStaticText* slashStaticText = new wxStaticText(this, wxID_ANY, _("/"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
         timeSignatureBoxSizer->Add(slashStaticText, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-        denominatorSpinCtrl = new wxSpinCtrl(this, wxID_ANY, _T("4"), wxDefaultPosition, wxDLG_UNIT(this,wxSize(25,-1)), 0, 1, 100, 4, _T("ID_BOTTOM_SPINCTRL"));
-        timeSignatureBoxSizer->Add(denominatorSpinCtrl, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+        m_denominatorSpinCtrl = new wxSpinCtrl(this, wxID_ANY, _T("4"), wxDefaultPosition, wxDLG_UNIT(this,wxSize(25,-1)), 0, 1, 100, 4, _T("ID_BOTTOM_SPINCTRL"));
+        timeSignatureBoxSizer->Add(m_denominatorSpinCtrl, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
         m_boxSizer->Add(timeSignatureBoxSizer, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 
     
@@ -191,10 +204,21 @@ public:
     void OnKeySigRadioBoxSelect(wxCommandEvent& event)
     {
         int selection;
+        int minValue;
         
         selection = event.GetSelection();
+        minValue = (selection==0) ? 0 : 1;
         m_keySymbolAmountSpinCtrl->Enable(selection>0);
-        m_keySymbolAmountSpinCtrl->SetValue((selection==0) ? 0 : 1);
+        m_keySymbolAmountSpinCtrl->SetValue(minValue);
+        m_keySymbolAmountSpinCtrl->SetRange(minValue, MAX_KEY_SYMBOL_AMOUNT);
+        
+        updateTonalities(selection, m_keySymbolAmountSpinCtrl->GetValue());
+    }
+    
+    
+    void OnSpinCtrlChange(wxSpinEvent& event)
+    {
+        updateTonalities(m_keySigRadioBox->GetSelection(), event.GetInt());
     }
 
 
@@ -221,14 +245,15 @@ public:
         m_sequence->setDefaultKeySymbolAmount(m_keySymbolAmountSpinCtrl->GetValue());
         
         // Tempo
-        m_sequence->setTempo(tempoSpinCtrl->GetValue());
+        m_sequence->setTempo(m_tempoSpinCtrl->GetValue());
         
         // Time signature
         MeasureData* measures = m_sequence->getMeasureData();
         if (!measures->isExpandedMode())
         {
-            ScopedMeasureTransaction tr(measures->startTransaction());
-            tr->setTimeSig( numeratorSpinCtrl->GetValue(), denominatorSpinCtrl->GetValue() );
+            // TODO - FIXME
+            //ScopedMeasureTransaction tr(measures->startTransaction());
+            //tr->setTimeSig( m_numeratorSpinCtrl->GetValue(), m_denominatorSpinCtrl->GetValue() );
         }
         
         m_code = wxID_OK;
@@ -266,22 +291,23 @@ public:
             m_keySymbolAmountSpinCtrl->SetValue(m_sequence->getDefaultKeySymbolAmount());
         }
         
+        updateTonalities(m_keySigRadioBox->GetSelection(), m_keySymbolAmountSpinCtrl->GetValue());
         
         // Tempo
-        tempoSpinCtrl->SetValue(m_sequence->getTempo());
+        m_tempoSpinCtrl->SetValue(m_sequence->getTempo());
         
         
          // Time signature
         MeasureData* measures = m_sequence->getMeasureData();
         if (measures->isExpandedMode())
         {
-            numeratorSpinCtrl->Enable(false);
-            denominatorSpinCtrl->Enable(false);
+            m_numeratorSpinCtrl->Enable(false);
+            m_denominatorSpinCtrl->Enable(false);
         }
         else
         {
-            numeratorSpinCtrl->SetValue(measures->getTimeSigNumerator());
-            denominatorSpinCtrl->SetValue(measures->getTimeSigDenominator());
+            m_numeratorSpinCtrl->SetValue(measures->getTimeSigNumerator());
+            m_denominatorSpinCtrl->SetValue(measures->getTimeSigDenominator());
         }
         
         wxDialog::Center();
@@ -290,15 +316,53 @@ public:
     }
 
 
-    void hide()
-    {
-        wxDialog::EndModal(m_code);
-    }
-
     void onCancel(wxCommandEvent& evt)
     {
         m_code = wxID_CANCEL;
         SongPropertiesDialog::hide();
+    }
+    
+    
+    void hide()
+    {
+        wxDialog::EndModal(m_code);
+    }
+    
+    
+    void updateTonalities(int keyType, int keySymbolAmount)
+    {
+        wxString tonalities;
+        int minorIndex;
+        int majorIndex;
+        
+        if (keyType==0)
+        {
+            tonalities = buildKeyLabel( _("C"), _("A") );
+        }
+        else if (keyType==1)
+        {
+            // Sharps
+            minorIndex = (keySymbolAmount* PERFECT_FITH_SEMITONE_NUMBER) % CHROMATIC_SCALE_NOTE_NUMBER;
+            majorIndex = (minorIndex + MINOR_THIRD_SEMITONE_NUMBER) % CHROMATIC_SCALE_NOTE_NUMBER;
+            tonalities = buildKeyLabel(wxGetTranslation(NOTE_12_NAME[majorIndex]),
+                                        wxGetTranslation(NOTE_12_NAME[minorIndex]));
+        }
+        else if (keyType==2)
+        {
+            // Flats
+            minorIndex = (keySymbolAmount* PERFECT_FOURTH_SEMITONE_NUMBER) % CHROMATIC_SCALE_NOTE_NUMBER;
+            majorIndex = (minorIndex + MINOR_THIRD_SEMITONE_NUMBER) % CHROMATIC_SCALE_NOTE_NUMBER;
+            tonalities = buildKeyLabel(wxGetTranslation(NOTE_12_NAME_FLATS[majorIndex]),
+                                        wxGetTranslation(NOTE_12_NAME_FLATS[minorIndex]));
+        }
+        
+        m_tonalitiesTextCtrl->SetValue(tonalities);
+    }
+    
+    // Duplicated with KeyPicker::buildKeyLabel
+    wxString buildKeyLabel(const wxString& majorKey, const wxString& minorKey)
+    {
+        return majorKey + wxT(" ") + _("Major") + wxT(" - ") + minorKey + wxT(" ") + _("minor");
     }
 
     DECLARE_EVENT_TABLE();
