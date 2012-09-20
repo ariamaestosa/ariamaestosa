@@ -1581,28 +1581,39 @@ void MainFrame::updateVerticalScrollbar()
 
 void MainFrame::addSequence(bool showSongPropertiesDialog)
 {
+    bool completeProcess;
+    
     Sequence* s = new Sequence(this, this, this, this, Display::isVisible());
+    completeProcess = true;
     
     if (showSongPropertiesDialog)
     {
-        SongPropertiesDialogNamespace::show(s);
-    }
-  
-    GraphicalSequence* gs = new GraphicalSequence(s);
-    m_sequences.push_back( gs );
-    setCurrentSequence( m_sequences.size() - 1, false /* update */ );
-    gs->createViewForTracks(-1 /* all */);
-    
-    if (showSongPropertiesDialog)
-    {
-        s->getTrack(0)->setKey(s->getDefaultKeySymbolAmount(), s->getDefaultKeyType());
+        if (SongPropertiesDialogNamespace::show(s)==wxID_CANCEL)
+        {
+            completeProcess = false;
+            wxDELETE(s);
+        }
     }
 
-    m_paused = false;
-    updateTopBarAndScrollbarsForSequence( getCurrentGraphicalSequence() );
-    updateMenuBarToSequence();
-    Display::render();
-    getMainFrame()->updateUndoMenuLabel();
+    if (completeProcess)
+    {
+        GraphicalSequence* gs = new GraphicalSequence(s);
+        m_sequences.push_back( gs );
+        setCurrentSequence( m_sequences.size() - 1, false /* update */ );
+        gs->createViewForTracks(-1 /* all */);
+        
+        if (showSongPropertiesDialog)
+        {
+            s->getTrack(0)->setKey(s->getDefaultKeySymbolAmount(), s->getDefaultKeyType());
+        }
+
+        m_paused = false;
+        updateTopBarAndScrollbarsForSequence( getCurrentGraphicalSequence() );
+        updateMenuBarToSequence();
+        Display::render();
+        getMainFrame()->updateUndoMenuLabel();
+    }
+   
 }
 
 // ----------------------------------------------------------------------------------------------------------
