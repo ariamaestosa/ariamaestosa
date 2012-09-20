@@ -231,11 +231,12 @@ public:
             tr->setTimeSig( numeratorSpinCtrl->GetValue(), denominatorSpinCtrl->GetValue() );
         }
         
+        m_code = wxID_OK;
         SongPropertiesDialog::hide();
     }
 
 
-    void show()
+    int show()
     {
         KeyType keyType;
         int selection;
@@ -285,6 +286,7 @@ public:
         
         wxDialog::Center();
         m_code = wxDialog::ShowModal();
+        return m_code;
     }
 
 
@@ -295,6 +297,7 @@ public:
 
     void onCancel(wxCommandEvent& evt)
     {
+        m_code = wxID_CANCEL;
         SongPropertiesDialog::hide();
     }
 
@@ -316,10 +319,10 @@ namespace SongPropertiesDialogNamespace
 
 SongPropertiesDialog* songPropertiesDlg=NULL;
 
-void show(Sequence* seq)
+int show(Sequence* seq)
 {
     songPropertiesDlg = new SongPropertiesDialog(seq);
-    songPropertiesDlg->show();
+    return songPropertiesDlg->show();
 }
 
 void hide()
