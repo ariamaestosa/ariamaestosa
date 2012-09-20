@@ -348,8 +348,9 @@ MainPane::WelcomeResult MainPane::drawWelcomeMenu()
                 if (n == 0)
                 {
                     m_is_mouse_down = false;
-                    wxCommandEvent dummy;
-                    mf->menuEvent_new(dummy);
+                    
+                    wxCommandEvent dummy(wxEVT_COMMAND_MENU_SELECTED, MENU_FILE_NEW);
+                    mf->GetEventHandler()->AddPendingEvent(dummy);
                 }
                 else if (n == 1)
                 {
