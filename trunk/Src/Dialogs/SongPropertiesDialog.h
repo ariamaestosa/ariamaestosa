@@ -29,7 +29,7 @@ namespace AriaMaestosa
       */
     namespace SongPropertiesDialogNamespace
     {
-        int show(Sequence* seq);
+        int show(Sequence* seq, int& timeSigNumerator, int& timeSigDenominator);
         void hide();
         void free();
     }

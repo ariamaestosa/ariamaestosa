@@ -737,12 +737,26 @@ void MainFrame::menuEvent_songProperties(wxCommandEvent& evt)
 {
     if (getSequenceAmount() > 0)
     {
-        SongPropertiesDialogNamespace::show(getCurrentSequence());
-
-        // to update tempo and time signature controls in top bar
-        updateTopBarAndScrollbarsForSequence(getCurrentGraphicalSequence());
+        Sequence* sequence;
+        int timeSigNumerator;
+        int timeSigDenominator;
+        
+        sequence = getCurrentSequence();
+        
+        if (SongPropertiesDialogNamespace::show(sequence, timeSigNumerator, timeSigDenominator)==wxID_OK)
+        {
+            // Time signature
+            MeasureData* measures = sequence->getMeasureData();
+            if (!measures->isExpandedMode())
+            {
+                ScopedMeasureTransaction tr(measures->startTransaction());
+                tr->setTimeSig(timeSigNumerator, timeSigDenominator);
+            }
+                
+            // to update tempo and time signature controls in top bar
+            updateTopBarAndScrollbarsForSequence(getCurrentGraphicalSequence());
+        }
     }
-
 }
 
 // -----------------------------------------------------------------------------------------------------------
