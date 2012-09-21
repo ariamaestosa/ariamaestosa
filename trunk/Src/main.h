@@ -37,6 +37,11 @@ namespace AriaMaestosa
     
     class wxWidgetApp : public wxApp
     {
+        
+    private:
+        void addLastSessionFiles(PreferencesData* prefs,
+                                  wxArrayString& filesToOpen);
+        
     public:
         MainFrame* frame;
         PreferencesData*  prefs;

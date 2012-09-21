@@ -252,8 +252,9 @@ bool wxWidgetApp::OnInit()
     {
         wxString fileName = wxString(argv[n]);
         filesToOpen.Add(fileName);
-        //loadFile(fileName);
     }
+    
+    addLastSessionFiles(prefs, filesToOpen);
     
     frame->init(filesToOpen);
 
@@ -372,4 +373,19 @@ bool wxWidgetApp::handleSingleInstance()
 void wxWidgetApp::loadFile(const wxString& fileName)
 {
     frame->loadFile(fileName);
+}
+
+
+void wxWidgetApp::addLastSessionFiles(PreferencesData* prefs, wxArrayString& filesToOpen)
+{
+    if ( prefs->getBoolValue(SETTING_ID_LOAD_LAST_SESSION, false) )
+    {
+        wxStringTokenizer tokenizer(prefs->getValue(SETTING_ID_LAST_SESSION_FILES), wxT(","));
+        
+        while ( tokenizer.HasMoreTokens() )
+        {
+            wxString path = tokenizer.GetNextToken();
+            filesToOpen.Add(path);
+        }
+    }
 }

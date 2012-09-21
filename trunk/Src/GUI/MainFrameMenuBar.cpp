@@ -764,28 +764,17 @@ void MainFrame::menuEvent_songProperties(wxCommandEvent& evt)
 void MainFrame::menuEvent_quit(wxCommandEvent& evt)
 {
     wxLogVerbose(wxT("MainFrame::menuEvent_quit"));
-    
-    printf("MainFrame::menuEvent_quit\n");
-    
-    // the quit menu is greyed out in playback mode, but there are other ways to get this code called
-    // (like closing the frame)
-    if (m_playback_mode)
+
+    if (!handleApplicationEnd())
     {
-        m_main_pane->exitPlayLoop();
+        return;
     }
-    
-    // close all open sequences
-    while (getSequenceAmount() > 0)
+    else
     {
-        if (not closeSequence())
-        {
-            // user canceled, don't quit
-            return;
-        }
+        // quit
+        wxWindow::Destroy();
     }
 
-    // quit
-    wxWindow::Destroy();
 }
 
 // -----------------------------------------------------------------------------------------------------------
