@@ -172,10 +172,15 @@ namespace AriaMaestosa
                 m_magic_number = 0xDEADBEEF;
 #endif
                 
-                if (m_parent != NULL) m_parent->updateMeasureInfo();
-                
-                const int count = m_parent->m_listeners.size();
-                for (int n=0; n<count; n++) m_parent->m_listeners[n]->onMeasureDataChange(m_changes);
+                if (m_parent != NULL)
+                {
+                    m_parent->updateMeasureInfo();
+                    const int count = m_parent->m_listeners.size();
+                    for (int n=0; n<count; n++)
+                    {
+                        m_parent->m_listeners[n]->onMeasureDataChange(m_changes);
+                    }
+                }
             }
             
             void  setExpandedMode(bool expanded)
