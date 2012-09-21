@@ -342,17 +342,9 @@ MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(1
 
 MainFrame::~MainFrame()
 {
-    PreferencesData* pd = PreferencesData::getInstance();
-    if (pd->getBoolValue(SETTING_ID_REMEMBER_WINDOW_POS, false))
-    {
-        pd->setValue(SETTING_ID_WINDOW_X, to_wxString(GetPosition().x));
-        pd->setValue(SETTING_ID_WINDOW_Y, to_wxString(GetPosition().y));
-        pd->setValue(SETTING_ID_WINDOW_W, to_wxString(GetSize().GetWidth()));
-        pd->setValue(SETTING_ID_WINDOW_H, to_wxString(GetSize().GetHeight()));
-        pd->save();
-    }
-    
     wxLogVerbose( wxT("MainFrame::~MainFrame") );
+
+    saveWindowPos();
 
     m_border_sizer->Detach(m_main_panel);
     m_main_panel->Destroy();
@@ -366,7 +358,7 @@ MainFrame::~MainFrame()
 
 // ----------------------------------------------------------------------------------------------------------
 
-void MainFrame::init(wxArrayString filesToOpen)
+void MainFrame::init(const wxArrayString& filesToOpen)
 {
     wxLogVerbose( wxT("MainFrame::init") );
     changingValues = true;
@@ -782,28 +774,14 @@ void MainFrame::on_close(wxCloseEvent& evt)
 {
     wxLogVerbose(wxT("MainFrame::on_close"));
 
-    //wxCommandEvent dummy;
-    //menuEvent_quit(dummy);
-
-    // the quit menu is greyed out in playback mode, but there are other ways to get this code called
-    // (like closing the frame)
-    if (m_playback_mode)
+    if (!handleApplicationEnd())
     {
-        m_main_pane->exitPlayLoop();
+        return;
     }
-
-    // close all open sequences
-    while (getSequenceAmount() > 0)
+    else
     {
-        if (not closeSequence())
-        {
-            // user canceled, don't quit
-            return;
-        }
+        evt.Skip();
     }
-
-    evt.Skip();
-    //closeSequence();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -1817,17 +1795,20 @@ void MainFrame::loadFile(const wxString& filePath)
     }
     else
     {
-        if (filePath.EndsWith(wxT("aria")))
+        if (wxFileExists(filePath))
         {
-            loadAriaFile(filePath);
-        }
-        else if (filePath.EndsWith(wxT("mid")) or filePath.EndsWith(wxT("midi")))
-        {
-            loadMidiFile(filePath);
-        }
-        else
-        {
-            wxMessageBox(_("Unknown file type: ") + filePath);
+            if (filePath.EndsWith(wxT("aria")))
+            {
+                loadAriaFile(filePath);
+            }
+            else if (filePath.EndsWith(wxT("mid")) or filePath.EndsWith(wxT("midi")))
+            {
+                loadMidiFile(filePath);
+            }
+            else
+            {
+                wxMessageBox(_("Unknown file type: ") + filePath);
+            }
         }
     }
 }
@@ -2125,4 +2106,80 @@ void MainFrame::disableScrollbars()
 {
     m_horizontal_scrollbar->Disable();
     m_vertical_scrollbar->Disable();
+}
+
+
+// ----------------------------------------------------------------------------------------------------------
+bool MainFrame::handleApplicationEnd()
+{
+    bool exitApp;
+    
+    saveOpenedFiles();
+    
+    exitApp = true;
+    
+    // the quit menu is greyed out in playback mode, but there are other ways to get this code called
+    // (like closing the frame)
+    if (m_playback_mode)
+    {
+        m_main_pane->exitPlayLoop();
+    }
+
+    // close all open sequences
+    while (getSequenceAmount() > 0)
+    {
+        if (not closeSequence())
+        {
+            // user canceled, don't quit
+            exitApp = false;
+        }
+    }
+    
+    return exitApp;
+}
+
+
+// ----------------------------------------------------------------------------------------------------------
+void MainFrame::saveWindowPos()
+{
+    PreferencesData* pd;
+    
+    pd = PreferencesData::getInstance();
+    if (pd->getBoolValue(SETTING_ID_REMEMBER_WINDOW_POS, false))
+    {
+        pd->setValue(SETTING_ID_WINDOW_X, to_wxString(GetPosition().x));
+        pd->setValue(SETTING_ID_WINDOW_Y, to_wxString(GetPosition().y));
+        pd->setValue(SETTING_ID_WINDOW_W, to_wxString(GetSize().GetWidth()));
+        pd->setValue(SETTING_ID_WINDOW_H, to_wxString(GetSize().GetHeight()));
+        pd->save();
+    }
+}
+
+
+// ----------------------------------------------------------------------------------------------------------
+void MainFrame::saveOpenedFiles()
+{
+    PreferencesData* pd;
+    wxString files;
+    wxString path;
+    int count;
+    
+    pd = PreferencesData::getInstance();
+    count = getSequenceAmount();
+    
+    for (int i=0 ; i<count ; i++)
+    {
+        path = getSequence(i)->getFilepath();
+        
+        if (wxFileExists(path))
+        {
+            files += path;
+            if (i<count-1)
+            {
+                files += wxT(",");
+            }
+        }
+    }
+    
+    pd->setValue(SETTING_ID_LAST_SESSION_FILES, files);
 }

@@ -296,6 +296,19 @@ void PreferencesData::fillSettingsVector()
                                      SETTING_BOOL, true /* show in preferences */, wxT("1") );
     m_settings.push_back(showNoteNames);
     
+    
+    Setting* loadLastSession = new Setting(fromCString(SETTING_ID_LOAD_LAST_SESSION),
+                                     _("Load last session files"),
+                                     SETTING_BOOL, true /* show in preferences */, wxT("0") );
+    m_settings.push_back(loadLastSession); 
+    
+    
+    Setting* lastSessionFiles = new Setting(fromCString(SETTING_ID_LAST_SESSION_FILES),
+                                     _("Last session files"),
+                                     SETTING_STRING, false, wxT("") );
+    m_settings.push_back(lastSessionFiles); 
+    
+    
 
     // TODO: make default value paltform-specific
     Setting* output = new Setting(fromCString(SETTING_ID_MIDI_OUTPUT), wxT(""),

@@ -46,6 +46,7 @@ class wxTextCtrl;
 class wxBoxSizer;
 class wxStaticBitmap;
 
+
 #if wxCHECK_VERSION(2,9,1)
     class wxGenericHyperlinkCtrl;
 #endif
@@ -56,6 +57,7 @@ namespace AriaMaestosa
     class CustomNoteSelectDialog;
     class Sequence;
     class PreferencesDialog;
+    class PreferencesData;
     class AboutDialog;
     class InstrumentChoice;
     class DrumChoice;
@@ -295,6 +297,12 @@ namespace AriaMaestosa
         void updateCurrentDir(wxString& path);
 
         wxArrayString m_files_to_open;
+        
+        
+        bool handleApplicationEnd();
+        void saveWindowPos();
+        void saveOpenedFiles();
+
 
     public:
         LEAK_CHECK();
@@ -303,7 +311,7 @@ namespace AriaMaestosa
         bool changingValues; // set this to true when modifying the controls in the top bar, this allows to ignore all events thrown by their modification.
 
         MainFrame();
-        void init(wxArrayString filesToOpen);
+        void init(const wxArrayString& filesToOpen);
         void initMenuBar();
         ~MainFrame();
 
