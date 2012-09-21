@@ -1582,13 +1582,15 @@ void MainFrame::updateVerticalScrollbar()
 void MainFrame::addSequence(bool showSongPropertiesDialog)
 {
     bool completeProcess;
+    int timeSigNumerator;
+    int timeSigDenominator;
     
     Sequence* s = new Sequence(this, this, this, this, Display::isVisible());
     completeProcess = true;
     
     if (showSongPropertiesDialog)
     {
-        if (SongPropertiesDialogNamespace::show(s)==wxID_CANCEL)
+        if (SongPropertiesDialogNamespace::show(s, timeSigNumerator, timeSigDenominator)==wxID_CANCEL)
         {
             completeProcess = false;
             wxDELETE(s);
@@ -1604,6 +1606,15 @@ void MainFrame::addSequence(bool showSongPropertiesDialog)
         
         if (showSongPropertiesDialog)
         {
+            // Time signature
+            MeasureData* measures = s->getMeasureData();
+            if (!measures->isExpandedMode())
+            {
+                ScopedMeasureTransaction tr(measures->startTransaction());
+                tr->setTimeSig(timeSigNumerator, timeSigDenominator);
+            }
+            
+            // Sets key from default key
             s->getTrack(0)->setKey(s->getDefaultKeySymbolAmount(), s->getDefaultKeyType());
         }
 

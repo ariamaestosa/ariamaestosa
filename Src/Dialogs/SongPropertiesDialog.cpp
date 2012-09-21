@@ -201,6 +201,18 @@ public:
     }
 
 
+    int getTimeSigNumerator()
+    {
+        return m_numeratorSpinCtrl->GetValue();
+    }
+    
+    
+    int getTimeSigDenominator()
+    {
+        return m_denominatorSpinCtrl->GetValue();
+    }
+
+
     void OnKeySigRadioBoxSelect(wxCommandEvent& event)
     {
         int selection;
@@ -246,15 +258,6 @@ public:
         
         // Tempo
         m_sequence->setTempo(m_tempoSpinCtrl->GetValue());
-        
-        // Time signature
-        MeasureData* measures = m_sequence->getMeasureData();
-        if (!measures->isExpandedMode())
-        {
-            // TODO - FIXME
-            //ScopedMeasureTransaction tr(measures->startTransaction());
-            //tr->setTimeSig( m_numeratorSpinCtrl->GetValue(), m_denominatorSpinCtrl->GetValue() );
-        }
         
         m_code = wxID_OK;
         SongPropertiesDialog::hide();
@@ -383,10 +386,16 @@ namespace SongPropertiesDialogNamespace
 
 SongPropertiesDialog* songPropertiesDlg=NULL;
 
-int show(Sequence* seq)
+int show(Sequence* seq, int& timeSigNumerator, int& timeSigDenominator)
 {
+    int returnCode;
+    
     songPropertiesDlg = new SongPropertiesDialog(seq);
-    return songPropertiesDlg->show();
+    returnCode = songPropertiesDlg->show();
+    timeSigNumerator = songPropertiesDlg->getTimeSigNumerator();
+    timeSigDenominator = songPropertiesDlg->getTimeSigDenominator();
+    
+    return returnCode;
 }
 
 void hide()
