@@ -899,7 +899,17 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     // white background
     AriaRender::primitives();
-    AriaRender::color(1,1,1);
+    
+    // TODO : fixme 
+    if (m_track->isPlayed())
+    {
+        AriaRender::color(1,1,1);
+    }
+    else
+    {
+        AriaRender::color(0.8,0.8,0.8);
+    }
+    
 
     const int middle_c_level = m_converter->getScoreCenterCLevel();
 

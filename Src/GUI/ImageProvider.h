@@ -57,11 +57,19 @@ namespace AriaMaestosa
     IMG_DEC Drawable* dockTrackDrawable;
     IMG_DEC Drawable* maximizeTrackDrawable;
         
+    // volume
+    IMG_DEC Drawable* volumeDrawable;
+        
     // mute
     IMG_DEC Image* muteOnImg;
     IMG_DEC Image* muteOffImg;
-
     IMG_DEC Drawable* muteDrawable;
+    
+    // solo
+    IMG_DEC Image* soloOnImg;
+    IMG_DEC Image* soloOffImg;
+    IMG_DEC Drawable* soloDrawable;
+    
 
     // combo box
     IMG_DEC Drawable* comboBorderDrawable;

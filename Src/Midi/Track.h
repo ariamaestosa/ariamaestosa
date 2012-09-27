@@ -133,8 +133,13 @@ namespace AriaMaestosa
           */
         KeyInclusionType m_key_notes[131];
         
-        /** Whether this track has been muted so that it's not heard on playback. */
+
         bool m_muted;
+        bool m_soloed;
+        
+        /** Whether this track has been muted so that it's not heard on playback. */
+        bool m_played;
+    
         
         OwnerPtr<GuitarTuning> m_tuning;
 
@@ -153,6 +158,8 @@ namespace AriaMaestosa
          *                  It tells not to do any more recursion. Do not set when calling externally.
          */
         void doSetDrumKit(int i, bool recursive=false);
+        
+        
         
         /** The sequence this track is part of */
         Sequence* m_sequence;
@@ -511,21 +518,18 @@ namespace AriaMaestosa
         }
 
         
-        /**
-          * @brief toggle the muted state of this track (a muted track becomes non-muted and vice-versa)
-          */
-        void toggleMuted()         { m_muted = not m_muted; }
+       
+        void toggleMuted();
+        bool isMuted() const;
+        void setMuted(bool muted);
         
-        /**
-          * @return whether this track is muted (not heard when sequence is played)
-          */
-        bool isMuted() const       { return m_muted;        }
+        void toggleSoloed();
+        bool isSoloed() const;
+        void setSoloed(bool soloed);
         
-        /**
-          * @brief set whether this track is muted (not heard when sequence is played)
-          * @param muted whether this track is muted (not heard when sequence is played)
-          */
-        void setMuted(bool muted)  { m_muted = muted;       }
+        // True if track if actually played (depends on m_muted and m_soloed)
+        bool isPlayed() const;
+        void setPlayed(bool played);
         
 
         /**

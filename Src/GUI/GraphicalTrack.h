@@ -65,7 +65,9 @@ namespace AriaMaestosa
         // widgets
         OwnerPtr< WidgetLayoutManager>  m_components;
         BitmapButton*                   m_collapse_button;
+        BitmapButton*                   m_volume_button;
         BitmapButton*                   m_mute_button;
+        BitmapButton*                   m_solo_button;
         ToolBar<BlankField>*            m_dock_toolbar;
         BlankField*                     m_track_name;
         ToolBar<ComboBox>*              m_grid_combo;

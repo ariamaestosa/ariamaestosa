@@ -412,6 +412,8 @@ namespace AriaMaestosa
         
         int getLastTickInSequence() const;
         
+        void updateTrackPlayingStatus();
+        
         bool isLoopEnabled() const { return m_loop_enabled; }
         void setLoopEnabled(bool loop) { m_loop_enabled = loop; }
     
