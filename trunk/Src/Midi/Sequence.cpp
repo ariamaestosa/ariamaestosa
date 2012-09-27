@@ -331,6 +331,43 @@ int Sequence::getLastTickInSequence() const
     return tick;
 }
 
+
+// ----------------------------------------------------------------------------------------------------------
+void Sequence::updateTrackPlayingStatus()
+{
+    bool soloTrackFound;
+    int count;
+    int n;
+    
+    soloTrackFound = false;
+    count = tracks.size();
+    for (n=0 ; n<count && !soloTrackFound ; n++)
+    {
+        if ( tracks[n].isSoloed() )
+        {
+            soloTrackFound = true;
+        }
+    }
+    
+   
+    if (soloTrackFound)
+    {
+        // Solo status prevails
+        for (n=0 ; n<count ; n++)
+        {
+            tracks[n].setPlayed(tracks[n].isSoloed());
+        }
+    }
+    else
+    {
+        for (n=0 ; n<count ; n++)
+        {
+            tracks[n].setPlayed(!tracks[n].isMuted());
+        }
+    }
+}
+
+
 // ----------------------------------------------------------------------------------------------------------
 // -------------------------------------------- Actions and Undo --------------------------------------------
 // ----------------------------------------------------------------------------------------------------------
@@ -1023,6 +1060,8 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
     if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
 
     parseBackgroundTracks();
+    
+    updateTrackPlayingStatus();
 
     return true;
 

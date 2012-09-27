@@ -56,6 +56,8 @@ Track::Track(Sequence* sequence)
 
     m_magnetic_grid = new MagneticGrid();
     m_muted = false;
+    m_soloed = false;
+    m_played = true;
 
     for (int n=0; n<NOTATION_TYPE_COUNT; n++)
     {
@@ -1051,6 +1053,8 @@ void Track::doSetDrumKit(int i, bool recursive)
     }//endif
 }
 
+
+
 // ----------------------------------------------------------------------------------------------------------
 
 int Track::getDuration() const
@@ -1188,6 +1192,55 @@ void Track::setCustomKey(const KeyInclusionType key_notes[131])
         m_key_notes[n] = key_notes[n];
     }
 }
+
+
+// ----------------------------------------------------------------------------------------------------------
+void Track::toggleMuted()
+{
+    m_muted = not m_muted;
+    m_sequence->updateTrackPlayingStatus();
+}
+
+bool Track::isMuted() const
+{
+    return m_muted;
+}
+
+void Track::setMuted(bool muted)
+{
+    m_muted = muted;
+    m_sequence->updateTrackPlayingStatus();
+}
+
+void Track::toggleSoloed()
+{
+    m_soloed = not m_soloed;
+    m_sequence->updateTrackPlayingStatus();
+}
+
+bool Track::isSoloed() const
+{
+    return m_soloed;
+}
+    
+void Track::setSoloed(bool soloed)
+{
+    m_soloed = m_soloed;
+    m_sequence->updateTrackPlayingStatus();
+}
+
+
+// True if track if actually played (depends on m_muted and m_soloed)
+bool Track::isPlayed() const
+{
+    return m_played;
+}
+
+void Track::setPlayed(bool played)
+{
+    m_played = played;
+}
+
 
 // ----------------------------------------------------------------------------------------------------------
 
@@ -1331,10 +1384,10 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                          int& startTick)
 {
 
-    // ignore track if it's muted
+    // ignore track if it has been muted
     // (but for some reason drum track can't be completely omitted)
     // if we only play selection, ignore mute and play anyway
-    if (m_muted and not m_editor_mode[DRUM] and not selectionOnly)
+    if (!m_played and not m_editor_mode[DRUM] and not selectionOnly)
     {
         return -1;
     }
@@ -1492,7 +1545,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
     int last_event_tick = 0;
 
     // if muted and drums, return now
-    if (m_muted and m_editor_mode[DRUM] and not selectionOnly) return -1;
+    if (!m_played and m_editor_mode[DRUM] and not selectionOnly) return -1;
 
     //std::cout << "-------------------- TRACK -------------" << std::endl;
 
@@ -1800,6 +1853,7 @@ void Track::saveToFile(wxFileOutputStream& fileout)
               wxT("\" id=\"") + to_wxString(m_track_id) +
               wxT("\" channel=\"") + to_wxString(m_channel) +
               (m_muted ? wxT("\" muted=\"true") : wxT("") )  +
+              (m_soloed ? wxT("\" soloed=\"true") : wxT("") )  +
               wxT("\" default_volume=\"") + to_wxString(m_default_volume) +
               wxT("\">\n"), fileout );
 
@@ -1895,6 +1949,25 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                     {
                         m_muted = false;
                     }
+                    
+                    
+                    const char* soloed_c = xml->getAttributeValue("soloed");
+                    if (soloed_c != NULL)
+                    {
+                        if (strcmp(soloed_c, "true") == 0)       m_soloed = true;
+                        else if (strcmp(soloed_c, "false") == 0) m_soloed = false;
+                        else
+                        {
+                            m_soloed = false;
+                            std::cerr << "Unknown keyword for attribute 'muted' in track: " << soloed_c << std::endl;
+                        }
+
+                    }
+                    else
+                    {
+                        m_soloed = false;
+                    }
+                    
                     
                     const char* track_id_c = xml->getAttributeValue("id");
                     if (track_id_c != NULL)

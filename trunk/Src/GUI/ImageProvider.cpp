@@ -55,9 +55,19 @@ namespace AriaMaestosa
             expandImg        = new Image(wxT("expand.jpg"));
             collapseDrawable = new Drawable(collapseImg);
             
-            muteOnImg    = new Image(wxT("mute_on.png"));
-            muteOffImg   = new Image(wxT("mute_off.png"));
-            muteDrawable = new Drawable( muteOffImg);
+            // volume
+            volumeDrawable = new Drawable(wxT("volume.png")); 
+            
+            // mute
+            muteOnImg    = new Image(wxT("led_red.png"));
+            muteOffImg   = new Image(wxT("led_off.png"));
+            muteDrawable = new Drawable(muteOffImg);
+            
+            // solo
+            soloOnImg    = new Image(wxT("led_green.png"));
+            soloOffImg   = new Image(wxT("led_off.png"));
+            soloDrawable = new Drawable(soloOffImg);
+            
             
             dockTrackDrawable     = new Drawable( wxT("dock.png"));
             maximizeTrackDrawable = new Drawable( wxT("maximize.png")  );

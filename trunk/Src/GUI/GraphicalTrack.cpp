@@ -45,6 +45,7 @@
 #include "Pickers/DrumPicker.h"
 #include "Pickers/InstrumentPicker.h"
 #include "Pickers/MagneticGridPicker.h"
+#include "Pickers/VolumeSlider.h"
 #include "PreferencesData.h"
 #include "Renderers/Drawable.h"
 #include "Renderers/ImageBase.h"
@@ -393,8 +394,14 @@ GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq, MagneticGri
     m_collapse_button = new BitmapButton(28, 15, collapseDrawable);
     m_components->addFromLeft(m_collapse_button);
     
-    m_mute_button = new BitmapButton(28, 10, muteDrawable);
+    m_volume_button = new BitmapButton(28, 12, volumeDrawable);
+    m_components->addFromLeft(m_volume_button);
+    
+    m_mute_button = new BitmapButton(24, 16, muteDrawable);
     m_components->addFromLeft(m_mute_button);
+    
+    m_solo_button = new BitmapButton(24, 16, soloDrawable);
+    m_components->addFromLeft(m_solo_button);
     
     m_dock_toolbar = new ToolBar<BlankField>();
     m_dock_toolbar->addItem( new BitmapButton( 16, 14, maximizeTrackDrawable, false), 0 );
@@ -703,11 +710,30 @@ bool GraphicalTrack::processMouseDown(RelativeXCoord mousex, int mousey)
                 DisplayFrame::updateVerticalScrollbar();
             }
         }
+        
+        
+        // volume
+        if (m_volume_button->clickIsOnThisWidget(winX, mousey))
+        {
+            int screen_x, screen_y;
+            
+            Display::clientToScreen(mousex.getRelativeTo(WINDOW),mousey, &screen_x, &screen_y);
+            
+            // TODO 
+            showVolumeSlider(screen_x, screen_y, 0, m_track);
+        }
 
         // mute
         if (m_mute_button->clickIsOnThisWidget(winX, mousey))
         {
             m_track->toggleMuted();
+            DisplayFrame::updateVerticalScrollbar();
+        }
+        
+        // solo
+        if (m_solo_button->clickIsOnThisWidget(winX, mousey))
+        {
+            m_track->toggleSoloed();
             DisplayFrame::updateVerticalScrollbar();
         }
 
@@ -1506,6 +1532,9 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     
     if (m_track->isMuted()) m_mute_button->m_drawable->setImage( muteOnImg );
     else                    m_mute_button->m_drawable->setImage( muteOffImg );
+    
+    if (m_track->isSoloed()) m_solo_button->m_drawable->setImage( soloOnImg );
+    else                     m_solo_button->m_drawable->setImage( soloOffImg );
     
     m_score_button -> enable( m_track->isNotationTypeEnabled(SCORE)      and focus );
     m_piano_button -> enable( m_track->isNotationTypeEnabled(KEYBOARD)   and focus );
