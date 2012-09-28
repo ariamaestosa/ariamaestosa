@@ -735,6 +735,11 @@ void MainFrame::setNotificationInfo()
 
 void MainFrame::onShow(wxShowEvent& evt)
 {
+    PreferencesData* pd;
+    
+    pd = PreferencesData::getInstance();
+    
+    
     Disconnect(wxEVT_SHOW, wxShowEventHandler(MainFrame::onShow)); // This callback is for initialisation so never call it again
     
 #ifdef RENDERER_OPENGL
@@ -758,6 +763,19 @@ void MainFrame::onShow(wxShowEvent& evt)
     {
         loadFile(m_files_to_open[n]);
     }
+    
+    
+    if ( pd->getBoolValue(SETTING_ID_LOAD_LAST_SESSION, false) )
+    {
+        int currentSequenceId;
+        
+        currentSequenceId = pd->getIntValue(SETTING_ID_LAST_CURRENT_SEQUENCE);
+        if (currentSequenceId<m_sequences.size())
+        {
+            setCurrentSequence(currentSequenceId);
+        }
+    }
+    
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -2166,7 +2184,6 @@ void MainFrame::saveOpenedFiles()
     
     pd = PreferencesData::getInstance();
     count = getSequenceAmount();
-    
     for (int i=0 ; i<count ; i++)
     {
         path = getSequence(i)->getFilepath();
@@ -2182,4 +2199,6 @@ void MainFrame::saveOpenedFiles()
     }
     
     pd->setValue(SETTING_ID_LAST_SESSION_FILES, files);
+    pd->setValue(SETTING_ID_LAST_CURRENT_SEQUENCE, 
+                 wxString::Format(wxT("%i"), m_current_sequence));
 }

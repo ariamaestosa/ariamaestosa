@@ -309,6 +309,12 @@ void PreferencesData::fillSettingsVector()
     m_settings.push_back(lastSessionFiles); 
     
     
+    Setting* lastCurrentSequence = new Setting(fromCString(SETTING_ID_LAST_CURRENT_SEQUENCE),
+                                     _("Last Current Sequence"),
+                                     SETTING_INT, false, wxT("0"));
+    m_settings.push_back(lastCurrentSequence); 
+    
+    
 
     // TODO: make default value paltform-specific
     Setting* output = new Setting(fromCString(SETTING_ID_MIDI_OUTPUT), wxT(""),
