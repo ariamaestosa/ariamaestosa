@@ -246,15 +246,16 @@ bool wxWidgetApp::OnInit()
     frame = new MainFrame();
     AriaMaestosa::setCurrentSequenceProvider(frame);
     
-    // check if filenames to open were given on the command-line
     wxArrayString filesToOpen;
+    
+    addLastSessionFiles(prefs, filesToOpen);
+    
+    // check if filenames to open were given on the command-line
     for (int n=1 ; n<argc ; n++)
     {
         wxString fileName = wxString(argv[n]);
         filesToOpen.Add(fileName);
     }
-    
-    addLastSessionFiles(prefs, filesToOpen);
     
     frame->init(filesToOpen);
 
