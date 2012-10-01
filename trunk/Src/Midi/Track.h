@@ -132,7 +132,9 @@ namespace AriaMaestosa
           * directly for custom keys.
           */
         KeyInclusionType m_key_notes[131];
-        
+
+        /** Percentage between 0 and 200 - default = 100 */
+        int m_volume;
 
         bool m_muted;
         bool m_soloed;
@@ -159,6 +161,8 @@ namespace AriaMaestosa
          */
         void doSetDrumKit(int i, bool recursive=false);
         
+    
+        int computeNoteVolume(int noteId);
         
         
         /** The sequence this track is part of */
@@ -517,7 +521,8 @@ namespace AriaMaestosa
             return m_note_off;
         }
 
-        
+        void setVolume(int volume);
+        int getVolume() const;
        
         void toggleMuted();
         bool isMuted() const;

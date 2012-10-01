@@ -182,7 +182,6 @@
     <File Name="../Src/Dialogs/PresetEditor.h"/>
     <File Name="../Src/Dialogs/PresetEditor.cpp"/>
     <File Name="../Src/Dialogs/CustomKeyDialog.cpp"/>
-    <File Name="../Src/Dialogs/CopyrightWindow.h"/>
     <File Name="../Src/Dialogs/ScaleDialog.h"/>
     <File Name="../Src/Dialogs/AboutDialog.h"/>
     <File Name="../Src/Dialogs/Preferences.cpp"/>
@@ -190,7 +189,6 @@
     <File Name="../Src/Dialogs/CustomNoteSelectDialog.cpp"/>
     <File Name="../Src/Dialogs/Preferences.h"/>
     <File Name="../Src/Dialogs/PrintSetupDialog.cpp"/>
-    <File Name="../Src/Dialogs/CopyrightWindow.cpp"/>
     <File Name="../Src/Dialogs/WaitWindow.h"/>
     <File Name="../Src/Dialogs/ScaleDialog.cpp"/>
     <File Name="../Src/Dialogs/TrackPropertiesDialog.h"/>
@@ -201,6 +199,8 @@
     <File Name="../Src/Dialogs/TuningDialog.h"/>
     <File Name="../Src/Dialogs/TrackPropertiesDialog.cpp"/>
     <File Name="../Src/Dialogs/TuningDialog.cpp"/>
+    <File Name="../Src/Dialogs/SongPropertiesDialog.cpp"/>
+    <File Name="../Src/Dialogs/SongPropertiesDialog.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="Actions">
     <File Name="../Src/Actions/AddNote.cpp"/>
@@ -257,6 +257,8 @@
     <File Name="../Src/Actions/DeleteTrack.cpp"/>
     <File Name="../Src/Actions/RearrangeVertically.cpp"/>
     <File Name="../Src/Actions/RearrangeVertically.h"/>
+    <File Name="../Src/Actions/SetTrackVolume.cpp"/>
+    <File Name="../Src/Actions/SetTrackVolume.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="IO">
     <File Name="../Src/IO/MidiToMemoryStream.h"/>
@@ -412,6 +414,8 @@
         <![CDATA[
       
       
+      
+      
       ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -458,6 +462,8 @@
       <General OutputFile="../bin/aria" IntermediateDirectory="../_build/linux_release" Command="../bin/aria" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="../bin" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
+      
+      
       
       
       

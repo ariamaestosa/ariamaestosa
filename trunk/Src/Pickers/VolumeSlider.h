@@ -37,6 +37,14 @@ namespace AriaMaestosa
       */
     void showVolumeSlider(int x, int y, int noteID, Track* track);
     
+    
+    /**
+      * @ingroup pickers
+      * @brief show small frame used to pick a track volume
+      */
+    void showVolumeSlider(int x, int y, Track* track);
+    
+    
     /**
       * @ingroup pickers
       * @brief hide and delete small frame used to pick a note volume (velocity)
