@@ -171,7 +171,6 @@ public:
 
         // cancel button
         m_cancelBtn = new wxButton( this, wxID_CANCEL, _("Cancel"));
-        m_cancelBtn->SetDefault();
         m_boxSizer->Add( m_cancelBtn, 0, wxALL, 0 );
 
         wxStdDialogButtonSizer* stdDialogButtonSizer = new wxStdDialogButtonSizer();
