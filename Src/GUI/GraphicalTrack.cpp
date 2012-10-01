@@ -720,7 +720,7 @@ bool GraphicalTrack::processMouseDown(RelativeXCoord mousex, int mousey)
             Display::clientToScreen(mousex.getRelativeTo(WINDOW),mousey, &screen_x, &screen_y);
             
             // TODO 
-            showVolumeSlider(screen_x, screen_y, 0, m_track);
+            showVolumeSlider(screen_x, screen_y, m_track);
         }
 
         // mute

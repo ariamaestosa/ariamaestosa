@@ -20,6 +20,7 @@
 #include "GUI/MainFrame.h"
 #include "Actions/EditAction.h"
 #include "Actions/SetNoteVolume.h"
+#include "Actions/SetTrackVolume.h"
 
 #include <iostream>
 #include "Utils.h"
@@ -43,9 +44,14 @@ namespace AriaMaestosa
         wxTextCtrl* m_value_text;
         wxPanel* m_pane;
         int m_return_code;
-        
         int m_note_ID;
+        bool m_set_track_volume;
+        wxString m_percent_string;
         Track* m_current_track;
+        
+        void launchPicker(int x, int y, Track* track, int value);
+        void updateValue(int value);
+        void updateValueText(int value);
         
     public:
         LEAK_CHECK();
@@ -53,6 +59,7 @@ namespace AriaMaestosa
         VolumeSlider();
         
         void show(int x, int y, int noteID, Track* track);
+        void show(int x, int y, Track* track);
         void closeWindow();
         
         void volumeSlideChanging(wxScrollEvent& evt);
@@ -90,6 +97,12 @@ namespace AriaMaestosa
         sliderframe->show(x,y,noteID, track);
     }
     
+    void showVolumeSlider(int x, int y, Track* track)
+    {
+        if (sliderframe == NULL) sliderframe = new VolumeSlider();
+        sliderframe->show(x, y, track);
+    }
+    
 }
 
 using namespace AriaMaestosa;
@@ -102,8 +115,12 @@ using namespace AriaMaestosa;
 #pragma mark Class implementation
 #endif
 
-const int VOLUME_SLIDER_FRAME_WIDTH = 50;
-const int VOLUME_SLIDER_FRAME_HEIGHT = 160;
+static const int VOLUME_SLIDER_FRAME_WIDTH = 50;
+static const int VOLUME_SLIDER_FRAME_HEIGHT = 160;
+static const int SLIDER_MIN_VALUE = 0;
+static const int SLIDER_MAX_VALUE = 127;
+static const int MAX_TRACK_VOLUME = 200;
+
 
 VolumeSlider::VolumeSlider() : wxDialog(NULL, wxNewId(),  _("volume"), wxDefaultPosition,
                                         wxSize(VOLUME_SLIDER_FRAME_WIDTH, VOLUME_SLIDER_FRAME_HEIGHT),
@@ -112,7 +129,8 @@ VolumeSlider::VolumeSlider() : wxDialog(NULL, wxNewId(),  _("volume"), wxDefault
     m_pane = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(VOLUME_SLIDER_FRAME_WIDTH,
                                                                    VOLUME_SLIDER_FRAME_HEIGHT));
     
-    m_slider = new wxSlider(m_pane, wxNewId(), 60, 0, 127, wxDefaultPosition, wxSize(50,128),
+    m_slider = new wxSlider(m_pane, wxNewId(), 60, SLIDER_MIN_VALUE, SLIDER_MAX_VALUE,
+                            wxDefaultPosition, wxSize(50, SLIDER_MAX_VALUE+1),
                             wxSL_VERTICAL | wxSL_INVERSE | wxWANTS_CHARS);
     
     wxSize smallsize = wxDefaultSize;
@@ -124,8 +142,8 @@ VolumeSlider::VolumeSlider() : wxDialog(NULL, wxNewId(),  _("volume"), wxDefault
     m_value_text->SetMaxSize(smallsize);
     m_note_ID = -1;
     m_current_track = NULL;
-    
-    
+    m_percent_string = _("%");
+
     // Connect all widgets to receive keypress events no matter where keyboard focus is
     this        ->Connect(GetId(),               wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
     m_slider    ->Connect(m_slider->GetId(),     wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);
@@ -172,39 +190,28 @@ void VolumeSlider::onCancel(wxCommandEvent& evt)
 
 void VolumeSlider::show(int x, int y, int noteID, Track* track)
 {
-    // show the volume picking dialog
-    
-    if (track == NULL) return;
-    
-    m_current_track = track;
-    m_note_ID       = noteID;
-    
-    SetPosition(wxPoint(x,y));
-    m_slider->SetValue(m_current_track->getNoteVolume(noteID));
-    
-    m_value_text->SetValue( to_wxString(m_current_track->getNoteVolume(noteID)) );
-    m_value_text->SetFocus();
-    m_value_text->SetSelection(-1,-1); // select all
-    
-    m_return_code = ShowModal();
+    ASSERT(track!=NULL);
+    m_note_ID = noteID;
+    m_set_track_volume = false;
+    launchPicker(x, y, track, track->getNoteVolume(noteID));
 }
+
+
+// -------------------------------------------------------------------------------------------------------
+void VolumeSlider::show(int x, int y, Track* track)
+{
+    ASSERT(track!=NULL);
+    m_set_track_volume = true;
+    launchPicker(x, y, track, track->getVolume()* SLIDER_MAX_VALUE / MAX_TRACK_VOLUME);
+}
+
+
 
 // -------------------------------------------------------------------------------------------------------
 
 void VolumeSlider::volumeSlideChanged(wxScrollEvent& evt)
 {
-    
-    if (m_current_track == NULL) return;
-    
-    if (m_note_ID!=-1)
-    {
-        
-        if (m_current_track->isNoteSelected(m_note_ID))
-            m_current_track->action( new Action::SetNoteVolume(m_slider->GetValue(), SELECTED_NOTES) );
-        else
-            m_current_track->action( new Action::SetNoteVolume(m_slider->GetValue(), m_note_ID) );
-        
-    }
+    updateValue(m_slider->GetValue());
     
     // close the volume picking dialog
     closeWindow();
@@ -216,7 +223,7 @@ void VolumeSlider::volumeSlideChanged(wxScrollEvent& evt)
 void VolumeSlider::volumeSlideChanging(wxScrollEvent& evt)
 {
     const int newValue = m_slider->GetValue();
-    m_value_text->SetValue( to_wxString(newValue) );
+    updateValueText(newValue);
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -229,40 +236,47 @@ void VolumeSlider::volumeTextChanged(wxCommandEvent& evt)
 
 void VolumeSlider::enterPressed(wxCommandEvent& evt)
 {
+    wxString valueText;
+ 
+    valueText = m_value_text->GetValue();
     
-    if (!m_value_text->GetValue().IsNumber())
+    if (m_set_track_volume)
+    {
+        valueText.Replace(m_percent_string, wxT(""));
+    }
+    
+    if (valueText.IsNumber())
+    {
+        int newValue = atoi_u(valueText);
+        
+        if (m_set_track_volume)
+        {
+            newValue = newValue* SLIDER_MAX_VALUE / MAX_TRACK_VOLUME;
+        }
+        
+        if (newValue<SLIDER_MIN_VALUE)
+        {
+            wxBell();
+            updateValueText(SLIDER_MIN_VALUE);
+        }
+        else if (newValue>SLIDER_MAX_VALUE)
+        {
+            wxBell();
+            updateValueText(SLIDER_MAX_VALUE);
+        }
+        else
+        {
+            updateValue(newValue);
+            closeWindow();
+        }
+    }
+    else
     {
         wxBell();
         const int newValue = m_slider->GetValue();
-        m_value_text->SetValue( to_wxString(newValue) );
-        return;
+        updateValueText(newValue);
     }
-    
-    const int newValue = atoi_u(m_value_text->GetValue());
-    if (newValue<0)
-    {
-        wxBell();
-        m_value_text->SetValue(wxT("0"));
-        return;
-    }
-    
-    if (newValue>127)
-    {
-        wxBell();
-        m_value_text->SetValue(wxT("127"));
-        return;
-    }
-    
-    ASSERT(m_note_ID       != -1  );
-    ASSERT(m_current_track != NULL);
-    
-    if (m_current_track->isNoteSelected(m_note_ID))
-        m_current_track->action( new Action::SetNoteVolume(newValue, SELECTED_NOTES) );
-    else
-        m_current_track->action( new Action::SetNoteVolume(newValue, m_note_ID) );
-    
-    closeWindow();
-    
+
 }
 
 // -------------------------------------------------------------------------------------------------------
@@ -297,3 +311,56 @@ void VolumeSlider::keyPress(wxKeyEvent& evt)
 }
 
 // -------------------------------------------------------------------------------------------------------
+void VolumeSlider::launchPicker(int x, int y, Track* track, int value)
+{
+    if (track != NULL)
+    {
+        m_current_track = track;
+        
+        SetPosition(wxPoint(x,y));
+        m_slider->SetValue(value);
+        
+        updateValueText(value);
+        m_value_text->SetFocus();
+        m_value_text->SetSelection(-1,-1); // select all
+        
+        m_return_code = ShowModal(); 
+    }
+}
+
+
+void VolumeSlider::updateValue(int value)
+{
+    ASSERT(m_current_track != NULL);
+    
+    if (m_set_track_volume)
+    {
+        m_current_track->action( new Action::SetTrackVolume(value* MAX_TRACK_VOLUME / SLIDER_MAX_VALUE) );
+    }
+    else
+    {
+        int target;
+        
+        ASSERT(m_note_ID != -1);
+    
+        target = m_current_track->isNoteSelected(m_note_ID) ? SELECTED_NOTES : m_note_ID;
+        m_current_track->action( new Action::SetNoteVolume(value, target) );
+    }
+}
+
+
+void VolumeSlider::updateValueText(int value)
+{
+    wxString display;
+    
+    if (m_set_track_volume)
+    {
+        display = to_wxString(value * MAX_TRACK_VOLUME / SLIDER_MAX_VALUE) + m_percent_string;
+    }
+    else
+    {
+        display = to_wxString(value);
+    }
+    m_value_text->SetValue(display);
+}
+

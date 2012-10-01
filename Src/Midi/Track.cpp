@@ -55,6 +55,8 @@ Track::Track(Sequence* sequence)
 #endif
 
     m_magnetic_grid = new MagneticGrid();
+    
+    m_volume = 100;
     m_muted = false;
     m_soloed = false;
     m_played = true;
@@ -1195,6 +1197,16 @@ void Track::setCustomKey(const KeyInclusionType key_notes[131])
 
 
 // ----------------------------------------------------------------------------------------------------------
+void Track::setVolume(int volume)
+{
+    m_volume = volume;
+}
+
+int Track::getVolume() const
+{
+    return m_volume;
+}
+
 void Track::toggleMuted()
 {
     m_muted = not m_muted;
@@ -1511,7 +1523,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         jdkmidi::MIDITimedBigMessage m;
 
         m.SetTime( 0 );
-        m.SetControlChange( channel, 7, 127 );
+        m.SetControlChange( channel, 7, SCHAR_MAX);
 
         if (not midiTrack->PutEvent( m ))
         {
@@ -1601,15 +1613,11 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
                 if (m_editor_mode[DRUM])
                 {
-                    // in the MIDI standard, a note velocity of 0 turns a note on event into a note
-                    // off event, don't let that happen
-                    m.SetNoteOn(channel, m_notes[note_on_id].getPitchID(),
-                                std::max(1, m_notes[note_on_id].getVolume()) );
+                    m.SetNoteOn(channel, m_notes[note_on_id].getPitchID(), computeNoteVolume(note_on_id));
                 }
                 else
                 {
-                    m.SetNoteOn(channel, 131-m_notes[note_on_id].getPitchID(),
-                                std::max(1, m_notes[note_on_id].getVolume()) );
+                    m.SetNoteOn(channel, 131-m_notes[note_on_id].getPitchID(), computeNoteVolume(note_on_id));
                 }
 
                 // find track end
@@ -1854,6 +1862,7 @@ void Track::saveToFile(wxFileOutputStream& fileout)
               wxT("\" channel=\"") + to_wxString(m_channel) +
               (m_muted ? wxT("\" muted=\"true") : wxT("") )  +
               (m_soloed ? wxT("\" soloed=\"true") : wxT("") )  +
+              wxT("\" volume=\"") + to_wxString(m_volume) +
               wxT("\" default_volume=\"") + to_wxString(m_default_volume) +
               wxT("\">\n"), fileout );
 
@@ -1973,6 +1982,13 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
                     if (track_id_c != NULL)
                     {
                         m_track_id = atoi(track_id_c);
+                    }
+                    
+                    
+                    const char* volume_c = xml->getAttributeValue("volume");
+                    if (volume_c != NULL)
+                    {
+                        m_volume = atoi(volume_c);
                     }
 
                     const char* default_volume_c = xml->getAttributeValue("default_volume");
@@ -2318,3 +2334,13 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
 
 }
 
+
+// Gets note volume
+// Applies track volume
+// In the MIDI standard, a note velocity of 0 turns a note on event into a note
+// off event, don't let that happen by using a max
+// prevents value from being greater than 127 by using a min
+int Track::computeNoteVolume(int noteId)
+{
+    return std::min(SCHAR_MAX, std::max(1, m_notes[noteId].getVolume() * m_volume / 100));
+}
