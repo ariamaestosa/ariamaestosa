@@ -112,8 +112,10 @@ public:
         
         m_input->Connect(m_input->GetId(), wxEVT_COMMAND_TEXT_ENTER,
                          wxCommandEventHandler(ControlChangeInput::onEnter), NULL, this);
+                        
         m_input->Connect(m_input->GetId(), wxEVT_CHAR,
                          wxKeyEventHandler(ControlChangeInput::onChar), NULL, this);
+        
                          
         m_input->SetFocus();
     }
@@ -123,6 +125,10 @@ public:
         if (evt.GetKeyCode() == WXK_ESCAPE)
         {
             Destroy();
+        }
+        else
+        {
+            evt.Skip();
         }
     }
     
