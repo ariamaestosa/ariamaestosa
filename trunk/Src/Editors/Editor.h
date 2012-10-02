@@ -135,6 +135,11 @@ namespace AriaMaestosa
          */
         void setYStep(const int height);
         
+        void setPaleLineColor();
+        void setStrongLineColor();
+        
+        
+        
         Track*             m_track;
         Sequence*          m_sequence;
         GraphicalSequence* m_gsequence;

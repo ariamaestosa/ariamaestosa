@@ -328,18 +328,16 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     
     std::cout << "KeyboardEditor::render";
     
-    // TODO : fixme 
+    // horizontal lines
     if (m_track->isPlayed())
     {
-        AriaRender::color(1,1,1);
+        AriaRender::color(0.94, 0.94, 0.94, 1);
     }
     else
     {
         AriaRender::color(0.8,0.8,0.8);
     }
 
-    // horizontal lines
-    AriaRender::color(0.94, 0.94, 0.94, 1);
     while (levelid < last_note)
     {
         //const int note12 = 11 - ((levelid - 3) % 12);

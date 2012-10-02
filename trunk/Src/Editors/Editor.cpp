@@ -150,7 +150,7 @@ void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
         new_mx = mb->firstPixelInMeasure(m);
 
         // draw pale lines
-        AriaRender::color(0.9, 0.9, 0.9);
+        setPaleLineColor();
         for (; mx < new_mx; mx += beatLength)
         {
             AriaRender::line( (int)round(mx), from_y, (int)round(mx), to_y);
@@ -158,7 +158,7 @@ void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
         mx = new_mx;
 
         // draw strong line
-        AriaRender::color(0.5, 0.5, 0.5);
+        setStrongLineColor();
         AriaRender::line((int)round(mx), from_y, (int)round(mx), to_y);
         mx += beatLength;
 
@@ -170,7 +170,7 @@ void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
     const int end_of_screen = Display::getWidth();
     if (mx < end_of_screen)
     {
-        AriaRender::color(0.9, 0.9, 0.9);
+        setPaleLineColor();
         for (;mx<end_of_screen; mx +=beatLength)
         {
             AriaRender::line((int)round(mx), from_y, (int)round(mx), to_y);
@@ -180,7 +180,7 @@ void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
 
     // close last measure with a strong line
     new_mx = mb->lastPixelInMeasure(measureAmount-1);
-    AriaRender::color(0.5, 0.5, 0.5);
+    setStrongLineColor();
     AriaRender::line((int)round(new_mx), from_y, (int)round(new_mx), to_y);
 }
 
@@ -1023,6 +1023,33 @@ void Editor::setEditTool(EditTool tool)
 {
     g_current_edit_tool = tool;
 }
+
+
+void Editor::setPaleLineColor()
+{
+    if (m_track->isPlayed())
+    {
+        AriaRender::color(0.9, 0.9, 0.9);
+    }
+    else
+    {
+        AriaRender::color(0.8, 0.8, 0.8);
+    }
+}
+
+
+void Editor::setStrongLineColor()
+{
+    if (m_track->isPlayed())
+    {
+        AriaRender::color(0.5, 0.5, 0.5);
+    }
+    else
+    {
+        AriaRender::color(0.4, 0.4, 0.4);
+    }
+}
+
 
 // ------------------------------------------------------------------------------------------------------------
 

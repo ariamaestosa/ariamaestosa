@@ -100,11 +100,6 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     AriaRender::beginScissors(LEFT_EDGE_X, getEditorYStart(), m_width - RIGHT_SCISSOR, m_height);
 
-    // white background
-    AriaRender::primitives();
-    AriaRender::color(1,1,1);
-    AriaRender::rect(0, getEditorYStart(), getXEnd(), getYEnd());
-
     drawVerticalMeasureLines(getEditorYStart() + first_string_position,
                              getEditorYStart() + first_string_position + (string_amount-1)*y_step);
 
