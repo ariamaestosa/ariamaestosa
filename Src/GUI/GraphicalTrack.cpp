@@ -1519,7 +1519,16 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     {
         // white area
         AriaRender::primitives();
-        AriaRender::color(1, 1, 1);
+        
+        if (m_track->isPlayed())
+        {
+            AriaRender::color(1, 1, 1);
+        }
+        else
+        {
+            AriaRender::color(0.9, 0.9, 0.9);
+        }
+        
         AriaRender::rect(x + LEFT_EDGE_X,
                          y + barHeight + BORDER_SIZE,
                          x + Display::getWidth() - MARGIN,

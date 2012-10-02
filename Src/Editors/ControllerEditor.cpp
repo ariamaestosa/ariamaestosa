@@ -392,12 +392,10 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     
     AriaRender::primitives();
     
-    AriaRender::color(0.9, 0.9, 0.9);
+    setPaleLineColor();
     AriaRender::rect(0, 0, getXEnd(), area_from_y);
     AriaRender::rect(0, area_to_y,getXEnd(), getYEnd());
-    
-    AriaRender::color(1,1,1);
-    AriaRender::rect(0, area_from_y, getXEnd(), area_to_y);
+
     
     // -------------------------- selection ------------------------
     
@@ -414,7 +412,7 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     }
 
     // ----------------------------------- horizontal lines -----------------------
-    AriaRender::color(0.9, 0.9, 0.9);
+    setPaleLineColor();
     
     // tempo
     if (m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_TEMPO)
@@ -443,7 +441,7 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     
     // ------------------------ min/max, on/off, left/right, etc. -------------------
     AriaRender::images();
-    AriaRender::color(0.5, 0.5, 0.5);
+    setStrongLineColor();
     
     m_controller_choice->renderTopLabel(   Editor::getEditorXStart() + 5 , area_from_y + 13);
     m_controller_choice->renderBottomLabel(Editor::getEditorXStart() + 5 , area_to_y);
