@@ -1664,8 +1664,11 @@ bool MainFrame::closeSequence(int id_arg) // -1 means current
         int answer = wxMessageBox( message, _("Unsaved changes in sequence"),
                                    wxYES_NO | wxCANCEL, this);
 
-        if (answer == wxCANCEL) return false;
-
+        if (answer == wxCANCEL)
+        {
+            return false;
+        }
+        
         if (answer == wxYES and not doSave())
         {
             // user canceled, don't quit
@@ -2144,7 +2147,7 @@ bool MainFrame::handleApplicationEnd()
     }
 
     // close all open sequences
-    while (getSequenceAmount() > 0)
+    while (getSequenceAmount() > 0 && exitApp)
     {
         if (not closeSequence())
         {
