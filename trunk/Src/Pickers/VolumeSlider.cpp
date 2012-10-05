@@ -52,7 +52,10 @@ namespace AriaMaestosa
         void launchPicker(int x, int y, Track* track, int value);
         void updateValue(int value);
         void updateValueText(int value);
+        int volumeToPixel(int input);
+        int pixelToVolume(int input);
         
+
     public:
         LEAK_CHECK();
         
@@ -119,7 +122,7 @@ static const int VOLUME_SLIDER_FRAME_WIDTH = 50;
 static const int VOLUME_SLIDER_FRAME_HEIGHT = 160;
 static const int SLIDER_MIN_VALUE = 0;
 static const int SLIDER_MAX_VALUE = 127;
-static const int MAX_TRACK_VOLUME = 200;
+static const int MAX_TRACK_VOLUME = 100;
 
 
 VolumeSlider::VolumeSlider() : wxDialog(NULL, wxNewId(),  _("volume"), wxDefaultPosition,
@@ -202,7 +205,7 @@ void VolumeSlider::show(int x, int y, Track* track)
 {
     ASSERT(track!=NULL);
     m_set_track_volume = true;
-    launchPicker(x, y, track, track->getVolume()* SLIDER_MAX_VALUE / MAX_TRACK_VOLUME);
+    launchPicker(x, y, track, track->getVolume());
 }
 
 
@@ -251,7 +254,7 @@ void VolumeSlider::enterPressed(wxCommandEvent& evt)
         
         if (m_set_track_volume)
         {
-            newValue = newValue* SLIDER_MAX_VALUE / MAX_TRACK_VOLUME;
+            newValue = volumeToPixel(std::min(MAX_TRACK_VOLUME, newValue+1));
         }
         
         if (newValue<SLIDER_MIN_VALUE)
@@ -318,9 +321,18 @@ void VolumeSlider::launchPicker(int x, int y, Track* track, int value)
         m_current_track = track;
         
         SetPosition(wxPoint(x,y));
-        m_slider->SetValue(value);
         
-        updateValueText(value);
+        if (m_set_track_volume)
+        {
+            m_slider->SetValue(volumeToPixel(value));
+            m_value_text->SetValue(to_wxString(value) + m_percent_string);
+        }
+        else
+        {
+            m_slider->SetValue(value);
+            updateValueText(value);
+        }
+    
         m_value_text->SetFocus();
         m_value_text->SetSelection(-1,-1); // select all
         
@@ -335,7 +347,7 @@ void VolumeSlider::updateValue(int value)
     
     if (m_set_track_volume)
     {
-        m_current_track->action( new Action::SetTrackVolume(value* MAX_TRACK_VOLUME / SLIDER_MAX_VALUE) );
+        m_current_track->action( new Action::SetTrackVolume(pixelToVolume(value)) );
     }
     else
     {
@@ -355,7 +367,7 @@ void VolumeSlider::updateValueText(int value)
     
     if (m_set_track_volume)
     {
-        display = to_wxString(value * MAX_TRACK_VOLUME / SLIDER_MAX_VALUE) + m_percent_string;
+        display = to_wxString(pixelToVolume(value)) + m_percent_string;
     }
     else
     {
@@ -364,3 +376,14 @@ void VolumeSlider::updateValueText(int value)
     m_value_text->SetValue(display);
 }
 
+
+int VolumeSlider::volumeToPixel(int input)
+{
+    return input * SLIDER_MAX_VALUE / MAX_TRACK_VOLUME;
+}
+
+
+int VolumeSlider::pixelToVolume(int input)
+{
+    return input * MAX_TRACK_VOLUME / SLIDER_MAX_VALUE;
+}

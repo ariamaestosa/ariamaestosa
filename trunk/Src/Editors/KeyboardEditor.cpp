@@ -150,7 +150,15 @@ void KeyboardEditor::processMouseMove(RelativeXCoord x, int y)
 {
     if (not PlatformMidiManager::get()->isPlaying())
     {
+        // TODO
+        getMainFrame()->SetCursor(wxCURSOR_SIZEWE); // doesn't work => connect to MainPane
+        
         getMainFrame()->setStatusText(getNoteName(getLevelAtY(y)));
+    }
+    else
+    {
+        // TODO
+        getMainFrame()->SetCursor(wxNullCursor);
     }
 }
 

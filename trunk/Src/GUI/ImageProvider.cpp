@@ -56,7 +56,10 @@ namespace AriaMaestosa
             collapseDrawable = new Drawable(collapseImg);
             
             // volume
-            volumeDrawable = new Drawable(wxT("volume.png")); 
+            volumeLowImg    = new Image(wxT("volume_low.png"));
+            volumeMediumImg   = new Image(wxT("volume_medium.png"));
+            volumeHighImg   = new Image(wxT("volume_high.png"));
+            volumeDrawable = new Drawable(volumeHighImg); 
             
             // mute
             muteOnImg    = new Image(wxT("led_red.png"));

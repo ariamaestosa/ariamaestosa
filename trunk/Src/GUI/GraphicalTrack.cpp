@@ -57,6 +57,8 @@ using namespace AriaMaestosa;
 
 const int THUMB_SIZE_ABOVE = 3;
 const int THUMB_SIZE_BELOW = 1;
+const int TRACK_VOLUME_LIMIT_1 = 33;
+const int TRACK_VOLUME_LIMIT_2 = 66;
 
 namespace AriaMaestosa
 {
@@ -1544,6 +1546,23 @@ void GraphicalTrack::renderHeader(const int x, const int y, const bool closed, c
     
     if (m_track->isSoloed()) m_solo_button->m_drawable->setImage( soloOnImg );
     else                     m_solo_button->m_drawable->setImage( soloOffImg );
+    
+    
+    int trackVolume = m_track->getVolume();
+    Image* volumeImg;
+    if (trackVolume<=TRACK_VOLUME_LIMIT_1)
+    {
+        volumeImg = volumeLowImg;
+    }
+    else if (trackVolume>TRACK_VOLUME_LIMIT_1 && trackVolume<=TRACK_VOLUME_LIMIT_2)
+    {
+        volumeImg = volumeMediumImg;
+    }
+    else if (trackVolume>TRACK_VOLUME_LIMIT_2)
+    {
+        volumeImg = volumeHighImg;
+    }
+    m_volume_button->m_drawable->setImage(volumeImg);
     
     m_score_button -> enable( m_track->isNotationTypeEnabled(SCORE)      and focus );
     m_piano_button -> enable( m_track->isNotationTypeEnabled(KEYBOARD)   and focus );

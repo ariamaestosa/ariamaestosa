@@ -58,6 +58,9 @@ namespace AriaMaestosa
     IMG_DEC Drawable* maximizeTrackDrawable;
         
     // volume
+    IMG_DEC Image* volumeLowImg;
+    IMG_DEC Image* volumeMediumImg;
+    IMG_DEC Image* volumeHighImg;
     IMG_DEC Drawable* volumeDrawable;
         
     // mute
