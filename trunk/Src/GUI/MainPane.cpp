@@ -1115,7 +1115,7 @@ void MainPane::mouseMoved(wxMouseEvent& event)
 
         if (mouse_hovering_tabs)
         {
-            handleTooltip(event);
+            handleTooltipOnTabs(event);
 
             if (not m_mouse_hovering_tabs)
             {
@@ -1157,7 +1157,8 @@ void MainPane::mouseMoved(wxMouseEvent& event)
                 
                 if (event.GetY() > graphics->getFromY() and event.GetY() < graphics->getToY())
                 {
-                    gseq->getGraphicsFor(track)->processMouseMove(m_mouse_x_current, event.GetY());
+                    wxString tooltip = gseq->getGraphicsFor(track)->processMouseMove(m_mouse_x_current, event.GetY());
+                    SetToolTip(tooltip);
                 }
                 else
                 {
@@ -1572,7 +1573,7 @@ void MainPane::saveToFile(wxFileOutputStream& fileout)
 }
 
 
-void MainPane::handleTooltip(wxMouseEvent& event)
+void MainPane::handleTooltipOnTabs(wxMouseEvent& event)
 {
     int start_at_x = 0;
     bool found = false;

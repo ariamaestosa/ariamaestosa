@@ -204,7 +204,9 @@ namespace AriaMaestosa
         
         bool processRightMouseClick(RelativeXCoord x, int y);
         bool processMouseDrag(RelativeXCoord x, int y);
-        void processMouseMove(RelativeXCoord x, int y);
+        
+        /** @return The tooltip at this area */
+        wxString processMouseMove(RelativeXCoord x, int y);
         void processMouseRelease();
         
         /** A mouse _drag_ exited this track */
