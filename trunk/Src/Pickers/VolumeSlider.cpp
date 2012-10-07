@@ -145,7 +145,7 @@ VolumeSlider::VolumeSlider() : wxDialog(NULL, wxNewId(),  _("volume"), wxDefault
     m_value_text->SetMaxSize(smallsize);
     m_note_ID = -1;
     m_current_track = NULL;
-    m_percent_string = _("%");
+    m_percent_string = wxT("%");
 
     // Connect all widgets to receive keypress events no matter where keyboard focus is
     this        ->Connect(GetId(),               wxEVT_KEY_DOWN, wxKeyEventHandler(VolumeSlider::keyPress), NULL, this);

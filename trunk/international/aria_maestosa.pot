@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-13 18:33-0400\n"
+"POT-Creation-Date: 2012-10-07 12:25-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: Src/main.cpp:317 Src/main.cpp:338
+#: Src/main.cpp:319 Src/main.cpp:340
 msgid "Sorry an internal error occurred : an exception was caught unhandled : "
 msgstr ""
 
@@ -126,8 +126,20 @@ msgstr ""
 msgid "Show note names in piano-roll"
 msgstr ""
 
-#: Src/PreferencesData.cpp:307 Src/GUI/MainFrameMenuBar.cpp:342
-#: Src/GUI/MainFrameMenuBar.cpp:345 Src/GUI/MainFrame.cpp:933
+#: Src/PreferencesData.cpp:301
+msgid "Load last session files"
+msgstr ""
+
+#: Src/PreferencesData.cpp:307
+msgid "Last session files"
+msgstr ""
+
+#: Src/PreferencesData.cpp:313
+msgid "Last Current Sequence"
+msgstr ""
+
+#: Src/PreferencesData.cpp:326 Src/GUI/MainFrameMenuBar.cpp:342
+#: Src/GUI/MainFrameMenuBar.cpp:345 Src/GUI/MainFrame.cpp:929
 msgid "No MIDI input"
 msgstr ""
 
@@ -153,10 +165,11 @@ msgid "Compact (print only key notes)"
 msgstr ""
 
 #: Src/Dialogs/PrintSetupDialog.cpp:105 Src/Dialogs/PrintSetupDialog.cpp:728
-#: Src/Dialogs/CustomKeyDialog.cpp:163 Src/Dialogs/Preferences.cpp:334
+#: Src/Dialogs/CustomKeyDialog.cpp:163
+#: Src/Dialogs/SongPropertiesDialog.cpp:168 Src/Dialogs/Preferences.cpp:334
 #: Src/Dialogs/ScaleDialog.cpp:152 Src/Dialogs/CustomNoteSelectDialog.cpp:167
-#: Src/Dialogs/TuningDialog.cpp:54 Src/Dialogs/CopyrightWindow.cpp:94
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:528 Src/Pickers/TimeSigPicker.cpp:181
+#: Src/Dialogs/TuningDialog.cpp:54 Src/Midi/Players/Alsa/AlsaPlayer.cpp:528
+#: Src/Pickers/TimeSigPicker.cpp:181
 msgid "OK"
 msgstr ""
 
@@ -242,10 +255,10 @@ msgid "Margins"
 msgstr ""
 
 #: Src/Dialogs/PrintSetupDialog.cpp:731 Src/Dialogs/CustomKeyDialog.cpp:164
-#: Src/Dialogs/Preferences.cpp:335 Src/Dialogs/ScaleDialog.cpp:148
-#: Src/Dialogs/TrackPropertiesDialog.cpp:192
+#: Src/Dialogs/SongPropertiesDialog.cpp:173 Src/Dialogs/Preferences.cpp:335
+#: Src/Dialogs/ScaleDialog.cpp:148 Src/Dialogs/TrackPropertiesDialog.cpp:192
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:169 Src/Dialogs/TuningDialog.cpp:57
-#: Src/Dialogs/CopyrightWindow.cpp:99 Src/Midi/Players/Alsa/AlsaPlayer.cpp:529
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:529
 msgid "Cancel"
 msgstr ""
 
@@ -299,6 +312,81 @@ msgstr ""
 msgid "Please wait..."
 msgstr ""
 
+#. I18N: - title of the copyright/info dialog
+#: Src/Dialogs/SongPropertiesDialog.cpp:85
+msgid "Song Properties"
+msgstr ""
+
+#. I18N: - title of the copyright/info dialog
+#: Src/Dialogs/SongPropertiesDialog.cpp:96
+msgid "Song name"
+msgstr ""
+
+#. I18N: - title of the copyright/info dialog
+#: Src/Dialogs/SongPropertiesDialog.cpp:105
+msgid "Copyright"
+msgstr ""
+
+#. I18N: - default key signature
+#: Src/Dialogs/SongPropertiesDialog.cpp:113
+msgid "Default key signature"
+msgstr ""
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:119
+msgid "None"
+msgstr ""
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:120
+msgid "Sharps"
+msgstr ""
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:121
+msgid "Flats"
+msgstr ""
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:124
+msgid "Symbols"
+msgstr ""
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:133
+msgid "Tonalities"
+msgstr ""
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:142 Src/GUI/MainFrame.cpp:453
+msgid "Tempo"
+msgstr ""
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:151 Src/Pickers/TimeSigPicker.cpp:139
+msgid "Time Signature"
+msgstr ""
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:155
+msgid "/"
+msgstr ""
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:163
+#: Src/Dialogs/SongPropertiesDialog.cpp:197
+msgid "Song duration :"
+msgstr ""
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:342 Src/Pickers/KeyPicker.cpp:95
+#: Src/Pickers/KeyPicker.cpp:110 Src/Midi/Note.h:102 Src/Midi/Note.h:118
+msgid "C"
+msgstr ""
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:342 Src/Pickers/KeyPicker.cpp:95
+#: Src/Pickers/KeyPicker.cpp:101 Src/Midi/Note.h:99 Src/Midi/Note.h:115
+msgid "A"
+msgstr ""
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:367 Src/Pickers/KeyPicker.cpp:522
+msgid "Major"
+msgstr ""
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:367 Src/Pickers/KeyPicker.cpp:522
+msgid "minor"
+msgstr ""
+
 #: Src/Dialogs/PresetEditor.cpp:33
 msgid "Presets"
 msgstr ""
@@ -312,7 +400,7 @@ msgid "Delete"
 msgstr ""
 
 #: Src/Dialogs/PresetEditor.cpp:66 Src/Dialogs/AboutDialog.cpp:109
-#: Src/GUI/MainFrameMenuBar.cpp:1287
+#: Src/GUI/MainFrameMenuBar.cpp:1298
 msgid "Close"
 msgstr ""
 
@@ -325,10 +413,10 @@ msgstr ""
 msgid "Are you sure you want to delete this preset? This cannot be undone."
 msgstr ""
 
-#: Src/Dialogs/PresetEditor.cpp:118 Src/GUI/MainFrameMenuBar.cpp:615
-#: Src/GUI/MainFrameMenuBar.cpp:676 Src/GUI/MainFrameMenuBar.cpp:713
-#: Src/GUI/MainFrameMenuBar.cpp:942 Src/GUI/MainFrameMenuBar.cpp:1061
-#: Src/GUI/MainFrameMenuBar.cpp:1145 Src/Pickers/TimeSigPicker.cpp:289
+#: Src/Dialogs/PresetEditor.cpp:118 Src/GUI/MainFrameMenuBar.cpp:617
+#: Src/GUI/MainFrameMenuBar.cpp:678 Src/GUI/MainFrameMenuBar.cpp:715
+#: Src/GUI/MainFrameMenuBar.cpp:953 Src/GUI/MainFrameMenuBar.cpp:1072
+#: Src/GUI/MainFrameMenuBar.cpp:1156 Src/Pickers/TimeSigPicker.cpp:289
 msgid "Confirm"
 msgstr ""
 
@@ -350,7 +438,7 @@ msgstr ""
 msgid "You will need to restart Aria Maestosa for changes to be effective."
 msgstr ""
 
-#: Src/Dialogs/Preferences.cpp:413 Src/GUI/MainFrameMenuBar.cpp:641
+#: Src/Dialogs/Preferences.cpp:413 Src/GUI/MainFrameMenuBar.cpp:643
 msgid "Select file"
 msgstr ""
 
@@ -525,25 +613,6 @@ msgstr ""
 msgid "Translations:"
 msgstr ""
 
-#. I18N: - title of the copyright/info dialog
-#: Src/Dialogs/CopyrightWindow.cpp:65
-msgid "Copyright and song info"
-msgstr ""
-
-#. I18N: - title of the copyright/info dialog
-#: Src/Dialogs/CopyrightWindow.cpp:73
-msgid "Song name"
-msgstr ""
-
-#. I18N: - title of the copyright/info dialog
-#: Src/Dialogs/CopyrightWindow.cpp:82
-msgid "Copyright"
-msgstr ""
-
-#: Src/Dialogs/CopyrightWindow.cpp:89 Src/Dialogs/CopyrightWindow.cpp:124
-msgid "Song duration :"
-msgstr ""
-
 #. I18N: (undoable) action name
 #: Src/Actions/ScaleSong.cpp:30
 msgid "scale song"
@@ -656,6 +725,11 @@ msgid "add note"
 msgstr ""
 
 #. I18N: (undoable) action name
+#: Src/Actions/SetTrackVolume.cpp:27
+msgid "change track volume"
+msgstr ""
+
+#. I18N: (undoable) action name
 #: Src/Actions/AddTrack.cpp:36
 msgid "add track"
 msgstr ""
@@ -727,9 +801,9 @@ msgid ""
 msgstr ""
 
 #: Src/IO/MidiFileReader.cpp:522 Src/Printing/AbstractPrintableSequence.cpp:39
-#: Src/Printing/AbstractPrintableSequence.cpp:43 Src/Midi/Sequence.cpp:68
-#: Src/Midi/Sequence.cpp:116 Src/Midi/Sequence.cpp:138 Src/Midi/Track.cpp:87
-#: Src/Midi/Track.cpp:934 Src/Midi/Track.cpp:1915
+#: Src/Printing/AbstractPrintableSequence.cpp:43 Src/Midi/Sequence.cpp:70
+#: Src/Midi/Sequence.cpp:118 Src/Midi/Sequence.cpp:140 Src/Midi/Track.cpp:92
+#: Src/Midi/Track.cpp:939 Src/Midi/Track.cpp:2008
 msgid "Untitled"
 msgstr ""
 
@@ -1081,7 +1155,7 @@ msgid "&Close"
 msgstr ""
 
 #: Src/GUI/MainFrameMenuBar.cpp:109
-msgid "Song &info..."
+msgid "Song Propert&ies..."
 msgstr ""
 
 #: Src/GUI/MainFrameMenuBar.cpp:113
@@ -1270,7 +1344,7 @@ msgstr ""
 msgid "&Settings"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:302 Src/GUI/MainFrameMenuBar.cpp:1199
+#: Src/GUI/MainFrameMenuBar.cpp:302 Src/GUI/MainFrameMenuBar.cpp:1210
 msgid "No MIDI Output Available"
 msgstr ""
 
@@ -1296,42 +1370,42 @@ msgstr ""
 msgid "&Help"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:499
+#: Src/GUI/MainFrameMenuBar.cpp:500
 #, c-format
 msgid "&Undo %s"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:510
+#: Src/GUI/MainFrameMenuBar.cpp:511
 msgid "Can't Undo"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:604 Src/GUI/MainFrameMenuBar.cpp:665
-#: Src/GUI/MainFrameMenuBar.cpp:703
+#: Src/GUI/MainFrameMenuBar.cpp:606 Src/GUI/MainFrameMenuBar.cpp:667
+#: Src/GUI/MainFrameMenuBar.cpp:705
 msgid "Select destination file"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:614 Src/GUI/MainFrameMenuBar.cpp:676
-#: Src/GUI/MainFrameMenuBar.cpp:713
+#: Src/GUI/MainFrameMenuBar.cpp:616 Src/GUI/MainFrameMenuBar.cpp:678
+#: Src/GUI/MainFrameMenuBar.cpp:715
 msgid "The file already exists. Do you wish to overwrite it?"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:642
+#: Src/GUI/MainFrameMenuBar.cpp:644
 msgid "Aria Maestosa file"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:652
+#: Src/GUI/MainFrameMenuBar.cpp:654
 msgid "Select midi file"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:653 Src/GUI/MainFrameMenuBar.cpp:666
+#: Src/GUI/MainFrameMenuBar.cpp:655 Src/GUI/MainFrameMenuBar.cpp:668
 msgid "Midi file"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:687
+#: Src/GUI/MainFrameMenuBar.cpp:689
 msgid "Sorry, failed to export midi file."
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:725
+#: Src/GUI/MainFrameMenuBar.cpp:727
 msgid ""
 "Please wait while audio file is being generated.\n"
 "\n"
@@ -1339,15 +1413,15 @@ msgid ""
 "this can take several minutes."
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:938
+#: Src/GUI/MainFrameMenuBar.cpp:949
 msgid "You may not delete the last track"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:942
+#: Src/GUI/MainFrameMenuBar.cpp:953
 msgid "Do you really want to delete this track?"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:1060
+#: Src/GUI/MainFrameMenuBar.cpp:1071
 msgid ""
 "If multiple tracks play on the same channel, they will be merged.\n"
 "This cannot be undone.\n"
@@ -1355,123 +1429,119 @@ msgid ""
 "Do you really want to continue?"
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:1144 Src/Pickers/TimeSigPicker.cpp:288
+#: Src/GUI/MainFrameMenuBar.cpp:1155 Src/Pickers/TimeSigPicker.cpp:288
 msgid ""
 "Are you sure you want to go back to having a single time signature? Any time "
 "sig events you may have added will be lost. This cannot be undone."
 msgstr ""
 
-#: Src/GUI/MainFrameMenuBar.cpp:1273
+#: Src/GUI/MainFrameMenuBar.cpp:1284
 msgid "Manual"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:428
+#: Src/GUI/MainFrame.cpp:420
 msgid "Record"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:432
+#: Src/GUI/MainFrame.cpp:424
 msgid "Play"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:436
+#: Src/GUI/MainFrame.cpp:428
 msgid "Stop"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:439
+#: Src/GUI/MainFrame.cpp:431
 msgid "Loop"
 msgstr ""
 
 #. I18N: song length (number of measures)
-#: Src/GUI/MainFrame.cpp:453
+#: Src/GUI/MainFrame.cpp:445
 msgid "Length"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:461
-msgid "Tempo"
-msgstr ""
-
-#: Src/GUI/MainFrame.cpp:473
+#: Src/GUI/MainFrame.cpp:465
 msgid "Time Sig"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:481
+#: Src/GUI/MainFrame.cpp:473
 msgid "Start"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:497
+#: Src/GUI/MainFrame.cpp:489
 msgid "Zoom"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:528 Src/GUI/MainFrame.cpp:530
+#: Src/GUI/MainFrame.cpp:520 Src/GUI/MainFrame.cpp:522
 msgid "Tool"
 msgstr ""
 
 #. I18N: to hide the panel that is shown when a file could not be imported successfully
-#: Src/GUI/MainFrame.cpp:568
+#: Src/GUI/MainFrame.cpp:560
 msgid "Hide"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:935
+#: Src/GUI/MainFrame.cpp:931
 msgid "Please select an input port from the 'input' menu before recording"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1626
+#: Src/GUI/MainFrame.cpp:1655
 #, c-format
 msgid ""
 "You have unsaved changes in sequence '%s'. Do you want to save them before "
 "proceeding?"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1628
+#: Src/GUI/MainFrame.cpp:1657
 msgid "Selecting 'Yes' will save your document before closing"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1629
+#: Src/GUI/MainFrame.cpp:1658
 msgid "Selecting 'No' will discard unsaved changes"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1630
+#: Src/GUI/MainFrame.cpp:1659
 msgid "Selecting 'Cancel' will cancel exiting the application"
 msgstr ""
 
 #. I18N: title of dialog shown when exiting without saving
-#: Src/GUI/MainFrame.cpp:1635
+#: Src/GUI/MainFrame.cpp:1664
 msgid "Unsaved changes in sequence"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1797
+#: Src/GUI/MainFrame.cpp:1831
 msgid "Unknown file type: "
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1823 Src/GUI/MainFrame.cpp:1940
+#: Src/GUI/MainFrame.cpp:1858 Src/GUI/MainFrame.cpp:1975
 msgid "Sorry, loading .aria file failed."
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1864
+#: Src/GUI/MainFrame.cpp:1899
 msgid "Please wait while midi file is loading."
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1871 Src/GUI/MainFrame.cpp:1952
+#: Src/GUI/MainFrame.cpp:1906 Src/GUI/MainFrame.cpp:1987
 msgid "Sorry, loading midi file failed."
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1893
+#: Src/GUI/MainFrame.cpp:1928
 msgid ""
 "Loading the MIDI file completed successfully, but with the following "
 "warnings (the song may not sound as intended) :"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1931
+#: Src/GUI/MainFrame.cpp:1966
 msgid "Please wait while file is reloaded."
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:2048
+#: Src/GUI/MainFrame.cpp:2083
 msgid ""
 "A new version of Aria Maestosa is now available! Visit the following link to "
 "download it :"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:2059
+#: Src/GUI/MainFrame.cpp:2094
 msgid "An error occurred"
 msgstr ""
 
@@ -1495,15 +1565,55 @@ msgstr ""
 msgid "Exit"
 msgstr ""
 
-#: Src/GUI/GraphicalTrack.cpp:717
+#: Src/GUI/GraphicalTrack.cpp:418
+msgid "Track volume"
+msgstr ""
+
+#: Src/GUI/GraphicalTrack.cpp:422
+msgid "Mute"
+msgstr ""
+
+#: Src/GUI/GraphicalTrack.cpp:426
+msgid "Solo"
+msgstr ""
+
+#: Src/GUI/GraphicalTrack.cpp:432
+msgid "Maximize track"
+msgstr ""
+
+#: Src/GUI/GraphicalTrack.cpp:436
+msgid "Dock track"
+msgstr ""
+
+#: Src/GUI/GraphicalTrack.cpp:458 Src/Editors/ScoreEditor.h:260
+msgid "Score Editor"
+msgstr ""
+
+#: Src/GUI/GraphicalTrack.cpp:462 Src/Editors/KeyboardEditor.h:83
+msgid "Keyboard Editor"
+msgstr ""
+
+#: Src/GUI/GraphicalTrack.cpp:466 Src/Editors/GuitarEditor.h:63
+msgid "Tablature Editor"
+msgstr ""
+
+#: Src/GUI/GraphicalTrack.cpp:470 Src/Editors/DrumEditor.h:103
+msgid "Drum Editor"
+msgstr ""
+
+#: Src/GUI/GraphicalTrack.cpp:474 Src/Editors/ControllerEditor.h:168
+msgid "Controller Editor"
+msgstr ""
+
+#: Src/GUI/GraphicalTrack.cpp:780
 msgid "Choose a new track title."
 msgstr ""
 
-#: Src/GUI/GraphicalTrack.cpp:774
+#: Src/GUI/GraphicalTrack.cpp:837
 msgid "Enter the ID of the channel this track should play in"
 msgstr ""
 
-#: Src/GUI/GraphicalTrack.cpp:776
+#: Src/GUI/GraphicalTrack.cpp:839
 msgid "Channel choice"
 msgstr ""
 
@@ -1655,7 +1765,7 @@ msgid ""
 "channels, expect unpredictable output"
 msgstr ""
 
-#: Src/Midi/Sequence.cpp:765
+#: Src/Midi/Sequence.cpp:814
 msgid ""
 "Warning : you are opening a file saved with a version of\n"
 "Aria Maestosa more recent than the version you currently have.\n"
@@ -2349,16 +2459,6 @@ msgstr ""
 msgid "Octave -1"
 msgstr ""
 
-#: Src/Pickers/KeyPicker.cpp:95 Src/Pickers/KeyPicker.cpp:110
-#: Src/Midi/Note.h:102 Src/Midi/Note.h:118
-msgid "C"
-msgstr ""
-
-#: Src/Pickers/KeyPicker.cpp:95 Src/Pickers/KeyPicker.cpp:101
-#: Src/Midi/Note.h:99 Src/Midi/Note.h:115
-msgid "A"
-msgstr ""
-
 #: Src/Pickers/KeyPicker.cpp:99 Src/Pickers/KeyPicker.cpp:109
 #: Src/Midi/Note.h:109 Src/Midi/Note.h:125
 msgid "G"
@@ -2449,18 +2549,6 @@ msgstr ""
 msgid "Edit Presets..."
 msgstr ""
 
-#: Src/Pickers/KeyPicker.cpp:522
-msgid "Major"
-msgstr ""
-
-#: Src/Pickers/KeyPicker.cpp:522
-msgid "minor"
-msgstr ""
-
-#: Src/Pickers/TimeSigPicker.cpp:139
-msgid "Time Signature"
-msgstr ""
-
 #. I18N: - when setting time signature, to indicate it's not constant through song
 #: Src/Pickers/TimeSigPicker.cpp:178
 msgid "Varies throughout song"
@@ -2501,26 +2589,6 @@ msgstr ""
 msgid "Right"
 msgstr ""
 
-#: Src/Pickers/VolumeSlider.cpp:108
+#: Src/Pickers/VolumeSlider.cpp:128
 msgid "volume"
-msgstr ""
-
-#: Src/Editors/ControllerEditor.h:168
-msgid "Controller Editor"
-msgstr ""
-
-#: Src/Editors/ScoreEditor.h:260
-msgid "Score Editor"
-msgstr ""
-
-#: Src/Editors/KeyboardEditor.h:83
-msgid "Keyboard Editor"
-msgstr ""
-
-#: Src/Editors/DrumEditor.h:103
-msgid "Drum Editor"
-msgstr ""
-
-#: Src/Editors/GuitarEditor.h:63
-msgid "Tablature Editor"
 msgstr ""
