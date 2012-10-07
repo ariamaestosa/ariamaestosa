@@ -1282,7 +1282,7 @@ class ManualView : public wxFrame
 
 public:
     ManualView(wxFrame* parent, wxString file) : wxFrame(parent, wxID_ANY, _("Manual"),
-                                                         wxDefaultPosition, wxSize(1000,600))
+                                                         wxDefaultPosition, wxSize(1200,600))
     {
         m_sizer = new wxBoxSizer(wxHORIZONTAL);
         wxString filepath = wxT("file://") + file ;

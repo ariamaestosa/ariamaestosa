@@ -393,10 +393,10 @@ GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq, MagneticGri
     // create widgets
     m_components = new WidgetLayoutManager();
     
-    m_collapse_button = new BitmapButton(28, 15, collapseDrawable);
+    m_collapse_button = new BitmapButton(26, 15, collapseDrawable);
     m_components->addFromLeft(m_collapse_button);
     
-    m_volume_button = new BitmapButton(28, 12, volumeDrawable);
+    m_volume_button = new BitmapButton(32, 10, volumeDrawable);
     m_components->addFromLeft(m_volume_button);
     
     m_mute_button = new BitmapButton(24, 16, muteDrawable);
