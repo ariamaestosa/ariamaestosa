@@ -334,8 +334,6 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     // white background
     AriaRender::primitives();
     
-    std::cout << "KeyboardEditor::render";
-    
     // horizontal lines
     if (m_track->isPlayed())
     {

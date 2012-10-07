@@ -176,7 +176,6 @@ namespace jdkmidi
   
   void    MIDIFileEvents::mf_error( const char *s )	
   {
-    
   } 
   
   void    MIDIFileEvents::mf_header(
@@ -343,6 +342,7 @@ namespace jdkmidi
   
   void MIDIFileRead::mf_error( const char *e )	
   {
+    printf("[jdkmidi] error : %s\n", e);
     event_handler->mf_error(e);
     abort_parse=true; 	
   } 

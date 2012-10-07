@@ -87,9 +87,36 @@ namespace jdkmidi
         {
           int r=-1;
           
-          if( f && !feof(f) && !ferror(f) )
+          if (!f)
+          {
+              printf("[jdkmidi] ReadChar on invalid file\n");
+          }
+          else if (feof(f))
+          {
+              printf("[jdkmidi] ReadChar reached end-of-file\n");
+          }
+          else if (ferror(f))
+          {
+              printf("[jdkmidi] ReadChar met ferror\n");
+          }
+          else
           {	
             r=fgetc(f);
+            if (r < 0)
+            {
+                if (feof(f))
+                {
+                    printf("[jdkmidi] ReadChar reached end-of-file\n");
+                }
+                else if (ferror(f))
+                {
+                    printf("[jdkmidi] ReadChar met ferror\n");
+                }
+                else
+                {
+                    printf("[jdkmidi] fgetc returned %i\n", (int)r);
+                }
+            }
           }
           
           return r;
