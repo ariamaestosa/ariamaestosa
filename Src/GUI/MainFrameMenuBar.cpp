@@ -570,7 +570,8 @@ void MainFrame::menuEvent_save(wxCommandEvent& evt)
 
 bool MainFrame::doSave()
 {
-    if (getCurrentSequence()->getFilepath().IsEmpty())
+    if (getCurrentSequence()->getFilepath().IsEmpty() or
+        not getCurrentSequence()->getFilepath().EndsWith(".aria"))
     {
         return doSaveAs();
     }
