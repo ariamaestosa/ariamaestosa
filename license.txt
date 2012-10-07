@@ -11,6 +11,8 @@ Aria Maestosa is released under GNU GPL (full text found below) EXCEPT:
 * tool1.png and tool2.png incoportate Oxygen icons, and are thus released un
   the LGPL license, and credits go to the Oxygen team.
 
+* led icons are from LMMS, released under GNU GPL license 
+  
 * FreeDesktop/aria_doc.png includes elements from the Gnome tango icon set, released under the GPL.
 
 ______________________________________________________________________
