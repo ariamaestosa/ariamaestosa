@@ -182,14 +182,14 @@ void MainFrame::initMenuBar()
     //I18N: menu item in the "edit" menu
     m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_REMOVE_OVERLAPPING, _("Remove O&verlapping Notes"),
                                     MainFrame::menuEvent_removeOverlapping );
-                                    
-                                    
+
+
     m_edit_menu->AppendSeparator();
-    
+
     //I18N: menu item in the "edit" menu
     m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_REARRANGE_VERTICALLY, _("Scroll notes into view"),
                                     MainFrame::menuEvent_rearrangeVertically );
-    
+
 
     //I18N: name of a menu
     m_menu_bar->Append(m_edit_menu,  _("&Edit"));
@@ -217,7 +217,7 @@ void MainFrame::initMenuBar()
 
         if (n == 0) m_menu_bar->Append(m_track_menu,  _("&Tracks"));
     }
-    
+
     // ---- Playback menu
     m_playback_menu = new wxMenu();
     //I18N: In the playback menu
@@ -228,7 +228,7 @@ void MainFrame::initMenuBar()
     //I18N: In the playback menu
     m_playback_menu -> QUICK_ADD_MENU ( MENU_RECORD, wxString(_("&Record"))+wxT("\tCtrl-R"),
                                         MainFrame::menuEvent_record );
-    
+
     m_menu_bar->Append(m_playback_menu,  _("&Playback"));
 
     // ---- Settings menu
@@ -276,7 +276,7 @@ void MainFrame::initMenuBar()
                                                           _("&Playthrough when recording"),
                                                           MainFrame::menuEvent_playthrough );
 
-    
+
     m_settings_menu->QUICK_ADD_MENU(wxID_PREFERENCES, _("&Preferences..."),
                                     MainFrame::menuEvent_preferences);
 
@@ -287,12 +287,12 @@ void MainFrame::initMenuBar()
     else                               {ASSERT(false);}
 
     m_playthrough->Check( PlatformMidiManager::get()->isPlayThrough() );
-    
+
     m_menu_bar->Append(m_settings_menu,  _("&Settings"));
 
     // ---- Output devices menu
     m_output_menu = new wxMenu();
-    
+
     wxArrayString choices = PlatformMidiManager::get()->getOutputChoices();
     wxString output = PreferencesData::getInstance()->getValue(SETTING_ID_MIDI_OUTPUT);
 
@@ -303,39 +303,39 @@ void MainFrame::initMenuBar()
                                                                MainFrame::menuEvent_outputDevice);
         m_output_device_menus.push_back(item);
     }
-    
+
     bool found = false;
     for (unsigned int n=0; n<choices.Count(); n++)
     {
         wxMenuItem* item = m_output_menu->QUICK_ADD_CHECK_MENU(MENU_OUTPUT_DEVICE+n, choices[n],
                                                                MainFrame::menuEvent_outputDevice);
         m_output_device_menus.push_back(item);
-        
+
         if (choices[n] == output)
         {
             found = true;
             item->Check(true);
         }
     }
-    
+
     if (not found)
     {
         printf("WARNING: Did not find output port '%s'\n", (const char*)output.mb_str());
         m_output_device_menus[0].Check();
-        
+
         wxCommandEvent dummy;
         dummy.SetId( m_output_device_menus[0].GetId() );
         menuEvent_outputDevice(dummy);
     }
-    
+
     m_menu_bar->Append(m_output_menu, _("&Output"));
 
-    
+
     // ---- Input devices menu
     m_input_menu = new wxMenu();
-    
+
     choices = PlatformMidiManager::get()->getInputChoices();
-    
+
     wxString input = PreferencesData::getInstance()->getValue(SETTING_ID_MIDI_INPUT);
 
     // NOTE: there is an identical string in PreferencesData that must be changed too if changed here
@@ -346,21 +346,21 @@ void MainFrame::initMenuBar()
     {
         item->Check();
     }
-    
+
     for (unsigned int n=0; n<choices.Count(); n++)
     {
         item = m_input_menu->QUICK_ADD_CHECK_MENU(MENU_INPUT_DEVICE+n+1, choices[n],
                                                   MainFrame::menuEvent_inputDevice);
-        
+
         if (input == choices[n]) item->Check();
-        
+
         m_input_device_menus.push_back(item);
     }
-    
+
     //I18N: menu where the MIDI input source is selected
     m_menu_bar->Append(m_input_menu, _("&Input"));
-    
-    
+
+
     // ---- Help menu
     m_help_menu = new wxMenu();
 
@@ -374,7 +374,7 @@ void MainFrame::initMenuBar()
 #else
     m_menu_bar->Append(m_help_menu, _("&Help"));
 #endif
-    
+
     SetMenuBar(m_menu_bar);
 }
 
@@ -412,7 +412,7 @@ void MainFrame::disableMenus(const bool disable)
         m_file_menu->Enable(MENU_FILE_EXPORT_SAMPLED_AUDIO, on);
     }
 
-    
+
     for (int n=0; n<m_input_device_menus.size(); n++)
     {
         m_input_device_menus[n].Enable(on);
@@ -421,7 +421,7 @@ void MainFrame::disableMenus(const bool disable)
     {
         m_output_device_menus[n].Enable(on);
     }
-    
+
     m_file_menu->Enable(MENU_FILE_EXPORT_NOTATION, on);
     m_file_menu->Enable(MENU_FILE_COPYRIGHT, on);
     m_file_menu->Enable(wxID_EXIT, on);
@@ -433,9 +433,9 @@ void MainFrame::disableMenus(const bool disable)
 void MainFrame::doDisableMenusForWelcomeScreen(const bool disable)
 {
     m_disabled_for_welcome_screen = disable;
-    
+
     const bool on = (not disable);
-    
+
     m_file_menu->Enable(MENU_FILE_SAVE, on);
     m_file_menu->Enable(MENU_FILE_SAVE_AS, on);
     m_file_menu->Enable(MENU_FILE_RELOAD, on);
@@ -446,10 +446,10 @@ void MainFrame::doDisableMenusForWelcomeScreen(const bool disable)
     {
         m_file_menu->Enable(MENU_FILE_EXPORT_SAMPLED_AUDIO, on);
     }
-    
+
     m_file_menu->Enable(MENU_FILE_EXPORT_NOTATION, on);
     m_file_menu->Enable(MENU_FILE_COPYRIGHT, on);
-    
+
     m_menu_bar->EnableTop(1, on);
     m_menu_bar->EnableTop(2, on);
     m_menu_bar->EnableTop(3, on);
@@ -501,7 +501,7 @@ void MainFrame::updateUndoMenuLabel()
             label.Replace(wxT("%s"),undo_what );
             menuBar->SetLabel( MENU_EDIT_UNDO, label );
             menuBar->Enable( MENU_EDIT_UNDO, true );
-            
+
 #if defined(__WXOSX_COCOA__)
             OSXSetModified(true);
 #endif
@@ -571,7 +571,7 @@ void MainFrame::menuEvent_save(wxCommandEvent& evt)
 bool MainFrame::doSave()
 {
     if (getCurrentSequence()->getFilepath().IsEmpty() or
-        not getCurrentSequence()->getFilepath().EndsWith(".aria"))
+        not getCurrentSequence()->getFilepath().EndsWith(wxT(".aria")))
     {
         return doSaveAs();
     }
@@ -613,12 +613,12 @@ bool MainFrame::doSaveAs()
         // file dialog has a built-in replace dialog
         if (wxFileExists(givenPath))
         {
-            int answer = wxMessageBox(_("The file already exists. Do you wish to overwrite it?"), 
+            int answer = wxMessageBox(_("The file already exists. Do you wish to overwrite it?"),
                                       _("Confirm"), wxYES_NO, this);
             if (answer != wxYES) return true;
         }
 #endif
-        
+
         getCurrentSequence()->setFilepath( givenPath );
         saveAriaFile(getCurrentGraphicalSequence(), getCurrentSequence()->getFilepath());
 
@@ -680,7 +680,7 @@ void MainFrame::menuEvent_exportmidi(wxCommandEvent& evt)
         if (answer != wxYES) return;
     }
 #endif
-    
+
     // write data to file
     const bool success = AriaMaestosa::exportMidiFile( getCurrentSequence(), midiFilePath );
 
@@ -695,7 +695,7 @@ void MainFrame::menuEvent_exportmidi(wxCommandEvent& evt)
 void MainFrame::menuEvent_exportSampledAudio(wxCommandEvent& evt)
 {
     if (getSequenceAmount() == 0) return;
-    
+
     wxString extension = PlatformMidiManager::get()->getAudioExtension();
     wxString wildcard = PlatformMidiManager::get()->getAudioWildcard();
 
@@ -742,9 +742,9 @@ void MainFrame::menuEvent_songProperties(wxCommandEvent& evt)
         Sequence* sequence;
         int timeSigNumerator;
         int timeSigDenominator;
-        
+
         sequence = getCurrentSequence();
-        
+
         if (SongPropertiesDialogNamespace::show(sequence, timeSigNumerator, timeSigDenominator)==wxID_OK)
         {
             // Time signature
@@ -754,7 +754,7 @@ void MainFrame::menuEvent_songProperties(wxCommandEvent& evt)
                 ScopedMeasureTransaction tr(measures->startTransaction());
                 tr->setTimeSig(timeSigNumerator, timeSigDenominator);
             }
-                
+
             // to update tempo and time signature controls in top bar
             updateTopBarAndScrollbarsForSequence(getCurrentGraphicalSequence());
         }
@@ -883,7 +883,7 @@ void MainFrame::menuEvent_addTrack(wxCommandEvent& evt)
     //getCurrentSequence()->addTrack();
     Sequence* seq = getCurrentSequence();
     seq->action( new Action::AddTrack() );
-    
+
     // FIXME: shouldn't need to handle maximized mode manually here
     if (getSequenceAmount() > 0 and getCurrentGraphicalSequence()->isTrackMaximized())
     {
@@ -900,7 +900,7 @@ void MainFrame::menuEvent_addTrack(wxCommandEvent& evt)
                 gs->setDockVisible(true);
             }
         }
-        
+
         gt->dock(false);
         gt->maximizeHeight();
     }
@@ -913,10 +913,10 @@ void MainFrame::menuEvent_addTrack(wxCommandEvent& evt)
 void MainFrame::menuEvent_dupTrack(wxCommandEvent& evt)
 {
     // TODO: actually duplicate
-    
+
     Sequence* seq = getCurrentSequence();
     seq->action( new Action::AddTrack(seq->getCurrentTrack()) );
-    
+
     // FIXME: shouldn't need to handle maximized mode manually here
     if (getSequenceAmount() > 0 and getCurrentGraphicalSequence()->isTrackMaximized())
     {
@@ -933,7 +933,7 @@ void MainFrame::menuEvent_dupTrack(wxCommandEvent& evt)
                 gs->setDockVisible(true);
             }
         }
-        
+
         gt->dock(false);
         gt->maximizeHeight();
     }
@@ -1118,7 +1118,7 @@ void MainFrame::menuEvent_manualChannelModeSelected(wxCommandEvent& evt)
     m_channel_management_manual->Check(true);
 
     Sequence* sequence = getCurrentSequence();
-    
+
     // TODO: this could should be moved inside "Sequence::setChannelManagementType"
     // we were in auto mode... we will need to set channels
     if (sequence->getChannelManagementType() == CHANNEL_AUTO)
@@ -1156,13 +1156,13 @@ void MainFrame::menuEvent_expandedMeasuresSelected(wxCommandEvent& evt)
                                         _("Confirm"), wxYES_NO);
         if (answer == wxNO) return;
     }
-    
+
     MeasureData* md = getCurrentSequence()->getMeasureData();
     {
         ScopedMeasureTransaction tr(md->startTransaction());
         tr->setExpandedMode( m_expanded_measures_menu_item->IsChecked() );
     }
-    
+
     updateVerticalScrollbar();
     updateMenuBarToSequence();
 }
@@ -1193,7 +1193,7 @@ void MainFrame::menuEvent_playthrough(wxCommandEvent& evt)
 void MainFrame::menuEvent_outputDevice(wxCommandEvent& evt)
 {
     wxMenuItem* item = NULL;
-    
+
     for (int n=0; n<m_output_device_menus.size(); n++)
     {
         if (m_output_device_menus[n].GetId() == evt.GetId())
@@ -1206,17 +1206,17 @@ void MainFrame::menuEvent_outputDevice(wxCommandEvent& evt)
             m_output_device_menus[n].Check(false);
         }
     }
-    
+
     if (item != NULL and item->GetItemLabelText() != _("No MIDI Output Available"))
     {
         PreferencesData::getInstance()->setValue(SETTING_ID_MIDI_OUTPUT, item->GetItemLabelText());
         PreferencesData::getInstance()->save();
-        
+
         // re-init MIDI player so that changes take effect
         PlatformMidiManager::get()->freeMidiPlayer();
         PlatformMidiManager::get()->initMidiPlayer();
     }
-    
+
 
 }
 
@@ -1229,9 +1229,9 @@ void MainFrame::menuEvent_inputDevice(wxCommandEvent& evt)
         wxBell();
         return;
     }
-    
+
     wxMenuItem* item = NULL;
-    
+
     for (int n=0; n<m_input_device_menus.size(); n++)
     {
         if (m_input_device_menus[n].GetId() == evt.GetId())
@@ -1244,13 +1244,13 @@ void MainFrame::menuEvent_inputDevice(wxCommandEvent& evt)
             m_input_device_menus[n].Check(false);
         }
     }
-    
+
     if (item != NULL)
     {
         PreferencesData::getInstance()->setValue(SETTING_ID_MIDI_INPUT, item->GetItemLabelText());
         PreferencesData::getInstance()->save();
     }
-    
+
     // re-init MIDI player so that changes take effect
     PlatformMidiManager::get()->freeMidiPlayer();
     PlatformMidiManager::get()->initMidiPlayer();
@@ -1328,7 +1328,7 @@ void MainFrame::menuEvent_manual(wxCommandEvent& evt)
     wxString url = wxT("file:") + sep + sep + sep + path_to_docs;
     url.Replace(wxT(" "), wxT("%20"));
     url.Replace(wxT("\\"), wxT("/"));
-    
+
     if (not wxFileExists( path_to_docs ))
     {
         wxMessageBox(wxT("Sorry, opening docs failed\n(") + path_to_docs +
