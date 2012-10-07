@@ -68,6 +68,8 @@ namespace AriaMaestosa
         int m_x, m_y;
         int m_width;
         bool m_hidden;
+        wxString m_tooltip;
+
     public:
         LEAK_CHECK();
         
@@ -77,6 +79,15 @@ namespace AriaMaestosa
             m_y = 0;
             m_width = width;
             m_hidden = false;
+        }
+        
+        void setTooltip(wxString tooltip) { m_tooltip = tooltip; }
+        const wxString getTooltip() const { return m_tooltip; }
+        
+        virtual const ptr_vector<BitmapButton, HOLD>& getChildren() const
+        {        
+            static ptr_vector<BitmapButton, HOLD> empty_children_vector;
+            return empty_children_vector;
         }
         
         int getX() const { return m_x; }
@@ -90,7 +101,7 @@ namespace AriaMaestosa
         void setX(const int x){ m_x = x; }
         void setY(const int y){ m_y = y; }
         
-        bool clickIsOnThisWidget(const int mx, const int my)
+        bool clickIsOnThisWidget(const int mx, const int my) const
         {
             return (not m_hidden) and ( mx > m_x and my > m_y and mx < m_x + m_width and my < m_y + 30);
         }
@@ -232,6 +243,9 @@ namespace AriaMaestosa
             m_contents.push_back(btn);
             m_margin.push_back(margin_after);
         }
+        
+        virtual const ptr_vector<BitmapButton, HOLD>& getChildren() const { return m_contents; }
+        
         void layout()
         {
             if (PARENT::m_hidden) return;
@@ -286,6 +300,10 @@ namespace AriaMaestosa
         WidgetLayoutManager()
         {
         }
+        
+        const ptr_vector<AriaWidget, HOLD>& getLeftWidgets() const { return m_widgets_left; }
+        const ptr_vector<AriaWidget, HOLD>& getRightWidgets() const { return m_widgets_right; }
+        
         void addFromLeft(AriaWidget* w)
         {
             m_widgets_left.push_back(w);
@@ -397,21 +415,29 @@ GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq, MagneticGri
     m_components->addFromLeft(m_collapse_button);
     
     m_volume_button = new BitmapButton(32, 10, volumeDrawable);
+    m_volume_button->setTooltip( wxString(_("Track volume")) );
     m_components->addFromLeft(m_volume_button);
     
     m_mute_button = new BitmapButton(24, 16, muteDrawable);
+    m_mute_button->setTooltip( wxString(_("Mute")) );
     m_components->addFromLeft(m_mute_button);
     
     m_solo_button = new BitmapButton(24, 16, soloDrawable);
+    m_solo_button->setTooltip( wxString(_("Solo")) );
     m_components->addFromLeft(m_solo_button);
     
     m_dock_toolbar = new ToolBar<BlankField>();
-    m_dock_toolbar->addItem( new BitmapButton( 16, 14, maximizeTrackDrawable, false), 0 );
-    m_dock_toolbar->addItem( new BitmapButton( 16, 14, dockTrackDrawable    , false), 0 );
+    BitmapButton* maximize;
+    m_dock_toolbar->addItem( maximize = new BitmapButton( 16, 14, maximizeTrackDrawable, false), 0 );
+    maximize->setTooltip(wxString(_("Maximize track")));
+    
+    BitmapButton* dock;
+    m_dock_toolbar->addItem( dock = new BitmapButton( 16, 14, dockTrackDrawable, false), 0 );
+    dock->setTooltip(wxString(_("Dock track")));
     m_components->addFromLeft(m_dock_toolbar);
     m_dock_toolbar->layout();
     
-    m_track_name = new BlankField(140);
+    m_track_name = new BlankField(175);
     m_components->addFromLeft(m_track_name);
     
     m_grid_combo = new ToolBar<ComboBox>();
@@ -429,14 +455,23 @@ GraphicalTrack::GraphicalTrack(Track* track, GraphicalSequence* seq, MagneticGri
     
     m_score_button = new BitmapButton(32, 7, score_view);
     m_components->addFromLeft(m_score_button);
+    m_score_button->setTooltip(wxString(_("Score Editor")));
+    
     m_piano_button = new BitmapButton(32, 7, keyboard_view);
     m_components->addFromLeft(m_piano_button);
+    m_piano_button->setTooltip(wxString(_("Keyboard Editor")));
+    
     m_tab_button = new BitmapButton(32, 7, guitar_view);
     m_components->addFromLeft(m_tab_button);
-    m_drum_button = new BitmapButton(32, 7, drum_view);
+    m_tab_button->setTooltip(wxString(_("Tablature Editor")));
+    
+    m_drum_button = new BitmapButton(38, 7, drum_view);
     m_components->addFromLeft(m_drum_button);
+    m_drum_button->setTooltip(wxString(_("Drum Editor")));
+    
     m_ctrl_button = new BitmapButton(32, 7, controller_view);
     m_components->addFromLeft(m_ctrl_button);
+    m_ctrl_button->setTooltip(wxString(_("Controller Editor")));
     
     m_sharp_flat_picker = new ToolBar<BlankField>();
     m_sharp_flat_picker->addItem( (new BitmapButton( 14, 21, sharpSign,   true ))->setImageState(AriaRender::STATE_NOTE), 6 );
@@ -1042,7 +1077,7 @@ bool GraphicalTrack::processMouseDrag(RelativeXCoord x, int y)
 // ----------------------------------------------------------------------------------------------------------
 
 
-void GraphicalTrack::processMouseMove(RelativeXCoord x, int y)
+wxString GraphicalTrack::processMouseMove(RelativeXCoord x, int y)
 {
     Editor* ed = getEditorAt(y);
     if (ed != NULL)
@@ -1060,6 +1095,49 @@ void GraphicalTrack::processMouseMove(RelativeXCoord x, int y)
     {
         getMainFrame()->setStatusText(wxT(""));
     }
+    
+    
+    // Find if there is a widget under the mouse with a tooltip
+    const int winX = x.getRelativeTo(WINDOW);
+    
+    const ptr_vector<AriaWidget, HOLD>& left = m_components->getLeftWidgets();
+    for (int wId = 0; wId < left.size(); wId++)
+    {
+        if (left[wId].clickIsOnThisWidget(winX, y))
+        {
+            const ptr_vector<BitmapButton, HOLD>& children = left[wId].getChildren();
+            for (int chId = 0; chId < children.size(); chId++)
+            {
+                if (children[chId].clickIsOnThisWidget(winX, y))
+                {
+                    return children[chId].getTooltip();
+                }
+            }
+        
+            return left[wId].getTooltip();
+        }
+        
+    }
+    
+    const ptr_vector<AriaWidget, HOLD>& right = m_components->getRightWidgets();
+    for (int wId = 0; wId < right.size(); wId++)
+    {
+        if (right[wId].clickIsOnThisWidget(winX, y))
+        {
+            const ptr_vector<BitmapButton, HOLD>& children = right[wId].getChildren();
+            for (int chId = 0; chId < children.size(); chId++)
+            {
+                if (children[chId].clickIsOnThisWidget(winX, y))
+                {
+                    return children[chId].getTooltip();
+                }
+            }
+            
+            return right[wId].getTooltip();
+        }
+    }
+    
+    return wxString(wxT(""));
 }
 
 // ----------------------------------------------------------------------------------------------------------

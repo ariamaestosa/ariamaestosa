@@ -227,7 +227,7 @@ namespace AriaMaestosa
         // ---- serialization
         void saveToFile(wxFileOutputStream& fileout);
 
-        void handleTooltip(wxMouseEvent& event);
+        void handleTooltipOnTabs(wxMouseEvent& event);
 
         DECLARE_EVENT_TABLE()
     };
