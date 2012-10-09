@@ -288,6 +288,8 @@ namespace AriaMaestosa
         bool m_paused;
         int  m_pause_location;
         wxString m_current_dir;
+        
+        bool m_file_in_command_line;
 
 #if !defined(__WXOSX_CARBON__)
         wxStaticBitmap* m_tools_bitmap;
@@ -311,7 +313,7 @@ namespace AriaMaestosa
         bool changingValues; // set this to true when modifying the controls in the top bar, this allows to ignore all events thrown by their modification.
 
         MainFrame();
-        void init(const wxArrayString& filesToOpen);
+        void init(const wxArrayString& filesToOpen, bool fileInCommandLine);
         void initMenuBar();
         ~MainFrame();
 
