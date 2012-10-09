@@ -358,11 +358,12 @@ MainFrame::~MainFrame()
 
 // ----------------------------------------------------------------------------------------------------------
 
-void MainFrame::init(const wxArrayString& filesToOpen)
+void MainFrame::init(const wxArrayString& filesToOpen, bool fileInCommandLine)
 {
     wxLogVerbose( wxT("MainFrame::init") );
     changingValues = true;
     m_files_to_open = filesToOpen;
+    m_file_in_command_line = fileInCommandLine;
     m_current_dir = ::wxGetCwd();
 
     Centre();
@@ -765,7 +766,7 @@ void MainFrame::onShow(wxShowEvent& evt)
     }
     
     
-    if ( pd->getBoolValue(SETTING_ID_LOAD_LAST_SESSION, false) )
+    if ( pd->getBoolValue(SETTING_ID_LOAD_LAST_SESSION, false) && !m_file_in_command_line )
     {
         int currentSequenceId;
         

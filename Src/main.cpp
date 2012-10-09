@@ -257,7 +257,7 @@ bool wxWidgetApp::OnInit()
         filesToOpen.Add(fileName);
     }
     
-    frame->init(filesToOpen);
+    frame->init(filesToOpen, argc>1);
 
     wxLogVerbose( wxT("[main] init main frame 2") );
 
