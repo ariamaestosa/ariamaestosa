@@ -85,15 +85,18 @@ void RearrangeVertically::perform()
         // Computes maximum pitch in track (the higher MIDI pitch, 
         // the lower the value returned by Track::getNotePitchID()
         noteCount = track->getNoteAmount();
-        double maxNotePitch = 0;
-        for (int j=0 ; j<noteCount ; j++)
+        if (noteCount > 0)
         {
-            maxNotePitch += track->getNotePitchID(j);
+            double maxNotePitch = 0;
+            for (int j=0 ; j<noteCount ; j++)
+            {
+                maxNotePitch += track->getNotePitchID(j);
+            }
+            int averageNotePitch = (int)(maxNotePitch / (double)noteCount);
+            
+            int localY = keyboardEditor->levelToLocalY(std::max(0, averageNotePitch - keyboardEditor->levelsInView()/2));
+            keyboardEditor->setYScrollInPixels(std::max(0, localY - 5));
         }
-        int averageNotePitch = (int)(maxNotePitch / (double)noteCount);
-        
-        int localY = keyboardEditor->levelToLocalY(std::max(0, averageNotePitch - keyboardEditor->levelsInView()/2));
-        keyboardEditor->setYScrollInPixels(std::max(0, localY - 5));
     }
 
     wxEndBusyCursor();
