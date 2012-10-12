@@ -64,7 +64,6 @@ void RearrangeVertically::perform()
 {
     KeyboardEditor* keyboardEditor;
     Track* track;
-    int maxNotePitch;
     int trackCount;
     int noteCount;
     float sbPosition;
@@ -86,13 +85,14 @@ void RearrangeVertically::perform()
         // Computes maximum pitch in track (the higher MIDI pitch, 
         // the lower the value returned by Track::getNotePitchID()
         noteCount = track->getNoteAmount();
-        maxNotePitch = 0;
+        double maxNotePitch = 0;
         for (int j=0 ; j<noteCount ; j++)
         {
-            maxNotePitch = std::max(maxNotePitch, track->getNotePitchID(j));
+            maxNotePitch += track->getNotePitchID(j);
         }
+        int averageNotePitch = (int)(maxNotePitch / (double)noteCount);
         
-        int localY = keyboardEditor->levelToLocalY(maxNotePitch);
+        int localY = keyboardEditor->levelToLocalY(std::max(0, averageNotePitch - keyboardEditor->levelsInView()/2));
         keyboardEditor->setYScrollInPixels(std::max(0, localY - 5));
     }
 

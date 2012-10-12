@@ -60,6 +60,11 @@ namespace AriaMaestosa
             return level*Y_STEP_HEIGHT+1 + getEditorYStart() - getYScrollInPixels();
         }
         
+        int levelsInView() const
+        {
+            return (getYEnd() - getEditorYStart()) / Y_STEP_HEIGHT;
+        }
+        
         /** implemented from base class Editor's required interface */
         virtual int getYScrollInPixels();
         
