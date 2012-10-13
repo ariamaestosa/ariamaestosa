@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-07 12:25-0400\n"
+"POT-Creation-Date: 2012-10-13 12:04-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -817,275 +817,343 @@ msgstr ""
 msgid "semitones"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:91
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:92
 msgid "High Q"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:92
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:94
 msgid "Slap"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:93
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:96
 msgid "Push"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:94
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:98
 msgid "Pull"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:95 Src/Editors/DrumEditor.cpp:101
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:100 Src/Editors/DrumEditor.cpp:112
 msgid "Stick"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:96
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:102
 msgid "Square"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:97
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:104
 msgid "Metro"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:98
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:106
 msgid "Metro bell"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:99
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:108
 msgid "Bass drum 2"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:100
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:110
 msgid "Bass drum 1"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:102
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:114
 msgid "Snare"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:103
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:116
 msgid "Clap"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:104
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:118
 msgid "Snare 2"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:105
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:120
 msgid "Tom 6"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:106
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:122
 msgid "Closed hi-hat"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:107
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:124
 msgid "Tom 5"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:108
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:126
 msgid "Pedal hi-hat"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:109
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:128
 msgid "Tom 4"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:110
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:130
 msgid "Open hi-hat"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:111
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:132
 msgid "Tom 3"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:112
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:134
 msgid "Tom 2"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:113
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:136
 msgid "Crash"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:114
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:138
 msgid "Tom 1"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:115
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:140
 msgid "Ride"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:116
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:142
 msgid "Chinese"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:117
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:144
 msgid "Ride bell"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:118
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:146
 msgid "Tambourine"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:119
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:148
 msgid "Splash"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:120
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:150
 msgid "Cowbell"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:121
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:152
 msgid "Crash 2"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:122
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:154
 msgid "Vibraslap"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:123
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:156
 msgid "Ride 2"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:124
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:158
 msgid "Hi bongo"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:125
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:160
 msgid "Low bongo"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:126
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:162
 msgid "Mute hi conga"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:127
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:164
 msgid "Open hi conga"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:128
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:166
 msgid "Low conga"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:129
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:168
 msgid "High timbale"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:130
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:170
 msgid "Low timbale"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:131
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:172
 msgid "High agogo"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:132
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:174
 msgid "Low agogo"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:133
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:176
 msgid "Cabasa"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:134
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:178
 msgid "Maracas"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:135
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:180
 msgid "Short whistle"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:136
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:182
 msgid "Long whistle"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:137
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:184
 msgid "Short guiro"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:138
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:186
 msgid "Long guiro"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:139
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:188
 msgid "Claves"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:140
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:190
 msgid "Hi wood block"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:141
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:192
 msgid "Lo wood block"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:142
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:194
 msgid "Mute cuica"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:143
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:196
 msgid "Open cuica"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:144
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:198
 msgid "Mute triangle"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:145
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:200
 msgid "Open triangle"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:146
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:202
 msgid "Shaker"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:147
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:204
 msgid "Jingle Bell"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:148
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:206
 msgid "Bell Tree"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:149
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:208
 msgid "Castanets"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:150
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:210
 msgid "Mute surdo"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:151
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:212
 msgid "Open surdo"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:155
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:217
 msgid "Drumkit"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:156
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:219
 msgid "Hi-hat"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:157
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:221
 msgid "Cymbal"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:158
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:223
 msgid "Toms"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:159
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:225
 msgid "African"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:160
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:227
 msgid "Latin"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:161
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:229
 msgid "Others"
 msgstr ""
 
-#: Src/Editors/DrumEditor.cpp:162 Src/Pickers/InstrumentPicker.cpp:98
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:231 Src/Pickers/InstrumentPicker.cpp:98
 #: Src/Pickers/InstrumentPicker.cpp:117 Src/Pickers/InstrumentPicker.cpp:136
 msgid "Sound Effects"
 msgstr ""
@@ -1589,7 +1657,7 @@ msgstr ""
 msgid "Score Editor"
 msgstr ""
 
-#: Src/GUI/GraphicalTrack.cpp:462 Src/Editors/KeyboardEditor.h:83
+#: Src/GUI/GraphicalTrack.cpp:462 Src/Editors/KeyboardEditor.h:88
 msgid "Keyboard Editor"
 msgstr ""
 
