@@ -88,77 +88,146 @@ static const wxString g_drum_names[] =
     _(" "), // 25
     _(" "), // 26
      */
+    //I18N: drum name
     _("High Q"), // 27
+    //I18N: drum name
     _("Slap"), // 28
+    //I18N: drum name
     _("Push"), // 29
+    //I18N: drum name
     _("Pull"), // 30
+    //I18N: drum name
     _("Stick"), // 31
+    //I18N: drum name
     _("Square"), // 32
+    //I18N: drum name
     _("Metro"), // 33
+    //I18N: drum name
     _("Metro bell"), // 34
+    //I18N: drum name
     _("Bass drum 2"), // 35
+    //I18N: drum name
     _("Bass drum 1"), // 36
+    //I18N: drum name
     _("Stick"), // 37
+    //I18N: drum name
     _("Snare"), // 38
+    //I18N: drum name
     _("Clap"), // 39
+    //I18N: drum name
     _("Snare 2"), // 40
+    //I18N: drum name
     _("Tom 6"), // 41
+    //I18N: drum name
     _("Closed hi-hat"), // 42
+    //I18N: drum name
     _("Tom 5"), // 43
+    //I18N: drum name
     _("Pedal hi-hat"), // 44
+    //I18N: drum name
     _("Tom 4"), // 45
+    //I18N: drum name
     _("Open hi-hat"), // 46
+    //I18N: drum name
     _("Tom 3"), // 47
+    //I18N: drum name
     _("Tom 2"), // 48
+    //I18N: drum name
     _("Crash"), // 49
+    //I18N: drum name
     _("Tom 1"), // 50
+    //I18N: drum name
     _("Ride"), // 51
+    //I18N: drum name
     _("Chinese"), // 52
+    //I18N: drum name
     _("Ride bell"), // 53
+    //I18N: drum name
     _("Tambourine"), // 54
+    //I18N: drum name
     _("Splash"), // 55
+    //I18N: drum name
     _("Cowbell"), // 56
+    //I18N: drum name
     _("Crash 2"), // 57
+    //I18N: drum name
     _("Vibraslap"), // 58
+    //I18N: drum name
     _("Ride 2"), // 59
+    //I18N: drum name
     _("Hi bongo"), // 60
+    //I18N: drum name
     _("Low bongo"), // 61
+    //I18N: drum name
     _("Mute hi conga"), // 62
+    //I18N: drum name
     _("Open hi conga"), // 63
+    //I18N: drum name
     _("Low conga"), // 64
+    //I18N: drum name
     _("High timbale"), // 65
+    //I18N: drum name
     _("Low timbale"), // 66
+    //I18N: drum name
     _("High agogo"), // 67
+    //I18N: drum name
     _("Low agogo"), // 68
+    //I18N: drum name
     _("Cabasa"), // 69
+    //I18N: drum name
     _("Maracas"), // 70
+    //I18N: drum name
     _("Short whistle"), // 71
+    //I18N: drum name
     _("Long whistle"), // 72
+    //I18N: drum name
     _("Short guiro"), // 73
+    //I18N: drum name
     _("Long guiro"), // 74
+    //I18N: drum name
     _("Claves"), // 75
+    //I18N: drum name
     _("Hi wood block"), // 76
+    //I18N: drum name
     _("Lo wood block"), // 77
+    //I18N: drum name
     _("Mute cuica"), // 78
+    //I18N: drum name
     _("Open cuica"), // 79
+    //I18N: drum name
     _("Mute triangle"), // 80
+    //I18N: drum name
     _("Open triangle"), // 81
+    //I18N: drum name
     _("Shaker"), // 82
+    //I18N: drum name
     _("Jingle Bell"), // 83
+    //I18N: drum name
     _("Bell Tree"), // 84
+    //I18N: drum name
     _("Castanets"), // 85
+    //I18N: drum name
     _("Mute surdo"), // 86
+    //I18N: drum name
     _("Open surdo"), // 87
 
     // sections (using unused instrument slots for these, so they be
     // put in the same string array, improving performance)
+    //I18N: percussions category name
     _("Drumkit"), // 88
+    //I18N: percussions category name
     _("Hi-hat"), // 89
+    //I18N: percussions category name
     _("Cymbal"), // 90
+    //I18N: percussions category name
     _("Toms"), // 91
+    //I18N: percussions category name
     _("African"), // 92
+    //I18N: percussions category name
     _("Latin"), // 93
+    //I18N: percussions category name
     _("Others"), // 94
+    //I18N: percussions category name
     _("Sound Effects"), // 95
     /*
     _(" "), // 96
