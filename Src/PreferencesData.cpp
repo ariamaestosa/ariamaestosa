@@ -304,13 +304,13 @@ void PreferencesData::fillSettingsVector()
     
     
     Setting* lastSessionFiles = new Setting(fromCString(SETTING_ID_LAST_SESSION_FILES),
-                                     _("Last session files"),
+                                     wxT("Last session files"),
                                      SETTING_STRING, false, wxT("") );
     m_settings.push_back(lastSessionFiles); 
     
     
     Setting* lastCurrentSequence = new Setting(fromCString(SETTING_ID_LAST_CURRENT_SEQUENCE),
-                                     _("Last Current Sequence"),
+                                     wxT("Last Current Sequence"),
                                      SETTING_INT, false, wxT("0"));
     m_settings.push_back(lastCurrentSequence); 
     
