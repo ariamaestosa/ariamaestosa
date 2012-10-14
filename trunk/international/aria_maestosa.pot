@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-13 12:04-0400\n"
+"POT-Creation-Date: 2012-10-13 23:57-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -346,10 +346,6 @@ msgstr ""
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:124
 msgid "Symbols"
-msgstr ""
-
-#: Src/Dialogs/SongPropertiesDialog.cpp:133
-msgid "Tonalities"
 msgstr ""
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:142 Src/GUI/MainFrame.cpp:453

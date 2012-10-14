@@ -130,7 +130,7 @@ public:
         Connect(ID_KEY_SYMBOL_AMOUNT_SPINCTRL,wxEVT_COMMAND_SPINCTRL_UPDATED,(wxObjectEventFunction)&SongPropertiesDialog::OnSpinCtrlChange);
         keySymbolAmountBoxSizer->Add(m_keySymbolAmountSpinCtrl, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
        
-	    m_tonalitiesTextCtrl = new wxTextCtrl(this, wxID_ANY, _("Tonalities"), wxDefaultPosition, wxDefaultSize,
+	    m_tonalitiesTextCtrl = new wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize,
                                     wxTE_READONLY|wxTRANSPARENT_WINDOW, wxDefaultValidator, _T("ID_TEXTCTRL"));
 	    keySymbolAmountBoxSizer->Add(m_tonalitiesTextCtrl, 1, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 15);
 
