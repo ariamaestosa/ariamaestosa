@@ -1350,6 +1350,38 @@ void MainPane::keyPressed(wxKeyEvent& evt)
         }
 
     }
+    
+    if (commandDown and evt.GetKeyCode() >= '1' and evt.GetKeyCode() <= '8')
+    {
+        Sequence* seq = getMainFrame()->getCurrentSequence();
+        if (seq != NULL)
+        {
+            Track* t = seq->getCurrentTrack();
+            if (t != NULL)
+            {
+                t->getMagneticGrid()->setTriplet(false);
+                
+                if (evt.GetKeyCode() == '1')
+                    t->getMagneticGrid()->setDivider(1);
+                else if (evt.GetKeyCode() == '2')
+                    t->getMagneticGrid()->setDivider(2);
+                else if (evt.GetKeyCode() == '3')
+                    t->getMagneticGrid()->setDivider(4);
+                else if (evt.GetKeyCode() == '4')
+                    t->getMagneticGrid()->setDivider(8);
+                else if (evt.GetKeyCode() == '5')
+                    t->getMagneticGrid()->setDivider(16);
+                else if (evt.GetKeyCode() == '6')
+                    t->getMagneticGrid()->setDivider(32);
+                else if (evt.GetKeyCode() == '7')
+                    t->getMagneticGrid()->setDivider(64);
+                else if (evt.GetKeyCode() == '8')
+                    t->getMagneticGrid()->setDivider(128);
+                    
+                Refresh();
+            }
+        }
+    }
 
     // perform editor-specific event filtering
     Editor* editor = gseq->getCurrentTrack()->getFocusedEditor();
