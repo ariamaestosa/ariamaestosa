@@ -298,7 +298,7 @@ void PreferencesData::fillSettingsVector()
     
     
     Setting* loadLastSession = new Setting(fromCString(SETTING_ID_LOAD_LAST_SESSION),
-                                     _("Load last session files"),
+                                     _("Restore open files from previous session"),
                                      SETTING_BOOL, true /* show in preferences */, wxT("0") );
     m_settings.push_back(loadLastSession); 
     

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-14 00:06-0400\n"
+"POT-Creation-Date: 2012-10-14 00:09-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -127,7 +127,7 @@ msgid "Show note names in piano-roll"
 msgstr ""
 
 #: Src/PreferencesData.cpp:301
-msgid "Load last session files"
+msgid "Restore open files from previous session"
 msgstr ""
 
 #: Src/PreferencesData.cpp:326 Src/GUI/MainFrameMenuBar.cpp:342
