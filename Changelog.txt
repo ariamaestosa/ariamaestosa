@@ -1,3 +1,11 @@
+1.4.5
+- Fix bug when saving after exporting MIDI file
+- Add 'Mute' and 'Solo'
+- Ask for sequence properties on creation
+- Add global track volume picker
+- Add keyboard shortcuts to change magnetic grid
+- Add 'Scroll notes into view' command
+
 1.4.4
 - Fix looping bugs
 - Fix magnetic grid dropdown menu
