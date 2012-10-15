@@ -1929,9 +1929,16 @@ void MainFrame::loadMidiFile(const wxString& filePath)
 
     // if a song is currently playing, it needs to stay on top
     if (PlatformMidiManager::get()->isPlaying() or m_paused) setCurrentSequence(old_currentSequence);
-
+   
     Display::render();
-
+    
+    Sequence* seq = getCurrentSequence();
+    int trackCount = seq->getTrackAmount();
+    for (int i=0 ; i<trackCount ; i++)
+    {
+        seq->getTrack(i)->getGraphics()->scrollKeyboardEditorNotesIntoView();
+    }
+    
     if (not warnings.empty())
     {
         std::set<wxString>::iterator it;
@@ -1959,6 +1966,8 @@ void MainFrame::loadMidiFile(const wxString& filePath)
         Layout();
 
     }
+    
+    //ariaTrack->getGraphics()->scrollKeyboardEditorNotesIntoView();
 }
 
 

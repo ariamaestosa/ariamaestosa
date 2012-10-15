@@ -481,6 +481,7 @@ void Editor::mouseDown(RelativeXCoord x, int y)
             m_clicked_on_note = true;
             m_track->playNote( m_last_clicked_note, false );
             
+            
             if (getMainFrame()->getMainPane()->isCommandDown())
             {
                 m_is_duplicating_note = true;
