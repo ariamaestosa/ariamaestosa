@@ -842,6 +842,17 @@ void MainFrame::setStatusText(wxString text)
 }
 
 
+void MainFrame::setResizingCursor()
+{
+    m_main_pane->SetCursor(wxCURSOR_SIZEWE);
+}
+
+
+void MainFrame::setNormalCursor()
+{
+    m_main_pane->SetCursor(wxNullCursor);
+}
+
 // ----------------------------------------------------------------------------------------------------------
 // ----------------------------------------------------------------------------------------------------------
 #if 0
@@ -2033,6 +2044,7 @@ void MainFrame::songHasFinishedPlaying()
 void MainFrame::evt_freeVolumeSlider( wxCommandEvent& evt )
 {
     freeVolumeSlider();
+    m_main_pane->renderNow();
 }
 
 // ----------------------------------------------------------------------------------------------------------

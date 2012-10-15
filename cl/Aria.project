@@ -255,10 +255,10 @@
     <File Name="../Src/Actions/ShiftString.h"/>
     <File Name="../Src/Actions/RemoveOverlapping.h"/>
     <File Name="../Src/Actions/DeleteTrack.cpp"/>
-    <File Name="../Src/Actions/RearrangeVertically.cpp"/>
-    <File Name="../Src/Actions/RearrangeVertically.h"/>
     <File Name="../Src/Actions/SetTrackVolume.cpp"/>
     <File Name="../Src/Actions/SetTrackVolume.h"/>
+    <File Name="../Src/Actions/ScrollNotesIntoView.cpp"/>
+    <File Name="../Src/Actions/ScrollNotesIntoView.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="IO">
     <File Name="../Src/IO/MidiToMemoryStream.h"/>
@@ -416,6 +416,7 @@
       
       
       
+      
       ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -462,6 +463,7 @@
       <General OutputFile="../bin/aria" IntermediateDirectory="../_build/linux_release" Command="../bin/aria" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="../bin" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
+      
       
       
       

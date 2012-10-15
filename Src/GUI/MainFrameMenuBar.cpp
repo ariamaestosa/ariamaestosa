@@ -23,7 +23,7 @@
 #include "Actions/DeleteTrack.h"
 #include "Actions/EditAction.h"
 #include "Actions/RemoveOverlapping.h"
-#include "Actions/RearrangeVertically.h"
+#include "Actions/ScrollNotesIntoView.h"
 
 #include "Dialogs/AboutDialog.h"
 #include "Dialogs/SongPropertiesDialog.h"
@@ -187,8 +187,8 @@ void MainFrame::initMenuBar()
     m_edit_menu->AppendSeparator();
 
     //I18N: menu item in the "edit" menu
-    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_REARRANGE_VERTICALLY, _("Scroll notes into view"),
-                                    MainFrame::menuEvent_rearrangeVertically );
+    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_SCROLL_NOTES_INTO_VIEW, _("Scroll notes into view"),
+                                    MainFrame::menuEvent_scrollNotesIntoView );
 
 
     //I18N: name of a menu
@@ -865,9 +865,9 @@ void MainFrame::menuEvent_removeOverlapping(wxCommandEvent& evt)
 }
 
 
-void MainFrame::menuEvent_rearrangeVertically(wxCommandEvent& evt)
+void MainFrame::menuEvent_scrollNotesIntoView(wxCommandEvent& evt)
 {
-    getCurrentSequence()->action( new Action::RearrangeVertically() );
+    getCurrentSequence()->action( new Action::ScrollNotesIntoView() );
 }
 
 // -----------------------------------------------------------------------------------------------------------
