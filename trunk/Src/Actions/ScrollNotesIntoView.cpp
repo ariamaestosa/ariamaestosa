@@ -14,7 +14,7 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "Actions/RearrangeVertically.h"
+#include "Actions/ScrollNotesIntoView.h"
 #include "AriaCore.h"
 
 #include "GUI/GraphicalTrack.h"
@@ -32,7 +32,7 @@ using namespace AriaMaestosa::Action;
 
 // --------------------------------------------------------------------------------------------------------
 
-RearrangeVertically::RearrangeVertically() :
+ScrollNotesIntoView::ScrollNotesIntoView() :
     //I18N: (undoable) action name
     MultiTrackAction( _("Scroll notes into view") )
 {
@@ -41,13 +41,13 @@ RearrangeVertically::RearrangeVertically() :
 
 // --------------------------------------------------------------------------------------------------------
 
-RearrangeVertically::~RearrangeVertically()
+ScrollNotesIntoView::~ScrollNotesIntoView()
 {
 }
 
 // --------------------------------------------------------------------------------------------------------
 
-void RearrangeVertically::undo()
+void ScrollNotesIntoView::undo()
 {
     int count;
     
@@ -60,7 +60,7 @@ void RearrangeVertically::undo()
 
 // --------------------------------------------------------------------------------------------------------
 
-void RearrangeVertically::perform()
+void ScrollNotesIntoView::perform()
 {
     KeyboardEditor* keyboardEditor;
     Track* track;
@@ -82,8 +82,7 @@ void RearrangeVertically::perform()
         sbPosition = keyboardEditor->getScrollbarPosition();
         m_positions.push_back(sbPosition);
         
-        // Computes maximum pitch in track (the higher MIDI pitch, 
-        // the lower the value returned by Track::getNotePitchID()
+        // Computes average pitch in track
         noteCount = track->getNoteAmount();
         if (noteCount > 0)
         {

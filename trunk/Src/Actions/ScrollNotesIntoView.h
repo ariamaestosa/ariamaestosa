@@ -14,8 +14,8 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _rearrangevertically_
-#define _rearrangevertically_
+#ifndef _scrollnotesintoview_
+#define _scrollnotesintoview_
 
 #include "Actions/EditAction.h"
 
@@ -30,14 +30,14 @@ namespace AriaMaestosa
         /**
          * @ingroup actions
          */
-        class RearrangeVertically : public MultiTrackAction
+        class ScrollNotesIntoView : public MultiTrackAction
         {
         private:
             std::vector<float> m_positions;
             
         public:
-            RearrangeVertically();
-            virtual ~RearrangeVertically();
+            ScrollNotesIntoView();
+            virtual ~ScrollNotesIntoView();
 
             void perform();
             void undo();
