@@ -562,6 +562,7 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
 
 
             if (lastEventTick_inTrack > lastEventTick) lastEventTick = lastEventTick_inTrack;
+            
         }//next track
 
         // erase empty tracks

@@ -56,6 +56,7 @@ static const int NOTE_TRACK_HEIGHT = 121;
 static const int NOTE_COUNT = 12;
 static const int NOTE_HEIGHT = NOTE_TRACK_HEIGHT/NOTE_COUNT;
 static const int NOTE_X_PADDING = 2;
+static const int NOTE_RESIZING_MODE_SPAN = 4; // in pixels
 
 #ifdef __WXMSW__
     static const int NOTE_NAME_Y_POS_OFFSET = 2;
@@ -77,8 +78,8 @@ KeyboardEditor::KeyboardEditor(GraphicalTrack* track) : Editor(track)
     int octave;
     wxFont drumFont = getDrumNamesFont();
     
+    m_resizing_mode = false;
     m_sb_position = 0.5;
-
     m_white_color.set(1.0, 1.0, 1.0, 1.0);
     m_black_color.set(0.0, 0.0, 0.0, 1.0);
     m_gray_color.set(0.5, 0.5, 0.5, 1.0);
@@ -148,18 +149,15 @@ void KeyboardEditor::mouseDown(RelativeXCoord x, const int y)
 
 void KeyboardEditor::processMouseMove(RelativeXCoord x, int y)
 {
+    MainFrame* mainFrame;
+    
+    mainFrame = getMainFrame();
     if (not PlatformMidiManager::get()->isPlaying())
     {
-        // TODO
-        getMainFrame()->SetCursor(wxCURSOR_SIZEWE); // doesn't work => connect to MainPane
-        
-        getMainFrame()->setStatusText(getNoteName(getLevelAtY(y)));
+        mainFrame->setStatusText(getNoteName(getLevelAtY(y)));
     }
-    else
-    {
-        // TODO
-        getMainFrame()->SetCursor(wxNullCursor);
-    }
+
+    //checkCursor(mainFrame, x, y);
 }
 
 // ***********************************************************************************************************
@@ -297,6 +295,28 @@ void KeyboardEditor::processKeyPress(int keycode, bool commandDown, bool shiftDo
     
     Editor::processKeyPress(keycode, commandDown, shiftDown);
 }
+
+
+// -----------------------------------------------------------------------------------------------------------
+void KeyboardEditor::scrollNotesIntoView()
+{
+    int noteCount = m_track->getNoteAmount();
+    if (noteCount > 0)
+    {
+        double maxNotePitch = 0;
+        
+        // Computes average pitch in track
+        for (int j=0 ; j<noteCount ; j++)
+        {
+            maxNotePitch += m_track->getNotePitchID(j);
+        }
+        int averageNotePitch = (int)(maxNotePitch / (double)noteCount);
+        
+        int localY = levelToLocalY(std::max(0, averageNotePitch - levelsInView()/2));
+        setYScrollInPixels(std::max(0, localY - 5));
+    }
+}
+
 
 // ************************************************************************************************************
 // ****************************************    RENDER      ****************************************************
@@ -842,5 +862,57 @@ void KeyboardEditor::drawMovedNote(int noteId, int x_step_move, int y_step_move,
         AriaRender::primitives();
     }
 }
-            
-           
+    
+
+void KeyboardEditor::checkCursor(MainFrame* mainFrame, RelativeXCoord x, int y)
+{
+    int flownOverNote;
+    bool resizingMode;
+    
+    const NoteSearchResult result = flownOverNoteAt(x, y, flownOverNote);
+    resizingMode = (result == FOUND_NOTE);
+    if (m_resizing_mode!=resizingMode)
+    {
+        m_resizing_mode=resizingMode;
+        if (resizingMode)
+        {
+            mainFrame->setResizingCursor();
+        }
+        else
+        {
+            mainFrame->setNormalCursor();
+        }
+    }
+}
+
+
+NoteSearchResult KeyboardEditor::flownOverNoteAt(RelativeXCoord x, const int y, int& noteID)
+{
+    NoteSearchResult result;
+    bool noteFound;
+    const int x_edit = x.getRelativeTo(EDITOR);
+    const int noteAmount = m_track->getNoteAmount();
+    
+    result = FOUND_NOTHING;
+    noteFound = false;
+    for (int n=0 ; n<noteAmount && !noteFound ; n++)
+    {
+        const int xOffset = m_gsequence->getXScrollInPixels();
+        const int x1 = m_graphical_track->getNoteStartInPixels(n) - xOffset;
+        const int x2 = m_graphical_track->getNoteEndInPixels(n)   - xOffset;
+        const int xResize = x2 - NOTE_RESIZING_MODE_SPAN;
+        
+        const int y1 = m_track->getNotePitchID(n)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels();
+
+        if (x_edit > x1 and x_edit < x2 and y > y1 and y < y1+12)
+        {
+            noteID = n;
+            noteFound = true;
+            result = (xResize>x1 && x_edit>xResize) ? FOUND_NOTE : FOUND_NOTHING;
+        }//end if
+    }//next
+
+    return result;
+}
+
+

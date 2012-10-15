@@ -97,6 +97,8 @@ namespace AriaMaestosa
         
         virtual void processKeyPress(int keycode, bool commandDown, bool shiftDown);
         
+        void scrollNotesIntoView();
+        
     private:
         
         struct FloatColor
@@ -115,6 +117,11 @@ namespace AriaMaestosa
             float a;
         };
         
+        FloatColor m_white_color;
+        FloatColor m_black_color;
+        FloatColor m_gray_color;
+        bool m_resizing_mode;
+        
         wxString getNoteName(int pitchID, bool addOctave = true);
         void applyColor(FloatColor color);
         void applyInvertedColor(FloatColor color);
@@ -122,10 +129,9 @@ namespace AriaMaestosa
         void drawNoteTrack(int x, int y, bool focus);
         void drawMovedNote(int noteId, int x_step_move, int y_step_move, 
                                 const FloatColor& floatColor, bool showNoteNames);
+        void checkCursor(MainFrame* mainFrame, RelativeXCoord x, int y);
+        NoteSearchResult flownOverNoteAt(RelativeXCoord x, const int y, int& noteID);
         
-        FloatColor m_white_color;
-        FloatColor m_black_color;
-        FloatColor m_gray_color;
     };
 
 }

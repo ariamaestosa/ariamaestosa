@@ -755,8 +755,6 @@ bool GraphicalTrack::processMouseDown(RelativeXCoord mousex, int mousey)
             int screen_x, screen_y;
             
             Display::clientToScreen(mousex.getRelativeTo(WINDOW),mousey, &screen_x, &screen_y);
-            
-            // TODO 
             showVolumeSlider(screen_x, screen_y, m_track);
         }
 
@@ -2027,6 +2025,11 @@ void GraphicalTrack::switchDivider(bool forward)
     }
 }
 
+
+void GraphicalTrack::scrollKeyboardEditorNotesIntoView()
+{
+    m_keyboard_editor->scrollNotesIntoView();
+}
 
 
 // ----------------------------------------------------------------------------------------------------------

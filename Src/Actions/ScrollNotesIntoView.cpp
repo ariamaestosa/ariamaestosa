@@ -65,7 +65,6 @@ void ScrollNotesIntoView::perform()
     KeyboardEditor* keyboardEditor;
     Track* track;
     int trackCount;
-    int noteCount;
     float sbPosition;
     
     wxBeginBusyCursor();
@@ -82,20 +81,8 @@ void ScrollNotesIntoView::perform()
         sbPosition = keyboardEditor->getScrollbarPosition();
         m_positions.push_back(sbPosition);
         
-        // Computes average pitch in track
-        noteCount = track->getNoteAmount();
-        if (noteCount > 0)
-        {
-            double maxNotePitch = 0;
-            for (int j=0 ; j<noteCount ; j++)
-            {
-                maxNotePitch += track->getNotePitchID(j);
-            }
-            int averageNotePitch = (int)(maxNotePitch / (double)noteCount);
-            
-            int localY = keyboardEditor->levelToLocalY(std::max(0, averageNotePitch - keyboardEditor->levelsInView()/2));
-            keyboardEditor->setYScrollInPixels(std::max(0, localY - 5));
-        }
+        // Performs action
+        keyboardEditor->scrollNotesIntoView();
     }
 
     wxEndBusyCursor();

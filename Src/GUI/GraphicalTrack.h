@@ -249,6 +249,8 @@ namespace AriaMaestosa
         void selectNote(const int id, const bool selected, bool ignoreModifiers=false);
         
         void switchDivider(bool forward);
+        
+        void scrollKeyboardEditorNotesIntoView();
 
         // serialization
         void saveToFile(wxFileOutputStream& fileout);
