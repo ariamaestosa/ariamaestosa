@@ -123,9 +123,15 @@ public:
         
         m_keySigRadioBox = new wxRadioBox(this, ID_KEY_SIG_RADIOBOX, _("Symbols"), wxDefaultPosition, wxDefaultSize, 3, symbolTypeChoices, 1);
         Connect(ID_KEY_SIG_RADIOBOX,wxEVT_COMMAND_RADIOBOX_SELECTED,(wxObjectEventFunction)&SongPropertiesDialog::OnKeySigRadioBoxSelect);
-        keySymbolAmountBoxSizer->Add(m_keySigRadioBox, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+        keySymbolAmountBoxSizer->Add(m_keySigRadioBox, 1, wxALL, 5);
         
-        m_keySymbolAmountSpinCtrl = new wxSpinCtrl(this, ID_KEY_SYMBOL_AMOUNT_SPINCTRL, _T("0"), wxDefaultPosition, wxSize(38,-1), 0, 0, MAX_KEY_SYMBOL_AMOUNT, 0);
+        #ifdef __WXMAC__
+        wxSize textboxSize(55,-1);
+        #else
+        wxSize textboxSize(50,-1);
+        #endif
+        
+        m_keySymbolAmountSpinCtrl = new wxSpinCtrl(this, ID_KEY_SYMBOL_AMOUNT_SPINCTRL, _T("0"), wxDefaultPosition, textboxSize, 0, 0, MAX_KEY_SYMBOL_AMOUNT, 0);
         m_keySymbolAmountSpinCtrl->SetValue(_T("0"));
         Connect(ID_KEY_SYMBOL_AMOUNT_SPINCTRL,wxEVT_COMMAND_SPINCTRL_UPDATED,(wxObjectEventFunction)&SongPropertiesDialog::OnSpinCtrlChange);
         keySymbolAmountBoxSizer->Add(m_keySymbolAmountSpinCtrl, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -150,11 +156,11 @@ public:
         wxBoxSizer* timeSignatureBoxSizer = new wxBoxSizer(wxHORIZONTAL);
         m_timeSignatureStaticText = new wxStaticText(this, wxID_ANY, _("Time Signature"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_TIME_SIGNATURE_STATICTEXT"));
         timeSignatureBoxSizer->Add(m_timeSignatureStaticText, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-        m_numeratorSpinCtrl = new wxSpinCtrl(this, wxID_ANY, wxT("4"), wxDefaultPosition, wxDLG_UNIT(this,wxSize(25,-1)), 0, 1, 100, 4, _T("ID_TOP_SPINCTRL"));
+        m_numeratorSpinCtrl = new wxSpinCtrl(this, wxID_ANY, wxT("4"), wxDefaultPosition, textboxSize, 0, 1, 100, 4, _T("ID_TOP_SPINCTRL"));
         timeSignatureBoxSizer->Add(m_numeratorSpinCtrl, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
         wxStaticText* slashStaticText = new wxStaticText(this, wxID_ANY, wxT("/"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
         timeSignatureBoxSizer->Add(slashStaticText, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-        m_denominatorSpinCtrl = new wxSpinCtrl(this, wxID_ANY, wxT("4"), wxDefaultPosition, wxDLG_UNIT(this,wxSize(25,-1)), 0, 1, 100, 4, _T("ID_BOTTOM_SPINCTRL"));
+        m_denominatorSpinCtrl = new wxSpinCtrl(this, wxID_ANY, wxT("4"), wxDefaultPosition, textboxSize, 0, 1, 100, 4, _T("ID_BOTTOM_SPINCTRL"));
         timeSignatureBoxSizer->Add(m_denominatorSpinCtrl, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
         m_boxSizer->Add(timeSignatureBoxSizer, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 
