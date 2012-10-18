@@ -157,14 +157,14 @@ void KeyboardEditor::processMouseMove(RelativeXCoord x, int y)
         mainFrame->setStatusText(getNoteName(getLevelAtY(y)));
     }
 
-    //checkCursor(mainFrame, x, y);
+    checkCursor(mainFrame, x, y);
 }
 
 // ***********************************************************************************************************
 // ******************************************    EDITOR METHODS      *****************************************
 // ***********************************************************************************************************
 #if 0
-#pragma mark -
+#pragma mark - 
 #pragma mark Editor methods
 #endif
 
