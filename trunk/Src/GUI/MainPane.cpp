@@ -859,6 +859,8 @@ void MainPane::rightClick(wxMouseEvent& event)
     
     if (mf->getSequenceAmount() == 0) return;
     
+    mf->onMouseClicked();
+    
     GraphicalSequence* gseq   = mf->getCurrentGraphicalSequence();
     Sequence* seq = gseq->getModel();
     const int measureBarHeight = gseq->getMeasureBar()->getMeasureBarHeight();
@@ -907,6 +909,8 @@ void MainPane::mouseDown(wxMouseEvent& event)
         Refresh();
         return;
     }
+    
+    mf->onMouseClicked();
     
     GraphicalSequence* gseq = mf->getCurrentGraphicalSequence();
     Sequence* seq = gseq->getModel();

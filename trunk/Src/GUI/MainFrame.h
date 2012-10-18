@@ -536,6 +536,8 @@ namespace AriaMaestosa
 
         /** @brief Implement callback from IMeasureDataListener */
         virtual void onMeasureDataChange(int change);
+        
+        void onMouseClicked();
 
         DECLARE_EVENT_TABLE();
     };

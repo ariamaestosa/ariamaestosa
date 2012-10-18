@@ -84,6 +84,11 @@ namespace AriaMaestosa
 #pragma mark Functions
 #endif
     
+    bool isVolumeSliderShown()
+    {
+        return (sliderframe != NULL);
+    }
+    
     void freeVolumeSlider()
     {
         if (sliderframe != NULL)
@@ -91,7 +96,6 @@ namespace AriaMaestosa
             sliderframe->Destroy();
             sliderframe = NULL;
         }
-        
     }
     
     void showVolumeSlider(int x, int y, int noteID, Track* track)
@@ -125,7 +129,7 @@ static const int SLIDER_MAX_VALUE = 127;
 static const int MAX_TRACK_VOLUME = 100;
 
 
-VolumeSlider::VolumeSlider() : wxDialog(NULL, wxNewId(),  _("volume"), wxDefaultPosition,
+VolumeSlider::VolumeSlider() : wxDialog(getMainFrame(), wxNewId(),  _("volume"), wxDefaultPosition,
                                         wxSize(VOLUME_SLIDER_FRAME_WIDTH, VOLUME_SLIDER_FRAME_HEIGHT),
                                         wxSTAY_ON_TOP | wxWANTS_CHARS | wxBORDER_NONE )
 {
@@ -171,7 +175,7 @@ VolumeSlider::VolumeSlider() : wxDialog(NULL, wxNewId(),  _("volume"), wxDefault
     Connect(m_value_text->GetId(), wxEVT_COMMAND_TEXT_ENTER,   wxCommandEventHandler(VolumeSlider::enterPressed),      NULL, this);
     
     Connect(wxID_CANCEL, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(VolumeSlider::onCancel), NULL, this);
-    
+
     SetMinSize(wxSize(VOLUME_SLIDER_FRAME_WIDTH, VOLUME_SLIDER_FRAME_HEIGHT));
     SetMaxSize(wxSize(VOLUME_SLIDER_FRAME_WIDTH, VOLUME_SLIDER_FRAME_HEIGHT));
 }
@@ -188,6 +192,8 @@ void VolumeSlider::onCancel(wxCommandEvent& evt)
 {
     closeWindow();
 }
+
+
 
 // -------------------------------------------------------------------------------------------------------
 
@@ -286,7 +292,7 @@ void VolumeSlider::enterPressed(wxCommandEvent& evt)
 
 void VolumeSlider::closeWindow()
 {
-    wxDialog::EndModal(m_return_code);
+    Show(false); 
     m_current_track = NULL;
     Display::requestFocus();
     
@@ -336,7 +342,7 @@ void VolumeSlider::launchPicker(int x, int y, Track* track, int value)
         m_value_text->SetFocus();
         m_value_text->SetSelection(-1,-1); // select all
         
-        m_return_code = ShowModal(); 
+        m_return_code = Show(true); 
     }
 }
 

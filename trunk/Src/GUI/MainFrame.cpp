@@ -2039,6 +2039,19 @@ void MainFrame::onSequenceDataChanged()
     m_main_pane->renderNow();
 }
 
+
+// ----------------------------------------------------------------------------------------------------------
+
+void MainFrame::onMouseClicked()
+{
+    if (isVolumeSliderShown())
+    {
+        freeVolumeSlider();
+        m_main_pane->renderNow();
+    }
+}
+
+
 // ----------------------------------------------------------------------------------------------------------
 
 /** event sent by the MusicPlayer to notify that it has stopped playing because the song is over. */

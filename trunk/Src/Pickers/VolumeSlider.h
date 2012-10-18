@@ -31,6 +31,8 @@ namespace AriaMaestosa
     DECLARE_LOCAL_EVENT_TYPE(wxEVT_DESTROY_VOLUME_SLIDER, -1)
     const int DESTROY_SLIDER_EVENT_ID = 100000;
     
+     bool isVolumeSliderShown();
+    
     /**
       * @ingroup pickers
       * @brief show small frame used to pick a note volume (velocity)
