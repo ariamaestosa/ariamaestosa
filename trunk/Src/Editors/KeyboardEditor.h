@@ -30,6 +30,7 @@ namespace AriaMaestosa
     class Track; // forward
     class Sequence;
     class GraphicalTrack;
+    class MainFrame;
     
     class KeyboardEditor : public Editor
     {
@@ -97,6 +98,10 @@ namespace AriaMaestosa
         
         virtual void processKeyPress(int keycode, bool commandDown, bool shiftDown);
         
+        /** last action when mouse button is up */
+        virtual bool performClickedOnNoteFinalAction(RelativeXCoord mousex_current, int mousey_current,
+                                                    RelativeXCoord mousex_initial, int mousey_initial);
+        
         void scrollNotesIntoView();
         
     private:
@@ -122,6 +127,8 @@ namespace AriaMaestosa
         FloatColor m_gray_color;
         bool m_resizing_mode;
         
+        MainFrame* m_main_frame;
+        
         wxString getNoteName(int pitchID, bool addOctave = true);
         void applyColor(FloatColor color);
         void applyInvertedColor(FloatColor color);
@@ -129,7 +136,9 @@ namespace AriaMaestosa
         void drawNoteTrack(int x, int y, bool focus);
         void drawMovedNote(int noteId, int x_step_move, int y_step_move, 
                                 const FloatColor& floatColor, bool showNoteNames);
-        void checkCursor(MainFrame* mainFrame, RelativeXCoord x, int y);
+        void drawResizedNote(int noteId, int x_step_resize, 
+                                const FloatColor& floatColor, bool showNoteNames);
+        void checkCursor(RelativeXCoord x, int y);
         NoteSearchResult flownOverNoteAt(RelativeXCoord x, const int y, int& noteID);
         
     };

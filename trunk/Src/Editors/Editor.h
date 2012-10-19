@@ -222,6 +222,10 @@ namespace AriaMaestosa
         virtual void mouseUp(RelativeXCoord mousex_current, int mousey_current,
                              RelativeXCoord mousex_initial, int mousey_initial);
         
+        /** last action when mouse button is up */
+        virtual bool performClickedOnNoteFinalAction(RelativeXCoord mousex_current, int mousey_current,
+                                                    RelativeXCoord mousex_initial, int mousey_initial);
+        
         /** @brief event callback for when mouse right button is pressed in the editor */
         virtual void rightClick(RelativeXCoord x, int y);
         

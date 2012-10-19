@@ -22,7 +22,9 @@
 #include "AriaCore.h"
 #include "Actions/AddNote.h"
 #include "Actions/EditAction.h"
+#include "Actions/Duplicate.h"
 #include "Actions/MoveNotes.h"
+#include "Actions/ResizeNotes.h"
 #include "Editors/RelativeXCoord.h"
 #include "GUI/GraphicalSequence.h"
 #include "GUI/GraphicalTrack.h"
@@ -78,6 +80,7 @@ KeyboardEditor::KeyboardEditor(GraphicalTrack* track) : Editor(track)
     int octave;
     wxFont drumFont = getDrumNamesFont();
     
+    m_main_frame = getMainFrame();
     m_resizing_mode = false;
     m_sb_position = 0.5;
     m_white_color.set(1.0, 1.0, 1.0, 1.0);
@@ -149,15 +152,12 @@ void KeyboardEditor::mouseDown(RelativeXCoord x, const int y)
 
 void KeyboardEditor::processMouseMove(RelativeXCoord x, int y)
 {
-    MainFrame* mainFrame;
-    
-    mainFrame = getMainFrame();
     if (not PlatformMidiManager::get()->isPlaying())
     {
-        mainFrame->setStatusText(getNoteName(getLevelAtY(y)));
+        m_main_frame->setStatusText(getNoteName(getLevelAtY(y)));
     }
 
-    checkCursor(mainFrame, x, y);
+    checkCursor(x, y);
 }
 
 // ***********************************************************************************************************
@@ -294,6 +294,47 @@ void KeyboardEditor::processKeyPress(int keycode, bool commandDown, bool shiftDo
     }
     
     Editor::processKeyPress(keycode, commandDown, shiftDown);
+}
+
+
+
+// ------------------------------------------------------------------------------------------------------------
+
+bool KeyboardEditor::performClickedOnNoteFinalAction(RelativeXCoord mousex_current, int mousey_current,
+                                                    RelativeXCoord mousex_initial, int mousey_initial)
+{
+    const int  x_difference = mousex_current.getRelativeTo(MIDI) - mousex_initial.getRelativeTo(MIDI);
+    const int  y_difference = mousey_current-mousey_initial;
+
+    const int relativeX = m_track->snapMidiTickToGrid(x_difference, false);
+    const int relativeY = (int)round( (float)y_difference / (float)m_y_step);
+    bool success = true;
+
+    if (relativeX == 0 and relativeY == 0)
+    {
+        success = false;
+    }
+    else
+    {
+        if (m_is_duplicating_note)
+        {
+            Action::EditAction* action = m_track->getSequence()->getLatestAction();
+            makeMoveNoteEvent(relativeX, relativeY, m_last_clicked_note, dynamic_cast<Action::Duplicate*>(action));
+        }
+        else
+        {
+            if (m_resizing_mode)
+            {
+                m_track->action( new Action::ResizeNotes(relativeX, SELECTED_NOTES));
+            }
+            else
+            {
+                makeMoveNoteEvent(relativeX, relativeY, m_last_clicked_note);
+            }
+        }
+    }
+
+    return success;
 }
 
 
@@ -578,29 +619,56 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     // ------------------------- move note (preview) -----------------------
     if (m_clicked_on_note)
     {
-        int x_difference = mousex_current.getRelativeTo(MIDI) - mousex_initial.getRelativeTo(MIDI);
-        int y_difference = mousey_current - mousey_initial;
-
-        const int x_step_move = (int)( m_track->snapMidiTickToGrid(x_difference, false) * m_gsequence->getZoom() );
-        const int y_step_move = (int)round( (float)y_difference/ (float)Y_STEP_HEIGHT );
-
-        // move a single note
-        if (m_last_clicked_note != -1)
+        if (m_resizing_mode)
         {
-            floatColor.set(1, 0.85, 0, 0.5);
-            drawMovedNote(m_last_clicked_note, x_step_move, y_step_move, floatColor, showNoteNames);
+            int x_difference = mousex_current.getRelativeTo(MIDI) - mousex_initial.getRelativeTo(MIDI);
+            const int x_step_resize = (int)( m_track->snapMidiTickToGrid(x_difference, false) * m_gsequence->getZoom() );
+            
+            // resize a single note
+            if (m_last_clicked_note != -1)
+            {
+                floatColor.set(1, 0.85, 0, 0.5);
+                drawResizedNote(m_last_clicked_note, x_step_resize, floatColor, showNoteNames);
+            }
+            else
+            {
+                // resize a bunch of notes
+                floatColor.set(0.0, 0.0, 0.0, 1.0);
+
+                for (int n=0; n<m_track->getNoteAmount(); n++)
+                {
+                    if (not m_track->isNoteSelected(n)) continue;
+                    drawResizedNote(n, x_step_resize, floatColor, showNoteNames);
+                }//next
+
+            }
         }
         else
         {
-            // move a bunch of notes
-            floatColor.set(0.0, 0.0, 0.0, 1.0);
+            int x_difference = mousex_current.getRelativeTo(MIDI) - mousex_initial.getRelativeTo(MIDI);
+            int y_difference = mousey_current - mousey_initial;
 
-            for (int n=0; n<m_track->getNoteAmount(); n++)
+            const int x_step_move = (int)( m_track->snapMidiTickToGrid(x_difference, false) * m_gsequence->getZoom() );
+            const int y_step_move = (int)round( (float)y_difference/ (float)Y_STEP_HEIGHT );
+
+            // move a single note
+            if (m_last_clicked_note != -1)
             {
-                if (not m_track->isNoteSelected(n)) continue;
-                drawMovedNote(n, x_step_move, y_step_move, floatColor, showNoteNames);
-            }//next
+                floatColor.set(1, 0.85, 0, 0.5);
+                drawMovedNote(m_last_clicked_note, x_step_move, y_step_move, floatColor, showNoteNames);
+            }
+            else
+            {
+                // move a bunch of notes
+                floatColor.set(0.0, 0.0, 0.0, 1.0);
 
+                for (int n=0; n<m_track->getNoteAmount(); n++)
+                {
+                    if (not m_track->isNoteSelected(n)) continue;
+                    drawMovedNote(n, x_step_move, y_step_move, floatColor, showNoteNames);
+                }//next
+
+            }
         }
 
     }
@@ -862,9 +930,37 @@ void KeyboardEditor::drawMovedNote(int noteId, int x_step_move, int y_step_move,
         AriaRender::primitives();
     }
 }
+
+
+void KeyboardEditor::drawResizedNote(int noteId, int x_step_resize, const FloatColor& floatColor, bool showNoteNames)
+{
+    int x1 = m_graphical_track->getNoteStartInPixels(noteId) - m_gsequence->getXScrollInPixels();
+    int x2 = m_graphical_track->getNoteEndInPixels  (noteId) - m_gsequence->getXScrollInPixels();
+    int y  = m_track->getNotePitchID(noteId);
+
+    AriaRender::primitives();
+    applyColor(floatColor);
+    AriaRender::rect(x1 + getEditorXStart(),
+                     y*Y_STEP_HEIGHT + 1 + getEditorYStart() - getYScrollInPixels(),
+                     std::max(x1 + getEditorXStart(), x2 - 1 + x_step_resize + getEditorXStart()),
+                     (y + 1)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels());
+                    
+    if (showNoteNames)
+    {
+        AriaRender::images();
+        applyInvertedColor(floatColor);
+
+        AriaRender::renderString(getNoteName(y),
+                                 x1 + getEditorXStart(),
+                                 (y + 1)*Y_STEP_HEIGHT + 1 + getEditorYStart() - getYScrollInPixels(),
+                                 std::max(0, x2 + x_step_resize - x1  -1));
+
+        AriaRender::primitives();
+    }
+}
     
 
-void KeyboardEditor::checkCursor(MainFrame* mainFrame, RelativeXCoord x, int y)
+void KeyboardEditor::checkCursor(RelativeXCoord x, int y)
 {
     int flownOverNote;
     bool resizingMode;
@@ -876,11 +972,11 @@ void KeyboardEditor::checkCursor(MainFrame* mainFrame, RelativeXCoord x, int y)
         m_resizing_mode=resizingMode;
         if (resizingMode)
         {
-            mainFrame->setResizingCursor();
+            m_main_frame->setResizingCursor();
         }
         else
         {
-            mainFrame->setNormalCursor();
+            m_main_frame->setNormalCursor();
         }
     }
 }

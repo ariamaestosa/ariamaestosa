@@ -642,28 +642,11 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
 
         if (m_clicked_on_note)
         {
-
-            const int  x_difference = mousex_current.getRelativeTo(MIDI) - mousex_initial.getRelativeTo(MIDI);
-            const int  y_difference = mousey_current-mousey_initial;
-
-            const int relativeX = m_track->snapMidiTickToGrid(x_difference, false);
-            const int relativeY = (int)round( (float)y_difference / (float)m_y_step);
-
-            if (relativeX == 0 and relativeY == 0)
+            if (!performClickedOnNoteFinalAction(mousex_current, mousey_current,
+                                                 mousex_initial, mousey_initial))
             {
                 goto end_of_func;
             }
-
-            if (m_is_duplicating_note)
-            {
-                Action::EditAction* action = m_track->getSequence()->getLatestAction();
-                makeMoveNoteEvent(relativeX, relativeY, m_last_clicked_note, dynamic_cast<Action::Duplicate*>(action));
-            }
-            else
-            {
-                makeMoveNoteEvent(relativeX, relativeY, m_last_clicked_note);
-            }
-            
         }// end if clicked on note
 
     }//end if m_mouse_is_in_editor
@@ -677,6 +660,40 @@ end_of_func:
     m_is_duplicating_note = false;
     Display::render();
 }
+
+
+// ------------------------------------------------------------------------------------------------------------
+
+bool Editor::performClickedOnNoteFinalAction(RelativeXCoord mousex_current, int mousey_current,
+                                                RelativeXCoord mousex_initial, int mousey_initial)
+{
+    const int  x_difference = mousex_current.getRelativeTo(MIDI) - mousex_initial.getRelativeTo(MIDI);
+    const int  y_difference = mousey_current-mousey_initial;
+
+    const int relativeX = m_track->snapMidiTickToGrid(x_difference, false);
+    const int relativeY = (int)round( (float)y_difference / (float)m_y_step);
+    bool success = true;
+    
+    if (relativeX == 0 and relativeY == 0)
+    {
+        success = false;
+    }
+    else
+    {
+        if (m_is_duplicating_note)
+        {
+            Action::EditAction* action = m_track->getSequence()->getLatestAction();
+            makeMoveNoteEvent(relativeX, relativeY, m_last_clicked_note, dynamic_cast<Action::Duplicate*>(action));
+        }
+        else
+        {
+            makeMoveNoteEvent(relativeX, relativeY, m_last_clicked_note);
+        }
+    }
+
+    return success;
+}
+
 
 // ------------------------------------------------------------------------------------------------------------
 
