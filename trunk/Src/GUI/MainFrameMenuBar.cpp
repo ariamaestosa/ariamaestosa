@@ -187,7 +187,7 @@ void MainFrame::initMenuBar()
     m_edit_menu->AppendSeparator();
 
     //I18N: menu item in the "edit" menu
-    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_SCROLL_NOTES_INTO_VIEW, _("Scroll notes into view"),
+    m_edit_menu -> QUICK_ADD_MENU ( MENU_EDIT_SCROLL_NOTES_INTO_VIEW, wxString(_("Scroll notes into view"))+wxT("\tCtrl-K"),
                                     MainFrame::menuEvent_scrollNotesIntoView );
 
 
