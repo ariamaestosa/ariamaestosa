@@ -299,12 +299,14 @@ namespace AriaMaestosa
         void updateCurrentDir(wxString& path);
 
         wxArrayString m_files_to_open;
+        bool m_reload_mode;
+        
         
         
         bool handleApplicationEnd();
         void saveWindowPos();
         void saveOpenedFiles();
-
+        void scrollKeyboardEditorNotesIntoView(Sequence* seq);
 
     public:
         LEAK_CHECK();
@@ -348,7 +350,7 @@ namespace AriaMaestosa
         
         void setResizingCursor();
         void setNormalCursor();
-
+        void setReloadMode(bool enable);
 
         // wait window events
         void evt_showWaitWindow(wxCommandEvent& evt);

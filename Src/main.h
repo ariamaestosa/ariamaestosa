@@ -48,6 +48,10 @@ namespace AriaMaestosa
 
         bool m_render_loop_on;
         
+        
+        wxWidgetApp() { frame = NULL; }
+        
+        
         /** implement callback from wxApp */
         bool OnInit();
         
