@@ -78,6 +78,7 @@ public:
         wxString concatenatedPaths(data, wxConvUTF8);
 #endif
         wxString path;
+        wxArrayString pathArray;
         
         std::cout << "[AppIPCConnection] OnExecute : " << size << " : " << concatenatedPaths.mb_str() << std::endl;
         
@@ -85,8 +86,23 @@ public:
         while ( tokenizer.HasMoreTokens() )
         {
             path = tokenizer.GetNextToken();
-            wxGetApp().loadFile(path);
+            
+            if (path == wxT("--reload"))
+            {
+                wxGetApp().frame->setReloadMode(true);
+            }
+            else
+            {
+                pathArray.Add(path);
+            }
         }
+        
+        for (size_t i=0 ; i<pathArray.size() ; i++)
+        {
+            wxGetApp().loadFile(pathArray[i]);
+        }
+        
+        wxGetApp().frame->setReloadMode(false);
     
         return true;
     }
@@ -176,7 +192,6 @@ bool wxWidgetApp::OnInit()
     std::cout << "[main] wxWidgetsApp::OnInit (enter)" << std::endl;
 
     m_render_loop_on = false;
-    frame = NULL;
     appName = GetAppName();
     
     for (int n=0; n<argc; n++)

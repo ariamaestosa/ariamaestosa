@@ -312,6 +312,7 @@ MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(1
     m_main_panel = new wxPanel(this);
     m_disabled_for_welcome_screen = false;
     m_paused = false;
+    m_reload_mode = false;
 
     m_root_sizer = new wxBoxSizer(wxVERTICAL);
     m_root_sizer->Add(m_main_panel, 1, wxEXPAND | wxALL, 0);
@@ -851,6 +852,12 @@ void MainFrame::setResizingCursor()
 void MainFrame::setNormalCursor()
 {
     m_main_pane->SetCursor(wxNullCursor);
+}
+
+
+void MainFrame::setReloadMode(bool enable)
+{
+    m_reload_mode = enable;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -1817,6 +1824,12 @@ void MainFrame::loadFile(const wxString& filePath)
         if (existingFilePath == inputLowerFilePath)
         {
             setCurrentSequence(i);
+            
+            if (m_reload_mode)
+            {
+                reloadFile();
+            }
+            
             found = true;
         }
     }
@@ -1932,13 +1945,8 @@ void MainFrame::loadMidiFile(const wxString& filePath)
    
     Display::render();
     
-    Sequence* seq = getCurrentSequence();
-    int trackCount = seq->getTrackAmount();
-    for (int i=0 ; i<trackCount ; i++)
-    {
-        seq->getTrack(i)->getGraphics()->scrollKeyboardEditorNotesIntoView();
-    }
-    
+    scrollKeyboardEditorNotesIntoView(getCurrentSequence());
+ 
     if (not warnings.empty())
     {
         std::set<wxString>::iterator it;
@@ -2012,8 +2020,9 @@ void MainFrame::reloadFile()
         }
 
         WaitWindow::hide();
+        seq->clearUndoStack();
+        scrollKeyboardEditorNotesIntoView(seq);
         updateVerticalScrollbar();
-
         Display::render();
     }
 }
@@ -2240,3 +2249,15 @@ void MainFrame::saveOpenedFiles()
     pd->setValue(SETTING_ID_LAST_CURRENT_SEQUENCE, 
                  wxString::Format(wxT("%i"), m_current_sequence));
 }
+
+
+void MainFrame::scrollKeyboardEditorNotesIntoView(Sequence* seq)
+{
+    int trackCount = seq->getTrackAmount();
+    for (int i=0 ; i<trackCount ; i++)
+    {
+        seq->getTrack(i)->getGraphics()->scrollKeyboardEditorNotesIntoView();
+    }
+}
+   
+
