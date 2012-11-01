@@ -9,7 +9,7 @@ Help("""
             does a release build, auto-detects your system
             
         Flags you can pass when calling 'scons' :
-            platform=[macosx/linux/unix/windows]
+            platform=[macosx/linux/unix/windows/netbsd]
                 specify platform, if not auto-detected
             config=[debug/release]
                 specify build type
@@ -38,7 +38,7 @@ Help("""
             Installs Aria, auto-detects system (run as root if necessary)
             
         Flags you can pass when calling 'scons install' :
-            platform=[macosx/linux/unix]
+            platform=[macosx/linux/unix/netbsd]
                 specify platform, if not auto-detected
             prefix=[/opt/local or something else]
                 install to a different prefix than default /usr/local
@@ -99,6 +99,8 @@ def main_Aria_func():
         #auto-detect
         if os.name == 'nt':
             which_os = "windows"
+        elif os.uname()[0] == 'NetBSD' or os.uname()[0] == 'FreeBSD':
+            which_os = "netbsd"
         elif os.uname()[0] == 'Linux':
             which_os = "linux"
         elif os.uname()[0] == 'Darwin':
@@ -107,8 +109,8 @@ def main_Aria_func():
             print "!! Unknown operating system '" + os.uname()[0] + "', defaulting to Unix"
             which_os = "unix"
 
-    if not which_os in ["linux", "macosx", "unix", "windows"]:
-        print "!! Unknown operating system '" + which_os + "', please specify 'platform=[linux/macosx/unix/windows]'"
+    if not which_os in ["netbsd", "linux", "macosx", "unix", "windows"]:
+        print "!! Unknown operating system '" + which_os + "', please specify 'platform=[linux/macosx/unix/windows/netbsd]'"
         sys.exit(0) 
     
     print">> Operating system : " + which_os 
@@ -116,14 +118,14 @@ def main_Aria_func():
     # check what to do
     if 'uninstall' in COMMAND_LINE_TARGETS:
         # uninstall
-        if which_os in ["linux", "unix"]:
+        if which_os in ["linux", "unix", "netbsd"]:
             uninstall_Aria_unix()
         else:
             print "!! Unknown operation or system (uninstall is not valid on your system)"
             sys.exit(0)
     elif 'install' in COMMAND_LINE_TARGETS:
         # install
-        if which_os in ["linux", "unix"]:
+        if which_os in ["linux", "unix", "netbsd"]:
             compile_Aria(which_os)
         elif which_os == "macosx":
             install_Aria_mac()
@@ -345,6 +347,30 @@ def compile_Aria(which_os):
             
         if renderer == 'opengl':
             env.Append(LINKFLAGS = ['-framework','OpenGL','-framework','AGL'])
+        
+    # NetBSD, FreeBSD (Alsa/tiMidity)
+    elif which_os == "netbsd":
+    
+        print "*** Adding Alsa libraries and defines"
+        
+        if renderer == 'opengl':
+            env.Append(CCFLAGS=['-DwxUSE_GLCANVAS=1'])
+        
+        env.Append(CCFLAGS=['-D_ALSA'])
+        
+        env.Append(CPPPATH = ['/usr/include'])
+        
+	# env.Append(LINKFLAGS = ['-Wl,--rpath,/usr/local/lib/'])
+	# env.Append(LIBPATH = ['usr/local/lib/','usr/lib/', '/opt/gnome/lib'])
+        if compiler_arch == '64bit':
+            env.Append(CCFLAGS=['-D__X86_64__'])
+            
+        if renderer == 'opengl':
+            env.Append(LIBS = ['GL', 'GLU'])
+            
+        env.Append(LIBS = ['asound'])
+        env.ParseConfig( 'pkg-config --cflags glib-2.0' )
+        env.ParseConfig( 'pkg-config --libs glib-2.0' )
         
     # linux (Alsa/tiMidity)
     elif which_os == "linux":
