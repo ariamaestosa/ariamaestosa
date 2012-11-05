@@ -28,12 +28,14 @@
 #include <wx/toolbar.h>
 #include <wx/panel.h>
 
+
 #include "AriaCore.h"
 #include "GUI/GraphicalSequence.h"
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 #include "ptr_vector.h"
 #include "Utils.h"
+#include <map>
 
 class wxButton;
 class wxScrollBar;
@@ -45,6 +47,8 @@ class wxFlexGridSizer;
 class wxTextCtrl;
 class wxBoxSizer;
 class wxStaticBitmap;
+class wxTimer;
+class wxTimerEvent;
 
 
 #if wxCHECK_VERSION(2,9,1)
@@ -290,7 +294,9 @@ namespace AriaMaestosa
         wxString m_current_dir;
         
         bool m_file_in_command_line;
-
+        
+        std::map<int, wxTimer*> m_timer_map;
+       
 #if !defined(__WXOSX_CARBON__)
         wxStaticBitmap* m_tools_bitmap;
         void onToolsBitmapMousedown(wxMouseEvent& evt);
@@ -306,7 +312,8 @@ namespace AriaMaestosa
         bool handleApplicationEnd();
         void saveWindowPos();
         void saveOpenedFiles();
-        void scrollKeyboardEditorNotesIntoView(Sequence* seq);
+        void requestForScrollKeyboardEditorNotesIntoView();
+        void scrollKeyboardEditorNotesIntoView(int sequenceId);
 
     public:
         LEAK_CHECK();
@@ -408,10 +415,9 @@ namespace AriaMaestosa
         void menuEvent_record(wxCommandEvent& evt);
 
         void onDropFile(wxDropFilesEvent& event);
-
         void onMouseWheel(wxMouseEvent& event);
-
         void onShow(wxShowEvent& evt);
+        void onTimer(wxTimerEvent & event);
 
         // ---- playback
         void songHasFinishedPlaying();
