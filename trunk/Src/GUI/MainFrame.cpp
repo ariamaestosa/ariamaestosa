@@ -72,6 +72,7 @@
 #include <wx/log.h>
 #include <wx/tglbtn.h>
 #include <wx/hyperlink.h>
+#include <wx/timer.h>
 
 #ifdef __WXMAC__
 #include <ApplicationServices/ApplicationServices.h>
@@ -91,6 +92,9 @@ namespace AriaMaestosa
     DEFINE_LOCAL_EVENT_TYPE(wxEVT_SHOW_TRACK_CONTEXTUAL_MENU)
 }
 
+
+static const int SCROLL_NOTES_INTO_VIEW_DELAY = 200;
+static const int SCROLL_NOTES_INTO_VIEW_TIMER = 10000;
 
 // ----------------------------------------------------------------------------------------------------------
 // ----------------------------------------------------------------------------------------------------------
@@ -344,12 +348,25 @@ MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, wxT("Aria Maestosa"), wxPoint(1
 MainFrame::~MainFrame()
 {
     wxLogVerbose( wxT("MainFrame::~MainFrame") );
+    
+    std::map<int, wxTimer*>::iterator it;
+    for(it = m_timer_map.begin() ; it != m_timer_map.end(); ++it)
+    {
+        wxTimer* timer = it->second;
+        
+        if (timer->IsRunning())
+        {
+            timer->Stop();
+        }
 
+        wxDELETE(timer);
+    }
+    
     saveWindowPos();
 
     m_border_sizer->Detach(m_main_panel);
     m_main_panel->Destroy();
-
+    
     ImageProvider::unloadImages();
     PlatformMidiManager::get()->freeMidiPlayer();
     SongPropertiesDialogNamespace::free();
@@ -779,6 +796,27 @@ void MainFrame::onShow(wxShowEvent& evt)
     }
     
 }
+
+
+void MainFrame::onTimer(wxTimerEvent & event)
+{
+    int sequenceId;
+    int timerId;
+    
+    timerId = event.GetId();
+    sequenceId = timerId - SCROLL_NOTES_INTO_VIEW_TIMER;
+    scrollKeyboardEditorNotesIntoView(sequenceId);
+    
+    /* Debug only
+    std::cout << "Timer : " << timerId << " -> " << m_timer_map[timerId] 
+     << " seqId : " << sequenceId << " seq : " << getSequence(sequenceId) << std::endl;
+    */
+    
+    
+    wxDELETE(m_timer_map[timerId]);
+    m_timer_map.erase(timerId);
+}
+
 
 // ----------------------------------------------------------------------------------------------------------
 
@@ -1945,7 +1983,7 @@ void MainFrame::loadMidiFile(const wxString& filePath)
    
     Display::render();
     
-    scrollKeyboardEditorNotesIntoView(getCurrentSequence());
+    requestForScrollKeyboardEditorNotesIntoView();
  
     if (not warnings.empty())
     {
@@ -1974,8 +2012,6 @@ void MainFrame::loadMidiFile(const wxString& filePath)
         Layout();
 
     }
-    
-    //ariaTrack->getGraphics()->scrollKeyboardEditorNotesIntoView();
 }
 
 
@@ -2017,11 +2053,14 @@ void MainFrame::reloadFile()
                 closeSequence();
                 return;
             }
+            else
+            {
+                requestForScrollKeyboardEditorNotesIntoView();
+            }
         }
 
         WaitWindow::hide();
         seq->clearUndoStack();
-        scrollKeyboardEditorNotesIntoView(seq);
         updateVerticalScrollbar();
         Display::render();
     }
@@ -2251,13 +2290,45 @@ void MainFrame::saveOpenedFiles()
 }
 
 
-void MainFrame::scrollKeyboardEditorNotesIntoView(Sequence* seq)
+void MainFrame::requestForScrollKeyboardEditorNotesIntoView()
 {
+    wxTimer* timer;
+    int timerId;
+    
+    timerId = SCROLL_NOTES_INTO_VIEW_TIMER + getCurrentSequenceID();
+    timer = new wxTimer(this, timerId);
+    m_timer_map[timerId] = timer;
+    Connect(timerId, wxEVT_TIMER, wxTimerEventHandler(MainFrame::onTimer));
+    timer->Start(SCROLL_NOTES_INTO_VIEW_DELAY, wxTIMER_ONE_SHOT);
+    
+    /* Debug only
+    std::cout << "----------------------------" << std::endl;
+    std::cout << "Creation : " << timerId << " -> " << timer 
+        << " seqId : "<< getCurrentSequenceID() << " seq : "<< getCurrentSequence() <<std::endl;
+    std::cout << "----------------------------" << std::endl;
+    */
+}
+
+
+void MainFrame::scrollKeyboardEditorNotesIntoView(int sequenceId)
+{
+    int currentSequenceId = getCurrentSequenceID();
+    Sequence* seq = getSequence(sequenceId);
     int trackCount = seq->getTrackAmount();
-    for (int i=0 ; i<trackCount ; i++)
+    
+    setCurrentSequence(sequenceId);
+    if (seq!=NULL)
     {
-        seq->getTrack(i)->getGraphics()->scrollKeyboardEditorNotesIntoView();
+       for (int i=0 ; i<trackCount ; i++)
+        {
+           
+            seq->getTrack(i)->getGraphics()->scrollKeyboardEditorNotesIntoView();
+           
+            // Debug only
+            //std::cout << "SeqId : " << sequenceId << " - seq : " << seq << " - i : " << i << std::endl;
+        }
     }
+    setCurrentSequence(currentSequenceId);
 }
    
 
