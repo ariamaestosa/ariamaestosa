@@ -1874,7 +1874,7 @@ void MainFrame::loadFile(const wxString& filePath)
     
     if (found)
     {
-        // @todo : Should stop playing curent sequence ?
+        // @todo : Should stop playing current sequence ?
         Display::render();
     }
     else

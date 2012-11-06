@@ -42,6 +42,7 @@ IMPLEMENT_APP(AriaMaestosa::wxWidgetApp)
 static const wxString IPC_START = wxT("StartOther");
 static const wxString IPC_APP_PORT = wxT("4242");
 static const wxString CONNECTION_FILE_SEPARATOR = wxT("|");
+static const wxString RELOAD_PARAM = wxT("--reload");
 
 
 using namespace AriaMaestosa;
@@ -79,15 +80,16 @@ public:
 #endif
         wxString path;
         wxArrayString pathArray;
-        
+  
+  
         std::cout << "[AppIPCConnection] OnExecute : " << size << " : " << concatenatedPaths.mb_str() << std::endl;
         
         wxStringTokenizer tokenizer(concatenatedPaths, CONNECTION_FILE_SEPARATOR);
         while ( tokenizer.HasMoreTokens() )
         {
-            path = tokenizer.GetNextToken();
+            path = wxWidgetApp::cleanPath(tokenizer.GetNextToken());
             
-            if (path == wxT("--reload"))
+            if (path == RELOAD_PARAM)
             {
                 wxGetApp().frame->setReloadMode(true);
             }
@@ -106,7 +108,7 @@ public:
     
         return true;
     }
-
+    
 };
 
 
@@ -268,8 +270,11 @@ bool wxWidgetApp::OnInit()
     // check if filenames to open were given on the command-line
     for (int n=1 ; n<argc ; n++)
     {
-        wxString fileName = wxString(argv[n]);
-        filesToOpen.Add(fileName);
+        wxString fileName = cleanPath(wxString(argv[n]));
+        if (fileName!=RELOAD_PARAM)
+        {
+            filesToOpen.Add(fileName);
+        }
     }
     
     frame->init(filesToOpen, argc>1);
@@ -383,6 +388,16 @@ bool wxWidgetApp::handleSingleInstance()
     wxDELETE(conn);
     
     return true;
+}
+
+
+/** Removes heading and trailing quotes */
+wxString wxWidgetApp::cleanPath(const wxString& input)
+{
+    wxString output = input;
+    output.Replace(wxT("'") , wxT(""));
+    output.Replace(wxT("\""), wxT(""));
+    return output;
 }
 
 

@@ -78,6 +78,8 @@ namespace AriaMaestosa
         
         void loadFile(const wxString& fileName);
         
+        static wxString cleanPath(const wxString& input);
+        
         DECLARE_EVENT_TABLE();
         
     private:
