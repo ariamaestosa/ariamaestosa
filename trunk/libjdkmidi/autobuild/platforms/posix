@@ -1,2 +1,0 @@
-add_configure_flags "--target-platform-posix=1"
-

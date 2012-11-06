@@ -42,8 +42,8 @@ namespace AriaMaestosa
 
     class SequencerThread : public wxThread
     {
-        jdkmidi::MIDIMultiTrack* jdkmidiseq;
-        jdkmidi::MIDISequencer* jdksequencer;
+        jdksmidi::MIDIMultiTrack* jdkmidiseq;
+        jdksmidi::MIDISequencer* jdksequencer;
         int songLengthInTicks;
         bool selectionOnly;
         int m_start_tick;
@@ -67,7 +67,7 @@ namespace AriaMaestosa
 
         void prepareSequencer()
         {
-            jdkmidiseq = new jdkmidi::MIDIMultiTrack();
+            jdkmidiseq = new jdksmidi::MIDIMultiTrack();
             songLengthInTicks = -1;
             int trackAmount = -1;
             m_start_tick = 0;
@@ -77,7 +77,7 @@ namespace AriaMaestosa
             //std::cout << "trackAmount=" << trackAmount << " start_tick=" << m_start_tick<<
             //        " songLengthInTicks=" << songLengthInTicks << std::endl;
 
-            jdksequencer = new jdkmidi::MIDISequencer(jdkmidiseq);
+            jdksequencer = new jdksmidi::MIDISequencer(jdkmidiseq);
         }
 
         void go(int* startTick /* out */)

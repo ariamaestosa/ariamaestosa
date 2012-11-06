@@ -24,13 +24,13 @@
 #include "Midi/Track.h"
 #include "PreferencesData.h"
 
-#include "jdkmidi/world.h"
-#include "jdkmidi/track.h"
-#include "jdkmidi/multitrack.h"
-#include "jdkmidi/filereadmultitrack.h"
-#include "jdkmidi/fileread.h"
-#include "jdkmidi/fileshow.h"
-#include "jdkmidi/filewritemultitrack.h"
+#include "jdksmidi/world.h"
+#include "jdksmidi/track.h"
+#include "jdksmidi/multitrack.h"
+#include "jdksmidi/filereadmultitrack.h"
+#include "jdksmidi/fileread.h"
+#include "jdksmidi/fileshow.h"
+#include "jdksmidi/filewritemultitrack.h"
 
 #include <cmath>
 #include <string>
@@ -43,16 +43,16 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
     OwnerPtr<Sequence::Import> import(sequence->startImport());
 
     // the stream used to read the input file
-    jdkmidi::MIDIFileReadStreamFile rs( filepath.mb_str() );
+    jdksmidi::MIDIFileReadStreamFile rs( filepath.mb_str() );
 
     // the object which will hold all the tracks
-    jdkmidi::MIDIMultiTrack jdksequence;
+    jdksmidi::MIDIMultiTrack jdksequence;
 
     // the object which loads the tracks into the tracks object
-    jdkmidi::MIDIFileReadMultiTrack track_loader( &jdksequence );
+    jdksmidi::MIDIFileReadMultiTrack track_loader( &jdksequence );
 
     // the object which parses the midifile and gives it to the multitrack loader
-    jdkmidi::MIDIFileRead reader( &rs, &track_loader );
+    jdksmidi::MIDIFileRead reader( &rs, &track_loader );
 
     // load the midifile into the multitrack object
     if (not reader.Parse())
@@ -61,8 +61,8 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
         return false;
     }
 
-    jdkmidi::MIDITrack* track;
-    jdkmidi::MIDITimedBigMessage* event;
+    jdksmidi::MIDITrack* track;
+    jdksmidi::MIDITimedBigMessage* event;
 
     sequence->setChannelManagementType(CHANNEL_MANUAL);
     
@@ -161,7 +161,7 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                     }
                     else if (not event->IsMetaEvent() and not event->IsAllNotesOff() and
                              not event->IsTextEvent() and not event->IsTempo() and
-                             not event->IsSystemMessage() and not event->IsSysEx())
+                             not event->IsSystemMessage() and not event->IsSystemExclusive())
                     {
                         if (error_message_choker_evt.find(channel*100 + last_channel) == error_message_choker_evt.end())
                         {
@@ -175,7 +175,7 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
 
                 if (last_channel == -1 and not event->IsMetaEvent() and
                    not event->IsTextEvent() and not event->IsTempo() and
-                   not event->IsSystemMessage() and not event->IsSysEx())
+                   not event->IsSystemMessage() and not event->IsSystemExclusive())
                 {
                     ariaTrack->setChannel(channel); // its first iteration
                     last_channel = channel;

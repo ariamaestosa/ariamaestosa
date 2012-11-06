@@ -42,16 +42,16 @@
 #include <wx/utils.h>
 #include <wx/process.h>
 
-#include "jdkmidi/world.h"
-#include "jdkmidi/track.h"
-#include "jdkmidi/multitrack.h"
-#include "jdkmidi/filereadmultitrack.h"
-#include "jdkmidi/fileread.h"
-#include "jdkmidi/fileshow.h"
-#include "jdkmidi/filewritemultitrack.h"
-#include "jdkmidi/msg.h"
-#include "jdkmidi/sysex.h"
-#include "jdkmidi/sequencer.h"
+#include "jdksmidi/world.h"
+#include "jdksmidi/track.h"
+#include "jdksmidi/multitrack.h"
+#include "jdksmidi/filereadmultitrack.h"
+#include "jdksmidi/fileread.h"
+#include "jdksmidi/fileshow.h"
+#include "jdksmidi/filewritemultitrack.h"
+#include "jdksmidi/msg.h"
+#include "jdksmidi/sysex.h"
+#include "jdksmidi/sequencer.h"
 
 namespace AriaMaestosa
 {
@@ -171,8 +171,8 @@ void* export_audio_func( void *ptr )
 
 class SequencerThread : public wxThread
 {
-    jdkmidi::MIDIMultiTrack* jdkmidiseq;
-    jdkmidi::MIDISequencer* jdksequencer;
+    jdksmidi::MIDIMultiTrack* jdkmidiseq;
+    jdksmidi::MIDISequencer* jdksequencer;
     int songLengthInTicks;
     bool selectionOnly;
     int m_start_tick;
@@ -193,7 +193,7 @@ public:
 
     void prepareSequencer()
     {
-        jdkmidiseq = new jdkmidi::MIDIMultiTrack();
+        jdkmidiseq = new jdksmidi::MIDIMultiTrack();
         songLengthInTicks = -1;
         int trackAmount = -1;
         m_start_tick = 0;
@@ -203,7 +203,7 @@ public:
         //std::cout << "trackAmount=" << trackAmount << " start_tick=" << m_start_tick<<
         //        " songLengthInTicks=" << songLengthInTicks << std::endl;
 
-        jdksequencer = new jdkmidi::MIDISequencer(jdkmidiseq);
+        jdksequencer = new jdksmidi::MIDISequencer(jdkmidiseq);
     }
 
     void go(int* startTick /* out */)

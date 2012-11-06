@@ -37,7 +37,8 @@
 
 #include <iostream>
 
-#include "jdkmidi/track.h"
+#include "jdksmidi/world.h"
+#include "jdksmidi/track.h"
 
 #include <wx/intl.h>
 #include <wx/utils.h>
@@ -1389,7 +1390,7 @@ int getActiveMin(bool have_a, int a, bool have_b, int b, bool have_c, int c)
 
 // ----------------------------------------------------------------------------------------------------------
 
-int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
+int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
                          int channel,
                          int firstMeasure,
                          bool selectionOnly,
@@ -1449,7 +1450,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
     // set bank
     {
-        jdkmidi::MIDITimedBigMessage m;
+        jdksmidi::MIDITimedBigMessage m;
 
         m.SetTime( 0 );
         m.SetControlChange( channel, 0, 0 );
@@ -1472,7 +1473,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
     // set instrument
     {
-        jdkmidi::MIDITimedBigMessage m;
+        jdksmidi::MIDITimedBigMessage m;
 
         m.SetTime( 0 );
 
@@ -1488,7 +1489,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
     // set track name
     {
 
-        jdkmidi::MIDITimedBigMessage m;
+        jdksmidi::MIDITimedBigMessage m;
         m.SetText( 3 );
         m.SetByte1( 3 );
 
@@ -1496,7 +1497,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         wxString track_name = m_track_name->getValue();
 
         /* This doesn't work under Linux: no track name seen in MIDI track
-        jdkmidi::MIDISystemExclusive sysex((unsigned char*)(const char*)track_name.mb_str(wxConvUTF8),
+        jdksmidi::MIDISystemExclusive sysex((unsigned char*)(const char*)track_name.mb_str(wxConvUTF8),
                                            track_name.size()+1, track_name.size()+1, false);
         */
 
@@ -1505,7 +1506,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
         charTrackName = new char[size];
         memcpy(charTrackName, track_name.mb_str(), size);
         charTrackName[size-1] = '\0';
-        jdkmidi::MIDISystemExclusive sysex((unsigned char*)charTrackName, size, size, false);
+        jdksmidi::MIDISystemExclusive sysex((unsigned char*)charTrackName, size, size, false);
 
         m.CopySysEx( &sysex );
         m.SetTime( 0 );
@@ -1520,7 +1521,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
 
     // set maximum volume
     {
-        jdkmidi::MIDITimedBigMessage m;
+        jdksmidi::MIDITimedBigMessage m;
 
         m.SetTime( 0 );
         m.SetControlChange( channel, 7, SCHAR_MAX);
@@ -1601,7 +1602,7 @@ int Track::addMidiEvents(jdkmidi::MIDITrack* midiTrack,
                                            have_tick_control, tick_control,
                                            have_tick_on, tick_on );
         
-        jdkmidi::MIDITimedBigMessage m;
+        jdksmidi::MIDITimedBigMessage m;
 
         //  ------------------------ add note on event ------------------------
         if (activeMin == 2)

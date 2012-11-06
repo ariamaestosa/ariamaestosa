@@ -24,7 +24,7 @@ namespace irr { namespace io {
     template<class char_type, class super_class> class IIrrXMLReader;
     typedef IIrrXMLReader<char, IXMLBase> IrrXMLReader; } }
 
-namespace jdkmidi { class MIDITrack; }
+namespace jdksmidi { class MIDITrack; }
 
 #include "Midi/ControllerEvent.h"
 #include "Midi/DrumChoice.h"
@@ -474,7 +474,7 @@ namespace AriaMaestosa
         /*
          * @pre only use in manual channel management mode
          * if auto mode is on, the playing code must pick a channel for each track.
-         * if you use Aria's libjdkmidi/midibytes functions, this will be done for you
+         * if you use Aria's libjdksmidi/midibytes functions, this will be done for you
          */
         void setChannel(int i);
         
@@ -510,7 +510,7 @@ namespace AriaMaestosa
          * @brief Add Midi Events to JDKMidi track object
          * @param channel in manual channel mode, this argument is NOT considered
          */
-        int addMidiEvents(jdkmidi::MIDITrack* track, int channel, int firstMeasure,
+        int addMidiEvents(jdksmidi::MIDITrack* track, int channel, int firstMeasure,
                           bool selectionOnly, int& startTick); // returns length
 
         /**
