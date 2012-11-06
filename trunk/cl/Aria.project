@@ -5,64 +5,6 @@
       <![CDATA[00020001N0011linux_debug0000000000000001N0013linux_release000000000000]]>
     </Plugin>
   </Plugins>
-  <VirtualDirectory Name="jdkmidi">
-    <File Name="../libjdkmidi/include/jdkmidi/showcontrol.h"/>
-    <File Name="../libjdkmidi/include/jdkmidi/process.h"/>
-    <File Name="../libjdkmidi/include/jdkmidi/fileread.h"/>
-    <File Name="../libjdkmidi/include/jdkmidi/fileshow.h"/>
-    <File Name="../libjdkmidi/include/jdkmidi/file.h"/>
-    <File Name="../libjdkmidi/include/jdkmidi/sysex.h"/>
-    <File Name="../libjdkmidi/include/jdkmidi/song.h"/>
-    <File Name="../libjdkmidi/include/jdkmidi/driverdump.h"/>
-    <File Name="../libjdkmidi/include/jdkmidi/midi.h"/>
-    <File Name="../libjdkmidi/include/jdkmidi/matrix.h"/>
-    <File Name="../libjdkmidi/include/jdkmidi/msg.h"/>
-    <File Name="../libjdkmidi/include/jdkmidi/tick.h"/>
-    <File Name="../libjdkmidi/include/jdkmidi/tempo.h"/>
-    <File Name="../libjdkmidi/include/jdkmidi/queue.h"/>
-    <File Name="../libjdkmidi/include/jdkmidi/manager.h"/>
-    <File Name="../libjdkmidi/include/jdkmidi/keysig.h"/>
-    <File Name="../libjdkmidi/include/jdkmidi/filewrite.h"/>
-    <File Name="../libjdkmidi/include/jdkmidi/filereadmultitrack.h"/>
-    <File Name="../libjdkmidi/include/jdkmidi/showcontrolhandler.h"/>
-    <File Name="../libjdkmidi/include/jdkmidi/edittrack.h"/>
-    <File Name="../libjdkmidi/include/jdkmidi/filewritemultitrack.h"/>
-    <File Name="../libjdkmidi/include/jdkmidi/smpte.h"/>
-    <File Name="../libjdkmidi/include/jdkmidi/multitrack.h"/>
-    <File Name="../libjdkmidi/include/jdkmidi/track.h"/>
-    <File Name="../libjdkmidi/include/jdkmidi/parser.h"/>
-    <File Name="../libjdkmidi/include/jdkmidi/world.h"/>
-    <File Name="../libjdkmidi/include/jdkmidi/driver.h"/>
-    <File Name="../libjdkmidi/include/jdkmidi/sequencer.h"/>
-    <File Name="../libjdkmidi/src/jdkmidi_edittrack.cpp"/>
-    <File Name="../libjdkmidi/src/jdkmidi_keysig.cpp"/>
-    <File Name="../libjdkmidi/src/jdkmidi_parser.cpp"/>
-    <File Name="../libjdkmidi/src/jdkmidi_fileread.cpp"/>
-    <File Name="../libjdkmidi/src/jdkmidi_track.cpp"/>
-    <File Name="../libjdkmidi/src/jdkmidi_smpte.cpp"/>
-    <File Name="../libjdkmidi/src/jdkmidi_driver.cpp"/>
-    <File Name="../libjdkmidi/src/jdkmidi_process.cpp"/>
-    <File Name="../libjdkmidi/src/jdkmidi_sysex.cpp"/>
-    <File Name="../libjdkmidi/src/jdkmidi_multitrack.cpp"/>
-    <File Name="../libjdkmidi/src/jdkmidi_filewritemultitrack.cpp"/>
-    <File Name="../libjdkmidi/src/jdkmidi_midi.cpp"/>
-    <File Name="../libjdkmidi/src/jdkmidi_filewrite.cpp"/>
-    <File Name="../libjdkmidi/src/jdkmidi_showcontrol.cpp"/>
-    <File Name="../libjdkmidi/src/jdkmidi_file.cpp"/>
-    <File Name="../libjdkmidi/src/jdkmidi_tempo.cpp"/>
-    <File Name="../libjdkmidi/src/jdkmidi_manager.cpp"/>
-    <File Name="../libjdkmidi/src/jdkmidi_sequencer.cpp"/>
-    <File Name="../libjdkmidi/src/jdkmidi_driverdump.cpp"/>
-    <File Name="../libjdkmidi/src/jdkmidi_filereadmultitrack.cpp"/>
-    <File Name="../libjdkmidi/src/jdkmidi_queue.cpp"/>
-    <File Name="../libjdkmidi/src/jdkmidi_fileshow.cpp"/>
-    <File Name="../libjdkmidi/src/jdkmidi_tick.cpp"/>
-    <File Name="../libjdkmidi/src/jdkmidi_advancedsequencer.cpp"/>
-    <File Name="../libjdkmidi/src/jdkmidi_msg.cpp"/>
-    <File Name="../libjdkmidi/src/jdkmidi_matrix.cpp"/>
-    <File Name="../libjdkmidi/src/jdkmidi_showcontrolhandler.cpp"/>
-    <File Name="../libjdkmidi/include/jdkmidi/advancedsequencer.h"/>
-  </VirtualDirectory>
   <VirtualDirectory Name="Printing">
     <VirtualDirectory Name="SymbolPrinter">
       <VirtualDirectory Name="PrintLayout">
@@ -364,8 +306,6 @@
     <File Name="../Src/AriaCore.cpp"/>
     <File Name="../Src/PresetManager.h"/>
     <File Name="../Src/UnitTest.cpp"/>
-    <File Name="../Src/AppIPCConnection.cpp"/>
-    <File Name="../Src/AppIPCConnection.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="irrXML">
     <File Name="../irrXML/fast_atof.h"/>
@@ -412,6 +352,8 @@
       <General OutputFile="../bin/aria-dbg" IntermediateDirectory="../_build/linux_debug" Command="../bin/aria-dbg" CommandArguments="../data/Riff.aria" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="../bin" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
+      
+      
       
       
       
@@ -471,6 +413,8 @@
       
       
       
+      
+      
       ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -502,4 +446,65 @@
   </Settings>
   <Dependencies Name="linux_debug"/>
   <Dependencies Name="linux_release"/>
+  <VirtualDirectory Name="libjdkmdi">
+    <File Name="../libjdkmidi/include/jdksmidi/advancedsequencer.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/driver.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/driverdump.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/driverwin32.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/edittrack.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/file.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/fileread.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/filereadmultitrack.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/fileshow.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/filewrite.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/filewritemultitrack.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/keysig.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/manager.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/matrix.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/midi.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/msg.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/multitrack.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/parser.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/process.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/queue.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/sequencer.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/showcontrol.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/showcontrolhandler.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/smpte.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/song.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/sysex.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/tempo.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/tick.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/track.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/utils.h"/>
+    <File Name="../libjdkmidi/include/jdksmidi/world.h"/>
+    <File Name="../libjdkmidi/src/jdksmidi_advancedsequencer.cpp"/>
+    <File Name="../libjdkmidi/src/jdksmidi_driver.cpp"/>
+    <File Name="../libjdkmidi/src/jdksmidi_driverdump.cpp"/>
+    <File Name="../libjdkmidi/src/jdksmidi_edittrack.cpp"/>
+    <File Name="../libjdkmidi/src/jdksmidi_file.cpp"/>
+    <File Name="../libjdkmidi/src/jdksmidi_fileread.cpp"/>
+    <File Name="../libjdkmidi/src/jdksmidi_filereadmultitrack.cpp"/>
+    <File Name="../libjdkmidi/src/jdksmidi_fileshow.cpp"/>
+    <File Name="../libjdkmidi/src/jdksmidi_filewrite.cpp"/>
+    <File Name="../libjdkmidi/src/jdksmidi_filewritemultitrack.cpp"/>
+    <File Name="../libjdkmidi/src/jdksmidi_keysig.cpp"/>
+    <File Name="../libjdkmidi/src/jdksmidi_manager.cpp"/>
+    <File Name="../libjdkmidi/src/jdksmidi_matrix.cpp"/>
+    <File Name="../libjdkmidi/src/jdksmidi_midi.cpp"/>
+    <File Name="../libjdkmidi/src/jdksmidi_msg.cpp"/>
+    <File Name="../libjdkmidi/src/jdksmidi_multitrack.cpp"/>
+    <File Name="../libjdkmidi/src/jdksmidi_parser.cpp"/>
+    <File Name="../libjdkmidi/src/jdksmidi_process.cpp"/>
+    <File Name="../libjdkmidi/src/jdksmidi_queue.cpp"/>
+    <File Name="../libjdkmidi/src/jdksmidi_sequencer.cpp"/>
+    <File Name="../libjdkmidi/src/jdksmidi_showcontrol.cpp"/>
+    <File Name="../libjdkmidi/src/jdksmidi_showcontrolhandler.cpp"/>
+    <File Name="../libjdkmidi/src/jdksmidi_smpte.cpp"/>
+    <File Name="../libjdkmidi/src/jdksmidi_sysex.cpp"/>
+    <File Name="../libjdkmidi/src/jdksmidi_tempo.cpp"/>
+    <File Name="../libjdkmidi/src/jdksmidi_tick.cpp"/>
+    <File Name="../libjdkmidi/src/jdksmidi_track.cpp"/>
+    <File Name="../libjdkmidi/src/jdksmidi_utils.cpp"/>
+  </VirtualDirectory>
 </CodeLite_Project>
