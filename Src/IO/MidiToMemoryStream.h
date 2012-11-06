@@ -20,7 +20,14 @@
 #include "Utils.h"
 #include <sstream>
 #include <vector>
-#include "jdkmidi/filewrite.h"
+#include "jdksmidi/world.h"
+#include "jdksmidi/track.h"
+#include "jdksmidi/multitrack.h"
+#include "jdksmidi/filereadmultitrack.h"
+#include "jdksmidi/fileread.h"
+#include "jdksmidi/fileshow.h"
+#include "jdksmidi/filewritemultitrack.h"
+#include "jdksmidi/filewrite.h"
 
 namespace AriaMaestosa
 {
@@ -30,7 +37,7 @@ namespace AriaMaestosa
      * So i wrote this "fake stream" that captures the bytes and stores them in memory rather than to a file.
      * @ingroup io
      */
-    class MidiToMemoryStream : public jdkmidi::MIDIFileWriteStream
+    class MidiToMemoryStream : public jdksmidi::MIDIFileWriteStream
     {
         std::vector<char> data;
         int pos, length;

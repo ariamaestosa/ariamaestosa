@@ -1,1 +1,0 @@
-add_configure_flags "--target-platform-linux-ppc=1" "--native-platform-posix=1" "--cross-compiling=1"

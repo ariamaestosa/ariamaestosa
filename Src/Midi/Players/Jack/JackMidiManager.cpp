@@ -11,8 +11,8 @@
 #include <jack/jack.h>
 #include <jack/midiport.h>
 #include <wx/wx.h>
-#include <jdkmidi/multitrack.h>
-#include <jdkmidi/sequencer.h>
+#include <jdksmidi/multitrack.h>
+#include <jdksmidi/sequencer.h>
 #include "Midi/CommonMidiUtils.h"
 #include "Midi/Sequence.h"
 #include "Midi/Players/PlatformMidiManager.h"
@@ -99,9 +99,9 @@ public:
 		}
 	}
 
-	void play(jdkmidi::MIDIMultiTrack* tracks, uint64_t frame = 0)
+	void play(jdksmidi::MIDIMultiTrack* tracks, uint64_t frame = 0)
 	{
-		jdkmidi::MIDISequencer* tmp = new jdkmidi::MIDISequencer(tracks);
+		jdksmidi::MIDISequencer* tmp = new jdksmidi::MIDISequencer(tracks);
 		{
 			ScopedLocker lock(&m_mutex);
 			std::swap(tmp, m_sequencer);
@@ -161,7 +161,7 @@ public:
 				while (self->m_sequencer->GetNextEventTimeMs(&t) && t < end)
 				{
 					int trackId;
-					jdkmidi::MIDITimedBigMessage msg;
+					jdksmidi::MIDITimedBigMessage msg;
 					self->m_sequencer->GetNextEvent(&trackId, &msg);
 
 					if (not msg.IsMetaEvent())
@@ -198,7 +198,7 @@ public:
 		jack_port_t* m_port;
 		bool m_playing;
 		uint64_t m_frame;
-		jdkmidi::MIDISequencer* m_sequencer;
+		jdksmidi::MIDISequencer* m_sequencer;
 		pthread_mutex_t m_mutex;
 		pthread_cond_t m_finish;
 };
@@ -209,7 +209,7 @@ namespace AriaMaestosa
 class JackMidiPlayer : public PlatformMidiManager
 {
 	std::auto_ptr<PrivateJackMidiPlayer> player;
-	std::auto_ptr<jdkmidi::MIDIMultiTrack> tracks;
+	std::auto_ptr<jdksmidi::MIDIMultiTrack> tracks;
 
 public:
 
@@ -234,11 +234,11 @@ public:
     
 	void resetSync()
 	{
-		jdkmidi::MIDIMultiTrack tracks(1);
+		jdksmidi::MIDIMultiTrack tracks(1);
 		tracks.SetClksPerBeat(960);
 		for (int ch = 0; ch < 16; ++ch)
 		{
-			jdkmidi::MIDITimedBigMessage msg;
+			jdksmidi::MIDITimedBigMessage msg;
 			msg.SetTime(0);
 			msg.SetAllNotesOff(ch);
 			tracks.GetTrack(0)->PutEvent(msg);
@@ -252,7 +252,7 @@ public:
 	{
 		resetSync();
 
-		jdkmidi::MIDITimedBigMessage msg0, msg1, msg2;
+		jdksmidi::MIDITimedBigMessage msg0, msg1, msg2;
 		msg0.SetTime(0);
 		msg0.SetProgramChange(ch, inst);
 		msg1.SetTime(0); // XXX: some midi devices take time to change programs.
@@ -260,7 +260,7 @@ public:
 		msg2.SetTime(dur);
 		msg2.SetNoteOff(ch, note, vel);
 
-		tracks.reset(new jdkmidi::MIDIMultiTrack(1));
+		tracks.reset(new jdksmidi::MIDIMultiTrack(1));
 		tracks->SetClksPerBeat(960);
 		tracks->GetTrack(0)->PutEvent(msg0);
 		tracks->GetTrack(0)->PutEvent(msg1);
@@ -280,7 +280,7 @@ public:
 
 		int len = -1;
 		int nTrack = -1;
-		tracks.reset(new jdkmidi::MIDIMultiTrack());
+		tracks.reset(new jdksmidi::MIDIMultiTrack());
 		makeJDKMidiSequence(seq, *tracks, false, &len, startTick, &nTrack, true);
 		player->play(tracks.get());
 
@@ -294,7 +294,7 @@ public:
 
 		int len = -1;
 		int nTrack = -1;
-		tracks.reset(new jdkmidi::MIDIMultiTrack());
+		tracks.reset(new jdksmidi::MIDIMultiTrack());
 		makeJDKMidiSequence(seq, *tracks, true, &len, startTick, &nTrack, true);
 		player->play(tracks.get());
 

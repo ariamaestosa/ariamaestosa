@@ -40,18 +40,18 @@
 #include "Midi/Track.h"
 #include "PreferencesData.h"
 
-#include "jdkmidi/world.h"
-#include "jdkmidi/track.h"
-#include "jdkmidi/multitrack.h"
-#include "jdkmidi/filereadmultitrack.h"
-#include "jdkmidi/fileread.h"
-#include "jdkmidi/fileshow.h"
-#include "jdkmidi/filewritemultitrack.h"
-#include "jdkmidi/msg.h"
-#include "jdkmidi/sysex.h"
-#include "jdkmidi/sequencer.h"
-#include "jdkmidi/driver.h"
-#include "jdkmidi/process.h"
+#include "jdksmidi/world.h"
+#include "jdksmidi/track.h"
+#include "jdksmidi/multitrack.h"
+#include "jdksmidi/filereadmultitrack.h"
+#include "jdksmidi/fileread.h"
+#include "jdksmidi/fileshow.h"
+#include "jdksmidi/filewritemultitrack.h"
+#include "jdksmidi/msg.h"
+#include "jdksmidi/sysex.h"
+#include "jdksmidi/sequencer.h"
+#include "jdksmidi/driver.h"
+#include "jdksmidi/process.h"
 
 #include <wx/msgdlg.h>
 
@@ -175,8 +175,8 @@ namespace AriaMaestosa
       */
     class SequencerThread : public wxThread
     {
-        jdkmidi::MIDIMultiTrack* jdkmidiseq;
-        jdkmidi::MIDISequencer* jdksequencer;
+        jdksmidi::MIDIMultiTrack* jdkmidiseq;
+        jdksmidi::MIDISequencer* jdksequencer;
         int songLengthInTicks;
         bool m_selection_only;
         int m_start_tick;
@@ -199,7 +199,7 @@ namespace AriaMaestosa
         
         void prepareSequencer()
         {
-            jdkmidiseq = new jdkmidi::MIDIMultiTrack();
+            jdkmidiseq = new jdksmidi::MIDIMultiTrack();
             songLengthInTicks = -1;
             int trackAmount = -1;
             m_start_tick = 0;
@@ -209,7 +209,7 @@ namespace AriaMaestosa
             //std::cout << "trackAmount=" << trackAmount << " start_tick=" << m_start_tick<<
             //        " songLengthInTicks=" << songLengthInTicks << std::endl;
             
-            jdksequencer = new jdkmidi::MIDISequencer(jdkmidiseq);
+            jdksequencer = new jdksmidi::MIDISequencer(jdkmidiseq);
             
             g_current_tick = m_start_tick;
             g_current_accurate_tick = m_start_tick;

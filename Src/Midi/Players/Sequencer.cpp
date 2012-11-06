@@ -22,10 +22,11 @@
 #include "Midi/Sequence.h"
 #include "Midi/Players/PlatformMidiManager.h"
 
-#include "jdkmidi/multitrack.h"
-#include "jdkmidi/sequencer.h"
-#include "jdkmidi/driver.h"
-#include "jdkmidi/process.h"
+#include "jdksmidi/world.h"
+#include "jdksmidi/multitrack.h"
+#include "jdksmidi/sequencer.h"
+#include "jdksmidi/driver.h"
+#include "jdksmidi/process.h"
 
 // FIXME: the build system should check for them.
 #ifdef __WXMSW__
@@ -168,7 +169,7 @@ public:
     }
 };
 
-void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int songLengthInTicks)
+void AriaSequenceTimer::run(jdksmidi::MIDISequencer* jdksequencer, const int songLengthInTicks)
 {
     // Added because I suspect invalid reentrency is the cause of bug #113
     ReentrencyGuard guard;
@@ -194,10 +195,10 @@ void AriaSequenceTimer::run(jdkmidi::MIDISequencer* jdksequencer, const int song
 
     float next_event_time = 0;
 
-    jdkmidi::MIDITimedBigMessage ev;
+    jdksmidi::MIDITimedBigMessage ev;
     int ev_track;
 
-    jdkmidi::MIDIClockTime tick;
+    jdksmidi::MIDIClockTime tick;
     if (not jdksequencer->GetNextEventTime(&tick))
     {
         std::cerr << "[AriaSequenceTimer] failed to get first event time, returning (did you try to play en empty sequence?)" << std::endl;

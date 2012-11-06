@@ -22,7 +22,7 @@
 #include <wx/string.h>
 
 // forward
-namespace jdkmidi{ class MIDIMultiTrack; }
+namespace jdksmidi{ class MIDIMultiTrack; }
 
 namespace AriaMaestosa
 {
@@ -45,7 +45,7 @@ namespace AriaMaestosa
       * @brief converts an Aria sequence into a libjdkmidi sequence
       * @ingroup midi
       */
-    bool makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bool selectionOnly,
+    bool makeJDKMidiSequence(Sequence* sequence, jdksmidi::MIDIMultiTrack& tracks, bool selectionOnly,
                              /*out*/int* songLengthInTicks, /*out*/int* startTick, /*out*/ int* numTracks, bool playing);
     
     /**

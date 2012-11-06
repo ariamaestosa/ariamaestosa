@@ -17,7 +17,7 @@
 #ifndef __ARIA_SEQUENCER_H__
 #define __ARIA_SEQUENCER_H__
 
-namespace jdkmidi{ class MIDISequencer; }
+namespace jdksmidi{ class MIDISequencer; }
 
 namespace AriaMaestosa
 {
@@ -31,7 +31,7 @@ namespace AriaMaestosa
     public:
 
         AriaSequenceTimer(Sequence* seq);
-        void run(jdkmidi::MIDISequencer* jdksequencer, const int songLengthInTicks);
+        void run(jdksmidi::MIDISequencer* jdksequencer, const int songLengthInTicks);
     };
 
 }

@@ -27,15 +27,15 @@
 #include "UnitTest.h"
 #include "ptr_vector.h"
 
-#include "jdkmidi/world.h"
-#include "jdkmidi/track.h"
-#include "jdkmidi/multitrack.h"
-#include "jdkmidi/filereadmultitrack.h"
-#include "jdkmidi/fileread.h"
-#include "jdkmidi/fileshow.h"
-#include "jdkmidi/filewritemultitrack.h"
-#include "jdkmidi/msg.h"
-#include "jdkmidi/sysex.h"
+#include "jdksmidi/world.h"
+#include "jdksmidi/track.h"
+#include "jdksmidi/multitrack.h"
+#include "jdksmidi/filereadmultitrack.h"
+#include "jdksmidi/fileread.h"
+#include "jdksmidi/fileshow.h"
+#include "jdksmidi/filewritemultitrack.h"
+#include "jdksmidi/msg.h"
+#include "jdksmidi/sysex.h"
 
 #include <wx/intl.h>
 #include <wx/timer.h>
@@ -94,11 +94,11 @@
 namespace AriaMaestosa
 {
     void addTimeSigFromVector(int n, int amount, MeasureData* measureData,
-                              jdkmidi::MIDIMultiTrack& tracks, int substract_ticks);
+                              jdksmidi::MIDIMultiTrack& tracks, int substract_ticks);
     void addTempoEventFromSequenceVector(int n, int amount, Sequence* sequence,
-                                        jdkmidi::MIDIMultiTrack& tracks, int substract_ticks);
+                                        jdksmidi::MIDIMultiTrack& tracks, int substract_ticks);
     void addTextEventFromSequenceVector(int n, Sequence* sequence,
-                                        jdkmidi::MIDIMultiTrack& tracks, int substract_ticks);
+                                        jdksmidi::MIDIMultiTrack& tracks, int substract_ticks);
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -110,13 +110,13 @@ bool AriaMaestosa::exportMidiFile(Sequence* sequence, wxString filepath)
     const int firstMeasureValue = sequence->getMeasureData()->getFirstMeasure();
     sequence->getMeasureData()->setFirstMeasure(0);
     
-    jdkmidi::MIDIMultiTrack tracks;
+    jdksmidi::MIDIMultiTrack tracks;
     int length = -1, start = -1, numTracks = -1;
     makeJDKMidiSequence(sequence, tracks, false, &length, &start, &numTracks, false);
     
-    jdkmidi::MIDIFileWriteStreamFileName file_stream( (const char*)filepath.mb_str(wxConvUTF8) );
+    jdksmidi::MIDIFileWriteStreamFileName file_stream( (const char*)filepath.mb_str(wxConvUTF8) );
     
-    jdkmidi::MIDIFileWriteMultiTrack writer2(
+    jdksmidi::MIDIFileWriteMultiTrack writer2(
                                              &tracks,
                                              &file_stream
                                              );
@@ -137,9 +137,9 @@ bool AriaMaestosa::exportMidiFile(Sequence* sequence, wxString filepath)
 // ----------------------------------------------------------------------------------------------------------
 
 void AriaMaestosa::addTimeSigFromVector(int n, int amount, MeasureData* measureData,
-                                        jdkmidi::MIDIMultiTrack& tracks, int substract_ticks)
+                                        jdksmidi::MIDIMultiTrack& tracks, int substract_ticks)
 {
-    jdkmidi::MIDITimedBigMessage m;
+    jdksmidi::MIDITimedBigMessage m;
     int tick_time =measureData->firstTickInMeasure( measureData->getTimeSig(n).getMeasure() ) - substract_ticks < 0;
     if (tick_time)
     {
@@ -169,9 +169,9 @@ void AriaMaestosa::addTimeSigFromVector(int n, int amount, MeasureData* measureD
 // ----------------------------------------------------------------------------------------------------------
 
 void AriaMaestosa::addTempoEventFromSequenceVector(int n, int amount, Sequence* sequence,
-                                                   jdkmidi::MIDIMultiTrack& tracks, int substract_ticks)
+                                                   jdksmidi::MIDIMultiTrack& tracks, int substract_ticks)
 {
-    jdkmidi::MIDITimedBigMessage m;
+    jdksmidi::MIDITimedBigMessage m;
     
     int tempo_time = sequence->getTempoEvent(n)->getTick() - substract_ticks;
     
@@ -203,9 +203,9 @@ void AriaMaestosa::addTempoEventFromSequenceVector(int n, int amount, Sequence* 
 // ----------------------------------------------------------------------------------------------------------
 
 void AriaMaestosa::addTextEventFromSequenceVector(int n, Sequence* sequence,
-                                                  jdkmidi::MIDIMultiTrack& tracks, int substract_ticks)
+                                                  jdksmidi::MIDIMultiTrack& tracks, int substract_ticks)
 {
-    jdkmidi::MIDITimedBigMessage m;
+    jdksmidi::MIDITimedBigMessage m;
     
     const TextEvent* evt = sequence->getTextEvents().getConst(n);
     
@@ -215,7 +215,7 @@ void AriaMaestosa::addTextEventFromSequenceVector(int n, Sequence* sequence,
     
     if (evt->getController() == PSEUDO_CONTROLLER_LYRICS)
     {
-        type = jdkmidi::META_LYRIC_TEXT;
+        type = jdksmidi::META_LYRIC_TEXT;
     }
     else
     {
@@ -227,11 +227,13 @@ void AriaMaestosa::addTextEventFromSequenceVector(int n, Sequence* sequence,
     
     wxCharBuffer buffer = evt->getText().getModel()->getValue().ToUTF8();
     
-    m.sysex = new jdkmidi::MIDISystemExclusive();
+    jdksmidi::MIDISystemExclusive* sysex = new jdksmidi::MIDISystemExclusive();
     for (const char* c = buffer.data(); *c != 0; c++)
     {
         m.GetSysEx()->PutByte(*c);
     }
+    m.CopySysEx(sysex);
+    delete sysex;
     
     if (not tracks.GetTrack(0)->PutEvent( m ))
     {
@@ -360,7 +362,7 @@ UNIT_TEST( MergeTest )
 
 // ----------------------------------------------------------------------------------------------------------
 
-bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTrack& tracks, bool selectionOnly,
+bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdksmidi::MIDIMultiTrack& tracks, bool selectionOnly,
                                        /*out*/int* songLengthInTicks, /*out*/int* startTick,
                                        /*out*/ int* numTracks, bool playing)
 {
@@ -477,7 +479,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
     // ---- default tempo
     
     {
-        jdkmidi::MIDITimedBigMessage m;
+        jdksmidi::MIDITimedBigMessage m;
         m.SetTime( 0 );
         m.SetTempo32( sequence->getTempo() * 32 ); // tempo stored as bpm * 32, giving 1/32 bpm resolution
         
@@ -490,7 +492,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
     
     // ----- default key signature
     {
-        jdkmidi::MIDITimedBigMessage m;
+        jdksmidi::MIDITimedBigMessage m;
         int amount;
         KeyType keyType;
         
@@ -526,13 +528,13 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
         if (not sequence->getCopyright().IsEmpty())
         {
             
-            jdkmidi::MIDITimedBigMessage m;
+            jdksmidi::MIDITimedBigMessage m;
             
             m.SetText( 2 );
             m.SetByte1( 2 );
             
             // FIXME - I removed strcpy, but not sure it works anymore...
-            jdkmidi::MIDISystemExclusive sysex( (unsigned char*)(const char*)sequence->getCopyright().mb_str(wxConvUTF8),
+            jdksmidi::MIDISystemExclusive sysex( (unsigned char*)(const char*)sequence->getCopyright().mb_str(wxConvUTF8),
                                                sequence->getCopyright().size()+1,
                                                sequence->getCopyright().size()+1, false);
             
@@ -552,12 +554,12 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
         if (not sequence->getInternalName().IsEmpty())
         {
             
-            jdkmidi::MIDITimedBigMessage m;
+            jdksmidi::MIDITimedBigMessage m;
             m.SetText( 3 );
             m.SetByte1( 3 );
             
             // FIXME - I removed strcpy, but not sure it works anymore...
-            jdkmidi::MIDISystemExclusive sysex( (unsigned char*)(const char*)sequence->getInternalName().mb_str(wxConvUTF8),
+            jdksmidi::MIDISystemExclusive sysex( (unsigned char*)(const char*)sequence->getInternalName().mb_str(wxConvUTF8),
                                                sequence->getInternalName().size()+1,
                                                sequence->getInternalName().size()+1, false);
             
@@ -585,12 +587,12 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
             int i;
             int m_count;
             MeasureData* m_md;
-            jdkmidi::MIDIMultiTrack& m_tracks;
+            jdksmidi::MIDIMultiTrack& m_tracks;
             int m_substract_ticks;
             
         public:
             
-            TimeSigSource(MeasureData* pmd, jdkmidi::MIDIMultiTrack& ptracks, int psubstract_ticks) : m_tracks(ptracks)
+            TimeSigSource(MeasureData* pmd, jdksmidi::MIDIMultiTrack& ptracks, int psubstract_ticks) : m_tracks(ptracks)
             {
                 i = 0;
                 m_count = pmd->getTimeSigAmount();
@@ -617,12 +619,12 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
             int i;
             int m_count;
             Sequence* m_seq;
-            jdkmidi::MIDIMultiTrack& m_tracks;
+            jdksmidi::MIDIMultiTrack& m_tracks;
             int m_substract_ticks;
             
         public:
             
-            TempoEvtSource(Sequence* seq, jdkmidi::MIDIMultiTrack& ptracks, int psubstract_ticks) : m_tracks(ptracks)
+            TempoEvtSource(Sequence* seq, jdksmidi::MIDIMultiTrack& ptracks, int psubstract_ticks) : m_tracks(ptracks)
             {
                 i = 0;
                 m_count = seq->getTempoEventAmount();
@@ -649,12 +651,12 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
             int i;
             int m_count;
             Sequence* m_seq;
-            jdkmidi::MIDIMultiTrack& m_tracks;
+            jdksmidi::MIDIMultiTrack& m_tracks;
             int m_substract_ticks;
             
         public:
             
-            TextEvtSource(Sequence* seq, jdkmidi::MIDIMultiTrack& ptracks, int psubstract_ticks) : m_tracks(ptracks)
+            TextEvtSource(Sequence* seq, jdksmidi::MIDIMultiTrack& ptracks, int psubstract_ticks) : m_tracks(ptracks)
             {
                 i = 0;
                 m_count = seq->getTextEvents().size();
@@ -704,7 +706,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
     {
         *songLengthInTicks += past_end_time;
         
-        jdkmidi::MIDITimedBigMessage m;
+        jdksmidi::MIDITimedBigMessage m;
         m.SetTime( *songLengthInTicks );
         m.SetControlChange(0, 127, 0);
         
@@ -738,7 +740,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
         const int tick = md->lastTickInMeasure(md->getMeasureAmount() - 1);
         if (tick > *songLengthInTicks)
         {
-            jdkmidi::MIDITimedBigMessage m;
+            jdksmidi::MIDITimedBigMessage m;
             m.SetTime( tick - 1 );
             m.SetControlChange(0, 127, 0);
             
@@ -763,17 +765,17 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
         
         // FIXME: if the user adds lots of tracks, just using the last track here may not be safe.
         const int metronomeTrackId = sequence->getTrackAmount() + 1; //tracks.GetNumTracks() - 1;
-        jdkmidi::MIDITrack* metronomeTrack = tracks.GetTrack(metronomeTrackId);
+        jdksmidi::MIDITrack* metronomeTrack = tracks.GetTrack(metronomeTrackId);
         
         *numTracks = *numTracks + 1;
         
         // set track name
         {
-            jdkmidi::MIDITimedBigMessage m;
+            jdksmidi::MIDITimedBigMessage m;
             m.SetText( 3 );
             m.SetByte1( 3 );
             
-            jdkmidi::MIDISystemExclusive sysex((unsigned char*)"Metronome",
+            jdksmidi::MIDISystemExclusive sysex((unsigned char*)"Metronome",
                                                strlen("Metronome")+1, strlen("Metronome")+1, false);
             
             m.CopySysEx( &sysex );
@@ -787,7 +789,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
         
         // set maximum volume
         {
-            jdkmidi::MIDITimedBigMessage m;
+            jdksmidi::MIDITimedBigMessage m;
             
             m.SetTime( 0 );
             m.SetControlChange( channel, 7, 127 );
@@ -824,7 +826,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdkmidi::MIDIMultiTra
                 timeBetweenMetronomeHits = beat;
             }
         
-            jdkmidi::MIDITimedBigMessage m;
+            jdksmidi::MIDITimedBigMessage m;
             m.SetTime((int)tick);
             m.SetNoteOn( 9 /* channel */, metronomeInstrument, metronomeVolume );
             
@@ -846,7 +848,7 @@ void AriaMaestosa::allocAsMidiBytes(Sequence* sequence, bool selectionOnly, /*ou
 {
     int numTracks = -1;
     
-    jdkmidi::MIDIMultiTrack tracks;
+    jdksmidi::MIDIMultiTrack tracks;
     
     makeJDKMidiSequence(sequence, tracks, selectionOnly, songlength, startTick, &numTracks, playing);
     
@@ -854,7 +856,7 @@ void AriaMaestosa::allocAsMidiBytes(Sequence* sequence, bool selectionOnly, /*ou
     OwnerPtr<MidiToMemoryStream>  out_stream;
     out_stream = new MidiToMemoryStream();
     
-    jdkmidi::MIDIFileWriteMultiTrack writer(
+    jdksmidi::MIDIFileWriteMultiTrack writer(
                                             &tracks,
                                             out_stream
                                             );
