@@ -14,6 +14,7 @@
 
 #ifdef __WIN32__
 
+#include "jdksmidi/world.h"
 #include "jdksmidi/multitrack.h"
 #include "jdksmidi/sequencer.h"
 #include "AriaCore.h"
