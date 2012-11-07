@@ -91,6 +91,9 @@ namespace AriaMaestosa
     EXTERN const char* SETTING_ID_WINDOW_W DEFAULT("window_w");
     EXTERN const char* SETTING_ID_WINDOW_H DEFAULT("window_h");
     
+    EXTERN const char* SETTING_ID_AUDIO_EXPORT_ENGINE DEFAULT("audioExportEngine");
+    EXTERN const char* SETTING_ID_FLUIDSYNTH_SOUNDFONT_PATH DEFAULT("fluidsynthSoundfontPath");
+    
 #ifdef __APPLE__
     EXTERN const char* SETTING_ID_SOUNDBANK        DEFAULT("soundbank");
 #endif

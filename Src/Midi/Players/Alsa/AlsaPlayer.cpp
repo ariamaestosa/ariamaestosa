@@ -102,8 +102,8 @@ enum AudioExportEngine
 };
 
 wxString g_export_audio_filepath;
-AudioExportEngine g_export_engine = FLUIDSYNTH;
-wxString g_fluisynth_soundfont = wxT("/usr/share/sounds/sf2/FluidR3_GM.sf2");
+AudioExportEngine g_export_engine;
+wxString g_fluisynth_soundfont;
 
 void* export_audio_func( void *ptr )
 {
@@ -505,6 +505,10 @@ public:
         AudioExportDialog(wxWindow* parent) : wxDialog(parent, wxID_ANY, _("Settings"), wxDefaultPosition, 
                                                        wxSize(460, 200), wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxCLOSE_BOX)
         {
+            PreferencesData* prefs = PreferencesData::getInstance();
+            g_export_engine = (AudioExportEngine)prefs->getIntValue(SETTING_ID_AUDIO_EXPORT_ENGINE);
+            g_fluisynth_soundfont = prefs->getValue(SETTING_ID_FLUIDSYNTH_SOUNDFONT_PATH);
+            
             wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
             
             wxStaticText* label = new wxStaticText(this, wxID_ANY, _("Choose the MIDI engine to use to render the file"));
@@ -557,7 +561,12 @@ public:
         
         ~AudioExportDialog()
         {
+            PreferencesData* prefs = PreferencesData::getInstance();
+            
             g_fluisynth_soundfont = m_soundfontTextCtrl->GetValue();
+ 
+            prefs->setValue(SETTING_ID_AUDIO_EXPORT_ENGINE, wxString::Format(wxT("%i"), g_export_engine));
+            prefs->setValue(SETTING_ID_FLUIDSYNTH_SOUNDFONT_PATH, g_fluisynth_soundfont);
         }
         
         void onChange(wxCommandEvent& evt)
