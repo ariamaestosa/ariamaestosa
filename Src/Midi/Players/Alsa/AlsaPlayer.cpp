@@ -41,6 +41,7 @@
 #include <wx/wx.h>
 #include <wx/utils.h>
 #include <wx/process.h>
+#include <wx/filename.h>
 
 #include "jdksmidi/world.h"
 #include "jdksmidi/track.h"
@@ -99,14 +100,15 @@ enum AudioExportEngine
     FLUIDSYNTH = 0,
     TIMIDITY = 1
 };
-wxString export_audio_filepath;
+
+wxString g_export_audio_filepath;
 AudioExportEngine g_export_engine = FLUIDSYNTH;
 wxString g_fluisynth_soundfont = wxT("/usr/share/sounds/sf2/FluidR3_GM.sf2");
 
 void* export_audio_func( void *ptr )
 {
     // the file is exported to midi, and then we tell timidity to make it into wav
-    wxString tempMidiFile = export_audio_filepath.BeforeLast('/') + wxT("/aria_temp_file.mid");
+    wxString tempMidiFile = g_export_audio_filepath.BeforeLast('/') + wxT("/aria_temp_file.mid");
     
     AriaMaestosa::exportMidiFile(g_sequence, tempMidiFile);
     wxString cmd;
@@ -114,12 +116,12 @@ void* export_audio_func( void *ptr )
     if (g_export_engine == FLUIDSYNTH)
     {
         // fluidsynth -O s32 -T wav -a file --fast-render=test.wav /usr/share/sounds/sf2/FluidR3_GM.sf2 '/home/mmg/Desktop/angelinblack/Angel in black piano.mid'
-        cmd = wxT("fluidsynth -O s32 -T wav -a file --fast-render=\"") + export_audio_filepath +
+        cmd = wxT("fluidsynth -O s32 -T wav -a file --fast-render=\"") + g_export_audio_filepath +
               wxT("\" \"") + g_fluisynth_soundfont + wxT("\" \"") + tempMidiFile + wxT("\"");
     }
     else if (g_export_engine == TIMIDITY)
     {
-        cmd = wxT("timidity -Ow -o \"") + export_audio_filepath + wxT("\" \"") + tempMidiFile + wxT("\" -idt");
+        cmd = wxT("timidity -Ow -o \"") + g_export_audio_filepath + wxT("\" \"") + tempMidiFile + wxT("\" -idt");
     }
     else
     {
@@ -496,10 +498,12 @@ public:
     class AudioExportDialog : public wxDialog
     {
         wxRadioBox* m_radioBox;
-        wxTextCtrl* m_soundfont;
+        wxTextCtrl* m_soundfontTextCtrl;
+        wxButton*   m_browseButton;
         
     public:
-        AudioExportDialog(wxWindow* parent) : wxDialog(parent, wxID_ANY, _("Settings"))
+        AudioExportDialog(wxWindow* parent) : wxDialog(parent, wxID_ANY, _("Settings"), wxDefaultPosition, 
+                                                       wxSize(460, 200), wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxCLOSE_BOX)
         {
             wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
             
@@ -518,12 +522,21 @@ public:
             
             wxStaticText* soundfontLbl = new wxStaticText(this, wxID_ANY, _("Fluidsynth Soundfont"));
             sizer->Add(soundfontLbl, 0, wxALL, 5);
-            m_soundfont = new wxTextCtrl(this, wxID_ANY, g_fluisynth_soundfont);
-            sizer->Add(m_soundfont, 0, wxEXPAND | wxALL, 5);
             
+            wxBoxSizer* soundFontSizer = new wxBoxSizer(wxHORIZONTAL);
+            
+            m_soundfontTextCtrl = new wxTextCtrl(this, wxID_ANY, g_fluisynth_soundfont);
+            soundFontSizer->Add(m_soundfontTextCtrl, 1, wxALL, 2);
+            
+            m_browseButton = new wxButton(this, wxID_ANY, wxT("..."), wxDefaultPosition,
+                                          wxDLG_UNIT(this,wxSize(15,13)));
+            soundFontSizer->Add(m_browseButton, 0, wxALL, 2);
+            
+            sizer->Add(soundFontSizer, 0, wxALL|wxEXPAND, 5);
+        
             sizer->AddStretchSpacer();
             
-            m_soundfont->Enable(g_export_engine == FLUIDSYNTH);
+            m_soundfontTextCtrl->Enable(g_export_engine == FLUIDSYNTH);
             
             wxButton* okBtn = new wxButton(this, wxID_OK, _("OK"));
             wxButton* cancelBtn = new wxButton(this, wxID_CANCEL, _("Cancel"));
@@ -537,18 +550,38 @@ public:
             
             m_radioBox->Connect(m_radioBox->GetId(), wxEVT_COMMAND_RADIOBOX_SELECTED,
                                 wxCommandEventHandler(AudioExportDialog::onChange), NULL, this);
+            
+            m_browseButton->Connect(m_browseButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED,
+                                wxCommandEventHandler(AudioExportDialog::onButtonClicked), NULL, this);
         }
         
         ~AudioExportDialog()
         {
-            g_fluisynth_soundfont = m_soundfont->GetValue();
+            g_fluisynth_soundfont = m_soundfontTextCtrl->GetValue();
         }
         
         void onChange(wxCommandEvent& evt)
         {
+            bool enable;
+            
             //printf("-> %i\n", m_radioBox->GetSelection());
             g_export_engine = (AudioExportEngine)m_radioBox->GetSelection();
-            m_soundfont->Enable(g_export_engine == FLUIDSYNTH);
+            enable = (g_export_engine == FLUIDSYNTH);
+            m_soundfontTextCtrl->Enable(enable);
+            m_browseButton->Enable(enable);
+        }
+        
+        void onButtonClicked(wxCommandEvent& evt)
+        {
+            wxFileName soundFontFile(m_soundfontTextCtrl->GetValue());
+
+            wxString soundFontFilePath = showFileDialog(this, _("Select file"), soundFontFile.GetPath(),
+                                            soundFontFile.GetFullName(), wxString(_("Sound Font"))+wxT(" (*.sf2)|*.sf2"), false /* open */);
+            
+            if (!soundFontFilePath.IsEmpty())
+            {
+                m_soundfontTextCtrl->SetValue(soundFontFilePath);
+            }
         }
     };
     
@@ -561,7 +594,7 @@ public:
     virtual void exportAudioFile(Sequence* sequence, wxString filepath)
     {
         g_sequence = sequence;
-        export_audio_filepath = filepath;
+        g_export_audio_filepath = filepath;
         
         threads::export_audio.runFunction( &export_audio_func );
     }
