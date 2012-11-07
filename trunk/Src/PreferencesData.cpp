@@ -348,6 +348,16 @@ void PreferencesData::fillSettingsVector()
                                      SETTING_INT, false /* show in preferences */, to_wxString(wxPAPER_LETTER) );
     m_settings.push_back( paperType );
     
+    // Default=0 => FLUIDSYNTH
+    Setting* audioExportEngine = new Setting(fromCString(SETTING_ID_AUDIO_EXPORT_ENGINE),
+                                     wxT("Audio Export Engine"),
+                                     SETTING_INT, false, wxT("0"));
+    m_settings.push_back( audioExportEngine );
+                         
+    Setting* fluidsynthSoundfontPath = new Setting(fromCString(SETTING_ID_FLUIDSYNTH_SOUNDFONT_PATH),
+                                     wxT("Fluidsynth Soundfont Path"),
+                                     SETTING_STRING, false, wxT("/usr/share/sounds/sf2/FluidR3_GM.sf2") );
+    m_settings.push_back( fluidsynthSoundfontPath );
 }
 
 // ----------------------------------------------------------------------------------------------------------
