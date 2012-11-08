@@ -107,6 +107,7 @@ namespace AriaMaestosa
         int  m_last_clicked_note; 
         
         bool m_clicked_on_note;
+        bool m_previous_clicked_on_note;
         
         bool m_is_duplicating_note;
         
@@ -137,13 +138,14 @@ namespace AriaMaestosa
         
         void setPaleLineColor();
         void setStrongLineColor();
-        
-        
+        virtual void updateMovingCursor();
+
         
         Track*             m_track;
         Sequence*          m_sequence;
         GraphicalSequence* m_gsequence;
         GraphicalTrack*    m_graphical_track;
+        MainFrame*         m_main_frame;
         
     public:
         LEAK_CHECK();
@@ -299,7 +301,7 @@ namespace AriaMaestosa
         int getHeight      () const { return m_height;                }
         
         float getRelativeHeight() const { return m_relative_height;                }
-
+        
     };
 }
 
