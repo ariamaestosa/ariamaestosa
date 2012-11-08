@@ -64,6 +64,7 @@ Editor::Editor(GraphicalTrack* track)
 {
     m_y_step = 10;
 
+    m_main_frame      = getMainFrame();
     m_track           = track->getTrack();
     m_sequence        = m_track->getSequence();
     m_graphical_track = track;
@@ -82,6 +83,7 @@ Editor::Editor(GraphicalTrack* track)
 
     m_mouse_is_in_editor  = false;
     m_clicked_on_note     = false;
+    m_previous_clicked_on_note = false;
     m_last_clicked_note   = -1;
     m_use_instant_notes   = false;
     m_is_duplicating_note = false;
@@ -498,6 +500,8 @@ void Editor::mouseDown(RelativeXCoord x, int y)
             // m_last_clicked_note to -1, meaning 'selected notes'.
             m_last_clicked_note = -1;
         }
+        
+        updateMovingCursor();
 
     }
 
@@ -658,6 +662,7 @@ end_of_func:
     m_mouse_is_in_editor  = false;
     m_clicked_on_note     = false;
     m_is_duplicating_note = false;
+    updateMovingCursor();
     Display::render();
 }
 
@@ -1065,6 +1070,24 @@ void Editor::setStrongLineColor()
     else
     {
         AriaRender::color(0.4, 0.4, 0.4);
+    }
+}
+
+
+void Editor::updateMovingCursor()
+{
+    if (m_previous_clicked_on_note!=m_clicked_on_note)
+    {
+        if (m_clicked_on_note)
+        {
+           m_main_frame->setMovingCursor(); 
+        }
+        else
+        {
+            m_main_frame->setNormalCursor();
+        }
+        
+        m_previous_clicked_on_note = m_clicked_on_note;
     }
 }
 

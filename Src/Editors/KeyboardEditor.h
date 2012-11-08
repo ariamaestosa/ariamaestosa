@@ -30,7 +30,6 @@ namespace AriaMaestosa
     class Track; // forward
     class Sequence;
     class GraphicalTrack;
-    class MainFrame;
     
     class KeyboardEditor : public Editor
     {
@@ -101,6 +100,8 @@ namespace AriaMaestosa
         /** last action when mouse button is up */
         virtual bool performClickedOnNoteFinalAction(RelativeXCoord mousex_current, int mousey_current,
                                                     RelativeXCoord mousex_initial, int mousey_initial);
+                                                    
+        virtual void updateMovingCursor();
         
         void scrollNotesIntoView();
         
@@ -127,8 +128,7 @@ namespace AriaMaestosa
         FloatColor m_gray_color;
         bool m_resizing_mode;
         
-        MainFrame* m_main_frame;
-        
+    
         wxString getNoteName(int pitchID, bool addOctave = true);
         void applyColor(FloatColor color);
         void applyInvertedColor(FloatColor color);

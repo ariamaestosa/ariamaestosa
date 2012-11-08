@@ -356,6 +356,7 @@ namespace AriaMaestosa
         void setStatusText(wxString text);
         
         void setResizingCursor();
+        void setMovingCursor();
         void setNormalCursor();
         void setReloadMode(bool enable);
 

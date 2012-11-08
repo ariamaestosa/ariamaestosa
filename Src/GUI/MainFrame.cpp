@@ -887,6 +887,12 @@ void MainFrame::setResizingCursor()
 }
 
 
+void MainFrame::setMovingCursor()
+{
+    m_main_pane->SetCursor(wxCURSOR_SIZING);
+}
+
+
 void MainFrame::setNormalCursor()
 {
     m_main_pane->SetCursor(wxNullCursor);

@@ -80,7 +80,6 @@ KeyboardEditor::KeyboardEditor(GraphicalTrack* track) : Editor(track)
     int octave;
     wxFont drumFont = getDrumNamesFont();
     
-    m_main_frame = getMainFrame();
     m_resizing_mode = false;
     m_sb_position = 0.5;
     m_white_color.set(1.0, 1.0, 1.0, 1.0);
@@ -339,6 +338,33 @@ bool KeyboardEditor::performClickedOnNoteFinalAction(RelativeXCoord mousex_curre
 
 
 // -----------------------------------------------------------------------------------------------------------
+void KeyboardEditor::updateMovingCursor()
+{
+    if (m_previous_clicked_on_note!=m_clicked_on_note)
+    {
+        if (m_clicked_on_note)
+        {
+            if (m_resizing_mode)
+            {
+                m_main_frame->setResizingCursor(); 
+            }
+            else
+            {
+                m_main_frame->setMovingCursor();
+            }
+        }
+        else
+        {
+            m_main_frame->setNormalCursor();
+        }
+        
+        m_previous_clicked_on_note = m_clicked_on_note;
+    }
+}
+
+
+
+// -----------------------------------------------------------------------------------------------------------
 void KeyboardEditor::scrollNotesIntoView()
 {
     int noteCount = m_track->getNoteAmount();
@@ -556,7 +582,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
         {
             AriaRender::images();
             applyInvertedColor(floatColor);
-            AriaRender::renderString(getNoteName(pitch), x+1, y2, x2 + getEditorXStart() - x);
+            AriaRender::renderString(getNoteName(pitch), x+1, y2, x2 + getEditorXStart() - x + 1);
         }
     }
 
