@@ -314,6 +314,8 @@ namespace AriaMaestosa
         void saveOpenedFiles();
         void requestForScrollKeyboardEditorNotesIntoView();
         void scrollKeyboardEditorNotesIntoView(int sequenceId);
+        bool areFilesIdentical(const wxString& filePath1, const wxString& filePath2);
+
 
     public:
         LEAK_CHECK();

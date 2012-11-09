@@ -1852,21 +1852,17 @@ void MainFrame::setCurrentSequence(int n, bool updateView)
 void MainFrame::loadFile(const wxString& filePath)
 {
     wxString existingFilePath;
-    wxString inputLowerFilePath;
     int size;
     bool found;
     
     size = m_sequences.size();
     found = false;
-    inputLowerFilePath = filePath;
-    inputLowerFilePath.MakeLower();
     
     for (int i=0 ; i<size && !found ; i++)
     {
-        existingFilePath = m_sequences[i].getModel()->getFilepath().MakeLower();
+        existingFilePath = m_sequences[i].getModel()->getFilepath();
         
-        // @todo : handle case where a path is relative and the other one is absolute (for the same file)
-        if (existingFilePath == inputLowerFilePath)
+        if (areFilesIdentical(existingFilePath, filePath))
         {
             setCurrentSequence(i);
             
@@ -2336,6 +2332,37 @@ void MainFrame::scrollKeyboardEditorNotesIntoView(int sequenceId)
         }
     }
     setCurrentSequence(currentSequenceId);
+}
+
+
+/** handle case where a path is relative and the other one is absolute (for the same file) */
+bool MainFrame::areFilesIdentical(const wxString& filePath1, const wxString& filePath2)
+{
+    bool identical;
+    
+    identical = false;
+    if (filePath1==filePath2)
+    {
+        identical = true;
+    }
+    else
+    {
+        wxFileName fileName1(filePath1);
+        wxFileName fileName2(filePath2);
+        
+        if (fileName1.IsRelative()) fileName1.MakeAbsolute();
+        if (fileName2.IsRelative()) fileName2.MakeAbsolute();
+        
+#if defined(__WXMSW__)
+        // paths with same letters but different cases are considered identical under Windows
+        identical = (fileName1.GetFullPath().Lower()==fileName2.GetFullPath().Lower());
+#else
+        identical = (fileName1.GetFullPath()==fileName2.GetFullPath());
+#endif
+
+    }
+ 
+    return identical;
 }
    
 
