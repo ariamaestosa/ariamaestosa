@@ -553,7 +553,8 @@ void MainFrame::init(const wxArrayString& filesToOpen, bool fileInCommandLine)
 	{
         wxBoxSizer* notification_sizer = new wxBoxSizer(wxHORIZONTAL);
         m_notification_panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_SIMPLE);
-        m_notification_text = new wxStaticText(m_notification_panel, wxID_ANY, wxT("[No message]"),
+        // for some reason, wxStaticText on some systems needs to be initially multiline to properly scale later one
+        m_notification_text = new wxStaticText(m_notification_panel, wxID_ANY, wxT("_______________\n_______________\n_______________\n_______________"),
                                                wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE);
         m_notification_icon = new wxStaticBitmap(m_notification_panel, wxID_ANY,
                                                     wxArtProvider::GetBitmap(wxART_WARNING, wxART_OTHER , wxSize(48, 48)));
@@ -562,7 +563,7 @@ void MainFrame::init(const wxArrayString& filesToOpen, bool fileInCommandLine)
         
         
         wxBoxSizer* subsizer = new wxBoxSizer(wxVERTICAL);
-        subsizer->Add(m_notification_text, 0, wxEXPAND);
+        subsizer->Add(m_notification_text, 1, wxEXPAND);
         notification_sizer->Add(subsizer, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 #if wxCHECK_VERSION(2,9,1)
