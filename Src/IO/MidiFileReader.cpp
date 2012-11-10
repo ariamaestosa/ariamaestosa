@@ -182,7 +182,7 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                 }
 
                 // ----------------------------------- note on -------------------------------------
-                if ( event->IsNoteOn() )
+                if (event->IsNoteOn() and event->GetVelocity() > 0)
                 {
 
                     const int note = ((channel == 9) ? event->GetNote() : 131 - event->GetNote());
@@ -196,11 +196,11 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                     continue;
                 }
                 // ----------------------------------- note off -------------------------------------
-                else if ( event->IsNoteOff() )
+                else if (event->IsNoteOff() or (event->IsNoteOn() and event->GetVelocity() == 0))
                 {
                     if (channel == 9) continue; // drum notes have no durations so dont care about this event
                     const int note = (131 - event->GetNote());
-
+                    
                     // a note off event was found, find to which note on event it corresponds
                     // (start iterating from the end, because since events are in order it will probably be found near the end)
                     for (int n=ariaTrack->getNoteAmount()-1; n>-1; n--)
