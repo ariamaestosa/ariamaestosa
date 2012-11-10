@@ -1,3 +1,8 @@
+1.4.6
+- Add 'duplicate track' features
+- Implement resizing notes with the mouse cursor
+
+
 1.4.5
 - Fix bug when saving after exporting MIDI file
 - Add 'Mute' and 'Solo'

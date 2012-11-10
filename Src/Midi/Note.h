@@ -168,6 +168,7 @@ namespace AriaMaestosa
         ~Note();
         
         void setParent(Track* parent);
+        Track* getParent() { return m_track; }
         
         /**
           * @note for guitar mode only

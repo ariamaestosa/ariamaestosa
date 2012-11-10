@@ -20,6 +20,7 @@
 #include <wx/menu.h>
 #include <wx/msgdlg.h>
 
+#include "Actions/DuplicateMeasures.h"
 #include "Actions/EditAction.h"
 #include "Actions/InsertEmptyMeasures.h"
 #include "Actions/RemoveMeasures.h"
@@ -67,9 +68,26 @@ public:
     SelectedMenu(GraphicalSequence* parent) : wxMenu()
     {
         Append(1, _("Remove selected measures"));
+        Append(2, _("Duplicate selected measures"));
         m_gseq = parent;
     }
 
+    void duplicateSelected(wxCommandEvent& event)
+    {
+        m_gseq->getMeasureBar()->unselect();
+        
+        Sequence* seq = m_gseq->getModel();
+        
+        if (PlatformMidiManager::get()->isRecording())
+        {
+            wxBell();
+            return;
+        }
+        
+        seq->action( new Action::DuplicateMeasures(g_remove_from, g_remove_to) );
+        m_gseq->getMeasureBar()->selectTimeSig(0);
+    }
+    
     /**
       * @brief Removes selected measures
       */
@@ -103,6 +121,7 @@ public:
 
 BEGIN_EVENT_TABLE(SelectedMenu, wxMenu)
 EVT_MENU(1,SelectedMenu::removeSelected)
+EVT_MENU(2,SelectedMenu::duplicateSelected)
 END_EVENT_TABLE()
 
 // ----------------------------------------------------------------------------------------------------------
