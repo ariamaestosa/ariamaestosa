@@ -63,7 +63,7 @@ AboutDialog::AboutDialog(wxWindow* parent) : wxFrame(parent, wxID_ANY,  _("About
     //I18N: - in about dialog
     wxString::Format(_("Ergonis Software and %s for making EasyBeat,\n\ta great app that inspired Aria (www.ergonis.com)."), wxT(" G\u00FCnther Blaschek "))  +
     //I18N: - in about dialog
-    wxT("\n\t") + wxString(_("J.D. Koftinoff Software for libjdkmidi")) +
+    wxT("\n\t") + wxString(_("J.D. Koftinoff Software for the jdksmidi library")) +
     //I18N: - in about dialog
     wxT("\n\t") + wxString(_("The irrXML team for their XML parser")) +
     //I18N: - in about dialog
