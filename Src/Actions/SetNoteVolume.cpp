@@ -22,12 +22,13 @@
 
 using namespace AriaMaestosa::Action;
 
-SetNoteVolume::SetNoteVolume(const int volume, const int noteID) :
+SetNoteVolume::SetNoteVolume(const int value, const int noteID, const bool increment) :
     //I18N: (undoable) action name
     SingleTrackAction( _("change note(s) volume") )
 {
-    m_volume = volume;
+    m_value = value;
     m_note_ID = noteID;
+    m_increment = increment;
 }
 
 SetNoteVolume::~SetNoteVolume()
@@ -49,22 +50,24 @@ void SetNoteVolume::undo()
 
 void SetNoteVolume::perform()
 {
+    int volume;
     ASSERT(m_track != NULL);
     
     ptr_vector<Note>& notes = m_visitor->getNotesVector();
 
     if (m_note_ID == SELECTED_NOTES)
     {
-        
         bool played = false;
-        
         const int noteAmount = notes.size();
+        
         for (int n=0; n<noteAmount; n++)
         {
             if (notes[n].isSelected())
             {
-                m_volumes.push_back( notes[n].getVolume()  );
-                notes[n].setVolume( m_volume );
+                volume = notes[n].getVolume();
+                m_volumes.push_back(volume);
+                adjustVolume(volume);
+                notes[n].setVolume(volume);
                 relocator.rememberNote(notes[n]);
                 if (not played)
                 {
@@ -83,11 +86,27 @@ void SetNoteVolume::perform()
         ASSERT_E(m_note_ID,<,notes.size());
         
         // if user changed the volume of a note that is not selected, change the volume of this note only
-        m_volumes.push_back( notes[m_note_ID].getVolume()  );
-        notes[m_note_ID].setVolume( m_volume );
+        volume = notes[m_note_ID].getVolume();
+        m_volumes.push_back(volume);
+        adjustVolume(volume);
+        notes[m_note_ID].setVolume(volume);
         relocator.rememberNote(notes[m_note_ID]);
         notes[m_note_ID].play(true);
     }
     
+}
+
+void SetNoteVolume::adjustVolume(int& volume)
+{
+    if (m_increment)
+    {
+        volume += m_value;
+        if (volume<0) volume = 0;
+        if (volume>SCHAR_MAX) volume = SCHAR_MAX;
+    }
+    else
+    {
+        volume = m_value;
+    }
 }
 

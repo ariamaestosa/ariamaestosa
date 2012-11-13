@@ -170,7 +170,7 @@ void DuplicateMeasures::perform()
             }//next
         }//endif
         
-        for (int n = 0; n < notesToDuplicate.size(); n++)
+        for (size_t n = 0; n < notesToDuplicate.size(); n++)
         {
             notesToDuplicate[n].getParent()->addNote_import(notesToDuplicate[n].getPitchID(),
                                                             notesToDuplicate[n].getTick(),
@@ -183,14 +183,14 @@ void DuplicateMeasures::perform()
              it != controllerEventsToDuplicate.end();
              it++)
         {
-            for (int n = 0; n < it->second.size(); n++)
+            for (size_t n = 0; n < it->second.size(); n++)
             {
                 ControllerEvent& evt = it->second[n];
                 it->first->addControlEvent_import(evt.getTick(), evt.getValue(), evt.getController());
             }
         }
         
-        for (int n = 0; n < tempoEventsToDuplicate.size(); n++)
+        for (size_t n = 0; n < tempoEventsToDuplicate.size(); n++)
         {
             m_sequence->addTempoEvent(new ControllerEvent(tempoEventsToDuplicate[n].getController(),
                                                           tempoEventsToDuplicate[n].getTick(),
