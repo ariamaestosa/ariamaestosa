@@ -31,7 +31,8 @@ namespace AriaMaestosa
          */
         class SetNoteVolume : public SingleTrackAction
         {
-            int m_volume, m_note_ID;
+            int m_value, m_note_ID;
+            bool m_increment;
             friend class AriaMaestosa::Track;
             
             /** for undo */
@@ -40,9 +41,15 @@ namespace AriaMaestosa
             NoteRelocator relocator;
             std::vector<int> m_volumes;
             
+            void adjustVolume(int& volume);
+            
         public:
             
-            SetNoteVolume(const int volume, const int noteID);
+            /**
+            * if increment is false : value is the volume to apply to the note(s)
+            * if increment is true : value is an increment to apply to current note volume(s)
+            */
+            SetNoteVolume(const int value, const int noteID, const bool increment = false);
             void perform();
             void undo();
             virtual ~SetNoteVolume();

@@ -23,6 +23,7 @@
 
 #include "Actions/EditAction.h"
 #include "Actions/ResizeNotes.h"
+#include "Actions/SetNoteVolume.h"
 #include "Actions/NumberPressed.h"
 #include "Actions/ShiftFrets.h"
 #include "Actions/ShiftString.h"
@@ -1284,6 +1285,8 @@ void MainPane::keyReleased(wxKeyEvent& evt)
 
 void MainPane::keyPressed(wxKeyEvent& evt)
 {
+    int keyCode = evt.GetKeyCode();
+    
     if (m_have_plus_cursor)
     {
         if (isSelectMorePressed())
@@ -1308,15 +1311,16 @@ void MainPane::keyPressed(wxKeyEvent& evt)
     const bool commandDown = evt.ControlDown();
 #endif
     const bool shiftDown   = evt.ShiftDown();
+    const bool altDown     = evt.AltDown();
 
     // ---------------- play selected notes -----------------
-    if (evt.GetKeyCode() == WXK_SPACE)
+    if (keyCode == WXK_SPACE)
     {
         seq->spacePressed();
     }
     
 #ifdef _MORE_DEBUG_CHECKS
-    if (evt.GetKeyCode() == WXK_F3)
+    if (keyCode == WXK_F3)
     {
         wxPoint p = wxGetMousePosition();
         RelativeXCoord x(gseq);
@@ -1326,10 +1330,10 @@ void MainPane::keyPressed(wxKeyEvent& evt)
 #endif
 
     // ---------------- resize notes -----------------
-    if (commandDown and not shiftDown)
+    if (commandDown and not shiftDown and not altDown)
     {
 
-        if (evt.GetKeyCode() == WXK_LEFT)
+        if (keyCode == WXK_LEFT)
         {
             seq->getCurrentTrack()->
             action( new Action::ResizeNotes(
@@ -1341,7 +1345,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
             Display::render();
         }
 
-        if (evt.GetKeyCode() == WXK_RIGHT)
+        else if (keyCode == WXK_RIGHT)
         {
             seq->getCurrentTrack()->
             action( new Action::ResizeNotes(
@@ -1352,10 +1356,36 @@ void MainPane::keyPressed(wxKeyEvent& evt)
                     );
             Display::render();
         }
-
     }
     
-    if (commandDown and evt.GetKeyCode() >= '1' and evt.GetKeyCode() <= '8')
+    
+    
+    // ---------------- change note velocities -----------------
+    if (not commandDown and not shiftDown and altDown)
+    {
+        int increment = 0;
+        
+        if (keyCode == WXK_UP) increment = 1;
+        else if (keyCode == WXK_DOWN) increment = -1;
+        else if (keyCode == WXK_PAGEUP) increment = 10;
+        else if (keyCode == WXK_PAGEDOWN) increment = -10;
+        
+        if (increment!=0)
+        {
+            Track* current_track = seq->getCurrentTrack();
+            
+            if (current_track!=NULL)
+            {
+                 current_track->action( new Action::SetNoteVolume(increment, SELECTED_NOTES, true) );
+                 Refresh();
+                 return;
+            }
+        }
+    }
+    
+    int unicodeKey = evt.GetUnicodeKey();
+
+    if (commandDown and unicodeKey >= WXK_NUMPAD1 and unicodeKey <= WXK_NUMPAD8)
     {
         Sequence* seq = getMainFrame()->getCurrentSequence();
         if (seq != NULL)
@@ -1364,23 +1394,9 @@ void MainPane::keyPressed(wxKeyEvent& evt)
             if (t != NULL)
             {
                 t->getMagneticGrid()->setTriplet(false);
-                
-                if (evt.GetKeyCode() == '1')
-                    t->getMagneticGrid()->setDivider(1);
-                else if (evt.GetKeyCode() == '2')
-                    t->getMagneticGrid()->setDivider(2);
-                else if (evt.GetKeyCode() == '3')
-                    t->getMagneticGrid()->setDivider(4);
-                else if (evt.GetKeyCode() == '4')
-                    t->getMagneticGrid()->setDivider(8);
-                else if (evt.GetKeyCode() == '5')
-                    t->getMagneticGrid()->setDivider(16);
-                else if (evt.GetKeyCode() == '6')
-                    t->getMagneticGrid()->setDivider(32);
-                else if (evt.GetKeyCode() == '7')
-                    t->getMagneticGrid()->setDivider(64);
-                else if (evt.GetKeyCode() == '8')
-                    t->getMagneticGrid()->setDivider(128);
+                t->getMagneticGrid()->setDivider(pow(2,(unicodeKey-WXK_NUMPAD1)));
+                // @todo : update also divider menu
+                // do something equivalent to GraphicalTrack::switchDivider(bool forward)
                     
                 Refresh();
             }
@@ -1389,9 +1405,10 @@ void MainPane::keyPressed(wxKeyEvent& evt)
 
     // perform editor-specific event filtering
     Editor* editor = gseq->getCurrentTrack()->getFocusedEditor();
-    if (editor == NULL) return;
-    
-    editor->processKeyPress(evt.GetKeyCode(), commandDown, shiftDown);
+    if (editor != NULL)
+    {
+        editor->processKeyPress(keyCode, commandDown, shiftDown);
+    }
 }
 
 // -----------------------------------------------------------------------------------------------------------
