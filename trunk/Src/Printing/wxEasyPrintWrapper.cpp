@@ -118,10 +118,10 @@ void wxEasyPrintWrapper::updateCoordinateSystem()
     float large_side = std::max(paperSize.GetWidth(), paperSize.GetHeight()); // in millimeters
     float small_side = std::min(paperSize.GetWidth(), paperSize.GetHeight()); // in millimeters
     
-    float large_side_cm = large_side / 10.0f;                                 // in centimeters
+    //float large_side_cm = large_side / 10.0f;                                 // in centimeters
     float small_side_cm = small_side / 10.0f;                                 // in centimeters
     
-    ASSERT(large_side_cm > 0.0f);
+    //ASSERT(large_side_cm > 0.0f);
     ASSERT(small_side_cm > 0.0f);
     
     /*
