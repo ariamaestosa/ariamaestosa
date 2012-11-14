@@ -1730,6 +1730,7 @@ bool MainFrame::closeSequence(int id_arg) // -1 means current
 
         if (answer == wxCANCEL)
         {
+            m_main_pane->SetToolTip(NULL);
             return false;
         }
         
@@ -1772,6 +1773,7 @@ bool MainFrame::closeSequence(int id_arg) // -1 means current
     }
 
     Display::render();
+    m_main_pane->SetToolTip(NULL);
     return true;
 
 }
