@@ -1393,11 +1393,11 @@ void MainPane::keyPressed(wxKeyEvent& evt)
             Track* t = seq->getCurrentTrack();
             if (t != NULL)
             {
+                bool isTriplet = t->getMagneticGrid()->isTriplet();
                 t->getMagneticGrid()->setTriplet(false);
-                t->getMagneticGrid()->setDivider(pow(2,(unicodeKey-WXK_NUMPAD1)));
-                // @todo : update also divider menu
-                // do something equivalent to GraphicalTrack::switchDivider(bool forward)
-                    
+                t->getGraphics()->setDivider(pow(2,(unicodeKey-WXK_NUMPAD1)));
+                t->getMagneticGrid()->setTriplet(isTriplet);
+
                 Refresh();
             }
         }
