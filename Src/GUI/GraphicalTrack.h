@@ -250,6 +250,8 @@ namespace AriaMaestosa
         
         void switchDivider(bool forward);
         
+        void setDivider(int divider);
+        
         void scrollKeyboardEditorNotesIntoView();
 
         // serialization
