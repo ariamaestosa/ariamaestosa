@@ -134,8 +134,9 @@ namespace AriaMaestosa
         MENU_STOP,
         MENU_RECORD,
 
-        MENU_OUTPUT_DEVICE = wxID_HIGHEST + 100,
-        MENU_INPUT_DEVICE = wxID_HIGHEST + 200
+        MENU_FILE_LOAD_RECENT_FILE = wxID_HIGHEST + 100,
+        MENU_OUTPUT_DEVICE = wxID_HIGHEST + 200,
+        MENU_INPUT_DEVICE = wxID_HIGHEST + 300
     };
 
 
@@ -233,6 +234,8 @@ namespace AriaMaestosa
         wxMenu* m_output_menu;
         wxMenu* m_input_menu;
         wxMenu* m_playback_menu;
+        wxMenu* m_recent_files_menu;
+        wxMenuItem* m_recent_files_menu_item;
 
         wxBitmap m_play_bitmap;
         wxBitmap m_pause_bitmap;
@@ -315,7 +318,8 @@ namespace AriaMaestosa
         void requestForScrollKeyboardEditorNotesIntoView();
         void scrollKeyboardEditorNotesIntoView(int sequenceId);
         bool areFilesIdentical(const wxString& filePath1, const wxString& filePath2);
-
+        void addRecentFile(const wxString& path);
+        void fillRecentFilesSubmenu();
 
     public:
         LEAK_CHECK();
@@ -370,6 +374,7 @@ namespace AriaMaestosa
         // menus
         void on_close(wxCloseEvent& evt);
         void menuEvent_new(wxCommandEvent& evt);
+        void menuEvent_loadRecentFile(wxCommandEvent& evt);
         void menuEvent_close(wxCommandEvent& evt);
         void menuEvent_exportNotation(wxCommandEvent& evt);
         void menuEvent_open(wxCommandEvent& evt);

@@ -1948,6 +1948,7 @@ void MainFrame::loadAriaFile(const wxString& filePath)
     }
 
     Display::render();
+    addRecentFile(filePath);
 }
 
 
@@ -2017,6 +2018,8 @@ void MainFrame::loadMidiFile(const wxString& filePath)
         Layout();
 
     }
+    
+    addRecentFile(filePath);
 }
 
 

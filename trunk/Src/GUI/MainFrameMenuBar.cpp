@@ -63,6 +63,9 @@
 #include <wx/button.h>
 #include <wx/spinctrl.h>
 
+
+static const int MAX_RECENT_FILE_COUNT = 10;
+
 using namespace AriaMaestosa;
 
 // -----------------------------------------------------------------------------------------------------------
@@ -86,6 +89,12 @@ void MainFrame::initMenuBar()
     addIconItem(m_file_menu, MENU_FILE_OPEN, wxString(_("&Open..."))+wxT("\tCtrl-O"), wxART_FILE_OPEN);
     Connect(MENU_FILE_OPEN, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_open));
 
+
+    //I18N: menu item in the "file" menu
+    m_recent_files_menu = new wxMenu();
+    m_recent_files_menu_item = m_file_menu->AppendSubMenu(m_recent_files_menu, _("&Recent Files"));
+    fillRecentFilesSubmenu();
+    m_file_menu->AppendSeparator();
 
     //I18N: menu item in the "file" menu
     addIconItem(m_file_menu, MENU_FILE_SAVE, wxString(_("&Save"))+wxT("\tCtrl-S"), wxART_FILE_SAVE);
@@ -541,6 +550,48 @@ void MainFrame::menuEvent_new(wxCommandEvent& evt)
     m_main_pane->forgetClickData();
     addSequence(true);
 }
+
+
+// -----------------------------------------------------------------------------------------------------------
+
+void MainFrame::menuEvent_loadRecentFile(wxCommandEvent& evt)
+{
+    int itemId;
+    wxMenuItem* fileMenuItem;
+    bool found;
+    
+    wxMenuItemList menuItemlist = m_recent_files_menu->GetMenuItems();
+    itemId = evt.GetId();
+    found = false;
+    fileMenuItem = NULL;
+    wxMenuItemList::iterator iter;
+    for (iter = menuItemlist.begin(); iter != menuItemlist.end() && !found; ++iter)
+    {
+        wxMenuItem* currentMenuItem = *iter;
+        if (currentMenuItem->GetId()==itemId)
+        {
+            fileMenuItem = currentMenuItem;
+            found = true;
+        }
+    }
+  
+    if (found)
+    {
+        wxString path;
+        
+        path = fileMenuItem->GetItemLabelText();
+        if (wxFileExists(path))
+        {
+            loadFile(path);
+        }
+        else
+        {
+            m_recent_files_menu->Destroy(fileMenuItem);
+        }
+    }
+
+}
+
 
 // -----------------------------------------------------------------------------------------------------------
 
@@ -1348,6 +1399,61 @@ void MainFrame::updateCurrentDir(wxString& path)
     {
         m_current_dir = extract_path(path);
     }
+}
+
+
+void MainFrame::addRecentFile(const wxString& path)
+{
+    int count;
+    bool found;
+    
+    wxMenuItemList menuItemlist = m_recent_files_menu->GetMenuItems();
+    wxMenuItemList::iterator iter;
+    found = false;
+    for (iter = menuItemlist.begin(); iter != menuItemlist.end() && !found; ++iter)
+    {
+        std::cout << (*iter)->GetItemLabelText().mb_str() << " - " << path.mb_str() << std::endl;
+        if (areFilesIdentical((*iter)->GetItemLabelText(), path))
+        {
+            found = true;
+        }
+    }
+    
+    // if file already there, do not add it
+    if (!found)
+    {
+        
+        count = m_recent_files_menu->GetMenuItemCount();
+        if (count>=MAX_RECENT_FILE_COUNT)
+        {
+            wxMenuItem* lastMenuItem = (wxMenuItem*)menuItemlist.GetLast()->GetData();
+            int menuId = lastMenuItem->GetId();
+            m_recent_files_menu->Destroy(menuId);
+            m_recent_files_menu->Insert(0, menuId, path);
+            m_recent_files_menu->Connect(menuId, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_loadRecentFile));
+        }
+        else
+        {
+            // TODO : id computation buggy - find an available id and use it
+            m_recent_files_menu->Insert(0, menuItemlist.GetLast()->GetData()->GetId()+1, path);
+        }
+    }
+   
+}
+
+
+void MainFrame::fillRecentFilesSubmenu()
+{
+    // TODO : read in preferences file instead
+    for (int i=0 ; i<MAX_RECENT_FILE_COUNT ; i++)
+    {
+        m_recent_files_menu->QUICK_ADD_MENU(MENU_FILE_LOAD_RECENT_FILE + i, 
+                                        wxT("path#") + wxString::Format(wxT("%i"), i),
+                                        MainFrame::menuEvent_loadRecentFile);
+    }
+    
+    // TODO : false if no file
+    m_recent_files_menu_item->Enable(true);
 }
 
 // -----------------------------------------------------------------------------------------------------------
