@@ -37,9 +37,12 @@
 #include <wx/stattext.h>
 #include <iostream>
 
+static const int ID_CHECK_ALL_BUTTON = 10000;
+static const int ID_UNCHECK_ALL_BUTTON = 10001;
+
+
 namespace AriaMaestosa
 {
-    
     
     class BackgroundChoicePanel : public wxPanel
     {
@@ -79,6 +82,20 @@ namespace AriaMaestosa
             return active->GetValue();
         }
         
+        void setChecked(bool checked)
+        {
+            if (checked)
+            {
+                // May only be checked if enabled
+                active->SetValue(active->IsEnabled());
+            }
+            else
+            {
+                active->SetValue(false);
+            }
+            
+        }
+        
     };
     
     /**
@@ -89,22 +106,24 @@ namespace AriaMaestosa
       */
     class TrackPropertiesDialog : public wxDialog
     {
-        wxButton* ok_btn;
-        wxButton* cancel_btn;
+        wxButton* m_ok_btn;
+        wxButton* m_cancel_btn;
         
-        wxBoxSizer* sizer;
+        wxButton* m_checkall_btn;
+        wxButton* m_uncheckall_btn;
         
-        wxTextCtrl* volume_text;
-        wxSlider* volume_slider;
+        wxBoxSizer* m_sizer;
+        
+        wxTextCtrl* m_volume_text;
+        wxSlider* m_volume_slider;
         
         ptr_vector<BackgroundChoicePanel> m_choice_panels;
         
         GraphicalTrack* m_parent;
-        
-        int modalid;
-        
+        int m_modalid;
         bool m_ignore_events;
         
+    
     public:
         LEAK_CHECK();
         
@@ -124,12 +143,12 @@ namespace AriaMaestosa
             
             Sequence* seq = parent->getSequence()->getModel();
             
-            modalid = -1;
+            m_modalid = -1;
             
-            sizer = new wxBoxSizer(wxVERTICAL);
+            m_sizer = new wxBoxSizer(wxVERTICAL);
             
             wxPanel* properties_panel = new wxPanel(this);
-            sizer->Add(properties_panel, 1, wxEXPAND | wxALL, 5);
+            m_sizer->Add(properties_panel, 1, wxEXPAND | wxALL, 5);
 
             // TODO: adapt with new multi-editor paradigm
             Editor* editor = parent->getFocusedEditor();
@@ -140,11 +159,14 @@ namespace AriaMaestosa
             wxStaticBoxSizer* bg_subsizer = new wxStaticBoxSizer(wxVERTICAL, properties_panel, _("Track Background"));
             
             const int trackAmount = seq->getTrackAmount();
+            int enabledTrackCount = 0;
             for (int n=0; n<trackAmount; n++)
             {
                 Track* track = seq->getTrack(n);
                 bool enabled = true;
                 if (track == parent_t) enabled = false; // can't be background of itself
+                
+                if (enabled && !track->isNotationTypeEnabled(DRUM)) enabledTrackCount++;
                 
                 bool activated = false;
                 if (editor->hasAsBackground(track)) activated = true;
@@ -153,26 +175,43 @@ namespace AriaMaestosa
                 bg_subsizer->Add(bcp, 0, wxALL, 5);
                 m_choice_panels.push_back(bcp);
             }
-            props_sizer->Add(bg_subsizer, 0, wxALL, 5);
             
+            // Adds selection buttons if necessary
+            if (enabledTrackCount>0)
+            {
+                 wxPanel* checkPanel = new wxPanel(this);
+                wxBoxSizer* check_sizer = new wxBoxSizer(wxHORIZONTAL);
+                m_checkall_btn = new wxButton(checkPanel, ID_CHECK_ALL_BUTTON, _("Check all"));
+                m_uncheckall_btn = new wxButton(checkPanel, ID_UNCHECK_ALL_BUTTON, _("Uncheck all"));
+                check_sizer->Add(m_checkall_btn, 1, wxEXPAND |wxALL, 5);
+                check_sizer->Add(m_uncheckall_btn, 1, wxEXPAND |wxALL, 5);
+                check_sizer->Layout();
+                check_sizer->SetSizeHints(this);
+                check_sizer->Fit(checkPanel);
+                checkPanel->SetSizer(check_sizer);
+                bg_subsizer->Add(checkPanel, 1, wxALL|wxEXPAND, 5);
+            }
+            
+            props_sizer->Add(bg_subsizer, 0, wxALL, 5);
             bg_subsizer->Layout();
             
+        
             // ------ other properties ------
             wxBoxSizer* right_subsizer = new wxBoxSizer(wxVERTICAL);
             props_sizer->Add(right_subsizer, 0, wxALL, 5);
             
             wxStaticBoxSizer* default_volume_subsizer = new wxStaticBoxSizer(wxHORIZONTAL, properties_panel, _("Default volume for new notes"));
             
-            volume_slider = new wxSlider(properties_panel, 300 /* ID */, 80 /* current */, 0 /* min */, 127 /* max */);
-            default_volume_subsizer->Add(volume_slider, 0, wxALL, 5);
+            m_volume_slider = new wxSlider(properties_panel, 300 /* ID */, 80 /* current */, 0 /* min */, 127 /* max */);
+            default_volume_subsizer->Add(m_volume_slider, 0, wxALL, 5);
 #ifdef __WXGTK__
-            volume_slider->SetMinSize( wxSize(127,-1) );
+            m_volume_slider->SetMinSize( wxSize(127,-1) );
 #endif
             
             wxSize smallsize = wxDefaultSize;
             smallsize.x = 50;
-            volume_text = new wxTextCtrl(properties_panel, 301, wxT("80"), wxDefaultPosition, smallsize);
-            default_volume_subsizer->Add(volume_text, 0, wxALL, 5);
+            m_volume_text = new wxTextCtrl(properties_panel, 301, wxT("80"), wxDefaultPosition, smallsize);
+            default_volume_subsizer->Add(m_volume_text, 0, wxALL, 5);
             
             right_subsizer->Add(default_volume_subsizer, 0, wxALL, 0);
             
@@ -186,21 +225,21 @@ namespace AriaMaestosa
             props_sizer->SetSizeHints(properties_panel);
             
             // ------ bottom OK/cancel buttons ----
-            ok_btn = new wxButton(this, wxID_OK, wxT("OK"));
-            ok_btn->SetDefault();
+            m_ok_btn = new wxButton(this, wxID_OK, _("OK"));
+            m_ok_btn->SetDefault();
             
-            cancel_btn = new wxButton(this, wxID_CANCEL,  _("Cancel"));
+            m_cancel_btn = new wxButton(this, wxID_CANCEL,  _("Cancel"));
 
             wxStdDialogButtonSizer* stdDialogButtonSizer = new wxStdDialogButtonSizer();
-            stdDialogButtonSizer->AddButton(ok_btn);
-            stdDialogButtonSizer->AddButton(cancel_btn);
+            stdDialogButtonSizer->AddButton(m_ok_btn);
+            stdDialogButtonSizer->AddButton(m_cancel_btn);
             stdDialogButtonSizer->Realize();
 
-            sizer->Add(stdDialogButtonSizer, 0, wxALL | wxEXPAND, 5);
+            m_sizer->Add(stdDialogButtonSizer, 0, wxALL | wxEXPAND, 5);
 
-            SetSizer(sizer);
-            sizer->Layout();
-            sizer->SetSizeHints(this); // resize window to take ideal space
+            SetSizer(m_sizer);
+            m_sizer->Layout();
+            m_sizer->SetSizeHints(this); // resize window to take ideal space
                                        // FIXME - if too many tracks for current screen space, may cause problems
             
             m_ignore_events = false;
@@ -211,22 +250,42 @@ namespace AriaMaestosa
             Center();
             
             Track* t = m_parent->getTrack();
-            volume_text->SetValue( to_wxString(t->getDefaultVolume()) );
-            volume_slider->SetValue( t->getDefaultVolume() );
+            m_volume_text->SetValue( to_wxString(t->getDefaultVolume()) );
+            m_volume_slider->SetValue( t->getDefaultVolume() );
             
-            modalid = ShowModal();
+            m_modalid = ShowModal();
+        }
+        
+        void ckeckAllButton(wxCommandEvent& evt)
+        {
+            int size = m_choice_panels.size();
+            
+            for (int i=0 ; i<size ; i++)
+            {
+                m_choice_panels[i].setChecked(true);
+            }
+        }
+        
+        void unckeckAllButton(wxCommandEvent& evt)
+        {
+            int size = m_choice_panels.size();
+            
+            for (int i=0 ; i<size ; i++)
+            {
+                m_choice_panels[i].setChecked(false);
+            }
         }
         
         /** when Cancel button of the tuning picker is pressed */
         void cancelButton(wxCommandEvent& evt)
         {
-            wxDialog::EndModal(modalid);
+            wxDialog::EndModal(m_modalid);
         }
         
         /** when OK button of the tuning picker is pressed */
         void okButton(wxCommandEvent& evt)
         {
-            const int value = atoi_u(volume_text->GetValue());
+            const int value = atoi_u(m_volume_text->GetValue());
             if (value >=0 and value < 128)
             {
                 m_parent->getTrack()->setDefaultVolume( value );
@@ -252,7 +311,7 @@ namespace AriaMaestosa
                 }
             }
             
-            wxDialog::EndModal(modalid);
+            wxDialog::EndModal(m_modalid);
             Display::render();
         }
         
@@ -261,8 +320,8 @@ namespace AriaMaestosa
             // FIXME: an apparent wxGTK bug sends events before the constructor even returned
             if (m_ignore_events) return;
             
-            const int value = volume_slider->GetValue();
-            if (value >=0 and value < 128) volume_text->SetValue( to_wxString(value) );
+            const int value = m_volume_slider->GetValue();
+            if (value >=0 and value < 128) m_volume_text->SetValue( to_wxString(value) );
         }
         
         void volumeTextChanged(wxCommandEvent& evt)
@@ -270,8 +329,8 @@ namespace AriaMaestosa
             // FIXME: an apparent wxGTK/wxMSW bug(?) sends events before the constructor even returned
             if (m_ignore_events) return;
             
-            const int value = atoi_u(volume_text->GetValue());
-            volume_slider->SetValue( value );
+            const int value = atoi_u(m_volume_text->GetValue());
+            m_volume_slider->SetValue( value );
         }
         DECLARE_EVENT_TABLE()
     };
@@ -279,6 +338,8 @@ namespace AriaMaestosa
     BEGIN_EVENT_TABLE(TrackPropertiesDialog, wxDialog)
     EVT_BUTTON(wxID_OK, TrackPropertiesDialog::okButton)
     EVT_BUTTON(wxID_CANCEL, TrackPropertiesDialog::cancelButton)
+    EVT_BUTTON(ID_CHECK_ALL_BUTTON, TrackPropertiesDialog::ckeckAllButton)
+    EVT_BUTTON(ID_UNCHECK_ALL_BUTTON, TrackPropertiesDialog::unckeckAllButton)
     
     EVT_COMMAND_SCROLL_THUMBTRACK(300, TrackPropertiesDialog::volumeSlideChanging)
     EVT_COMMAND_SCROLL_THUMBRELEASE(300, TrackPropertiesDialog::volumeSlideChanging)
