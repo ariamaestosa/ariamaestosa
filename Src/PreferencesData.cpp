@@ -315,6 +315,13 @@ void PreferencesData::fillSettingsVector()
     m_settings.push_back(lastCurrentSequence); 
     
     
+    
+    Setting* recentFiles = new Setting(fromCString(SETTING_ID_RECENT_FILES),
+                                     wxT("Recent files"),
+                                     SETTING_STRING, false, wxT("") );
+    m_settings.push_back(recentFiles); 
+    
+    
 
     // TODO: make default value paltform-specific
     Setting* output = new Setting(fromCString(SETTING_ID_MIDI_OUTPUT), wxT(""),

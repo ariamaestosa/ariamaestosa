@@ -82,7 +82,9 @@ namespace AriaMaestosa
     EXTERN const char* SETTING_ID_LOAD_LAST_SESSION      DEFAULT("loadLastSessionFiles");
     EXTERN const char* SETTING_ID_LAST_SESSION_FILES     DEFAULT("lastSessionFiles");
     EXTERN const char* SETTING_ID_LAST_CURRENT_SEQUENCE  DEFAULT("0");
-
+    
+    EXTERN const char* SETTING_ID_RECENT_FILES     DEFAULT("recentFiles");
+    
     EXTERN const char* SETTING_ID_CHECK_NEW_VERSION DEFAULT("checkForNewVersion");
     
     EXTERN const char* SETTING_ID_REMEMBER_WINDOW_POS DEFAULT("rememberWindowLocation");

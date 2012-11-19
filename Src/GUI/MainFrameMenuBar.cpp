@@ -62,7 +62,7 @@
 #include <wx/textctrl.h>
 #include <wx/button.h>
 #include <wx/spinctrl.h>
-
+#include <wx/tokenzr.h>
 
 static const int MAX_RECENT_FILE_COUNT = 10;
 
@@ -574,23 +574,54 @@ void MainFrame::menuEvent_loadRecentFile(wxCommandEvent& evt)
             found = true;
         }
     }
-  
+    
+
     if (found)
     {
         wxString path;
+        
+        //std::cout << "==== Found item# " << fileMenuItem->GetId() << " - " << fileMenuItem->GetItemLabelText().mb_str() << std::endl;
         
         path = fileMenuItem->GetItemLabelText();
         if (wxFileExists(path))
         {
             loadFile(path);
+            
+            // Sets path as number #1
+            // Nothing to do if already first
+            wxMenuItem* firstMenuItem = menuItemlist.GetFirst()->GetData();
+            
+            /* TODO : fixme
+            if (firstMenuItem!=*iter)
+            {
+                wxString formerPath = firstMenuItem->GetItemLabelText();
+                (*iter)->SetItemLabel(formerPath);
+                firstMenuItem->SetItemLabel(path);
+            }
+            */
         }
         else
         {
             m_recent_files_menu->Destroy(fileMenuItem);
+            m_recent_files_menu_item->Enable(m_recent_files_menu->GetMenuItems().GetCount()>0);
         }
     }
 
 }
+
+
+void MainFrame::menuEvent_clearRecentFileList(wxCommandEvent& evt)
+{
+    wxMenuItemList menuItemlist = m_recent_files_menu->GetMenuItems();
+    wxMenuItemList::iterator iter;
+    for (iter = menuItemlist.begin(); iter != menuItemlist.end() ; ++iter)
+    {
+        m_recent_files_menu->Destroy(*iter);
+    }
+    
+    m_recent_files_menu_item->Enable(false);
+}
+
 
 
 // -----------------------------------------------------------------------------------------------------------
@@ -1404,56 +1435,115 @@ void MainFrame::updateCurrentDir(wxString& path)
 
 void MainFrame::addRecentFile(const wxString& path)
 {
+    bool usedIdsArray[MAX_RECENT_FILE_COUNT];
     int count;
     bool found;
+    
+    for (int i=0 ; i<MAX_RECENT_FILE_COUNT ; i++)
+    {
+        usedIdsArray[i] = false;
+    }
     
     wxMenuItemList menuItemlist = m_recent_files_menu->GetMenuItems();
     wxMenuItemList::iterator iter;
     found = false;
     for (iter = menuItemlist.begin(); iter != menuItemlist.end() && !found; ++iter)
     {
-        std::cout << (*iter)->GetItemLabelText().mb_str() << " - " << path.mb_str() << std::endl;
-        if (areFilesIdentical((*iter)->GetItemLabelText(), path))
-        {
-            found = true;
-        }
+        usedIdsArray[(*iter)->GetId()-MENU_FILE_LOAD_RECENT_FILE] = true;
+        found = (areFilesIdentical((*iter)->GetItemLabelText(), path));
     }
     
-    // if file already there, do not add it
-    if (!found)
+    
+    if (found)
     {
+        wxMenuItem* firstMenuItem;
+        
+        // If file already there, do not add it
+        // Just sets it as number #1
+        
+        // Nothing to do if already first
+        firstMenuItem = menuItemlist.GetFirst()->GetData();
+        
+        /* TODO : fixme
+        if (firstMenuItem!=*iter)
+        {
+            wxString formerPath = firstMenuItem->GetItemLabelText();
+            (*iter)->SetItemLabel(formerPath);
+            firstMenuItem->SetItemLabel(path);
+        }
+        */
+    }
+    else
+    {
+        int menuId;
         
         count = m_recent_files_menu->GetMenuItemCount();
         if (count>=MAX_RECENT_FILE_COUNT)
         {
-            wxMenuItem* lastMenuItem = (wxMenuItem*)menuItemlist.GetLast()->GetData();
-            int menuId = lastMenuItem->GetId();
+            // List is full
+            // Destroy last item and insert new one of top of list 
+            wxMenuItem* lastMenuItem;
+            
+            lastMenuItem = (wxMenuItem*)menuItemlist.GetLast()->GetData();
+            menuId = lastMenuItem->GetId();
             m_recent_files_menu->Destroy(menuId);
             m_recent_files_menu->Insert(0, menuId, path);
-            m_recent_files_menu->Connect(menuId, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_loadRecentFile));
+            //std::cout << "=======================================================" << std::endl;
+            //std::cout << "Added item# " << menuId << " - " << path.mb_str() << std::endl;
         }
         else
         {
-            // TODO : id computation buggy - find an available id and use it
-            m_recent_files_menu->Insert(0, menuItemlist.GetLast()->GetData()->GetId()+1, path);
+            bool freeIdFound;
+            
+            // Adds new item in list by using first free ID
+            freeIdFound = false;
+            for (int i=0 ; i<MAX_RECENT_FILE_COUNT && !freeIdFound ; i++)
+            {
+                freeIdFound = !usedIdsArray[i];
+                menuId = MENU_FILE_LOAD_RECENT_FILE + i;
+            }
+            
+            m_recent_files_menu->Insert(0, menuId, path);
+            Connect(menuId, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::menuEvent_loadRecentFile));
+            //std::cout << "=======================================================" << std::endl;
+            //std::cout << "Added item# " << menuId << " - " << path.mb_str() << std::endl;
         }
     }
    
+    m_recent_files_menu_item->Enable(m_recent_files_menu->GetMenuItems().GetCount()>0);
 }
 
 
 void MainFrame::fillRecentFilesSubmenu()
 {
-    // TODO : read in preferences file instead
-    for (int i=0 ; i<MAX_RECENT_FILE_COUNT ; i++)
+    int addedFilesCount;
+    PreferencesData* prefs = PreferencesData::getInstance();
+    wxStringTokenizer tokenizer(prefs->getValue(SETTING_ID_RECENT_FILES), FILE_SEPARATOR);
+
+    addedFilesCount = 0;
+    while ( tokenizer.HasMoreTokens() )
     {
-        m_recent_files_menu->QUICK_ADD_MENU(MENU_FILE_LOAD_RECENT_FILE + i, 
-                                        wxT("path#") + wxString::Format(wxT("%i"), i),
+        wxString path = tokenizer.GetNextToken();
+        if (wxFileExists(path))
+        {
+            m_recent_files_menu->QUICK_ADD_MENU(MENU_FILE_LOAD_RECENT_FILE + addedFilesCount, path,
                                         MainFrame::menuEvent_loadRecentFile);
+            addedFilesCount++;
+        }
     }
+
+    /* TODO
+    if (addedFilesCount>0)
+    {
+        m_recent_files_menu->AppendSeparator();
     
-    // TODO : false if no file
-    m_recent_files_menu_item->Enable(true);
+        m_recent_files_menu->QUICK_ADD_MENU(MENU_FILE_LOAD_RECENT_FILE + MAX_RECENT_FILE_COUNT + 1, 
+                                        _("Clear List"),
+                                        MainFrame::menuEvent_clearRecentFileList);
+    }
+    */
+    
+    m_recent_files_menu_item->Enable(addedFilesCount>0);
 }
 
 // -----------------------------------------------------------------------------------------------------------
