@@ -314,6 +314,7 @@ namespace AriaMaestosa
         
         bool handleApplicationEnd();
         void saveWindowPos();
+        void saveRecentFileList();
         void saveOpenedFiles();
         void requestForScrollKeyboardEditorNotesIntoView();
         void scrollKeyboardEditorNotesIntoView(int sequenceId);
@@ -375,6 +376,7 @@ namespace AriaMaestosa
         void on_close(wxCloseEvent& evt);
         void menuEvent_new(wxCommandEvent& evt);
         void menuEvent_loadRecentFile(wxCommandEvent& evt);
+        void menuEvent_clearRecentFileList(wxCommandEvent& evt);
         void menuEvent_close(wxCommandEvent& evt);
         void menuEvent_exportNotation(wxCommandEvent& evt);
         void menuEvent_open(wxCommandEvent& evt);

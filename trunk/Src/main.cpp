@@ -44,7 +44,6 @@ static const wxString IPC_APP_PORT = wxT("4242");
 static const wxString CONNECTION_FILE_SEPARATOR = wxT("|");
 static const wxString RELOAD_PARAM = wxT("--reload");
 
-
 using namespace AriaMaestosa;
 
 BEGIN_EVENT_TABLE(wxWidgetApp,wxApp)
@@ -411,7 +410,7 @@ void wxWidgetApp::addLastSessionFiles(PreferencesData* prefs, wxArrayString& fil
 {
     if ( prefs->getBoolValue(SETTING_ID_LOAD_LAST_SESSION, false) )
     {
-        wxStringTokenizer tokenizer(prefs->getValue(SETTING_ID_LAST_SESSION_FILES), wxT(","));
+        wxStringTokenizer tokenizer(prefs->getValue(SETTING_ID_LAST_SESSION_FILES), FILE_SEPARATOR);
         
         while ( tokenizer.HasMoreTokens() )
         {

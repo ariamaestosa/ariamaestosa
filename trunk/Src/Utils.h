@@ -71,6 +71,8 @@ struct AriaDebugMagicNumber
 
 #define PRINT_VAR( foo ) #foo << " = " << (foo) << "; "
 
+static const wxString FILE_SEPARATOR = wxT(",");
+
 
 template<typename T>
 class OwnerPtr

@@ -96,6 +96,7 @@ namespace AriaMaestosa
 static const int SCROLL_NOTES_INTO_VIEW_DELAY = 200;
 static const int SCROLL_NOTES_INTO_VIEW_TIMER = 10000;
 
+
 // ----------------------------------------------------------------------------------------------------------
 // ----------------------------------------------------------------------------------------------------------
 
@@ -2227,6 +2228,7 @@ bool MainFrame::handleApplicationEnd()
     bool exitApp;
     
     saveOpenedFiles();
+    saveRecentFileList();
     
     exitApp = true;
     
@@ -2287,7 +2289,7 @@ void MainFrame::saveOpenedFiles()
             files += path;
             if (i<count-1)
             {
-                files += wxT(",");
+                files += FILE_SEPARATOR;
             }
         }
     }
@@ -2296,6 +2298,35 @@ void MainFrame::saveOpenedFiles()
     pd->setValue(SETTING_ID_LAST_CURRENT_SEQUENCE, 
                  wxString::Format(wxT("%i"), m_current_sequence));
 }
+
+
+
+// ----------------------------------------------------------------------------------------------------------
+void MainFrame::saveRecentFileList()
+{
+    PreferencesData* pd;
+    wxString recentFiles;
+    wxString path;
+    
+    wxMenuItemList menuItemlist = m_recent_files_menu->GetMenuItems();
+    wxMenuItemList::iterator iter;
+    for (iter = menuItemlist.begin(); iter != menuItemlist.end() ; ++iter)
+    {
+        path = (*iter)->GetItemLabelText();
+        if (wxFileExists(path))
+        {
+            recentFiles += path + FILE_SEPARATOR;
+        }
+    }
+
+    if (!recentFiles.IsEmpty())
+    {
+        recentFiles.RemoveLast();
+    }
+    pd = PreferencesData::getInstance();
+    pd->setValue(SETTING_ID_RECENT_FILES, recentFiles);
+}
+
 
 
 void MainFrame::requestForScrollKeyboardEditorNotesIntoView()
