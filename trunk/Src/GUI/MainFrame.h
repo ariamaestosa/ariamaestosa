@@ -324,6 +324,8 @@ namespace AriaMaestosa
         void addRecentFile(const wxString& path);
         void fillRecentFilesSubmenu();
         void stackItemUp(wxMenuItemList& menuItemlist, wxMenuItem* menuItem, const wxString& newPath);
+        void updateClearListItem();
+        wxMenuItem* lookForRecentFileListMenuItem(int menuItemId);
 
     public:
         LEAK_CHECK();
