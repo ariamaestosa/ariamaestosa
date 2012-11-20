@@ -850,18 +850,11 @@ void MainFrame::on_close(wxCloseEvent& evt)
 void MainFrame::onDropFile(wxDropFilesEvent& event)
 {
     int i;
-    wxString fileName;
+    wxString filePath;
     for (i=0 ; i<event.GetNumberOfFiles() ;i++)
     {
-        fileName = event.m_files[i];
-        if (fileName.EndsWith(wxT("aria")))
-        {
-            loadAriaFile(fileName);
-        }
-        else if (fileName.EndsWith(wxT("mid")) or fileName.EndsWith(wxT("midi")))
-        {
-            loadMidiFile(fileName);
-        }
+        filePath = event.m_files[i];
+        loadFile(filePath);
     }
 }
 
@@ -1904,7 +1897,7 @@ void MainFrame::loadFile(const wxString& filePath)
 }
 
 // ----------------------------------------------------------------------------------------------------------
-
+/** Opens the .aria file in filepath, reads it and prepares the editor to display and edit it. */
 void MainFrame::loadAriaFile(const wxString& filePath)
 {
     wxLogVerbose( wxT("MainFrame::loadAriaFile") );
@@ -1954,7 +1947,7 @@ void MainFrame::loadAriaFile(const wxString& filePath)
 
 
 // ----------------------------------------------------------------------------------------------------------
-
+ /** Opens the .mid file in filepath, reads it and prepares the editor to display and edit it. */
 void MainFrame::loadMidiFile(const wxString& filePath)
 {
     wxLogVerbose( wxT("MainFrame::loadMidiFile") );
