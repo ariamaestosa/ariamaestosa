@@ -557,20 +557,20 @@ void MainFrame::menuEvent_new(wxCommandEvent& evt)
 void MainFrame::menuEvent_loadRecentFile(wxCommandEvent& evt)
 {
     int itemId;
-    wxMenuItem* fileMenuItem;
+    wxMenuItem* menuItem;
     bool found;
     
     wxMenuItemList menuItemlist = m_recent_files_menu->GetMenuItems();
     itemId = evt.GetId();
     found = false;
-    fileMenuItem = NULL;
+    menuItem = NULL;
     wxMenuItemList::iterator iter;
     for (iter = menuItemlist.begin(); iter != menuItemlist.end() && !found; ++iter)
     {
         wxMenuItem* currentMenuItem = *iter;
         if (currentMenuItem->GetId()==itemId)
         {
-            fileMenuItem = currentMenuItem;
+            menuItem = currentMenuItem;
             found = true;
         }
     }
@@ -582,27 +582,15 @@ void MainFrame::menuEvent_loadRecentFile(wxCommandEvent& evt)
         
         //std::cout << "==== Found item# " << fileMenuItem->GetId() << " - " << fileMenuItem->GetItemLabelText().mb_str() << std::endl;
         
-        path = fileMenuItem->GetItemLabelText();
+        path = menuItem->GetItemLabelText();
         if (wxFileExists(path))
         {
             loadFile(path);
-            
-            // Sets path as number #1
-            // Nothing to do if already first
-            wxMenuItem* firstMenuItem = menuItemlist.GetFirst()->GetData();
-            
-            /* TODO : fixme
-            if (firstMenuItem!=*iter)
-            {
-                wxString formerPath = firstMenuItem->GetItemLabelText();
-                (*iter)->SetItemLabel(formerPath);
-                firstMenuItem->SetItemLabel(path);
-            }
-            */
+            stackItemUp(menuItemlist, menuItem, path);
         }
         else
         {
-            m_recent_files_menu->Destroy(fileMenuItem);
+            m_recent_files_menu->Destroy(menuItem);
             m_recent_files_menu_item->Enable(m_recent_files_menu->GetMenuItems().GetCount()>0);
         }
     }
@@ -725,7 +713,7 @@ void MainFrame::menuEvent_open(wxCommandEvent& evt)
     wxString filePath = showFileDialog(this, _("Select file"), m_current_dir, wxT(""),
                                        wxString(_("Aria Maestosa file"))+wxT("|*.aria"), false /*open*/);
     updateCurrentDir(filePath);
-    MainFrame::loadAriaFile(filePath);
+    loadFile(filePath);
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -736,7 +724,7 @@ void MainFrame::menuEvent_importmidi(wxCommandEvent& evt)
     wxString midiFilePath = showFileDialog(this, _("Select midi file"), m_current_dir, wxT(""),
                                            wxString(_("Midi file"))+wxT("|*.mid;*.midi"), false /*open*/);
     updateCurrentDir(midiFilePath);
-    MainFrame::loadMidiFile(midiFilePath);
+    loadFile(midiFilePath);
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -1435,6 +1423,7 @@ void MainFrame::updateCurrentDir(wxString& path)
 
 void MainFrame::addRecentFile(const wxString& path)
 {
+    wxMenuItem* menuItem;
     bool usedIdsArray[MAX_RECENT_FILE_COUNT];
     int count;
     bool found;
@@ -1446,32 +1435,18 @@ void MainFrame::addRecentFile(const wxString& path)
     
     wxMenuItemList menuItemlist = m_recent_files_menu->GetMenuItems();
     wxMenuItemList::iterator iter;
+    menuItem = NULL;
     found = false;
     for (iter = menuItemlist.begin(); iter != menuItemlist.end() && !found; ++iter)
     {
-        usedIdsArray[(*iter)->GetId()-MENU_FILE_LOAD_RECENT_FILE] = true;
-        found = (areFilesIdentical((*iter)->GetItemLabelText(), path));
+        menuItem = *iter;
+        usedIdsArray[menuItem->GetId()-MENU_FILE_LOAD_RECENT_FILE] = true;
+        found = (areFilesIdentical(menuItem->GetItemLabelText(), path));
     }
-    
     
     if (found)
     {
-        wxMenuItem* firstMenuItem;
-        
-        // If file already there, do not add it
-        // Just sets it as number #1
-        
-        // Nothing to do if already first
-        firstMenuItem = menuItemlist.GetFirst()->GetData();
-        
-        /* TODO : fixme
-        if (firstMenuItem!=*iter)
-        {
-            wxString formerPath = firstMenuItem->GetItemLabelText();
-            (*iter)->SetItemLabel(formerPath);
-            firstMenuItem->SetItemLabel(path);
-        }
-        */
+        stackItemUp(menuItemlist, menuItem, path);
     }
     else
     {
@@ -1514,6 +1489,7 @@ void MainFrame::addRecentFile(const wxString& path)
 }
 
 
+// -----------------------------------------------------------------------------------------------------------
 void MainFrame::fillRecentFilesSubmenu()
 {
     int addedFilesCount;
@@ -1546,6 +1522,25 @@ void MainFrame::fillRecentFilesSubmenu()
     m_recent_files_menu_item->Enable(addedFilesCount>0);
 }
 
+
 // -----------------------------------------------------------------------------------------------------------
+/** If file already there, do not add it in list, just sets it as number #1 */
+void MainFrame::stackItemUp(wxMenuItemList& menuItemlist, wxMenuItem* menuItem, const wxString& newPath)
+{
+    wxMenuItem* firstMenuItem;
+
+    firstMenuItem = menuItemlist.GetFirst()->GetData();
+    
+    // Nothing to do if already first
+    if (firstMenuItem!=menuItem)
+    {
+        wxString formerPath = firstMenuItem->GetItemLabelText();
+        menuItem->SetItemLabel(formerPath);
+        firstMenuItem->SetItemLabel(newPath);
+    }
+}
+
+
+
 
 

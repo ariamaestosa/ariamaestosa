@@ -312,6 +312,8 @@ namespace AriaMaestosa
         
         
         
+        void loadAriaFile(const wxString& filePath);
+        void loadMidiFile(const wxString& filePath);
         bool handleApplicationEnd();
         void saveWindowPos();
         void saveRecentFileList();
@@ -321,6 +323,7 @@ namespace AriaMaestosa
         bool areFilesIdentical(const wxString& filePath1, const wxString& filePath2);
         void addRecentFile(const wxString& path);
         void fillRecentFilesSubmenu();
+        void stackItemUp(wxMenuItemList& menuItemlist, wxMenuItem* menuItem, const wxString& newPath);
 
     public:
         LEAK_CHECK();
@@ -456,12 +459,7 @@ namespace AriaMaestosa
         /** Opens the file in filepath, or sets sequence current, if file already open */
         void loadFile(const wxString& filePath);
         
-        /** Opens the .aria file in filepath, reads it and prepares the editor to display and edit it. */
-        void loadAriaFile(const wxString& filePath);
-
-        /** Opens the .mid file in filepath, reads it and prepares the editor to display and edit it. */
-        void loadMidiFile(const wxString& filePath);
-
+    
         /** Updates file from disk */
         void reloadFile();
 
