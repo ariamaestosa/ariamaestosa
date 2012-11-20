@@ -558,25 +558,12 @@ void MainFrame::menuEvent_loadRecentFile(wxCommandEvent& evt)
 {
     int itemId;
     wxMenuItem* menuItem;
-    bool found;
     
-    wxMenuItemList menuItemlist = m_recent_files_menu->GetMenuItems();
+    wxMenuItemList& menuItemlist = m_recent_files_menu->GetMenuItems();
     itemId = evt.GetId();
-    found = false;
-    menuItem = NULL;
-    wxMenuItemList::iterator iter;
-    for (iter = menuItemlist.begin(); iter != menuItemlist.end() && !found; ++iter)
-    {
-        wxMenuItem* currentMenuItem = *iter;
-        if (currentMenuItem->GetId()==itemId)
-        {
-            menuItem = currentMenuItem;
-            found = true;
-        }
-    }
-    
-
-    if (found)
+    menuItem = lookForRecentFileListMenuItem(itemId);
+   
+    if (menuItem!=NULL)
     {
         wxString path;
         
@@ -591,16 +578,16 @@ void MainFrame::menuEvent_loadRecentFile(wxCommandEvent& evt)
         else
         {
             m_recent_files_menu->Destroy(menuItem);
-            m_recent_files_menu_item->Enable(m_recent_files_menu->GetMenuItems().GetCount()>0);
+            updateClearListItem();
         }
     }
-
+    
 }
 
 
 void MainFrame::menuEvent_clearRecentFileList(wxCommandEvent& evt)
 {
-    wxMenuItemList menuItemlist = m_recent_files_menu->GetMenuItems();
+    wxMenuItemList& menuItemlist = m_recent_files_menu->GetMenuItems();
     wxMenuItemList::iterator iter;
     for (iter = menuItemlist.begin(); iter != menuItemlist.end() ; ++iter)
     {
@@ -1433,7 +1420,7 @@ void MainFrame::addRecentFile(const wxString& path)
         usedIdsArray[i] = false;
     }
     
-    wxMenuItemList menuItemlist = m_recent_files_menu->GetMenuItems();
+    wxMenuItemList& menuItemlist = m_recent_files_menu->GetMenuItems();
     wxMenuItemList::iterator iter;
     menuItem = NULL;
     found = false;
@@ -1483,9 +1470,9 @@ void MainFrame::addRecentFile(const wxString& path)
             //std::cout << "=======================================================" << std::endl;
             //std::cout << "Added item# " << menuId << " - " << path.mb_str() << std::endl;
         }
+        
+        updateClearListItem();
     }
-   
-    m_recent_files_menu_item->Enable(m_recent_files_menu->GetMenuItems().GetCount()>0);
 }
 
 
@@ -1508,18 +1495,7 @@ void MainFrame::fillRecentFilesSubmenu()
         }
     }
 
-    /* TODO
-    if (addedFilesCount>0)
-    {
-        m_recent_files_menu->AppendSeparator();
-    
-        m_recent_files_menu->QUICK_ADD_MENU(MENU_FILE_LOAD_RECENT_FILE + MAX_RECENT_FILE_COUNT + 1, 
-                                        _("Clear List"),
-                                        MainFrame::menuEvent_clearRecentFileList);
-    }
-    */
-    
-    m_recent_files_menu_item->Enable(addedFilesCount>0);
+    updateClearListItem();
 }
 
 
@@ -1541,6 +1517,50 @@ void MainFrame::stackItemUp(wxMenuItemList& menuItemlist, wxMenuItem* menuItem, 
 }
 
 
+// -----------------------------------------------------------------------------------------------------------
+void MainFrame::updateClearListItem()
+{
+    const int clearItemId = MENU_FILE_LOAD_RECENT_FILE + MAX_RECENT_FILE_COUNT + 1;
+    wxMenuItemList& menuItemlist = m_recent_files_menu->GetMenuItems();
+    int addedFilesCount;
+    bool clearItemInList;
+    
+    addedFilesCount = menuItemlist.GetCount();
+    clearItemInList = (lookForRecentFileListMenuItem(clearItemId)!=NULL);
+    
+    if (!clearItemInList && addedFilesCount>0)
+    {
+        m_recent_files_menu->AppendSeparator();
+        m_recent_files_menu->QUICK_ADD_MENU(clearItemId, _("Clear List"), MainFrame::menuEvent_clearRecentFileList);
+    }
+    
+    addedFilesCount = menuItemlist.GetCount();
+    m_recent_files_menu_item->Enable(addedFilesCount>2);
+}
+
+
+/** Looks for a menu item in recent file list - returns NULL if not found */
+wxMenuItem* MainFrame::lookForRecentFileListMenuItem(int menuItemId)
+{
+    wxMenuItemList& menuItemlist = m_recent_files_menu->GetMenuItems();
+    wxMenuItemList::iterator iter;
+    wxMenuItem* menuItem;
+    bool found;
+    
+    found = false;
+    menuItem = NULL;
+    for (iter = menuItemlist.begin(); iter != menuItemlist.end() && !found; ++iter)
+    {
+        wxMenuItem* currentMenuItem = *iter;
+        if (currentMenuItem->GetId()==menuItemId)
+        {
+            menuItem = currentMenuItem;
+            found = true;
+        }
+    }
+    
+    return menuItem;
+}
 
 
 

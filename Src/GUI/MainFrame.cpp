@@ -2288,8 +2288,7 @@ void MainFrame::saveOpenedFiles()
     }
     
     pd->setValue(SETTING_ID_LAST_SESSION_FILES, files);
-    pd->setValue(SETTING_ID_LAST_CURRENT_SEQUENCE, 
-                 wxString::Format(wxT("%i"), m_current_sequence));
+    pd->setValue(SETTING_ID_LAST_CURRENT_SEQUENCE, wxString::Format(wxT("%i"), m_current_sequence));
 }
 
 
