@@ -409,6 +409,16 @@ void MainFrame::disableMenus(const bool disable)
 
     m_file_menu->Enable(MENU_FILE_NEW, on);
     m_file_menu->Enable(MENU_FILE_OPEN, on);
+
+    if (on)
+    {
+        updateClearListItem();
+    }
+    else
+    {
+        m_recent_files_menu_item->Enable(false);
+    }
+
     m_file_menu->Enable(MENU_FILE_SAVE, on);
     m_file_menu->Enable(MENU_FILE_SAVE_AS, on);
     m_file_menu->Enable(MENU_FILE_RELOAD, on);
