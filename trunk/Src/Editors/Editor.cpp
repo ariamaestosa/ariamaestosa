@@ -53,7 +53,7 @@ const int SCROLLBAR_X = -29; // 20 pixels for the scrollbar itself + 9 pixels ri
 const int SCROLLBAR_ARROW_HEIGHT = 21;
 const int SCROLLBAR_THUMB_HEIGHT = 30;
 #elif defined(__WXGTK__)
-const int SCROLLBAR_X = -24; // 20 pixels for the scrollbar itself + 9 pixels right margin
+const int SCROLLBAR_X = -22; // 20 pixels for the scrollbar itself + 9 pixels right margin
 const int SCROLLBAR_ARROW_HEIGHT = 13;
 const int SCROLLBAR_THUMB_HEIGHT = 30;
 #else
