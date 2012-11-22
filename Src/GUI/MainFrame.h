@@ -323,7 +323,7 @@ namespace AriaMaestosa
         bool areFilesIdentical(const wxString& filePath1, const wxString& filePath2);
         void addRecentFile(const wxString& path);
         void fillRecentFilesSubmenu();
-        void stackItemUp(wxMenuItemList& menuItemlist, wxMenuItem* menuItem, const wxString& newPath);
+        void stackItemUp(wxMenuItemList& menuItemlist, wxMenuItem* menuItem);
         void updateClearListItem();
         wxMenuItem* lookForRecentFileListMenuItem(int menuItemId);
 

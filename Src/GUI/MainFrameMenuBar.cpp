@@ -573,7 +573,7 @@ void MainFrame::menuEvent_loadRecentFile(wxCommandEvent& evt)
         if (wxFileExists(path))
         {
             loadFile(path);
-            stackItemUp(menuItemlist, menuItem, path);
+            stackItemUp(menuItemlist, menuItem);
         }
         else
         {
@@ -1433,7 +1433,7 @@ void MainFrame::addRecentFile(const wxString& path)
     
     if (found)
     {
-        stackItemUp(menuItemlist, menuItem, path);
+        stackItemUp(menuItemlist, menuItem);
     }
     else
     {
@@ -1501,7 +1501,7 @@ void MainFrame::fillRecentFilesSubmenu()
 
 // -----------------------------------------------------------------------------------------------------------
 /** If file already there, do not add it in list, just sets it as number #1 */
-void MainFrame::stackItemUp(wxMenuItemList& menuItemlist, wxMenuItem* menuItem, const wxString& newPath)
+void MainFrame::stackItemUp(wxMenuItemList& menuItemlist, wxMenuItem* menuItem)
 {
     wxMenuItem* firstMenuItem;
 
@@ -1511,6 +1511,7 @@ void MainFrame::stackItemUp(wxMenuItemList& menuItemlist, wxMenuItem* menuItem, 
     if (firstMenuItem!=menuItem)
     {
         wxString formerPath = firstMenuItem->GetItemLabelText();
+        wxString newPath = menuItem->GetItemLabelText();
         menuItem->SetItemLabel(formerPath);
         firstMenuItem->SetItemLabel(newPath);
     }
