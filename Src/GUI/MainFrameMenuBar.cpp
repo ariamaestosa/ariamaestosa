@@ -692,6 +692,8 @@ bool MainFrame::doSaveAs()
         // change song name
         getCurrentSequence()->setSequenceFilename( extractTitle(getCurrentSequence()->getFilepath()) );
         Display::render();
+        
+        addRecentFile(givenPath);
 
         return true;
     }
