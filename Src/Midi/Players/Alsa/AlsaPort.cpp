@@ -106,6 +106,9 @@ void runTimidity()
     //  -c '/home/mmg/Desktop/timidity-synth/default/timidity.cfg'
     // -EFreverb=0
     std::cout << "Launching TiMidity ALSA deamon\n";
+    
+    //-iA => Launch TiMidity++ as ALSA sequencer client
+    //-Os => Output to ALSA
     wxString cmd("timidity -iA -Os", wxConvUTF8);
     wxExecute(cmd);
     wxMilliSleep(500); // let the timidity deamon some time to start
