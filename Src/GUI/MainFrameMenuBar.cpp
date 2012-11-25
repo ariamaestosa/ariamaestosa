@@ -671,7 +671,7 @@ bool MainFrame::doSaveAs()
     wxString suggestedName = getCurrentSequence()->suggestFileName() + wxT(".aria");
 
     wxString givenPath = showFileDialog(this, _("Select destination file"), m_current_dir, suggestedName,
-                                        wxT("Aria Maestosa file|*.aria"), true /*save*/);
+                                        wxString(_("Aria Maestosa file"))+wxT("|*.aria"), true /*save*/);
     updateCurrentDir(givenPath);
     if (not givenPath.IsEmpty())
     {
