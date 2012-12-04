@@ -182,6 +182,10 @@ namespace AriaMaestosa
         /** helper method for rendering */
         void renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* analyser);
         
+        void renderTrack(Track* track, RelativeXCoord mousex_current, int mousey_current,
+                         RelativeXCoord mousex_initial, int mousey_initial,
+                         bool focus, bool enableSelection);
+        
     public:
         
         ScoreEditor(GraphicalTrack* track);
@@ -203,6 +207,14 @@ namespace AriaMaestosa
         
         void enableMusicalNotation(const bool enabled);
         void enableLinearNotation(const bool enabled);
+        
+
+        bool isMusicalNotationEnabled() const { return m_musical_notation_enabled; };
+       
+        bool isLinearNotationEnabled() const { return m_linear_notation_enabled; };
+    
+        
+        
         
         /** Called when user changes key. parameters are e.g. 5 sharps, 3 flats, etc. */
         virtual void onKeyChange(const int symbol_amount, const KeyType sharpness_symbol);

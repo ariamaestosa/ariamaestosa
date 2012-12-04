@@ -2043,6 +2043,8 @@ void GraphicalTrack::saveToFile(wxFileOutputStream& fileout)
               wxT("height=\"") + to_wxString(m_height) + wxT("\">\n"),
               fileout);
     writeData(wxT("    <score enabled=\"") + wxString(m_track->isNotationTypeEnabled(SCORE) ? wxT("true") : wxT("false")) +
+              wxT("\" musical_notation=\"") + (m_score_editor->isMusicalNotationEnabled()?wxT("true"):wxT("false")) +
+              wxT("\" linear_notation=\"") + (m_score_editor->isLinearNotationEnabled()?wxT("true"):wxT("false")) +
               wxT("\" g_clef=\"") + (m_score_editor->isGClefEnabled()?wxT("true"):wxT("false")) +
               wxT("\" f_clef=\"") + (m_score_editor->isFClefEnabled()?wxT("true"):wxT("false")) +
               ( octave_shift != 0 ? wxT("\" octave_shift=\"") + to_wxString(octave_shift) : wxT("")) +
@@ -2160,24 +2162,6 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
             m_collapsed = false;
         }
 
-
-        const char* g_clef_c = xml->getAttributeValue("g_clef");
-        if (g_clef_c != NULL)
-        {
-            if (strcmp(g_clef_c, "true") == 0)
-            {
-                m_score_editor->enableGClef(true);
-            }
-            else if (strcmp(g_clef_c, "false") == 0)
-            {
-                m_score_editor->enableGClef(false);
-            }
-            else
-            {
-                std::cout << "Unknown keyword for attribute 'g_clef' in track: " << g_clef_c << std::endl;
-            }
-
-        }
         const char* f_clef_c = xml->getAttributeValue("f_clef");
         if (f_clef_c != NULL)
         {
@@ -2314,6 +2298,40 @@ bool GraphicalTrack::readFromFile(irr::io::IrrXMLReader* xml)
                         m_score_editor->setScrollbarPosition(scroll);
                         m_score_editor->setBackgroundTracks(backgroundTracks);
                         if (enabled) m_score_editor->setRelativeHeight(proportion);
+                        
+                        const char* musical_notation_c = xml->getAttributeValue("musical_notation");
+                        if (musical_notation_c != NULL)
+                        {
+                            if (strcmp(musical_notation_c, "true") == 0)
+                            {
+                                m_score_editor->enableMusicalNotation(true);
+                            }
+                            else if (strcmp(musical_notation_c, "false") == 0)
+                            {
+                                m_score_editor->enableMusicalNotation(false);
+                            }
+                            else
+                            {
+                                std::cout << "Unknown keyword for attribute 'musical_notation' in track: " << musical_notation_c << std::endl;
+                            }
+                        }
+
+                        const char* linear_notation_c = xml->getAttributeValue("linear_notation");
+                        if (linear_notation_c != NULL)
+                        {
+                            if (strcmp(linear_notation_c, "true") == 0)
+                            {
+                                m_score_editor->enableLinearNotation(true);
+                            }
+                            else if (strcmp(linear_notation_c, "false") == 0)
+                            {
+                                m_score_editor->enableLinearNotation(false);
+                            }
+                            else
+                            {
+                                std::cout << "Unknown keyword for attribute 'linear_notation_c' in track: " << linear_notation_c << std::endl;
+                            }
+                        }
                         
                         const char* g_clef_c = xml->getAttributeValue("g_clef");
                         if (g_clef_c != NULL)
