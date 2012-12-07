@@ -471,7 +471,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     if (m_background_tracks.size() > 0)
     {
         const int amount = m_background_tracks.size();
-        int color = 0;
+        int colorIndex = 0;
         
         // iterate through all tracks that need to be rendered as background
         for (int bgtrack=0; bgtrack<amount; bgtrack++)
@@ -480,19 +480,9 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             GraphicalTrack* otherGTrack = m_gsequence->getGraphicsFor(otherTrack);
             ASSERT(otherGTrack != NULL);
             const int noteAmount = otherTrack->getNoteAmount();
-
-            // pick a color
-            switch (color)
-            {
-                case 0: ariaColor.set(1, 0.85, 0,    0.5); break;
-                case 1: ariaColor.set(0, 1,    0,    0.5); break;
-                case 2: ariaColor.set(1, 0,    0.85, 0.5); break;
-                case 3: ariaColor.set(1, 0,    0,    0.5); break;
-                case 4: ariaColor.set(0, 0.85, 1,    0.5); break;
-            }
-            color++; if (color > 4) color = 0;
             
-
+            ariaColor = pickColor(colorIndex);
+        
             // render the notes
             for (int n=0; n<noteAmount; n++)
             {

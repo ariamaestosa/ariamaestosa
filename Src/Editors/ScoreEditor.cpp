@@ -955,25 +955,13 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
     {
         const int amount = m_background_tracks.size();
         renderSilences = false;
-        int color = 0;
+        int colorIndex = 0;
         
         // iterate through all tracks that need to be rendered as background
         for (int bgtrack=0; bgtrack<amount; bgtrack++)
         {
             Track* otherTrack = m_background_tracks.get(bgtrack);
-
-            // pick a color 
-            // @todo : factor with same code in KeyboardEditor
-            switch (color)
-            {
-                case 0: ariaColor.set(1, 0.85, 0,    0.5); break;
-                case 1: ariaColor.set(0, 1,    0,    0.5); break;
-                case 2: ariaColor.set(1, 0,    0.85, 0.5); break;
-                case 3: ariaColor.set(1, 0,    0,    0.5); break;
-                case 4: ariaColor.set(0, 0.85, 1,    0.5); break;
-            }
-            color++; if (color > 4) color = 0;
-
+            ariaColor = pickColor(colorIndex);
             renderTrack(otherTrack, ctx, false, false, renderSilences, ariaColor);
         }
     }
