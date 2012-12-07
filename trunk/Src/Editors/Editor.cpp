@@ -1096,6 +1096,26 @@ void Editor::updateMovingCursor()
 }
 
 
+// Picks a color and increments colorIndex
+AriaColor Editor::pickColor(int& colorIndex)
+{
+    AriaColor ariaColor;
+    
+    ariaColor.set(0.0, 0.0, 0.0, 1.0);
+    switch (colorIndex)
+    {
+        case 0: ariaColor.set(1, 0.85, 0,    0.5); break;
+        case 1: ariaColor.set(0, 1,    0,    0.5); break;
+        case 2: ariaColor.set(1, 0,    0.85, 0.5); break;
+        case 3: ariaColor.set(1, 0,    0,    0.5); break;
+        case 4: ariaColor.set(0, 0.85, 1,    0.5); break;
+    }
+    colorIndex++; if (colorIndex > 4) colorIndex = 0;
+    
+    return ariaColor;
+}
+
+
 // ------------------------------------------------------------------------------------------------------------
 
 

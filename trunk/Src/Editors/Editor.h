@@ -157,7 +157,7 @@ namespace AriaMaestosa
         void setPaleLineColor();
         void setStrongLineColor();
         virtual void updateMovingCursor();
-        
+        AriaColor pickColor(int& colorIndex);
 
         
         Track*             m_track;
