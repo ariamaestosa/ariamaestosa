@@ -537,7 +537,7 @@ using namespace EditorStemParams;
 // ----------------------------------------------------------------------------------------------------------
 // ----------------------------------------------------------------------------------------------------------
 
-void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
+void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo, const AriaColor& baseColor)
 {
     AriaRender::lineWidth(2);
 
@@ -646,7 +646,7 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
         AriaRender::point(noteX + 14, renderInfo.getY() + 5);
 
         if (renderInfo.m_selected) AriaRender::color(1,0,0);
-        else                       AriaRender::color(0,0,0);
+        else                       AriaRender::color(baseColor.r, baseColor.g, baseColor.b);
         
         AriaRender::pointSize(3);
 
@@ -679,11 +679,11 @@ void ScoreEditor::renderNote_pass1(NoteRenderInfo& renderInfo)
 
 // ----------------------------------------------------------------------------------------------------------
 
-void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* analyser)
+void ScoreEditor::renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* analyser, const AriaColor& baseColor)
 {
     AriaRender::primitives();
     if (renderInfo.m_selected) AriaRender::color(1,0,0);
-    else                       AriaRender::color(0,0,0);
+    else                       AriaRender::color(baseColor.r, baseColor.g, baseColor.b);
 
     // stem
     if (renderInfo.m_draw_stem)
@@ -890,6 +890,10 @@ void renderSilence(const Sequence* seq, const int duration, const int tick, cons
 void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
                          RelativeXCoord mousex_initial, int mousey_initial, bool focus)
 {
+    TrackRenderContext ctx;
+    AriaColor ariaColor;
+    bool renderSilences;
+    
     if (not ImageProvider::imagesLoaded()) return;
 
     if (head_radius == -1) head_radius = noteOpen->getImageHeight()/2;
@@ -913,8 +917,6 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     const int middle_c_level = m_converter->getScoreCenterCLevel();
 
-    m_g_clef_analyser->clearAndPrepare();
-    m_f_clef_analyser->clearAndPrepare();
 
     if (m_g_clef)
     {
@@ -932,206 +934,53 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
     AriaRender::color(0,0,0);
     AriaRender::pointSize(4);
 
-    const int noteAmount = m_track->getNoteAmount();
-
-    //MeasureData* md = m_sequence->getMeasureData();
-    MeasureBar* mb = m_gsequence->getMeasureBar();
-
-    const int first_x_to_consider = mb->firstPixelInMeasure( mb->measureAtPixel(0) ) + 1;
-    const int last_x_to_consider  = mb->lastPixelInMeasure( mb->measureAtPixel(m_width + 15) );
-
+    
     if (m_musical_notation_enabled) m_converter->resetAccidentalsForNewRender();
 
-    
+
+    MeasureBar* mb = m_gsequence->getMeasureBar();
     const bool mouseValid = (mousex_current.isValid() and mousex_initial.isValid());
-    
     const int mxc = (mouseValid ? mousex_current.getRelativeTo(WINDOW) : -1);
     const int mxi = (mouseValid ? mousex_initial.getRelativeTo(WINDOW) : -1);
-    const int mouse_x1 = std::min(mxc, mxi) ;
-    const int mouse_x2 = std::max(mxc, mxi) ;
-    const int mouse_y1 = std::min(mousey_current, mousey_initial);
-    const int mouse_y2 = std::max(mousey_current, mousey_initial);
-    const int head_radius = noteOpen->getImageHeight()/2;
-
-    int previous_tick = -1;
     
-    // render pass 1. draw linear notation if relevant, gather information and do initial rendering for
-    // musical notation
-    for (int n=0; n<noteAmount; n++)
+    ctx.first_x_to_consider = mb->firstPixelInMeasure( mb->measureAtPixel(0) ) + 1;
+    ctx.last_x_to_consider  = mb->lastPixelInMeasure( mb->measureAtPixel(m_width + 15) );
+    ctx.mouse_x1 = std::min(mxc, mxi) ;
+    ctx.mouse_x2 = std::max(mxc, mxi) ;
+    ctx.mouse_y1 = std::min(mousey_current, mousey_initial);
+    ctx.mouse_y2 = std::max(mousey_current, mousey_initial);
+    
+    renderSilences = true;
+    if (m_background_tracks.size() > 0)
     {
-        PitchSign note_sign;
-        const int noteLevel = m_converter->noteToLevel(m_track->getNote(n), &note_sign);
-
-        if (noteLevel == -1) continue;
+        const int amount = m_background_tracks.size();
+        renderSilences = false;
+        int color = 0;
         
-        const int tick = m_track->getNoteStartInMidiTicks(n);
-        ASSERT_E(tick, >=, previous_tick);
-        previous_tick = tick;
-        const int noteLength = m_track->getNoteEndInMidiTicks(n) - tick;
-
-        const int original_x1 = m_graphical_track->getNoteStartInPixels(n) - m_gsequence->getXScrollInPixels() +
-                                Editor::getEditorXStart();
-        int       x1 = original_x1;
-        const int x2 = m_graphical_track->getNoteEndInPixels(n)   - m_gsequence->getXScrollInPixels() +
-                       Editor::getEditorXStart();
-
-        // don't consider notes that won't be visible
-        if (x2 < first_x_to_consider) continue;
-        if (x1 > last_x_to_consider)  break;
-
-        if (m_linear_notation_enabled)
+        // iterate through all tracks that need to be rendered as background
+        for (int bgtrack=0; bgtrack<amount; bgtrack++)
         {
-            if (m_musical_notation_enabled) x1 += 8;
+            Track* otherTrack = m_background_tracks.get(bgtrack);
 
-            if (x1 < x2) // when notes are too short to be visible, don't draw them
+            // pick a color 
+            // @todo : factor with same code in KeyboardEditor
+            switch (color)
             {
-                const int y1 = noteLevel*Y_STEP_HEIGHT     + getEditorYStart() - getYScrollInPixels();
-                const int y2 = (noteLevel+1)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels() - 1;
-                float volume = m_track->getNoteVolume(n)/127.0;
-
-                // draw the quad with black border that is visible in linear notation mode
-                AriaRender::primitives();
-                if (m_selecting and mouse_x1 < original_x1 + head_radius and
-                    mouse_x2 > original_x1 + head_radius and
-                    mouse_y1 < y1+2 and mouse_y2 > y1+2)
-                {
-                    AriaRender::color(0.94f, 1.0f, 0.0f);
-                }
-                else if (m_track->isNoteSelected(n) and focus)
-                {
-                    AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
-                }
-                else
-                {
-                    AriaRender::color((1-volume*0.7), (1-volume*0.7), 1);
-                }
-
-                if (m_musical_notation_enabled)
-                {
-                    AriaRender::bordered_rect_no_start(x1+1, y1, x2-1, y2);
-                }
-                else
-                {
-                    AriaRender::bordered_rect(x1+1, y1, x2-1, y2);
-                }
-
+                case 0: ariaColor.set(1, 0.85, 0,    0.5); break;
+                case 1: ariaColor.set(0, 1,    0,    0.5); break;
+                case 2: ariaColor.set(1, 0,    0.85, 0.5); break;
+                case 3: ariaColor.set(1, 0,    0,    0.5); break;
+                case 4: ariaColor.set(0, 0.85, 1,    0.5); break;
             }
+            color++; if (color > 4) color = 0;
 
-            // when musical notation is disabled, we need to render the sharpness sign here
-            // (when it's activated, it's done by the note drawing code. When note drawing code
-            // is disabled, we need to do it ourselves).
-            if (not m_musical_notation_enabled)
-            {
-                AriaRender::images();
-
-                if (note_sign == SHARP)
-                {
-                    sharpSign->move(x1 - 5,
-                                    noteLevel*Y_STEP_HEIGHT+1 + getEditorYStart() - getYScrollInPixels());
-                    sharpSign->render();
-                }
-                else if (note_sign == FLAT)
-                {
-                    flatSign->move(x1 - 5,
-                                   noteLevel*Y_STEP_HEIGHT+1 + getEditorYStart() - getYScrollInPixels());
-                    flatSign->render();
-                }
-                else if (note_sign == NATURAL)
-                {
-                    naturalSign->move(x1 - 5,
-                                      noteLevel*Y_STEP_HEIGHT+1 + getEditorYStart() - getYScrollInPixels());
-                    naturalSign->render();
-                }
-
-                AriaRender::primitives();
-            }
-        }// end if linear
-
-        if (m_musical_notation_enabled)
-        {
-            MeasureData* md = m_sequence->getMeasureData();
-            
-            // build visible notes vector with initial info in it
-            NoteRenderInfo currentNote = NoteRenderInfo::factory(tick, noteLevel, noteLength, note_sign,
-                                                                 m_track->isNoteSelected(n),
-                                                                 m_track->getNotePitchID(n), md);
-
-            // add note to either G clef score or F clef score
-            if (m_g_clef and not m_f_clef)
-            {
-                m_g_clef_analyser->addToVector(currentNote);
-            }
-            else if (m_f_clef and not m_g_clef)
-            {
-                m_f_clef_analyser->addToVector(currentNote);
-            }
-            else if (m_f_clef and m_g_clef)
-            {
-                const int middleC = m_converter->getScoreCenterCLevel();
-                if (noteLevel < middleC)
-                {
-                    m_g_clef_analyser->addToVector(currentNote);
-                }
-                else if (noteLevel > middleC)
-                {
-                    m_f_clef_analyser->addToVector(currentNote);
-                }
-                else
-                {
-                    // note is exactly on middle C... do our best to
-                    // guess on which clef to put this note
-                    // we'll check nearby notes in case it can help us
-                    int check_note = -1;
-                    if      (n > 0)            check_note = n-1;
-                    else if (n+1 < noteAmount) check_note = n+1;
-
-                    if (check_note != -1)
-                    {
-                        const int checkNoteLevel = m_converter->noteToLevel( m_track->getNote(check_note), (PitchSign*)NULL );
-                        
-                        if (checkNoteLevel > middleC)  m_f_clef_analyser->addToVector(currentNote);
-                        else                           m_g_clef_analyser->addToVector(currentNote);
-                    }
-                    else
-                    {
-                        m_g_clef_analyser->addToVector(currentNote);
-                    }
-                    
-                } // end if note on middle C
-            } // end if both G and F clefs
-        } // end if musical notation enabled
-    } // next note
-
-    
-    if (m_g_clef)
-    {
-        m_g_clef_analyser->doneAdding();
-    }
-    if (m_f_clef)
-    {
-        m_f_clef_analyser->doneAdding();
-    }
-    
-    // render musical notation if enabled
-    if (m_musical_notation_enabled)
-    {
-        if (m_g_clef)
-        {
-            const int silences_y = getEditorYStart() +
-                                   Y_STEP_HEIGHT*(m_converter->getScoreCenterCLevel()-8) -
-                                   getYScrollInPixels() + 1;
-            renderScore(m_g_clef_analyser, silences_y);
-        }
-
-        if (m_f_clef)
-        {
-            const int silences_y = getEditorYStart() +
-                                   Y_STEP_HEIGHT*(m_converter->getScoreCenterCLevel()+4) -
-                                  getYScrollInPixels() + 1;
-            renderScore(m_f_clef_analyser, silences_y);
+            renderTrack(otherTrack, ctx, false, false, renderSilences, ariaColor);
         }
     }
 
+    ariaColor.set(0.0f, 0.0f, 0.0f, 1.0f);
+    renderTrack(m_track, ctx, focus, true, renderSilences, ariaColor);
+  
 
     AriaRender::lineWidth(1);
     // ------------------------- mouse drag (preview) ------------------------
@@ -1394,26 +1243,224 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
     AriaRender::endScissors();
 }
 
+
 // ----------------------------------------------------------------------------------------------------------
 
-void ScoreEditor::renderScore(ScoreAnalyser* analyser, const int silences_y)
+void ScoreEditor::renderTrack(Track* track, const TrackRenderContext& ctx, bool focus, 
+                bool enableSelection, bool renderSilences, const AriaColor& baseColor)
+{
+    const int noteAmount = track->getNoteAmount();
+    int previous_tick = -1;
+    
+    GraphicalTrack* otherGTrack = m_gsequence->getGraphicsFor(track);
+    ASSERT(otherGTrack != NULL);
+    
+    m_g_clef_analyser->clearAndPrepare();
+    m_f_clef_analyser->clearAndPrepare();
+    
+    // render pass 1. draw linear notation if relevant, gather information and do initial rendering for
+    // musical notation
+    for (int n=0; n<noteAmount; n++)
+    {
+        PitchSign note_sign;
+        const int noteLevel = m_converter->noteToLevel(track->getNote(n), &note_sign);
+
+        if (noteLevel == -1) continue;
+        
+        const int tick = track->getNoteStartInMidiTicks(n);
+        ASSERT_E(tick, >=, previous_tick);
+        previous_tick = tick;
+        const int noteLength = track->getNoteEndInMidiTicks(n) - tick;
+
+        const int original_x1 = otherGTrack->getNoteStartInPixels(n) - m_gsequence->getXScrollInPixels() +
+                                Editor::getEditorXStart();
+        int       x1 = original_x1;
+        const int x2 = otherGTrack->getNoteEndInPixels(n)   - m_gsequence->getXScrollInPixels() +
+                       Editor::getEditorXStart();
+
+        // don't consider notes that won't be visible
+        if (x2 < ctx.first_x_to_consider) continue;
+        if (x1 > ctx.last_x_to_consider)  break;
+
+        if (m_linear_notation_enabled)
+        {
+            if (m_musical_notation_enabled) x1 += 8;
+
+            if (x1 < x2) // when notes are too short to be visible, don't draw them
+            {
+                const int y1 = noteLevel*Y_STEP_HEIGHT     + getEditorYStart() - getYScrollInPixels();
+                const int y2 = (noteLevel+1)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels() - 1;
+                float volume = track->getNoteVolume(n)/127.0;
+
+                // draw the quad with black border that is visible in linear notation mode
+                AriaRender::primitives();
+                if (m_selecting and enableSelection and ctx.mouse_x1 < original_x1 + head_radius and
+                    ctx.mouse_x2 > original_x1 + head_radius and
+                    ctx.mouse_y1 < y1+2 and ctx.mouse_y2 > y1+2)
+                {
+                    AriaRender::color(0.94f, 1.0f, 0.0f);
+                }
+                else if (enableSelection and track->isNoteSelected(n) and focus)
+                {
+                    AriaRender::color((1-volume)*1, (1-(volume/2))*1, 0);
+                }
+                else
+                {
+                    AriaRender::color((1-volume*0.7), (1-volume*0.7), 1);
+                }
+
+                if (m_musical_notation_enabled)
+                {
+                    AriaRender::bordered_rect_no_start(x1+1, y1, x2-1, y2);
+                }
+                else
+                {
+                    AriaRender::bordered_rect(x1+1, y1, x2-1, y2);
+                }
+
+            }
+
+            // when musical notation is disabled, we need to render the sharpness sign here
+            // (when it's activated, it's done by the note drawing code. When note drawing code
+            // is disabled, we need to do it ourselves).
+            if (not m_musical_notation_enabled)
+            {
+                AriaRender::images();
+
+                if (note_sign == SHARP)
+                {
+                    sharpSign->move(x1 - 5,
+                                    noteLevel*Y_STEP_HEIGHT+1 + getEditorYStart() - getYScrollInPixels());
+                    sharpSign->render();
+                }
+                else if (note_sign == FLAT)
+                {
+                    flatSign->move(x1 - 5,
+                                   noteLevel*Y_STEP_HEIGHT+1 + getEditorYStart() - getYScrollInPixels());
+                    flatSign->render();
+                }
+                else if (note_sign == NATURAL)
+                {
+                    naturalSign->move(x1 - 5,
+                                      noteLevel*Y_STEP_HEIGHT+1 + getEditorYStart() - getYScrollInPixels());
+                    naturalSign->render();
+                }
+
+                AriaRender::primitives();
+            }
+        }// end if linear
+
+        if (m_musical_notation_enabled)
+        {
+            MeasureData* md = m_sequence->getMeasureData();
+            
+            // build visible notes vector with initial info in it
+            NoteRenderInfo currentNote = NoteRenderInfo::factory(tick, noteLevel, noteLength, note_sign,
+                                                                 enableSelection and track->isNoteSelected(n),
+                                                                 track->getNotePitchID(n), md);
+
+            // add note to either G clef score or F clef score
+            if (m_g_clef and not m_f_clef)
+            {
+                m_g_clef_analyser->addToVector(currentNote);
+            }
+            else if (m_f_clef and not m_g_clef)
+            {
+                m_f_clef_analyser->addToVector(currentNote);
+            }
+            else if (m_f_clef and m_g_clef)
+            {
+                const int middleC = m_converter->getScoreCenterCLevel();
+                if (noteLevel < middleC)
+                {
+                    m_g_clef_analyser->addToVector(currentNote);
+                }
+                else if (noteLevel > middleC)
+                {
+                    m_f_clef_analyser->addToVector(currentNote);
+                }
+                else
+                {
+                    // note is exactly on middle C... do our best to
+                    // guess on which clef to put this note
+                    // we'll check nearby notes in case it can help us
+                    int check_note = -1;
+                    if      (n > 0)            check_note = n-1;
+                    else if (n+1 < noteAmount) check_note = n+1;
+
+                    if (check_note != -1)
+                    {
+                        const int checkNoteLevel = m_converter->noteToLevel( track->getNote(check_note), (PitchSign*)NULL );
+                        
+                        if (checkNoteLevel > middleC)  m_f_clef_analyser->addToVector(currentNote);
+                        else                           m_g_clef_analyser->addToVector(currentNote);
+                    }
+                    else
+                    {
+                        m_g_clef_analyser->addToVector(currentNote);
+                    }
+                    
+                } // end if note on middle C
+            } // end if both G and F clefs
+        } // end if musical notation enabled
+    } // next note
+    
+    
+    if (m_g_clef)
+    {
+        m_g_clef_analyser->doneAdding();
+    }
+    if (m_f_clef)
+    {
+        m_f_clef_analyser->doneAdding();
+    }
+    
+    // render musical notation if enabled
+    if (m_musical_notation_enabled)
+    {
+        if (m_g_clef)
+        {
+            const int silences_y = getEditorYStart() +
+                                   Y_STEP_HEIGHT*(m_converter->getScoreCenterCLevel()-8) -
+                                   getYScrollInPixels() + 1;
+            renderScore(m_g_clef_analyser, silences_y, renderSilences, baseColor);
+        }
+
+        if (m_f_clef)
+        {
+            const int silences_y = getEditorYStart() +
+                                   Y_STEP_HEIGHT*(m_converter->getScoreCenterCLevel()+4) -
+                                  getYScrollInPixels() + 1;
+            renderScore(m_f_clef_analyser, silences_y, renderSilences, baseColor);
+        }
+    }
+}
+
+
+// ----------------------------------------------------------------------------------------------------------
+
+void ScoreEditor::renderScore(ScoreAnalyser* analyser, const int silences_y, 
+            bool renderSilences, const AriaColor& baseColor)
 {
     int visibleNoteAmount = analyser->getNoteCount();
     
     // first note rendering pass
-    for (int i=0; i<visibleNoteAmount; i++) renderNote_pass1( analyser->m_note_render_info[i] );
+    for (int i=0; i<visibleNoteAmount; i++) renderNote_pass1(analyser->m_note_render_info[i], baseColor);
 
     AriaRender::setImageState(AriaRender::STATE_NOTE);
     
     // render silences
-    //MeasureData* md = m_sequence->getMeasureData();
-    MeasureBar* mb = m_gsequence->getMeasureBar();
+    if (renderSilences)
+    {
+        MeasureBar* mb = m_gsequence->getMeasureBar();
 
-    const unsigned int first_visible_measure = mb->measureAtPixel( Editor::getEditorXStart() );
-    const unsigned int last_visible_measure  = mb->measureAtPixel( getXEnd() );
-    
-    SilenceAnalyser::findSilences(m_sequence, &renderSilence, analyser, first_visible_measure,
-                                  last_visible_measure, silences_y, m_gsequence);
+        const unsigned int first_visible_measure = mb->measureAtPixel( Editor::getEditorXStart() );
+        const unsigned int last_visible_measure  = mb->measureAtPixel( getXEnd() );
+        
+        SilenceAnalyser::findSilences(m_sequence, &renderSilence, analyser, first_visible_measure,
+                                      last_visible_measure, silences_y, m_gsequence);
+                                  
+    }
 
     // ------------------------- second note rendering pass -------------------
 
@@ -1425,7 +1472,7 @@ void ScoreEditor::renderScore(ScoreAnalyser* analyser, const int silences_y)
     for (int i=0; i<visibleNoteAmount; i++)
     {
         ASSERT_E(i,<,(int)analyser->m_note_render_info.size());
-        renderNote_pass2(analyser->m_note_render_info[i], analyser);
+        renderNote_pass2(analyser->m_note_render_info[i], analyser, baseColor);
     }
     AriaRender::setImageState(AriaRender::STATE_NOTE);
 }
@@ -1752,5 +1799,4 @@ void ScoreEditor::processKeyPress(int keycode, bool commandDown, bool shiftDown)
     
     Editor::processKeyPress(keycode, commandDown, shiftDown);
 }
-
 

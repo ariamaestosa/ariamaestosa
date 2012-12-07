@@ -58,6 +58,24 @@ namespace AriaMaestosa
         EDIT_TOOL_ADD
     };
     
+    
+    struct AriaColor
+    {
+        void set(float rp, float gp, float bp, float ap)
+        {
+            r = rp;
+            g = gp;
+            b = bp;
+            a = ap;
+        }
+        
+        float r;
+        float g;
+        float b;
+        float a;
+    };
+    
+    
     /** 
       * @brief The common base class for all editors.
       *
@@ -139,6 +157,7 @@ namespace AriaMaestosa
         void setPaleLineColor();
         void setStrongLineColor();
         virtual void updateMovingCursor();
+        
 
         
         Track*             m_track;
