@@ -398,7 +398,7 @@ void KeyboardEditor::scrollNotesIntoView()
 void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
                             RelativeXCoord mousex_initial, int mousey_initial, bool focus)
 {
-    FloatColor floatColor;
+    AriaColor ariaColor;
     bool showNoteNames;
     
     if (not ImageProvider::imagesLoaded()) return;
@@ -484,11 +484,11 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             // pick a color
             switch (color)
             {
-                case 0: floatColor.set(1, 0.85, 0,    0.5); break;
-                case 1: floatColor.set(0, 1,    0,    0.5); break;
-                case 2: floatColor.set(1, 0,    0.85, 0.5); break;
-                case 3: floatColor.set(1, 0,    0,    0.5); break;
-                case 4: floatColor.set(0, 0.85, 1,    0.5); break;
+                case 0: ariaColor.set(1, 0.85, 0,    0.5); break;
+                case 1: ariaColor.set(0, 1,    0,    0.5); break;
+                case 2: ariaColor.set(1, 0,    0.85, 0.5); break;
+                case 3: ariaColor.set(1, 0,    0,    0.5); break;
+                case 4: ariaColor.set(0, 0.85, 1,    0.5); break;
             }
             color++; if (color > 4) color = 0;
             
@@ -510,13 +510,13 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
                 y = levelToY(pitch+1);
 
                 AriaRender::primitives();
-                applyColor(floatColor);
+                applyColor(ariaColor);
                 AriaRender::rect(x, levelToY(pitch), x2 + getEditorXStart()-1, y);
                                  
                 if (showNoteNames)
                 {
                     AriaRender::images();
-                    applyInvertedColor(floatColor);
+                    applyInvertedColor(ariaColor);
                     AriaRender::renderString(getNoteName(pitch), x+1, y, x2 + getEditorXStart()-1 - x);
                 }
             }
@@ -555,24 +555,24 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
         
         if (key_notes[pitch] == KEY_INCLUSION_NONE)
         {
-            floatColor.set(1.0f, 0.0f, 0.0f, 1.0f);
+            ariaColor.set(1.0f, 0.0f, 0.0f, 1.0f);
         }
         else if (m_selecting and x1 > mouse_x_min and x2 < mouse_x_max and
                  y1 + Y_STEP_HEIGHT/2 > mouse_y_min and y1 + Y_STEP_HEIGHT/2 < mouse_y_max)
         {
-            floatColor.set(0.94f, 1.0f, 0.0f, 1.0f);
+            ariaColor.set(0.94f, 1.0f, 0.0f, 1.0f);
         }
         else if (m_track->isNoteSelected(n) and focus)
         {
-            floatColor.set((1-volume)*1, (1-(volume/2))*1, 0, 1.0f);
+            ariaColor.set((1-volume)*1, (1-(volume/2))*1, 0, 1.0f);
         }
         else
         {
-            floatColor.set((1-volume)*0.9, (1-volume)*0.9,  (1-volume)*0.9, 1.0f);
+            ariaColor.set((1-volume)*0.9, (1-volume)*0.9,  (1-volume)*0.9, 1.0f);
         }
 
         AriaRender::primitives();
-        applyColor(floatColor);
+        applyColor(ariaColor);
 
         x = x1 + getEditorXStart() + 1;
         
@@ -581,7 +581,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
         if (showNoteNames)
         {
             AriaRender::images();
-            applyInvertedColor(floatColor);
+            applyInvertedColor(ariaColor);
             AriaRender::renderString(getNoteName(pitch), x+1, y2, x2 + getEditorXStart() - x + 1);
         }
     }
@@ -618,17 +618,17 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
                                 getEditorYStart() - getYScrollInPixels();
                 const int y2 = y1 + Y_STEP_HEIGHT;
                                 
-                floatColor.set(1, 0.85, 0, 1.0);
+                ariaColor.set(1, 0.85, 0, 1.0);
                 
                 AriaRender::primitives();
-                applyColor(floatColor);
+                applyColor(ariaColor);
                 AriaRender::rect(preview_x1 + getEditorXStart(), y1,
                                  preview_x2 + getEditorXStart(), y2);
                                  
                 if (showNoteNames)
                 {
                     AriaRender::images();
-                    applyInvertedColor(floatColor);
+                    applyInvertedColor(ariaColor);
        
                     AriaRender::renderString(getNoteName( (y2 - getEditorYStart() + getYScrollInPixels())/ Y_STEP_HEIGHT - 1 ),
                                              preview_x1 + getEditorXStart(), 
@@ -653,18 +653,18 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             // resize a single note
             if (m_last_clicked_note != -1)
             {
-                floatColor.set(1, 0.85, 0, 0.5);
-                drawResizedNote(m_last_clicked_note, x_step_resize, floatColor, showNoteNames);
+                ariaColor.set(1, 0.85, 0, 0.5);
+                drawResizedNote(m_last_clicked_note, x_step_resize, ariaColor, showNoteNames);
             }
             else
             {
                 // resize a bunch of notes
-                floatColor.set(0.0, 0.0, 0.0, 1.0);
+                ariaColor.set(0.0, 0.0, 0.0, 1.0);
 
                 for (int n=0; n<m_track->getNoteAmount(); n++)
                 {
                     if (not m_track->isNoteSelected(n)) continue;
-                    drawResizedNote(n, x_step_resize, floatColor, showNoteNames);
+                    drawResizedNote(n, x_step_resize, ariaColor, showNoteNames);
                 }//next
 
             }
@@ -680,18 +680,18 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             // move a single note
             if (m_last_clicked_note != -1)
             {
-                floatColor.set(1, 0.85, 0, 0.5);
-                drawMovedNote(m_last_clicked_note, x_step_move, y_step_move, floatColor, showNoteNames);
+                ariaColor.set(1, 0.85, 0, 0.5);
+                drawMovedNote(m_last_clicked_note, x_step_move, y_step_move, ariaColor, showNoteNames);
             }
             else
             {
                 // move a bunch of notes
-                floatColor.set(0.0, 0.0, 0.0, 1.0);
+                ariaColor.set(0.0, 0.0, 0.0, 1.0);
 
                 for (int n=0; n<m_track->getNoteAmount(); n++)
                 {
                     if (not m_track->isNoteSelected(n)) continue;
-                    drawMovedNote(n, x_step_move, y_step_move, floatColor, showNoteNames);
+                    drawMovedNote(n, x_step_move, y_step_move, ariaColor, showNoteNames);
                 }//next
 
             }
@@ -784,7 +784,7 @@ wxString KeyboardEditor::getNoteName(int pitchID, bool addOctave)
 
 // -----------------------------------------------------------------------------------------------------------
 
-void KeyboardEditor::applyColor(FloatColor color)
+void KeyboardEditor::applyColor(AriaColor color)
 {
     AriaRender::color(color.r, color.g ,color.b, color.a);
 }
@@ -794,10 +794,10 @@ void KeyboardEditor::applyColor(FloatColor color)
 /** Makes color lighter when input color is dark
   * and makes color darker when input color is light
   */
-void KeyboardEditor::applyInvertedColor(FloatColor input)
+void KeyboardEditor::applyInvertedColor(AriaColor input)
 {
     float average;
-    FloatColor output;
+    AriaColor output;
   
     average = (input.r+input.g+input.b)/3.0f;
     
@@ -858,8 +858,8 @@ float KeyboardEditor::changeComponent(float component, float offset)
 
 void KeyboardEditor::drawNoteTrack(int x, int y, bool focus)
 {
-    FloatColor naturalNotesBackgroundColor;
-    FloatColor alteredNotesTextColor;
+    AriaColor naturalNotesBackgroundColor;
+    AriaColor alteredNotesTextColor;
     int alteredNotesIt;
     bool isNoteAltered;
     bool displayFlatNotes;
@@ -926,7 +926,7 @@ void KeyboardEditor::drawNoteTrack(int x, int y, bool focus)
 
 
 void KeyboardEditor::drawMovedNote(int noteId, int x_step_move, int y_step_move,
-                                        const FloatColor& floatColor, bool showNoteNames)
+                                        const AriaColor& ariaColor, bool showNoteNames)
 {
     int x1 = m_graphical_track->getNoteStartInPixels(noteId) -
              m_gsequence->getXScrollInPixels();
@@ -936,7 +936,7 @@ void KeyboardEditor::drawMovedNote(int noteId, int x_step_move, int y_step_move,
 
 
     AriaRender::primitives();
-    applyColor(floatColor);
+    applyColor(ariaColor);
     AriaRender::rect(x1 + x_step_move + getEditorXStart(),
                      (y + y_step_move)*Y_STEP_HEIGHT + 1 + getEditorYStart() - getYScrollInPixels(),
                      x2 - 1 + x_step_move + getEditorXStart(),
@@ -946,7 +946,7 @@ void KeyboardEditor::drawMovedNote(int noteId, int x_step_move, int y_step_move,
     if (showNoteNames)
     {
         AriaRender::images();
-        applyInvertedColor(floatColor);
+        applyInvertedColor(ariaColor);
 
         AriaRender::renderString(getNoteName(y + y_step_move),
                                  x1 + x_step_move + getEditorXStart(),
@@ -958,14 +958,14 @@ void KeyboardEditor::drawMovedNote(int noteId, int x_step_move, int y_step_move,
 }
 
 
-void KeyboardEditor::drawResizedNote(int noteId, int x_step_resize, const FloatColor& floatColor, bool showNoteNames)
+void KeyboardEditor::drawResizedNote(int noteId, int x_step_resize, const AriaColor& ariaColor, bool showNoteNames)
 {
     int x1 = m_graphical_track->getNoteStartInPixels(noteId) - m_gsequence->getXScrollInPixels();
     int x2 = m_graphical_track->getNoteEndInPixels  (noteId) - m_gsequence->getXScrollInPixels();
     int y  = m_track->getNotePitchID(noteId);
 
     AriaRender::primitives();
-    applyColor(floatColor);
+    applyColor(ariaColor);
     AriaRender::rect(x1 + getEditorXStart(),
                      y*Y_STEP_HEIGHT + 1 + getEditorYStart() - getYScrollInPixels(),
                      std::max(x1 + getEditorXStart(), x2 - 1 + x_step_resize + getEditorXStart()),
@@ -974,7 +974,7 @@ void KeyboardEditor::drawResizedNote(int noteId, int x_step_resize, const FloatC
     if (showNoteNames)
     {
         AriaRender::images();
-        applyInvertedColor(floatColor);
+        applyInvertedColor(ariaColor);
 
         AriaRender::renderString(getNoteName(y),
                                  x1 + getEditorXStart(),

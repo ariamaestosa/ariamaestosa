@@ -107,37 +107,22 @@ namespace AriaMaestosa
         
     private:
         
-        struct FloatColor
-        {
-            void set(float rp, float gp, float bp, float ap)
-            {
-                r = rp;
-                g = gp;
-                b = bp;
-                a = ap;
-            }
-            
-            float r;
-            float g;
-            float b;
-            float a;
-        };
-        
-        FloatColor m_white_color;
-        FloatColor m_black_color;
-        FloatColor m_gray_color;
+
+        AriaColor m_white_color;
+        AriaColor m_black_color;
+        AriaColor m_gray_color;
         bool m_resizing_mode;
         
     
         wxString getNoteName(int pitchID, bool addOctave = true);
-        void applyColor(FloatColor color);
-        void applyInvertedColor(FloatColor color);
+        void applyColor(AriaColor color);
+        void applyInvertedColor(AriaColor color);
         float changeComponent(float component, float factor);
         void drawNoteTrack(int x, int y, bool focus);
         void drawMovedNote(int noteId, int x_step_move, int y_step_move, 
-                                const FloatColor& floatColor, bool showNoteNames);
+                                const AriaColor& ariaColor, bool showNoteNames);
         void drawResizedNote(int noteId, int x_step_resize, 
-                                const FloatColor& floatColor, bool showNoteNames);
+                                const AriaColor& ariaColor, bool showNoteNames);
         void checkCursor(RelativeXCoord x, int y);
         NoteSearchResult flownOverNoteAt(RelativeXCoord x, const int y, int& noteID);
         

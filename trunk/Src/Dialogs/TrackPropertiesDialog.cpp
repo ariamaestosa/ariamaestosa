@@ -136,18 +136,19 @@ namespace AriaMaestosa
                                                    (const char*)parent->getTrack()->getName().c_str()),
                  wxPoint(100,100), wxSize(700,300), wxCAPTION | wxCLOSE_BOX | wxSTAY_ON_TOP )
         {
+            bool enableBackgroundTracks;
+        
             m_ignore_events = true;
             m_parent = parent;
             
             Track* parent_t = parent->getTrack();
-            
             Sequence* seq = parent->getSequence()->getModel();
-            
             m_modalid = -1;
-            
             m_sizer = new wxBoxSizer(wxVERTICAL);
-            
             wxPanel* properties_panel = new wxPanel(this);
+            
+            enableBackgroundTracks = parent_t->isNotationTypeEnabled(KEYBOARD) || parent_t->isNotationTypeEnabled(SCORE);
+            
             m_sizer->Add(properties_panel, 1, wxEXPAND | wxALL, 5);
 
             // TODO: adapt with new multi-editor paradigm
@@ -156,46 +157,48 @@ namespace AriaMaestosa
             wxBoxSizer* props_sizer = new wxBoxSizer(wxHORIZONTAL);
             
             // ------ track background -----
-            wxStaticBoxSizer* bg_subsizer = new wxStaticBoxSizer(wxVERTICAL, properties_panel, _("Track Background"));
-            
-            const int trackAmount = seq->getTrackAmount();
-            int enabledTrackCount = 0;
-            for (int n=0; n<trackAmount; n++)
+            if (enableBackgroundTracks)
             {
-                Track* track = seq->getTrack(n);
-                bool enabled = true;
-                if (track == parent_t) enabled = false; // can't be background of itself
+                wxStaticBoxSizer* bg_subsizer = new wxStaticBoxSizer(wxVERTICAL, properties_panel, _("Track Background"));
                 
-                if (enabled && !track->isNotationTypeEnabled(DRUM)) enabledTrackCount++;
+                const int trackAmount = seq->getTrackAmount();
+                int enabledTrackCount = 0;
+                for (int n=0; n<trackAmount; n++)
+                {
+                    Track* track = seq->getTrack(n);
+                    bool enabled = true;
+                    if (track == parent_t) enabled = false; // can't be background of itself
+                    
+                    if (enabled && !track->isNotationTypeEnabled(DRUM)) enabledTrackCount++;
+                    
+                    bool activated = false;
+                    if (editor->hasAsBackground(track)) activated = true;
+                    
+                    BackgroundChoicePanel* bcp = new BackgroundChoicePanel(properties_panel, n, track, activated, enabled);
+                    bg_subsizer->Add(bcp, 0, wxALL, 5);
+                    m_choice_panels.push_back(bcp);
+                }
                 
-                bool activated = false;
-                if (editor->hasAsBackground(track)) activated = true;
+                // Adds selection buttons if necessary
+                if (enabledTrackCount>0)
+                {
+                     wxPanel* checkPanel = new wxPanel(this);
+                    wxBoxSizer* check_sizer = new wxBoxSizer(wxHORIZONTAL);
+                    m_checkall_btn = new wxButton(checkPanel, ID_CHECK_ALL_BUTTON, _("Check all"));
+                    m_uncheckall_btn = new wxButton(checkPanel, ID_UNCHECK_ALL_BUTTON, _("Uncheck all"));
+                    check_sizer->Add(m_checkall_btn, 1, wxEXPAND |wxALL, 5);
+                    check_sizer->Add(m_uncheckall_btn, 1, wxEXPAND |wxALL, 5);
+                    check_sizer->Layout();
+                    check_sizer->SetSizeHints(this);
+                    check_sizer->Fit(checkPanel);
+                    checkPanel->SetSizer(check_sizer);
+                    bg_subsizer->Add(checkPanel, 1, wxALL|wxEXPAND, 5);
+                }
                 
-                BackgroundChoicePanel* bcp = new BackgroundChoicePanel(properties_panel, n, track, activated, enabled);
-                bg_subsizer->Add(bcp, 0, wxALL, 5);
-                m_choice_panels.push_back(bcp);
+                props_sizer->Add(bg_subsizer, 0, wxALL, 5);
+                bg_subsizer->Layout();
             }
             
-            // Adds selection buttons if necessary
-            if (enabledTrackCount>0)
-            {
-                 wxPanel* checkPanel = new wxPanel(this);
-                wxBoxSizer* check_sizer = new wxBoxSizer(wxHORIZONTAL);
-                m_checkall_btn = new wxButton(checkPanel, ID_CHECK_ALL_BUTTON, _("Check all"));
-                m_uncheckall_btn = new wxButton(checkPanel, ID_UNCHECK_ALL_BUTTON, _("Uncheck all"));
-                check_sizer->Add(m_checkall_btn, 1, wxEXPAND |wxALL, 5);
-                check_sizer->Add(m_uncheckall_btn, 1, wxEXPAND |wxALL, 5);
-                check_sizer->Layout();
-                check_sizer->SetSizeHints(this);
-                check_sizer->Fit(checkPanel);
-                checkPanel->SetSizer(check_sizer);
-                bg_subsizer->Add(checkPanel, 1, wxALL|wxEXPAND, 5);
-            }
-            
-            props_sizer->Add(bg_subsizer, 0, wxALL, 5);
-            bg_subsizer->Layout();
-            
-        
             // ------ other properties ------
             wxBoxSizer* right_subsizer = new wxBoxSizer(wxVERTICAL);
             props_sizer->Add(right_subsizer, 0, wxALL, 5);

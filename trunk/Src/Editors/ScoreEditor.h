@@ -70,6 +70,17 @@ namespace AriaMaestosa
     };
     
     
+    struct TrackRenderContext
+    {
+        int first_x_to_consider;
+        int last_x_to_consider;
+        int mouse_x1;
+        int mouse_x2;
+        int mouse_y1;
+        int mouse_y2;
+    };
+    
+    
     /**
      * Each note can be represented in many ways (its Y position on screen, its note_7, its note_12,
      * its midi pitch...). This class eases the burden by doing convertions and managing the location where
@@ -174,17 +185,19 @@ namespace AriaMaestosa
         int m_clicked_note;
         
         /** helper method for rendering */
-        void renderScore(ScoreAnalyser* analyser, const int silences_y);
+        void renderScore(ScoreAnalyser* analyser, const int silences_y, 
+                        bool renderSilences, const AriaColor& baseColor);
         
         /** helper method for rendering */
-        void renderNote_pass1(NoteRenderInfo& renderInfo);
+        void renderNote_pass1(NoteRenderInfo& renderInfo, const AriaColor& baseColor);
         
         /** helper method for rendering */
-        void renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* analyser);
+        void renderNote_pass2(NoteRenderInfo& renderInfo, ScoreAnalyser* analyser, 
+                            const AriaColor& baseColor);
         
-        void renderTrack(Track* track, RelativeXCoord mousex_current, int mousey_current,
-                         RelativeXCoord mousex_initial, int mousey_initial,
-                         bool focus, bool enableSelection);
+        void renderTrack(Track* track, const TrackRenderContext& ctx,
+                        bool focus, bool enableSelection, bool renderSilences,
+                        const AriaColor& baseColor);
         
     public:
         
