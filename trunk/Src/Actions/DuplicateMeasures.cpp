@@ -74,6 +74,9 @@ void DuplicateMeasures::perform()
     {
         ScopedMeasureTransaction tr(md->startTransaction());
         
+        // abusing the import feature to add notes sorting
+        OwnerPtr<Sequence::Import> import(m_sequence->startImport());
+        
         tr->setMeasureAmount( md->getMeasureAmount() + amount );
     
         std::vector<Note> notesToDuplicate;
