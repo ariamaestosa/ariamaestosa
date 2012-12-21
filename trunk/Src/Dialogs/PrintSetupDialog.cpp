@@ -13,13 +13,11 @@
 #include <wx/choice.h>
 #include <wx/valtext.h>
 #include <wx/dcclient.h>
-//#include <wx/listctrl.h>
 #include <wx/statbmp.h>
 
 #include "Utils.h"
 #include "AriaCore.h"
 
-#include "AriaCore.h"
 #include "Dialogs/PrintSetupDialog.h"
 #include "Dialogs/WaitWindow.h"
 #include "Editors/GuitarEditor.h"

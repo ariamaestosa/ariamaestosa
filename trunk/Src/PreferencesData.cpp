@@ -223,10 +223,10 @@ void PreferencesData::fillSettingsVector()
 
 
     
-#ifdef __APPLE__
+#ifndef __WXMSW__ 
     // ---- soundbank
     Setting* soundbank = new Setting(fromCString(SETTING_ID_SOUNDBANK), _("Soundfont"),
-                                     SETTING_STRING, true /* show in preferences */, wxT("System soundbank"),
+                                     SETTING_STRING, true /* show in preferences */, SYSTEM_BANK,
                                      SETTING_SUBTYPE_FILE_OR_DEFAULT);
     m_settings.push_back( soundbank );
 #endif
@@ -278,10 +278,10 @@ void PreferencesData::fillSettingsVector()
      Setting alsaPort(wxT("alsaPort"), _("Alsa Port"), SETTING_INT, 0 );
      m_settings.push_back( alsaPort );
      */
-    Setting* launchTim = new Setting(fromCString(SETTING_ID_LAUNCH_TIMIDITY),
-                                     _("Automatically launch TiMidity if needed"),
+    Setting* launchFluidSynth = new Setting(fromCString(SETTING_ID_LAUNCH_FLUIDSYNTH),
+                                     _("Automatically launch FluidSynth if needed"),
                                      SETTING_BOOL, true /* show in preferences */, wxT("1") );
-    m_settings.push_back( launchTim );
+    m_settings.push_back(launchFluidSynth);
 #endif
 
 #ifndef __WXMAC__
@@ -323,9 +323,8 @@ void PreferencesData::fillSettingsVector()
     
     
 
-    // TODO: make default value paltform-specific
     Setting* output = new Setting(fromCString(SETTING_ID_MIDI_OUTPUT), wxT(""),
-                                  SETTING_STRING, false /* show in preferences */, wxT("default") );
+                                  SETTING_STRING, false /* show in preferences */, DEFAULT_PORT );
     m_settings.push_back( output );
     
     Setting* input = new Setting(fromCString(SETTING_ID_MIDI_INPUT), wxT(""),
@@ -363,7 +362,7 @@ void PreferencesData::fillSettingsVector()
                          
     Setting* fluidsynthSoundfontPath = new Setting(fromCString(SETTING_ID_FLUIDSYNTH_SOUNDFONT_PATH),
                                      wxT("Fluidsynth Soundfont Path"),
-                                     SETTING_STRING, false, wxT("/usr/share/sounds/sf2/FluidR3_GM.sf2") );
+                                     SETTING_STRING, false, DEFAULT_SOUNDFONT_PATH );
     m_settings.push_back( fluidsynthSoundfontPath );
 }
 

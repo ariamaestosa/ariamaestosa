@@ -300,7 +300,7 @@ wxDialog(parent, wxID_ANY,
                     QuickBoxLayout box(this, vert_sizer);
                     box.add(new wxStaticText(box.pane, wxID_ANY, settings[i].m_user_name), 1);
                     
-                    wxString choices[] = {wxT("System soundbank"), _("Browse...")};
+                    wxString choices[] = {SYSTEM_BANK, _("Browse...")};
                     wxComboBox* combo = new wxComboBox(box.pane, wxID_ANY, settings[i].m_value,
                                                        wxDefaultPosition, wxDefaultSize,
                                                        2, choices);                    

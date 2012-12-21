@@ -134,7 +134,7 @@ void* export_audio_func( void *ptr )
     char output[128];
     int amount_read = 1;
     
-    std::cout << "-----------------\ntimidity output\n-----------------\n";
+    std::cout << "-----------------\ntiMidity output\n-----------------\n";
     try
     {
         command_output = popen(cmd.mb_str(), "r");
@@ -250,9 +250,9 @@ public:
         
         context = new MidiContext();
         
-        const bool launchTimidity = (PreferencesData::getInstance()->getBoolValue("launchTimidity", false));
+        const bool launchFluidSynth = (PreferencesData::getInstance()->getBoolValue("launchFluidSynth", false));
         
-        if (not context->openDevice(launchTimidity))
+        if (not context->openDevice(launchFluidSynth))
         {
             wxMessageBox( _("Failed to open ALSA device, sound will be unavailable (you can try selecting another output device from the 'Output' menu)") );
             std::cerr << "failed to open ALSA device" << std::endl;
@@ -489,7 +489,7 @@ public:
 		{
 			MidiDevice* md = context->getDevice(n);
 			std::cout << (const char*)md->name.mb_str() << std::endl;
-			out.Add( wxString::Format(wxT("%i:%i "), md->client, md->port) + md->name );
+			out.Add(md->getFullName());
 		}
 		
         return out;
@@ -515,7 +515,7 @@ public:
             sizer->Add(label, 0, wxALL, 5);
             
             wxArrayString choices;
-            choices.Add(wxT("Fluidsynth"));
+            choices.Add(wxT("FluidSynth"));
             choices.Add(wxT("TiMidity"));
             m_radioBox = new wxRadioBox(this, wxID_ANY, _("MIDI Engine"), wxDefaultPosition,
                                                   wxDefaultSize, choices, wxRA_SPECIFY_ROWS);

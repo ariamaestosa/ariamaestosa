@@ -272,15 +272,15 @@ namespace AriaMaestosa
         virtual void initMidiPlayer()
         {
             wxString driver = PreferencesData::getInstance()->getValue(SETTING_ID_MIDI_OUTPUT);
-            if (driver == wxT("default") || driver == _("OSX Software Synthesizer"))
+            if (driver == DEFAULT_PORT || driver == _("OSX Software Synthesizer"))
             {
-                if (driver == wxT("default"))
+                if (driver == DEFAULT_PORT)
                 {
                     PreferencesData::getInstance()->setValue(SETTING_ID_MIDI_OUTPUT, _("OSX Software Synthesizer"));
                 }
                 
                 wxString soundfont = PreferencesData::getInstance()->getValue(SETTING_ID_SOUNDBANK);
-                output = new AudioUnitOutput(soundfont == wxT("System soundbank") ?
+                output = new AudioUnitOutput(soundfont == systemBank ?
                                              NULL : (const char*)soundfont.utf8_str());
             }
             else

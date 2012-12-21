@@ -23,6 +23,7 @@
 #include <wx/string.h>
 #include <wx/arrstr.h>
 #include <wx/font.h>
+#include <wx/intl.h>
 
 namespace AriaMaestosa
 {
@@ -50,12 +51,24 @@ namespace AriaMaestosa
 #define EXTERN extern
 #define DEFAULT(X)
 #endif
+
+
+#ifndef __WXMSW__ 
+    static const wxString SYSTEM_BANK = _("System soundbank");
+#endif
+    
+#ifdef __WXGTK__
+    static const wxString DEFAULT_SOUNDFONT_PATH = wxT("/usr/share/sounds/sf2/FluidR3_GM.sf2");
+#endif
+
+    // TODO: make default value platform-specific
+    static const wxString DEFAULT_PORT = wxT("default");
     
     EXTERN const char* SETTING_ID_FOLLOW_PLAYBACK  DEFAULT("followPlayback");
     EXTERN const char* SETTING_ID_SCORE_VIEW       DEFAULT("scoreview");
     EXTERN const char* SETTING_ID_PLAY_DURING_EDIT DEFAULT("playDuringEdit");
     EXTERN const char* SETTING_ID_LANGUAGE         DEFAULT("lang");
-    EXTERN const char* SETTING_ID_LAUNCH_TIMIDITY  DEFAULT("launchTimidity");
+    EXTERN const char* SETTING_ID_LAUNCH_FLUIDSYNTH  DEFAULT("launchFluidSynth");
     
 #ifndef __WXMAC__
     EXTERN const char* SETTING_ID_SINGLE_INSTANCE_APPLICATION  DEFAULT("singleInstanceApplication");
@@ -96,7 +109,7 @@ namespace AriaMaestosa
     EXTERN const char* SETTING_ID_AUDIO_EXPORT_ENGINE DEFAULT("audioExportEngine");
     EXTERN const char* SETTING_ID_FLUIDSYNTH_SOUNDFONT_PATH DEFAULT("fluidsynthSoundfontPath");
     
-#ifdef __APPLE__
+#ifndef __WXMSW__
     EXTERN const char* SETTING_ID_SOUNDBANK        DEFAULT("soundbank");
 #endif
     
