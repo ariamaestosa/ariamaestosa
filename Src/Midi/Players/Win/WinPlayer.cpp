@@ -328,9 +328,9 @@ namespace AriaMaestosa
                 
                 int e;
                 
-                if (driver == "default" || driver == _("Windows Software Synthesizer"))
+                if (driver == DEFAULT_PORT || driver == _("Windows Software Synthesizer"))
                 {
-                    if (driver == "default")
+                    if (driver == DEFAULT_PORT)
                     {
                         PreferencesData::getInstance()->setValue(SETTING_ID_MIDI_OUTPUT, _("Windows Software Synthesizer"));
                     }

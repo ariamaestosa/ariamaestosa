@@ -31,8 +31,12 @@ namespace AriaMaestosa
     {
         ptr_vector<MidiDevice> devices;
         bool timerStarted;
+        
+        bool isExeRunning(const wxString& command);
+        void runSoftSynth(const wxString& soundfontPath);
+        void setDevice(MidiDevice** d, int index);
 
-        public:
+    public:
         LEAK_CHECK();
 
         MidiDevice* device;
@@ -48,9 +52,9 @@ namespace AriaMaestosa
         ~MidiContext();
 
         bool openDevice(MidiDevice* device);
-        //bool openTimidityDevice();
+        //bool openTimidityDevice(); // obsoleted
         void closeDevice();
-        bool openDevice(bool launchTimidity);
+        bool openDevice(bool launchSoftSynth);
 
         bool isPlaying();
         void setPlaying(bool playing);
@@ -75,11 +79,12 @@ namespace AriaMaestosa
         snd_seq_addr_t address;
         int client, port;
         wxString name;
-
+        
         MidiDevice(MidiContext* context, int client_arg, int port_arg, const char* name_arg);
         bool open();
         void close();
-
+        wxString getFullName();
+        
     };
 
 }
