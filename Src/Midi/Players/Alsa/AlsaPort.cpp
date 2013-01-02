@@ -1,4 +1,4 @@
-#ifdef ALSA // @todo : uncomment
+#ifdef _ALSA
 
 #include <glib.h>
 #include "AriaCore.h"
