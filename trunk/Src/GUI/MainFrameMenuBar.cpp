@@ -319,16 +319,6 @@ void MainFrame::initMenuBar()
         wxMenuItem* item = m_output_menu->QUICK_ADD_CHECK_MENU(MENU_OUTPUT_DEVICE+n, choices[n],
                                                                MainFrame::menuEvent_outputDevice);
         m_output_device_menus.push_back(item);
-    
-        /* @todo : create a port equality test virtual method in AlsaPlayer, 
-        which will call another method in MidiContext base upon this code :
-        
-        wxString a_str = port.BeforeFirst(wxT(':'));
-        wxString b_str = port.BeforeFirst(wxT(' ')).AfterLast(wxT(':'));
-        
-        long a, b;
-        if (!a_str.ToLong(&a) || !b_str.ToLong(&b))
-        */
         
         if (choices[n]==output)
         {
