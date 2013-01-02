@@ -1,4 +1,4 @@
-//#ifdef ALSA // @todo : uncomment
+#ifdef ALSA // @todo : uncomment
 
 #include <glib.h>
 #include "AriaCore.h"
@@ -12,6 +12,8 @@
 
 static const wxString SOFT_SYNTH_COMMAND = wxT("fluidsynth");
 static const wxString SOFT_SYNTH_NAME = wxT("FluidSynth");
+static const wxString SOFT_SYNTH_PORT_MARKER = wxT("Synth");
+static const wxString MIDI_THROUGH_PORT_MARKER = wxT("through");
 static const int SOFT_SYNTH_BASIC_TIMER = 300;
 static const int SOFT_SYNTH_TIMER = 1000; // 1s
 static const int SOFT_SYNTH_SLICE = 50000000; // in bytes - 50 Mo
@@ -202,7 +204,7 @@ bool MidiContext::openDevice(bool launchSoftSynth)
             for (int n=0 ; n<(int)devices.size() && !portSelected ; n++)
             {
                 lowerCaseName=devices[n].name.Lower();
-                if (lowerCaseName.Find(wxT("through"))==wxNOT_FOUND)
+                if (lowerCaseName.Find(MIDI_THROUGH_PORT_MARKER)==wxNOT_FOUND)
                 {
                     // This is not a Midi Through port
                     portSelected = true;
@@ -230,10 +232,25 @@ bool MidiContext::openDevice(bool launchSoftSynth)
                     (const char*)b_str.utf8_str());
             return false;
         }
-        
-        d = getDevice(a,b);
-        
-        // @todo : fail-over based upon "fluidsynth" string 
+        else
+        {
+            d = getDevice(a,b);
+            
+            // fail-over based upon "Synth" string 
+            if (d==NULL && port.Find(SOFT_SYNTH_PORT_MARKER)!=wxNOT_FOUND)
+            {
+                bool found = false;
+                for (int n=0 ; n<(int)devices.size() && !found ; n++)
+                {
+                    if (devices[n].name.Find(SOFT_SYNTH_PORT_MARKER)!=wxNOT_FOUND)
+                    {
+                        d = &devices[n];
+                        found = true;
+                        setDevice(&d, n);
+                    }
+                }
+            }
+        }
     }
     
     if (d == NULL)
@@ -429,4 +446,4 @@ void MidiContext::setDevice(MidiDevice** d, int index)
 
 }
 
-//#endif // @todo : uncomment
+#endif
