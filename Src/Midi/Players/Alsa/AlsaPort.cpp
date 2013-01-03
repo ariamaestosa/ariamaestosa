@@ -1,4 +1,4 @@
-#ifdef _ALSA
+//#ifdef _ALSA
 
 #include <glib.h>
 #include "AriaCore.h"
@@ -10,9 +10,9 @@
 #include "Dialogs/WaitWindow.h"
 #include "PreferencesData.h"
 
-static const wxString SOFT_SYNTH_COMMAND = wxT("fluidsynth");
-static const wxString SOFT_SYNTH_NAME = wxT("FluidSynth");
-static const wxString SOFT_SYNTH_PORT_MARKER = wxT("Synth");
+static const wxString FLUIDSYNTH_COMMAND = wxT("fluidsynth");
+static const wxString FLUIDSYNTH_NAME = wxT("FluidSynth");
+static const wxString FLUIDSYNTH_PORT_MARKER = wxT("Synth input");
 static const wxString MIDI_THROUGH_PORT_MARKER = wxT("through");
 static const int SOFT_SYNTH_BASIC_TIMER = 300;
 static const int SOFT_SYNTH_TIMER = 1000; // 1s
@@ -103,13 +103,13 @@ bool MidiContext::openDevice(bool launchSoftSynth)
         soundBank = PreferencesData::getInstance()->getValue(SETTING_ID_SOUNDBANK);
         soundFontPath = (soundBank == SYSTEM_BANK ? DEFAULT_SOUNDFONT_PATH : soundBank);
         soundFontExists = wxFileExists(soundFontPath);
-        if (isExeRunning(SOFT_SYNTH_COMMAND))
+        if (isExeRunning(FLUIDSYNTH_COMMAND))
         {
-            std::cout << SOFT_SYNTH_NAME.mb_str() << " appears to be already running. " << std::endl;
+            std::cout << FLUIDSYNTH_NAME.mb_str() << " appears to be already running. " << std::endl;
             
             if (soundFontExists)
             {
-                wxString grepCommand = wxT("ps x --cols 255 | grep ") + SOFT_SYNTH_COMMAND;
+                wxString grepCommand = wxT("ps x --cols 255 | grep ") + FLUIDSYNTH_COMMAND;
                 
                 // @todo : compare current soundfont path (in params) with path in prefs
                 
@@ -145,9 +145,9 @@ bool MidiContext::openDevice(bool launchSoftSynth)
                 {
                     int filePartCount;
                     
-                    WaitWindow::show((wxWindow*)getMainFrame(), _("Loading ") + SOFT_SYNTH_NAME, true);
+                    WaitWindow::show((wxWindow*)getMainFrame(), _("Loading ") + FLUIDSYNTH_NAME, true);
                     
-                    std::cout << "Launching " << SOFT_SYNTH_NAME.mb_str() << " ALSA deamon" << std::endl;
+                    std::cout << "Launching " << FLUIDSYNTH_NAME.mb_str() << " ALSA deamon" << std::endl;
                     runSoftSynth(soundFontPath);
                     
                     wxMilliSleep(SOFT_SYNTH_BASIC_TIMER);
@@ -234,21 +234,22 @@ bool MidiContext::openDevice(bool launchSoftSynth)
         }
         else
         {
-            d = getDevice(a,b);
+            int n = -1;
+            d = getDevice(a, b, n);
             
-            // fail-over based upon "Synth" string 
-            if (d==NULL && port.Find(SOFT_SYNTH_PORT_MARKER)!=wxNOT_FOUND)
+            // fail-over based upon Fluidsynth port string 
+            if (d==NULL && port.Find(FLUIDSYNTH_PORT_MARKER)!=wxNOT_FOUND)
             {
-                bool found = false;
-                for (int n=0 ; n<(int)devices.size() && !found ; n++)
-                {
-                    if (devices[n].name.Find(SOFT_SYNTH_PORT_MARKER)!=wxNOT_FOUND)
-                    {
-                        d = &devices[n];
-                        found = true;
-                        setDevice(&d, n);
-                    }
-                }
+                d = getDevice(FLUIDSYNTH_PORT_MARKER, n);
+            }
+            
+            // Overwrites the setting SETTING_ID_MIDI_OUTPUT, so that output midi port menu selection 
+            // happens correctly in MainFrame::initMenuBar
+            // => in expression "128:0 Synth input port (24071:0)", last params (here : 24071:0) 
+            // change if Fluidsynth has been killed then restarted
+            if (d!=NULL)
+            {
+                setDevice(&d, n);
             }
         }
     }
@@ -273,20 +274,43 @@ bool MidiContext::openDevice(bool launchSoftSynth)
 }
 
 
-MidiDevice* MidiContext::getDevice(int i)
+MidiDevice* MidiContext::getDevice(int index)
 {
-    if(i<0 or i>(int)devices.size()) return NULL;
-    return &devices[i];
+    if (index<0 or index>(int)devices.size()) return NULL;
+    return &devices[index];
 }
 
 
-MidiDevice* MidiContext::getDevice(int client, int port)
+MidiDevice* MidiContext::getDevice(int client, int port, int& index)
 {
     for (int n=0; n<(int)devices.size(); n++)
     {
-        if(devices[n].client == client and devices[n].port == port) return &devices[n];
+        if (devices[n].client == client and devices[n].port == port)
+        {
+            index = n;
+            return &devices[n];
+        }
+        
     }
     return NULL;
+}
+
+
+MidiDevice* MidiContext::getDevice(const wxString& marker, int& index)
+{
+    MidiDevice* d = NULL;
+    bool found = false;
+    for (int n=0 ; n<(int)devices.size() && !found ; n++)
+    {
+        if (devices[n].name.Find(marker)!=wxNOT_FOUND)
+        {
+            index = n;
+            d = &devices[n];
+            found = true;
+        }
+    }
+    
+    return d;
 }
 
 
@@ -429,7 +453,7 @@ void MidiContext::runTimidity()
 
 void MidiContext::runSoftSynth(const wxString& soundfontPath)
 {
-    wxString cmd(SOFT_SYNTH_COMMAND 
+    wxString cmd(FLUIDSYNTH_COMMAND 
         + wxT(" -a alsa -l --server -i ") + soundfontPath);
     
     wxExecute(cmd, wxEXEC_ASYNC);
@@ -446,4 +470,4 @@ void MidiContext::setDevice(MidiDevice** d, int index)
 
 }
 
-#endif
+//#endif
