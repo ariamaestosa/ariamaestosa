@@ -61,8 +61,9 @@ namespace AriaMaestosa
 
         void  findDevices ();
         int getDeviceAmount();
-        MidiDevice* getDevice(int id);
-        MidiDevice* getDevice(int client, int port);
+        MidiDevice* getDevice(int index);
+        MidiDevice* getDevice(int client, int port, int& index);
+        MidiDevice* getDevice(const wxString& marker, int& index);
 
     };
 
