@@ -33,6 +33,7 @@ namespace AriaMaestosa
         bool timerStarted;
         
         bool isExeRunning(const wxString& command);
+        void launchFluidSynth(const wxString& soundFontPath);
         void runSoftSynth(const wxString& soundfontPath);
         void setDevice(MidiDevice** d, int index);
 

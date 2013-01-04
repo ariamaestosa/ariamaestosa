@@ -1,4 +1,4 @@
-//#ifdef _ALSA
+#ifdef _ALSA
 
 #include <glib.h>
 #include "AriaCore.h"
@@ -97,40 +97,59 @@ bool MidiContext::openDevice(bool launchSoftSynth)
     if (launchSoftSynth)
     {
         wxString soundBank;
-        wxString soundFontPath;
+        wxString settingsSoundFontPath;
         bool soundFontExists;
         
         soundBank = PreferencesData::getInstance()->getValue(SETTING_ID_SOUNDBANK);
-        soundFontPath = (soundBank == SYSTEM_BANK ? DEFAULT_SOUNDFONT_PATH : soundBank);
-        soundFontExists = wxFileExists(soundFontPath);
+        settingsSoundFontPath = (soundBank == SYSTEM_BANK ? DEFAULT_SOUNDFONT_PATH : soundBank);
+        soundFontExists = wxFileExists(settingsSoundFontPath);
         if (isExeRunning(FLUIDSYNTH_COMMAND))
         {
             std::cout << FLUIDSYNTH_NAME.mb_str() << " appears to be already running. " << std::endl;
             
             if (soundFontExists)
             {
-                wxString grepCommand = wxT("ps x --cols 255 | grep ") + FLUIDSYNTH_COMMAND;
-                
-                // @todo : compare current soundfont path (in params) with path in prefs
-                
-                wxString command;
                 char output[256];
                 FILE* commandOutput;
                 wxString outputString;
+                wxString psCommand;
 
-                commandOutput = popen(grepCommand.mb_str(), "r");
+                psCommand = wxT("ps x --cols 255 | grep ") + FLUIDSYNTH_COMMAND;
+                commandOutput = popen(psCommand.mb_str(), "r");
                 memset(output,0,256);
                 if (commandOutput != NULL)
                 {
                     fread(output, 1, 255, commandOutput);
                     outputString = wxString::FromUTF8(output);
-                
-                    // @todo extract data from fullOutput
-                    // relaunch if soundfont has changed
-                    
-                    //wxString killCommand = wxT("killall ") + SOFT_SYNTH_COMMAND;
-                    
                     pclose(commandOutput);
+                    
+                    if (psCommand.Find(FLUIDSYNTH_COMMAND)!=wxNOT_FOUND)
+                    {
+                        wxString currentsoundFontPath;
+                        int firstTokenPos;
+                        int secondTokenPos;
+                        
+                        firstTokenPos = outputString.Find(wxT("-i "));
+                        
+                        if (firstTokenPos!=wxNOT_FOUND)
+                        {
+                            currentsoundFontPath = outputString.Mid(firstTokenPos+3);
+                            secondTokenPos = currentsoundFontPath.Find(wxT("\n"));
+                            if (secondTokenPos!=wxNOT_FOUND)
+                            {
+                                currentsoundFontPath = currentsoundFontPath.Mid(0, secondTokenPos);
+                                
+                                // relaunches if soundfont has changed
+                                if (!currentsoundFontPath.IsEmpty() && currentsoundFontPath!=settingsSoundFontPath)
+                                {
+                                    wxString killCommand = wxT("killall ") + FLUIDSYNTH_COMMAND;
+                                    wxExecute(killCommand, wxEXEC_SYNC);
+                                    
+                                    launchFluidSynth(settingsSoundFontPath);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -138,34 +157,7 @@ bool MidiContext::openDevice(bool launchSoftSynth)
         {
             if (soundFontExists)
             {
-                wxULongLong fileSize;
-            
-                fileSize = wxFileName::GetSize(soundFontPath);
-                if (fileSize!=wxInvalidSize)
-                {
-                    int filePartCount;
-                    
-                    WaitWindow::show((wxWindow*)getMainFrame(), _("Loading ") + FLUIDSYNTH_NAME, true);
-                    
-                    std::cout << "Launching " << FLUIDSYNTH_NAME.mb_str() << " ALSA deamon" << std::endl;
-                    runSoftSynth(soundFontPath);
-                    
-                    wxMilliSleep(SOFT_SYNTH_BASIC_TIMER);
-                    
-                    filePartCount = (int)fileSize.ToULong() / SOFT_SYNTH_SLICE + 1;
-                    
-                    for (int i=0 ; i<filePartCount ; i++)
-                    {
-                        WaitWindow::setProgress(i * 100 / filePartCount);
-                        wxMilliSleep(SOFT_SYNTH_TIMER); 
-                    }
-                
-                    WaitWindow::hide();
-                }
-                else
-                {
-                    std::cout << "Soundfont could not be read" << std::endl;
-                }
+                launchFluidSynth(settingsSoundFontPath);
             }
         }
     }
@@ -439,6 +431,38 @@ bool MidiContext::isExeRunning(const wxString& command)
 }
 
 
+void MidiContext::launchFluidSynth(const wxString& soundFontPath)
+{
+    wxULongLong fileSize = wxFileName::GetSize(soundFontPath);
+    
+    if (fileSize!=wxInvalidSize)
+    {
+        int filePartCount;
+
+        WaitWindow::show((wxWindow*)getMainFrame(), _("Loading ") + FLUIDSYNTH_NAME, true);
+
+        std::cout << "Launching " << FLUIDSYNTH_NAME.mb_str() << " ALSA deamon" << std::endl;
+        runSoftSynth(soundFontPath);
+
+        wxMilliSleep(SOFT_SYNTH_BASIC_TIMER);
+
+        filePartCount = (int)fileSize.ToULong() / SOFT_SYNTH_SLICE + 1;
+
+        for (int i=0 ; i<filePartCount ; i++)
+        {
+            WaitWindow::setProgress(i * 100 / filePartCount);
+            wxMilliSleep(SOFT_SYNTH_TIMER);
+        }
+
+        WaitWindow::hide();
+    }
+    else
+    {
+        std::cout << "Soundfont could not be read" << std::endl;
+    }
+}
+
+
 /* obsoleted
 void MidiContext::runTimidity()
 {
@@ -454,7 +478,7 @@ void MidiContext::runTimidity()
 void MidiContext::runSoftSynth(const wxString& soundfontPath)
 {
     wxString cmd(FLUIDSYNTH_COMMAND 
-        + wxT(" -a alsa -l --server -i ") + soundfontPath);
+        + wxT(" -a alsa -l --server -i '") + soundfontPath + wxT("'"));
     
     wxExecute(cmd, wxEXEC_ASYNC);
 }
@@ -470,4 +494,4 @@ void MidiContext::setDevice(MidiDevice** d, int index)
 
 }
 
-//#endif
+#endif
