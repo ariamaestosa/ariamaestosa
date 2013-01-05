@@ -1,6 +1,13 @@
 1.4.6
 - Add 'duplicate track' features
+- Add 'recent files' menu
 - Implement resizing notes with the mouse cursor
+- Allow background tracks in score editor
+- Score editor's notation flags (musical and linear notations) are now saved in .aria file
+- Add GTK-style scrollbar for Linux systems
+- "Select all" and "Unselect all" buttons for background tracks in track properties
+- Add keyboard shortcut to change note velocity (Alt + up/down, Alt + pageup/pagedown)
+- Update to latest version of libjdksmidi
 
 
 1.4.5

@@ -1884,7 +1884,8 @@ void MainFrame::loadFile(const wxString& filePath)
             {
                 loadAriaFile(filePath);
             }
-            else if (filePath.EndsWith(wxT("mid")) or filePath.EndsWith(wxT("midi")))
+            else if (filePath.EndsWith(wxT("mid")) or filePath.EndsWith(wxT("midi")) or
+                     filePath.EndsWith(wxT("MID")) or filePath.EndsWith(wxT("MIDI")))
             {
                 loadMidiFile(filePath);
             }

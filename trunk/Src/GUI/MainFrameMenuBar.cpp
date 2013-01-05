@@ -721,7 +721,7 @@ void MainFrame::menuEvent_importmidi(wxCommandEvent& evt)
 {
     m_main_pane->forgetClickData();
     wxString midiFilePath = showFileDialog(this, _("Select midi file"), m_current_dir, wxT(""),
-                                           wxString(_("Midi file"))+wxT("|*.mid;*.midi"), false /*open*/);
+                                           wxString(_("Midi file"))+wxT("|*.mid;*.midi;*.MID;*.MIDI"), false /*open*/);
     updateCurrentDir(midiFilePath);
     loadFile(midiFilePath);
 }
