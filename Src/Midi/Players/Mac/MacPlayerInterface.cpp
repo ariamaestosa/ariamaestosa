@@ -280,7 +280,7 @@ namespace AriaMaestosa
                 }
                 
                 wxString soundfont = PreferencesData::getInstance()->getValue(SETTING_ID_SOUNDBANK);
-                output = new AudioUnitOutput(soundfont == systemBank ?
+                output = new AudioUnitOutput(soundfont == SYSTEM_BANK ?
                                              NULL : (const char*)soundfont.utf8_str());
             }
             else
