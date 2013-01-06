@@ -354,6 +354,8 @@ void PreferencesData::fillSettingsVector()
                                      SETTING_INT, false /* show in preferences */, to_wxString(wxPAPER_LETTER) );
     m_settings.push_back( paperType );
     
+    
+#ifdef __WXGTK__
     // Default=0 => FLUIDSYNTH
     Setting* audioExportEngine = new Setting(fromCString(SETTING_ID_AUDIO_EXPORT_ENGINE),
                                      wxT("Audio Export Engine"),
@@ -364,6 +366,7 @@ void PreferencesData::fillSettingsVector()
                                      wxT("Fluidsynth Soundfont Path"),
                                      SETTING_STRING, false, DEFAULT_SOUNDFONT_PATH );
     m_settings.push_back( fluidsynthSoundfontPath );
+#endif
 }
 
 // ----------------------------------------------------------------------------------------------------------
