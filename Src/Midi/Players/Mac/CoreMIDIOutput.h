@@ -24,6 +24,7 @@
 
 #include <vector>
 #include <string>
+#include <wx/string.h>
 
 /**
   * @ingroup midi
