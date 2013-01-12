@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-25 16:19-0500\n"
+"POT-Creation-Date: 2013-01-11 19:37-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -115,7 +115,7 @@ msgid "Remember window location"
 msgstr ""
 
 #: Src/PreferencesData.cpp:282
-msgid "Automatically launch TiMidity if needed"
+msgid "Automatically launch FluidSynth if needed"
 msgstr ""
 
 #: Src/PreferencesData.cpp:289
@@ -130,125 +130,125 @@ msgstr ""
 msgid "Restore open files from previous session"
 msgstr ""
 
-#: Src/PreferencesData.cpp:333 Src/GUI/MainFrameMenuBar.cpp:351
+#: Src/PreferencesData.cpp:332 Src/GUI/MainFrameMenuBar.cpp:351
 #: Src/GUI/MainFrameMenuBar.cpp:354 Src/GUI/MainFrame.cpp:987
 msgid "No MIDI input"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:48
+#: Src/Dialogs/PrintSetupDialog.cpp:46
 msgid "Keyroll Printing Options"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:59
+#: Src/Dialogs/PrintSetupDialog.cpp:57
 msgid "Size of a beat : "
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:67
+#: Src/Dialogs/PrintSetupDialog.cpp:65
 msgid "Vertical margin between notes : "
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:77
+#: Src/Dialogs/PrintSetupDialog.cpp:75
 msgid "Colors"
 msgstr ""
 
 #. I18N: keyroll printing option
-#: Src/Dialogs/PrintSetupDialog.cpp:102
+#: Src/Dialogs/PrintSetupDialog.cpp:100
 msgid "Compact (print only key notes)"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:105 Src/Dialogs/PrintSetupDialog.cpp:728
+#: Src/Dialogs/PrintSetupDialog.cpp:103 Src/Dialogs/PrintSetupDialog.cpp:726
 #: Src/Dialogs/CustomKeyDialog.cpp:163
 #: Src/Dialogs/SongPropertiesDialog.cpp:174 Src/Dialogs/Preferences.cpp:334
-#: Src/Dialogs/ScaleDialog.cpp:152 Src/Dialogs/TrackPropertiesDialog.cpp:228
+#: Src/Dialogs/ScaleDialog.cpp:152 Src/Dialogs/TrackPropertiesDialog.cpp:231
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:167 Src/Dialogs/TuningDialog.cpp:54
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:545 Src/Pickers/TimeSigPicker.cpp:181
 msgid "OK"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:196
+#: Src/Dialogs/PrintSetupDialog.cpp:194
 msgid ""
 "Keyroll tracks and tablature/score tracks cannot be mixed in the same "
 "printout"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:201
+#: Src/Dialogs/PrintSetupDialog.cpp:199
 msgid "No printable track selected"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:238
+#: Src/Dialogs/PrintSetupDialog.cpp:236
 msgid "Calculating print layout..."
 msgstr ""
 
 #. I18N: - %s is the name of the track
-#: Src/Dialogs/PrintSetupDialog.cpp:249
+#: Src/Dialogs/PrintSetupDialog.cpp:247
 #, c-format
 msgid ""
 "Track '%s' could not be printed, since its current\n"
 "view (editor) does not support printing."
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:277
+#: Src/Dialogs/PrintSetupDialog.cpp:275
 msgid "An error occurred during printing."
 msgstr ""
 
 #. I18N: - title of the notation-print dialog
-#: Src/Dialogs/PrintSetupDialog.cpp:513
+#: Src/Dialogs/PrintSetupDialog.cpp:511
 msgid "Print musical notation"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:525
+#: Src/Dialogs/PrintSetupDialog.cpp:523
 msgid "An error occurred while preparing to print."
 msgstr ""
 
 #. I18N: - in print setup dialog.
-#: Src/Dialogs/PrintSetupDialog.cpp:543
+#: Src/Dialogs/PrintSetupDialog.cpp:541
 msgid "Print..."
 msgstr ""
 
 #. I18N: - in print setup dialog.
-#: Src/Dialogs/PrintSetupDialog.cpp:546
+#: Src/Dialogs/PrintSetupDialog.cpp:544
 msgid "Current track only"
 msgstr ""
 
 #. I18N: - in print setup dialog.
-#: Src/Dialogs/PrintSetupDialog.cpp:551
+#: Src/Dialogs/PrintSetupDialog.cpp:549
 msgid "This list of tracks"
 msgstr ""
 
 #. I18N: in printing dialog
-#: Src/Dialogs/PrintSetupDialog.cpp:658
+#: Src/Dialogs/PrintSetupDialog.cpp:656
 msgid "Omit instruments that play nothing on the current line"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:660
+#: Src/Dialogs/PrintSetupDialog.cpp:658
 msgid ""
 "If some instrument plays nothing during a long part of the song, checking "
 "this option can make the printed score tighter by eliminating empty lines"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:674
+#: Src/Dialogs/PrintSetupDialog.cpp:672
 msgid "Page Setup"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:680
+#: Src/Dialogs/PrintSetupDialog.cpp:678
 msgid "Paper :"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:688
+#: Src/Dialogs/PrintSetupDialog.cpp:686
 msgid "Edit Page Setup"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:694
+#: Src/Dialogs/PrintSetupDialog.cpp:692
 msgid "Margins :"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:702
+#: Src/Dialogs/PrintSetupDialog.cpp:700
 msgid "Margins"
 msgstr ""
 
-#: Src/Dialogs/PrintSetupDialog.cpp:731 Src/Dialogs/CustomKeyDialog.cpp:164
+#: Src/Dialogs/PrintSetupDialog.cpp:729 Src/Dialogs/CustomKeyDialog.cpp:164
 #: Src/Dialogs/SongPropertiesDialog.cpp:179 Src/Dialogs/Preferences.cpp:335
-#: Src/Dialogs/ScaleDialog.cpp:148 Src/Dialogs/TrackPropertiesDialog.cpp:231
+#: Src/Dialogs/ScaleDialog.cpp:148 Src/Dialogs/TrackPropertiesDialog.cpp:234
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:169 Src/Dialogs/TuningDialog.cpp:57
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:546
 msgid "Cancel"
@@ -476,19 +476,19 @@ msgstr ""
 msgid "Track '%s' Properties"
 msgstr ""
 
-#: Src/Dialogs/TrackPropertiesDialog.cpp:159
+#: Src/Dialogs/TrackPropertiesDialog.cpp:162
 msgid "Track Background"
 msgstr ""
 
-#: Src/Dialogs/TrackPropertiesDialog.cpp:184
+#: Src/Dialogs/TrackPropertiesDialog.cpp:187
 msgid "Check all"
 msgstr ""
 
-#: Src/Dialogs/TrackPropertiesDialog.cpp:185
+#: Src/Dialogs/TrackPropertiesDialog.cpp:188
 msgid "Uncheck all"
 msgstr ""
 
-#: Src/Dialogs/TrackPropertiesDialog.cpp:203
+#: Src/Dialogs/TrackPropertiesDialog.cpp:206
 msgid "Default volume for new notes"
 msgstr ""
 
@@ -1583,39 +1583,39 @@ msgstr ""
 msgid "Unsaved changes in sequence"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1893
+#: Src/GUI/MainFrame.cpp:1894
 msgid "Unknown file type: "
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1920 Src/GUI/MainFrame.cpp:2042
+#: Src/GUI/MainFrame.cpp:1921 Src/GUI/MainFrame.cpp:2043
 msgid "Sorry, loading .aria file failed."
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1962
+#: Src/GUI/MainFrame.cpp:1963
 msgid "Please wait while midi file is loading."
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1969 Src/GUI/MainFrame.cpp:2054
+#: Src/GUI/MainFrame.cpp:1970 Src/GUI/MainFrame.cpp:2055
 msgid "Sorry, loading midi file failed."
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:1993
+#: Src/GUI/MainFrame.cpp:1994
 msgid ""
 "Loading the MIDI file completed successfully, but with the following "
 "warnings (the song may not sound as intended) :"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:2033
+#: Src/GUI/MainFrame.cpp:2034
 msgid "Please wait while file is reloaded."
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:2168
+#: Src/GUI/MainFrame.cpp:2169
 msgid ""
 "A new version of Aria Maestosa is now available! Visit the following link to "
 "download it :"
 msgstr ""
 
-#: Src/GUI/MainFrame.cpp:2179
+#: Src/GUI/MainFrame.cpp:2180
 msgid "An error occurred"
 msgstr ""
 
@@ -1659,7 +1659,7 @@ msgstr ""
 msgid "Dock track"
 msgstr ""
 
-#: Src/GUI/GraphicalTrack.cpp:458 Src/Editors/ScoreEditor.h:260
+#: Src/GUI/GraphicalTrack.cpp:458 Src/Editors/ScoreEditor.h:285
 msgid "Score Editor"
 msgstr ""
 
@@ -1806,17 +1806,21 @@ msgstr ""
 msgid "Fluidsynth Soundfont"
 msgstr ""
 
-#: Src/Midi/Players/Alsa/AlsaPort.cpp:35
+#: Src/Midi/Players/Alsa/AlsaPort.cpp:46
 msgid "Failed to open ALSA port."
 msgstr ""
 
-#: Src/Midi/Players/Alsa/AlsaPort.cpp:140
+#: Src/Midi/Players/Alsa/AlsaPort.cpp:172
 msgid "No midi port found, no sound will be available."
 msgstr ""
 
-#: Src/Midi/Players/Alsa/AlsaPort.cpp:186
+#: Src/Midi/Players/Alsa/AlsaPort.cpp:260
 #, c-format
 msgid "The selected ALSA device (%s) could not be opened."
+msgstr ""
+
+#: Src/Midi/Players/Alsa/AlsaPort.cpp:442
+msgid "Loading "
 msgstr ""
 
 #: Src/Midi/Players/Jack/JackMidiManager.cpp:231
@@ -2669,4 +2673,8 @@ msgstr ""
 
 #: Src/Pickers/VolumeSlider.cpp:132
 msgid "volume"
+msgstr ""
+
+#: Src/PreferencesData.h:57
+msgid "System soundbank"
 msgstr ""
