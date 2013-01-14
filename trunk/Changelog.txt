@@ -1,3 +1,6 @@
+1.4.7
+- Fix for .MID and .MIDI files (upper-case extension)
+
 1.4.6
 - Add 'duplicate track' features
 - Add 'recent files' menu
