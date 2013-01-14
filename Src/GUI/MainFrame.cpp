@@ -1419,7 +1419,7 @@ void MainFrame::songLengthChanged(wxSpinEvent& evt)
 
 // ----------------------------------------------------------------------------------------------------------
 
-#if !defined(__WXOSX_CARBON_)
+#if !defined(__WXOSX_CARBON__)
 
 void MainFrame::onToolsBitmapMousedown(wxMouseEvent& evt)
 {
