@@ -1,4 +1,5 @@
 1.4.7
+- Use now FluidSynth and not TiMidity as MIDI synthesizer (Linux only).
 - Fix for .MID and .MIDI files (upper-case extension)
 
 1.4.6
