@@ -939,11 +939,17 @@ void Editor::processKeyPress(int keycode, bool commandDown, bool shiftDown)
             }
             return;
         }
-        else if (keycode==WXK_TAB)
-        {
-            m_graphical_track->switchDivider(false);
-            return;
-        }
+    }
+    
+    if (keycode >= '1' and keycode <= '8' and commandDown)
+    {
+        m_graphical_track->switchDivider(keycode - '0');
+        return;
+    }
+    else if (keycode >= WXK_NUMPAD1 and keycode <= WXK_NUMPAD8 and commandDown)
+    {
+        m_graphical_track->switchDivider(keycode - WXK_NUMPAD0);
+        return;
     }
     
     if (not commandDown and not shiftDown)
@@ -985,11 +991,6 @@ void Editor::processKeyPress(int keycode, bool commandDown, bool shiftDown)
         {
             m_track->action( new Action::DeleteSelected(this) );
             Display::render();
-        }
-        
-        else if (keycode==WXK_TAB)
-        {
-            m_graphical_track->switchDivider(true);
         }
     }
 }
