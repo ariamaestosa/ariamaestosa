@@ -453,17 +453,26 @@ void MainFrame::init(const wxArrayString& filesToOpen, bool fileInCommandLine)
 
     m_toolbar->AddSeparator();
 
-    m_song_length = new wxSpinCtrl(m_toolbar, LENGTH, to_wxString(DEFAULT_SONG_LENGTH), wxDefaultPosition,
+    m_song_length = new SPINNER_CLASS(m_toolbar, LENGTH, to_wxString(DEFAULT_SONG_LENGTH), wxDefaultPosition,
 #if defined(__WXGTK__) || defined(__WXMSW__) || defined(__WXOSX_COCOA__)
                               averageTextCtrlSize
 #else
                               wxDefaultSize
 #endif
                               , wxTE_PROCESS_ENTER);
+
     m_song_length->SetRange(1, 9999);
+
     //I18N: song length (number of measures)
     m_toolbar->add(m_song_length, _("Length"));
 
+#ifdef __WXMAC__
+    wxSpinButton* songLengthSpinner;
+    m_toolbar->add(songLengthSpinner = new wxSpinButton(m_toolbar, wxID_ANY));
+    songLengthSpinner->Bind(wxEVT_SPIN_UP, &wxWorkaroundSpinCtrl::up, m_song_length);
+    songLengthSpinner->Bind(wxEVT_SPIN_DOWN, &wxWorkaroundSpinCtrl::down, m_song_length);
+#endif
+    
 #if defined(__WXMSW__)
     m_toolbar->AddSeparator();
     m_toolbar->AddSeparator();
@@ -492,7 +501,7 @@ void MainFrame::init(const wxArrayString& filesToOpen, bool fileInCommandLine)
     m_first_measure = new wxTextCtrl(m_toolbar, BEGINNING, wxT("1"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER);
     m_toolbar->add(m_first_measure, _("Start"));
 
-    m_display_zoom = new wxSpinCtrl(m_toolbar, ZOOM, wxT("100"), wxDefaultPosition,
+    m_display_zoom = new SPINNER_CLASS(m_toolbar, ZOOM, wxT("100"), wxDefaultPosition,
     #if defined(__WXGTK__) || defined(__WXMSW__) || defined(__WXOSX_COCOA__)
                            averageTextCtrlSize
     #else
@@ -500,14 +509,24 @@ void MainFrame::init(const wxArrayString& filesToOpen, bool fileInCommandLine)
     #endif
                            );
 
+    
 #if defined(__WXMSW__)
     m_toolbar->AddSeparator();
     m_toolbar->AddSeparator();
 #endif
 
     m_display_zoom->SetRange(25,500);
+
     m_toolbar->add(m_display_zoom, _("Zoom"));
 
+#ifdef __WXMAC__
+    wxSpinButton* zoomSpinner;
+    m_toolbar->add(zoomSpinner = new wxSpinButton(m_toolbar, wxID_ANY));
+    zoomSpinner->Bind(wxEVT_SPIN_UP, &wxWorkaroundSpinCtrl::up, m_display_zoom);
+    zoomSpinner->Bind(wxEVT_SPIN_DOWN, &wxWorkaroundSpinCtrl::down, m_display_zoom);
+#endif
+    
+    
     // seems broken for now
 //#if defined(NO_WX_TOOLBAR) || wxMAJOR_VERSION > 2 || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION == 9)
 //    toolbar->AddStretchableSpace();
