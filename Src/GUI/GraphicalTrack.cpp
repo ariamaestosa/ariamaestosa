@@ -1977,8 +1977,9 @@ int GraphicalTrack::render(const int y, const int currentTick, const bool focus)
 
 
 // Handles TAB keyboard shortcut 
-void GraphicalTrack::switchDivider(bool forward)
+void GraphicalTrack::switchDivider(int index)
 {
+    /*
     int divider;
     
     divider = m_grid->getModel()->getDivider();
@@ -1998,7 +1999,16 @@ void GraphicalTrack::switchDivider(bool forward)
         if (divider==1) divider = 128;
         else divider /= 2;
     }
+    */
     
+    int divider = 1;
+    if (index == 2) divider = 2;
+    else if (index == 3) divider = 4;
+    else if (index == 4) divider = 8;
+    else if (index == 5) divider = 16;
+    else if (index == 6) divider = 32;
+    else if (index == 7) divider = 64;
+    else if (index == 8) divider = 128;
     setDivider(divider);
 }
 

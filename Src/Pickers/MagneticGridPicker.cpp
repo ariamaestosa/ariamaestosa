@@ -30,14 +30,14 @@ MagneticGridPicker::MagneticGridPicker(GraphicalTrack* parent, MagneticGrid* mod
     m_model = model;
     m_parent = parent;
     
-    grid1   = AppendCheckItem(wxID_ANY, wxT("1/1"));
-    grid2   = AppendCheckItem(wxID_ANY, wxT("1/2"));
-    grid4   = AppendCheckItem(wxID_ANY, wxT("1/4"));
-    grid8   = AppendCheckItem(wxID_ANY, wxT("1/8"));
-    grid16  = AppendCheckItem(wxID_ANY, wxT("1/16"));
-    grid32  = AppendCheckItem(wxID_ANY, wxT("1/32"));
-    grid64  = AppendCheckItem(wxID_ANY, wxT("1/64"));
-    grid128 = AppendCheckItem(wxID_ANY, wxT("1/128"));
+    grid1   = AppendCheckItem(wxID_ANY, wxT("1/1\tCtrl+1"));
+    grid2   = AppendCheckItem(wxID_ANY, wxT("1/2\tCtrl+2"));
+    grid4   = AppendCheckItem(wxID_ANY, wxT("1/4\tCtrl+3"));
+    grid8   = AppendCheckItem(wxID_ANY, wxT("1/8\tCtrl+4"));
+    grid16  = AppendCheckItem(wxID_ANY, wxT("1/16\tCtrl+5"));
+    grid32  = AppendCheckItem(wxID_ANY, wxT("1/32\tCtrl+6"));
+    grid64  = AppendCheckItem(wxID_ANY, wxT("1/64\tCtrl+7"));
+    grid128 = AppendCheckItem(wxID_ANY, wxT("1/128\tCtrl+8"));
 
     AppendSeparator();
     gridTriplet = AppendCheckItem(wxID_ANY, _("Triplet"));
