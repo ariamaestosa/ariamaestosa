@@ -50,6 +50,53 @@ class wxStaticBitmap;
 class wxTimer;
 class wxTimerEvent;
 
+#ifdef __WXMAC__
+#include <wx/textctrl.h>
+#include <wx/valnum.h>
+// workaround until wxWidgets bug #15016 is fixed
+class wxWorkaroundSpinCtrl : public wxTextCtrl
+{
+    int min, max;
+public:
+    wxWorkaroundSpinCtrl(wxWindow* parent, int id, const wxString& value, const wxPoint& point, const wxSize& size, long style=0)
+    : wxTextCtrl(parent, id, value, point, wxSize(45, -1), style, wxIntegerValidator<int>())
+    {
+        min = 0;
+        max = 100;
+    }
+    
+    void SetRange(int a, int b)
+    {
+        min = a;
+        max = b;
+    }
+    
+    void SetValue(int val)
+    {
+        wxTextCtrl::SetValue(wxString::Format("%i", val));
+    }
+    
+    int GetValue()
+    {
+        return atoi((const char*)wxTextCtrl::GetValue().utf8_str());
+    }
+    
+    void up(wxSpinEvent& evt)
+    {
+        int v = GetValue() + 1;
+        if (v <= max) SetValue(v);
+    }
+    void down(wxSpinEvent& evt)
+    {
+        int v = GetValue() - 1;
+        if (v >= min) SetValue(v);
+    }
+};
+#define SPINNER_CLASS wxWorkaroundSpinCtrl
+#else
+#define SPINNER_CLASS wxSpinCtrl
+#endif
+
 
 #if wxCHECK_VERSION(2,9,1)
     class wxGenericHyperlinkCtrl;
@@ -220,8 +267,8 @@ namespace AriaMaestosa
 
         wxButton*   m_time_sig;
         wxTextCtrl* m_first_measure;
-        wxSpinCtrl* m_song_length;
-        wxSpinCtrl* m_display_zoom;
+        SPINNER_CLASS* m_song_length;
+        SPINNER_CLASS* m_display_zoom;
         wxTextCtrl* m_tempo_ctrl;
 
         wxMenuBar* m_menu_bar;
