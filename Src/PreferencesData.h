@@ -60,9 +60,7 @@ namespace AriaMaestosa
 #endif
 
 
-#ifndef __WXMSW__ 
-    static const wxString SYSTEM_BANK = _("System soundbank");
-#endif
+static const wxString SYSTEM_BANK = _("System soundbank");
     
 #ifdef __WXGTK__
     static const wxString DEFAULT_SOUNDFONT_PATH = wxT("/usr/share/sounds/sf2/FluidR3_GM.sf2");
