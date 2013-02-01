@@ -40,6 +40,9 @@ namespace AriaMaestosa
         int modalCode;
 
         wxBoxSizer* vert_sizer;
+        wxBoxSizer* vert_sizer1;
+        wxBoxSizer* vert_sizer2;
+        wxBoxSizer* vert_sizer3;
         wxButton* ok_btn;
         wxButton* cancel_btn;
         

@@ -1,7 +1,9 @@
 1.4.7
-- Use now FluidSynth and not TiMidity as MIDI synthesizer (Linux only).
 - Fix for .MID and .MIDI files (upper-case extension)
 - Workaround wxWidgets bug that caused spinners to disappear on OSX
+- Allow navigating between notes with tab and shift-tab
+- Now use FluidSynth and not TiMidity as MIDI synthesizer (Linux only)
+- Reorganise preferences a bit
 
 1.4.6
 - Add 'duplicate track' features

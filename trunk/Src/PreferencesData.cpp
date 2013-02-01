@@ -41,15 +41,15 @@ using namespace AriaMaestosa;
 #endif
 
 Setting::Setting(wxString name, wxString user_name, SettingType type,
-                 bool visibleInPreferences, wxString default_value,
+                 SettingCategory category, wxString default_value,
                  SettingSubType subtype)
 {
-    m_name                   = name;
-    m_user_name              = user_name;
-    m_type                   = type;
-    m_subtype                = subtype;
-    m_value                  = default_value;
-    m_visible_in_preferences = visibleInPreferences;
+    m_name      = name;
+    m_user_name = user_name;
+    m_type      = type;
+    m_subtype   = subtype;
+    m_value     = default_value;
+    m_category  = category;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -107,6 +107,8 @@ PreferencesData::PreferencesData()
     m_inited = false;
 }
 
+// ----------------------------------------------------------------------------------------------------------
+
 void PreferencesData::init()
 {
     if (m_inited) return;
@@ -147,8 +149,8 @@ void PreferencesData::readValues()
 void PreferencesData::prepareLanguageEntry()
 {
     // ---- language
-    Setting* languages = new Setting(fromCString(SETTING_ID_LANGUAGE), _("Language"), SETTING_ENUM, true,
-                                     to_wxString(getDefaultLanguageAriaID()) );
+    Setting* languages = new Setting(fromCString(SETTING_ID_LANGUAGE), _("Language"), SETTING_ENUM,
+                                     SETTING_CATEGORY_UI, to_wxString(getDefaultLanguageAriaID()) );
     languages->setChoices( getLanguageList() );
     m_settings.push_back( languages );
 }
@@ -174,7 +176,7 @@ void PreferencesData::fillSettingsVector()
     
     // ---- Midi Driver
     Setting* midiDriver = new Setting(fromCString(SETTING_ID_MIDI_DRIVER), _("MIDI Driver"),
-                                SETTING_STRING_ENUM, true /* show in preferences */, defaultMidiDriver );
+                                SETTING_STRING_ENUM, SETTING_CATEGORY_AUDIO, defaultMidiDriver );
     std::vector<wxString> midiDrivers = PlatformMidiManager::getChoices();
     const int count = midiDrivers.size();
     for (int n=0; n<count; n++)
@@ -186,7 +188,7 @@ void PreferencesData::fillSettingsVector()
     // ---- play during edit
     //I18N: In preferences
     Setting* play = new Setting(fromCString(SETTING_ID_PLAY_DURING_EDIT), _("Play during edit (default value)"),
-                                SETTING_ENUM, true /* show in preferences */, wxT("1") );
+                                SETTING_ENUM, SETTING_CATEGORY_EDITION, wxT("1") );
     play->addChoice(_("Always"));        // PLAY_ALWAYS = 0,
     play->addChoice(_("On note change"));// PLAY_ON_CHANGE = 1,
     play->addChoice(_("Never"));         // PLAY_NEVER = 2
@@ -195,7 +197,7 @@ void PreferencesData::fillSettingsVector()
     // ---- score view
     //I18N: In preferences
     Setting* scoreview = new Setting(fromCString(SETTING_ID_SCORE_VIEW), _("Default Score View"),
-                                     SETTING_ENUM, true /* show in preferences */, wxT("0") );
+                                     SETTING_ENUM, SETTING_CATEGORY_EDITION, wxT("0") );
     scoreview->addChoice(_("Both Musical and Linear"));
     scoreview->addChoice(_("Musical Only"));
     scoreview->addChoice(_("Linear Only"));
@@ -204,17 +206,17 @@ void PreferencesData::fillSettingsVector()
     // ---- default editor
     //I18N: In preferences
     Setting* defaultEditor = new Setting(fromCString(SETTING_ID_DEFAULT_EDITOR), _("Default Editor View"),
-                                         SETTING_ENUM, true /* show in preferences */, wxT("0") );
+                                         SETTING_ENUM, SETTING_CATEGORY_EDITION, wxT("0") );
     defaultEditor->addChoice(_("Keyboard"));  // 0
     defaultEditor->addChoice(_("Score"));     // 1
     defaultEditor->addChoice(_("Tablature")); // 2
     m_settings.push_back( defaultEditor );
 
 
-    // ---- default editor
+    // ---- instrument classification
     //I18N: In preferences
     Setting* instrumentClassification = new Setting(fromCString(SETTING_ID_INSTRUMENT_CLASSIFICATION), _("Instrument Classification"),
-                                         SETTING_ENUM, true /* show in preferences */, wxT("0") );
+                                         SETTING_ENUM, SETTING_CATEGORY_EDITION, wxT("0") );
     instrumentClassification->addChoice(_("MIDI Standard"));  // 0
     instrumentClassification->addChoice(wxT("Aria"));     // 1
     instrumentClassification->addChoice(wxT("Buzzwood"));     // 2
@@ -226,45 +228,45 @@ void PreferencesData::fillSettingsVector()
 #ifndef __WXMSW__ 
     // ---- soundbank
     Setting* soundbank = new Setting(fromCString(SETTING_ID_SOUNDBANK), _("Soundfont"),
-                                     SETTING_STRING, true /* show in preferences */, SYSTEM_BANK,
+                                     SETTING_STRING, SETTING_CATEGORY_AUDIO, SYSTEM_BANK,
                                      SETTING_SUBTYPE_FILE_OR_DEFAULT);
     m_settings.push_back( soundbank );
 #endif
     
     // ---- follow playback
     Setting* followp = new Setting(fromCString(SETTING_ID_FOLLOW_PLAYBACK), _("Follow playback by default"),
-                                   SETTING_BOOL, true /* show in preferences */, wxT("0") );
+                                   SETTING_BOOL, SETTING_CATEGORY_EDITION, wxT("0") );
     m_settings.push_back( followp );
     
     // ---- playthrough
     Setting* playthrough = new Setting(fromCString(SETTING_ID_PLAYTHROUGH), _("Enable playthrough when recording by default"),
-                                       SETTING_BOOL, true /* show in preferences */, wxT("1") );
+                                       SETTING_BOOL, SETTING_CATEGORY_AUDIO, wxT("1") );
     m_settings.push_back( playthrough );
 
     // ---- check for new version
     Setting* newversion = new Setting(fromCString(SETTING_ID_CHECK_NEW_VERSION), _("Check online for new versions"),
-                                       SETTING_BOOL, true /* show in preferences */, wxT("1") );
+                                       SETTING_BOOL, SETTING_CATEGORY_UI, wxT("1") );
     m_settings.push_back( newversion );
     
     // ---- Remember window location
     Setting* windowloc = new Setting(fromCString(SETTING_ID_REMEMBER_WINDOW_POS), _("Remember window location"),
-                                     SETTING_BOOL, true /* show in preferences */, wxT("0") );
+                                     SETTING_BOOL, SETTING_CATEGORY_UI, wxT("0") );
     m_settings.push_back( windowloc );
     
     Setting* window_x = new Setting(fromCString(SETTING_ID_WINDOW_X), wxT("Window X"),
-                                     SETTING_INT, false /* show in preferences */, wxT("0") );
+                                     SETTING_INT, SETTING_CATEGORY_HIDDEN, wxT("0") );
     m_settings.push_back( window_x );
     
     Setting* window_y = new Setting(fromCString(SETTING_ID_WINDOW_Y), wxT("Window Y"),
-                                     SETTING_INT, false /* show in preferences */, wxT("0") );
+                                     SETTING_INT, SETTING_CATEGORY_HIDDEN, wxT("0") );
     m_settings.push_back( window_y );
     
     Setting* window_w = new Setting(fromCString(SETTING_ID_WINDOW_W), wxT("Window W"),
-                                     SETTING_INT, false /* show in preferences */, wxT("800") );
+                                     SETTING_INT, SETTING_CATEGORY_HIDDEN, wxT("800") );
     m_settings.push_back( window_w );
     
     Setting* window_h = new Setting(fromCString(SETTING_ID_WINDOW_H), wxT("Window H"),
-                                     SETTING_INT, false /* show in preferences */, wxT("600") );
+                                     SETTING_INT, SETTING_CATEGORY_HIDDEN, wxT("600") );
     m_settings.push_back( window_h );
     
 #ifdef __WXGTK__
@@ -280,78 +282,78 @@ void PreferencesData::fillSettingsVector()
      */
     Setting* launchFluidSynth = new Setting(fromCString(SETTING_ID_LAUNCH_FLUIDSYNTH),
                                      _("Automatically launch FluidSynth if needed"),
-                                     SETTING_BOOL, true /* show in preferences */, wxT("1") );
+                                     SETTING_BOOL, SETTING_CATEGORY_AUDIO, wxT("1") );
     m_settings.push_back(launchFluidSynth);
 #endif
 
 #ifndef __WXMAC__
     Setting* singleInstance = new Setting(fromCString(SETTING_ID_SINGLE_INSTANCE_APPLICATION),
                                      _("Single-instance application"),
-                                     SETTING_BOOL, true /* show in preferences */, wxT("1") );
+                                     SETTING_BOOL, SETTING_CATEGORY_UI, wxT("1") );
     m_settings.push_back( singleInstance );
 #endif
 
     Setting* showNoteNames = new Setting(fromCString(SETTING_ID_SHOW_NOTE_NAMES),
                                      _("Show note names in piano-roll"),
-                                     SETTING_BOOL, true /* show in preferences */, wxT("1") );
+                                     SETTING_BOOL, SETTING_CATEGORY_EDITION, wxT("1") );
     m_settings.push_back(showNoteNames);
     
     
     Setting* loadLastSession = new Setting(fromCString(SETTING_ID_LOAD_LAST_SESSION),
                                      _("Restore open files from previous session"),
-                                     SETTING_BOOL, true /* show in preferences */, wxT("0") );
+                                     SETTING_BOOL, SETTING_CATEGORY_UI, wxT("0") );
     m_settings.push_back(loadLastSession); 
     
     
     Setting* lastSessionFiles = new Setting(fromCString(SETTING_ID_LAST_SESSION_FILES),
                                      wxT("Last session files"),
-                                     SETTING_STRING, false, wxT("") );
+                                     SETTING_STRING, SETTING_CATEGORY_HIDDEN, wxT("") );
     m_settings.push_back(lastSessionFiles); 
     
     
     Setting* lastCurrentSequence = new Setting(fromCString(SETTING_ID_LAST_CURRENT_SEQUENCE),
                                      wxT("Last Current Sequence"),
-                                     SETTING_INT, false, wxT("0"));
+                                     SETTING_INT, SETTING_CATEGORY_HIDDEN, wxT("0"));
     m_settings.push_back(lastCurrentSequence); 
     
     
     
     Setting* recentFiles = new Setting(fromCString(SETTING_ID_RECENT_FILES),
                                      wxT("Recent files"),
-                                     SETTING_STRING, false, wxT("") );
+                                     SETTING_STRING, SETTING_CATEGORY_HIDDEN, wxT("") );
     m_settings.push_back(recentFiles); 
     
     
 
     Setting* output = new Setting(fromCString(SETTING_ID_MIDI_OUTPUT), wxT(""),
-                                  SETTING_STRING, false /* show in preferences */, DEFAULT_PORT );
+                                  SETTING_STRING, SETTING_CATEGORY_HIDDEN, DEFAULT_PORT );
     m_settings.push_back( output );
     
     Setting* input = new Setting(fromCString(SETTING_ID_MIDI_INPUT), wxT(""),
                                  // NOTE: there is an identical string in MainFrameMenuBar that must be changed too if changed here
-                                 SETTING_STRING, false /* show in preferences */, _("No MIDI input") );
+                                 SETTING_STRING, SETTING_CATEGORY_HIDDEN, _("No MIDI input") );
     m_settings.push_back( input );
     
     // ---- printing
     Setting* marginLeft = new Setting(fromCString(SETTING_ID_MARGIN_LEFT), wxT(""),
-                                      SETTING_INT, false /* show in preferences */, wxT("12") );
+                                      SETTING_INT, SETTING_CATEGORY_HIDDEN, wxT("12") );
     m_settings.push_back( marginLeft );
     
     Setting* marginRight = new Setting(fromCString(SETTING_ID_MARGIN_RIGHT), wxT(""),
-                                      SETTING_INT, false /* show in preferences */, wxT("12") );
+                                      SETTING_INT, SETTING_CATEGORY_HIDDEN, wxT("12") );
     m_settings.push_back( marginRight );
     
     Setting* marginTop = new Setting(fromCString(SETTING_ID_MARGIN_TOP), wxT(""),
-                                      SETTING_INT, false /* show in preferences */, wxT("12") );
+                                      SETTING_INT, SETTING_CATEGORY_HIDDEN, wxT("12") );
     m_settings.push_back( marginTop );
     
     Setting* marginBottom = new Setting(fromCString(SETTING_ID_MARGIN_BOTTOM), wxT(""),
-                                      SETTING_INT, false /* show in preferences */, wxT("16") );
+                                      SETTING_INT, SETTING_CATEGORY_HIDDEN, wxT("16") );
     m_settings.push_back( marginBottom );
     
     //FIXME: hope wx enum values don't change...
     Setting* paperType = new Setting(fromCString(SETTING_ID_PAPER_TYPE), wxT(""),
-                                     SETTING_INT, false /* show in preferences */, to_wxString(wxPAPER_LETTER) );
+                                     SETTING_INT, SETTING_CATEGORY_HIDDEN, to_wxString(wxPAPER_LETTER) );
     m_settings.push_back( paperType );
     
     
@@ -359,12 +361,12 @@ void PreferencesData::fillSettingsVector()
     // Default=0 => FLUIDSYNTH
     Setting* audioExportEngine = new Setting(fromCString(SETTING_ID_AUDIO_EXPORT_ENGINE),
                                      wxT("Audio Export Engine"),
-                                     SETTING_INT, false, wxT("0"));
+                                     SETTING_INT, SETTING_CATEGORY_HIDDEN, wxT("0"));
     m_settings.push_back( audioExportEngine );
                          
     Setting* fluidsynthSoundfontPath = new Setting(fromCString(SETTING_ID_FLUIDSYNTH_SOUNDFONT_PATH),
                                      wxT("Fluidsynth Soundfont Path"),
-                                     SETTING_STRING, false, DEFAULT_SOUNDFONT_PATH );
+                                     SETTING_STRING, SETTING_CATEGORY_HIDDEN, DEFAULT_SOUNDFONT_PATH );
     m_settings.push_back( fluidsynthSoundfontPath );
 #endif
 }

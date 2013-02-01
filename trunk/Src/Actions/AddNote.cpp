@@ -109,6 +109,9 @@ void AddNote::perform()
     
     // FIXME: maybe this should be automatic?
     if (m_track->isNotationTypeEnabled(GUITAR)) m_track->updateNotesForGuitarEditor();
+    
+    // The note will have been inserted correctly but we also sort by pitch
+    m_track->reorderNoteVector();
 }
 
 // ----------------------------------------------------------------------------------------------------------

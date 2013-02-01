@@ -952,6 +952,37 @@ void Editor::processKeyPress(int keycode, bool commandDown, bool shiftDown)
         return;
     }
     
+    if (keycode == WXK_TAB)
+    {
+        int idSelectedNote = -1;
+        for (int i = 0; i < m_track->getNoteAmount(); i++)
+        {
+            if (m_track->isNoteSelected(i))
+            {
+                idSelectedNote = i;
+                break;
+            }
+        }
+        
+        if (idSelectedNote != -1)
+        {
+            m_track->selectNote(ALL_NOTES, false, true);
+            
+            if (shiftDown)
+            {
+                if (idSelectedNote > 0)
+                    m_track->selectNote(idSelectedNote - 1, true, true);
+            }
+            else
+            {
+                if (idSelectedNote < m_track->getNoteAmount() - 1)
+                    m_track->selectNote(idSelectedNote + 1, true, true);
+            }
+            
+            Display::render();
+        }
+    }
+    
     if (not commandDown and not shiftDown)
     {
         // ---------------- move notes -----------------
