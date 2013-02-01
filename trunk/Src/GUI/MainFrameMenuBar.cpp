@@ -444,6 +444,11 @@ void MainFrame::disableMenus(const bool disable)
     m_file_menu->Enable(MENU_FILE_EXPORT_NOTATION, on);
     m_file_menu->Enable(MENU_FILE_COPYRIGHT, on);
     m_file_menu->Enable(wxID_EXIT, on);
+    
+    m_channel_management_automatic->Enable(on);
+    m_channel_management_manual->Enable(on);
+    m_settings_menu->Enable(MENU_SETTINGS_METRONOME, on);
+    m_settings_menu->Enable(MENU_SETTINGS_MEASURE_EXPANDED, on);
 }
 
 
@@ -480,6 +485,11 @@ void MainFrame::doDisableMenusForWelcomeScreen(const bool disable)
     m_tempo_ctrl->Enable(on);
     m_song_length->Enable(on);
     m_display_zoom->Enable(on);
+    
+    m_channel_management_automatic->Enable(on);
+    m_channel_management_manual->Enable(on);
+    m_settings_menu->Enable(MENU_SETTINGS_METRONOME, on);
+    m_settings_menu->Enable(MENU_SETTINGS_MEASURE_EXPANDED, on);
 }
 
 // -----------------------------------------------------------------------------------------------------------
