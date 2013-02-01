@@ -76,11 +76,13 @@ AboutDialog::AboutDialog(wxWindow* parent) : wxFrame(parent, wxID_ANY,  _("About
     wxT("\n\n[h1]") + wxString(_("Translations:") +
              wxString(wxT("[/h1]\n\n\t")) + wxString( wxT("Chinese : Scilenso")) +
              wxString(wxT("\n\t")) + wxString( wxT("German : Friedrich Weber")) +
-             wxString(wxT("\n\t")) + wxString( wxT("Italian : Gianluca Pignalberi")) +
+             wxString(wxT("\n\t")) + wxString( wxT("Italian : Gianluca Pignalberi, RedTide")) +
              wxString(wxT("\n\t")) + wxString( wxT("Japanese : Jessie Wanner") ) +
+             wxString(wxT("\n\t")) + wxString( wxT("Chinese : scilenso")
              wxString(wxT("\n\t")) + wxString( wxT("Portuguese : guiagge") ) +
              wxString(wxT("\n\t")) + wxString( wxT("Russian : Ruslan Tertyshny & Artem Krosheninnikov") ) +
-             wxString(wxT("\n\t")) + wxString( wxT("Spanish : Othyro") )
+             wxString(wxT("\n\t")) + wxString( wxT("Spanish : Othyro") +
+             wxString(wxT("\n\t")) + wxString( wxT("Czech : fri"))
              );
     
 #if wxUSE_WEBVIEW && !defined(__WXMSW__)
