@@ -252,38 +252,77 @@ wxDialog(parent, wxID_ANY,
     
     // ---- add widgets
     vert_sizer = new wxBoxSizer(wxVERTICAL);
+    
+    wxBoxSizer* hsizer = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer* leftPartSizer = new wxBoxSizer(wxVERTICAL);
+    vert_sizer1 = new wxStaticBoxSizer(wxVERTICAL, this, _("Aria Maestosa"));
+    vert_sizer2 = new wxStaticBoxSizer(wxVERTICAL, this, _("Sound input/output"));
+    vert_sizer3 = new wxStaticBoxSizer(wxVERTICAL, this, _("Edition"));
+    vert_sizer->Add(hsizer, 0, wxEXPAND);
+    hsizer->Add(leftPartSizer, 1, wxEXPAND);
+    leftPartSizer->Add(vert_sizer1, 1, wxEXPAND | wxALL, 5);
+    leftPartSizer->Add(vert_sizer2, 1, wxEXPAND | wxALL, 5);
+    hsizer->Add(vert_sizer3, 1, wxEXPAND | wxALL, 5);
+    
     const int settingAmount = settings.size();
     for (int i=0; i<settingAmount; i++)
     {
-        if (not settings[i].m_visible_in_preferences) continue;
+        if (settings[i].m_category == SETTING_CATEGORY_HIDDEN) continue;
         
         SettingWidget* w = new SettingWidget(settings.get(i));
         m_setting_widgets.push_back(w);
         
+        wxBoxSizer* column;
+        if (settings[i].m_category == SETTING_CATEGORY_UI)
+        {
+            column = vert_sizer1;
+        }
+        else if (settings[i].m_category == SETTING_CATEGORY_AUDIO)
+        {
+            column = vert_sizer2;
+        }
+        else if (settings[i].m_category == SETTING_CATEGORY_EDITION)
+        {
+            column = vert_sizer3;
+        }
+        else
+        {
+            ASSERT(false);
+            column = vert_sizer1;
+        }
+        
         switch (settings[i].m_type)
         {
-                
             case SETTING_ENUM:
             case SETTING_STRING_ENUM:
             {
-                QuickBoxLayout box(this, vert_sizer);
+                /*
+                QuickBoxLayout box(this, column);
                 box.add(new wxStaticText(box.pane , wxID_ANY, settings[i].m_user_name), 1);
                 
                 w->m_combo = new wxChoice(box.pane, 1, wxDefaultPosition, wxDefaultSize, 
                                                    settings[i].m_choices );
                 box.add(w->m_combo, 1);
+                 * */
+                column->Add(w->m_combo = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 
+                                                      settings[i].m_choices), 0,
+                                                      wxEXPAND | wxTOP | wxLEFT | wxRIGHT, 8);
+                                                   
+                column->Add(new wxStaticText(this, wxID_ANY, settings[i].m_user_name), 0,
+                                             wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 8);                                 
                 break;
             }
             case SETTING_BOOL:
             {
                 w->m_checkbox = new wxCheckBox(this, wxID_ANY, settings[i].m_user_name,
                                                         wxDefaultPosition, wxDefaultSize );
-                vert_sizer->Add( w->m_checkbox, 0, wxALL, 10 );
+                column->Add( w->m_checkbox, 0, wxALL, 5 );
                 break;
             }
             case SETTING_INT:
             {
-                QuickBoxLayout box(this, vert_sizer);
+                /*
+                QuickBoxLayout box(this, column);
                 box.add(new wxStaticText(box.pane, wxID_ANY, settings[i].m_user_name ), 1);
                 
                 w->m_number = new wxSpinCtrl(box.pane, wxID_ANY,
@@ -291,13 +330,22 @@ wxDialog(parent, wxID_ANY,
                                                       wxDefaultPosition, wxDefaultSize,  wxSP_ARROW_KEYS,
                                                       0, 99999 );
                 box.add(w->m_number);
+                 */
+
+                column->Add(w->m_number = new wxSpinCtrl(this, wxID_ANY,
+                                                         settings[i].m_value,
+                                                         wxDefaultPosition, wxDefaultSize,  wxSP_ARROW_KEYS,
+                                                         0, 99999), 0, wxEXPAND);
+                
+                column->Add(new wxStaticText(this, wxID_ANY, settings[i].m_user_name ), 0, wxEXPAND);
+                
                 break;
             }
             case SETTING_STRING:
             {
                 if (settings[i].m_subtype == SETTING_SUBTYPE_FILE_OR_DEFAULT)
                 {
-                    QuickBoxLayout box(this, vert_sizer);
+                    QuickBoxLayout box(this, column);
                     box.add(new wxStaticText(box.pane, wxID_ANY, settings[i].m_user_name), 1);
                     
                     wxString choices[] = {SYSTEM_BANK, _("Browse...")};
@@ -312,7 +360,7 @@ wxDialog(parent, wxID_ANY,
                 }
                 else
                 {
-                    QuickBoxLayout box(this, vert_sizer);
+                    QuickBoxLayout box(this, column);
                     box.add(new wxStaticText(box.pane, wxID_ANY, settings[i].m_user_name ), 1);
                     
                     w->m_textbox = new wxTextCtrl(box.pane, wxID_ANY, settings[i].m_value);
@@ -326,7 +374,7 @@ wxDialog(parent, wxID_ANY,
     
     updateWidgetsFromValues();
     
-    vert_sizer->AddStretchSpacer();
+    //vert_sizer->AddStretchSpacer();
 
 
 
@@ -334,18 +382,24 @@ wxDialog(parent, wxID_ANY,
     ok_btn = new wxButton(this, wxID_OK, _("OK"));
     cancel_btn = new wxButton(this, wxID_CANCEL, _("Cancel"));
 
+    wxBoxSizer* bottom = new wxBoxSizer(wxHORIZONTAL);
+    vert_sizer->Add(bottom, 0, wxALL|wxEXPAND, 5);
+
+
+    //I18N: - in the preferences dialog
+    wxStaticText* effect_label = new wxStaticText(this, wxID_ANY, _("Changes will take effect next time you open the application."),
+                                                  wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE);
+    effect_label->SetFont( wxFont(wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_NORMAL) );
+    bottom->Add( effect_label, 1, wxEXPAND | wxALL, 10 );
+    
+    
     wxStdDialogButtonSizer* stdDialogButtonSizer = new wxStdDialogButtonSizer();
     stdDialogButtonSizer->AddButton(ok_btn);
     stdDialogButtonSizer->AddButton(cancel_btn);
     stdDialogButtonSizer->Realize();
-    vert_sizer->Add(stdDialogButtonSizer, 0, wxALL|wxEXPAND, 5);
+    bottom->Add(stdDialogButtonSizer, 0, wxALL|wxEXPAND, 5);
 
 
-    //I18N: - in the preferences dialog
-    wxStaticText* effect_label = new wxStaticText(this, wxID_ANY, _("Changes will take effect next time you open the app."),
-                                                  wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE);
-    effect_label->SetFont( wxFont(wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_NORMAL) );
-    vert_sizer->Add( effect_label, 0, wxEXPAND | wxALL, 10 );
     
     
     ok_btn -> SetDefault();

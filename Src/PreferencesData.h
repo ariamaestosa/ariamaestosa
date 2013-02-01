@@ -27,6 +27,13 @@
 
 namespace AriaMaestosa
 {
+    enum SettingCategory
+    {
+        SETTING_CATEGORY_AUDIO,
+        SETTING_CATEGORY_EDITION,
+        SETTING_CATEGORY_UI,
+        SETTING_CATEGORY_HIDDEN
+    };
     
     enum SettingType
     {
@@ -119,15 +126,15 @@ namespace AriaMaestosa
     {
     public:
         
-        wxString       m_name;
-        wxString       m_user_name;
-        wxArrayString  m_choices;
-        SettingType    m_type;
-        SettingSubType m_subtype;
-        wxString       m_value;
-        bool           m_visible_in_preferences;
+        wxString        m_name;
+        wxString        m_user_name;
+        wxArrayString   m_choices;
+        SettingType     m_type;
+        SettingSubType  m_subtype;
+        wxString        m_value;
+        SettingCategory m_category;
         
-        Setting(wxString name, wxString user_name, SettingType type, bool visibleInPreferences,
+        Setting(wxString name, wxString user_name, SettingType type, SettingCategory category,
                 wxString default_value = wxEmptyString, SettingSubType subtype = SETTING_SUBTYPE_NONE);
         void addChoice(wxString choice);
         void setChoices(wxArrayString choices);

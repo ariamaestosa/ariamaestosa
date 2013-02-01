@@ -420,6 +420,13 @@ void Track::reorderNoteVector()
             if (n>2) n-= 2;
             else n=-1;
         }
+        else if (m_notes[n].getTick() == m_notes[n+1].getTick() and
+                 m_notes[n].getPitchID() > m_notes[n+1].getPitchID())
+        {
+            m_notes.swap(n, n+1);
+            if (n>2) n-= 2;
+            else n=-1;
+        }
     }//next
 
 }
