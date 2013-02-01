@@ -45,7 +45,7 @@ using namespace AriaMaestosa;
 // ----------------------------------------------------------------------------------------------------------
 
 AboutDialog::AboutDialog(wxWindow* parent) : wxFrame(parent, wxID_ANY,  _("About Aria Maestosa"),
-                                                     wxDefaultPosition, wxSize(517, 600) )
+                                                     wxDefaultPosition, wxSize(517, 650) )
 {
     wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
     
@@ -78,10 +78,10 @@ AboutDialog::AboutDialog(wxWindow* parent) : wxFrame(parent, wxID_ANY,  _("About
              wxString(wxT("\n\t")) + wxString( wxT("German : Friedrich Weber")) +
              wxString(wxT("\n\t")) + wxString( wxT("Italian : Gianluca Pignalberi, RedTide")) +
              wxString(wxT("\n\t")) + wxString( wxT("Japanese : Jessie Wanner") ) +
-             wxString(wxT("\n\t")) + wxString( wxT("Chinese : scilenso")
+             wxString(wxT("\n\t")) + wxString( wxT("Chinese : scilenso")) +
              wxString(wxT("\n\t")) + wxString( wxT("Portuguese : guiagge") ) +
              wxString(wxT("\n\t")) + wxString( wxT("Russian : Ruslan Tertyshny & Artem Krosheninnikov") ) +
-             wxString(wxT("\n\t")) + wxString( wxT("Spanish : Othyro") +
+             wxString(wxT("\n\t")) + wxString( wxT("Spanish : Othyro")) +
              wxString(wxT("\n\t")) + wxString( wxT("Czech : fri"))
              );
     

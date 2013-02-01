@@ -58,6 +58,9 @@ void DeleteTrack::undo()
 
 void DeleteTrack::perform()
 {
+    Track* t = m_parent_sequence->getCurrentTrack();
+    if (t->isSoloed()) t->toggleSoloed();
+
     m_removed_track = m_parent_sequence->removeSelectedTrack();
     ASSERT(m_removed_track != NULL);
 }
