@@ -114,8 +114,12 @@ bool AriaMaestosa::exportMidiFile(Sequence* sequence, wxString filepath)
     int length = -1, start = -1, numTracks = -1;
     makeJDKMidiSequence(sequence, tracks, false, &length, &start, &numTracks, false);
     
+#ifdef __WXMSW__
+    jdksmidi::MIDIFileWriteStreamFileName file_stream( (const char*)filepath.mb_str() );
+#else
     jdksmidi::MIDIFileWriteStreamFileName file_stream( (const char*)filepath.mb_str(wxConvUTF8) );
-    
+#endif
+
     jdksmidi::MIDIFileWriteMultiTrack writer2(
                                              &tracks,
                                              &file_stream
