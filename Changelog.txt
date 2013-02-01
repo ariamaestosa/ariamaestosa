@@ -4,6 +4,7 @@
 - Allow navigating between notes with tab and shift-tab
 - Now use FluidSynth and not TiMidity as MIDI synthesizer (Linux only)
 - Reorganise preferences a bit
+- Fix bug when deleting soloed track
 
 1.4.6
 - Add 'duplicate track' features
