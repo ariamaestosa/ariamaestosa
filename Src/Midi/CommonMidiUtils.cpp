@@ -742,10 +742,11 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdksmidi::MIDIMultiTr
         // to account for empty measures at the end
         
         const int tick = md->lastTickInMeasure(md->getMeasureAmount() - 1);
-        if (tick > *songLengthInTicks)
+        
+        if (tick > *songLengthInTicks + 1) // add +1 because we'll do -1 just below
         {
             jdksmidi::MIDITimedBigMessage m;
-            m.SetTime( tick - 1 );
+            m.SetTime( tick - 1 ); // -1 to not open a new measure when importing back
             m.SetControlChange(0, 127, 0);
             
             const int count = sequence->getTrackAmount();
@@ -757,6 +758,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdksmidi::MIDIMultiTr
                 }
             }//next
         }
+        
     }
     
     // ---- Add metronome track if enabled
