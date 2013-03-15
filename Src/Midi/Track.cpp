@@ -1403,7 +1403,6 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
                          bool selectionOnly,
                          int& startTick)
 {
-
     // ignore track if it has been muted
     // (but for some reason drum track can't be completely omitted)
     // if we only play selection, ignore mute and play anyway
@@ -1568,7 +1567,7 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
     if (!m_played and m_editor_mode[DRUM] and not selectionOnly) return -1;
 
     //std::cout << "-------------------- TRACK -------------" << std::endl;
-
+    
     while (true)
     {
 
@@ -1650,7 +1649,7 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
             if (time >= 0 and (time + firstNoteStartTick) <= lastTickInSong)
             {
                 m.SetTime( time );
-
+                
                 if (m_editor_mode[DRUM])
                 {
                     m.SetNoteOff( channel, m_note_off[note_off_id].getPitchID(), 0 );
@@ -1680,6 +1679,8 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
             {
                 int time = m_control_events[control_evt_id].getTick() - firstNoteStartTick;
 
+                // find track end
+                if (time > last_event_tick) last_event_tick = time;
 
                 // controller changes happens before the area we play
                 // but perhaps it still is affecting the area we want to play - check for that.
@@ -1738,7 +1739,7 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
                 if (doAddControlEvent and (time + firstNoteStartTick) <= lastTickInSong)
                 {
                     m.SetTime( time );
-
+ 
                     /** In range [-8192, 8191] */
                     const int pitchBendVal = m_control_events[control_evt_id].getPitchBendValue();
 
@@ -1752,6 +1753,10 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
             else if (controllerID == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE)
             {
                 int time = m_control_events[control_evt_id].getTick() - firstNoteStartTick;
+                
+                // find track end
+                if (time > last_event_tick) last_event_tick = time;
+
                 if ((time + firstNoteStartTick) <= lastTickInSong)
                 {
                     m.SetTime( time );
@@ -1768,6 +1773,9 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
             else
             {
                 int time = m_control_events[control_evt_id].getTick() - firstNoteStartTick;
+
+                // find track end
+                if (time > last_event_tick) last_event_tick = time;
 
                 // controller changes happens before the area we play
                 // but perhaps it still is affecting the area we want to play - check for that.
@@ -1826,7 +1834,7 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
                 if (doAddControlEvent and (time + firstNoteStartTick) <= lastTickInSong)
                 {
                     m.SetTime( time );
-
+ 
                     // FIXME: also write fine values
                     m.SetControlChange(channel,
                                        controllerID,
