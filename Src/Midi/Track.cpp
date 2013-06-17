@@ -1597,7 +1597,6 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
         const int tick_control = have_tick_control ?
                                   m_control_events[control_evt_id].getTick() - firstNoteStartTick : -1;
 
-
         if (not have_tick_control and not have_tick_off and not have_tick_on)
         {
             // all events have been added
@@ -1674,68 +1673,68 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
         {
             const int controllerID = m_control_events[control_evt_id].getController();
 
-            // pitch bend
-            if (controllerID == PSEUDO_CONTROLLER_PITCH_BEND)
+            int time = m_control_events[control_evt_id].getTick() - firstNoteStartTick;
+
+            // find track end
+            if (time > last_event_tick) last_event_tick = time;
+
+            // controller changes happens before the area we play
+            // but perhaps it still is affecting the area we want to play - check for that.
+            bool doAddControlEvent = true;
+            if (time < 0)
             {
-                int time = m_control_events[control_evt_id].getTick() - firstNoteStartTick;
-
-                // find track end
-                if (time > last_event_tick) last_event_tick = time;
-
-                // controller changes happens before the area we play
-                // but perhaps it still is affecting the area we want to play - check for that.
-                bool doAddControlEvent = true;
-                if (time < 0)
+                if (control_evt_id+1 < controllerAmount)
                 {
-                    if (control_evt_id+1 < controllerAmount)
-                    {
-                        doAddControlEvent = false;
-                        int checkEventID = control_evt_id+1;
+                    doAddControlEvent = false;
+                    int checkEventID = control_evt_id+1;
 
-                        // check if there are other controller events of the same type before the area we play.
-                        while (true)
+                    // check if there are other controller events of the same type before the area we play.
+                    while (true)
+                    {
+
+                        if ((m_control_events[checkEventID].getTick() - firstNoteStartTick)<1  and
+                            m_control_events[checkEventID].getController() == controllerID)
                         {
+                            // the current event has no effect, there is another one later, disregard it.
+                            doAddControlEvent = false;
+                            break;
+                        }
 
-                            if ((m_control_events[checkEventID].getTick() - firstNoteStartTick)<1  and
-                               m_control_events[checkEventID].getController() == controllerID)
-                            {
-                                // the current event has no effect, there is another one later, disregard it.
-                                doAddControlEvent = false;
-                                break;
-                            }
+                        if ((m_control_events[checkEventID].getTick() - firstNoteStartTick)>0  and
+                           m_control_events[checkEventID].getController() == controllerID)
+                        {
+                            // there is another event, but it's later so current event is still relevant.
+                            doAddControlEvent = true;
+                            time = 0;
+                            break;
+                        }
 
-                            if ((m_control_events[checkEventID].getTick() - firstNoteStartTick)>0  and
-                               m_control_events[checkEventID].getController() == controllerID)
-                            {
-                                // there is another event, but it's later so current event is still relevant.
-                                doAddControlEvent = true;
-                                time = 0;
-                                break;
-                            }
-
-                            checkEventID++;
-                            if (not (checkEventID < controllerAmount))
-                            {
-                                // we reaached the end, there are no other events of the same type
-                                // this one still affects playback of the area that we're playing.
-                                doAddControlEvent = true;
-                                time = 0;
-                                break;
-                            }
-                        }//wend
-                    }
-                    else
-                    {
-                        // there are no other events in track. add it.
-                        doAddControlEvent = true;
-                        time = 0;
-                    }
+                        checkEventID++;
+                        if (not (checkEventID < controllerAmount ))
+                        {
+                            // we reaached the end, there are no other events of the same type
+                            // this one still affects playback of the area that we're playing.
+                            doAddControlEvent = true;
+                            time = 0;
+                            break;
+                        }
+                    }//wend
                 }
                 else
                 {
+                    // there are no other events in track. add it.
                     doAddControlEvent = true;
+                    time = 0;
                 }
-
+            }
+            else
+            {
+                doAddControlEvent = true;
+            }
+            
+            // pitch bend
+            if (controllerID == PSEUDO_CONTROLLER_PITCH_BEND)
+            {
                 if (doAddControlEvent and (time + firstNoteStartTick) <= lastTickInSong)
                 {
                     m.SetTime( time );
@@ -1748,89 +1747,25 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
                     if (not midiTrack->PutEvent(m)) { std::cout << "Error adding midi event!" << std::endl; }
                 }
                 control_evt_id++;
-
             }
             else if (controllerID == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE)
             {
-                int time = m_control_events[control_evt_id].getTick() - firstNoteStartTick;
-                
-                // find track end
-                if (time > last_event_tick) last_event_tick = time;
-
-                if ((time + firstNoteStartTick) <= lastTickInSong)
+                if (doAddControlEvent and (time + firstNoteStartTick) <= lastTickInSong)
                 {
                     m.SetTime( time );
                     m.SetProgramChange(channel, (int)round(m_control_events[control_evt_id].getValue()));
-                    control_evt_id++;
 
                     if (not midiTrack->PutEvent( m ))
                     {
                         std::cerr << "Error adding midi event!" << std::endl;
                     }
                 }
+                
+                control_evt_id++;
             }
             // other controller
             else
             {
-                int time = m_control_events[control_evt_id].getTick() - firstNoteStartTick;
-
-                // find track end
-                if (time > last_event_tick) last_event_tick = time;
-
-                // controller changes happens before the area we play
-                // but perhaps it still is affecting the area we want to play - check for that.
-                bool doAddControlEvent = true;
-                if (time < 0)
-                {
-                    if (control_evt_id+1 < controllerAmount)
-                    {
-                        doAddControlEvent = false;
-                        int checkEventID = control_evt_id+1;
-
-                        // check if there are other controller events of the same type before the area we play.
-                        while (true)
-                        {
-
-                            if ((m_control_events[checkEventID].getTick() - firstNoteStartTick)<1  and
-                                m_control_events[checkEventID].getController() == controllerID)
-                            {
-                                // the current event has no effect, there is another one later, disregard it.
-                                doAddControlEvent = false;
-                                break;
-                            }
-
-                            if ((m_control_events[checkEventID].getTick() - firstNoteStartTick)>0  and
-                               m_control_events[checkEventID].getController() == controllerID)
-                            {
-                                // there is another event, but it's later so current event is still relevant.
-                                doAddControlEvent = true;
-                                time = 0;
-                                break;
-                            }
-
-                            checkEventID++;
-                            if (not (checkEventID < controllerAmount ))
-                            {
-                                // we reaached the end, there are no other events of the same type
-                                // this one still affects playback of the area that we're playing.
-                                doAddControlEvent = true;
-                                time = 0;
-                                break;
-                            }
-                        }//wend
-                    }
-                    else
-                    {
-                        // there are no other events in track. add it.
-                        doAddControlEvent = true;
-                        time = 0;
-                    }
-                }
-                else
-                {
-                    doAddControlEvent = true;
-                }
-
                 if (doAddControlEvent and (time + firstNoteStartTick) <= lastTickInSong)
                 {
                     m.SetTime( time );

@@ -735,6 +735,47 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdksmidi::MIDIMultiTr
             }
         }//next
 
+
+        // DEBUG
+        /*
+        for (int t=0; t<count; t++)
+        {
+            printf("============ Track %i\n", t);
+            for (int e = 0; e < tracks.GetTrack(t+1)->GetNumEvents(); e++)
+            {
+                jdksmidi::MIDITimedBigMessage msg;
+                tracks.GetTrack(t+1)->GetEvent(e, &msg);
+                
+                const char* evtType;
+                if (msg.IsNoteOn())
+                    evtType = "on";
+                else if (msg.IsNoteOff())
+                    evtType = "off";
+                else if (msg.IsControlChange())
+                    evtType = "control change";
+                else if (msg.IsProgramChange())
+                    evtType = "program change";
+                else if (msg.IsChannelPressure())
+                    evtType = "chan pressure";
+                else if (msg.IsPitchBend())
+                    evtType = "pitch bend";
+                else if (msg.IsSystemMessage())
+                    evtType = "sys msg";
+                else if (msg.IsTextEvent())
+                    evtType = "text";
+                else if (msg.IsAllNotesOff())
+                    evtType = "all notes off";
+                else if (msg.IsTempo())
+                    evtType = "tempo";
+                else if (msg.IsTimeSig())
+                    evtType = "time sig";
+                else
+                    evtType = "other";
+                
+                printf("Evt (%s) at %i\n", evtType, msg.GetTime());
+            }
+        }
+        */
     }
     else
     {
