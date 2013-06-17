@@ -468,10 +468,10 @@ void MIDIFileRead::ReadTrack()
             }
             lookfor = to_be_read - lng;
             MsgInit();
-            while ( to_be_read > lookfor )
+            while ( to_be_read > lookfor && !abort_parse )
                 MsgAdd ( EGetC() );
 
-            if ( !event_handler->MetaEvent ( cur_time, type, act_msg_len, the_msg ) )
+            if ( !abort_parse && !event_handler->MetaEvent ( cur_time, type, act_msg_len, the_msg ) )
                 abort_parse = true;
             break;
 
