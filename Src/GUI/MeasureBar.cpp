@@ -153,10 +153,9 @@ public:
 
     void insert(wxCommandEvent& event)
     {
-        int number = wxGetNumberFromUser(  _("Insert empty measures between measures ") +
-                                           to_wxString(g_insert_at_measure+1) +
-                                           _(" and ") + to_wxString(g_insert_at_measure+2),
-                                           _("Amount: "), wxT(""), 4 /*default*/, 1 /*min*/);
+        int number = wxGetNumberFromUser(wxString::Format(_("Insert empty measures between measures %i and %i"),
+                                                          g_insert_at_measure+1, g_insert_at_measure+2),
+                                         _("Amount: "), wxT(""), 4 /*default*/, 1 /*min*/);
         if (number==-1) return;
 
         Sequence* seq = m_gseq->getModel();
