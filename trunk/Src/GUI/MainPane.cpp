@@ -1279,12 +1279,15 @@ void MainPane::keyReleased(wxKeyEvent& evt)
     {
         SetCursor( wxNullCursor );
     }
+    
+    evt.Skip();
 }
 
 // -----------------------------------------------------------------------------------------------------------
 
 void MainPane::keyPressed(wxKeyEvent& evt)
 {
+    evt.Skip();
     int keyCode = evt.GetKeyCode();
     
     if (m_have_plus_cursor)
