@@ -48,6 +48,7 @@ namespace AriaMaestosa
             
             ptr_vector<RemovedTrackPart> removedTrackParts;
             ptr_vector<ControllerEvent> removedTempoEvents;
+            ptr_vector<TextEvent> removedTextEvents;
             std::vector<TimeSigChange> timeSigChangesBackup;
         public:
             RemoveMeasures(int from_measure, int to_measure);

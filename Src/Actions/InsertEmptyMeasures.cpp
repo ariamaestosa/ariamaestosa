@@ -123,6 +123,23 @@ void InsertEmptyMeasures::perform()
             }
         }
         
+        // ----------------- move text events -----------------
+        const int text_event_amount = m_sequence->getTextEventAmount();
+        if (text_event_amount>0)
+        {
+            //const int first_tick = getMeasureData()->firstTickInMeasure(measureID+1) - 1;
+            //const int amountInTicks = amount * getMeasureData()->measureLengthInTicks(measureID+1);
+            for (int n=0; n<text_event_amount; n++)
+            {
+                const int tick = m_sequence->getTextEvent(n)->getTick();
+                if (tick > afterTick)
+                {
+                    //std::cout << "starting at " << seq->tempoEvents[n].getTick() << std::endl;
+                    m_sequence->setTextEventTick(n, tick + amountInTicks);
+                }
+            }
+        }
+        
         // ----------------- move time sig changes -----------------
         if (not md->isMeasureLengthConstant())
         {

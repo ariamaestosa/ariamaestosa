@@ -93,6 +93,14 @@ void RemoveMeasures::undo()
     // we will be using the events again, make sure it doesn't delete them
     removedTempoEvents.clearWithoutDeleting();
     
+    // add removed text events again
+    const int text_event_amount = removedTextEvents.size();
+    for (int n=0; n<text_event_amount; n++)
+    {
+        m_sequence->addTextEvent( removedTextEvents.get(n) );
+    }
+    removedTextEvents.clearWithoutDeleting();
+    
     // add removed time sig events again
     MeasureData* md = m_sequence->getMeasureData();
     const int t_amount = timeSigChangesBackup.size();
@@ -211,6 +219,32 @@ void RemoveMeasures::perform()
         }
         
         m_sequence->removeMarkedTempoEvents();
+    }
+    
+    
+    // ------------------------ erase/move text events ------------------------
+    const int text_event_amount = m_sequence->getTextEventAmount();
+
+    if (text_event_amount > 0)
+    {
+        for (int n=0; n<text_event_amount; n++)
+        {
+            const int tick = m_sequence->getTextEvent(n)->getTick();
+            
+            // event is in deleted area
+            if (tick > fromTick and tick < toTick)
+            {
+                removedTextEvents.push_back( m_sequence->extractTextEvent(n) );
+            }
+            //event is after deleted area
+            else if (tick >= toTick)
+            {
+                // move it back
+                m_sequence->setTextEventTick( n, tick - (toTick - fromTick - 1) );
+            }
+        }
+        
+        m_sequence->removeMarkedTextEvents();
     }
     
     {
