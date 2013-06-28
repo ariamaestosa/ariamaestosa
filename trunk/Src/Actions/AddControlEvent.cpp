@@ -47,8 +47,30 @@ AddControlEvent::~AddControlEvent()
 
 void AddControlEvent::undo()
 {
-    
-    if (m_controller != PSEUDO_CONTROLLER_TEMPO)
+    if (m_controller == PSEUDO_CONTROLLER_TEMPO)
+    {
+        Sequence* sequence = m_track->getSequence();
+        for (int n=0; n<sequence->getTempoEventAmount(); n++)
+        {
+            if (sequence->getTempoEvent(n)->getTick() == m_x)
+            {
+                ASSERT_E(sequence->getTempoEvent(n)->getController(), ==, m_controller);
+                
+                // if event was added where there was no event before
+                if (m_removed_event_value == -1)
+                {
+                    sequence->eraseTempoEvent(n);
+                    break;
+                }
+                else
+                    // if event replaced an event that existed before
+                {
+                    sequence->setTempoEventValue(n, m_removed_event_value);
+                }
+            }//endif
+        }//next
+    }
+    else
     {
         ptr_vector<ControllerEvent>& control_events = m_visitor->getControlEventVector();
         
@@ -69,30 +91,6 @@ void AddControlEvent::undo()
                     // if event replaced an event that existed before
                 {
                     control_events[n].setValue( m_removed_event_value );
-                }
-            }//endif
-        }//next
-    }
-    else //tempo
-    {
-        Sequence* sequence = m_track->getSequence();
-        for (int n=0; n<sequence->getTempoEventAmount(); n++)
-        {
-            
-            if (sequence->getTempoEvent(n)->getTick() == m_x)
-            {
-                ASSERT_E(sequence->getTempoEvent(n)->getController(), ==, m_controller);
-                
-                // if event was added where there was no event before
-                if (m_removed_event_value == -1)
-                {
-                    sequence->eraseTempoEvent(n);
-                    break;
-                }
-                else
-                    // if event replaced an event that existed before
-                {
-                    sequence->setTempoEventValue(n, m_removed_event_value);
                 }
             }//endif
         }//next
