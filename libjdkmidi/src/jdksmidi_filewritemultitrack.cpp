@@ -49,8 +49,11 @@ MIDIFileWriteMultiTrack::~MIDIFileWriteMultiTrack()
 bool MIDIFileWriteMultiTrack::Write ( int num_tracks, int division )
 {
     if ( !PreWrite() )
+    {
+        fprintf(stderr, "[MidiExport] PreWrite failed\n");
         return false;
-
+    }
+    
     // first, write the header.
     writer.WriteFileHeader ( ( num_tracks > 1 )? 1:0, num_tracks, division );
     // now write each track
@@ -60,8 +63,11 @@ bool MIDIFileWriteMultiTrack::Write ( int num_tracks, int division )
         const MIDITrack *t = multitrack->GetTrack ( i );
 
         if ( !t || !t->EventsOrderOK() ) // time of events out of order: t->SortEventsOrder() must be done externally
+        {
+            fprintf(stderr, "[MidiExport] events out of order\n");
             return false;
-
+        }
+        
         writer.WriteTrackHeader ( 0 ); // will be rewritten later
 
         const MIDITimedBigMessage *ev;
@@ -71,8 +77,11 @@ bool MIDIFileWriteMultiTrack::Write ( int num_tracks, int division )
         {
             ev = t->GetEventAddress ( event_num );
             if ( !ev )
+            {
+                fprintf(stderr, "[MidiExport] GetEventAddress failed\n");
                 return false;
-
+            }
+            
             // don't write to midifile NoOp msgs
             if ( ev->IsNoOp() )
                 continue;
@@ -81,13 +90,18 @@ bool MIDIFileWriteMultiTrack::Write ( int num_tracks, int division )
 
             // ignore all msgs after EndOfTrack
             if ( ev->IsDataEnd() )
-              break;
-
+            {
+                break;
+            }
+            
             // write all other msgs
             writer.WriteEvent ( *ev );
 
             if ( writer.ErrorOccurred() )
+            {
+                fprintf(stderr, "[MidiExport] ErrorOccurred\n");
                 return false;
+            }
         }
 
         writer.WriteEndOfTrack ( ev_time );
@@ -95,8 +109,11 @@ bool MIDIFileWriteMultiTrack::Write ( int num_tracks, int division )
     }
 
     if ( !PostWrite() )
+    {
+        fprintf(stderr, "[MidiExport] PostWrite failed\n");
         return false;
-
+    }
+    
     return true;
 }
 
