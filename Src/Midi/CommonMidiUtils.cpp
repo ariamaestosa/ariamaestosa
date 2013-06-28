@@ -234,7 +234,8 @@ void AriaMaestosa::addTextEventFromSequenceVector(int n, Sequence* sequence,
     jdksmidi::MIDISystemExclusive* sysex = new jdksmidi::MIDISystemExclusive();
     for (const char* c = buffer.data(); *c != 0; c++)
     {
-        m.GetSysEx()->PutByte(*c);
+        sysex->PutByte(*c);
+        //m.GetSysEx()->PutByte(*c);
     }
     m.CopySysEx(sysex);
     delete sysex;

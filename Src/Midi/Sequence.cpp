@@ -314,6 +314,62 @@ void Sequence::addTextEvent_import(const int x, const wxString& value, const int
 
 // ----------------------------------------------------------------------------------------------------------
 
+TextEvent* Sequence::getTextEventAt(int tick, int idController)
+{
+    const int eventAmount = m_text_events.size();
+    for (int n=0; n<eventAmount; n++)
+    {
+        if (m_text_events[n].getController() == idController and
+            m_text_events[n].getTick() == tick)
+        {
+            return m_text_events.get(n);
+        }
+    }
+    return NULL;
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+wxString Sequence::addTextEvent(TextEvent* evt)
+{
+    wxString previousValue;
+
+    // don't bother checking order if we're importing, we know its in time order and all
+    // FIXME - what about 'addControlEvent_import' ??
+    if (isImportMode())
+    {
+        m_text_events.push_back( evt );
+        return previousValue;
+    }
+
+    const int eventAmount = m_text_events.size();
+    for (int n=0; n<eventAmount; n++)
+    {
+        if (m_text_events[n].getTick() == evt->getTick())
+        {
+            // if there is already an even of same type at same time, remove it first
+            if (m_text_events[n].getController() == evt->getController() )
+            {
+                previousValue = m_text_events[n].getTextValue();
+                m_text_events.erase(n);
+            }
+            m_text_events.add( evt, n );
+            return previousValue;
+        }
+        else if ( m_text_events[n].getTick() > evt->getTick() )
+        {
+            m_text_events.add( evt, n );
+            return previousValue;
+        }//endif
+
+    }//next
+
+    m_text_events.push_back( evt );
+    return previousValue;
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
 int Sequence::getLastTickInSequence() const
 {
     int tick = 0;

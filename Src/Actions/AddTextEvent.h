@@ -14,43 +14,37 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _delslct_
-#define _delslct_
+#ifndef _ADD_TEXT_EVENT_
+#define _ADD_TEXT_EVENT_
 
 #include "Actions/EditAction.h"
-#include "ptr_vector.h"
-
 
 namespace AriaMaestosa
 {
     class Track;
-    class Note;
-    class Editor;
     
+
     namespace Action
     {
         
         /**
-         * @ingroup actions
-         */
-        class DeleteSelected : public SingleTrackAction
+          * @ingroup actions
+          */
+        class AddTextEvent : public SingleTrackAction
         {
             friend class AriaMaestosa::Track;
+            int m_x, m_controller;
+            wxString m_value;
             
-            ptr_vector<Note> removedNotes;
-            ptr_vector<ControllerEvent> removedControlEvents;
-            Editor* m_editor;
-            int m_provider_type;
+            wxString m_removed_event_value; //!< if any event was replaced by this one...
             
         public:
             
-            DeleteSelected(Editor* editor);
+            AddTextEvent(const int x, const wxString value, const int controller);
             void perform();
             void undo();
-            virtual ~DeleteSelected();
+            virtual ~AddTextEvent();
         };
-        
-        
     }
 }
 #endif

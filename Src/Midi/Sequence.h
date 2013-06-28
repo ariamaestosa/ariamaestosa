@@ -325,12 +325,21 @@ namespace AriaMaestosa
         
         int                    getTempoEventAmount() const { return m_tempo_events.size();  }
         const ControllerEvent* getTempoEvent(int id) const { return m_tempo_events.getConst(id); }
-        
         void eraseTempoEvent(int id) { m_tempo_events.erase(id); }
-        
         void setTempoEventValue(int id, int newValue) { m_tempo_events[id].setValue(newValue); }
         void setTempoEventTick (int id, int newTick)  { m_tempo_events[id].setTick(newTick);  }
 
+        /** @return Returns the old value there was, if any, before this new event replaces it.*/
+        wxString addTextEvent(TextEvent* evt);
+        
+        int                    getTextEventAmount() const { return m_text_events.size();  }
+        const TextEvent*       getTextEvent(int id) const { return m_text_events.getConst(id); }
+        void eraseTextEvent(int id) { m_text_events.erase(id); }
+        void setTextEventValue(int id, wxString& newValue) { m_text_events[id].setText(newValue); }
+        void setTextEventTick (int id, int newTick)  { m_text_events[id].setTick(newTick);  }
+        TextEvent* getTextEventAt(int tick, int idController);
+
+    
         /** The tempo event with the given id will be extraced from this sequence (not deleted); the tempo
             vector will not be packed until you call removeMarkedTempoEvents(). See ptr_vector for more
             info */
@@ -342,6 +351,14 @@ namespace AriaMaestosa
         }
         void removeMarkedTempoEvents()        { m_tempo_events.removeMarked();      }
 
+        TextEvent* extractTextEvent(int id)
+        {
+            TextEvent* evt = m_text_events.get(id);
+            m_text_events.markToBeRemoved(id);
+            return evt;
+        }
+        void removeMarkedTextEvents()        { m_text_events.removeMarked();      }
+        
         void  setChannelManagementType(ChannelManagementType m);
         ChannelManagementType getChannelManagementType() const { return channelManagement; }
 

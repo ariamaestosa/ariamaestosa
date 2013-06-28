@@ -20,6 +20,7 @@
 #include "Actions/EditAction.h"
 #include "Actions/AddControlEvent.h"
 #include "Actions/AddControllerSlide.h"
+#include "Actions/AddTextEvent.h"
 #include "Editors/ControllerEditor.h"
 #include "Editors/RelativeXCoord.h"
 #include "GUI/ImageProvider.h"
@@ -44,6 +45,8 @@
 #include <wx/textctrl.h>
 #include <wx/stattext.h>
 #include <wx/choice.h>
+#include <wx/textdlg.h> 
+#include <wx/msgdlg.h> 
 
 using namespace AriaMaestosa;
 
@@ -304,7 +307,24 @@ void ControllerEditor::renderEvents()
                         break;
                 }
                 
-                evt->getText().render(xloc - x_scroll, y);
+                AriaRender::primitives();
+                
+                if (tmp->getTick() >= std::min(m_selection_begin, m_selection_end) and
+                    tmp->getTick() <= std::max(m_selection_begin, m_selection_end))
+                {
+                    AriaRender::color(0, 0.75f, 0);
+                }
+                else
+                {
+                    AriaRender::color(0.6f, 0.6f, 0.6f);
+                }
+                
+                AriaRender::bordered_rect(xloc - x_scroll - 3, y - 12, xloc - x_scroll + 3, y - 5);
+                
+                AriaRender::images();
+                
+                
+                evt->getText().render(xloc - x_scroll + 6, y);
             }
         }
         else if (currentController == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE)
@@ -344,7 +364,7 @@ void ControllerEditor::renderEvents()
         }
         else
         {
-            // -------- Non-text events
+            // -------- Other events
             const wxFloat64 value = tmp->getValue();
 
             if (previous_location - x_scroll > getXEnd()) // if events are no more visible, stop drawing
@@ -579,6 +599,7 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
 void ControllerEditor::mouseDown(RelativeXCoord x, const int y)
 {
+    int window_x = x.getRelativeTo(WINDOW);
     
     m_has_been_resizing = false;
 
@@ -590,7 +611,7 @@ void ControllerEditor::mouseDown(RelativeXCoord x, const int y)
     m_mouse_is_in_editor = false;
     
     if (y < getAreaYTo() and y > getEditorYStart() and
-        x.getRelativeTo(WINDOW) < getWidth() - 24 and
+        window_x < getWidth() - 24 and
         x.getRelativeTo(EDITOR) > -1)
     {
         m_mouse_is_in_editor = true;
@@ -603,14 +624,14 @@ void ControllerEditor::mouseDown(RelativeXCoord x, const int y)
         m_selecting = true;
     }
 
-    if (x.getRelativeTo(WINDOW) < Editor::getEditorXStart() and y > getEditorYStart() and
+    if (window_x < Editor::getEditorXStart() and y > getEditorYStart() and
         not m_graphical_track->isCollapsed() )
     {
-        Display::popupMenu(m_controller_choice,x.getRelativeTo(WINDOW), y + 15);
+        Display::popupMenu(m_controller_choice, window_x, y + 15);
         getMainFrame()->getMainPane()->SetFocus();
     }
     
-    if (x.getRelativeTo(WINDOW) >= Editor::getEditorXStart() and y > getEditorYStart() and
+    if (window_x >= Editor::getEditorXStart() and y > getEditorYStart() and
         not m_graphical_track->isCollapsed() and not m_selecting and
         m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE)
     {
@@ -618,8 +639,7 @@ void ControllerEditor::mouseDown(RelativeXCoord x, const int y)
         OwnerPtr<InstrumentChoice> choice(new InstrumentChoice(-1, NULL));
         //picker->setModel(choice);
         Core::getInstrumentPicker()->setModel(choice);
-        Display::popupMenu((wxMenu*)(Core::getInstrumentPicker()),
-                           x.getRelativeTo(WINDOW), y);
+        Display::popupMenu((wxMenu*)(Core::getInstrumentPicker()), window_x, y);
         
         int selection = Core::getInstrumentPicker()->getModel()->getSelectedInstrument();
         if (selection != -1)
@@ -627,6 +647,28 @@ void ControllerEditor::mouseDown(RelativeXCoord x, const int y)
             m_track->action( new Action::AddControlEvent(m_track->snapMidiTickToGrid( x.getRelativeTo(MIDI), false ),
                                                          selection,
                                                          m_controller_choice->getControllerID()) );
+            Display::render();
+        }
+    }
+    
+    if (window_x >= Editor::getEditorXStart() and y > getEditorYStart() and
+        not m_graphical_track->isCollapsed() and not m_selecting and
+        m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_LYRICS)
+    {
+        wxString defaultVal;
+        
+        int tick = m_track->snapMidiTickToGrid( x.getRelativeTo(MIDI), false );
+        
+        TextEvent* evt = m_sequence->getTextEventAt(tick, PSEUDO_CONTROLLER_LYRICS);
+        if (evt != NULL) defaultVal = evt->getTextValue();
+        
+        wxString text = wxGetTextFromUser(wxString(_("Lyrics")) + wxT(" :"), _("Lyrics"), defaultVal);
+        
+        if (text.Length() > 0)
+        {
+            m_track->action( new Action::AddTextEvent(tick,
+                                                      text,
+                                                      m_controller_choice->getControllerID()) );
             Display::render();
         }
     }

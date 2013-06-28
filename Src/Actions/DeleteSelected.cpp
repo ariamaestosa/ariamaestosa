@@ -40,6 +40,7 @@ DeleteSelected::DeleteSelected(Editor* editor) :
     SingleTrackAction( _("delete note(s)") )
 {
     m_editor = editor;
+    m_provider_type = -1;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -55,7 +56,16 @@ void DeleteSelected::undo()
     const int noteAmount    = removedNotes.size();
     const int controlAmount = removedControlEvents.size();
     
-    if (noteAmount > 0)
+    if (m_provider_type == PSEUDO_CONTROLLER_LYRICS)
+    {
+        for (int n=0; n<controlAmount; n++)
+        {
+            m_track->getSequence()->addTextEvent( (TextEvent*)removedControlEvents.get(n) );
+        }
+        // we will be using the notes again, make sure it doesn't delete them
+        removedControlEvents.clearWithoutDeleting();
+    }
+    else if (noteAmount > 0)
     {
         
         for (int n=0; n<noteAmount; n++)
@@ -95,10 +105,42 @@ void DeleteSelected::perform()
         int selEnd     = editor->getSelectionEnd();
         const int type = editor->getCurrentControllerType();
 
+        m_provider_type = type;
+        
         const int from = std::min(selBegin, selEnd);
         const int to   = std::max(selBegin, selEnd);
         
-        if (type != PSEUDO_CONTROLLER_TEMPO)
+        if (type == PSEUDO_CONTROLLER_TEMPO)
+        {
+            // remove tempo events
+            Sequence* sequence = m_track->getSequence();
+            const int tempoEventsAmount = sequence->getTempoEventAmount();
+            for (int n=0; n<tempoEventsAmount; n++)
+            {
+                const int tick = sequence->getTempoEvent(n)->getTick();
+                
+                if (tick < from or tick > to) continue; // this event is not concerned by selection
+                
+                removedControlEvents.push_back( sequence->extractTempoEvent(n) );
+            }//next
+            sequence->removeMarkedTempoEvents();
+        }
+        else if (type == PSEUDO_CONTROLLER_LYRICS)
+        {
+            // remove tempo events
+            Sequence* sequence = m_track->getSequence();
+            const int textEventsAmount = sequence->getTextEventAmount();
+            for (int n=0; n<textEventsAmount; n++)
+            {
+                const int tick = sequence->getTextEvent(n)->getTick();
+                
+                if (tick < from or tick > to) continue; // this event is not concerned by selection
+                
+                removedControlEvents.push_back( sequence->extractTextEvent(n) );
+            }//next
+            sequence->removeMarkedTextEvents();
+        }
+        else
         {
             // remove controller events
             for (int n=0; n<ctrls.size(); n++)
@@ -116,22 +158,6 @@ void DeleteSelected::perform()
             }//next
             
         }
-        else
-        {
-            // remove tempo events
-            Sequence* sequence = m_track->getSequence();
-            const int tempoEventsAmount = sequence->getTempoEventAmount();
-            for (int n=0; n<tempoEventsAmount; n++)
-            {
-                const int tick = sequence->getTempoEvent(n)->getTick();
-                
-                if (tick < from or tick > to) continue; // this event is not concerned by selection
-                
-                removedControlEvents.push_back( sequence->extractTempoEvent(n) );
-            }//next
-            sequence->removeMarkedTempoEvents();
-        }
-        
     }
     else
     {
