@@ -1397,6 +1397,22 @@ int getActiveMin(bool have_a, int a, bool have_b, int b, bool have_c, int c)
 
 // ----------------------------------------------------------------------------------------------------------
 
+ControllerEvent* Track::getControllerEventAt(int tick, int idController)
+{
+    const int eventAmount = m_control_events.size();
+    for (int n=0; n<eventAmount; n++)
+    {
+        if (m_control_events[n].getController() == idController and
+            m_control_events[n].getTick() == tick)
+        {
+            return m_control_events.get(n);
+        }
+    }
+    return NULL;
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
 int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
                          int channel,
                          int firstMeasure,

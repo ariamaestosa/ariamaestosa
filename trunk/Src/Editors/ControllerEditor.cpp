@@ -21,6 +21,7 @@
 #include "Actions/AddControlEvent.h"
 #include "Actions/AddControllerSlide.h"
 #include "Actions/AddTextEvent.h"
+#include "Actions/DeleteControllerEvent.h"
 #include "Editors/ControllerEditor.h"
 #include "Editors/RelativeXCoord.h"
 #include "GUI/ImageProvider.h"
@@ -801,14 +802,134 @@ void ControllerEditor::processMouseOutsideOfMe()
 
 void ControllerEditor::rightClick(RelativeXCoord x, const int y)
 {
-    if (not m_controller_choice->isOnOffController(m_controller_choice->getControllerID()) and
-        m_controller_choice->getControllerID() != PSEUDO_CONTROLLER_LYRICS and
-        m_controller_choice->getControllerID() != PSEUDO_CONTROLLER_INSTRUMENT_CHANGE)
+    const int area_from_y = getAreaYFrom();
+    const int area_to_y   = getAreaYTo();
+    const int x_scroll = m_gsequence->getXScrollInPixels();
+    int idController = m_controller_choice->getControllerID();
+    
+    if (idController == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE or
+        idController == PSEUDO_CONTROLLER_LYRICS)
+    {
+        int tick = m_track->snapMidiTickToGrid(x.getRelativeTo(MIDI), false);
+        
+        if (idController == PSEUDO_CONTROLLER_LYRICS)
+        {
+            if (m_sequence->getTextEventAt(tick, PSEUDO_CONTROLLER_LYRICS) == NULL)
+            {
+                return;
+            }
+            
+            const TextEvent* eventToDelete = NULL;
+            
+            int event_y;
+            const int event_amount = m_sequence->getTextEventAmount();
+            for (int n = 0; n < event_amount; n++)
+            {
+                const TextEvent* evt = m_sequence->getTextEvent(n);
+
+                if (evt->getController() != PSEUDO_CONTROLLER_LYRICS) continue;
+
+                switch (n % 3)
+                {
+                    case 0:
+                        event_y = (area_from_y + area_from_y + area_to_y)/3;
+                        break;
+                    case 1:
+                        event_y = (area_from_y + area_to_y)/2;
+                        break;
+                    default:
+                        event_y = (area_from_y + area_to_y + area_to_y)/3;
+                        break;
+                }
+                
+                const int xloc = ControllerEditor::getPositionInPixels(evt->getTick(), m_gsequence);
+
+                int mx = x.getRelativeTo(WINDOW);
+                if (mx >= xloc - x_scroll - 3 and
+                    mx <= xloc - x_scroll + 5 and
+                    y >= event_y - 16 and
+                    y <= event_y)
+                {
+                    eventToDelete = evt;
+                    break;
+                }
+            }
+            
+            if (eventToDelete == NULL) return;
+            
+            static wxMenu* menu = new wxMenu();
+            static bool initialized = false;
+            if (not initialized)
+            {
+                int id = wxNewId();
+                menu->Append(id, _("Delete"));
+                initialized = true;
+                getMainFrame()->Bind(wxEVT_COMMAND_MENU_SELECTED, &ControllerEditor::onDeleteLyricsEvent, this, id);
+            }
+            m_event_tick_to_delete = eventToDelete->getTick();
+            getMainFrame()->PopupMenu(menu);
+        }
+        else if (idController == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE)
+        {
+            const int instruments_y = (area_from_y + area_to_y + area_to_y)/3;
+            
+            const int eventAmount = m_track->getControllerEventAmount();
+            ControllerEvent* eventToDelete = NULL;
+            for (int n=0; n<eventAmount; n++)
+            {     
+                ControllerEvent* evt = m_track->getControllerEvent(n, PSEUDO_CONTROLLER_INSTRUMENT_CHANGE);
+                
+                if (evt->getController() != PSEUDO_CONTROLLER_INSTRUMENT_CHANGE) continue;
+                
+                const int xloc = ControllerEditor::getPositionInPixels(evt->getTick(), m_gsequence);
+
+                int mx = x.getRelativeTo(WINDOW);
+                if (mx >= xloc - x_scroll - 3 and
+                    mx <= xloc - x_scroll + 5 and
+                    y >= instruments_y - 8 and
+                    y <= instruments_y + 2)
+                {
+                    eventToDelete = evt;
+                    break;
+                }
+            }
+            
+            if (eventToDelete == NULL) return;
+            
+            static wxMenu* menu = new wxMenu();
+            static bool initialized = false;
+            if (not initialized)
+            {
+                int id = wxNewId();
+                menu->Append(id, _("Delete"));
+                initialized = true;
+                getMainFrame()->Bind(wxEVT_COMMAND_MENU_SELECTED, &ControllerEditor::onDeleteInstrumentEvent, this, id);
+            }
+            m_event_tick_to_delete = eventToDelete->getTick();
+            getMainFrame()->PopupMenu(menu);
+        }
+    
+    }
+    else if (not m_controller_choice->isOnOffController(idController))
     {
         wxPoint mouse(x.getRelativeTo(WINDOW), y);
         mouse = getMainFrame()->getMainPane()->ClientToScreen(mouse);
         new ControlChangeInput(this, x.getRelativeTo(MIDI), mouse);
     }
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void ControllerEditor::onDeleteInstrumentEvent(wxCommandEvent& evt)
+{
+    m_track->action(new Action::DeleteControllerEvent(m_event_tick_to_delete));
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void ControllerEditor::onDeleteLyricsEvent(wxCommandEvent& evt)
+{
+    m_track->action(new Action::DeleteControllerEvent(m_event_tick_to_delete));
 }
 
 // ----------------------------------------------------------------------------------------------------------

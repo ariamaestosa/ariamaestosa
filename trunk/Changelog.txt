@@ -3,6 +3,7 @@
 - Improve end of file detection
 - Support for editing lyrics
 - Correctly handle lyrics events when adding or deleting measures
+- Allow deleting instrument through a contextual menu
 
 1.4.7
 - Fix for .MID and .MIDI files (upper-case extension)
