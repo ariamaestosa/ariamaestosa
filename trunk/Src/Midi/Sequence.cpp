@@ -276,11 +276,11 @@ float Sequence::getTempoAtTick(const int tick) const
 
 // ----------------------------------------------------------------------------------------------------------
 
-void Sequence::addTempoEvent( ControllerEvent* evt )
+void Sequence::addTempoEvent(ControllerEvent* evt, wxFloat64* previousValue)
 {
     // add to any track, they will redirect tempo events to the right one.
     // FIXME - not too elegant
-    tracks[0].addControlEvent( evt );
+    tracks[0].addControlEvent(evt, previousValue);
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -323,6 +323,21 @@ TextEvent* Sequence::getTextEventAt(int tick, int idController)
             m_text_events[n].getTick() == tick)
         {
             return m_text_events.get(n);
+        }
+    }
+    return NULL;
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+ControllerEvent* Sequence::getTempoEventAt(int tick)
+{
+    const int eventAmount = m_tempo_events.size();
+    for (int n=0; n<eventAmount; n++)
+    {
+        if (m_tempo_events[n].getTick() == tick)
+        {
+            return m_tempo_events.get(n);
         }
     }
     return NULL;

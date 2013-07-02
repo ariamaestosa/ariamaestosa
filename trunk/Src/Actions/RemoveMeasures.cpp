@@ -25,6 +25,7 @@
 #include "AriaCore.h"
 
 #include <iostream>
+#include <map>
 
 #include <wx/intl.h>
 
@@ -88,7 +89,8 @@ void RemoveMeasures::undo()
     const int s_amount = removedTempoEvents.size();
     for (int n=0; n<s_amount; n++)
     {
-        m_sequence->addTempoEvent( removedTempoEvents.get(n) );
+        wxFloat64 previousEventValue;
+        m_sequence->addTempoEvent(removedTempoEvents.get(n), &previousEventValue);
     }
     // we will be using the events again, make sure it doesn't delete them
     removedTempoEvents.clearWithoutDeleting();
@@ -174,12 +176,15 @@ void RemoveMeasures::perform()
         
         ptr_vector<ControllerEvent>& ctrl = tvisitor->getControlEventVector();
         
+        std::map<int, wxFloat64> latest_value_by_controller;
+        
         const int c_amount = ctrl.size();
         for (int n=0; n<c_amount; n++)
         {
             // delete all controller events located in the area to be deleted
             if (ctrl[n].getTick() > fromTick and ctrl[n].getTick() < toTick)
             {
+                latest_value_by_controller[ctrl[n].getController()] = ctrl[n].getValue();
                 removedBits->removedControlEvents.push_back( ctrl.get(n) );
                 ctrl.markToBeRemoved(n);
             }
@@ -190,9 +195,22 @@ void RemoveMeasures::perform()
             }
         }
         ctrl.removeMarked();
+        
+        // if needed, insert a new event at the end of the deleted section with the latest value
+        // the controller had. This part is not undoable since the additional event doesn't hurt.
+        for (std::map<int, wxFloat64>::iterator it = latest_value_by_controller.begin();
+             it != latest_value_by_controller.end(); it++)
+        {
+             if (track->getControllerEventAt(toTick - amountInTicks, it->first) == NULL)
+             {
+                 wxFloat64 previousVal;
+                 track->addControlEvent(new ControllerEvent(it->first, toTick - amountInTicks, it->second),
+                                        &previousVal);
+             }
+        }
+        
         track->reorderNoteVector();
         track->reorderNoteOffVector();
-        
     }
     
     
@@ -201,13 +219,17 @@ void RemoveMeasures::perform()
 
     if (s_amount > 0)
     {
+        std::map<int, wxFloat64> latest_value_by_controller;
+
         for (int n=0; n<s_amount; n++)
         {
-            const int tick = m_sequence->getTempoEvent(n)->getTick();
+            const ControllerEvent* evt = m_sequence->getTempoEvent(n);
+            const int tick = evt->getTick();
             
             // event is in deleted area
             if (tick > fromTick and tick < toTick)
             {
+                latest_value_by_controller[evt->getController()] = evt->getValue();
                 removedTempoEvents.push_back( m_sequence->extractTempoEvent(n) );
             }
             //event is after deleted area
@@ -219,6 +241,19 @@ void RemoveMeasures::perform()
         }
         
         m_sequence->removeMarkedTempoEvents();
+        
+        // if needed, insert a new event at the end of the deleted section with the latest value
+        // the controller had. This part is not undoable since the additional event doesn't hurt.
+        for (std::map<int, wxFloat64>::iterator it = latest_value_by_controller.begin();
+             it != latest_value_by_controller.end(); it++)
+        {
+            if (m_sequence->getTempoEventAt(toTick - amountInTicks) == NULL)
+            {
+                wxFloat64 previousVal;
+                m_sequence->addTempoEvent(new ControllerEvent(PSEUDO_CONTROLLER_TEMPO, toTick - amountInTicks, it->second),
+                                          &previousVal);
+            }
+        }
     }
     
     
