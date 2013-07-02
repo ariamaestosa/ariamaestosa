@@ -319,7 +319,7 @@ namespace AriaMaestosa
         /** @return the tempo at any tick (not necessarily a tick where there is a tempo change event) */
         float getTempoAtTick(const int tick) const;
         
-        void  addTempoEvent( ControllerEvent* evt );
+        void  addTempoEvent(ControllerEvent* evt, wxFloat64* previousValue);
         
         void addTextEvent_import(const int x, const wxString& value, const int controller);
         
@@ -328,6 +328,7 @@ namespace AriaMaestosa
         void eraseTempoEvent(int id) { m_tempo_events.erase(id); }
         void setTempoEventValue(int id, int newValue) { m_tempo_events[id].setValue(newValue); }
         void setTempoEventTick (int id, int newTick)  { m_tempo_events[id].setTick(newTick);  }
+        ControllerEvent* getTempoEventAt(int tick);
 
         /** @return Returns the old value there was, if any, before this new event replaces it.*/
         wxString addTextEvent(TextEvent* evt);

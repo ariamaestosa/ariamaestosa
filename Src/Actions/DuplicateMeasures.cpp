@@ -195,9 +195,11 @@ void DuplicateMeasures::perform()
         
         for (size_t n = 0; n < tempoEventsToDuplicate.size(); n++)
         {
+            wxFloat64 previousEventValue;
             m_sequence->addTempoEvent(new ControllerEvent(tempoEventsToDuplicate[n].getController(),
                                                           tempoEventsToDuplicate[n].getTick(),
-                                                          tempoEventsToDuplicate[n].getValue()));
+                                                          tempoEventsToDuplicate[n].getValue()),
+                                      &previousEventValue);
         }
     } // end transaction
     
