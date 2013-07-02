@@ -82,6 +82,9 @@ namespace AriaMaestosa
         
         /** For instrument change controller */
         AriaRenderString m_instrument_name;
+        
+        /** used with right-click contextual menus */
+        int m_event_tick_to_delete;
 
     public:
         
@@ -170,6 +173,9 @@ namespace AriaMaestosa
         static int getPositionInPixels(int tick, GraphicalSequence* gseq);
         
         virtual NotationType getNotationType() const { return CONTROLLER; }
+        
+        void onDeleteInstrumentEvent(wxCommandEvent& evt);
+        void onDeleteLyricsEvent(wxCommandEvent& evt);
     };
     
 }

@@ -428,6 +428,8 @@ namespace AriaMaestosa
          */
         int getControllerEventAmount(const int controller) const;
         
+        ControllerEvent* getControllerEventAt(int tick, int idController);
+        
         /**
           * @brief get a controller event object
           * @param id of the control event to retrieve (from 0 to count-1)
