@@ -882,6 +882,20 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdksmidi::MIDIMultiTr
             {
                 std::cerr << "Error adding metronome midi event!" << std::endl;
             }
+            
+            //printf("%i vs %i\n", (int)tick, sequence->getMeasureData()->firstTickInMeasure(measure));
+            if (sequence->getMeasureData()->firstTickInMeasure(measure) == tick)
+            {
+                jdksmidi::MIDITimedBigMessage m2;
+                m2.SetTime((int)tick);
+                m2.SetNoteOn( 9 /* channel */, 81 /* triangle */, metronomeVolume );
+                
+                if (not metronomeTrack->PutEvent(m2))
+                {
+                    std::cerr << "Error adding metronome midi event!" << std::endl;
+                }
+            }
+            
         }
     }
      

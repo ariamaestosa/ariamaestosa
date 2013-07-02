@@ -5,6 +5,7 @@
 - Correctly handle lyrics events when adding or deleting measures
 - Allow deleting instrument through a contextual menu
 - Preserve most recent controller values when deleting measures
+- Metronome indicates starts of measures
 
 1.4.7
 - Fix for .MID and .MIDI files (upper-case extension)
