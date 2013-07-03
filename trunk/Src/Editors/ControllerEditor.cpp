@@ -810,6 +810,7 @@ void ControllerEditor::rightClick(RelativeXCoord x, const int y)
     if (idController == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE or
         idController == PSEUDO_CONTROLLER_LYRICS)
     {
+#if wxMAJOR_VERSION > 2 || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION == 9)
         int tick = m_track->snapMidiTickToGrid(x.getRelativeTo(MIDI), false);
         
         if (idController == PSEUDO_CONTROLLER_LYRICS)
@@ -908,7 +909,9 @@ void ControllerEditor::rightClick(RelativeXCoord x, const int y)
             m_event_tick_to_delete = eventToDelete->getTick();
             getMainFrame()->PopupMenu(menu);
         }
-    
+#else
+        return;
+#endif
     }
     else if (not m_controller_choice->isOnOffController(idController))
     {
