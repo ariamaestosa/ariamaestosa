@@ -103,6 +103,7 @@ void AddTrack::perform()
         m_added_track->getMagneticGrid()->setDotted( m_model->getMagneticGrid()->isDotted() );
         m_added_track->getMagneticGrid()->setTriplet( m_model->getMagneticGrid()->isTriplet() );
         m_added_track->setDefaultVolume( m_model->getDefaultVolume() );
+        m_added_track->setVolume(m_model->getVolume());
     }
 }
 
