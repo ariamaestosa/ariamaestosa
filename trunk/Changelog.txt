@@ -1,5 +1,5 @@
 1.4.9
-- Include track volume when duplicating track
+- Improve duplicate track settings feature
 
 1.4.8
 - Fix bug related to instrument changes
