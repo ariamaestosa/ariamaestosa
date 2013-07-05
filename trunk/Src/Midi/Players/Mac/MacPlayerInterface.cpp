@@ -67,6 +67,12 @@ namespace AriaMaestosa
     
     OutputBase* output = NULL;
     
+    enum AudioExportBackend
+    {
+        AUDIO_EXPORT_BACKEND_QUICKTIME,
+        AUDIO_EXPORT_BACKEND_AUDIOUNIT
+    };
+    
     /**
       * @ingroup midi.players
       *
@@ -79,11 +85,13 @@ namespace AriaMaestosa
         char* m_data;
         int m_length;
         int m_firstMeasureValue;
+        AudioExportBackend m_backend;
         
     public:
         
-        AudioExport(Sequence* sequence, wxString filepath)
+        AudioExport(Sequence* sequence, wxString filepath, AudioExportBackend backend)
         {
+            m_backend = backend;
             m_filepath = filepath;
             m_sequence = sequence;
             
@@ -103,16 +111,20 @@ namespace AriaMaestosa
             int startTick = -1, songLength = -1;
             allocAsMidiBytes(m_sequence, false, &songLength, &startTick, &m_data, &m_length, true);
             
-            /*
-            if (not QuickTimeExport::qtkit_setData(m_data, m_length))
+            if (backend == AUDIO_EXPORT_BACKEND_QUICKTIME)
             {
-                wxMessageBox( _("Sorry, an internal error occurred during export") );
+                if (not QuickTimeExport::qtkit_setData(m_data, m_length))
+                {
+                    wxMessageBox( _("Sorry, an internal error occurred during export") );
+                    
+                    // send hide progress window event
+                    MAKE_HIDE_PROGRESSBAR_EVENT(event);
+                    getMainFrame()->GetEventHandler()->AddPendingEvent(event);
+                    
+                    return;
+                }
             }
-            else
-            {*/
-                Run();
-            /*
-            }*/
+            Run();
         }
         
         virtual ExitCode Entry()
@@ -121,12 +133,18 @@ namespace AriaMaestosa
             MeasureData* md = m_sequence->getMeasureData();
             
             wxArrayString errorMessages;
-            bool success = ((AudioUnitOutput*)output)->outputToDisk(m_filepath.mb_str(),
+            
+            bool success = false;
+            if (m_backend == AUDIO_EXPORT_BACKEND_QUICKTIME)
+            {
+                success = QuickTimeExport::qtkit_exportToAiff( m_filepath.mb_str() );
+            }
+            else if (m_backend == AUDIO_EXPORT_BACKEND_AUDIOUNIT)
+            {
+                success = ((AudioUnitOutput*)output)->outputToDisk(m_filepath.mb_str(),
                                                                     m_data, m_length,
                                                                     errorMessages);
-            /*
-            bool success = QuickTimeExport::qtkit_exportToAiff( m_filepath.mb_str() );
-            */
+            }
 
             // send hide progress window event
             MAKE_HIDE_PROGRESSBAR_EVENT(event);
@@ -298,7 +316,7 @@ namespace AriaMaestosa
         
         virtual void exportAudioFile(Sequence* sequence, wxString filepath)
         {
-            new AudioExport(sequence, filepath);
+            new AudioExport(sequence, filepath, AUDIO_EXPORT_BACKEND_QUICKTIME);
         }
         
         virtual const wxString getAudioExtension()
