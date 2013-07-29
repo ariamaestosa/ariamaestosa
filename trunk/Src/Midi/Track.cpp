@@ -43,6 +43,7 @@
 #include <wx/intl.h>
 #include <wx/utils.h>
 #include "irrXML/irrXML.h"
+#include <wx/stopwatch.h>
 
 using namespace AriaMaestosa;
 
@@ -150,6 +151,8 @@ void Track::action( Action::SingleTrackAction* actionObj)
     actionObj->setParentTrack(this, new TrackVisitor(this));
     m_sequence->addToUndoStack( actionObj );
     actionObj->perform();
+    
+    ASSERT(m_sequence->invariant());
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -396,91 +399,33 @@ void Track::removeMarkedNotes()
 
 // ----------------------------------------------------------------------------------------------------------
 
+int getNoteTick(Note* note)
+{
+    return note->getTick();
+}
+
 void Track::reorderNoteVector()
 {
-    // FIXME - innefficient implementation
-    const int noteAmount = m_notes.size();
-
-#ifdef _MORE_DEBUG_CHECKS
-    if (m_notes.size() != m_note_off.size())
-    {
-        std::cout << "WARNING note on and off events differ in amount" << std::endl;
-        std::cout << m_notes.size() << " notes and " << m_note_off.size() << " note offs" << std::endl;
-    }
-#endif
-
-    for (int n=0; n<noteAmount-1; n++)
-    {
-
-        ASSERT_E(n+1,<,m_notes.size());
-
-        if (m_notes[n].getTick() > m_notes[n+1].getTick())
-        {
-            m_notes.swap(n, n+1);
-            if (n>2) n-= 2;
-            else n=-1;
-        }
-        else if (m_notes[n].getTick() == m_notes[n+1].getTick() and
-                 m_notes[n].getPitchID() > m_notes[n+1].getPitchID())
-        {
-            m_notes.swap(n, n+1);
-            if (n>2) n-= 2;
-            else n=-1;
-        }
-    }//next
-
+    m_notes.insertionSort(getNoteTick);
 }
 
 // ----------------------------------------------------------------------------------------------------------
 
+int getNoteEndTick(Note* note)
+{
+    return note->getEndTick();
+}
+
 void Track::reorderNoteOffVector()
 {
-    // FIXME - innefficient implementation
-    const int noteAmount = m_note_off.size();
-#ifdef _MORE_DEBUG_CHECKS
-    if (m_notes.size() != m_note_off.size()) std::cout << "WARNING note on and off events differ in amount" << std::endl;
-#endif
-
-    for (int n=0; n<noteAmount-1; n++)
-    {
-
-        ASSERT_E(n+1,<,m_note_off.size());
-        ASSERT(m_note_off.get(n) != NULL);
-        ASSERT(m_note_off.get(n+1) != NULL);
-        ASSERT(m_note_off.get(n) != 0);
-        ASSERT(m_note_off.get(n+1) != 0);
-
-        if (m_note_off[n].getEndTick() > m_note_off[n+1].getEndTick())
-        {
-            m_note_off.swap(n, n+1);
-            if (n>2) n-= 2;
-            else n=-1;
-        }//end if
-    }//next
-
+    m_note_off.insertionSort(getNoteEndTick);
 }
 
 // ----------------------------------------------------------------------------------------------------------
 
 void Track::reorderControlVector()
 {
-    // FIXME - innefficient implementation
-    // FIXME - if bugs in controller editor are fixed that method shouldn't even be necessary
-    const int ctrlAmount = m_control_events.size();
-
-    for (int n=0; n<ctrlAmount-1; n++)
-    {
-
-        ASSERT_E(n+1,<,ctrlAmount);
-
-        if (m_control_events[n].getTick() > m_control_events[n+1].getTick())
-        {
-            m_control_events.swap(n, n+1);
-            if (n>2) n-= 2;
-            else n=0;
-        }
-    }//next
-
+    m_control_events.insertionSort();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -1849,6 +1794,7 @@ void Track::saveToFile(wxFileOutputStream& fileout)
 {
     reorderNoteVector();
     reorderNoteOffVector();
+    reorderControlVector();
 
     writeData(wxT("\n<track name=\"") + m_track_name->getValue() +
               wxT("\" id=\"") + to_wxString(m_track_id) +
@@ -2300,7 +2246,11 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
 
                 if (strcmp("track", xml->getNodeName()) == 0)
                 {
+                    reorderNoteVector();
                     reorderNoteOffVector();
+                    reorderControlVector();
+
+                    ASSERT(invariant());
 
                     // now that we have the set of notes, we can collapse the view if needed
                     GraphicalTrack* gtrack = getGraphics();
@@ -2336,4 +2286,43 @@ bool Track::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
 int Track::computeNoteVolume(int noteId)
 {
     return std::min(SCHAR_MAX, std::max(1, m_notes[noteId].getVolume() * m_volume / 100));
+}
+
+
+bool Track::invariant()
+{
+    if (m_notes.size() > 1)
+    {
+        int note_tick = m_notes[0].getTick();
+        for (int n = 1; n < m_notes.size(); n++)
+        {
+            int newTick = m_notes[n].getTick();
+            ASSERT_E(note_tick, <=, newTick);
+            note_tick = newTick;
+        }
+    }
+    
+    if (m_note_off.size() > 1)
+    {
+        int note_tick = m_note_off[0].getEndTick();
+        for (int n = 1; n < m_note_off.size(); n++)
+        {
+            int newTick = m_note_off[n].getEndTick();
+            ASSERT_E(note_tick, <=, newTick);
+            note_tick = newTick;
+        }
+    }
+    
+    if (m_control_events.size() > 1)
+    {
+        int note_tick = m_control_events[0].getTick();
+        for (int n = 1; n < m_control_events.size(); n++)
+        {
+            int newTick = m_control_events[n].getTick();
+            ASSERT_E(note_tick, <=, newTick);
+            note_tick = newTick;
+        }
+    }
+    
+    return true;
 }

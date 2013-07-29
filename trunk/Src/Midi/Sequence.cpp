@@ -292,6 +292,23 @@ void Sequence::addTempoEvent_import( ControllerEvent* evt )
 
 // ----------------------------------------------------------------------------------------------------------
 
+/** A user hit a bug causing tempo events to be out of order, unfortunately I do not know which operation
+ *  caused that :( so meanwhile, just make sure to keep them sorted
+ */
+void Sequence::sortTempoEvents()
+{
+    m_tempo_events.insertionSort();
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void Sequence::sortTextEvents()
+{
+    m_text_events.insertionSort();
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
 //FIXME: dubious this goes here
 void Sequence::snapNotesToGrid()
 {
@@ -455,6 +472,8 @@ void Sequence::action( Action::MultiTrackAction* actionObj)
     actionObj->perform();
     
     if (m_action_stack_listener != NULL) m_action_stack_listener->onActionStackChanged();
+    
+    ASSERT(invariant());
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -502,6 +521,8 @@ void Sequence::undo()
     if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
     
     if (m_action_stack_listener != NULL) m_action_stack_listener->onActionStackChanged();
+    
+    ASSERT(invariant());
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -1126,6 +1147,12 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
     
 // over:
     clearUndoStack();
+    
+    
+    // A user hit a bug causing tempo events to be out of order, unfortunately I do not know which operation
+    // caused that :( so meanwhile, just make sure to keep them sorted
+    sortTempoEvents();
+    sortTextEvents();
 
     m_importing = false;
     if (m_seq_data_listener != NULL) m_seq_data_listener->onSequenceDataChanged();
@@ -1134,6 +1161,8 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
     
     updateTrackPlayingStatus();
 
+    ASSERT(invariant());
+    
     return true;
 
 }
@@ -1151,4 +1180,37 @@ void Sequence::parseBackgroundTracks()
         graphicalTrack->getEditorFor(KEYBOARD)->addBackgroundTracks();
         graphicalTrack->getEditorFor(CONTROLLER)->addBackgroundTracks();
     }
+}
+
+
+bool Sequence::invariant()
+{
+    if (m_tempo_events.size() > 1)
+    {
+        int tempo_tick = m_tempo_events[0].getTick();
+        for (int n = 1; n < m_tempo_events.size(); n++)
+        {
+            int newTick = m_tempo_events[n].getTick();
+            ASSERT_E(tempo_tick, <=, newTick);
+            tempo_tick = newTick;
+        }
+    }
+    
+    if (m_text_events.size() > 1)
+    {
+        int text_tick = m_text_events[0].getTick();
+        for (int n = 1; n < m_text_events.size(); n++)
+        {
+            int newTick = m_text_events[n].getTick();
+            ASSERT_E(text_tick, <=, newTick);
+            text_tick = newTick;
+        }
+    }
+    
+    
+    for (int n = 0; n < tracks.size(); n++)
+    {
+        tracks[n].invariant();
+    }
+    return true;
 }
