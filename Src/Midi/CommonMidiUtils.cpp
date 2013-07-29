@@ -128,7 +128,7 @@ bool AriaMaestosa::exportMidiFile(Sequence* sequence, wxString filepath)
     // write the output file
     if (not writer2.Write(numTracks, sequence->ticksPerBeat()))
     {
-        fprintf(stderr, "Error writing midi file\n");
+        fprintf(stderr, "[exportMidiFile] Error writing midi file\n");
         return false;
     }
     
@@ -552,7 +552,6 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdksmidi::MIDIMultiTr
                 std::cerr << "Error adding copyright sysex event" << std::endl;
                 return false;
             }
-            
         }
         
         // song name
@@ -570,6 +569,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdksmidi::MIDIMultiTr
             
             m.CopySysEx( &sysex );
             m.SetTime( 0 );
+            
             if (not tracks.GetTrack(0)->PutEvent( m ))
             {
                 std::cerr << "Error adding songname sysex event" << std::endl;
@@ -828,6 +828,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdksmidi::MIDIMultiTr
             
             m.CopySysEx( &sysex );
             m.SetTime( 0 );
+            
             if (not metronomeTrack->PutEvent( m ))
             {
                 std::cout << "Error adding metronome track name event" << std::endl;
@@ -926,7 +927,7 @@ void AriaMaestosa::allocAsMidiBytes(Sequence* sequence, bool selectionOnly, /*ou
     // write the output data
     if ( !writer.Write( numTracks, sequence->ticksPerBeat() ) )
     {
-        fprintf( stderr, "Error writing midi file\n");
+        fprintf( stderr, "[allocAsMidiBytes] Error writing midi file\n");
         return;
     }
     

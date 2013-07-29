@@ -808,6 +808,25 @@ public:
 
     friend bool operator == ( const MIDITimedBigMessage &m1, const MIDITimedBigMessage &m2 );
 
+    const char* getHumanReadableName() const
+    {
+        if (IsNoteOn() and GetVelocity() > 0) return "NoteOn";
+        else if (IsNoteOff() or (IsNoteOn() and GetVelocity() == 0)) return "NoteOff";
+        else if (IsControlChange() ) return "ControlChange";
+        else if (IsPitchBend() ) return "PitchBend";
+        else if (IsProgramChange() ) return "ProgramChange";
+        else if (IsTempo() ) return "Tempo";
+        else if (IsTimeSig() ) return "TimeSig";
+        else if (IsKeySig() ) return "KeySig";
+        else if (IsBeatMarker() ) return "BeatMarker";
+        else  if (IsTextEvent() ) return "TextEvent";
+        else if (IsSystemMessage() ) return "SystemMessage";
+        else if (IsSysExN() ) return "SysExN";
+        else if (IsSysExA() ) return "SysExA";
+        else if (IsMetaEvent() ) return "MetaEvent";
+        else return "Other";
+    }
+
 protected:
     MIDIClockTime time;
 };
