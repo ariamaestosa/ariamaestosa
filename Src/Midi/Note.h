@@ -223,6 +223,7 @@ namespace AriaMaestosa
         
         int   getTick   () const    { return m_start_tick; }
         int   getEndTick() const    { return m_end_tick;   }
+        int   getLength () const    { return m_end_tick - m_start_tick; }
         short getPitchID() const    { return m_pitch_ID;   }
         
         
