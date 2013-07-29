@@ -763,6 +763,8 @@ void MainFrame::menuEvent_exportmidi(wxCommandEvent& evt)
     // write data to file
     const bool success = AriaMaestosa::exportMidiFile( getCurrentSequence(), midiFilePath );
 
+    printf("AriaMaestosa::exportMidiFile returned %i\n", (int)success);
+
     if (not success)
     {
         wxMessageBox( _("Sorry, failed to export midi file."));

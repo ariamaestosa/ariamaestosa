@@ -115,7 +115,12 @@ bool MIDITrack::EventsOrderOK() const
     {
         MIDIClockTime time1 = GetEventAddress(i)->GetTime();
         if ( time0 > time1 )
+        {
+            fprintf(stderr, "[MIDITrack] event order issue : %i (type %s) then %i (type %s)\n",
+                (int)time0, GetEventAddress(i - 1)->getHumanReadableName(),
+                (int)time1, GetEventAddress(i)->getHumanReadableName());
             return false;
+        }
         time0 = time1;
     }
 

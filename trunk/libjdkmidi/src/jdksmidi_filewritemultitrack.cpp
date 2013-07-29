@@ -62,9 +62,15 @@ bool MIDIFileWriteMultiTrack::Write ( int num_tracks, int division )
     {
         const MIDITrack *t = multitrack->GetTrack ( i );
 
-        if ( !t || !t->EventsOrderOK() ) // time of events out of order: t->SortEventsOrder() must be done externally
+        if (!t)
         {
-            fprintf(stderr, "[MidiExport] events out of order\n");
+            fprintf(stderr, "[MidiExport] null track (track %i)\n", i);
+            return false;
+        }
+        
+        if (!t->EventsOrderOK()) // time of events out of order: t->SortEventsOrder() must be done externally
+        {
+            fprintf(stderr, "[MidiExport] events out of order (track %i)\n", i);
             return false;
         }
         

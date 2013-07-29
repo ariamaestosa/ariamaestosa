@@ -1419,6 +1419,8 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
                          bool selectionOnly,
                          int& startTick)
 {
+    const bool DEBUG_NOTE_ORDER = false;
+    
     // ignore track if it has been muted
     // (but for some reason drum track can't be completely omitted)
     // if we only play selection, ignore mute and play anyway
@@ -1444,6 +1446,14 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
     // the right place and note from the beginning)
     int firstNoteStartTick = -1;
     int selectedNoteAmount = 0;
+
+    for (int n=0; n<m_notes.size(); n++)
+    {
+        if (m_notes[n].getLength() <= 1)
+        {
+            fprintf(stderr, "EMPTY NOTE\n");
+        }
+    }
 
     if (selectionOnly)
     {
@@ -1537,7 +1547,6 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
             std::cout << "Error adding event" << std::endl;
             ASSERT(FALSE);
         }
-
         delete[] charTrackName;
     }
 
@@ -1583,6 +1592,11 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
     if (!m_played and m_editor_mode[DRUM] and not selectionOnly) return -1;
 
     //std::cout << "-------------------- TRACK -------------" << std::endl;
+    
+    if (DEBUG_NOTE_ORDER) printf("---------------- Track <%s> ----------------\n",
+                                 (const char*)m_track_name->getValue().mb_str());
+    
+    int debug_curr_time = 0;
     
     while (true)
     {
@@ -1631,8 +1645,10 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
             const int time = m_notes[note_on_id].getTick() - firstNoteStartTick;
             if (time >= 0 and (time + firstNoteStartTick) <= lastTickInSong)
             {
+                ASSERT_E(time, >=, debug_curr_time); debug_curr_time = time;
                 m.SetTime( time );
-
+                if (DEBUG_NOTE_ORDER) printf("[DEBUG_NOTE_ORDER] %i (note on)\n", time);
+                
                 if (m_editor_mode[DRUM])
                 {
                     m.SetNoteOn(channel, m_notes[note_on_id].getPitchID(), computeNoteVolume(note_on_id));
@@ -1663,7 +1679,9 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
             const int time=m_note_off[note_off_id].getEndTick() - firstNoteStartTick;
             if (time >= 0 and (time + firstNoteStartTick) <= lastTickInSong)
             {
+                ASSERT_E(time, >=, debug_curr_time); debug_curr_time = time;
                 m.SetTime( time );
+                if (DEBUG_NOTE_ORDER) printf("[DEBUG_NOTE_ORDER] %i (note off)\n", time);
                 
                 if (m_editor_mode[DRUM])
                 {
@@ -1753,7 +1771,10 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
             {
                 if (doAddControlEvent and (time + firstNoteStartTick) <= lastTickInSong)
                 {
+                    ASSERT_E(time, >=, debug_curr_time); debug_curr_time = time;
                     m.SetTime( time );
+ 
+                    if (DEBUG_NOTE_ORDER) printf("[DEBUG_NOTE_ORDER] %i (pitch bend)\n", time);
  
                     /** In range [-8192, 8191] */
                     const int pitchBendVal = m_control_events[control_evt_id].getPitchBendValue();
@@ -1768,8 +1789,11 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
             {
                 if (doAddControlEvent and (time + firstNoteStartTick) <= lastTickInSong)
                 {
+                    ASSERT_E(time, >=, debug_curr_time); debug_curr_time = time;
                     m.SetTime( time );
                     m.SetProgramChange(channel, (int)round(m_control_events[control_evt_id].getValue()));
+
+                    if (DEBUG_NOTE_ORDER) printf("[DEBUG_NOTE_ORDER] %i (program change)\n", time);
 
                     if (not midiTrack->PutEvent( m ))
                     {
@@ -1784,8 +1808,11 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
             {
                 if (doAddControlEvent and (time + firstNoteStartTick) <= lastTickInSong)
                 {
+                    ASSERT_E(time, >=, debug_curr_time); debug_curr_time = time;
                     m.SetTime( time );
  
+                    if (DEBUG_NOTE_ORDER) printf("[DEBUG_NOTE_ORDER] %i (controller)\n", time);
+
                     // FIXME: also write fine values
                     m.SetControlChange(channel,
                                        controllerID,
@@ -1804,7 +1831,6 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
         }// if (note/note off/control)
 
     }//wend
-
 
     if (selectionOnly) startTick = firstNoteStartTick;
 
