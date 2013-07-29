@@ -586,6 +586,8 @@ namespace AriaMaestosa
          */
         void setDefaultVolume(const int v);
         
+        bool invariant();
+        
         // serialization
         void saveToFile(wxFileOutputStream& fileout);
         bool readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq);

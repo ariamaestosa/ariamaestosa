@@ -320,6 +320,8 @@ namespace AriaMaestosa
         float getTempoAtTick(const int tick) const;
         
         void  addTempoEvent(ControllerEvent* evt, wxFloat64* previousValue);
+        void sortTempoEvents();
+        void sortTextEvents();
         
         void addTextEvent_import(const int x, const wxString& value, const int controller);
         
@@ -440,6 +442,8 @@ namespace AriaMaestosa
         
         int getDefaultKeySymbolAmount() { return m_default_key_symbol_amount; }
         void setDefaultKeySymbolAmount(int symbolAmount) { m_default_key_symbol_amount = symbolAmount; }
+        
+        bool invariant();
         
         // ---- serialization
         

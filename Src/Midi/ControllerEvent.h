@@ -116,6 +116,31 @@ namespace AriaMaestosa
           
         ControllerEvent* clone() { return new ControllerEvent(m_controller, m_tick, m_value); }
         
+        bool operator<(const ControllerEvent& other) const
+        {
+            return m_tick < other.m_tick;
+        }
+        bool operator>(const ControllerEvent& other) const
+        {
+            return m_tick > other.m_tick;
+        }
+        bool operator<=(const ControllerEvent& other) const
+        {
+            return m_tick <= other.m_tick;
+        }
+        bool operator>=(const ControllerEvent& other) const
+        {
+            return m_tick >= other.m_tick;
+        }
+        bool operator==(const ControllerEvent& other) const
+        {
+            return m_tick == other.m_tick;
+        }
+        bool operator!=(const ControllerEvent& other) const
+        {
+            return m_tick != other.m_tick;
+        }
+        
         // ---- serialization
         virtual void saveToFile(wxFileOutputStream& fileout);
         virtual bool readFromFile(irr::io::IrrXMLReader* xml);

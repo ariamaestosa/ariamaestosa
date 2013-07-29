@@ -404,7 +404,28 @@ namespace AriaMaestosa
             }
         }
         
+        // ------------------------------------------------------------------------
         
+        template<typename F, typename T>
+        void insertionSort(F (*getSortFieldFn)(T*))
+        {
+            // We should not used unsigned ints here, because if the vector is 
+            // empty j needs to be compared against -1
+            for (int j=0; j<(int)contentsVector.size()-1; j++)
+            {
+                if (getSortFieldFn(contentsVector[j]) < getSortFieldFn(contentsVector[j+1])) continue;
+                // Now search the proper place for m_contents_vector[j+1] 
+                // in the sorted section contentsVectot[start:j]
+                TYPE* t = contentsVector[j+1];
+                unsigned int i = j+1;
+                do
+                {
+                    contentsVector[i] = contentsVector[i-1];
+                    i--;
+                } while (i>0 && getSortFieldFn(t) < getSortFieldFn(contentsVector[i-1]));
+                contentsVector[i] = t;
+            }
+        }
     };
     
     template<typename T>
