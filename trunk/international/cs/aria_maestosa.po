@@ -3,15 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-#   <alexisarcham@gmail.com>, 2012.
-# Pavel Fric <pavelfric@seznam.cz>, 2012.
-#   <pavelfric@seznam.cz>, 2012.
+#   <alexisarcham@gmail.com>, 2012
+# fri <pavelfric@seznam.cz>, 2012
+# fri <pavelfric@seznam.cz>, 2013
+# fri <pavelfric@seznam.cz>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: Aria Maestosa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-11 19:37-0500\n"
-"PO-Revision-Date: 2013-01-12 08:38+0000\n"
+"POT-Creation-Date: 2013-06-17 20:12-0400\n"
+"PO-Revision-Date: 2013-07-09 16:30+0000\n"
 "Last-Translator: fri <pavelfric@seznam.cz>\n"
 "Language-Team: Czech (http://www.transifex.com/projects/p/ariamaestosa/language/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -30,112 +31,112 @@ msgstr "Promiňte, ale vyskytla se vnitřní chyba: S výjimkou nebylo zacházen
 msgid "Sorry, an error occurred : could not create %s"
 msgstr "Promiňte, ale vyskytla se chyba: Nepodařilo se vytvořit %s"
 
-#: Src/PreferencesData.cpp:150
+#: Src/PreferencesData.cpp:152
 msgid "Language"
 msgstr "Jazyk"
 
-#: Src/PreferencesData.cpp:176
+#: Src/PreferencesData.cpp:178
 msgid "MIDI Driver"
 msgstr "Ovladač MIDI"
 
 #. I18N: In preferences
-#: Src/PreferencesData.cpp:188
+#: Src/PreferencesData.cpp:190
 msgid "Play during edit (default value)"
 msgstr "Přehrávat během úprav (výchozí hodnota)"
 
-#: Src/PreferencesData.cpp:190
+#: Src/PreferencesData.cpp:192
 msgid "Always"
 msgstr "Vždy"
 
-#: Src/PreferencesData.cpp:191
+#: Src/PreferencesData.cpp:193
 msgid "On note change"
 msgstr "Při změně noty"
 
-#: Src/PreferencesData.cpp:192
+#: Src/PreferencesData.cpp:194
 msgid "Never"
 msgstr "Nikdy"
 
 #. I18N: In preferences
-#: Src/PreferencesData.cpp:197
+#: Src/PreferencesData.cpp:199
 msgid "Default Score View"
 msgstr "Výchozí pohled na notový zápis"
 
-#: Src/PreferencesData.cpp:199
+#: Src/PreferencesData.cpp:201
 msgid "Both Musical and Linear"
 msgstr "Jak hudební tak přímý"
 
-#: Src/PreferencesData.cpp:200
+#: Src/PreferencesData.cpp:202
 msgid "Musical Only"
 msgstr "Jen hudební"
 
-#: Src/PreferencesData.cpp:201
+#: Src/PreferencesData.cpp:203
 msgid "Linear Only"
 msgstr "Jen přímý"
 
 #. I18N: In preferences
-#: Src/PreferencesData.cpp:206
+#: Src/PreferencesData.cpp:208
 msgid "Default Editor View"
 msgstr "Výchozí pohled na editor"
 
-#: Src/PreferencesData.cpp:208
+#: Src/PreferencesData.cpp:210
 msgid "Keyboard"
 msgstr "Klávesnice"
 
-#: Src/PreferencesData.cpp:209
+#: Src/PreferencesData.cpp:211
 msgid "Score"
 msgstr "Notový zápis"
 
-#: Src/PreferencesData.cpp:210
+#: Src/PreferencesData.cpp:212
 msgid "Tablature"
 msgstr "Tabulatura"
 
 #. I18N: In preferences
-#: Src/PreferencesData.cpp:216
+#: Src/PreferencesData.cpp:218
 msgid "Instrument Classification"
 msgstr "Zařazení nástroje"
 
-#: Src/PreferencesData.cpp:218
+#: Src/PreferencesData.cpp:220
 msgid "MIDI Standard"
 msgstr "Standard MIDI"
 
-#: Src/PreferencesData.cpp:228
+#: Src/PreferencesData.cpp:230
 msgid "Soundfont"
 msgstr "Zvuková banka"
 
-#: Src/PreferencesData.cpp:235
+#: Src/PreferencesData.cpp:237
 msgid "Follow playback by default"
 msgstr "Sledovat přehrávání jako výchozí nastavení"
 
-#: Src/PreferencesData.cpp:240
+#: Src/PreferencesData.cpp:242
 msgid "Enable playthrough when recording by default"
 msgstr "Povolit přehrávání, když se nahrává, jako výchozí nastavení"
 
-#: Src/PreferencesData.cpp:245
+#: Src/PreferencesData.cpp:247
 msgid "Check online for new versions"
 msgstr "Sledovat internet kvůli novým verzím"
 
-#: Src/PreferencesData.cpp:250
+#: Src/PreferencesData.cpp:252
 msgid "Remember window location"
 msgstr "Zapamatovat si umístění okna"
 
-#: Src/PreferencesData.cpp:282
+#: Src/PreferencesData.cpp:284
 msgid "Automatically launch FluidSynth if needed"
-msgstr ""
+msgstr "V případě potřeby spustit FluidSynth automaticky"
 
-#: Src/PreferencesData.cpp:289
+#: Src/PreferencesData.cpp:291
 msgid "Single-instance application"
 msgstr "Program o jedné instanci"
 
-#: Src/PreferencesData.cpp:295
+#: Src/PreferencesData.cpp:297
 msgid "Show note names in piano-roll"
 msgstr "Ukázat názvy not ve válečku"
 
-#: Src/PreferencesData.cpp:301
+#: Src/PreferencesData.cpp:303
 msgid "Restore open files from previous session"
 msgstr "Obnovit otevřené soubory z předchozího sezení"
 
-#: Src/PreferencesData.cpp:332 Src/GUI/MainFrameMenuBar.cpp:351
-#: Src/GUI/MainFrameMenuBar.cpp:354 Src/GUI/MainFrame.cpp:987
+#: Src/PreferencesData.cpp:334 Src/GUI/MainFrameMenuBar.cpp:351
+#: Src/GUI/MainFrameMenuBar.cpp:354 Src/GUI/MainFrame.cpp:1006
 msgid "No MIDI input"
 msgstr "Není dostupný žádný vstup MIDI"
 
@@ -162,7 +163,7 @@ msgstr "Strohý (tisknout jen noty předznamenání)"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:103 Src/Dialogs/PrintSetupDialog.cpp:726
 #: Src/Dialogs/CustomKeyDialog.cpp:163
-#: Src/Dialogs/SongPropertiesDialog.cpp:174 Src/Dialogs/Preferences.cpp:334
+#: Src/Dialogs/SongPropertiesDialog.cpp:174 Src/Dialogs/Preferences.cpp:382
 #: Src/Dialogs/ScaleDialog.cpp:152 Src/Dialogs/TrackPropertiesDialog.cpp:231
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:167 Src/Dialogs/TuningDialog.cpp:54
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:545 Src/Pickers/TimeSigPicker.cpp:181
@@ -251,7 +252,7 @@ msgid "Margins"
 msgstr "Okraje"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:729 Src/Dialogs/CustomKeyDialog.cpp:164
-#: Src/Dialogs/SongPropertiesDialog.cpp:179 Src/Dialogs/Preferences.cpp:335
+#: Src/Dialogs/SongPropertiesDialog.cpp:179 Src/Dialogs/Preferences.cpp:383
 #: Src/Dialogs/ScaleDialog.cpp:148 Src/Dialogs/TrackPropertiesDialog.cpp:234
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:169 Src/Dialogs/TuningDialog.cpp:57
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:546
@@ -347,7 +348,7 @@ msgstr "Béčka"
 msgid "Symbols"
 msgstr "Symboly"
 
-#: Src/Dialogs/SongPropertiesDialog.cpp:148 Src/GUI/MainFrame.cpp:473
+#: Src/Dialogs/SongPropertiesDialog.cpp:148 Src/GUI/MainFrame.cpp:482
 msgid "Tempo"
 msgstr "Tempo"
 
@@ -390,8 +391,8 @@ msgstr "Zdvojit"
 msgid "Delete"
 msgstr "Smazat"
 
-#: Src/Dialogs/PresetEditor.cpp:66 Src/Dialogs/AboutDialog.cpp:109
-#: Src/GUI/MainFrameMenuBar.cpp:1367
+#: Src/Dialogs/PresetEditor.cpp:66 Src/Dialogs/AboutDialog.cpp:111
+#: Src/GUI/MainFrameMenuBar.cpp:1377
 msgid "Close"
 msgstr "Zavřít"
 
@@ -404,10 +405,10 @@ msgstr "Zadat název kopie"
 msgid "Are you sure you want to delete this preset? This cannot be undone."
 msgstr "Opravdu chcete smazat toto přednastavení? Toto nelze vrátit zpět."
 
-#: Src/Dialogs/PresetEditor.cpp:118 Src/GUI/MainFrameMenuBar.cpp:684
-#: Src/GUI/MainFrameMenuBar.cpp:747 Src/GUI/MainFrameMenuBar.cpp:784
-#: Src/GUI/MainFrameMenuBar.cpp:1022 Src/GUI/MainFrameMenuBar.cpp:1141
-#: Src/GUI/MainFrameMenuBar.cpp:1225 Src/Pickers/TimeSigPicker.cpp:289
+#: Src/Dialogs/PresetEditor.cpp:118 Src/GUI/MainFrameMenuBar.cpp:694
+#: Src/GUI/MainFrameMenuBar.cpp:757 Src/GUI/MainFrameMenuBar.cpp:794
+#: Src/GUI/MainFrameMenuBar.cpp:1032 Src/GUI/MainFrameMenuBar.cpp:1151
+#: Src/GUI/MainFrameMenuBar.cpp:1235 Src/Pickers/TimeSigPicker.cpp:289
 msgid "Confirm"
 msgstr "Potvrdit"
 
@@ -416,25 +417,37 @@ msgstr "Potvrdit"
 msgid "Preferences"
 msgstr "Nastavení"
 
-#: Src/Dialogs/Preferences.cpp:303
+#: Src/Dialogs/Preferences.cpp:258
+msgid "Aria Maestosa"
+msgstr "Aria Maestosa"
+
+#: Src/Dialogs/Preferences.cpp:259
+msgid "Sound input/output"
+msgstr "Vstup/Výstup zvuku"
+
+#: Src/Dialogs/Preferences.cpp:260
+msgid "Edition"
+msgstr "Verze"
+
+#: Src/Dialogs/Preferences.cpp:351
 msgid "Browse..."
 msgstr "Procházet…"
 
 #. I18N: - in the preferences dialog
-#: Src/Dialogs/Preferences.cpp:345
-msgid "Changes will take effect next time you open the app."
-msgstr "Změny se projeví teprve tehdy, když tento program spustíte znovu."
-
 #: Src/Dialogs/Preferences.cpp:390
+msgid "Changes will take effect next time you open the application."
+msgstr "Změny se projeví, až když tento program spustíte znovu."
+
+#: Src/Dialogs/Preferences.cpp:444
 msgid "You will need to restart Aria Maestosa for changes to be effective."
 msgstr "Aria Maestosa bude potřeba, aby se změny projevily, spustit znovu."
 
-#: Src/Dialogs/Preferences.cpp:413 Src/GUI/MainFrameMenuBar.cpp:712
+#: Src/Dialogs/Preferences.cpp:467 Src/GUI/MainFrameMenuBar.cpp:722
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:587
 msgid "Select file"
 msgstr "Vybrat soubor"
 
-#: Src/Dialogs/Preferences.cpp:414 Src/Midi/Players/Alsa/AlsaPlayer.cpp:588
+#: Src/Dialogs/Preferences.cpp:468 Src/Midi/Players/Alsa/AlsaPlayer.cpp:588
 msgid "Sound Font"
 msgstr "Zvuková banka"
 
@@ -504,7 +517,7 @@ msgstr "Zrušit zaškrtnutí všeho"
 
 #: Src/Dialogs/TrackPropertiesDialog.cpp:206
 msgid "Default volume for new notes"
-msgstr "Výchozí hlasitost pro nové noty"
+msgstr "Výchozí hlasitost nových not"
 
 #. I18N: - title of the custom note select dialog
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:63
@@ -609,7 +622,7 @@ msgstr "Ergonis Software a %s za práci na EasyBeat,\n\tcož je skvělý program
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:66
 msgid "J.D. Koftinoff Software for the jdksmidi library"
-msgstr "J.D. Koftinoff Software pro knihovnu jdksmidi"
+msgstr "J. D. Koftinoff Software za knihovnu jdksmidi"
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:68
@@ -688,7 +701,8 @@ msgstr "Odstranit takty"
 
 #. I18N: (undoable) action name
 #. I18N: menu item in the "edit" menu
-#: Src/Actions/ScrollNotesIntoView.cpp:37 Src/GUI/MainFrameMenuBar.cpp:199
+#: Src/Actions/ScrollNotesIntoView.cpp:37
+#: Src/Actions/RearrangeVertically.cpp:37 Src/GUI/MainFrameMenuBar.cpp:199
 msgid "Scroll notes into view"
 msgstr "Posunout noty do pohledu"
 
@@ -831,7 +845,7 @@ msgstr "Tento soubor  používá nepodporovaný ovladač MIDI #%i, Data vztahuj�
 #: Src/IO/MidiFileReader.cpp:522 Src/Printing/AbstractPrintableSequence.cpp:39
 #: Src/Printing/AbstractPrintableSequence.cpp:43 Src/Midi/Sequence.cpp:70
 #: Src/Midi/Sequence.cpp:118 Src/Midi/Sequence.cpp:140 Src/Midi/Track.cpp:93
-#: Src/Midi/Track.cpp:940 Src/Midi/Track.cpp:2009
+#: Src/Midi/Track.cpp:947 Src/Midi/Track.cpp:1959
 msgid "Untitled"
 msgstr "Bez názvu"
 
@@ -1310,7 +1324,7 @@ msgstr "Vložit v poloze &ukazovátka myši"
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:177
 msgid "Select &All"
-msgstr "Vybrat &vše"
+msgstr "Vybrat vš&e"
 
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:180
@@ -1330,7 +1344,7 @@ msgstr "Zapadnout noty do &mřížky"
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:190
 msgid "&Scale..."
-msgstr "&Změnit měřítko..."
+msgstr "Změnit měří&tko..."
 
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:192
@@ -1340,7 +1354,7 @@ msgstr "Odstranit &překrývající se noty"
 #. I18N: name of a menu
 #: Src/GUI/MainFrameMenuBar.cpp:204
 msgid "&Edit"
-msgstr "Ú&pravy"
+msgstr "Úp&ravy"
 
 #. I18N: menu item in the "track" menu
 #: Src/GUI/MainFrameMenuBar.cpp:214
@@ -1364,7 +1378,7 @@ msgstr "&Vlastnosti..."
 
 #: Src/GUI/MainFrameMenuBar.cpp:227
 msgid "&Tracks"
-msgstr "Stopy: %1"
+msgstr "S&topy"
 
 #. I18N: In the playback menu
 #: Src/GUI/MainFrameMenuBar.cpp:233
@@ -1383,7 +1397,7 @@ msgstr "&Nahrát"
 
 #: Src/GUI/MainFrameMenuBar.cpp:241
 msgid "&Playback"
-msgstr "Přehrávání"
+msgstr "&Přehrávání"
 
 #: Src/GUI/MainFrameMenuBar.cpp:246
 msgid "&Follow Playback"
@@ -1449,9 +1463,9 @@ msgstr "&Nastavení..."
 
 #: Src/GUI/MainFrameMenuBar.cpp:300
 msgid "&Settings"
-msgstr "Na&stavení"
+msgstr "&Nastavení"
 
-#: Src/GUI/MainFrameMenuBar.cpp:311 Src/GUI/MainFrameMenuBar.cpp:1279
+#: Src/GUI/MainFrameMenuBar.cpp:311 Src/GUI/MainFrameMenuBar.cpp:1289
 msgid "No MIDI Output Available"
 msgstr "Není dostupný žádný výstup MIDI"
 
@@ -1462,7 +1476,7 @@ msgstr "&Výstup"
 #. I18N: menu where the MIDI input source is selected
 #: Src/GUI/MainFrameMenuBar.cpp:370
 msgid "&Input"
-msgstr "V&stup"
+msgstr "Vst&up"
 
 #: Src/GUI/MainFrameMenuBar.cpp:376
 msgid "&About Aria Maestosa"
@@ -1475,44 +1489,44 @@ msgstr "Uživatelská &příručka"
 
 #: Src/GUI/MainFrameMenuBar.cpp:384
 msgid "&Help"
-msgstr "Nápo&věda"
+msgstr "Náp&ověda"
 
-#: Src/GUI/MainFrameMenuBar.cpp:519
+#: Src/GUI/MainFrameMenuBar.cpp:529
 #, c-format
 msgid "&Undo %s"
 msgstr "&Zpět %s"
 
-#: Src/GUI/MainFrameMenuBar.cpp:530
+#: Src/GUI/MainFrameMenuBar.cpp:540
 msgid "Can't Undo"
 msgstr "Nelze vrátit zpět"
 
-#: Src/GUI/MainFrameMenuBar.cpp:673 Src/GUI/MainFrameMenuBar.cpp:736
-#: Src/GUI/MainFrameMenuBar.cpp:774
+#: Src/GUI/MainFrameMenuBar.cpp:683 Src/GUI/MainFrameMenuBar.cpp:746
+#: Src/GUI/MainFrameMenuBar.cpp:784
 msgid "Select destination file"
 msgstr "Vybrat cílový soubor"
 
-#: Src/GUI/MainFrameMenuBar.cpp:674 Src/GUI/MainFrameMenuBar.cpp:713
+#: Src/GUI/MainFrameMenuBar.cpp:684 Src/GUI/MainFrameMenuBar.cpp:723
 msgid "Aria Maestosa file"
 msgstr "Soubor Aria Maestosa"
 
-#: Src/GUI/MainFrameMenuBar.cpp:683 Src/GUI/MainFrameMenuBar.cpp:747
-#: Src/GUI/MainFrameMenuBar.cpp:784
+#: Src/GUI/MainFrameMenuBar.cpp:693 Src/GUI/MainFrameMenuBar.cpp:757
+#: Src/GUI/MainFrameMenuBar.cpp:794
 msgid "The file already exists. Do you wish to overwrite it?"
 msgstr "Soubor již existuje. Opravdu ho chcete přepsat?"
 
-#: Src/GUI/MainFrameMenuBar.cpp:723
+#: Src/GUI/MainFrameMenuBar.cpp:733
 msgid "Select midi file"
 msgstr "Vybrat soubor MIDI"
 
-#: Src/GUI/MainFrameMenuBar.cpp:724 Src/GUI/MainFrameMenuBar.cpp:737
+#: Src/GUI/MainFrameMenuBar.cpp:734 Src/GUI/MainFrameMenuBar.cpp:747
 msgid "Midi file"
 msgstr "Soubor MIDI"
 
-#: Src/GUI/MainFrameMenuBar.cpp:758
+#: Src/GUI/MainFrameMenuBar.cpp:768
 msgid "Sorry, failed to export midi file."
 msgstr "Promiňte, nepodařilo se vyvést soubor MIDI."
 
-#: Src/GUI/MainFrameMenuBar.cpp:796
+#: Src/GUI/MainFrameMenuBar.cpp:806
 msgid ""
 "Please wait while audio file is being generated.\n"
 "\n"
@@ -1520,15 +1534,15 @@ msgid ""
 "this can take several minutes."
 msgstr "Počkejte, prosím, zatímco je zvukový soubor vytvářen.\n\nV závislosti na délce vašeho souboru no může několik\nminut trvat."
 
-#: Src/GUI/MainFrameMenuBar.cpp:1018
+#: Src/GUI/MainFrameMenuBar.cpp:1028
 msgid "You may not delete the last track"
 msgstr "Není povoleno smazat poslední stopu"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1022
+#: Src/GUI/MainFrameMenuBar.cpp:1032
 msgid "Do you really want to delete this track?"
 msgstr "Opravdu chcete smazat tuto stopu?"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1140
+#: Src/GUI/MainFrameMenuBar.cpp:1150
 msgid ""
 "If multiple tracks play on the same channel, they will be merged.\n"
 "This cannot be undone.\n"
@@ -1536,17 +1550,17 @@ msgid ""
 "Do you really want to continue?"
 msgstr "Když se na tomtéž kanálu přehrává více stop, budou sloučeny.\nToto nelze vrátit zpět.\nOpravdu chcete pokračovat?"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1224 Src/Pickers/TimeSigPicker.cpp:288
+#: Src/GUI/MainFrameMenuBar.cpp:1234 Src/Pickers/TimeSigPicker.cpp:288
 msgid ""
 "Are you sure you want to go back to having a single time signature? Any time"
 " sig events you may have added will be lost. This cannot be undone."
 msgstr "Jste si jistý, že se chcete vrátit zpět, aby platilo jen jedno taktové označení? Všechny události taktových označení, které jste přidal, budou nenávratně ztraceny."
 
-#: Src/GUI/MainFrameMenuBar.cpp:1353
+#: Src/GUI/MainFrameMenuBar.cpp:1363
 msgid "Manual"
 msgstr "Ručně"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1547
+#: Src/GUI/MainFrameMenuBar.cpp:1557
 msgid "Clear List"
 msgstr "Vyprázdnit seznam"
 
@@ -1567,93 +1581,93 @@ msgid "Loop"
 msgstr "Smyčka"
 
 #. I18N: song length (number of measures)
-#: Src/GUI/MainFrame.cpp:465
+#: Src/GUI/MainFrame.cpp:467
 msgid "Length"
 msgstr "Délka"
 
-#: Src/GUI/MainFrame.cpp:485
+#: Src/GUI/MainFrame.cpp:494
 msgid "Time Sig"
 msgstr "Taktové označení"
 
-#: Src/GUI/MainFrame.cpp:493
+#: Src/GUI/MainFrame.cpp:502
 msgid "Start"
 msgstr "Začátek"
 
-#: Src/GUI/MainFrame.cpp:509
+#: Src/GUI/MainFrame.cpp:520
 msgid "Zoom"
 msgstr "Zvětšení"
 
-#: Src/GUI/MainFrame.cpp:540 Src/GUI/MainFrame.cpp:542
+#: Src/GUI/MainFrame.cpp:559 Src/GUI/MainFrame.cpp:561
 msgid "Tool"
 msgstr "Nástroj"
 
 #. I18N: to hide the panel that is shown when a file could not be imported
 #. successfully
-#: Src/GUI/MainFrame.cpp:581
+#: Src/GUI/MainFrame.cpp:600
 msgid "Hide"
 msgstr "Skrýt"
 
-#: Src/GUI/MainFrame.cpp:989
+#: Src/GUI/MainFrame.cpp:1008
 msgid "Please select an input port from the 'input' menu before recording"
 msgstr "Vyberte, prosím, před nahráváním vstupní přípojku z nabídky Vstup"
 
-#: Src/GUI/MainFrame.cpp:1713
+#: Src/GUI/MainFrame.cpp:1732
 #, c-format
 msgid ""
 "You have unsaved changes in sequence '%s'. Do you want to save them before "
 "proceeding?"
 msgstr "Máte neuložené změny v sekvenci '%s'. Chcete je před pokračováním uložit?"
 
-#: Src/GUI/MainFrame.cpp:1715
+#: Src/GUI/MainFrame.cpp:1734
 msgid "Selecting 'Yes' will save your document before closing"
 msgstr "Volba Ano váš dokument před zavřením uloží"
 
-#: Src/GUI/MainFrame.cpp:1716
+#: Src/GUI/MainFrame.cpp:1735
 msgid "Selecting 'No' will discard unsaved changes"
 msgstr "Volba Ne neuložené změny zahodí"
 
-#: Src/GUI/MainFrame.cpp:1717
+#: Src/GUI/MainFrame.cpp:1736
 msgid "Selecting 'Cancel' will cancel exiting the application"
 msgstr "Volba Zrušit zruší ukončení programu"
 
 #. I18N: title of dialog shown when exiting without saving
-#: Src/GUI/MainFrame.cpp:1722
+#: Src/GUI/MainFrame.cpp:1741
 msgid "Unsaved changes in sequence"
 msgstr "Neuložené změny v sekvenci"
 
-#: Src/GUI/MainFrame.cpp:1894
+#: Src/GUI/MainFrame.cpp:1913
 msgid "Unknown file type: "
 msgstr "Neznámý typ souboru: "
 
-#: Src/GUI/MainFrame.cpp:1921 Src/GUI/MainFrame.cpp:2043
+#: Src/GUI/MainFrame.cpp:1940 Src/GUI/MainFrame.cpp:2062
 msgid "Sorry, loading .aria file failed."
 msgstr "Promiňte, nahrání souboru .aria se nezdařilo."
 
-#: Src/GUI/MainFrame.cpp:1963
+#: Src/GUI/MainFrame.cpp:1982
 msgid "Please wait while midi file is loading."
 msgstr "Počkejte, prosím, zatímco se nahrává soubor MIDI.\t"
 
-#: Src/GUI/MainFrame.cpp:1970 Src/GUI/MainFrame.cpp:2055
+#: Src/GUI/MainFrame.cpp:1989 Src/GUI/MainFrame.cpp:2074
 msgid "Sorry, loading midi file failed."
 msgstr "Promiňte, nahrání souboru MIDI se nezdařilo."
 
-#: Src/GUI/MainFrame.cpp:1994
+#: Src/GUI/MainFrame.cpp:2013
 msgid ""
 "Loading the MIDI file completed successfully, but with the following "
 "warnings (the song may not sound as intended) :"
 msgstr "Nahrání souboru MIDI bylo dokončeno úspěšně, ale s následujícími varováními (píseň nemusí znít tak, jak bylo zamýšleno):"
 
-#: Src/GUI/MainFrame.cpp:2034
+#: Src/GUI/MainFrame.cpp:2053
 msgid "Please wait while file is reloaded."
 msgstr "Počkejte, prosím, zatímco se soubor nahrává znovu.\t"
 
-#: Src/GUI/MainFrame.cpp:2169
+#: Src/GUI/MainFrame.cpp:2188
 msgid ""
 "A new version of Aria Maestosa is now available! Visit the following link to"
 " download it :"
 msgstr "Je dostupná novější verze programu Aria Maestosa. Navštivte následující odkaz a stáhněte jej:"
 
-#: Src/GUI/MainFrame.cpp:2180
+#: Src/GUI/MainFrame.cpp:2199
 msgid "An error occurred"
 msgstr "Došlo k chybě"
 
@@ -1750,22 +1764,19 @@ msgid "Remove time sig change"
 msgstr "Odstranit změnu taktového označení"
 
 #: Src/GUI/MeasureBar.cpp:156
-msgid "Insert empty measures between measures "
-msgstr "Vložit prázdné takty mezi takty"
+#, c-format
+msgid "Insert empty measures between measures %i and %i"
+msgstr "Vložit prázdné takty mezi takty %i a %i"
 
 #: Src/GUI/MeasureBar.cpp:158
-msgid " and "
-msgstr "a "
-
-#: Src/GUI/MeasureBar.cpp:159
 msgid "Amount: "
 msgstr "Množství: "
 
-#: Src/GUI/MeasureBar.cpp:178
+#: Src/GUI/MeasureBar.cpp:177
 msgid "Do you really want to remove this time sig change?"
 msgstr "Opravdu chcete odstranit tuto změnu taktového označení?"
 
-#: Src/GUI/MeasureBar.cpp:184
+#: Src/GUI/MeasureBar.cpp:183
 msgid "You can't remove the first time signature change."
 msgstr "Nemůžete odstranit první změnu taktového označení."
 
@@ -1859,7 +1870,7 @@ msgstr "Vybrané zařízení ALSA (%s) se nepodařilo otevřít."
 
 #: Src/Midi/Players/Alsa/AlsaPort.cpp:442
 msgid "Loading "
-msgstr ""
+msgstr "Nahrává se"
 
 #: Src/Midi/Players/Jack/JackMidiManager.cpp:231
 msgid "Jack"
@@ -1879,7 +1890,7 @@ msgstr "Softwarový syntetizátor Windows"
 msgid "Failed to initialize MIDI out device"
 msgstr "Nepodařilo se inicializovat zařízení pro výstup MIDI"
 
-#: Src/Midi/CommonMidiUtils.cpp:430 Src/Midi/CommonMidiUtils.cpp:455
+#: Src/Midi/CommonMidiUtils.cpp:434 Src/Midi/CommonMidiUtils.cpp:459
 msgid ""
 "WARNING: this song has too many\n"
 "channels, expect unpredictable output"
@@ -2716,6 +2727,6 @@ msgstr "Vpravo"
 msgid "volume"
 msgstr "Hlasitost"
 
-#: Src/PreferencesData.h:57
+#: Src/PreferencesData.h:63
 msgid "System soundbank"
-msgstr ""
+msgstr "Zvuková banka systému"

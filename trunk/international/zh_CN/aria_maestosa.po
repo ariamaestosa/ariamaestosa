@@ -3,20 +3,1902 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-#   <scilenso@gmail.com>, 2012.
+# scilenso <scilenso@gmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: Aria Maestosa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-26 12:20+0200\n"
-"PO-Revision-Date: 2012-07-28 15:32+0000\n"
-"Last-Translator: scilenso <scilenso@gmail.com>\n"
+"POT-Creation-Date: 2013-06-17 20:12-0400\n"
+"PO-Revision-Date: 2013-06-18 08:18+0000\n"
+"Last-Translator: Auria <auria.mg@gmail.com>\n"
 "Language-Team: Chinese (China) (GB2312) (http://www.transifex.com/projects/p/ariamaestosa/language/zh_CN.GB2312/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: zh_CN.GB2312\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: Src/main.cpp:338 Src/main.cpp:359
+msgid ""
+"Sorry an internal error occurred : an exception was caught unhandled : "
+msgstr "很抱歉，发生内部错误：一个异常被发现未处理："
+
+#: Src/PresetManager.cpp:133
+#, c-format
+msgid "Sorry, an error occurred : could not create %s"
+msgstr "很抱歉，出现错误：无法创建 %s"
+
+#: Src/PreferencesData.cpp:152
+msgid "Language"
+msgstr "语言"
+
+#: Src/PreferencesData.cpp:178
+msgid "MIDI Driver"
+msgstr "MIDI驱动器"
+
+#. I18N: In preferences
+#: Src/PreferencesData.cpp:190
+msgid "Play during edit (default value)"
+msgstr "编辑时播放(默认值)"
+
+#: Src/PreferencesData.cpp:192
+msgid "Always"
+msgstr "永远"
+
+#: Src/PreferencesData.cpp:193
+msgid "On note change"
+msgstr "音符改变时"
+
+#: Src/PreferencesData.cpp:194
+msgid "Never"
+msgstr "从不"
+
+#. I18N: In preferences
+#: Src/PreferencesData.cpp:199
+msgid "Default Score View"
+msgstr "默认乐谱视图"
+
+#: Src/PreferencesData.cpp:201
+msgid "Both Musical and Linear"
+msgstr "同时乐器和乐谱"
+
+#: Src/PreferencesData.cpp:202
+msgid "Musical Only"
+msgstr "仅乐器"
+
+#: Src/PreferencesData.cpp:203
+msgid "Linear Only"
+msgstr "仅乐谱"
+
+#. I18N: In preferences
+#: Src/PreferencesData.cpp:208
+msgid "Default Editor View"
+msgstr "默认编辑器视图"
+
+#: Src/PreferencesData.cpp:210
+msgid "Keyboard"
+msgstr "钢琴键盘"
+
+#: Src/PreferencesData.cpp:211
+msgid "Score"
+msgstr "五线谱"
+
+#: Src/PreferencesData.cpp:212
+msgid "Tablature"
+msgstr "六线谱"
+
+#. I18N: In preferences
+#: Src/PreferencesData.cpp:218
+msgid "Instrument Classification"
+msgstr "乐器分类"
+
+#: Src/PreferencesData.cpp:220
+msgid "MIDI Standard"
+msgstr "MIDI标准"
+
+#: Src/PreferencesData.cpp:230
+msgid "Soundfont"
+msgstr "soundfont"
+
+#: Src/PreferencesData.cpp:237
+msgid "Follow playback by default"
+msgstr "遵循预设播放"
+
+#: Src/PreferencesData.cpp:242
+msgid "Enable playthrough when recording by default"
+msgstr "依预设录制时启用playthrough"
+
+#: Src/PreferencesData.cpp:247
+msgid "Check online for new versions"
+msgstr "在线检查版本更新"
+
+#: Src/PreferencesData.cpp:252
+msgid "Remember window location"
+msgstr "记住窗口位置"
+
+#: Src/PreferencesData.cpp:284
+msgid "Automatically launch FluidSynth if needed"
+msgstr ""
+
+#: Src/PreferencesData.cpp:291
+msgid "Single-instance application"
+msgstr "单实例应用"
+
+#: Src/PreferencesData.cpp:297
+msgid "Show note names in piano-roll"
+msgstr "在滚动琴键上显示音符名"
+
+#: Src/PreferencesData.cpp:303
+msgid "Restore open files from previous session"
+msgstr ""
+
+#: Src/PreferencesData.cpp:334 Src/GUI/MainFrameMenuBar.cpp:351
+#: Src/GUI/MainFrameMenuBar.cpp:354 Src/GUI/MainFrame.cpp:1006
+msgid "No MIDI input"
+msgstr "无MIDI输入设备"
+
+#: Src/Dialogs/PrintSetupDialog.cpp:46
+msgid "Keyroll Printing Options"
+msgstr "滚动钢琴键盘视图打印选项"
+
+#: Src/Dialogs/PrintSetupDialog.cpp:57
+msgid "Size of a beat : "
+msgstr "一个节拍的大小："
+
+#: Src/Dialogs/PrintSetupDialog.cpp:65
+msgid "Vertical margin between notes : "
+msgstr "音符间的垂直间距："
+
+#: Src/Dialogs/PrintSetupDialog.cpp:75
+msgid "Colors"
+msgstr "色彩"
+
+#. I18N: keyroll printing option
+#: Src/Dialogs/PrintSetupDialog.cpp:100
+msgid "Compact (print only key notes)"
+msgstr "紧凑型(只打印关键音符)"
+
+#: Src/Dialogs/PrintSetupDialog.cpp:103 Src/Dialogs/PrintSetupDialog.cpp:726
+#: Src/Dialogs/CustomKeyDialog.cpp:163
+#: Src/Dialogs/SongPropertiesDialog.cpp:174 Src/Dialogs/Preferences.cpp:382
+#: Src/Dialogs/ScaleDialog.cpp:152 Src/Dialogs/TrackPropertiesDialog.cpp:231
+#: Src/Dialogs/CustomNoteSelectDialog.cpp:167 Src/Dialogs/TuningDialog.cpp:54
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:545 Src/Pickers/TimeSigPicker.cpp:181
+msgid "OK"
+msgstr "确定"
+
+#: Src/Dialogs/PrintSetupDialog.cpp:194
+msgid ""
+"Keyroll tracks and tablature/score tracks cannot be mixed in the same "
+"printout"
+msgstr "滚动钢琴键盘音轨和六线谱/五线谱音轨不能同时混合打印"
+
+#: Src/Dialogs/PrintSetupDialog.cpp:199
+msgid "No printable track selected"
+msgstr "没有选择可打印的音轨"
+
+#: Src/Dialogs/PrintSetupDialog.cpp:236
+msgid "Calculating print layout..."
+msgstr "计算打印布局…"
+
+#. I18N: - %s is the name of the track
+#: Src/Dialogs/PrintSetupDialog.cpp:247
+#, c-format
+msgid ""
+"Track '%s' could not be printed, since its current\n"
+"view (editor) does not support printing."
+msgstr "曲目 '%s' 无法被打印，因为其当前\n视图(编辑器)不支持打印。"
+
+#: Src/Dialogs/PrintSetupDialog.cpp:275
+msgid "An error occurred during printing."
+msgstr "打印时出错。"
+
+#. I18N: - title of the notation-print dialog
+#: Src/Dialogs/PrintSetupDialog.cpp:511
+msgid "Print musical notation"
+msgstr "打印乐谱"
+
+#: Src/Dialogs/PrintSetupDialog.cpp:523
+msgid "An error occurred while preparing to print."
+msgstr "准备打印时出现一个错误。"
+
+#. I18N: - in print setup dialog.
+#: Src/Dialogs/PrintSetupDialog.cpp:541
+msgid "Print..."
+msgstr "打印…"
+
+#. I18N: - in print setup dialog.
+#: Src/Dialogs/PrintSetupDialog.cpp:544
+msgid "Current track only"
+msgstr "仅当前音轨"
+
+#. I18N: - in print setup dialog.
+#: Src/Dialogs/PrintSetupDialog.cpp:549
+msgid "This list of tracks"
+msgstr "以下列表中的音轨"
+
+#. I18N: in printing dialog
+#: Src/Dialogs/PrintSetupDialog.cpp:656
+msgid "Omit instruments that play nothing on the current line"
+msgstr "省略对当前行没有影响的乐器"
+
+#: Src/Dialogs/PrintSetupDialog.cpp:658
+msgid ""
+"If some instrument plays nothing during a long part of the song, checking "
+"this option can make the printed score tighter by eliminating empty lines"
+msgstr "如有一些乐器在歌曲的很长一部分都并不演奏，选择此选项可消除空白行以使打印出来的乐谱更紧凑"
+
+#: Src/Dialogs/PrintSetupDialog.cpp:672
+msgid "Page Setup"
+msgstr "页面设置"
+
+#: Src/Dialogs/PrintSetupDialog.cpp:678
+msgid "Paper :"
+msgstr "纸张："
+
+#: Src/Dialogs/PrintSetupDialog.cpp:686
+msgid "Edit Page Setup"
+msgstr "编辑页面设置"
+
+#: Src/Dialogs/PrintSetupDialog.cpp:692
+msgid "Margins :"
+msgstr "页边距："
+
+#: Src/Dialogs/PrintSetupDialog.cpp:700
+msgid "Margins"
+msgstr "页边距"
+
+#: Src/Dialogs/PrintSetupDialog.cpp:729 Src/Dialogs/CustomKeyDialog.cpp:164
+#: Src/Dialogs/SongPropertiesDialog.cpp:179 Src/Dialogs/Preferences.cpp:383
+#: Src/Dialogs/ScaleDialog.cpp:148 Src/Dialogs/TrackPropertiesDialog.cpp:234
+#: Src/Dialogs/CustomNoteSelectDialog.cpp:169 Src/Dialogs/TuningDialog.cpp:57
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:546
+msgid "Cancel"
+msgstr "取消"
+
+#: Src/Dialogs/CustomKeyDialog.cpp:38
+msgid "Custom Key Editor"
+msgstr "自定义key编辑器"
+
+#: Src/Dialogs/CustomKeyDialog.cpp:52
+msgid "Select which notes should be part of the custom key"
+msgstr "从音符中选出自定义key的部分"
+
+#. I18N: in custom key editor, this is the option to edit notes on a single
+#. octave
+#: Src/Dialogs/CustomKeyDialog.cpp:97
+msgid "All Octaves are Similar"
+msgstr "所有八度类似"
+
+#. I18N: in custom key editor, this is the option to edit all octaves
+#. independently
+#: Src/Dialogs/CustomKeyDialog.cpp:144
+msgid "All Octaves are Independent"
+msgstr "所有八度均为独立"
+
+#. I18N: in custom key editor
+#. wxButton* copySettingsBtn = new wxButton( pane, wxID_COPY, _("Copy settings
+#. from another track...") );
+#. over_sizer->Add(copySettingsBtn, 0, wxALL, 5);
+#. I18N: in the key editor
+#: Src/Dialogs/CustomKeyDialog.cpp:153
+msgid "* Checked notes are included in the key"
+msgstr ""
+
+#. I18N: in the key editor
+#: Src/Dialogs/CustomKeyDialog.cpp:155
+msgid "* \"Half-checked\" notes are included as accidentals"
+msgstr ""
+
+#. I18N: in the key editor
+#: Src/Dialogs/CustomKeyDialog.cpp:157
+msgid ""
+"* Unchecked notes are excluded (for instance, they could be unplayable on "
+"your instrument)"
+msgstr ""
+
+#: Src/Dialogs/CustomKeyDialog.cpp:165
+msgid "Save as preset..."
+msgstr "存为预设定…"
+
+#: Src/Dialogs/CustomKeyDialog.cpp:264
+msgid "Enter the name of the preset"
+msgstr "输入预设定名称"
+
+#: Src/Dialogs/WaitWindow.cpp:69
+msgid "Please wait..."
+msgstr "请稍等…"
+
+#. I18N: - title of the copyright/info dialog
+#: Src/Dialogs/SongPropertiesDialog.cpp:85
+msgid "Song Properties"
+msgstr ""
+
+#. I18N: - title of the copyright/info dialog
+#: Src/Dialogs/SongPropertiesDialog.cpp:96
+msgid "Song name"
+msgstr "歌曲名称"
+
+#. I18N: - title of the copyright/info dialog
+#: Src/Dialogs/SongPropertiesDialog.cpp:105
+msgid "Copyright"
+msgstr "版权"
+
+#. I18N: - default key signature
+#: Src/Dialogs/SongPropertiesDialog.cpp:113
+msgid "Default key signature"
+msgstr ""
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:119
+msgid "None"
+msgstr ""
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:120
+msgid "Sharps"
+msgstr ""
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:121
+msgid "Flats"
+msgstr ""
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:124
+msgid "Symbols"
+msgstr ""
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:148 Src/GUI/MainFrame.cpp:482
+msgid "Tempo"
+msgstr "速度"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:157 Src/Pickers/TimeSigPicker.cpp:139
+msgid "Time Signature"
+msgstr "拍号"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:169
+#: Src/Dialogs/SongPropertiesDialog.cpp:203
+msgid "Song duration :"
+msgstr "歌曲长度："
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:348 Src/Pickers/KeyPicker.cpp:95
+#: Src/Pickers/KeyPicker.cpp:110 Src/Midi/Note.h:102 Src/Midi/Note.h:118
+msgid "C"
+msgstr "C"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:348 Src/Pickers/KeyPicker.cpp:95
+#: Src/Pickers/KeyPicker.cpp:101 Src/Midi/Note.h:99 Src/Midi/Note.h:115
+msgid "A"
+msgstr "A"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:373 Src/Pickers/KeyPicker.cpp:522
+msgid "Major"
+msgstr "大调"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:373 Src/Pickers/KeyPicker.cpp:522
+msgid "minor"
+msgstr "小调"
+
+#: Src/Dialogs/PresetEditor.cpp:33
+msgid "Presets"
+msgstr "预设置"
+
+#: Src/Dialogs/PresetEditor.cpp:60
+msgid "Duplicate"
+msgstr "副本"
+
+#: Src/Dialogs/PresetEditor.cpp:62
+msgid "Delete"
+msgstr "删除"
+
+#: Src/Dialogs/PresetEditor.cpp:66 Src/Dialogs/AboutDialog.cpp:111
+#: Src/GUI/MainFrameMenuBar.cpp:1377
+msgid "Close"
+msgstr "关闭"
+
+#. I18N: when duplicating a preset
+#: Src/Dialogs/PresetEditor.cpp:97
+msgid "Enter the name of the duplicate"
+msgstr "输入副本的名称"
+
+#: Src/Dialogs/PresetEditor.cpp:117
+msgid "Are you sure you want to delete this preset? This cannot be undone."
+msgstr "您确定要删除这个预设置项吗？删除后将不能取消。"
+
+#: Src/Dialogs/PresetEditor.cpp:118 Src/GUI/MainFrameMenuBar.cpp:694
+#: Src/GUI/MainFrameMenuBar.cpp:757 Src/GUI/MainFrameMenuBar.cpp:794
+#: Src/GUI/MainFrameMenuBar.cpp:1032 Src/GUI/MainFrameMenuBar.cpp:1151
+#: Src/GUI/MainFrameMenuBar.cpp:1235 Src/Pickers/TimeSigPicker.cpp:289
+msgid "Confirm"
+msgstr "确认"
+
+#. I18N: - title of the preferences dialog
+#: Src/Dialogs/Preferences.cpp:246 Src/GUI/MainPane.cpp:150
+msgid "Preferences"
+msgstr "首选项"
+
+#: Src/Dialogs/Preferences.cpp:258
+msgid "Aria Maestosa"
+msgstr ""
+
+#: Src/Dialogs/Preferences.cpp:259
+msgid "Sound input/output"
+msgstr ""
+
+#: Src/Dialogs/Preferences.cpp:260
+msgid "Edition"
+msgstr ""
+
+#: Src/Dialogs/Preferences.cpp:351
+msgid "Browse..."
+msgstr "浏览…"
+
+#. I18N: - in the preferences dialog
+#: Src/Dialogs/Preferences.cpp:390
+msgid "Changes will take effect next time you open the application."
+msgstr ""
+
+#: Src/Dialogs/Preferences.cpp:444
+msgid "You will need to restart Aria Maestosa for changes to be effective."
+msgstr "您需要重启Aria Maestosa以使更改生效。"
+
+#: Src/Dialogs/Preferences.cpp:467 Src/GUI/MainFrameMenuBar.cpp:722
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:587
+msgid "Select file"
+msgstr "选择文件"
+
+#: Src/Dialogs/Preferences.cpp:468 Src/Midi/Players/Alsa/AlsaPlayer.cpp:588
+msgid "Sound Font"
+msgstr "Sound Font"
+
+#. I18N: - title of the scale dialog
+#: Src/Dialogs/ScaleDialog.cpp:70
+msgid "Scale"
+msgstr "按比例缩放调整"
+
+#. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
+#. selection\n* track\n* song"
+#: Src/Dialogs/ScaleDialog.cpp:111
+msgid "Scale notes in..."
+msgstr "要调整的音符是…"
+
+#. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
+#. selection\n* track\n* song"
+#: Src/Dialogs/ScaleDialog.cpp:115
+msgid "selection"
+msgstr "当前选择的"
+
+#. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
+#. selection\n* track\n* song"
+#: Src/Dialogs/ScaleDialog.cpp:120
+msgid "track"
+msgstr "当前音轨的"
+
+#. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
+#. selection\n* track\n* song"
+#: Src/Dialogs/ScaleDialog.cpp:124
+msgid "song"
+msgstr "当前歌曲的"
+
+#. I18N: - in the scale dialog. full context : "relative to...\n\n* first
+#. affected note\n* song beginning"
+#: Src/Dialogs/ScaleDialog.cpp:130
+msgid "relative to..."
+msgstr "以何为基准…"
+
+#. I18N: - in the scale dialog. full context : "relative to...\n\n* first
+#. affected note\n* song beginning"
+#: Src/Dialogs/ScaleDialog.cpp:134
+msgid "first affected note"
+msgstr "所选音符中的头一个"
+
+#. I18N: - in the scale dialog. full context : "relative to...\n\n* first
+#. affected note\n* song beginning"
+#: Src/Dialogs/ScaleDialog.cpp:139
+msgid "song beginning"
+msgstr "歌曲开头"
+
+#: Src/Dialogs/TrackPropertiesDialog.cpp:135
+#, c-format
+msgid "Track '%s' Properties"
+msgstr "音轨 '%s' 属性"
+
+#: Src/Dialogs/TrackPropertiesDialog.cpp:162
+msgid "Track Background"
+msgstr "音轨背景"
+
+#: Src/Dialogs/TrackPropertiesDialog.cpp:187
+msgid "Check all"
+msgstr ""
+
+#: Src/Dialogs/TrackPropertiesDialog.cpp:188
+msgid "Uncheck all"
+msgstr ""
+
+#: Src/Dialogs/TrackPropertiesDialog.cpp:206
+msgid "Default volume for new notes"
+msgstr "新音符的默认音量"
+
+#. I18N: - title of the custom note select dialog
+#: Src/Dialogs/CustomNoteSelectDialog.cpp:63
+msgid "Select notes..."
+msgstr "选择音符…"
+
+#. I18N: - in custom note select dialog. full context :\n\n Select notes
+#. that...\n\n* have the same pitch\n* have a similar volume *
+#. I18N: - * are on the same string * have the same fret * have a similar
+#. duration * are located in measures ... to ...
+#: Src/Dialogs/CustomNoteSelectDialog.cpp:74
+msgid "Select notes that..."
+msgstr "选择这些音符…"
+
+#. I18N: - in custom note select dialog. full context :\n\n Select notes
+#. that...\n\n* have the same pitch\n* have a similar volume *
+#. I18N: - * are on the same string * have the same fret * have a similar
+#. duration * are located in measures ... to ...
+#: Src/Dialogs/CustomNoteSelectDialog.cpp:79
+msgid "have the same pitch"
+msgstr "有相同音调"
+
+#. I18N: - in custom note select dialog. full context :\n\n Select notes
+#. that...\n\n* have the same pitch\n* have a similar volume *
+#. I18N: - * are on the same string * have the same fret * have a similar
+#. duration * are located in measures ... to ...
+#: Src/Dialogs/CustomNoteSelectDialog.cpp:91
+msgid "have a similar volume"
+msgstr "有相似音量"
+
+#. I18N: - in custom note select dialog. full context :\n\n Select notes
+#. that...\n\n* have the same pitch\n* have a similar volume *
+#. I18N: - * are on the same string * have the same fret * have a similar
+#. duration * are located in measures ... to ...
+#: Src/Dialogs/CustomNoteSelectDialog.cpp:110
+msgid "are on the same string"
+msgstr "在同一弦"
+
+#. I18N: - in custom note select dialog. full context :\n\n Select notes
+#. that...\n\n* have the same pitch\n* have a similar volume *
+#. I18N: - * are on the same string * have the same fret * have a similar
+#. duration * are located in measures ... to ...
+#: Src/Dialogs/CustomNoteSelectDialog.cpp:115
+msgid "have the same fret"
+msgstr "在同一品"
+
+#. I18N: - in custom note select dialog. full context :\n\n Select notes
+#. that...\n\n* have the same pitch\n* have a similar volume *
+#. I18N: - * are on the same string * have the same fret * have a similar
+#. duration * are located in measures ... to ...
+#: Src/Dialogs/CustomNoteSelectDialog.cpp:126
+msgid "have a similar duration"
+msgstr "有相似的音长"
+
+#. I18N: - in custom note select dialog. full context :\n\n Select notes
+#. that...\n\n* have the same pitch\n* have a similar volume *
+#. I18N: - * are on the same string * have the same fret * have a similar
+#. duration * are located in measures ... to ...
+#: Src/Dialogs/CustomNoteSelectDialog.cpp:143
+msgid "are located in measures "
+msgstr "位于小节"
+
+#. I18N: - in custom note select dialog. full context :\n\n Select notes
+#. that...\n\n* have the same pitch\n* have a similar volume *
+#. I18N: - * are on the same string * have the same fret * have a similar
+#. duration * are located in measures ... to ...
+#: Src/Dialogs/CustomNoteSelectDialog.cpp:152
+msgid " to "
+msgstr "至"
+
+#: Src/Dialogs/CustomNoteSelectDialog.cpp:271
+msgid "Illegal values"
+msgstr "不合法的值"
+
+#: Src/Dialogs/TuningDialog.cpp:42
+msgid "Custom Tuning Editor"
+msgstr "自定义调整编辑器"
+
+#: Src/Dialogs/AboutDialog.cpp:47
+msgid "About Aria Maestosa"
+msgstr "关于Aria Maestosa"
+
+#. I18N: - in about dialog
+#: Src/Dialogs/AboutDialog.cpp:59
+#, c-format
+msgid "version %s"
+msgstr "版本 %s"
+
+#. I18N: - in about dialog
+#: Src/Dialogs/AboutDialog.cpp:62
+msgid "Thanks to:"
+msgstr "感谢："
+
+#. I18N: - in about dialog
+#: Src/Dialogs/AboutDialog.cpp:64
+#, c-format
+msgid ""
+"Ergonis Software and %s for making EasyBeat,\n"
+"\ta great app that inspired Aria (www.ergonis.com)."
+msgstr ""
+
+#. I18N: - in about dialog
+#: Src/Dialogs/AboutDialog.cpp:66
+msgid "J.D. Koftinoff Software for the jdksmidi library"
+msgstr ""
+
+#. I18N: - in about dialog
+#: Src/Dialogs/AboutDialog.cpp:68
+msgid "The irrXML team for their XML parser"
+msgstr ""
+
+#. I18N: - in about dialog
+#: Src/Dialogs/AboutDialog.cpp:70
+msgid "The wxWidgets team"
+msgstr "wxWidgets团队"
+
+#. I18N: - in about dialog
+#: Src/Dialogs/AboutDialog.cpp:72
+msgid "The Tango icon set"
+msgstr "Tango图标设置"
+
+#. I18N: - in about dialog
+#: Src/Dialogs/AboutDialog.cpp:74
+msgid "Windows port by Alexis Archambault"
+msgstr "Windows端口由Alexis Archambault"
+
+#. I18N: - in about dialog
+#: Src/Dialogs/AboutDialog.cpp:76
+msgid "Translations:"
+msgstr "翻译："
+
+#. I18N: (undoable) action name
+#: Src/Actions/ScaleSong.cpp:30
+msgid "scale song"
+msgstr "缩放歌曲"
+
+#. I18N: (undoable) action name
+#: Src/Actions/ShiftFrets.cpp:28 Src/Actions/NumberPressed.cpp:29
+msgid "change note fret"
+msgstr "改变音符所在品"
+
+#. I18N: (undoable) action name
+#: Src/Actions/RemoveOverlapping.cpp:31
+msgid "remove overlapping notes"
+msgstr "移除重叠的音符"
+
+#. I18N: (undoable) action name
+#: Src/Actions/AddControllerSlide.cpp:33
+msgid "add control slide"
+msgstr "添加控制滑块"
+
+#. I18N: (undoable) action name
+#: Src/Actions/ShiftString.cpp:27
+msgid "string change"
+msgstr "横行变化"
+
+#. I18N: (undoable) action name
+#: Src/Actions/DeleteTrack.cpp:32
+msgid "delete track"
+msgstr "删除音轨"
+
+#. I18N: (undoable) action name
+#: Src/Actions/SetAccidentalSign.cpp:34
+msgid "accidental change"
+msgstr "临时变音"
+
+#. I18N: (undoable) action name
+#: Src/Actions/Record.cpp:32
+msgid "record from MIDI instrument"
+msgstr "从MIDI设备录入"
+
+#. I18N: (undoable) action name
+#: Src/Actions/RearrangeNotes.cpp:29
+msgid "rearrange notes"
+msgstr "重新排列音符"
+
+#. I18N: (undoable) action name
+#: Src/Actions/RemoveMeasures.cpp:37
+msgid "remove measure(s)"
+msgstr "移除小节"
+
+#. I18N: (undoable) action name
+#. I18N: menu item in the "edit" menu
+#: Src/Actions/ScrollNotesIntoView.cpp:37
+#: Src/Actions/RearrangeVertically.cpp:37 Src/GUI/MainFrameMenuBar.cpp:199
+msgid "Scroll notes into view"
+msgstr ""
+
+#. I18N: (undoable) action name
+#: Src/Actions/InsertEmptyMeasures.cpp:35
+msgid "insert measures"
+msgstr "插入小节"
+
+#. I18N: (undoable) action name
+#: Src/Actions/Duplicate.cpp:43
+msgid "duplicate"
+msgstr "副本"
+
+#. I18N: (undoable) action name
+#: Src/Actions/ShiftBySemiTone.cpp:30
+msgid "change pitch"
+msgstr "改变音调"
+
+#. I18N: (undoable) action name
+#: Src/Actions/ResizeNotes.cpp:31
+msgid "resize note(s)"
+msgstr "调整音符"
+
+#. I18N: (undoable) action name
+#: Src/Actions/SetNoteVolume.cpp:27
+msgid "change note(s) volume"
+msgstr "改变音符音量"
+
+#. I18N: (undoable) action name
+#: Src/Actions/AddControlEvent.cpp:32
+msgid "add control event"
+msgstr "添加控制事件"
+
+#. I18N: (undoable) action name
+#: Src/Actions/DuplicateMeasures.cpp:37
+msgid "duplicate measures"
+msgstr ""
+
+#. I18N: (undoable) action name
+#: Src/Actions/SnapNotesToGrid.cpp:28
+msgid "snap notes to grid"
+msgstr "将音符对齐至网格"
+
+#. I18N: (undoable) action name
+#: Src/Actions/DeleteSelected.cpp:40
+msgid "delete note(s)"
+msgstr "删除音符"
+
+#. I18N: (undoable) action name
+#: Src/Actions/Paste.cpp:42
+msgid "paste"
+msgstr "粘贴"
+
+#. I18N: (undoable) action name
+#: Src/Actions/ScaleTrack.cpp:30
+msgid "scale note(s)"
+msgstr "缩放音符"
+
+#. I18N: (undoable) action name
+#: Src/Actions/AddNote.cpp:39
+msgid "add note"
+msgstr "添加音符"
+
+#. I18N: (undoable) action name
+#: Src/Actions/SetTrackVolume.cpp:27
+msgid "change track volume"
+msgstr ""
+
+#. I18N: (undoable) action name
+#: Src/Actions/AddTrack.cpp:36
+msgid "add track"
+msgstr "添加音轨"
+
+#. I18N: (undoable) action name
+#: Src/Actions/MoveNotes.cpp:38
+msgid "move note(s)"
+msgstr "移动音符"
+
+#. I18N: (undoable) action name
+#: Src/Actions/UpdateGuitarTuning.cpp:29
+msgid "change guitar tuning"
+msgstr "改变吉他调谐"
+
+#: Src/IO/AriaFileWriter.cpp:49 Src/IO/AriaFileWriter.cpp:58
+#, c-format
+msgid "Could not open file '%s' for reading"
+msgstr "无法打开文件 '%s' 进行读取"
+
+#: Src/IO/MidiFileReader.cpp:156
+msgid ""
+"This MIDI file has tracks that play on multiple MIDI channels. This is not "
+"supported by Aria Maestosa."
+msgstr "此MIDI文件中含有用于多个MIDI通道的音轨，Aria Maestosa并不支持此项。"
+
+#: Src/IO/MidiFileReader.cpp:171
+msgid ""
+"This MIDI file has a track that sends events on multiple MIDI channels. This"
+" is not supported by Aria Maestosa."
+msgstr "此MIDI文件中含有传递事件到多个MIDI通道的音轨，Aria Maestosa并不支持此项。"
+
+#: Src/IO/MidiFileReader.cpp:222
+#, c-format
+msgid ""
+"This MIDI file appears to be incorrect; a note at tick %i in channel %i does"
+" not appear to have an end"
+msgstr "此MIDI文件出现了错误；通道 %i 的tick %i 中一个音符貌似没有结束"
+
+#: Src/IO/MidiFileReader.cpp:252
+#, c-format
+msgid ""
+"This MIDI file uses controller #%i, which is not part of the MIDI standard. "
+"This information will be discarded."
+msgstr "此MIDI文件使用了控制器 #%i，而这并非MIDI标准的一部分。这些信息将被丢弃。"
+
+#: Src/IO/MidiFileReader.cpp:262
+msgid ""
+"This MIDI file uses Registered Parameters, which are currently not supported"
+" by Aria Maestosa."
+msgstr "此MIDI文件使用了注册的参数，而这个目前未被Aria Maestosa支持。"
+
+#: Src/IO/MidiFileReader.cpp:266
+msgid ""
+"This MIDI files uses NRPN (Non-Registered Parameters, i.e. non-standard "
+"controllers), which are currently not supported by Aria Maestosa."
+msgstr "此MIDI文件使用了NRPN(未注册参数，即非标准控制器)，而这个目前未被Aria Maestosa支持。"
+
+#: Src/IO/MidiFileReader.cpp:278
+msgid ""
+"This MIDI files uses Channel Mode Message, which are currently not supported"
+" by Aria Maestosa."
+msgstr "此MIDI文件使用了通道模式信息，而这个目前未被Aria Maestosa支持。"
+
+#: Src/IO/MidiFileReader.cpp:282
+#, c-format
+msgid ""
+"This MIDI file uses unsupported MIDI controller #%i. Data related to this "
+"controller will be discarded."
+msgstr "此MIDI文件使用了不受支持的MIDI控制器 #%i。与此控制器相关联的数据将被丢弃。"
+
+#: Src/IO/MidiFileReader.cpp:522 Src/Printing/AbstractPrintableSequence.cpp:39
+#: Src/Printing/AbstractPrintableSequence.cpp:43 Src/Midi/Sequence.cpp:70
+#: Src/Midi/Sequence.cpp:118 Src/Midi/Sequence.cpp:140 Src/Midi/Track.cpp:93
+#: Src/Midi/Track.cpp:947 Src/Midi/Track.cpp:1959
+msgid "Untitled"
+msgstr "无标题"
+
+#. I18N: beats per minute (tempo)
+#: Src/Editors/ControllerEditor.cpp:87
+msgid "bpm"
+msgstr "bpm"
+
+#. I18N: as in "+2 semitones"
+#: Src/Editors/ControllerEditor.cpp:92
+msgid "semitones"
+msgstr "半音"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:92
+msgid "High Q"
+msgstr "High Q"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:94
+msgid "Slap"
+msgstr "Slap"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:96
+msgid "Push"
+msgstr "Push"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:98
+msgid "Pull"
+msgstr "pull"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:100 Src/Editors/DrumEditor.cpp:112
+msgid "Stick"
+msgstr "小鼓鼓边"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:102
+msgid "Square"
+msgstr "Square"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:104
+msgid "Metro"
+msgstr "Metro"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:106
+msgid "Metro bell"
+msgstr "Metro bell"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:108
+msgid "Bass drum 2"
+msgstr "大鼓 2"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:110
+msgid "Bass drum 1"
+msgstr "大鼓 1"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:114
+msgid "Snare"
+msgstr "小鼓 1"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:116
+msgid "Clap"
+msgstr "拍手"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:118
+msgid "Snare 2"
+msgstr "小鼓 2"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:120
+msgid "Tom 6"
+msgstr "低音鼓 6"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:122
+msgid "Closed hi-hat"
+msgstr "闭合开合钹"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:124
+msgid "Tom 5"
+msgstr "低音鼓 5"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:126
+msgid "Pedal hi-hat"
+msgstr "脚踏开合钹"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:128
+msgid "Tom 4"
+msgstr "中音鼓 4"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:130
+msgid "Open hi-hat"
+msgstr "开放开合钹"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:132
+msgid "Tom 3"
+msgstr "中音鼓 3"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:134
+msgid "Tom 2"
+msgstr "高音鼓 2"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:136
+msgid "Crash"
+msgstr "强音钹 1"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:138
+msgid "Tom 1"
+msgstr "高音鼓 1"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:140
+msgid "Ride"
+msgstr "打点钹 1"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:142
+msgid "Chinese"
+msgstr "钹"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:144
+msgid "Ride bell"
+msgstr "响铃"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:146
+msgid "Tambourine"
+msgstr "铃鼓"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:148
+msgid "Splash"
+msgstr "小钹铜钹"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:150
+msgid "Cowbell"
+msgstr "牛铃"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:152
+msgid "Crash 2"
+msgstr "强音钹 2"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:154
+msgid "Vibraslap"
+msgstr "噪音器"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:156
+msgid "Ride 2"
+msgstr "打点钹 2"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:158
+msgid "Hi bongo"
+msgstr "高音邦加鼓"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:160
+msgid "Low bongo"
+msgstr "低音邦加鼓"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:162
+msgid "Mute hi conga"
+msgstr "闷音高音康加鼓"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:164
+msgid "Open hi conga"
+msgstr "开放高音康加鼓"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:166
+msgid "Low conga"
+msgstr "低音康加鼓"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:168
+msgid "High timbale"
+msgstr "高音天巴雷鼓"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:170
+msgid "Low timbale"
+msgstr "低音天巴雷鼓"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:172
+msgid "High agogo"
+msgstr "高音阿哥哥"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:174
+msgid "Low agogo"
+msgstr "低音阿哥哥"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:176
+msgid "Cabasa"
+msgstr "卡巴沙（串珠）"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:178
+msgid "Maracas"
+msgstr "沙槌"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:180
+msgid "Short whistle"
+msgstr "短口哨"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:182
+msgid "Long whistle"
+msgstr "长口哨"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:184
+msgid "Short guiro"
+msgstr "短刮壶"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:186
+msgid "Long guiro"
+msgstr "长刮壶"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:188
+msgid "Claves"
+msgstr "梆子"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:190
+msgid "Hi wood block"
+msgstr "高音木鱼"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:192
+msgid "Lo wood block"
+msgstr "低音木鱼"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:194
+msgid "Mute cuica"
+msgstr "弱音美洲拉鼓声"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:196
+msgid "Open cuica"
+msgstr "开击美洲拉鼓声"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:198
+msgid "Mute triangle"
+msgstr "闷音三角铁"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:200
+msgid "Open triangle"
+msgstr "开放三角铁"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:202
+msgid "Shaker"
+msgstr "振动器"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:204
+msgid "Jingle Bell"
+msgstr "丁当响铃"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:206
+msgid "Bell Tree"
+msgstr "音树"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:208
+msgid "Castanets"
+msgstr "响板"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:210
+msgid "Mute surdo"
+msgstr "闷音surdo"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:212
+msgid "Open surdo"
+msgstr "开音surdo"
+
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:217
+msgid "Drumkit"
+msgstr "架子鼓"
+
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:219
+msgid "Hi-hat"
+msgstr "镲"
+
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:221
+msgid "Cymbal"
+msgstr "钹"
+
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:223
+msgid "Toms"
+msgstr "鼓"
+
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:225
+msgid "African"
+msgstr "非洲的"
+
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:227
+msgid "Latin"
+msgstr "拉丁的"
+
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:229
+msgid "Others"
+msgstr "其它"
+
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:231 Src/Pickers/InstrumentPicker.cpp:98
+#: Src/Pickers/InstrumentPicker.cpp:117 Src/Pickers/InstrumentPicker.cpp:136
+msgid "Sound Effects"
+msgstr "声音效果"
+
+#: Src/Renderers/wxImage.cpp:53
+msgid "Failed to load "
+msgstr "无法加载"
+
+#: Src/Renderers/GLImage.cpp:52 Src/Renderers/GLImage.cpp:64
+#: Src/Renderers/GLImage.cpp:77 Src/Renderers/GLImage.cpp:87
+#: Src/Renderers/GLImage.cpp:108 Src/Renderers/GLImage.cpp:194
+msgid "Failed to load resource image"
+msgstr "无法加载源镜像"
+
+#. I18N: for printing (page orientation)
+#: Src/Printing/wxEasyPrintWrapper.cpp:232
+msgid "Portrait"
+msgstr "纵向"
+
+#: Src/Printing/wxEasyPrintWrapper.cpp:232
+msgid "Landscape"
+msgstr "横向"
+
+#. I18N: for printing (page setup)
+#: Src/Printing/wxEasyPrintWrapper.cpp:234
+#, c-format
+msgid "left = %i mm, right = %i mm,"
+msgstr "左 = %i mm, 右 = %i mm,"
+
+#: Src/Printing/wxEasyPrintWrapper.cpp:235
+#, c-format
+msgid "top = %i mm, bottom = %i mm"
+msgstr "顶端 = %i mm, 底端 = %i mm"
+
+#: Src/Printing/AbstractPrintableSequence.cpp:39
+msgid "Aria Maestosa song"
+msgstr "Aria Maestosa歌曲"
+
+#. I18N: menu item in the "file" menu
+#: Src/GUI/MainFrameMenuBar.cpp:84
+msgid "&New"
+msgstr "新建"
+
+#. I18N: menu item in the "file" menu
+#: Src/GUI/MainFrameMenuBar.cpp:89
+msgid "&Open..."
+msgstr "打开"
+
+#: Src/GUI/MainFrameMenuBar.cpp:95
+msgid "&Recent Files"
+msgstr ""
+
+#. I18N: menu item in the "file" menu
+#: Src/GUI/MainFrameMenuBar.cpp:100
+msgid "&Save"
+msgstr "保存"
+
+#. I18N: menu item in the "file" menu
+#: Src/GUI/MainFrameMenuBar.cpp:104
+msgid "Save &As..."
+msgstr "另存为…"
+
+#. I18N: menu item in the "file" menu
+#: Src/GUI/MainFrameMenuBar.cpp:110
+msgid "&Reload"
+msgstr "重新载入"
+
+#. I18N: menu item in the "file" menu
+#: Src/GUI/MainFrameMenuBar.cpp:114
+msgid "&Close"
+msgstr "关闭"
+
+#: Src/GUI/MainFrameMenuBar.cpp:118
+msgid "Song Propert&ies..."
+msgstr ""
+
+#: Src/GUI/MainFrameMenuBar.cpp:122
+msgid "&Print..."
+msgstr "打印…"
+
+#. I18N: menu item in the "file" menu
+#: Src/GUI/MainFrameMenuBar.cpp:129
+msgid "I&mport Midi File..."
+msgstr "导入Midi文件…"
+
+#. I18N: menu item in the "file" menu
+#: Src/GUI/MainFrameMenuBar.cpp:132
+msgid "&Export to Midi..."
+msgstr "导出Midi…"
+
+#. I18N: menu item in the "file" menu
+#: Src/GUI/MainFrameMenuBar.cpp:139
+msgid "E&xport to Audio..."
+msgstr "导出音频…"
+
+#. I18N: menu item in the "file" menu
+#: Src/GUI/MainFrameMenuBar.cpp:144
+msgid "&Quit"
+msgstr "退出"
+
+#. I18N: name of a menu
+#: Src/GUI/MainFrameMenuBar.cpp:150
+msgid "&File"
+msgstr "文件"
+
+#. I18N: menu item in the "edit" menu
+#: Src/GUI/MainFrameMenuBar.cpp:156
+msgid "&Undo"
+msgstr "取消"
+
+#. I18N: menu item in the "edit" menu
+#: Src/GUI/MainFrameMenuBar.cpp:163
+msgid "&Copy"
+msgstr "复制"
+
+#. I18N: menu item in the "edit" menu
+#: Src/GUI/MainFrameMenuBar.cpp:168
+msgid "&Paste"
+msgstr "粘贴"
+
+#. I18N: menu item in the "edit" menu
+#: Src/GUI/MainFrameMenuBar.cpp:173
+msgid "Paste at Mouse Cu&rsor"
+msgstr "粘贴至鼠标处"
+
+#. I18N: menu item in the "edit" menu
+#: Src/GUI/MainFrameMenuBar.cpp:177
+msgid "Select &All"
+msgstr "选择所有"
+
+#. I18N: menu item in the "edit" menu
+#: Src/GUI/MainFrameMenuBar.cpp:180
+msgid "Select &None"
+msgstr "取消选择"
+
+#. I18N: menu item in the "edit" menu
+#: Src/GUI/MainFrameMenuBar.cpp:183
+msgid "Select N&otes..."
+msgstr "选择音符…"
+
+#. I18N: menu item in the "edit" menu
+#: Src/GUI/MainFrameMenuBar.cpp:187
+msgid "Snap Notes to &Grid"
+msgstr "将音符对齐至网格"
+
+#. I18N: menu item in the "edit" menu
+#: Src/GUI/MainFrameMenuBar.cpp:190
+msgid "&Scale..."
+msgstr "缩放…"
+
+#. I18N: menu item in the "edit" menu
+#: Src/GUI/MainFrameMenuBar.cpp:192
+msgid "Remove O&verlapping Notes"
+msgstr "移除重叠的音符"
+
+#. I18N: name of a menu
+#: Src/GUI/MainFrameMenuBar.cpp:204
+msgid "&Edit"
+msgstr "编辑"
+
+#. I18N: menu item in the "track" menu
+#: Src/GUI/MainFrameMenuBar.cpp:214
+msgid "&Add Track"
+msgstr "添加音轨"
+
+#. I18N: menu item in the "track" menu
+#: Src/GUI/MainFrameMenuBar.cpp:217
+msgid "&Duplicate Track Settings"
+msgstr "重复轨道设置"
+
+#. I18N: menu item in the "track" menu
+#: Src/GUI/MainFrameMenuBar.cpp:220
+msgid "&Delete Track"
+msgstr "删除音轨"
+
+#. I18N: - in the track menu, allows choosing the properties of a track
+#: Src/GUI/MainFrameMenuBar.cpp:224
+msgid "&Properties..."
+msgstr "属性…"
+
+#: Src/GUI/MainFrameMenuBar.cpp:227
+msgid "&Tracks"
+msgstr "音轨"
+
+#. I18N: In the playback menu
+#: Src/GUI/MainFrameMenuBar.cpp:233
+msgid "&Play / Pause"
+msgstr "播放/暂停"
+
+#. I18N: In the playback menu
+#: Src/GUI/MainFrameMenuBar.cpp:236
+msgid "&Stop"
+msgstr "停止"
+
+#. I18N: In the playback menu
+#: Src/GUI/MainFrameMenuBar.cpp:238
+msgid "&Record"
+msgstr "录制"
+
+#: Src/GUI/MainFrameMenuBar.cpp:241
+msgid "&Playback"
+msgstr "播放"
+
+#: Src/GUI/MainFrameMenuBar.cpp:246
+msgid "&Follow Playback"
+msgstr "跟随播放"
+
+#: Src/GUI/MainFrameMenuBar.cpp:250
+msgid "E&xpanded time sig management"
+msgstr "扩展拍号管理"
+
+#. I18N: - the channel setting. full context : Channel management\n\n*
+#. Automatic\n* Manual
+#: Src/GUI/MainFrameMenuBar.cpp:258
+msgid "&Channel management"
+msgstr "通道管理"
+
+#. I18N: - the channel setting. full context : Channel management\n\n*
+#. Automatic\n* Manual
+#: Src/GUI/MainFrameMenuBar.cpp:260
+msgid "&Automatic"
+msgstr "自动"
+
+#. I18N: - the channel setting. full context : Channel management\n\n*
+#. Automatic\n* Manual
+#: Src/GUI/MainFrameMenuBar.cpp:263
+msgid "&Manual"
+msgstr "手动"
+
+#. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n*
+#. Always\n* On note change\n* Never
+#: Src/GUI/MainFrameMenuBar.cpp:269
+msgid "Play during &edit"
+msgstr "编辑时播放"
+
+#. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n*
+#. Always\n* On note change\n* Never
+#: Src/GUI/MainFrameMenuBar.cpp:271
+msgid "&Always"
+msgstr "总是"
+
+#. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n*
+#. Always\n* On note change\n* Never
+#: Src/GUI/MainFrameMenuBar.cpp:274
+msgid "On note &change"
+msgstr "音符改变时"
+
+#. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n*
+#. Always\n* On note change\n* Never
+#: Src/GUI/MainFrameMenuBar.cpp:277
+msgid "&Never"
+msgstr "永不"
+
+#: Src/GUI/MainFrameMenuBar.cpp:281
+msgid "Play with &Metronome"
+msgstr "与节拍器一起播放"
+
+#: Src/GUI/MainFrameMenuBar.cpp:285
+msgid "&Playthrough when recording"
+msgstr "记录时仍然播放"
+
+#: Src/GUI/MainFrameMenuBar.cpp:289
+msgid "&Preferences..."
+msgstr "首选项…"
+
+#: Src/GUI/MainFrameMenuBar.cpp:300
+msgid "&Settings"
+msgstr "设置"
+
+#: Src/GUI/MainFrameMenuBar.cpp:311 Src/GUI/MainFrameMenuBar.cpp:1289
+msgid "No MIDI Output Available"
+msgstr "MIDI输出不可用"
+
+#: Src/GUI/MainFrameMenuBar.cpp:340
+msgid "&Output"
+msgstr "输出"
+
+#. I18N: menu where the MIDI input source is selected
+#: Src/GUI/MainFrameMenuBar.cpp:370
+msgid "&Input"
+msgstr "输入"
+
+#: Src/GUI/MainFrameMenuBar.cpp:376
+msgid "&About Aria Maestosa"
+msgstr "关于Aria Maestosa"
+
+#. I18N: - in help menu - see the help files
+#: Src/GUI/MainFrameMenuBar.cpp:378
+msgid "User's &Manual"
+msgstr "用户手册"
+
+#: Src/GUI/MainFrameMenuBar.cpp:384
+msgid "&Help"
+msgstr "帮助"
+
+#: Src/GUI/MainFrameMenuBar.cpp:529
+#, c-format
+msgid "&Undo %s"
+msgstr "取消 %s"
+
+#: Src/GUI/MainFrameMenuBar.cpp:540
+msgid "Can't Undo"
+msgstr "无法取消"
+
+#: Src/GUI/MainFrameMenuBar.cpp:683 Src/GUI/MainFrameMenuBar.cpp:746
+#: Src/GUI/MainFrameMenuBar.cpp:784
+msgid "Select destination file"
+msgstr "选择目标文件"
+
+#: Src/GUI/MainFrameMenuBar.cpp:684 Src/GUI/MainFrameMenuBar.cpp:723
+msgid "Aria Maestosa file"
+msgstr "Aria Maestosa 文件"
+
+#: Src/GUI/MainFrameMenuBar.cpp:693 Src/GUI/MainFrameMenuBar.cpp:757
+#: Src/GUI/MainFrameMenuBar.cpp:794
+msgid "The file already exists. Do you wish to overwrite it?"
+msgstr "文件已存在，您希望覆盖它吗？"
+
+#: Src/GUI/MainFrameMenuBar.cpp:733
+msgid "Select midi file"
+msgstr "选择midi文件"
+
+#: Src/GUI/MainFrameMenuBar.cpp:734 Src/GUI/MainFrameMenuBar.cpp:747
+msgid "Midi file"
+msgstr "Midi文件"
+
+#: Src/GUI/MainFrameMenuBar.cpp:768
+msgid "Sorry, failed to export midi file."
+msgstr "抱歉，导出midi文件失败。"
+
+#: Src/GUI/MainFrameMenuBar.cpp:806
+msgid ""
+"Please wait while audio file is being generated.\n"
+"\n"
+"Depending on the length of your file,\n"
+"this can take several minutes."
+msgstr "音频文件生成，请稍等。\n取决于您的文件长度。\n这可能需要几分钟。"
+
+#: Src/GUI/MainFrameMenuBar.cpp:1028
+msgid "You may not delete the last track"
+msgstr "您不能删除最后一个音轨"
+
+#: Src/GUI/MainFrameMenuBar.cpp:1032
+msgid "Do you really want to delete this track?"
+msgstr "您真的要删除这条音轨吗？"
+
+#: Src/GUI/MainFrameMenuBar.cpp:1150
+msgid ""
+"If multiple tracks play on the same channel, they will be merged.\n"
+"This cannot be undone.\n"
+"\n"
+"Do you really want to continue?"
+msgstr "如果有多条音轨使用相同的通道，它们将会被合并。\n这个操作无法取消。\n您确定要继续吗？"
+
+#: Src/GUI/MainFrameMenuBar.cpp:1234 Src/Pickers/TimeSigPicker.cpp:288
+msgid ""
+"Are you sure you want to go back to having a single time signature? Any time"
+" sig events you may have added will be lost. This cannot be undone."
+msgstr "您确定要重新使用唯一拍号吗？之前您可能添加的任何拍号都将丢失。这个操作无法取消。"
+
+#: Src/GUI/MainFrameMenuBar.cpp:1363
+msgid "Manual"
+msgstr "手动"
+
+#: Src/GUI/MainFrameMenuBar.cpp:1557
+msgid "Clear List"
+msgstr ""
+
+#: Src/GUI/MainFrame.cpp:440
+msgid "Record"
+msgstr "记录"
+
+#: Src/GUI/MainFrame.cpp:444
+msgid "Play"
+msgstr "播放"
+
+#: Src/GUI/MainFrame.cpp:448
+msgid "Stop"
+msgstr "停止"
+
+#: Src/GUI/MainFrame.cpp:451
+msgid "Loop"
+msgstr "循环"
+
+#. I18N: song length (number of measures)
+#: Src/GUI/MainFrame.cpp:467
+msgid "Length"
+msgstr "长度"
+
+#: Src/GUI/MainFrame.cpp:494
+msgid "Time Sig"
+msgstr "拍号"
+
+#: Src/GUI/MainFrame.cpp:502
+msgid "Start"
+msgstr "开始"
+
+#: Src/GUI/MainFrame.cpp:520
+msgid "Zoom"
+msgstr "缩放"
+
+#: Src/GUI/MainFrame.cpp:559 Src/GUI/MainFrame.cpp:561
+msgid "Tool"
+msgstr "工具"
+
+#. I18N: to hide the panel that is shown when a file could not be imported
+#. successfully
+#: Src/GUI/MainFrame.cpp:600
+msgid "Hide"
+msgstr "隐藏"
+
+#: Src/GUI/MainFrame.cpp:1008
+msgid "Please select an input port from the 'input' menu before recording"
+msgstr "在录制以前请先从‘输入’菜单选择一个输入端口"
+
+#: Src/GUI/MainFrame.cpp:1732
+#, c-format
+msgid ""
+"You have unsaved changes in sequence '%s'. Do you want to save them before "
+"proceeding?"
+msgstr "您在序列 '%s' 中有未保存的更改。您想在继续下一步前保存它们吗？"
+
+#: Src/GUI/MainFrame.cpp:1734
+msgid "Selecting 'Yes' will save your document before closing"
+msgstr "选择“是”将会在关闭之前保存您的文档"
+
+#: Src/GUI/MainFrame.cpp:1735
+msgid "Selecting 'No' will discard unsaved changes"
+msgstr "选择“否”将会丢弃未保存的更改"
+
+#: Src/GUI/MainFrame.cpp:1736
+msgid "Selecting 'Cancel' will cancel exiting the application"
+msgstr "选择“取消”将会取消退出本程序"
+
+#. I18N: title of dialog shown when exiting without saving
+#: Src/GUI/MainFrame.cpp:1741
+msgid "Unsaved changes in sequence"
+msgstr "序列中未保存的更改"
+
+#: Src/GUI/MainFrame.cpp:1913
+msgid "Unknown file type: "
+msgstr "未知的文件类型："
+
+#: Src/GUI/MainFrame.cpp:1940 Src/GUI/MainFrame.cpp:2062
+msgid "Sorry, loading .aria file failed."
+msgstr "抱歉，加载.aria文件失败。"
+
+#: Src/GUI/MainFrame.cpp:1982
+msgid "Please wait while midi file is loading."
+msgstr "加载midi文件，请稍等。"
+
+#: Src/GUI/MainFrame.cpp:1989 Src/GUI/MainFrame.cpp:2074
+msgid "Sorry, loading midi file failed."
+msgstr "抱歉，加载midi文件失败。"
+
+#: Src/GUI/MainFrame.cpp:2013
+msgid ""
+"Loading the MIDI file completed successfully, but with the following "
+"warnings (the song may not sound as intended) :"
+msgstr "加载MIDI文件成功完成，但预先通知如下（歌曲可能听起来跟预计的不同）："
+
+#: Src/GUI/MainFrame.cpp:2053
+msgid "Please wait while file is reloaded."
+msgstr "文件重载，请等待。"
+
+#: Src/GUI/MainFrame.cpp:2188
+msgid ""
+"A new version of Aria Maestosa is now available! Visit the following link to"
+" download it :"
+msgstr "Aria Maestosa的一个新版本现在可用！访问以下链接下载："
+
+#: Src/GUI/MainFrame.cpp:2199
+msgid "An error occurred"
+msgstr "出错了"
+
+#: Src/GUI/MainPane.cpp:147
+msgid "Create a new sequence"
+msgstr "创建一个新序列"
+
+#: Src/GUI/MainPane.cpp:148
+msgid "Open a saved sequence"
+msgstr "打开一个已保存的序列"
+
+#: Src/GUI/MainPane.cpp:149
+msgid "Import a MIDI file"
+msgstr "导入一个MIDI文件"
+
+#: Src/GUI/MainPane.cpp:151
+msgid "Help"
+msgstr "帮助"
+
+#: Src/GUI/MainPane.cpp:152
+msgid "Exit"
+msgstr "退出"
+
+#: Src/GUI/GraphicalTrack.cpp:418
+msgid "Track volume"
+msgstr ""
+
+#: Src/GUI/GraphicalTrack.cpp:422
+msgid "Mute"
+msgstr ""
+
+#: Src/GUI/GraphicalTrack.cpp:426
+msgid "Solo"
+msgstr ""
+
+#: Src/GUI/GraphicalTrack.cpp:432
+msgid "Maximize track"
+msgstr ""
+
+#: Src/GUI/GraphicalTrack.cpp:436
+msgid "Dock track"
+msgstr ""
+
+#: Src/GUI/GraphicalTrack.cpp:458 Src/Editors/ScoreEditor.h:285
+msgid "Score Editor"
+msgstr "乐谱编辑器"
+
+#: Src/GUI/GraphicalTrack.cpp:462 Src/Editors/KeyboardEditor.h:88
+msgid "Keyboard Editor"
+msgstr "键盘编辑器"
+
+#: Src/GUI/GraphicalTrack.cpp:466 Src/Editors/GuitarEditor.h:63
+msgid "Tablature Editor"
+msgstr "乐谱编辑器"
+
+#: Src/GUI/GraphicalTrack.cpp:470 Src/Editors/DrumEditor.h:103
+msgid "Drum Editor"
+msgstr "鼓编辑器"
+
+#: Src/GUI/GraphicalTrack.cpp:474 Src/Editors/ControllerEditor.h:168
+msgid "Controller Editor"
+msgstr "控制器编辑器"
+
+#: Src/GUI/GraphicalTrack.cpp:778
+msgid "Choose a new track title."
+msgstr "选择新的音轨标题。"
+
+#: Src/GUI/GraphicalTrack.cpp:835
+msgid "Enter the ID of the channel this track should play in"
+msgstr "输入该音轨要使用的通道ID"
+
+#: Src/GUI/GraphicalTrack.cpp:837
+msgid "Channel choice"
+msgstr "通道选择"
+
+#: Src/GUI/MeasureBar.cpp:70
+msgid "Remove selected measures"
+msgstr "移除选择的小节"
+
+#: Src/GUI/MeasureBar.cpp:71
+msgid "Duplicate selected measures"
+msgstr ""
+
+#: Src/GUI/MeasureBar.cpp:97
+msgid "Do you really want to remove selected measures?"
+msgstr "您真的要移除所选的小节吗？"
+
+#: Src/GUI/MeasureBar.cpp:148
+msgid "Insert measures"
+msgstr "插入小节"
+
+#: Src/GUI/MeasureBar.cpp:150
+msgid "Remove time sig change"
+msgstr "移除拍号更改"
+
+#: Src/GUI/MeasureBar.cpp:156
+#, c-format
+msgid "Insert empty measures between measures %i and %i"
+msgstr ""
+
+#: Src/GUI/MeasureBar.cpp:158
+msgid "Amount: "
+msgstr "合计："
+
+#: Src/GUI/MeasureBar.cpp:177
+msgid "Do you really want to remove this time sig change?"
+msgstr "您真的想移除这个拍号更改吗？"
+
+#: Src/GUI/MeasureBar.cpp:183
+msgid "You can't remove the first time signature change."
+msgstr "您无法移除第一次签名更改。"
+
+#: Src/Midi/Players/PlatformMidiManager.cpp:65
+msgid "Bad binary, no MIDI driver was compiled in!"
+msgstr "错误的二进制文件，没有MIDI驱动被编译！"
+
+#: Src/Midi/Players/PlatformMidiManager.cpp:285
+msgid "Sorry, no MIDI input port is available"
+msgstr "很抱歉，没有可用的MIDI输入端口"
+
+#: Src/Midi/Players/PlatformMidiManager.cpp:313
+#: Src/Midi/Players/PlatformMidiManager.cpp:332
+msgid "Sorry, failed to open the selected MIDI input port"
+msgstr "很抱歉，打开所选的MIDI端口时失败"
+
+#: Src/Midi/Players/Example/ExamplePlayer.cpp:179
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:443
+msgid "WAV file"
+msgstr "WAV文件"
+
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:772
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:805
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:823
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:834
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:844
+msgid ""
+"An error has occurred when connecting to the MIDI output device with "
+"AudioUnit; audio playback may be unavailable"
+msgstr "用AudioUnit连接到MIDI输出设备时出错，音频播放可能无法使用。"
+
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:783
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:794
+msgid "Sorry, failed to set custom soundfont."
+msgstr "很抱歉，设置自定义soundfont失败。"
+
+#: Src/Midi/Players/Mac/CoreMIDIOutput.cpp:189
+msgid "Unknown MIDI port : "
+msgstr "未知的MIDI端口"
+
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:139
+msgid ""
+"Sorry, exporting to audio could not complete successfully. Please include "
+"the following error code when reporting the issue :"
+msgstr "很抱歉，输出到音频无法顺利完成。请在报告问题时包含以下错误代码："
+
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:275
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:279
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:328
+msgid "OSX Software Synthesizer"
+msgstr "OSX软件合成器"
+
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:311
+msgid "AIFF file"
+msgstr "AIFF文件"
+
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:257
+msgid ""
+"Failed to open ALSA device, sound will be unavailable (you can try selecting"
+" another output device from the 'Output' menu)"
+msgstr "打开ALSA设备失败，声音将不可用(您可以尝试在输出列表中选择其它输出设备)"
+
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:505
+msgid "Settings"
+msgstr "设置"
+
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:514
+msgid "Choose the MIDI engine to use to render the file"
+msgstr "选择用来渲染文件的MIDI引擎"
+
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:520
+msgid "MIDI Engine"
+msgstr "MIDI引擎"
+
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:527
+msgid "Fluidsynth Soundfont"
+msgstr "Fluidsynth Soundfont"
+
+#: Src/Midi/Players/Alsa/AlsaPort.cpp:46
+msgid "Failed to open ALSA port."
+msgstr "打开ALSA端口失败。"
+
+#: Src/Midi/Players/Alsa/AlsaPort.cpp:172
+msgid "No midi port found, no sound will be available."
+msgstr "未发现midi端口，声音将不可用。"
+
+#: Src/Midi/Players/Alsa/AlsaPort.cpp:260
+#, c-format
+msgid "The selected ALSA device (%s) could not be opened."
+msgstr "所选的ALSA设备 (%s) 无法打开。"
+
+#: Src/Midi/Players/Alsa/AlsaPort.cpp:442
+msgid "Loading "
+msgstr ""
+
+#: Src/Midi/Players/Jack/JackMidiManager.cpp:231
+msgid "Jack"
+msgstr "Jack"
+
+#: Src/Midi/Players/NullDevice.cpp:65
+msgid "No sound available"
+msgstr "无可用声音"
+
+#: Src/Midi/Players/Win/WinPlayer.cpp:300
+#: Src/Midi/Players/Win/WinPlayer.cpp:331
+#: Src/Midi/Players/Win/WinPlayer.cpp:335
+msgid "Windows Software Synthesizer"
+msgstr "Windows软件合成器"
+
+#: Src/Midi/Players/Win/WinPlayer.cpp:362
+msgid "Failed to initialize MIDI out device"
+msgstr "MIDI输出设备初始化失败"
+
+#: Src/Midi/CommonMidiUtils.cpp:434 Src/Midi/CommonMidiUtils.cpp:459
+msgid ""
+"WARNING: this song has too many\n"
+"channels, expect unpredictable output"
+msgstr "警告：这首歌曲有过多的通道，会出现无法预测的输出"
+
+#: Src/Midi/Sequence.cpp:814
+msgid ""
+"Warning : you are opening a file saved with a version of\n"
+"Aria Maestosa more recent than the version you currently have.\n"
+"It may not open correctly."
+msgstr "警告：您正在打开一个用比您现在的版本⏎更新的Aria Maestosa保存的文件。⏎它可能无法正确打开。"
 
 #: Src/Midi/InstrumentChoice.cpp:29
 msgid "Acoustic Grand Piano"
@@ -428,7 +2310,7 @@ msgstr "小妖"
 
 #: Src/Midi/InstrumentChoice.cpp:131
 msgid "Drops"
-msgstr ""
+msgstr "水滴"
 
 #: Src/Midi/InstrumentChoice.cpp:132
 msgid "Star Theme"
@@ -530,50 +2412,37 @@ msgstr "鼓掌声"
 msgid "Gunshot"
 msgstr "枪声"
 
-#: Src/Midi/Track.cpp:87 Src/Midi/Track.cpp:934 Src/Midi/Track.cpp:1915
-#: Src/Midi/Sequence.cpp:68 Src/Midi/Sequence.cpp:116
-#: Src/Midi/Sequence.cpp:138 Src/Printing/AbstractPrintableSequence.cpp:39
-#: Src/Printing/AbstractPrintableSequence.cpp:43 Src/IO/MidiFileReader.cpp:522
-msgid "Untitled"
-msgstr "无标题"
-
-#: Src/Midi/CommonMidiUtils.cpp:428 Src/Midi/CommonMidiUtils.cpp:453
-msgid ""
-"WARNING: this song has too many\n"
-"channels, expect unpredictable output"
-msgstr "警告：这首歌曲有过多的通道，会出现无法预测的输出"
-
 #: Src/Midi/DrumChoice.cpp:30
 msgid "Standard"
-msgstr ""
+msgstr "标准"
 
 #: Src/Midi/DrumChoice.cpp:31
 msgid "Room kit"
-msgstr ""
+msgstr "房间套件"
 
 #: Src/Midi/DrumChoice.cpp:32
 msgid "Power kit"
-msgstr ""
+msgstr "动力套件"
 
 #: Src/Midi/DrumChoice.cpp:33
 msgid "Electronic"
-msgstr ""
+msgstr "电子"
 
 #: Src/Midi/DrumChoice.cpp:34
 msgid "Analog"
-msgstr ""
+msgstr "模拟"
 
 #: Src/Midi/DrumChoice.cpp:35
 msgid "Jazz"
-msgstr ""
+msgstr "爵士"
 
 #: Src/Midi/DrumChoice.cpp:36
 msgid "Brush"
-msgstr ""
+msgstr "Brush"
 
 #: Src/Midi/DrumChoice.cpp:37
 msgid "Orchestral"
-msgstr ""
+msgstr "管弦乐的"
 
 #: Src/Midi/DrumChoice.cpp:38
 msgid "Special Effects"
@@ -583,1331 +2452,13 @@ msgstr "特别效果"
 msgid "Invalid Drumkit"
 msgstr "无效的鼓组"
 
-#: Src/Midi/Sequence.cpp:765
-msgid ""
-"Warning : you are opening a file saved with a version of\n"
-"Aria Maestosa more recent than the version you currently have.\n"
-"It may not open correctly."
-msgstr ""
-
-#: Src/Midi/Players/Jack/JackMidiManager.cpp:231
-msgid "Jack"
-msgstr "Jack"
-
-#: Src/Midi/Players/NullDevice.cpp:65
-msgid "No sound available"
-msgstr "无可用声音"
-
-#: Src/Midi/Players/Example/ExamplePlayer.cpp:179
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:441
-msgid "WAV file"
-msgstr "WAV文件"
-
-#: Src/Midi/Players/PlatformMidiManager.cpp:65
-msgid "Bad binary, no MIDI driver was compiled in!"
-msgstr "错误的二进制文件，没有MIDI驱动被编译！"
-
-#: Src/Midi/Players/PlatformMidiManager.cpp:285
-msgid "Sorry, no MIDI input port is available"
-msgstr "很抱歉，没有可用的MIDI输入端口"
-
-#: Src/Midi/Players/PlatformMidiManager.cpp:313
-#: Src/Midi/Players/PlatformMidiManager.cpp:332
-msgid "Sorry, failed to open the selected MIDI input port"
-msgstr "很抱歉，打开所选的MIDI端口时失败"
-
-#: Src/Midi/Players/Mac/CoreMIDIOutput.cpp:189
-msgid "Unknown MIDI port : "
-msgstr "未知的MIDI端口"
-
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:772
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:805
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:823
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:834
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:844
-msgid ""
-"An error has occurred when connecting to the MIDI output device with "
-"AudioUnit; audio playback may be unavailable"
-msgstr "用AudioUnit连接到MIDI输出设备时出错，音频播放可能无法使用。"
-
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:783
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:794
-msgid "Sorry, failed to set custom soundfont."
-msgstr "很抱歉，设置自定义soundfont失败。"
-
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:139
-msgid ""
-"Sorry, exporting to audio could not complete successfully. Please include "
-"the following error code when reporting the issue :"
-msgstr ""
-
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:275
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:279
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:328
-msgid "OSX Software Synthesizer"
-msgstr "OSX软件合成器"
-
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:311
-msgid "AIFF file"
-msgstr "AIFF文件"
-
-#: Src/Midi/Players/Alsa/AlsaPort.cpp:35
-msgid "Failed to open ALSA port."
-msgstr "打开ALSA端口失败。"
-
-#: Src/Midi/Players/Alsa/AlsaPort.cpp:137
-msgid "No midi port found, no sound will be available."
-msgstr "未发现midi端口，声音将不可用。"
-
-#: Src/Midi/Players/Alsa/AlsaPort.cpp:183
-#, c-format
-msgid "The selected ALSA device (%s) could not be opened."
-msgstr "所选的ALSA设备 (%s) 无法打开。"
-
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:255
-msgid ""
-"Failed to open ALSA device, sound will be unavailable (you can try selecting"
-" another output device from the 'Output' menu)"
-msgstr "打开ALSA设备失败，声音将不可用(您可以尝试在输出列表中选择其它输出设备)"
-
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:502
-msgid "Settings"
-msgstr "设置"
-
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:506
-msgid "Choose the MIDI engine to use to render the file"
-msgstr ""
-
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:512
-msgid "MIDI Engine"
-msgstr "MIDI引擎"
-
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:519
-msgid "Fluidsynth Soundfont"
-msgstr ""
-
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:528
-#: Src/Dialogs/CustomKeyDialog.cpp:161 Src/Dialogs/Preferences.cpp:334
-#: Src/Dialogs/CustomNoteSelectDialog.cpp:167
-#: Src/Dialogs/PrintSetupDialog.cpp:105 Src/Dialogs/PrintSetupDialog.cpp:728
-#: Src/Dialogs/CopyrightWindow.cpp:94 Src/Dialogs/ScaleDialog.cpp:152
-#: Src/Dialogs/TuningDialog.cpp:54 Src/Pickers/TimeSigPicker.cpp:181
-msgid "OK"
-msgstr "确定"
-
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:529
-#: Src/Dialogs/CustomKeyDialog.cpp:162 Src/Dialogs/Preferences.cpp:335
-#: Src/Dialogs/CustomNoteSelectDialog.cpp:169
-#: Src/Dialogs/PrintSetupDialog.cpp:731 Src/Dialogs/CopyrightWindow.cpp:99
-#: Src/Dialogs/ScaleDialog.cpp:148 Src/Dialogs/TrackPropertiesDialog.cpp:192
-#: Src/Dialogs/TuningDialog.cpp:57
-msgid "Cancel"
-msgstr "取消"
-
-#: Src/Midi/Players/Win/WinPlayer.cpp:299
-#: Src/Midi/Players/Win/WinPlayer.cpp:330
-#: Src/Midi/Players/Win/WinPlayer.cpp:334
-msgid "Windows Software Synthesizer"
-msgstr "Windows软件合成器"
-
-#: Src/Midi/Players/Win/WinPlayer.cpp:361
-msgid "Failed to initialize MIDI out device"
-msgstr "MIDI输出设备初始化失败"
-
-#. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:80
-msgid "&New"
-msgstr "新建"
-
-#. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:85
-msgid "&Open..."
-msgstr "打开"
-
-#. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:90
-msgid "&Save"
-msgstr "保存"
-
-#. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:94
-msgid "Save &As..."
-msgstr "另存为…"
-
-#. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:100
-msgid "&Reload"
-msgstr "重新载入"
-
-#. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:104
-msgid "&Close"
-msgstr "关闭"
-
-#: Src/GUI/MainFrameMenuBar.cpp:108
-msgid "Song &info..."
-msgstr "歌曲信息…"
-
-#: Src/GUI/MainFrameMenuBar.cpp:112
-msgid "&Print..."
-msgstr "打印…"
-
-#. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:119
-msgid "I&mport Midi File..."
-msgstr "导入Midi文件…"
-
-#. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:122
-msgid "&Export to Midi..."
-msgstr "导出Midi…"
-
-#. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:129
-msgid "E&xport to Audio..."
-msgstr "导出音频…"
-
-#. I18N: menu item in the "file" menu
-#: Src/GUI/MainFrameMenuBar.cpp:134
-msgid "&Quit"
-msgstr "退出"
-
-#. I18N: name of a menu
-#: Src/GUI/MainFrameMenuBar.cpp:140
-msgid "&File"
-msgstr "文件"
-
-#. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:146
-msgid "&Undo"
-msgstr "取消"
-
-#. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:153
-msgid "&Copy"
-msgstr "复制"
-
-#. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:158
-msgid "&Paste"
-msgstr "粘贴"
-
-#. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:163
-msgid "Paste at Mouse Cu&rsor"
-msgstr "粘贴至鼠标处"
-
-#. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:167
-msgid "Select &All"
-msgstr "选择所有"
-
-#. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:170
-msgid "Select &None"
-msgstr "取消选择"
-
-#. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:173
-msgid "Select N&otes..."
-msgstr "选择音符…"
-
-#. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:177
-msgid "Snap Notes to &Grid"
-msgstr "将音符对齐至网格"
-
-#. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:180
-msgid "&Scale..."
-msgstr "缩放…"
-
-#. I18N: menu item in the "edit" menu
-#: Src/GUI/MainFrameMenuBar.cpp:182
-msgid "Remove O&verlapping Notes"
-msgstr "移除重叠的音符"
-
-#. I18N: name of a menu
-#: Src/GUI/MainFrameMenuBar.cpp:186
-msgid "&Edit"
-msgstr "编辑"
-
-#. I18N: menu item in the "track" menu
-#: Src/GUI/MainFrameMenuBar.cpp:193
-msgid "&Add Track"
-msgstr "添加音轨"
-
-#. I18N: menu item in the "track" menu
-#: Src/GUI/MainFrameMenuBar.cpp:196
-msgid "&Duplicate Track Settings"
-msgstr ""
-
-#. I18N: menu item in the "track" menu
-#: Src/GUI/MainFrameMenuBar.cpp:199
-msgid "&Delete Track"
-msgstr "删除音轨"
-
-#. I18N: - in the track menu, allows choosing the properties of a track
-#: Src/GUI/MainFrameMenuBar.cpp:203
-msgid "&Properties..."
-msgstr "属性…"
-
-#: Src/GUI/MainFrameMenuBar.cpp:206
-msgid "&Tracks"
-msgstr "音轨"
-
-#. I18N: In the playback menu
-#: Src/GUI/MainFrameMenuBar.cpp:211
-msgid "&Play / Pause"
-msgstr "播放/暂停"
-
-#. I18N: In the playback menu
-#: Src/GUI/MainFrameMenuBar.cpp:214
-msgid "&Stop"
-msgstr "停止"
-
-#. I18N: In the playback menu
-#: Src/GUI/MainFrameMenuBar.cpp:216
-msgid "&Record"
-msgstr "录制"
-
-#: Src/GUI/MainFrameMenuBar.cpp:219
-msgid "&Playback"
-msgstr "播放"
-
-#: Src/GUI/MainFrameMenuBar.cpp:224
-msgid "&Follow Playback"
-msgstr ""
-
-#: Src/GUI/MainFrameMenuBar.cpp:228
-msgid "E&xpanded time sig management"
-msgstr ""
-
-#. I18N: - the channel setting. full context : Channel management\n\n*
-#. Automatic\n* Manual
-#: Src/GUI/MainFrameMenuBar.cpp:236
-msgid "&Channel management"
-msgstr "通道管理"
-
-#. I18N: - the channel setting. full context : Channel management\n\n*
-#. Automatic\n* Manual
-#: Src/GUI/MainFrameMenuBar.cpp:238
-msgid "&Automatic"
-msgstr "自动"
-
-#. I18N: - the channel setting. full context : Channel management\n\n*
-#. Automatic\n* Manual
-#: Src/GUI/MainFrameMenuBar.cpp:241
-msgid "&Manual"
-msgstr "手动"
-
-#. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n*
-#. Always\n* On note change\n* Never
-#: Src/GUI/MainFrameMenuBar.cpp:247
-msgid "Play during &edit"
-msgstr "编辑时播放"
-
-#. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n*
-#. Always\n* On note change\n* Never
-#: Src/GUI/MainFrameMenuBar.cpp:249
-msgid "&Always"
-msgstr "总是"
-
-#. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n*
-#. Always\n* On note change\n* Never
-#: Src/GUI/MainFrameMenuBar.cpp:252
-msgid "On note &change"
-msgstr "音符改变时"
-
-#. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n*
-#. Always\n* On note change\n* Never
-#: Src/GUI/MainFrameMenuBar.cpp:255
-msgid "&Never"
-msgstr "永不"
-
-#: Src/GUI/MainFrameMenuBar.cpp:259
-msgid "Play with &Metronome"
-msgstr "播放时有节拍器"
-
-#: Src/GUI/MainFrameMenuBar.cpp:263
-msgid "&Playthrough when recording"
-msgstr ""
-
-#: Src/GUI/MainFrameMenuBar.cpp:267
-msgid "&Preferences..."
-msgstr "首选项…"
-
-#: Src/GUI/MainFrameMenuBar.cpp:278
-msgid "&Settings"
-msgstr "设置"
-
-#: Src/GUI/MainFrameMenuBar.cpp:289 Src/GUI/MainFrameMenuBar.cpp:1180
-msgid "No MIDI Output Available"
-msgstr "MIDI输出不可用"
-
-#: Src/GUI/MainFrameMenuBar.cpp:318
-msgid "&Output"
-msgstr "输出"
-
-#: Src/GUI/MainFrameMenuBar.cpp:329 Src/GUI/MainFrameMenuBar.cpp:332
-#: Src/GUI/MainFrame.cpp:933 Src/PreferencesData.cpp:307
-msgid "No MIDI input"
-msgstr "无MIDI输入设备"
-
-#. I18N: menu where the MIDI input source is selected
-#: Src/GUI/MainFrameMenuBar.cpp:348
-msgid "&Input"
-msgstr "输入"
-
-#: Src/GUI/MainFrameMenuBar.cpp:354
-msgid "&About Aria Maestosa"
-msgstr "关于Aria Maestosa"
-
-#. I18N: - in help menu - see the help files
-#: Src/GUI/MainFrameMenuBar.cpp:356
-msgid "User's &Manual"
-msgstr "用户手册"
-
-#: Src/GUI/MainFrameMenuBar.cpp:362
-msgid "&Help"
-msgstr "帮助"
-
-#: Src/GUI/MainFrameMenuBar.cpp:486
-#, c-format
-msgid "&Undo %s"
-msgstr "取消 %s"
-
-#: Src/GUI/MainFrameMenuBar.cpp:497
-msgid "Can't Undo"
-msgstr "无法取消"
-
-#: Src/GUI/MainFrameMenuBar.cpp:591 Src/GUI/MainFrameMenuBar.cpp:652
-#: Src/GUI/MainFrameMenuBar.cpp:690
-msgid "Select destination file"
-msgstr "选择目标文件"
-
-#: Src/GUI/MainFrameMenuBar.cpp:601 Src/GUI/MainFrameMenuBar.cpp:663
-#: Src/GUI/MainFrameMenuBar.cpp:700
-msgid "The file already exists. Do you wish to overwrite it?"
-msgstr "文件已存在，您希望覆盖它吗？"
-
-#: Src/GUI/MainFrameMenuBar.cpp:602 Src/GUI/MainFrameMenuBar.cpp:663
-#: Src/GUI/MainFrameMenuBar.cpp:700 Src/GUI/MainFrameMenuBar.cpp:923
-#: Src/GUI/MainFrameMenuBar.cpp:1042 Src/GUI/MainFrameMenuBar.cpp:1126
-#: Src/Dialogs/PresetEditor.cpp:118 Src/Pickers/TimeSigPicker.cpp:289
-msgid "Confirm"
-msgstr "确认"
-
-#: Src/GUI/MainFrameMenuBar.cpp:628 Src/Dialogs/Preferences.cpp:413
-msgid "Select file"
-msgstr "选择文件"
-
-#: Src/GUI/MainFrameMenuBar.cpp:629
-msgid "Aria Maestosa file"
-msgstr "Aria Maestosa 文件"
-
-#: Src/GUI/MainFrameMenuBar.cpp:639
-msgid "Select midi file"
-msgstr "选择midi文件"
-
-#: Src/GUI/MainFrameMenuBar.cpp:640 Src/GUI/MainFrameMenuBar.cpp:653
-msgid "Midi file"
-msgstr "Midi文件"
-
-#: Src/GUI/MainFrameMenuBar.cpp:674
-msgid "Sorry, failed to export midi file."
-msgstr "抱歉，导出midi文件失败。"
-
-#: Src/GUI/MainFrameMenuBar.cpp:712
-msgid ""
-"Please wait while audio file is being generated.\n"
-"\n"
-"Depending on the length of your file,\n"
-"this can take several minutes."
-msgstr "音频文件生成，请稍等。\n取决于您的文件长度。\n这可能需要几分钟。"
-
-#: Src/GUI/MainFrameMenuBar.cpp:919
-msgid "You may not delete the last track"
-msgstr "您不能删除最后一个音轨"
-
-#: Src/GUI/MainFrameMenuBar.cpp:923
-msgid "Do you really want to delete this track?"
-msgstr "您真的要删除这条音轨吗？"
-
-#: Src/GUI/MainFrameMenuBar.cpp:1041
-msgid ""
-"If multiple tracks play on the same channel, they will be merged.\n"
-"This cannot be undone.\n"
-"\n"
-"Do you really want to continue?"
-msgstr "如果有多条音轨使用相同的通道，它们将会被合并。\n这个操作无法取消。\n您确定要继续吗？"
-
-#: Src/GUI/MainFrameMenuBar.cpp:1125 Src/Pickers/TimeSigPicker.cpp:288
-msgid ""
-"Are you sure you want to go back to having a single time signature? Any time"
-" sig events you may have added will be lost. This cannot be undone."
-msgstr "您确定要重新使用唯一拍号吗？之前您可能添加的任何拍号都将丢失。这个操作无法取消。"
-
-#: Src/GUI/MainFrameMenuBar.cpp:1254
-msgid "Manual"
-msgstr "手动"
-
-#: Src/GUI/MainFrameMenuBar.cpp:1268 Src/Dialogs/PresetEditor.cpp:66
-#: Src/Dialogs/AboutDialog.cpp:85
-msgid "Close"
-msgstr "关闭"
-
-#: Src/GUI/GraphicalTrack.cpp:717
-msgid "Choose a new track title."
-msgstr "选择新的音轨标题"
-
-#: Src/GUI/GraphicalTrack.cpp:774
-msgid "Enter the ID of the channel this track should play in"
-msgstr "输入该音轨要使用的通道ID"
-
-#: Src/GUI/GraphicalTrack.cpp:776
-msgid "Channel choice"
-msgstr "通道选择"
-
-#: Src/GUI/MeasureBar.cpp:69
-msgid "Remove selected measures"
-msgstr "移除选择的小节"
-
-#: Src/GUI/MeasureBar.cpp:79
-msgid "Do you really want to remove selected measures?"
-msgstr "您真的要移除所选的小节吗？"
-
-#: Src/GUI/MeasureBar.cpp:129
-msgid "Insert measures"
-msgstr "插入小节"
-
-#: Src/GUI/MeasureBar.cpp:131
-msgid "Remove time sig change"
-msgstr "移除拍号更改"
-
-#: Src/GUI/MeasureBar.cpp:137
-msgid "Insert empty measures between measures "
-msgstr "在小节之间插入空白小节"
-
-#: Src/GUI/MeasureBar.cpp:139
-msgid " and "
-msgstr "和"
-
-#: Src/GUI/MeasureBar.cpp:140
-msgid "Amount: "
-msgstr "合计："
-
-#: Src/GUI/MeasureBar.cpp:159
-msgid "Do you really want to remove this time sig change?"
-msgstr "您真的想移除这个拍号更改吗？"
-
-#: Src/GUI/MeasureBar.cpp:165
-msgid "You can't remove the first time signature change."
-msgstr "您无法移除第一次签名更改。"
-
-#: Src/GUI/MainFrame.cpp:428
-msgid "Record"
-msgstr "记录"
-
-#: Src/GUI/MainFrame.cpp:432
-msgid "Play"
-msgstr "播放"
-
-#: Src/GUI/MainFrame.cpp:436
-msgid "Stop"
-msgstr "停止"
-
-#: Src/GUI/MainFrame.cpp:439
-msgid "Loop"
-msgstr "循环"
-
-#. I18N: song length (number of measures)
-#: Src/GUI/MainFrame.cpp:453
-msgid "Length"
-msgstr "长度"
-
-#: Src/GUI/MainFrame.cpp:461
-msgid "Tempo"
-msgstr "速度"
-
-#: Src/GUI/MainFrame.cpp:473
-msgid "Time Sig"
-msgstr "拍号"
-
-#: Src/GUI/MainFrame.cpp:481
-msgid "Start"
-msgstr "开始"
-
-#: Src/GUI/MainFrame.cpp:497
-msgid "Zoom"
-msgstr "缩放"
-
-#: Src/GUI/MainFrame.cpp:528 Src/GUI/MainFrame.cpp:530
-msgid "Tool"
-msgstr "工具"
-
-#. I18N: to hide the panel that is shown when a file could not be imported
-#. successfully
-#: Src/GUI/MainFrame.cpp:568
-msgid "Hide"
-msgstr "隐藏"
-
-#: Src/GUI/MainFrame.cpp:935
-msgid "Please select an input port from the 'input' menu before recording"
-msgstr "在录制以前请先从‘输入’菜单选择一个输入端口"
-
-#: Src/GUI/MainFrame.cpp:1626
-#, c-format
-msgid ""
-"You have unsaved changes in sequence '%s'. Do you want to save them before "
-"proceeding?"
-msgstr "您在序列 '%s' 中有未保存的更改。您想在继续下一步前保存它们吗？"
-
-#: Src/GUI/MainFrame.cpp:1628
-msgid "Selecting 'Yes' will save your document before closing"
-msgstr "选择“是”将会在关闭之前保存您的文档"
-
-#: Src/GUI/MainFrame.cpp:1629
-msgid "Selecting 'No' will discard unsaved changes"
-msgstr "选择“否”将会丢弃未保存的更改"
-
-#: Src/GUI/MainFrame.cpp:1630
-msgid "Selecting 'Cancel' will cancel exiting the application"
-msgstr "选择“取消”将会取消退出本程序"
-
-#. I18N: title of dialog shown when exiting without saving
-#: Src/GUI/MainFrame.cpp:1635
-msgid "Unsaved changes in sequence"
-msgstr "序列中未保存的更改"
-
-#: Src/GUI/MainFrame.cpp:1797
-msgid "Unknown file type: "
-msgstr "未知的文件类型："
-
-#: Src/GUI/MainFrame.cpp:1823 Src/GUI/MainFrame.cpp:1940
-msgid "Sorry, loading .aria file failed."
-msgstr "抱歉，加载.aria文件失败。"
-
-#: Src/GUI/MainFrame.cpp:1864
-msgid "Please wait while midi file is loading."
-msgstr "加载midi文件，请稍等。"
-
-#: Src/GUI/MainFrame.cpp:1871 Src/GUI/MainFrame.cpp:1952
-msgid "Sorry, loading midi file failed."
-msgstr "抱歉，加载midi文件失败。"
-
-#: Src/GUI/MainFrame.cpp:1893
-msgid ""
-"Loading the MIDI file completed successfully, but with the following "
-"warnings (the song may not sound as intended) :"
-msgstr "加载MIDI文件成功完成，但预先通知如下（歌曲可能听起来跟预计的不同）："
-
-#: Src/GUI/MainFrame.cpp:1931
-msgid "Please wait while file is reloaded."
-msgstr ""
-
-#: Src/GUI/MainFrame.cpp:2048
-msgid ""
-"A new version of Aria Maestosa is now available! Visit the following link to"
-" download it :"
-msgstr "Aria Maestosa的一个新版本现在可用！访问以下链接下载："
-
-#: Src/GUI/MainFrame.cpp:2059
-msgid "An error occurred"
-msgstr "出错了"
-
-#: Src/GUI/MainPane.cpp:146
-msgid "Create a new sequence"
-msgstr "创建一个新序列"
-
-#: Src/GUI/MainPane.cpp:147
-msgid "Open a saved sequence"
-msgstr "打开一个已保存的序列"
-
-#: Src/GUI/MainPane.cpp:148
-msgid "Import a MIDI file"
-msgstr "导入一个MIDI文件"
-
-#. I18N: - title of the preferences dialog
-#: Src/GUI/MainPane.cpp:149 Src/Dialogs/Preferences.cpp:246
-msgid "Preferences"
-msgstr "首选项"
-
-#: Src/GUI/MainPane.cpp:150
-msgid "Help"
-msgstr "帮助"
-
-#: Src/GUI/MainPane.cpp:151
-msgid "Exit"
-msgstr "退出"
-
-#: Src/Dialogs/PresetEditor.cpp:33
-msgid "Presets"
-msgstr "预设置"
-
-#: Src/Dialogs/PresetEditor.cpp:60
-msgid "Duplicate"
-msgstr "副本"
-
-#: Src/Dialogs/PresetEditor.cpp:62
-msgid "Delete"
-msgstr "删除"
-
-#. I18N: when duplicating a preset
-#: Src/Dialogs/PresetEditor.cpp:97
-msgid "Enter the name of the duplicate"
-msgstr "输入副本的名称"
-
-#: Src/Dialogs/PresetEditor.cpp:117
-msgid "Are you sure you want to delete this preset? This cannot be undone."
-msgstr "您确定要删除这个预设置项吗？删除后将不能取消。"
-
-#: Src/Dialogs/CustomKeyDialog.cpp:38
-msgid "Custom Key Editor"
-msgstr "自定义key编辑器"
-
-#: Src/Dialogs/CustomKeyDialog.cpp:52
-msgid "Select which notes should be part of the custom key"
-msgstr "从音符中选出自定义key的部分"
-
-#. I18N: in custom key editor, this is the option to edit notes on a single
-#. octave
-#: Src/Dialogs/CustomKeyDialog.cpp:97
-msgid "All Octaves are Similar"
-msgstr ""
-
-#. I18N: in custom key editor, this is the option to edit all octaves
-#. independently
-#: Src/Dialogs/CustomKeyDialog.cpp:142
-msgid "All Octaves are Independent"
-msgstr ""
-
-#. I18N: in custom key editor
-#. wxButton* copySettingsBtn = new wxButton( pane, wxID_COPY, _("Copy settings
-#. from another track...") );
-#. over_sizer->Add(copySettingsBtn, 0, wxALL, 5);
-#. I18N: in the key editor
-#: Src/Dialogs/CustomKeyDialog.cpp:151
-msgid "* Checked notes are included in the key"
-msgstr ""
-
-#. I18N: in the key editor
-#: Src/Dialogs/CustomKeyDialog.cpp:153
-msgid "* \"Half-checked\" notes are included as accidentals"
-msgstr ""
-
-#. I18N: in the key editor
-#: Src/Dialogs/CustomKeyDialog.cpp:155
-msgid ""
-"* Unchecked notes are excluded (for instance, they could be unplayable on "
-"your instrument)"
-msgstr ""
-
-#: Src/Dialogs/CustomKeyDialog.cpp:163
-msgid "Save as preset..."
-msgstr "存为预设定…"
-
-#: Src/Dialogs/CustomKeyDialog.cpp:262
-msgid "Enter the name of the preset"
-msgstr "输入预设定名称"
-
-#: Src/Dialogs/Preferences.cpp:303
-msgid "Browse..."
-msgstr "浏览…"
-
-#. I18N: - in the preferences dialog
-#: Src/Dialogs/Preferences.cpp:345
-msgid "Changes will take effect next time you open the app."
-msgstr "更改会在下次打开应用时生效"
-
-#: Src/Dialogs/Preferences.cpp:390
-msgid "You will need to restart Aria Maestosa for changes to be effective."
-msgstr "您需要重启Aria Maestosa以使更改生效。"
-
-#: Src/Dialogs/Preferences.cpp:414
-msgid "Sound Font"
-msgstr "Sound Font"
-
-#: Src/Dialogs/WaitWindow.cpp:69
-msgid "Please wait..."
-msgstr "请稍等…"
-
-#. I18N: - title of the custom note select dialog
-#: Src/Dialogs/CustomNoteSelectDialog.cpp:63
-msgid "Select notes..."
-msgstr "选择音符…"
-
-#. I18N: - in custom note select dialog. full context :\n\n Select notes
-#. that...\n\n* have the same pitch\n* have a similar volume *
-#. I18N: - * are on the same string * have the same fret * have a similar
-#. duration * are located in measures ... to ...
-#: Src/Dialogs/CustomNoteSelectDialog.cpp:74
-msgid "Select notes that..."
-msgstr "选择这些音符…"
-
-#. I18N: - in custom note select dialog. full context :\n\n Select notes
-#. that...\n\n* have the same pitch\n* have a similar volume *
-#. I18N: - * are on the same string * have the same fret * have a similar
-#. duration * are located in measures ... to ...
-#: Src/Dialogs/CustomNoteSelectDialog.cpp:79
-msgid "have the same pitch"
-msgstr "有相同音调"
-
-#. I18N: - in custom note select dialog. full context :\n\n Select notes
-#. that...\n\n* have the same pitch\n* have a similar volume *
-#. I18N: - * are on the same string * have the same fret * have a similar
-#. duration * are located in measures ... to ...
-#: Src/Dialogs/CustomNoteSelectDialog.cpp:91
-msgid "have a similar volume"
-msgstr "有相似音量"
-
-#. I18N: - in custom note select dialog. full context :\n\n Select notes
-#. that...\n\n* have the same pitch\n* have a similar volume *
-#. I18N: - * are on the same string * have the same fret * have a similar
-#. duration * are located in measures ... to ...
-#: Src/Dialogs/CustomNoteSelectDialog.cpp:110
-msgid "are on the same string"
-msgstr "在同一弦"
-
-#. I18N: - in custom note select dialog. full context :\n\n Select notes
-#. that...\n\n* have the same pitch\n* have a similar volume *
-#. I18N: - * are on the same string * have the same fret * have a similar
-#. duration * are located in measures ... to ...
-#: Src/Dialogs/CustomNoteSelectDialog.cpp:115
-msgid "have the same fret"
-msgstr "在同一品"
-
-#. I18N: - in custom note select dialog. full context :\n\n Select notes
-#. that...\n\n* have the same pitch\n* have a similar volume *
-#. I18N: - * are on the same string * have the same fret * have a similar
-#. duration * are located in measures ... to ...
-#: Src/Dialogs/CustomNoteSelectDialog.cpp:126
-msgid "have a similar duration"
-msgstr "有相似的音长"
-
-#. I18N: - in custom note select dialog. full context :\n\n Select notes
-#. that...\n\n* have the same pitch\n* have a similar volume *
-#. I18N: - * are on the same string * have the same fret * have a similar
-#. duration * are located in measures ... to ...
-#: Src/Dialogs/CustomNoteSelectDialog.cpp:143
-msgid "are located in measures "
-msgstr "位于小节"
-
-#. I18N: - in custom note select dialog. full context :\n\n Select notes
-#. that...\n\n* have the same pitch\n* have a similar volume *
-#. I18N: - * are on the same string * have the same fret * have a similar
-#. duration * are located in measures ... to ...
-#: Src/Dialogs/CustomNoteSelectDialog.cpp:152
-msgid " to "
-msgstr "至"
-
-#: Src/Dialogs/CustomNoteSelectDialog.cpp:271
-msgid "Illegal values"
-msgstr ""
-
-#: Src/Dialogs/PrintSetupDialog.cpp:48
-msgid "Keyroll Printing Options"
-msgstr ""
-
-#: Src/Dialogs/PrintSetupDialog.cpp:59
-msgid "Size of a beat : "
-msgstr "一个节拍的大小"
-
-#: Src/Dialogs/PrintSetupDialog.cpp:67
-msgid "Vertical margin between notes : "
-msgstr "音符间的垂直间距"
-
-#: Src/Dialogs/PrintSetupDialog.cpp:77
-msgid "Colors"
-msgstr "色彩"
-
-#. I18N: keyroll printing option
-#: Src/Dialogs/PrintSetupDialog.cpp:102
-msgid "Compact (print only key notes)"
-msgstr "紧凑型(只打印关键音符)"
-
-#: Src/Dialogs/PrintSetupDialog.cpp:196
-msgid ""
-"Keyroll tracks and tablature/score tracks cannot be mixed in the same "
-"printout"
-msgstr ""
-
-#: Src/Dialogs/PrintSetupDialog.cpp:201
-msgid "No printable track selected"
-msgstr "没有选择可打印的音轨"
-
-#: Src/Dialogs/PrintSetupDialog.cpp:238
-msgid "Calculating print layout..."
-msgstr "计算打印布局"
-
-#. I18N: - %s is the name of the track
-#: Src/Dialogs/PrintSetupDialog.cpp:249
-#, c-format
-msgid ""
-"Track '%s' could not be printed, since its current\n"
-"view (editor) does not support printing."
-msgstr "曲目 '%s' 无法被打印，因为其当前\n视图(编辑器)不支持打印。"
-
-#: Src/Dialogs/PrintSetupDialog.cpp:277
-msgid "An error occurred during printing."
-msgstr "打印时出错。"
-
-#. I18N: - title of the notation-print dialog
-#: Src/Dialogs/PrintSetupDialog.cpp:513
-msgid "Print musical notation"
-msgstr "打印乐谱"
-
-#: Src/Dialogs/PrintSetupDialog.cpp:525
-msgid "An error occurred while preparing to print."
-msgstr "准备打印时出现一个错误。"
-
-#. I18N: - in print setup dialog.
-#: Src/Dialogs/PrintSetupDialog.cpp:543
-msgid "Print..."
-msgstr "打印…"
-
-#. I18N: - in print setup dialog.
-#: Src/Dialogs/PrintSetupDialog.cpp:546
-msgid "Current track only"
-msgstr "仅当前音轨"
-
-#. I18N: - in print setup dialog.
-#: Src/Dialogs/PrintSetupDialog.cpp:551
-msgid "This list of tracks"
-msgstr "以下列表中的音轨"
-
-#. I18N: in printing dialog
-#: Src/Dialogs/PrintSetupDialog.cpp:658
-msgid "Omit instruments that play nothing on the current line"
-msgstr ""
-
-#: Src/Dialogs/PrintSetupDialog.cpp:660
-msgid ""
-"If some instrument plays nothing during a long part of the song, checking "
-"this option can make the printed score tighter by eliminating empty lines"
-msgstr ""
-
-#: Src/Dialogs/PrintSetupDialog.cpp:674
-msgid "Page Setup"
-msgstr "页面设置"
-
-#: Src/Dialogs/PrintSetupDialog.cpp:680
-msgid "Paper :"
-msgstr "纸张："
-
-#: Src/Dialogs/PrintSetupDialog.cpp:688
-msgid "Edit Page Setup"
-msgstr "编辑页面设置"
-
-#: Src/Dialogs/PrintSetupDialog.cpp:694
-msgid "Margins :"
-msgstr ""
-
-#: Src/Dialogs/PrintSetupDialog.cpp:702
-msgid "Margins"
-msgstr "页边距"
-
-#. I18N: - title of the copyright/info dialog
-#: Src/Dialogs/CopyrightWindow.cpp:65
-msgid "Copyright and song info"
-msgstr "版权与歌曲信息"
-
-#. I18N: - title of the copyright/info dialog
-#: Src/Dialogs/CopyrightWindow.cpp:73
-msgid "Song name"
-msgstr "歌曲名称"
-
-#. I18N: - title of the copyright/info dialog
-#: Src/Dialogs/CopyrightWindow.cpp:82
-msgid "Copyright"
-msgstr "版权"
-
-#: Src/Dialogs/CopyrightWindow.cpp:89 Src/Dialogs/CopyrightWindow.cpp:124
-msgid "Song duration :"
-msgstr "歌曲长度："
-
-#. I18N: - title of the scale dialog
-#: Src/Dialogs/ScaleDialog.cpp:70
-msgid "Scale"
-msgstr "按比例缩放调整"
-
-#. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
-#. selection\n* track\n* song"
-#: Src/Dialogs/ScaleDialog.cpp:111
-msgid "Scale notes in..."
-msgstr "要调整的音符是…"
-
-#. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
-#. selection\n* track\n* song"
-#: Src/Dialogs/ScaleDialog.cpp:115
-msgid "selection"
-msgstr "当前选择的"
-
-#. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
-#. selection\n* track\n* song"
-#: Src/Dialogs/ScaleDialog.cpp:120
-msgid "track"
-msgstr "当前音轨的"
-
-#. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
-#. selection\n* track\n* song"
-#: Src/Dialogs/ScaleDialog.cpp:124
-msgid "song"
-msgstr "当前歌曲的"
-
-#. I18N: - in the scale dialog. full context : "relative to...\n\n* first
-#. affected note\n* song beginning"
-#: Src/Dialogs/ScaleDialog.cpp:130
-msgid "relative to..."
-msgstr "以何为基准…"
-
-#. I18N: - in the scale dialog. full context : "relative to...\n\n* first
-#. affected note\n* song beginning"
-#: Src/Dialogs/ScaleDialog.cpp:134
-msgid "first affected note"
-msgstr "所选音符中的头一个"
-
-#. I18N: - in the scale dialog. full context : "relative to...\n\n* first
-#. affected note\n* song beginning"
-#: Src/Dialogs/ScaleDialog.cpp:139
-msgid "song beginning"
-msgstr "歌曲开头"
-
-#: Src/Dialogs/AboutDialog.cpp:41
-msgid "About Aria Maestosa"
-msgstr "关于Aria Maestosa"
-
-#. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:50
-#, c-format
-msgid "version %s"
-msgstr "版本 %s"
-
-#. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:52
-msgid "Thanks to:"
-msgstr "感谢："
-
-#. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:54
-#, c-format
-msgid ""
-"Ergonis Software and %s for making EasyBeat,\n"
-"\ta great app that inspired Aria (www.ergonis.com)."
-msgstr ""
-
-#. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:56
-msgid "J.D. Koftinoff Software for libjdkmidi"
-msgstr ""
-
-#. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:58
-msgid "The irrXML team for their XML parser"
-msgstr ""
-
-#. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:60
-msgid "The wxWidgets team"
-msgstr ""
-
-#. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:62
-msgid "The Tango icon set"
-msgstr ""
-
-#. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:64
-msgid "Windows port by Alexis Archambault"
-msgstr ""
-
-#. I18N: - in about dialog
-#: Src/Dialogs/AboutDialog.cpp:66
-msgid "Translations:"
-msgstr "翻译："
-
-#: Src/Dialogs/TrackPropertiesDialog.cpp:116
-#, c-format
-msgid "Track '%s' Properties"
-msgstr "音轨 '%s' 属性"
-
-#: Src/Dialogs/TrackPropertiesDialog.cpp:140
-msgid "Track Background"
-msgstr "音轨背景"
-
-#: Src/Dialogs/TrackPropertiesDialog.cpp:164
-msgid "Default volume for new notes"
-msgstr "新音符的默认音量"
-
-#: Src/Dialogs/TuningDialog.cpp:42
-msgid "Custom Tuning Editor"
-msgstr "自定义调整编辑器"
-
-#. I18N: for printing (page orientation)
-#: Src/Printing/wxEasyPrintWrapper.cpp:232
-msgid "Portrait"
-msgstr "纵向"
-
-#: Src/Printing/wxEasyPrintWrapper.cpp:232
-msgid "Landscape"
-msgstr "横向"
-
-#. I18N: for printing (page setup)
-#: Src/Printing/wxEasyPrintWrapper.cpp:234
-#, c-format
-msgid "left = %i mm, right = %i mm,"
-msgstr "左 = %i mm, 右 = %i mm,"
-
-#: Src/Printing/wxEasyPrintWrapper.cpp:235
-#, c-format
-msgid "top = %i mm, bottom = %i mm"
-msgstr "顶端 = %i mm, 底端 = %i mm"
-
-#: Src/Printing/AbstractPrintableSequence.cpp:39
-msgid "Aria Maestosa song"
-msgstr "Aria Maestosa歌曲"
-
-#. I18N: (undoable) action name
-#: Src/Actions/AddNote.cpp:38
-msgid "add note"
-msgstr "添加音符"
-
-#. I18N: (undoable) action name
-#: Src/Actions/RemoveMeasures.cpp:37
-msgid "remove measure(s)"
-msgstr "移除小节"
-
-#. I18N: (undoable) action name
-#: Src/Actions/MoveNotes.cpp:38
-msgid "move note(s)"
-msgstr "移动音符"
-
-#. I18N: (undoable) action name
-#: Src/Actions/DeleteSelected.cpp:40
-msgid "delete note(s)"
-msgstr "删除音符"
-
-#. I18N: (undoable) action name
-#: Src/Actions/ResizeNotes.cpp:31
-msgid "resize note(s)"
-msgstr "调整音符"
-
-#. I18N: (undoable) action name
-#: Src/Actions/ShiftBySemiTone.cpp:30
-msgid "change pitch"
-msgstr "改变音调"
-
-#. I18N: (undoable) action name
-#: Src/Actions/Duplicate.cpp:43
-msgid "duplicate"
-msgstr "副本"
-
-#. I18N: (undoable) action name
-#: Src/Actions/SnapNotesToGrid.cpp:28
-msgid "snap notes to grid"
-msgstr "将音符对齐至网格"
-
-#. I18N: (undoable) action name
-#: Src/Actions/UpdateGuitarTuning.cpp:29
-msgid "change guitar tuning"
-msgstr "改变吉他调谐"
-
-#. I18N: (undoable) action name
-#: Src/Actions/AddControlEvent.cpp:32
-msgid "add control event"
-msgstr "添加控制事件"
-
-#. I18N: (undoable) action name
-#: Src/Actions/Paste.cpp:42
-msgid "paste"
-msgstr "粘贴"
-
-#. I18N: (undoable) action name
-#: Src/Actions/ScaleTrack.cpp:30
-msgid "scale note(s)"
-msgstr "缩放音符"
-
-#. I18N: (undoable) action name
-#: Src/Actions/InsertEmptyMeasures.cpp:35
-msgid "insert measures"
-msgstr "插入小节"
-
-#. I18N: (undoable) action name
-#: Src/Actions/RearrangeNotes.cpp:29
-msgid "rearrange notes"
-msgstr ""
-
-#. I18N: (undoable) action name
-#: Src/Actions/ScaleSong.cpp:30
-msgid "scale song"
-msgstr "缩放歌曲"
-
-#. I18N: (undoable) action name
-#: Src/Actions/AddControllerSlide.cpp:33
-msgid "add control slide"
-msgstr "添加控制滑块"
-
-#. I18N: (undoable) action name
-#: Src/Actions/RemoveOverlapping.cpp:31
-msgid "remove overlapping notes"
-msgstr "移除重叠的音符"
-
-#. I18N: (undoable) action name
-#: Src/Actions/SetNoteVolume.cpp:27
-msgid "change note(s) volume"
-msgstr "改变音符音量"
-
-#. I18N: (undoable) action name
-#: Src/Actions/ShiftFrets.cpp:28 Src/Actions/NumberPressed.cpp:29
-msgid "change note fret"
-msgstr "改变音符所在品"
-
-#. I18N: (undoable) action name
-#: Src/Actions/ShiftString.cpp:27
-msgid "string change"
-msgstr "横行变化"
-
-#. I18N: (undoable) action name
-#: Src/Actions/SetAccidentalSign.cpp:34
-msgid "accidental change"
-msgstr ""
-
-#. I18N: (undoable) action name
-#: Src/Actions/Record.cpp:32
-msgid "record from MIDI instrument"
-msgstr "从MIDI设备录入"
-
-#. I18N: (undoable) action name
-#: Src/Actions/AddTrack.cpp:36
-msgid "add track"
-msgstr "添加音轨"
-
-#. I18N: (undoable) action name
-#: Src/Actions/DeleteTrack.cpp:32
-msgid "delete track"
-msgstr "删除音轨"
-
-#: Src/IO/AriaFileWriter.cpp:49 Src/IO/AriaFileWriter.cpp:58
-#, c-format
-msgid "Could not open file '%s' for reading"
-msgstr "无法打开文件 '%s' 进行读取"
-
-#: Src/IO/MidiFileReader.cpp:156
-msgid ""
-"This MIDI file has tracks that play on multiple MIDI channels. This is not "
-"supported by Aria Maestosa."
-msgstr "此MIDI文件中含有用于多个MIDI通道的音轨，Aria Maestosa并不支持此项。"
-
-#: Src/IO/MidiFileReader.cpp:171
-msgid ""
-"This MIDI file has a track that sends events on multiple MIDI channels. This"
-" is not supported by Aria Maestosa."
-msgstr "此MIDI文件中含有传递事件到多个MIDI通道的音轨，Aria Maestosa并不支持此项。"
-
-#: Src/IO/MidiFileReader.cpp:222
-#, c-format
-msgid ""
-"This MIDI file appears to be incorrect; a note at tick %i in channel %i does"
-" not appear to have an end"
-msgstr ""
-
-#: Src/IO/MidiFileReader.cpp:252
-#, c-format
-msgid ""
-"This MIDI file uses controller #%i, which is not part of the MIDI standard. "
-"This information will be discarded."
-msgstr ""
-
-#: Src/IO/MidiFileReader.cpp:262
-msgid ""
-"This MIDI file uses Registered Parameters, which are currently not supported"
-" by Aria Maestosa."
-msgstr ""
-
-#: Src/IO/MidiFileReader.cpp:266
-msgid ""
-"This MIDI files uses NRPN (Non-Registered Parameters, i.e. non-standard "
-"controllers), which are currently not supported by Aria Maestosa."
-msgstr ""
-
-#: Src/IO/MidiFileReader.cpp:278
-msgid ""
-"This MIDI files uses Channel Mode Message, which are currently not supported"
-" by Aria Maestosa."
-msgstr ""
-
-#: Src/IO/MidiFileReader.cpp:282
-#, c-format
-msgid ""
-"This MIDI file uses unsupported MIDI controller #%i. Data related to this "
-"controller will be discarded."
-msgstr ""
-
-#: Src/PresetManager.cpp:133
-#, c-format
-msgid "Sorry, an error occurred : could not create %s"
-msgstr "很抱歉，出现错误：无法创建 %s"
-
-#: Src/Pickers/TimeSigPicker.cpp:139
-msgid "Time Signature"
-msgstr "拍号"
-
-#. I18N: - when setting time signature, to indicate it's not constant through
-#. song
-#: Src/Pickers/TimeSigPicker.cpp:178
-msgid "Varies throughout song"
-msgstr ""
-
-#. I18N: - when setting a wrong time signature
-#: Src/Pickers/TimeSigPicker.cpp:280
-msgid "Denominator must be a power of 2"
-msgstr ""
-
-#. I18N: - in controller, when a controller can only be on/off
-#: Src/Pickers/ControllerChoice.cpp:194
-msgid "On"
-msgstr "开"
-
-#. I18N: - in controller, when a controller can only be on/off
-#: Src/Pickers/ControllerChoice.cpp:196
-msgid "Off"
-msgstr "关"
-
-#. I18N: - in controller, for a controller with min/max range
-#: Src/Pickers/ControllerChoice.cpp:198
-msgid "Min"
-msgstr "最小"
-
-#. I18N: - in controller, for a controller with min/max range
-#: Src/Pickers/ControllerChoice.cpp:200
-msgid "Max"
-msgstr "最大"
-
-#. I18N: - when setting pan in controller
-#: Src/Pickers/ControllerChoice.cpp:202
-msgid "Left"
-msgstr "左"
-
-#. I18N: - when setting pan in controller
-#: Src/Pickers/ControllerChoice.cpp:204
-msgid "Right"
-msgstr "右"
-
-#: Src/Pickers/VolumeSlider.cpp:108
-msgid "volume"
-msgstr "音量"
-
 #: Src/Pickers/MagneticGridPicker.cpp:43
 msgid "Triplet"
-msgstr ""
+msgstr "三连音"
 
 #: Src/Pickers/MagneticGridPicker.cpp:44
 msgid "Dotted"
-msgstr ""
-
-#: Src/Pickers/TuningPicker.cpp:62
-msgid "Rearrange selected notes"
-msgstr ""
+msgstr "附点音符"
 
 #: Src/Pickers/InstrumentPicker.cpp:83 Src/Pickers/InstrumentPicker.cpp:104
 #: Src/Pickers/InstrumentPicker.cpp:124
@@ -1976,14 +2527,9 @@ msgstr "民族乐器"
 msgid "Percussive"
 msgstr "打击乐"
 
-#: Src/Pickers/InstrumentPicker.cpp:98 Src/Pickers/InstrumentPicker.cpp:117
-#: Src/Pickers/InstrumentPicker.cpp:136 Src/Editors/DrumEditor.cpp:162
-msgid "Sound Effects"
-msgstr "声音效果"
-
 #: Src/Pickers/InstrumentPicker.cpp:105
 msgid "Chromatic"
-msgstr ""
+msgstr "半音的"
 
 #: Src/Pickers/InstrumentPicker.cpp:109
 msgid "Strings and Orchestra"
@@ -2003,11 +2549,15 @@ msgstr "打击乐器"
 
 #: Src/Pickers/InstrumentPicker.cpp:127
 msgid "Pads"
-msgstr ""
+msgstr "垫"
 
 #: Src/Pickers/InstrumentPicker.cpp:132
 msgid "Plucked"
 msgstr "拨弦乐器"
+
+#: Src/Pickers/TuningPicker.cpp:62
+msgid "Rearrange selected notes"
+msgstr "重新排列所选的音符"
 
 #. I18N: - in the view settings for score editor. whether to show notes in a
 #. traditional musical way.
@@ -2039,13 +2589,87 @@ msgstr "八度+1"
 msgid "Octave -1"
 msgstr "八度-1"
 
+#: Src/Pickers/KeyPicker.cpp:99 Src/Pickers/KeyPicker.cpp:109
+#: Src/Midi/Note.h:109 Src/Midi/Note.h:125
+msgid "G"
+msgstr "G"
+
+#: Src/Pickers/KeyPicker.cpp:99 Src/Pickers/KeyPicker.cpp:102
+#: Src/Midi/Note.h:106 Src/Midi/Note.h:122
+msgid "E"
+msgstr "E"
+
+#: Src/Pickers/KeyPicker.cpp:100 Src/Pickers/KeyPicker.cpp:108
+#: Src/Midi/Note.h:104 Src/Midi/Note.h:120
+msgid "D"
+msgstr "D"
+
+#: Src/Pickers/KeyPicker.cpp:100 Src/Pickers/KeyPicker.cpp:103
+#: Src/Midi/Note.h:101 Src/Midi/Note.h:117
+msgid "B"
+msgstr "B"
+
+#: Src/Pickers/KeyPicker.cpp:101 Src/Pickers/KeyPicker.cpp:104
+#: Src/Midi/Note.h:108
+msgid "F#"
+msgstr "F#"
+
+#: Src/Pickers/KeyPicker.cpp:102 Src/Pickers/KeyPicker.cpp:105
+#: Src/Midi/Note.h:103
+msgid "C#"
+msgstr "C#"
+
+#: Src/Pickers/KeyPicker.cpp:103 Src/Midi/Note.h:110
+msgid "G#"
+msgstr "G#"
+
+#: Src/Pickers/KeyPicker.cpp:104 Src/Midi/Note.h:105
+msgid "D#"
+msgstr "D#"
+
+#: Src/Pickers/KeyPicker.cpp:105 Src/Midi/Note.h:100
+msgid "A#"
+msgstr "A#"
+
+#: Src/Pickers/KeyPicker.cpp:108 Src/Pickers/KeyPicker.cpp:111
+#: Src/Midi/Note.h:107 Src/Midi/Note.h:123
+msgid "F"
+msgstr "F"
+
+#: Src/Pickers/KeyPicker.cpp:109 Src/Pickers/KeyPicker.cpp:112
+#: Src/Midi/Note.h:116
+msgid "Bb"
+msgstr "Bb"
+
+#: Src/Pickers/KeyPicker.cpp:110 Src/Pickers/KeyPicker.cpp:113
+#: Src/Midi/Note.h:121
+msgid "Eb"
+msgstr "Eb"
+
+#: Src/Pickers/KeyPicker.cpp:111 Src/Pickers/KeyPicker.cpp:114
+#: Src/Midi/Note.h:126
+msgid "Ab"
+msgstr "Ab"
+
+#: Src/Pickers/KeyPicker.cpp:112 Src/Midi/Note.h:119
+msgid "Db"
+msgstr "Db"
+
+#: Src/Pickers/KeyPicker.cpp:113 Src/Midi/Note.h:124
+msgid "Gb"
+msgstr "Gb"
+
+#: Src/Pickers/KeyPicker.cpp:114
+msgid "Cb"
+msgstr "Cb"
+
 #: Src/Pickers/KeyPicker.cpp:127
 msgid "Guess Key"
-msgstr ""
+msgstr "猜测键"
 
 #: Src/Pickers/KeyPicker.cpp:128
 msgid "Custom Key"
-msgstr ""
+msgstr "自定义键"
 
 #: Src/Pickers/KeyPicker.cpp:153
 msgid "User presets"
@@ -2055,415 +2679,51 @@ msgstr "用户预设置"
 msgid "Edit Presets..."
 msgstr "编辑预设置"
 
-#: Src/main.cpp:312 Src/main.cpp:333
-msgid ""
-"Sorry an internal error occurred : an exception was caught unhandled : "
-msgstr "很抱歉，发生内部错误：一个异常被发现未处理："
-
-#: Src/Renderers/wxImage.cpp:53
-msgid "Failed to load "
-msgstr "无法加载"
-
-#: Src/Renderers/GLImage.cpp:52 Src/Renderers/GLImage.cpp:64
-#: Src/Renderers/GLImage.cpp:77 Src/Renderers/GLImage.cpp:87
-#: Src/Renderers/GLImage.cpp:108 Src/Renderers/GLImage.cpp:194
-msgid "Failed to load resource image"
-msgstr "无法加载源镜像"
-
-#: Src/PreferencesData.cpp:150
-msgid "Language"
-msgstr "语言"
-
-#: Src/PreferencesData.cpp:176
-msgid "MIDI Driver"
-msgstr "MIDI驱动器"
-
-#. I18N: In preferences
-#: Src/PreferencesData.cpp:188
-msgid "Play during edit (default value)"
-msgstr "编辑时播放(默认值)"
-
-#: Src/PreferencesData.cpp:190
-msgid "Always"
-msgstr "永远"
-
-#: Src/PreferencesData.cpp:191
-msgid "On note change"
-msgstr "音符改变时"
-
-#: Src/PreferencesData.cpp:192
-msgid "Never"
-msgstr "从不"
-
-#. I18N: In preferences
-#: Src/PreferencesData.cpp:197
-msgid "Default Score View"
-msgstr "默认乐谱视图"
-
-#: Src/PreferencesData.cpp:199
-msgid "Both Musical and Linear"
-msgstr ""
-
-#: Src/PreferencesData.cpp:200
-msgid "Musical Only"
-msgstr ""
-
-#: Src/PreferencesData.cpp:201
-msgid "Linear Only"
-msgstr ""
-
-#. I18N: In preferences
-#: Src/PreferencesData.cpp:206
-msgid "Default Editor View"
-msgstr "默认编辑器视图"
-
-#: Src/PreferencesData.cpp:208
-msgid "Keyboard"
-msgstr "键盘"
-
-#: Src/PreferencesData.cpp:209
-msgid "Score"
-msgstr "五线谱"
-
-#: Src/PreferencesData.cpp:210
-msgid "Tablature"
-msgstr "乐谱"
-
-#. I18N: In preferences
-#: Src/PreferencesData.cpp:216
-msgid "Instrument Classification"
-msgstr ""
-
-#: Src/PreferencesData.cpp:218
-msgid "MIDI Standard"
-msgstr ""
-
-#: Src/PreferencesData.cpp:228
-msgid "Soundfont"
-msgstr "soundfont"
-
-#: Src/PreferencesData.cpp:235
-msgid "Follow playback by default"
-msgstr ""
-
-#: Src/PreferencesData.cpp:240
-msgid "Enable playthrough when recording by default"
-msgstr ""
-
-#: Src/PreferencesData.cpp:245
-msgid "Check online for new versions"
-msgstr "在线检查版本更新"
-
-#: Src/PreferencesData.cpp:250
-msgid "Remember window location"
-msgstr "记住窗口位置"
-
-#: Src/PreferencesData.cpp:282
-msgid "Automatically launch TiMidity if needed"
-msgstr "如果需要自动启动TiMidity"
-
-#: Src/PreferencesData.cpp:289
-msgid "Single-instance application"
-msgstr ""
-
-#: Src/PreferencesData.cpp:295
-msgid "Show note names in piano-roll"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:91
-msgid "High Q"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:92
-msgid "Slap"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:93
-msgid "Push"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:94
-msgid "Pull"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:95 Src/Editors/DrumEditor.cpp:101
-msgid "Stick"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:96
-msgid "Square"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:97
-msgid "Metro"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:98
-msgid "Metro bell"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:99
-msgid "Bass drum 2"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:100
-msgid "Bass drum 1"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:102
-msgid "Snare"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:103
-msgid "Clap"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:104
-msgid "Snare 2"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:105
-msgid "Tom 6"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:106
-msgid "Closed hi-hat"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:107
-msgid "Tom 5"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:108
-msgid "Pedal hi-hat"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:109
-msgid "Tom 4"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:110
-msgid "Open hi-hat"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:111
-msgid "Tom 3"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:112
-msgid "Tom 2"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:113
-msgid "Crash"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:114
-msgid "Tom 1"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:115
-msgid "Ride"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:116
-msgid "Chinese"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:117
-msgid "Ride bell"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:118
-msgid "Tambourine"
+#. I18N: - when setting time signature, to indicate it's not constant through
+#. song
+#: Src/Pickers/TimeSigPicker.cpp:178
+msgid "Varies throughout song"
+msgstr ""
+
+#. I18N: - when setting a wrong time signature
+#: Src/Pickers/TimeSigPicker.cpp:280
+msgid "Denominator must be a power of 2"
+msgstr "分母必须是2的幂"
+
+#. I18N: - in controller, when a controller can only be on/off
+#: Src/Pickers/ControllerChoice.cpp:194
+msgid "On"
+msgstr "开"
+
+#. I18N: - in controller, when a controller can only be on/off
+#: Src/Pickers/ControllerChoice.cpp:196
+msgid "Off"
+msgstr "关"
+
+#. I18N: - in controller, for a controller with min/max range
+#: Src/Pickers/ControllerChoice.cpp:198
+msgid "Min"
+msgstr "最小"
+
+#. I18N: - in controller, for a controller with min/max range
+#: Src/Pickers/ControllerChoice.cpp:200
+msgid "Max"
+msgstr "最大"
+
+#. I18N: - when setting pan in controller
+#: Src/Pickers/ControllerChoice.cpp:202
+msgid "Left"
+msgstr "左"
+
+#. I18N: - when setting pan in controller
+#: Src/Pickers/ControllerChoice.cpp:204
+msgid "Right"
+msgstr "右"
+
+#: Src/Pickers/VolumeSlider.cpp:132
+msgid "volume"
+msgstr "音量"
+
+#: Src/PreferencesData.h:63
+msgid "System soundbank"
 msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:119
-msgid "Splash"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:120
-msgid "Cowbell"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:121
-msgid "Crash 2"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:122
-msgid "Vibraslap"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:123
-msgid "Ride 2"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:124
-msgid "Hi bongo"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:125
-msgid "Low bongo"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:126
-msgid "Mute hi conga"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:127
-msgid "Open hi conga"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:128
-msgid "Low conga"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:129
-msgid "High timbale"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:130
-msgid "Low timbale"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:131
-msgid "High agogo"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:132
-msgid "Low agogo"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:133
-msgid "Cabasa"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:134
-msgid "Maracas"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:135
-msgid "Short whistle"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:136
-msgid "Long whistle"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:137
-msgid "Short guiro"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:138
-msgid "Long guiro"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:139
-msgid "Claves"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:140
-msgid "Hi wood block"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:141
-msgid "Lo wood block"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:142
-msgid "Mute cuica"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:143
-msgid "Open cuica"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:144
-msgid "Mute triangle"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:145
-msgid "Open triangle"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:146
-msgid "Shaker"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:147
-msgid "Jingle Bell"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:148
-msgid "Bell Tree"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:149
-msgid "Castanets"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:150
-msgid "Mute surdo"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:151
-msgid "Open surdo"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:155
-msgid "Drumkit"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:156
-msgid "Hi-hat"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:157
-msgid "Cymbal"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:158
-msgid "Toms"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:159
-msgid "African"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:160
-msgid "Latin"
-msgstr ""
-
-#: Src/Editors/DrumEditor.cpp:161
-msgid "Others"
-msgstr ""
-
-#. I18N: beats per minute (tempo)
-#: Src/Editors/ControllerEditor.cpp:81
-msgid "bpm"
-msgstr "bpm（拍/分）"
-
-#. I18N: as in "+2 semitones"
-#: Src/Editors/ControllerEditor.cpp:86
-msgid "semitones"
-msgstr "半音"
-
-#: Src/Editors/DrumEditor.h:103
-msgid "Drum Editor"
-msgstr "鼓编辑器"
-
-#: Src/Editors/ControllerEditor.h:168
-msgid "Controller Editor"
-msgstr "控制器编辑器"
-
-#: Src/Editors/ScoreEditor.h:260
-msgid "Score Editor"
-msgstr ""
-
-#: Src/Editors/KeyboardEditor.h:74
-msgid "Keyboard Editor"
-msgstr "键盘编辑器"
-
-#: Src/Editors/GuitarEditor.h:63
-msgid "Tablature Editor"
-msgstr "乐谱编辑器"
