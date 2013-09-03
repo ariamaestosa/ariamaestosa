@@ -654,7 +654,7 @@ bool MainFrame::doSave()
     }
     else if (not wxFileExists(getCurrentSequence()->getFilepath()))
     {
-        int answer = wxMessageBox( _("The file no longer exists on disk. Do you wish to select a new file name?"), _("Warning"),
+        int answer = wxMessageBox( _("The file no longer exists on disk. Do you want to save it anyway?"), _("Warning"),
                                    wxYES_NO, this);
 
         if (answer == wxNO)
