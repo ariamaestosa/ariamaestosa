@@ -36,6 +36,20 @@
 #include <string>
 #include <wx/intl.h>
 
+class AriaMIDIFileReadMultiTrack : public jdksmidi::MIDIFileReadMultiTrack
+{
+public:
+
+    AriaMIDIFileReadMultiTrack(jdksmidi::MIDIMultiTrack* mlttrk) : MIDIFileReadMultiTrack(mlttrk)
+    {
+    }
+    
+    virtual void mf_error(const char* err)
+    {
+        printf("[jdksmidi] ERROR: %s\n", err);
+    }
+};
+
 bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std::set<wxString>& warnings)
 {
     Sequence* sequence = gseq->getModel();
@@ -49,7 +63,7 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
     jdksmidi::MIDIMultiTrack jdksequence;
 
     // the object which loads the tracks into the tracks object
-    jdksmidi::MIDIFileReadMultiTrack track_loader( &jdksequence );
+    AriaMIDIFileReadMultiTrack track_loader( &jdksequence );
 
     // the object which parses the midifile and gives it to the multitrack loader
     jdksmidi::MIDIFileRead reader( &rs, &track_loader );
