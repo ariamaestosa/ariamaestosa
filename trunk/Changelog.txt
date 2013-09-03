@@ -1,6 +1,7 @@
 1.4.9
 - Improve duplicate track settings feature
 - Workaround event order issues
+- Better handling when file open in Aria is moved/deleted in the file manager
 
 1.4.8
 - Fix bug related to instrument changes
