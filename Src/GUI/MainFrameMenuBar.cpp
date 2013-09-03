@@ -652,6 +652,21 @@ bool MainFrame::doSave()
     {
         return doSaveAs();
     }
+    else if (not wxFileExists(getCurrentSequence()->getFilepath()))
+    {
+        int answer = wxMessageBox( _("The file no longer exists on disk. Do you wish to select a new file name?"), _("Warning"),
+                                   wxYES_NO, this);
+
+        if (answer == wxNO)
+        {
+            return false;
+        }
+        
+        if (answer == wxYES)
+        {
+            return doSaveAs();
+        }
+    }
     else
     {
         saveAriaFile(getCurrentGraphicalSequence(), getCurrentSequence()->getFilepath());
