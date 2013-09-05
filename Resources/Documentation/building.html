@@ -216,16 +216,13 @@
 </script>
 
 <p>
-    The command may need to be adapted a little, depending on your enviroment. Here are a few examples :
+    Adapt the paths in this command as needed. The scons file that comes with Aria assumes you are using wx 2.9.x built
+    manually with mingw. Modifications to the scons file may be needed for other configs.
 </p>
 
 <p>
     <span class="code">
-    python.exe scons/scons.py WXCONFIG="C:\wx-config --debug=no --static=yes
-        --prefix=C:\wxWidgets-2.8.10" renderer="wxwidgets" WX_HOME="C:\wxWidgets-2.8.10\"
-    
-    python.exe scons/scons.py WXCONFIG="C:\wx-config  --prefix=C:\wxWidgets-2.9.1
-        --wxcfg=gcc_dll\mswud" renderer="wxwidgets" WX_HOME="C:\wxWidgets-2.9.1\"
+    python.exe scons/scons.py renderer="wxwidgets" WX_HOME="C:\dependencies\wxWidgets-2.9.5"
     </span>
 </p>
 
