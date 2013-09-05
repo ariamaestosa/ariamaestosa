@@ -495,6 +495,8 @@ namespace AriaMaestosa
             int c1 = temp & 0x7F; // low 7 bits
             int c2 = temp >> 7;   // high 7 bits
             
+            printf("Pitch bend : %i %i\n", value, temp);
+            
             dwMsg = MAKEMIDISHORTMSG(MIDI_PITCH_WHEEL, channel, c1, c2);
             ::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
         }
