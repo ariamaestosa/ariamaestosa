@@ -84,6 +84,7 @@ namespace AriaMaestosa
         void setTooltip(wxString tooltip) { m_tooltip = tooltip; }
         const wxString getTooltip() const { return m_tooltip; }
         
+        
         virtual const ptr_vector<BitmapButton, HOLD>& getChildren() const
         {        
             static ptr_vector<BitmapButton, HOLD> empty_children_vector;

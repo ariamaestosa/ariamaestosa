@@ -16,7 +16,7 @@ Help("""
             jack=[0/1]
                 whether to enable the Jack MIDI driver (on by default for non-Linux unices, disabled everywhere else by default)
             WXCONFIG=/path/to/wx-config
-                build using a specified wx-config
+                build using a specified wx-config (unix)
             compiler_arch=[32bit/64bit]
                 specify whether the compiler will build as 32 bits or 64 bits
                 (does _not_ add flags to cross-compile, only selects the right lib dirs)
@@ -28,7 +28,7 @@ Help("""
             LDFLAGS="custom link flags"
                 To add other flags to pass when linking
             WX_HOME="C:\wxWidgets-2.8.10"
-                for windows only, defire the wx home directory
+                for windows only, define the wx home directory
              
         Furthermore, the CXX environment variable is read if it exists, allowing
         you to choose which g++ executable you wish to use.
@@ -241,23 +241,26 @@ def compile_Aria(which_os):
     # add wxWidgets flags
     # check if user defined his own WXCONFIG, else use defaults
     WXCONFIG = ARGUMENTS.get('WXCONFIG', 'wx-config')
-    print ">> wx-config : " + WXCONFIG
+    if which_os != 'windows':
+        print ">> wx-config : " + WXCONFIG
         
     if which_os == 'windows':
-        # work around bugs in scons 'ParseConfig' on Windows...
-        if renderer == "opengl":
-            winCppFlags=subprocess.check_output(WXCONFIG.split() + ["--cppflags","core,base,net,adv,gl"])
-            winLdFlags=subprocess.check_output(WXCONFIG.split() + ["--libs", "core,base,net,adv,gl"])
-        else:
-            winCppFlags=subprocess.check_output(WXCONFIG.split() + ["--cppflags","core,net,adv,base"])
-            winLdFlags=subprocess.check_output(WXCONFIG.split() + ["--libs", "core,net,adv,base"])
-        print "Build flags :", winCppFlags
-        print "Link flags :", winLdFlags
-        
+    
         wxHomePath = ARGUMENTS.get('WX_HOME', None)
         if wxHomePath is None:
             sys.stderr.write("Please pass WX_HOME for Windows builds")
             sys.exit(1)
+           
+        winCppFlags = ['-mthreads', '-DHAVE_W32API_H', '-D__WXMSW__', '-D_UNICODE', '-I' + wxHomePath + '\lib\gcc_dll\mswu',
+                       '-I' + wxHomePath + '\include', '-DWXUSINGDLL', '-Wno-ctor-dtor-privacy'] 
+
+        winLdFlags = ['-mthreads', '-L' + wxHomePath + '\lib\gcc_dll', '-lwxbase295u_gcc_custom', '-lwxmsw295u_core_gcc_custom',
+                      '-lwxmsw295u_adv_gcc_custom', '-lwxbase295u_net_gcc_custom', '-lwxtiff', '-lwxjpeg', '-lwxpng',
+                      '-lwxzlib', '-lwxregexu', '-lwxexpat', '-lkernel32', '-luser32', '-lgdi32', '-lcomdlg32', '-lwxregexu', '-lwinspool',
+                      '-lwinmm', '-lshell32', '-lcomctl32', '-lole32', '-loleaut32', '-luuid', '-lrpcrt4', '-ladvapi32', '-lwsock32']
+        
+        print "Build flags :", winCppFlags
+        print "Link flags :", winLdFlags
         
         try:
             command = ["windres", "--include-dir="+wxHomePath+"\include", "--input", "win32\Aria.rc", "--output", "msvcr.o"]
@@ -266,11 +269,11 @@ def compile_Aria(which_os):
         except:
             sys.stderr.write("could not execute 'windres', is mingw installed?\n")
         
-        env.Append(CCFLAGS=winCppFlags.split())
+        env.Append(CCFLAGS=winCppFlags)
         
         #env.Append(LINKFLAGS=['-mwindows'] + winLdFlags.split())
         # Ugly hack : wx flags need to appear at the end of the command, but scons doesn't support that, so I need to hack their link command
-        env['LINKCOM']     = '$LINK -o $TARGET $LINKFLAGS $SOURCES $_LIBDIRFLAGS $_LIBFLAGS -mwindows ' + winLdFlags
+        env['LINKCOM']     = '$LINK -o $TARGET $LINKFLAGS $SOURCES $_LIBDIRFLAGS $_LIBFLAGS -mwindows ' + ' '.join(winLdFlags)
     else:
         wxversion = subprocess.check_output([WXCONFIG,"--version"]).strip()
         print ">> wxWidgets version : " + wxversion
