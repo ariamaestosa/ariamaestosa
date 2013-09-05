@@ -273,7 +273,7 @@ def compile_Aria(which_os):
         
         #env.Append(LINKFLAGS=['-mwindows'] + winLdFlags.split())
         # Ugly hack : wx flags need to appear at the end of the command, but scons doesn't support that, so I need to hack their link command
-        env['LINKCOM']     = '$LINK -o $TARGET $LINKFLAGS $SOURCES $_LIBDIRFLAGS $_LIBFLAGS -mwindows ' + ' '.join(winLdFlags)
+        env['LINKCOM']     = '$LINK -o $TARGET $LINKFLAGS $SOURCES $_LIBDIRFLAGS $_LIBFLAGS ' + (' -mwindows ' if build_type == 'release' else '') + ' '.join(winLdFlags)
     else:
         wxversion = subprocess.check_output([WXCONFIG,"--version"]).strip()
         print ">> wxWidgets version : " + wxversion
