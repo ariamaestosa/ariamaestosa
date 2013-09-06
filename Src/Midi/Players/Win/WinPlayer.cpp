@@ -489,13 +489,9 @@ namespace AriaMaestosa
         {
             DWORD dwMsg;
             
-            int temp = ROUND(0x2000 * ((double)value + 1));
-            if (temp > 0x3fff) temp = 0x3fff; // 14 bits maximum
-            if (temp < 0) temp = 0;
-            int c1 = temp & 0x7F; // low 7 bits
-            int c2 = temp >> 7;   // high 7 bits
-            
-            printf("Pitch bend : %i %i\n", value, temp);
+            int adjustedValue = value + 8192;            
+            int c1 = (adjustedValue & 0x7F);
+            int c2 = ((adjustedValue >> 7) & 0x7F);
             
             dwMsg = MAKEMIDISHORTMSG(MIDI_PITCH_WHEEL, channel, c1, c2);
             ::midiOutShortMsg(m_hOutMidiDevice, dwMsg);
