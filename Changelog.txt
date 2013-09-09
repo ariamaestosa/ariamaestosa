@@ -3,6 +3,8 @@
 - Workaround event order issues
 - Better handling when file open in Aria is moved/deleted in the file manager
 - Fix pitch bend playback on windows
+- Fix crash in drum editor
+- Fix rendering bug in drum editor when collapsing sections
 
 1.4.8
 - Fix bug related to instrument changes
