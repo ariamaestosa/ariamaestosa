@@ -560,7 +560,10 @@ int DrumEditor::getDrumAtY(const int given_y)
         if (not m_drums[drumID].m_section_expanded)
         {
             drumID++;
-            while (not m_drums[drumID++].m_section){ ASSERT_E(drumID,<,(int)m_drums.size()); }
+            while (not m_drums[drumID++].m_section)
+            {
+                if (drumID >= (int)m_drums.size()) return -1;
+            }
             drumID = drumID - 2;
             continue;
         }//end if section collapsed
