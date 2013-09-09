@@ -596,7 +596,10 @@ int DrumEditor::getYForDrum(const int given_drumID)
         if (not m_drums[drumID].m_section_expanded)
         {
             drumID++;
-            while (not m_drums[drumID++].m_section){ ASSERT_E(drumID,<,(int)m_drums.size()); }
+            while (not m_drums[drumID++].m_section)
+            {
+                if (drumID >= (int)m_drums.size()) return -1;
+            }
             drumID = drumID - 2;
             continue;
         }//end if section collapsed
@@ -1032,10 +1035,12 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
         drumY++;
 
         const int y = getEditorYStart() + drumY*Y_STEP - getYScrollInPixels();
-        if (y < getEditorYStart() - Y_STEP or y > getYEnd()) continue;
+        
+        bool visible = true;
+        if (y < getEditorYStart() - Y_STEP or y > getYEnd()) visible = false;
 
         // only show used drums widget
-        if (drumY == 0)
+        if (drumY == 0 and visible)
         {
             AriaRender::color(0,0,0);
             if (m_show_used_drums_only)
@@ -1052,48 +1057,51 @@ void DrumEditor::render(RelativeXCoord mousex_current, int mousey_current,
            }
 
         }
-
-        AriaRender::images();
-        m_drum_names_renderer.bind();
-
-        if (m_drums[drumID].m_section) // section header
+        
+        if (visible)
         {
-            AriaRender::primitives();
-            AriaRender::color(0,0,0);
-            AriaRender::rect(Editor::getEditorXStart(), y,
-                             getXEnd(), y+Y_STEP);
-
-            AriaRender::color(1,1,1);
-
-            if (not m_drums[drumID].m_section_expanded) // expand/collapse widget of section header
+            AriaRender::images();
+            m_drum_names_renderer.bind();
+            
+            if (m_drums[drumID].m_section) // section header
             {
-                AriaRender::triangle( Editor::getEditorXStart()+7, y+2,
-                                     Editor::getEditorXStart() +7, y+8,
-                                     Editor::getEditorXStart()+17, y+5 );
-            }
+                AriaRender::primitives();
+                AriaRender::color(0,0,0);
+                AriaRender::rect(Editor::getEditorXStart(), y,
+                                 getXEnd(), y+Y_STEP);
+
+                AriaRender::color(1,1,1);
+
+                if (not m_drums[drumID].m_section_expanded) // expand/collapse widget of section header
+                {
+                    AriaRender::triangle( Editor::getEditorXStart()+7, y+2,
+                                         Editor::getEditorXStart() +7, y+8,
+                                         Editor::getEditorXStart()+17, y+5 );
+                }
+                else
+                {
+                    AriaRender::triangle(Editor::getEditorXStart()+7,  y+1,
+                                         Editor::getEditorXStart()+13, y+1,
+                                         Editor::getEditorXStart()+10, y+9 );
+                }
+
+
+                AriaRender::images();
+                AriaRender::color(1,1,1);
+                // render twice otherwise it's too pale
+                m_drum_names_renderer.get(m_drums[drumID].m_midi_key-27).render( Editor::getEditorXStart()+20, y+12 );
+                m_drum_names_renderer.get(m_drums[drumID].m_midi_key-27).render( Editor::getEditorXStart()+20, y+12 );
+
+            }//end if section
             else
             {
-                AriaRender::triangle(Editor::getEditorXStart()+7,  y+1,
-                                     Editor::getEditorXStart()+13, y+1,
-                                     Editor::getEditorXStart()+10, y+9 );
+                AriaRender::color(0,0,0);
+                m_drum_names_renderer.get(m_drums[drumID].m_midi_key-27).render( Editor::getEditorXStart()-74, y+11 );
             }
 
-
-            AriaRender::images();
-            AriaRender::color(1,1,1);
-            // render twice otherwise it's too pale
-            m_drum_names_renderer.get(m_drums[drumID].m_midi_key-27).render( Editor::getEditorXStart()+20, y+12 );
-            m_drum_names_renderer.get(m_drums[drumID].m_midi_key-27).render( Editor::getEditorXStart()+20, y+12 );
-
-        }//end if section
-        else
-        {
             AriaRender::color(0,0,0);
-            m_drum_names_renderer.get(m_drums[drumID].m_midi_key-27).render( Editor::getEditorXStart()-74, y+11 );
         }
-
-        AriaRender::color(0,0,0);
-
+        
         // if section is collapsed, skip all its elements
         ASSERT_E(drumID,<,(int)m_drums.size());
         if (not m_drums[drumID].m_section_expanded)
