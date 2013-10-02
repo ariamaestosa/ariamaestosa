@@ -519,7 +519,7 @@ void KeyPicker::onEditPresets(wxCommandEvent& evt)
 
 wxString KeyPicker::buildKeyLabel(const wxString& majorKey, const wxString& minorKey)
 {
-    return majorKey + wxT(" ") + _("Major") + wxT(", ") + minorKey + wxT(" ") + _("minor");
+    return wxString::Format(_("%s Major, %s minor"), majorKey.c_str(), minorKey.c_str());
 }
 
 // ----------------------------------------------------------------------------------------------------------
