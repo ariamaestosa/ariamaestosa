@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-03 18:51-0400\n"
+"POT-Creation-Date: 2013-10-02 18:51-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -363,12 +363,9 @@ msgstr ""
 msgid "A"
 msgstr ""
 
-#: Src/Dialogs/SongPropertiesDialog.cpp:373 Src/Pickers/KeyPicker.cpp:522
-msgid "Major"
-msgstr ""
-
-#: Src/Dialogs/SongPropertiesDialog.cpp:373 Src/Pickers/KeyPicker.cpp:522
-msgid "minor"
+#: Src/Dialogs/SongPropertiesDialog.cpp:373
+#, c-format
+msgid "%s Major - %s minor"
 msgstr ""
 
 #: Src/Dialogs/PresetEditor.cpp:33
@@ -1674,55 +1671,55 @@ msgstr ""
 msgid "Exit"
 msgstr ""
 
-#: Src/GUI/GraphicalTrack.cpp:418
+#: Src/GUI/GraphicalTrack.cpp:419
 msgid "Track volume"
 msgstr ""
 
-#: Src/GUI/GraphicalTrack.cpp:422
+#: Src/GUI/GraphicalTrack.cpp:423
 msgid "Mute"
 msgstr ""
 
-#: Src/GUI/GraphicalTrack.cpp:426
+#: Src/GUI/GraphicalTrack.cpp:427
 msgid "Solo"
 msgstr ""
 
-#: Src/GUI/GraphicalTrack.cpp:432
+#: Src/GUI/GraphicalTrack.cpp:433
 msgid "Maximize track"
 msgstr ""
 
-#: Src/GUI/GraphicalTrack.cpp:436
+#: Src/GUI/GraphicalTrack.cpp:437
 msgid "Dock track"
 msgstr ""
 
-#: Src/GUI/GraphicalTrack.cpp:458 Src/Editors/ScoreEditor.h:285
+#: Src/GUI/GraphicalTrack.cpp:459 Src/Editors/ScoreEditor.h:285
 msgid "Score Editor"
 msgstr ""
 
-#: Src/GUI/GraphicalTrack.cpp:462 Src/Editors/KeyboardEditor.h:88
+#: Src/GUI/GraphicalTrack.cpp:463 Src/Editors/KeyboardEditor.h:88
 msgid "Keyboard Editor"
 msgstr ""
 
-#: Src/GUI/GraphicalTrack.cpp:466 Src/Editors/GuitarEditor.h:63
+#: Src/GUI/GraphicalTrack.cpp:467 Src/Editors/GuitarEditor.h:63
 msgid "Tablature Editor"
 msgstr ""
 
-#: Src/GUI/GraphicalTrack.cpp:470 Src/Editors/DrumEditor.h:103
+#: Src/GUI/GraphicalTrack.cpp:471 Src/Editors/DrumEditor.h:103
 msgid "Drum Editor"
 msgstr ""
 
-#: Src/GUI/GraphicalTrack.cpp:474 Src/Editors/ControllerEditor.h:171
+#: Src/GUI/GraphicalTrack.cpp:475 Src/Editors/ControllerEditor.h:171
 msgid "Controller Editor"
 msgstr ""
 
-#: Src/GUI/GraphicalTrack.cpp:778
+#: Src/GUI/GraphicalTrack.cpp:779
 msgid "Choose a new track title."
 msgstr ""
 
-#: Src/GUI/GraphicalTrack.cpp:835
+#: Src/GUI/GraphicalTrack.cpp:836
 msgid "Enter the ID of the channel this track should play in"
 msgstr ""
 
-#: Src/GUI/GraphicalTrack.cpp:837
+#: Src/GUI/GraphicalTrack.cpp:838
 msgid "Channel choice"
 msgstr ""
 
@@ -2665,6 +2662,11 @@ msgstr ""
 
 #: Src/Pickers/KeyPicker.cpp:166
 msgid "Edit Presets..."
+msgstr ""
+
+#: Src/Pickers/KeyPicker.cpp:522
+#, c-format
+msgid "%s Major, %s minor"
 msgstr ""
 
 #. I18N: - when setting time signature, to indicate it's not constant through song
