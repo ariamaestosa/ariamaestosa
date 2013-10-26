@@ -309,6 +309,7 @@ bool MIDIFileRead::Parse()
 
         if ( abort_parse )
         {
+            mf_error("ReadTrack failed");
             return false;
         }
     }
@@ -316,7 +317,7 @@ bool MIDIFileRead::Parse()
     return true;
 }
 
-int MIDIFileRead::ReadMT ( unsigned long type, int skip )
+bool MIDIFileRead::ReadMT ( unsigned long type, int skip )
 {
     unsigned long read = 0;
     int c;
@@ -357,20 +358,29 @@ int MIDIFileRead::ReadHeader()
     int ntrks;
     int division;
 
-    if ( ReadMT ( _MThd, skip_init ) == 0xffff )
+    if (!ReadMT( _MThd, skip_init))
+    {
+        mf_error("ReadMT in ReadHeader failed");
         return 0;
-
+    }
+    
     if ( abort_parse )
+    {
+        mf_error("abort parse after ReadMT");
         return 0;
-
+    }
+    
     to_be_read = Read32Bit();
     the_format = Read16Bit();
     ntrks = Read16Bit();
     division = Read16Bit();
 
     if ( abort_parse )
+    {
+        mf_error("error in header");
         return 0;
-
+    }
+    
     // silently fix error if midi file have format = 0 and ntrks > 1
     if ( the_format == 0 && ntrks > 1 )
         the_format = 1;
@@ -410,9 +420,12 @@ void MIDIFileRead::ReadTrack()
     int status = 0;  // (possible running) status byte
     int needed;      // number of bytes needed (1 or 2) for a channel message, or 0 if not a channel message
 
-    if ( ReadMT ( _MTrk, 0 ) == 0xFFFF )
+    if (!ReadMT(_MTrk, 0))
+    {
+        mf_error("ReadMT failed");
         return;
-
+    }
+    
     to_be_read = Read32Bit();
     cur_time = 0;
     event_handler->mf_starttrack ( cur_track );
@@ -448,7 +461,10 @@ void MIDIFileRead::ReadTrack()
             if ( running ) c1 = c;
             else           c1 = EGetC();
             if ( !FormChanMessage ( status, c1, (needed > 1)? EGetC():0 ) )
+            {
+                mf_error("Parse error, invalid channel message");
                 abort_parse = true;
+            }
             continue;
         }
 
@@ -472,7 +488,10 @@ void MIDIFileRead::ReadTrack()
                 MsgAdd ( EGetC() );
 
             if ( !abort_parse && !event_handler->MetaEvent ( cur_time, type, act_msg_len, the_msg ) )
+            {
+                mf_error("Parse error, invalid meta message");
                 abort_parse = true;
+            }
             break;
 
         case 0xF0: // SYSEX_START
@@ -491,7 +510,10 @@ void MIDIFileRead::ReadTrack()
                 MsgAdd ( EGetC() );
 
             if ( !event_handler->mf_sysex ( cur_time, type, act_msg_len, the_msg ) )
+            {
+                mf_error("Parse error, invalid sysex message");
                 abort_parse = true;
+            }
             break;
 
         default:
