@@ -235,7 +235,7 @@ private:
 
     int EGetC();
 
-    int ReadMT ( unsigned long, int );
+    bool ReadMT ( unsigned long, int );
 
     bool FormChanMessage ( unsigned char st, unsigned char b1, unsigned char b2 );
     // reset data for multiple parse
