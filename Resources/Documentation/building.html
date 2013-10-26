@@ -113,9 +113,7 @@
 </script>
 
 <p>
-    <b>Warning</b> : Midi on Linux is especially painful, synthesizers like TiMidity haven't been maintained for years, eat a lot of CPU
-    and don't play nicely with PulseAudio. In the future I will consider alternative implementations.<br/>
-    <br/>You will need Python, Alsa (including -dev packages if your distro uses them), wxGTK (wxWidgets), OpenGL (if you wish to use the OpenGL
+    You will need Python, Alsa (including -dev packages if your distro uses them), wxGTK (wxWidgets), OpenGL (if you wish to use the OpenGL
     renderer, and also get -dev packages if any), gcc/g++ (build-essential in Ubuntu). For midi playback, you will need a softsynth like Fluidsynth
     or Timidity plus a soundbank (more info below)
 </p>
@@ -225,8 +223,8 @@
 </p>
 
 <p>
-    Adapt the path to "wx-config" and to your wxWidgets build as needed. Modify the flags given to wx-config to get the right
-    build if you have many wxWidgets builds.
+    The SCONS file assumes wxWidgets 2.9.5 built as previously described. Using another version or build configuration
+    of wxWidgets may require tweaking the SCONS file.
 </p>
 
 <script type="text/javascript">
@@ -343,8 +341,7 @@
 </script>
 
 <p>
-    If your wxWidgets build is a DLL build, copy the DLL(s) into the same directory as Aria so they are
-    found.
+    Copy the wxWidgets DLLs into the same directory as Aria so they are found.
 </p>
 
 <script type="text/javascript">
