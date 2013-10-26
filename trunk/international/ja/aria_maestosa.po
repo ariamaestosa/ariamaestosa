@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Aria Maestosa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-17 20:12-0400\n"
-"PO-Revision-Date: 2013-06-19 13:05+0000\n"
-"Last-Translator: 悟 小泉 <koizumistr@minos.ocn.ne.jp>\n"
+"POT-Creation-Date: 2013-10-02 18:51-0400\n"
+"PO-Revision-Date: 2013-10-03 08:19+0000\n"
+"Last-Translator: Auria <auria.mg@gmail.com>\n"
 "Language-Team: Japanese (http://www.transifex.com/projects/p/ariamaestosa/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -371,13 +371,10 @@ msgstr "ド"
 msgid "A"
 msgstr "ラ"
 
-#: Src/Dialogs/SongPropertiesDialog.cpp:373 Src/Pickers/KeyPicker.cpp:522
-msgid "Major"
-msgstr "長調"
-
-#: Src/Dialogs/SongPropertiesDialog.cpp:373 Src/Pickers/KeyPicker.cpp:522
-msgid "minor"
-msgstr "短調"
+#: Src/Dialogs/SongPropertiesDialog.cpp:373
+#, c-format
+msgid "%s Major - %s minor"
+msgstr ""
 
 #: Src/Dialogs/PresetEditor.cpp:33
 msgid "Presets"
@@ -387,12 +384,13 @@ msgstr "プリセット"
 msgid "Duplicate"
 msgstr "複製"
 
-#: Src/Dialogs/PresetEditor.cpp:62
+#: Src/Dialogs/PresetEditor.cpp:62 Src/Editors/ControllerEditor.cpp:866
+#: Src/Editors/ControllerEditor.cpp:905
 msgid "Delete"
 msgstr "削除"
 
 #: Src/Dialogs/PresetEditor.cpp:66 Src/Dialogs/AboutDialog.cpp:111
-#: Src/GUI/MainFrameMenuBar.cpp:1377
+#: Src/GUI/MainFrameMenuBar.cpp:1394
 msgid "Close"
 msgstr "閉じる"
 
@@ -405,10 +403,10 @@ msgstr "複製の名前を入力してください"
 msgid "Are you sure you want to delete this preset? This cannot be undone."
 msgstr "このプリセットを削除してもよろしいですか？これを取り消すことはできません。"
 
-#: Src/Dialogs/PresetEditor.cpp:118 Src/GUI/MainFrameMenuBar.cpp:694
-#: Src/GUI/MainFrameMenuBar.cpp:757 Src/GUI/MainFrameMenuBar.cpp:794
-#: Src/GUI/MainFrameMenuBar.cpp:1032 Src/GUI/MainFrameMenuBar.cpp:1151
-#: Src/GUI/MainFrameMenuBar.cpp:1235 Src/Pickers/TimeSigPicker.cpp:289
+#: Src/Dialogs/PresetEditor.cpp:118 Src/GUI/MainFrameMenuBar.cpp:709
+#: Src/GUI/MainFrameMenuBar.cpp:772 Src/GUI/MainFrameMenuBar.cpp:811
+#: Src/GUI/MainFrameMenuBar.cpp:1049 Src/GUI/MainFrameMenuBar.cpp:1168
+#: Src/GUI/MainFrameMenuBar.cpp:1252 Src/Pickers/TimeSigPicker.cpp:289
 msgid "Confirm"
 msgstr "確認"
 
@@ -442,7 +440,7 @@ msgstr "変更は次回アプリケーションを開いた時に有効になり
 msgid "You will need to restart Aria Maestosa for changes to be effective."
 msgstr "変更を有効にするためにはAria Maestosaを再起動してください。"
 
-#: Src/Dialogs/Preferences.cpp:467 Src/GUI/MainFrameMenuBar.cpp:722
+#: Src/Dialogs/Preferences.cpp:467 Src/GUI/MainFrameMenuBar.cpp:737
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:587
 msgid "Select file"
 msgstr "ファイルを選択"
@@ -695,14 +693,13 @@ msgid "rearrange notes"
 msgstr "音符を並べ替える"
 
 #. I18N: (undoable) action name
-#: Src/Actions/RemoveMeasures.cpp:37
+#: Src/Actions/RemoveMeasures.cpp:38
 msgid "remove measure(s)"
 msgstr "小節の削除"
 
 #. I18N: (undoable) action name
 #. I18N: menu item in the "edit" menu
-#: Src/Actions/ScrollNotesIntoView.cpp:37
-#: Src/Actions/RearrangeVertically.cpp:37 Src/GUI/MainFrameMenuBar.cpp:199
+#: Src/Actions/ScrollNotesIntoView.cpp:37 Src/GUI/MainFrameMenuBar.cpp:199
 msgid "Scroll notes into view"
 msgstr ""
 
@@ -710,6 +707,11 @@ msgstr ""
 #: Src/Actions/InsertEmptyMeasures.cpp:35
 msgid "insert measures"
 msgstr "小節の挿入"
+
+#. I18N: (undoable) action name
+#: Src/Actions/DeleteControllerEvent.cpp:40
+msgid "delete controller event"
+msgstr ""
 
 #. I18N: (undoable) action name
 #: Src/Actions/Duplicate.cpp:43
@@ -742,6 +744,11 @@ msgid "duplicate measures"
 msgstr "小節を複製"
 
 #. I18N: (undoable) action name
+#: Src/Actions/AddTextEvent.cpp:31
+msgid "text change"
+msgstr ""
+
+#. I18N: (undoable) action name
 #: Src/Actions/SnapNotesToGrid.cpp:28
 msgid "snap notes to grid"
 msgstr "音符をグリッドにスナップ"
@@ -772,7 +779,7 @@ msgid "change track volume"
 msgstr "トラックの音量を変更する"
 
 #. I18N: (undoable) action name
-#: Src/Actions/AddTrack.cpp:36
+#: Src/Actions/AddTrack.cpp:37
 msgid "add track"
 msgstr "トラックを追加"
 
@@ -791,73 +798,77 @@ msgstr "ギターのチューニングを変更"
 msgid "Could not open file '%s' for reading"
 msgstr "ファイル '%s'を読み取り用に開くことができません"
 
-#: Src/IO/MidiFileReader.cpp:156
+#: Src/IO/MidiFileReader.cpp:170
 msgid ""
 "This MIDI file has tracks that play on multiple MIDI channels. This is not "
 "supported by Aria Maestosa."
 msgstr "このMIDIファイルは、複数のMIDIチャンネルで再生するトラックを含んでいます。これは、Aria Maestosaではサポートされていません。"
 
-#: Src/IO/MidiFileReader.cpp:171
+#: Src/IO/MidiFileReader.cpp:185
 msgid ""
 "This MIDI file has a track that sends events on multiple MIDI channels. This"
 " is not supported by Aria Maestosa."
 msgstr "このMIDIファイルは、複数のMIDIチャンネル上でイベントを送信するトラックを含んでいます。これは、Aria Maestosaではサポートされていません。"
 
-#: Src/IO/MidiFileReader.cpp:222
+#: Src/IO/MidiFileReader.cpp:236
 #, c-format
 msgid ""
 "This MIDI file appears to be incorrect; a note at tick %i in channel %i does"
 " not appear to have an end"
 msgstr "このMIDIファイルは正しくない可能性があります; a note at tick %i in channel %i does not appear to have an end"
 
-#: Src/IO/MidiFileReader.cpp:252
+#: Src/IO/MidiFileReader.cpp:266
 #, c-format
 msgid ""
 "This MIDI file uses controller #%i, which is not part of the MIDI standard. "
 "This information will be discarded."
 msgstr "このMIDIファイルはMIDI規格の一部ではないコントローラ #%iを使用しています。この情報は破棄されます。"
 
-#: Src/IO/MidiFileReader.cpp:262
+#: Src/IO/MidiFileReader.cpp:276
 msgid ""
 "This MIDI file uses Registered Parameters, which are currently not supported"
 " by Aria Maestosa."
 msgstr "このMIDIファイルは、現在のAria Maestosaでサポートされていないレジスタードパラメーターを使用しています。"
 
-#: Src/IO/MidiFileReader.cpp:266
+#: Src/IO/MidiFileReader.cpp:280
 msgid ""
 "This MIDI files uses NRPN (Non-Registered Parameters, i.e. non-standard "
 "controllers), which are currently not supported by Aria Maestosa."
 msgstr "このMIDIファイルは、現在のAria MaestosaでサポートされいないNRPN（ノンレジスタードパラメータ、すなわち非標準コントローラ）を使用しています。"
 
-#: Src/IO/MidiFileReader.cpp:278
+#: Src/IO/MidiFileReader.cpp:292
 msgid ""
 "This MIDI files uses Channel Mode Message, which are currently not supported"
 " by Aria Maestosa."
 msgstr "このMIDIファイルは、現在のAria Maestosaでサポートされていないチャンネルモードメッセージを使用しています。"
 
-#: Src/IO/MidiFileReader.cpp:282
+#: Src/IO/MidiFileReader.cpp:296
 #, c-format
 msgid ""
 "This MIDI file uses unsupported MIDI controller #%i. Data related to this "
 "controller will be discarded."
 msgstr "このMIDIファイルはサポートされていないMIDIコントローラ #%iを使用しています。このコントローラに関連したデータは破棄されます。"
 
-#: Src/IO/MidiFileReader.cpp:522 Src/Printing/AbstractPrintableSequence.cpp:39
+#: Src/IO/MidiFileReader.cpp:536 Src/Printing/AbstractPrintableSequence.cpp:39
 #: Src/Printing/AbstractPrintableSequence.cpp:43 Src/Midi/Sequence.cpp:70
-#: Src/Midi/Sequence.cpp:118 Src/Midi/Sequence.cpp:140 Src/Midi/Track.cpp:93
-#: Src/Midi/Track.cpp:947 Src/Midi/Track.cpp:1959
+#: Src/Midi/Sequence.cpp:118 Src/Midi/Sequence.cpp:140 Src/Midi/Track.cpp:94
+#: Src/Midi/Track.cpp:892 Src/Midi/Track.cpp:1949
 msgid "Untitled"
 msgstr "無題"
 
 #. I18N: beats per minute (tempo)
-#: Src/Editors/ControllerEditor.cpp:87
+#: Src/Editors/ControllerEditor.cpp:91
 msgid "bpm"
 msgstr ""
 
 #. I18N: as in "+2 semitones"
-#: Src/Editors/ControllerEditor.cpp:92
+#: Src/Editors/ControllerEditor.cpp:96
 msgid "semitones"
 msgstr "半音"
+
+#: Src/Editors/ControllerEditor.cpp:666
+msgid "Lyrics"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:92
@@ -1465,7 +1476,7 @@ msgstr "&環境設定..."
 msgid "&Settings"
 msgstr "&設定"
 
-#: Src/GUI/MainFrameMenuBar.cpp:311 Src/GUI/MainFrameMenuBar.cpp:1289
+#: Src/GUI/MainFrameMenuBar.cpp:311 Src/GUI/MainFrameMenuBar.cpp:1306
 msgid "No MIDI Output Available"
 msgstr "MIDI出力が利用できません。"
 
@@ -1500,33 +1511,41 @@ msgstr "&元に戻す %s"
 msgid "Can't Undo"
 msgstr "元に戻せません"
 
-#: Src/GUI/MainFrameMenuBar.cpp:683 Src/GUI/MainFrameMenuBar.cpp:746
-#: Src/GUI/MainFrameMenuBar.cpp:784
+#: Src/GUI/MainFrameMenuBar.cpp:657
+msgid "The file no longer exists on disk. Do you want to save it anyway?"
+msgstr ""
+
+#: Src/GUI/MainFrameMenuBar.cpp:657
+msgid "Warning"
+msgstr ""
+
+#: Src/GUI/MainFrameMenuBar.cpp:698 Src/GUI/MainFrameMenuBar.cpp:761
+#: Src/GUI/MainFrameMenuBar.cpp:801
 msgid "Select destination file"
 msgstr "保存先のファイルを選択"
 
-#: Src/GUI/MainFrameMenuBar.cpp:684 Src/GUI/MainFrameMenuBar.cpp:723
+#: Src/GUI/MainFrameMenuBar.cpp:699 Src/GUI/MainFrameMenuBar.cpp:738
 msgid "Aria Maestosa file"
 msgstr "Aria Maestosaファイル"
 
-#: Src/GUI/MainFrameMenuBar.cpp:693 Src/GUI/MainFrameMenuBar.cpp:757
-#: Src/GUI/MainFrameMenuBar.cpp:794
+#: Src/GUI/MainFrameMenuBar.cpp:708 Src/GUI/MainFrameMenuBar.cpp:772
+#: Src/GUI/MainFrameMenuBar.cpp:811
 msgid "The file already exists. Do you wish to overwrite it?"
 msgstr "ファイルは既に存在します。上書きしますか？"
 
-#: Src/GUI/MainFrameMenuBar.cpp:733
+#: Src/GUI/MainFrameMenuBar.cpp:748
 msgid "Select midi file"
 msgstr "MIDIファイルを選択"
 
-#: Src/GUI/MainFrameMenuBar.cpp:734 Src/GUI/MainFrameMenuBar.cpp:747
+#: Src/GUI/MainFrameMenuBar.cpp:749 Src/GUI/MainFrameMenuBar.cpp:762
 msgid "Midi file"
 msgstr "MIDIファイル"
 
-#: Src/GUI/MainFrameMenuBar.cpp:768
+#: Src/GUI/MainFrameMenuBar.cpp:785
 msgid "Sorry, failed to export midi file."
 msgstr "MIDIファイルのエクスポートに失敗しました。"
 
-#: Src/GUI/MainFrameMenuBar.cpp:806
+#: Src/GUI/MainFrameMenuBar.cpp:823
 msgid ""
 "Please wait while audio file is being generated.\n"
 "\n"
@@ -1534,15 +1553,15 @@ msgid ""
 "this can take several minutes."
 msgstr "オーディオファイルを生成しています。しばらくお待ちください。\n\nファイルの長さに応じて、\nこれは数分かかる場合があります。"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1028
+#: Src/GUI/MainFrameMenuBar.cpp:1045
 msgid "You may not delete the last track"
 msgstr "最後のトラックは削除できません"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1032
+#: Src/GUI/MainFrameMenuBar.cpp:1049
 msgid "Do you really want to delete this track?"
 msgstr "本当にこのトラックを削除しますか？"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1150
+#: Src/GUI/MainFrameMenuBar.cpp:1167
 msgid ""
 "If multiple tracks play on the same channel, they will be merged.\n"
 "This cannot be undone.\n"
@@ -1550,17 +1569,17 @@ msgid ""
 "Do you really want to continue?"
 msgstr "複数のトラックが同一チャンネルで再生されている場合、それらは統合されます。\nこれを取り消すことはできません。\n\n本当に続行しますか？"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1234 Src/Pickers/TimeSigPicker.cpp:288
+#: Src/GUI/MainFrameMenuBar.cpp:1251 Src/Pickers/TimeSigPicker.cpp:288
 msgid ""
 "Are you sure you want to go back to having a single time signature? Any time"
 " sig events you may have added will be lost. This cannot be undone."
 msgstr "本当に、単一の拍子に戻しますか？追加した拍子のイベントは失われます。これを取り消すことはできません。"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1363
+#: Src/GUI/MainFrameMenuBar.cpp:1380
 msgid "Manual"
 msgstr "マニュアル"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1557
+#: Src/GUI/MainFrameMenuBar.cpp:1574
 msgid "Clear List"
 msgstr "一覧を消去"
 
@@ -1691,55 +1710,55 @@ msgstr "ヘルプ"
 msgid "Exit"
 msgstr "終了"
 
-#: Src/GUI/GraphicalTrack.cpp:418
+#: Src/GUI/GraphicalTrack.cpp:419
 msgid "Track volume"
 msgstr "トラック音量"
 
-#: Src/GUI/GraphicalTrack.cpp:422
+#: Src/GUI/GraphicalTrack.cpp:423
 msgid "Mute"
 msgstr "消音"
 
-#: Src/GUI/GraphicalTrack.cpp:426
+#: Src/GUI/GraphicalTrack.cpp:427
 msgid "Solo"
 msgstr "ソロ"
 
-#: Src/GUI/GraphicalTrack.cpp:432
+#: Src/GUI/GraphicalTrack.cpp:433
 msgid "Maximize track"
 msgstr "トラックの最大化"
 
-#: Src/GUI/GraphicalTrack.cpp:436
+#: Src/GUI/GraphicalTrack.cpp:437
 msgid "Dock track"
 msgstr "トラックをしまう"
 
-#: Src/GUI/GraphicalTrack.cpp:458 Src/Editors/ScoreEditor.h:285
+#: Src/GUI/GraphicalTrack.cpp:459 Src/Editors/ScoreEditor.h:285
 msgid "Score Editor"
 msgstr "楽譜エディタ"
 
-#: Src/GUI/GraphicalTrack.cpp:462 Src/Editors/KeyboardEditor.h:88
+#: Src/GUI/GraphicalTrack.cpp:463 Src/Editors/KeyboardEditor.h:88
 msgid "Keyboard Editor"
 msgstr "キーボードエディタ"
 
-#: Src/GUI/GraphicalTrack.cpp:466 Src/Editors/GuitarEditor.h:63
+#: Src/GUI/GraphicalTrack.cpp:467 Src/Editors/GuitarEditor.h:63
 msgid "Tablature Editor"
 msgstr "タブ譜エディタ"
 
-#: Src/GUI/GraphicalTrack.cpp:470 Src/Editors/DrumEditor.h:103
+#: Src/GUI/GraphicalTrack.cpp:471 Src/Editors/DrumEditor.h:103
 msgid "Drum Editor"
 msgstr "ドラムエディタ"
 
-#: Src/GUI/GraphicalTrack.cpp:474 Src/Editors/ControllerEditor.h:168
+#: Src/GUI/GraphicalTrack.cpp:475 Src/Editors/ControllerEditor.h:171
 msgid "Controller Editor"
 msgstr "コントローラエディタ"
 
-#: Src/GUI/GraphicalTrack.cpp:778
+#: Src/GUI/GraphicalTrack.cpp:779
 msgid "Choose a new track title."
 msgstr "新しいトラックのタイトルを選択してください。"
 
-#: Src/GUI/GraphicalTrack.cpp:835
+#: Src/GUI/GraphicalTrack.cpp:836
 msgid "Enter the ID of the channel this track should play in"
 msgstr "このトラックが再生されるべきチャンネルのIDを入力してください"
 
-#: Src/GUI/GraphicalTrack.cpp:837
+#: Src/GUI/GraphicalTrack.cpp:838
 msgid "Channel choice"
 msgstr "チャンネルの選択"
 
@@ -1817,19 +1836,23 @@ msgstr "カスタムサウンドフォントの設定に失敗しました。"
 msgid "Unknown MIDI port : "
 msgstr "不明なMIDIポート : "
 
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:139
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:118
+msgid "Sorry, an internal error occurred during export"
+msgstr ""
+
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:157
 msgid ""
 "Sorry, exporting to audio could not complete successfully. Please include "
 "the following error code when reporting the issue :"
 msgstr "オーディオファイルへの出力が完了しませんでした。この問題を報告する際には以下のエラーコードを含めて下さい。"
 
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:275
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:279
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:328
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:293
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:297
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:346
 msgid "OSX Software Synthesizer"
 msgstr "OSXソフトウェアシンセサイザー"
 
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:311
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:329
 msgid "AIFF file"
 msgstr "AIFFファイル"
 
@@ -1890,13 +1913,13 @@ msgstr "Windowsソフトウェアシンセサイザー"
 msgid "Failed to initialize MIDI out device"
 msgstr "MIDI出力デバイスの初期化に失敗しました"
 
-#: Src/Midi/CommonMidiUtils.cpp:434 Src/Midi/CommonMidiUtils.cpp:459
+#: Src/Midi/CommonMidiUtils.cpp:435 Src/Midi/CommonMidiUtils.cpp:460
 msgid ""
 "WARNING: this song has too many\n"
 "channels, expect unpredictable output"
 msgstr "警告: この曲はチャンネル数が多すぎます\n予期不能な出力をします"
 
-#: Src/Midi/Sequence.cpp:814
+#: Src/Midi/Sequence.cpp:906
 msgid ""
 "Warning : you are opening a file saved with a version of\n"
 "Aria Maestosa more recent than the version you currently have.\n"
@@ -2681,6 +2704,11 @@ msgstr "ユーザプリセット"
 #: Src/Pickers/KeyPicker.cpp:166
 msgid "Edit Presets..."
 msgstr "プリセットを編集..."
+
+#: Src/Pickers/KeyPicker.cpp:522
+#, c-format
+msgid "%s Major, %s minor"
+msgstr ""
 
 #. I18N: - when setting time signature, to indicate it's not constant through
 #. song

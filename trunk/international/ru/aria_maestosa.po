@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Aria Maestosa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-17 20:12-0400\n"
-"PO-Revision-Date: 2013-06-18 08:18+0000\n"
+"POT-Creation-Date: 2013-10-02 18:51-0400\n"
+"PO-Revision-Date: 2013-10-03 08:19+0000\n"
 "Last-Translator: Auria <auria.mg@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/ariamaestosa/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -370,12 +370,9 @@ msgstr ""
 msgid "A"
 msgstr ""
 
-#: Src/Dialogs/SongPropertiesDialog.cpp:373 Src/Pickers/KeyPicker.cpp:522
-msgid "Major"
-msgstr ""
-
-#: Src/Dialogs/SongPropertiesDialog.cpp:373 Src/Pickers/KeyPicker.cpp:522
-msgid "minor"
+#: Src/Dialogs/SongPropertiesDialog.cpp:373
+#, c-format
+msgid "%s Major - %s minor"
 msgstr ""
 
 #: Src/Dialogs/PresetEditor.cpp:33
@@ -386,12 +383,13 @@ msgstr "Пресеты"
 msgid "Duplicate"
 msgstr "Дубликат"
 
-#: Src/Dialogs/PresetEditor.cpp:62
+#: Src/Dialogs/PresetEditor.cpp:62 Src/Editors/ControllerEditor.cpp:866
+#: Src/Editors/ControllerEditor.cpp:905
 msgid "Delete"
 msgstr "Удалить"
 
 #: Src/Dialogs/PresetEditor.cpp:66 Src/Dialogs/AboutDialog.cpp:111
-#: Src/GUI/MainFrameMenuBar.cpp:1377
+#: Src/GUI/MainFrameMenuBar.cpp:1394
 msgid "Close"
 msgstr "Закрыть"
 
@@ -404,10 +402,10 @@ msgstr "Введите имя дубликата"
 msgid "Are you sure you want to delete this preset? This cannot be undone."
 msgstr "Вы уверены, что хотите удалить этот пресет? Данное действие не может быть отменено."
 
-#: Src/Dialogs/PresetEditor.cpp:118 Src/GUI/MainFrameMenuBar.cpp:694
-#: Src/GUI/MainFrameMenuBar.cpp:757 Src/GUI/MainFrameMenuBar.cpp:794
-#: Src/GUI/MainFrameMenuBar.cpp:1032 Src/GUI/MainFrameMenuBar.cpp:1151
-#: Src/GUI/MainFrameMenuBar.cpp:1235 Src/Pickers/TimeSigPicker.cpp:289
+#: Src/Dialogs/PresetEditor.cpp:118 Src/GUI/MainFrameMenuBar.cpp:709
+#: Src/GUI/MainFrameMenuBar.cpp:772 Src/GUI/MainFrameMenuBar.cpp:811
+#: Src/GUI/MainFrameMenuBar.cpp:1049 Src/GUI/MainFrameMenuBar.cpp:1168
+#: Src/GUI/MainFrameMenuBar.cpp:1252 Src/Pickers/TimeSigPicker.cpp:289
 msgid "Confirm"
 msgstr "Подтвердить"
 
@@ -441,7 +439,7 @@ msgstr ""
 msgid "You will need to restart Aria Maestosa for changes to be effective."
 msgstr "Чтобы изменения вступили в силу, необходимо перезагрузить Aria Maestosa."
 
-#: Src/Dialogs/Preferences.cpp:467 Src/GUI/MainFrameMenuBar.cpp:722
+#: Src/Dialogs/Preferences.cpp:467 Src/GUI/MainFrameMenuBar.cpp:737
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:587
 msgid "Select file"
 msgstr "Выбрать файл"
@@ -694,14 +692,13 @@ msgid "rearrange notes"
 msgstr "реорганизовать ноты"
 
 #. I18N: (undoable) action name
-#: Src/Actions/RemoveMeasures.cpp:37
+#: Src/Actions/RemoveMeasures.cpp:38
 msgid "remove measure(s)"
 msgstr "Удалить такт(-ы)"
 
 #. I18N: (undoable) action name
 #. I18N: menu item in the "edit" menu
-#: Src/Actions/ScrollNotesIntoView.cpp:37
-#: Src/Actions/RearrangeVertically.cpp:37 Src/GUI/MainFrameMenuBar.cpp:199
+#: Src/Actions/ScrollNotesIntoView.cpp:37 Src/GUI/MainFrameMenuBar.cpp:199
 msgid "Scroll notes into view"
 msgstr ""
 
@@ -709,6 +706,11 @@ msgstr ""
 #: Src/Actions/InsertEmptyMeasures.cpp:35
 msgid "insert measures"
 msgstr "Вставить такт(-ы)"
+
+#. I18N: (undoable) action name
+#: Src/Actions/DeleteControllerEvent.cpp:40
+msgid "delete controller event"
+msgstr ""
 
 #. I18N: (undoable) action name
 #: Src/Actions/Duplicate.cpp:43
@@ -738,6 +740,11 @@ msgstr "Добавить контрольное событие"
 #. I18N: (undoable) action name
 #: Src/Actions/DuplicateMeasures.cpp:37
 msgid "duplicate measures"
+msgstr ""
+
+#. I18N: (undoable) action name
+#: Src/Actions/AddTextEvent.cpp:31
+msgid "text change"
 msgstr ""
 
 #. I18N: (undoable) action name
@@ -771,7 +778,7 @@ msgid "change track volume"
 msgstr ""
 
 #. I18N: (undoable) action name
-#: Src/Actions/AddTrack.cpp:36
+#: Src/Actions/AddTrack.cpp:37
 msgid "add track"
 msgstr "Добавить трек"
 
@@ -790,73 +797,77 @@ msgstr "Изменить настройку гитары"
 msgid "Could not open file '%s' for reading"
 msgstr "Невозможно открыть файл '%s' для чтения"
 
-#: Src/IO/MidiFileReader.cpp:156
+#: Src/IO/MidiFileReader.cpp:170
 msgid ""
 "This MIDI file has tracks that play on multiple MIDI channels. This is not "
 "supported by Aria Maestosa."
 msgstr "Этот MIDI-файл содержит треки, которые воспроизводятся в нескольких каналах. Данная функция не поддерживается в Aria Maestosa."
 
-#: Src/IO/MidiFileReader.cpp:171
+#: Src/IO/MidiFileReader.cpp:185
 msgid ""
 "This MIDI file has a track that sends events on multiple MIDI channels. This"
 " is not supported by Aria Maestosa."
 msgstr "Этот MIDI-файл содержит трек, который отправляет события в несколько каналов. Данная функция не поддерживается в Aria Maestosa."
 
-#: Src/IO/MidiFileReader.cpp:222
+#: Src/IO/MidiFileReader.cpp:236
 #, c-format
 msgid ""
 "This MIDI file appears to be incorrect; a note at tick %i in channel %i does"
 " not appear to have an end"
 msgstr "Этот MIDI-файл - некорректен; нота в такте %i в канале %i не имеет конца"
 
-#: Src/IO/MidiFileReader.cpp:252
+#: Src/IO/MidiFileReader.cpp:266
 #, c-format
 msgid ""
 "This MIDI file uses controller #%i, which is not part of the MIDI standard. "
 "This information will be discarded."
 msgstr "Этот MIDI-файл использует контроллер #%i, который не является частью MIDI-стандарта. Данная информация будет утеряна."
 
-#: Src/IO/MidiFileReader.cpp:262
+#: Src/IO/MidiFileReader.cpp:276
 msgid ""
 "This MIDI file uses Registered Parameters, which are currently not supported"
 " by Aria Maestosa."
 msgstr "Этот MIDI-файл содержит параметры, которые сейчас не поддерживается в Aria Maestosa."
 
-#: Src/IO/MidiFileReader.cpp:266
+#: Src/IO/MidiFileReader.cpp:280
 msgid ""
 "This MIDI files uses NRPN (Non-Registered Parameters, i.e. non-standard "
 "controllers), which are currently not supported by Aria Maestosa."
 msgstr "Этот MIDI-файл использует незарегистрированные параметры (например, нестандартные контроллеры), которые сейчас не поддерживается в Aria Maestosa."
 
-#: Src/IO/MidiFileReader.cpp:278
+#: Src/IO/MidiFileReader.cpp:292
 msgid ""
 "This MIDI files uses Channel Mode Message, which are currently not supported"
 " by Aria Maestosa."
 msgstr "Этот MIDI-файл использует режим передачи сообщений в каналах, который сейчас не поддерживается в Aria Maestosa."
 
-#: Src/IO/MidiFileReader.cpp:282
+#: Src/IO/MidiFileReader.cpp:296
 #, c-format
 msgid ""
 "This MIDI file uses unsupported MIDI controller #%i. Data related to this "
 "controller will be discarded."
 msgstr "Этот MIDI-файл использует неподдерживаемый контроллер #%i. Данные, связанные с этим контроллером не будут доступны."
 
-#: Src/IO/MidiFileReader.cpp:522 Src/Printing/AbstractPrintableSequence.cpp:39
+#: Src/IO/MidiFileReader.cpp:536 Src/Printing/AbstractPrintableSequence.cpp:39
 #: Src/Printing/AbstractPrintableSequence.cpp:43 Src/Midi/Sequence.cpp:70
-#: Src/Midi/Sequence.cpp:118 Src/Midi/Sequence.cpp:140 Src/Midi/Track.cpp:93
-#: Src/Midi/Track.cpp:947 Src/Midi/Track.cpp:1959
+#: Src/Midi/Sequence.cpp:118 Src/Midi/Sequence.cpp:140 Src/Midi/Track.cpp:94
+#: Src/Midi/Track.cpp:892 Src/Midi/Track.cpp:1949
 msgid "Untitled"
 msgstr "Без имени"
 
 #. I18N: beats per minute (tempo)
-#: Src/Editors/ControllerEditor.cpp:87
+#: Src/Editors/ControllerEditor.cpp:91
 msgid "bpm"
 msgstr "ударов/мин."
 
 #. I18N: as in "+2 semitones"
-#: Src/Editors/ControllerEditor.cpp:92
+#: Src/Editors/ControllerEditor.cpp:96
 msgid "semitones"
 msgstr "полутона"
+
+#: Src/Editors/ControllerEditor.cpp:666
+msgid "Lyrics"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:92
@@ -1464,7 +1475,7 @@ msgstr "Настройки..."
 msgid "&Settings"
 msgstr "&Настройки"
 
-#: Src/GUI/MainFrameMenuBar.cpp:311 Src/GUI/MainFrameMenuBar.cpp:1289
+#: Src/GUI/MainFrameMenuBar.cpp:311 Src/GUI/MainFrameMenuBar.cpp:1306
 msgid "No MIDI Output Available"
 msgstr ""
 
@@ -1499,33 +1510,41 @@ msgstr "&Отменить %s"
 msgid "Can't Undo"
 msgstr "Невозможно отменить"
 
-#: Src/GUI/MainFrameMenuBar.cpp:683 Src/GUI/MainFrameMenuBar.cpp:746
-#: Src/GUI/MainFrameMenuBar.cpp:784
+#: Src/GUI/MainFrameMenuBar.cpp:657
+msgid "The file no longer exists on disk. Do you want to save it anyway?"
+msgstr ""
+
+#: Src/GUI/MainFrameMenuBar.cpp:657
+msgid "Warning"
+msgstr ""
+
+#: Src/GUI/MainFrameMenuBar.cpp:698 Src/GUI/MainFrameMenuBar.cpp:761
+#: Src/GUI/MainFrameMenuBar.cpp:801
 msgid "Select destination file"
 msgstr "Выберите конечный файл"
 
-#: Src/GUI/MainFrameMenuBar.cpp:684 Src/GUI/MainFrameMenuBar.cpp:723
+#: Src/GUI/MainFrameMenuBar.cpp:699 Src/GUI/MainFrameMenuBar.cpp:738
 msgid "Aria Maestosa file"
 msgstr "Файл Aria Maestosa"
 
-#: Src/GUI/MainFrameMenuBar.cpp:693 Src/GUI/MainFrameMenuBar.cpp:757
-#: Src/GUI/MainFrameMenuBar.cpp:794
+#: Src/GUI/MainFrameMenuBar.cpp:708 Src/GUI/MainFrameMenuBar.cpp:772
+#: Src/GUI/MainFrameMenuBar.cpp:811
 msgid "The file already exists. Do you wish to overwrite it?"
 msgstr "Файл уже существует. Вы хотите перезаписать его?"
 
-#: Src/GUI/MainFrameMenuBar.cpp:733
+#: Src/GUI/MainFrameMenuBar.cpp:748
 msgid "Select midi file"
 msgstr "Выбрать midi-файл"
 
-#: Src/GUI/MainFrameMenuBar.cpp:734 Src/GUI/MainFrameMenuBar.cpp:747
+#: Src/GUI/MainFrameMenuBar.cpp:749 Src/GUI/MainFrameMenuBar.cpp:762
 msgid "Midi file"
 msgstr "Midi-файл"
 
-#: Src/GUI/MainFrameMenuBar.cpp:768
+#: Src/GUI/MainFrameMenuBar.cpp:785
 msgid "Sorry, failed to export midi file."
 msgstr "Извините, не удалось экспортировать midi-файл."
 
-#: Src/GUI/MainFrameMenuBar.cpp:806
+#: Src/GUI/MainFrameMenuBar.cpp:823
 msgid ""
 "Please wait while audio file is being generated.\n"
 "\n"
@@ -1533,15 +1552,15 @@ msgid ""
 "this can take several minutes."
 msgstr "Пожалуйста, подождите пока будет создан аудиофайл.\n\nВ зависимости от длительности Вашего файла, это может занять несколько минут."
 
-#: Src/GUI/MainFrameMenuBar.cpp:1028
+#: Src/GUI/MainFrameMenuBar.cpp:1045
 msgid "You may not delete the last track"
 msgstr "Вы не можете удалить последний трек"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1032
+#: Src/GUI/MainFrameMenuBar.cpp:1049
 msgid "Do you really want to delete this track?"
 msgstr "Вы действительно хотите удалить этот трек?"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1150
+#: Src/GUI/MainFrameMenuBar.cpp:1167
 msgid ""
 "If multiple tracks play on the same channel, they will be merged.\n"
 "This cannot be undone.\n"
@@ -1549,17 +1568,17 @@ msgid ""
 "Do you really want to continue?"
 msgstr "Если несколько треков звучит в одном канале, они будут смешаны. Это нельзя отменить.\n\nВы действительно хотите продолжать?"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1234 Src/Pickers/TimeSigPicker.cpp:288
+#: Src/GUI/MainFrameMenuBar.cpp:1251 Src/Pickers/TimeSigPicker.cpp:288
 msgid ""
 "Are you sure you want to go back to having a single time signature? Any time"
 " sig events you may have added will be lost. This cannot be undone."
 msgstr "Вы уверены, что хотите вернуться к единому размеру? Вся Ваша работа с размерами, которую Вы провели, будет утеряна. Это нельзя отменить!"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1363
+#: Src/GUI/MainFrameMenuBar.cpp:1380
 msgid "Manual"
 msgstr "Ручное"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1557
+#: Src/GUI/MainFrameMenuBar.cpp:1574
 msgid "Clear List"
 msgstr ""
 
@@ -1690,55 +1709,55 @@ msgstr "Помощь"
 msgid "Exit"
 msgstr "Выход"
 
-#: Src/GUI/GraphicalTrack.cpp:418
+#: Src/GUI/GraphicalTrack.cpp:419
 msgid "Track volume"
 msgstr ""
 
-#: Src/GUI/GraphicalTrack.cpp:422
+#: Src/GUI/GraphicalTrack.cpp:423
 msgid "Mute"
 msgstr ""
 
-#: Src/GUI/GraphicalTrack.cpp:426
+#: Src/GUI/GraphicalTrack.cpp:427
 msgid "Solo"
 msgstr ""
 
-#: Src/GUI/GraphicalTrack.cpp:432
+#: Src/GUI/GraphicalTrack.cpp:433
 msgid "Maximize track"
 msgstr ""
 
-#: Src/GUI/GraphicalTrack.cpp:436
+#: Src/GUI/GraphicalTrack.cpp:437
 msgid "Dock track"
 msgstr ""
 
-#: Src/GUI/GraphicalTrack.cpp:458 Src/Editors/ScoreEditor.h:285
+#: Src/GUI/GraphicalTrack.cpp:459 Src/Editors/ScoreEditor.h:285
 msgid "Score Editor"
 msgstr "Нотный редактор"
 
-#: Src/GUI/GraphicalTrack.cpp:462 Src/Editors/KeyboardEditor.h:88
+#: Src/GUI/GraphicalTrack.cpp:463 Src/Editors/KeyboardEditor.h:88
 msgid "Keyboard Editor"
 msgstr "Клавишный редактор"
 
-#: Src/GUI/GraphicalTrack.cpp:466 Src/Editors/GuitarEditor.h:63
+#: Src/GUI/GraphicalTrack.cpp:467 Src/Editors/GuitarEditor.h:63
 msgid "Tablature Editor"
 msgstr "Редактор Табулатуры"
 
-#: Src/GUI/GraphicalTrack.cpp:470 Src/Editors/DrumEditor.h:103
+#: Src/GUI/GraphicalTrack.cpp:471 Src/Editors/DrumEditor.h:103
 msgid "Drum Editor"
 msgstr "Редактор Ударных"
 
-#: Src/GUI/GraphicalTrack.cpp:474 Src/Editors/ControllerEditor.h:168
+#: Src/GUI/GraphicalTrack.cpp:475 Src/Editors/ControllerEditor.h:171
 msgid "Controller Editor"
 msgstr "Редактор Контроллера"
 
-#: Src/GUI/GraphicalTrack.cpp:778
+#: Src/GUI/GraphicalTrack.cpp:779
 msgid "Choose a new track title."
 msgstr "Выберите заголовок для нового трека."
 
-#: Src/GUI/GraphicalTrack.cpp:835
+#: Src/GUI/GraphicalTrack.cpp:836
 msgid "Enter the ID of the channel this track should play in"
 msgstr "Введите идентификатор для канала, в котором будет воспроизводиться трек"
 
-#: Src/GUI/GraphicalTrack.cpp:837
+#: Src/GUI/GraphicalTrack.cpp:838
 msgid "Channel choice"
 msgstr "Выбор канала"
 
@@ -1816,19 +1835,23 @@ msgstr ""
 msgid "Unknown MIDI port : "
 msgstr "Неизвестный порт MIDI: "
 
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:139
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:118
+msgid "Sorry, an internal error occurred during export"
+msgstr ""
+
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:157
 msgid ""
 "Sorry, exporting to audio could not complete successfully. Please include "
 "the following error code when reporting the issue :"
 msgstr ""
 
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:275
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:279
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:328
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:293
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:297
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:346
 msgid "OSX Software Synthesizer"
 msgstr "Программный OSX-синтезатор"
 
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:311
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:329
 msgid "AIFF file"
 msgstr "AIFF-файл"
 
@@ -1889,13 +1912,13 @@ msgstr "Программный синтезатор Windows"
 msgid "Failed to initialize MIDI out device"
 msgstr "Ошибка инициализации устройства вывода MIDI"
 
-#: Src/Midi/CommonMidiUtils.cpp:434 Src/Midi/CommonMidiUtils.cpp:459
+#: Src/Midi/CommonMidiUtils.cpp:435 Src/Midi/CommonMidiUtils.cpp:460
 msgid ""
 "WARNING: this song has too many\n"
 "channels, expect unpredictable output"
 msgstr "ПРЕДУПРЕЖДЕНИЕ: эта песня содержит слишком много каналов, возможен непредсказуемый вывод"
 
-#: Src/Midi/Sequence.cpp:814
+#: Src/Midi/Sequence.cpp:906
 msgid ""
 "Warning : you are opening a file saved with a version of\n"
 "Aria Maestosa more recent than the version you currently have.\n"
@@ -2680,6 +2703,11 @@ msgstr "Пользовательские пресеты"
 #: Src/Pickers/KeyPicker.cpp:166
 msgid "Edit Presets..."
 msgstr "Редактировать пресеты..."
+
+#: Src/Pickers/KeyPicker.cpp:522
+#, c-format
+msgid "%s Major, %s minor"
+msgstr ""
 
 #. I18N: - when setting time signature, to indicate it's not constant through
 #. song
