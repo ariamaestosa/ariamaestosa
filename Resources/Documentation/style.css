@@ -247,3 +247,18 @@ a:visited
 {
     color: #0A007D;
 }
+
+.manheader
+{
+    background-color: #EEEEEE; border-bottom: 1px solid #D8D8D8; padding-top: 12px; padding-bottom: 12px
+}
+
+.manheader img
+{
+    vertical-align: middle; margin-right: 3px;
+}
+
+.mandivider
+{
+    background-color: #2a4b74; width: 110%; height: 10px; margin-left: -11px; width: calc(100% + 22px)
+}
