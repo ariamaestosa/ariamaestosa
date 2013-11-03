@@ -203,6 +203,10 @@
     <File Name="../Src/Actions/ScrollNotesIntoView.h"/>
     <File Name="../Src/Actions/DuplicateMeasures.cpp"/>
     <File Name="../Src/Actions/DuplicateMeasures.h"/>
+    <File Name="../Src/Actions/AddTextEvent.cpp"/>
+    <File Name="../Src/Actions/AddTextEvent.h"/>
+    <File Name="../Src/Actions/DeleteControllerEvent.cpp"/>
+    <File Name="../Src/Actions/DeleteControllerEvent.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="IO">
     <File Name="../Src/IO/MidiToMemoryStream.h"/>
