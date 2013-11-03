@@ -478,7 +478,7 @@ void MidiContext::runTimidity()
 void MidiContext::runSoftSynth(const wxString& soundfontPath)
 {
     wxString cmd(FLUIDSYNTH_COMMAND 
-        + wxT(" -a alsa -l --server -i '") + soundfontPath + wxT("'"));
+        + wxT(" -a pulseaudio -l --server -i '") + soundfontPath + wxT("'"));
     
     wxExecute(cmd, wxEXEC_ASYNC);
 }
