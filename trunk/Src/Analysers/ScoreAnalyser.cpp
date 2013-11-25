@@ -210,8 +210,17 @@ public:
         }
 
         // fix all note stems so they all point in the same direction and have the correct height
+        int infinite_loop_detection = 0;
         while (true)
         {
+            infinite_loop_detection++;
+            if (infinite_loop_detection > 100)
+            {
+                fprintf(stderr, "ERROR: infinite loop in dobeam\n");
+                ASSERT(false);
+                return;
+            }
+            
             const int   from_tick  = m_note_render_info[m_first_id].getTick();
             const float from_level = m_analyser->getStemTo(m_note_render_info[m_first_id]);
             const int   to_tick    = m_note_render_info[m_first_id].m_beam_to_tick;
