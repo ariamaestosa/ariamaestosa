@@ -294,7 +294,7 @@ def compile_Aria(which_os):
         env.Append(CCFLAGS=['-g','-Wall','-Wextra','-Wno-unused-parameter','-D_MORE_DEBUG_CHECKS','-D_CHECK_FOR_LEAKS','-Wfatal-errors','-DDEBUG=1'])
         
     elif build_type == "release":
-        env.Append(CCFLAGS=['-O3','-DNDEBUG=1'])
+        env.Append(CCFLAGS=['-O2','-DNDEBUG=1'])
     
     else:
         print 'Unknown build type, cannot continue'
