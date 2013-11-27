@@ -71,7 +71,6 @@ bool QuickTimeExport::qtkit_exportToAiff(const char* filename)
         QTMovieExportType, nil];
     [dictionary retain];
     
-	//NSString* nsstring_filepath = [NSString stringWithCString:"/Users/mathieu/Desktop/caut.aiff"];
     NSString* nsstring_filepath = [NSString stringWithCString:filename encoding:NSUTF8StringEncoding ];
     [nsstring_filepath retain];
 	if (nsstring_filepath == nil)
