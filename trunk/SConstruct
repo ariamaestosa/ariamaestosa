@@ -254,8 +254,8 @@ def compile_Aria(which_os):
         winCppFlags = ['-mthreads', '-DHAVE_W32API_H', '-D__WXMSW__', '-D_UNICODE', '-I' + wxHomePath + '\lib\gcc_dll\mswu',
                        '-I' + wxHomePath + '\include', '-DWXUSINGDLL', '-Wno-ctor-dtor-privacy'] 
 
-        winLdFlags = ['-mthreads', '-L' + wxHomePath + '\lib\gcc_dll', '-lwxbase295u_gcc_custom', '-lwxmsw295u_core_gcc_custom',
-                      '-lwxmsw295u_adv_gcc_custom', '-lwxbase295u_net_gcc_custom', '-lwxtiff', '-lwxjpeg', '-lwxpng',
+        winLdFlags = ['-mthreads', '-L' + wxHomePath + '\lib\gcc_dll', '-lwxbase30u_gcc_custom', '-lwxmsw30u_core_gcc_custom',
+                      '-lwxmsw30u_adv_gcc_custom', '-lwxbase30u_net_gcc_custom', '-lwxtiff', '-lwxjpeg', '-lwxpng',
                       '-lwxzlib', '-lwxregexu', '-lwxexpat', '-lkernel32', '-luser32', '-lgdi32', '-lcomdlg32', '-lwxregexu', '-lwinspool',
                       '-lwinmm', '-lshell32', '-lcomctl32', '-lole32', '-loleaut32', '-luuid', '-lrpcrt4', '-ladvapi32', '-lwsock32']
         
