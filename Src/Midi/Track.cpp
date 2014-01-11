@@ -1749,7 +1749,7 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
                 control_evt_id++;
             }
             // other controller
-            else
+            else if (controllerID < 128)
             {
                 if (doAddControlEvent and (time + firstNoteStartTick) <= lastTickInSong)
                 {
@@ -1772,6 +1772,11 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
                 control_evt_id++;
 
             }//endif (control/pitch-bend)
+			else
+			{
+				// unexported event
+				control_evt_id++;
+			}
 
         }// if (note/note off/control)
 
