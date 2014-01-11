@@ -1103,6 +1103,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
     if (m_g_clef)
     {
         AriaRender::primitives();
+		AriaRender::color(0,0,0);
 
         // draw horizontal score lines
         for (int n = middle_c_level - 10 ; n < middle_c_level; n+=2)
@@ -1112,8 +1113,6 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
         }
 
         // draw sharp/flat signs next to key
-        AriaRender::images();
-
         int max_level_with_signs = -1;
         int min_level_with_signs = -1;
 
@@ -1130,6 +1129,8 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
 
         AriaRender::images();
+		AriaRender::color(0,0,0);
+		AriaRender::setImageState(AriaRender::STATE_NOTE);
         for (int n = min_level_with_signs; n < max_level_with_signs; n++)
         {
             const int liney = getEditorYStart() + n*Y_STEP_HEIGHT + Y_STEP_HEIGHT/2 - yscroll;
@@ -1152,7 +1153,6 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
     {
         AriaRender::primitives();
         AriaRender::color(0,0,0);
-
         // draw horizontal score lines
         for (int n = middle_c_level+2 ; n < middle_c_level + 11; n+=2)
         {
@@ -1162,7 +1162,8 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
         // draw sharp/flat signs next to key
         AriaRender::images();
-
+		AriaRender::setImageState(AriaRender::STATE_NOTE);
+		
         int max_level_with_signs = -1;
         int min_level_with_signs = -1;
 
@@ -1176,9 +1177,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
             min_level_with_signs = middle_c_level + 5;
             max_level_with_signs = middle_c_level + 12;
         }
-
-        AriaRender::images();
-
+		
         for (int n = min_level_with_signs; n < max_level_with_signs; n++)
         {
             const int liney = getEditorYStart() + n*Y_STEP_HEIGHT + Y_STEP_HEIGHT/2 - yscroll;
@@ -1196,6 +1195,7 @@ void ScoreEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     // --------------------------- clefs -------------------------
     AriaRender::images();
+	AriaRender::setImageState(AriaRender::STATE_NORMAL);
     if (m_g_clef)
     {
         const int clef_y = getEditorYStart() + (middle_c_level-6)*Y_STEP_HEIGHT -  yscroll + 5;
