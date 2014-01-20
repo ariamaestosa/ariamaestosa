@@ -787,11 +787,11 @@ int Track::snapMidiTickToGrid(int tick, bool isNoteStart, bool is_ceil)
     float ticklen;
     if (dotted)
     {
-        ticklen = (float)(m_sequence->ticksPerBeat()*4 / divider);
+        ticklen = (float)(m_sequence->ticksPerQuarterNote()*4 / divider);
         if (isNoteStart)
         {
             // when note is dotted, allow to start note at halves too
-            ticklen = std::min(ticklen/2.0f, (float)m_sequence->ticksPerBeat());
+            ticklen = std::min(ticklen/2.0f, (float)m_sequence->ticksPerQuarterNote());
         }
         else
         {
@@ -801,7 +801,7 @@ int Track::snapMidiTickToGrid(int tick, bool isNoteStart, bool is_ceil)
     else
     {
         if (isNoteStart and divider < 4) divider = 4; // for note start, allow starting at every bea at least
-        ticklen = (float)(m_sequence->ticksPerBeat()*4 / divider);
+        ticklen = (float)(m_sequence->ticksPerQuarterNote()*4 / divider);
     }
 
     if (is_ceil)
@@ -826,7 +826,7 @@ void Track::copy()
      */
 
     Clipboard::clear();
-    Clipboard::setBeatLength(m_sequence->ticksPerBeat());
+    Clipboard::setBeatLength(m_sequence->ticksPerQuarterNote());
 
     int tickOfFirstSelectedNote=-1;
     // place all selected notes into clipboard

@@ -99,10 +99,7 @@ int MeasureData::measureLengthInTicks(int measure) const
 
     const int num   = getTimeSigNumerator(measure);
     const int denom = getTimeSigDenominator(measure);
-
-    return (int)round(
-                 m_sequence->ticksPerBeat() * num * (4.0/(float)denom)
-                 );
+    return getMeasureLengthInTicks(num, denom);
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -111,7 +108,9 @@ int MeasureData::measureLengthInTicks(int measure) const
 // (i'm not sure if this is used at all or very much)
 int MeasureData::defaultMeasureLengthInTicks()
 {
-    return (int)( m_sequence->ticksPerBeat() * getTimeSigNumerator(0) * (4.0/getTimeSigDenominator(0)) );
+    const int num   = getTimeSigNumerator(0);
+    const int denom = getTimeSigDenominator(0);
+    return getMeasureLengthInTicks(num, denom);
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -265,9 +264,9 @@ int MeasureData::measureAtTick(int tick) const
             
             const int answer =  (int)(
                                       m_time_sig_changes[ last_id ].getMeasure() +
-                                      tick / ( m_sequence->ticksPerBeat() *
-                                              m_time_sig_changes[ last_id ].getNum() *
-                                              (4.0/ m_time_sig_changes[ last_id ].getDenom() ) )
+                                      tick / getMeasureLengthInTicks(
+                                            m_time_sig_changes[ last_id ].getNum(),
+                                            m_time_sig_changes[ last_id ].getDenom())
                                       );
             return answer;
         }
@@ -505,7 +504,7 @@ void MeasureData::updateMeasureInfo()
     const int amount = m_measure_info.size();
     //const float zoom = sequence->getZoom();
     
-    const int ticksPerBeat = m_sequence->ticksPerBeat();
+    const int ticksPerQuarterNote = m_sequence->ticksPerQuarterNote();
     float tick = 0;
     int timg_sig_event = 0;
 
@@ -537,8 +536,8 @@ void MeasureData::updateMeasureInfo()
         // calculations and drawing
         m_measure_info[n].tick = (int)round( tick );
         //m_measure_info[n].pixel = (int)round( tick * zoom );
-        tick += ticksPerBeat * m_time_sig_changes[timg_sig_event].getNum() *
-                (4.0 /(float)m_time_sig_changes[timg_sig_event].getDenom());
+        tick += getMeasureLengthInTicks(m_time_sig_changes[timg_sig_event].getNum(),
+                                        m_time_sig_changes[timg_sig_event].getDenom());
     }
 
     // fill length and end of last measure
@@ -630,10 +629,8 @@ void MeasureData::addTimeSigChange_import(int tick, int num, int denom)
         const int last_id = m_time_sig_changes.size() - 1;
         measure = (int)(
                         measuresPassed + (tick - last_event_tick)  /
-                        ( m_sequence->ticksPerBeat() *
-                          m_time_sig_changes[last_id].getNum() *
-                          (4.0/ m_time_sig_changes[last_id].getDenom() )
-                          )
+                        getMeasureLengthInTicks(m_time_sig_changes[last_id].getNum(),
+                                        m_time_sig_changes[last_id].getDenom())
                         );
     }
 
@@ -823,4 +820,64 @@ void MeasureData::saveToFile(wxFileOutputStream& fileout)
     }
 }
 
+
 // ----------------------------------------------------------------------------------------------------------
+
+float MeasureData::getBeatSize(int measure) const
+{
+    if (measure == -1) measure = 0; // no parameter passed, use measure 0 settings
+
+    const int num   = getTimeSigNumerator(measure);
+    const int denom = getTimeSigDenominator(measure);
+    return getBeatSize(num, denom);
+}
+
+
+// ----------------------------------------------------------------------------------------------------------
+
+int MeasureData::getBeatCount(int measure) const
+{
+    if (measure == -1) measure = 0; // no parameter passed, use measure 0 settings
+
+    const int num   = getTimeSigNumerator(measure);
+    const int denom = getTimeSigDenominator(measure);
+    return getBeatCount(num, denom);
+}
+
+
+// ----------------------------------------------------------------------------------------------------------
+
+int MeasureData::getMeasureLengthInTicks(int num, int denom) const
+{
+    return (int)((float)m_sequence->ticksPerQuarterNote() * 
+                 (float)getBeatCount(num, denom) * getBeatSize(num, denom));
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+// Returns the number of beat in a bar given the time signature
+// This is simply given in theory by numerator
+// But, practically, the result might be different for certain 
+// ternary time signatures (e. g. : 3/8, 6/8, 3/4)
+// cf. http://www2.siba.fi/muste1/index.php?id=98&la=en
+// This is why we also consider denominator for possible evolutions
+int MeasureData::getBeatCount(int numerator, int denominator) const
+{
+    return numerator;
+}
+
+
+// ----------------------------------------------------------------------------------------------------------
+
+// Returns the beat size expressed in quarter note
+// May be less than 1.0 (ex : 0.5 => eighth note)
+// This is simply given in theory by denominator
+// But, practically, the result might be different for certain 
+// ternary time signatures (e. g. : 3/8, 6/8, 3/4)
+// cf. http://www2.siba.fi/muste1/index.php?id=98&la=en
+// This is why we also consider numerator for possible evolutions
+float MeasureData::getBeatSize(int numerator, int denominator) const
+{
+    return 4.0/(float)denominator;
+}
+

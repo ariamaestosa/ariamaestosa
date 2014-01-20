@@ -37,7 +37,7 @@ KeyrollPrintableSequence::KeyrollPrintableSequence(Sequence* parent, float cmPer
     m_vertical_margin = verticalMargin;
     m_colors = colors;
 
-    m_units_per_tick = cmPerBeat * UNITS_PER_CM / parent->ticksPerBeat();
+    m_units_per_tick = cmPerBeat * UNITS_PER_CM / parent->ticksPerQuarterNote();
     ASSERT_E(m_units_per_tick, >, 0.0f);
 }
 
@@ -48,7 +48,7 @@ void KeyrollPrintableSequence::calculateLayout()
     MeasureData* md = m_sequence->getMeasureData();
     
     const int tickCount = md->getTotalTickAmount();
-    const int beat = m_sequence->ticksPerBeat();
+    const int beat = m_sequence->ticksPerQuarterNote();
     
     //const float unitCount = tickCount * UNITS_PER_TICK;
     int ticksPerPage = AriaPrintable::getCurrentPrintable()->getUnitWidth() / m_units_per_tick;
@@ -202,7 +202,7 @@ void KeyrollPrintableSequence::printLinesInArea(wxDC& dc, wxGraphicsContext* grc
         dc.DrawLine(usableX0, notationAreaY0 + notationAreaHeight, x1, notationAreaY0 + notationAreaHeight);
     }
 
-    const int beatLen = m_sequence->ticksPerBeat();
+    const int beatLen = m_sequence->ticksPerQuarterNote();
 
     // page must start on a beat
     ASSERT_E( (m_pages[page].m_first_tick/beatLen)*beatLen, ==, m_pages[page].m_first_tick );

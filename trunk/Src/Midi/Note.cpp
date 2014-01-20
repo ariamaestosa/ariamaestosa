@@ -364,7 +364,7 @@ void Note::play(bool change)
     if (playSetting == PLAY_ON_CHANGE and not change) return;
 
     int durationMilli = (m_end_tick - m_start_tick)*60*1000 /
-                        (m_track->getSequence()->getTempo() * m_track->getSequence()->ticksPerBeat());
+                        (m_track->getSequence()->getTempo() * m_track->getSequence()->ticksPerQuarterNote());
     
     // FIXME(DESIGN): remove this 131-pitch ugliness
     if (m_track->isNotationTypeEnabled(DRUM)) 

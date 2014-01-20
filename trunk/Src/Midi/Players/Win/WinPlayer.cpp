@@ -552,7 +552,7 @@ namespace AriaMaestosa
         
         // add some breath time at the end so that last note is not cut too sharply
         // 'makeMidiBytes' adds some silence at the end so no need to worry about possible problems
-        songLengthInTicks += sequence->ticksPerBeat();
+        songLengthInTicks += sequence->ticksPerQuarterNote();
         
         /*
          * PATH 2 : Use the generic Aria/jdkmidi sequencer, then native functions below

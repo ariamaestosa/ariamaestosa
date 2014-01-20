@@ -53,7 +53,7 @@ Sequence::Sequence(IPlaybackModeListener* playbackListener, IActionStackListener
                    ISequenceDataListener* sequenceDataListener,
                    IMeasureDataListener* measureListener, bool addDefautTrack)
 {
-    beatResolution              = 960;
+    m_quarterNoteResolution     = 960;
     currentTrack                = 0;
     m_tempo                     = 120;
     m_importing                 = false;
@@ -179,9 +179,9 @@ void Sequence::setChannelManagementType(ChannelManagementType type)
 
 // ----------------------------------------------------------------------------------------------------------
 
-void Sequence::setTicksPerBeat(int res)
+void Sequence::setTicksPerQuarterNote(int res)
 {
-    beatResolution = res;
+    m_quarterNoteResolution = res;
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -799,7 +799,7 @@ void Sequence::saveToFile(wxFileOutputStream& fileout)
     writeData(wxT(" maintempo=\"")           + to_wxString(m_tempo) +
               wxT("\" measureAmount=\"")     + to_wxString(m_measure_data->getMeasureAmount()) +
               wxT("\" currentTrack=\"")      + to_wxString(currentTrack) +
-              wxT("\" beatResolution=\"")    + to_wxString(beatResolution) +
+              wxT("\" beatResolution=\"")    + to_wxString(m_quarterNoteResolution) +
               wxT("\" internalName=\"")      + internal_sequenceName +
               // FIXME: file format version doesn't quite belong in <sequence> anymore since that's not the top-level element anymore...
               wxT("\" fileFormatVersion=\"") + to_wxString(CURRENT_FILE_VERSION) +
@@ -958,11 +958,11 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
         const char* beatResolution_c = xml->getAttributeValue("beatResolution");
         if (beatResolution_c != NULL)
         {
-            beatResolution = atoi( beatResolution_c );
+            m_quarterNoteResolution = atoi( beatResolution_c );
         }
         else
         {
-            //beatResolution = 960;
+            //m_quarterNoteResolution = 960;
             std::cerr << "Missing info from file: beat resolution" << std::endl;
             return false;
         }

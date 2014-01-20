@@ -350,7 +350,7 @@ public:
 
             makeMidiBytes(sequence, true, &songLengthInTicks, startTick, &data, &datalength, true);
 
-            stored_songLength = songLengthInTicks + sequence->ticksPerBeat();
+            stored_songLength = songLengthInTicks + sequence->ticksPerQuarterNote();
 
             // start in a new thread as to not block the UI during playback;
             threads::add_events.runFunction(&add_events_func);

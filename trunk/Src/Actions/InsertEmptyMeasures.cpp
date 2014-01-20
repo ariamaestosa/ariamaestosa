@@ -182,7 +182,7 @@ namespace InsertMeasuresTest
             
             Track* t = new Track(m_seq);
             
-            const int beatLen = m_seq->ticksPerBeat();
+            const int beatLen = m_seq->ticksPerQuarterNote();
             
             // make a factory sequence to work from
             {
@@ -230,7 +230,7 @@ namespace InsertMeasuresTest
         {
             Track* t = m_seq->getTrack(0);
             
-            const int beatLen = m_seq->ticksPerBeat();
+            const int beatLen = m_seq->ticksPerQuarterNote();
             
             require(t->getNoteAmount() == 16, "the number of events is fine on undo");
             require(t->getNoteOffVector().size() == 16, "Note off vector is fine on undo");
@@ -274,7 +274,7 @@ namespace InsertMeasuresTest
         // TODO: test this action on tempo events too
         
         // verify the data is OK        
-        const int beatLen = provider.m_seq->ticksPerBeat();
+        const int beatLen = provider.m_seq->ticksPerQuarterNote();
         
         require(t->getNoteAmount() == 16, "the number of events is fine");
         require(t->getNoteOffVector().size() == 16, "Note off vector is fine");

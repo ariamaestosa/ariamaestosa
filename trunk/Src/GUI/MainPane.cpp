@@ -1340,7 +1340,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
         {
             seq->getCurrentTrack()->
             action( new Action::ResizeNotes(
-                        -seq->ticksPerBeat() *
+                        -seq->ticksPerQuarterNote() *
                         4 /
                         seq->getCurrentTrack()->getMagneticGrid()->getDivider(),
                         SELECTED_NOTES)
@@ -1352,7 +1352,7 @@ void MainPane::keyPressed(wxKeyEvent& evt)
         {
             seq->getCurrentTrack()->
             action( new Action::ResizeNotes(
-                        seq->ticksPerBeat() *
+                        seq->ticksPerQuarterNote() *
                         4 /
                         seq->getCurrentTrack()->getMagneticGrid()->getDivider(),
                         SELECTED_NOTES)

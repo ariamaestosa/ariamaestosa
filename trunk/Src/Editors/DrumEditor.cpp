@@ -672,7 +672,7 @@ void DrumEditor::addNote(const int snappedX, const int mouseY)
     m_track->action(
                     new Action::AddNote(note,
                                         snappedX,
-                                        snappedX + m_sequence->ticksPerBeat()/32+1,
+                                        snappedX + m_sequence->ticksPerQuarterNote()/32+1,
                                         m_track->getDefaultVolume() )
                     );
 }

@@ -111,7 +111,7 @@ namespace AriaMaestosa
         void parseBackgroundTracks();
         
         int m_tempo;
-        int beatResolution;
+        int m_quarterNoteResolution;
 
         wxString m_copyright;
         wxString internal_sequenceName;
@@ -392,12 +392,12 @@ namespace AriaMaestosa
         /**
           * @return Ticks per beat (the number of time units in a quarter note.)
           */
-        int ticksPerBeat() const { return beatResolution; }
+        int ticksPerQuarterNote() const { return m_quarterNoteResolution; }
         
         /**
           * @param res Ticks per beat (the number of time units in a quarter note.)
           */
-        void setTicksPerBeat(int res);
+        void setTicksPerQuarterNote(int res);
 
         MeasureData* getMeasureData() { return m_measure_data; }
         const MeasureData* getMeasureData() const { return m_measure_data.raw_ptr; }

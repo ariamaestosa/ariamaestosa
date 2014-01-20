@@ -91,7 +91,7 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
         ScopedMeasureITransaction tr(sequence->getMeasureData()->startImportTransaction());
         
         const int resolution = jdksequence.GetClksPerBeat();
-        sequence->setTicksPerBeat( resolution );
+        sequence->setTicksPerQuarterNote(resolution);
 
         const int drum_note_duration = resolution/32+1;
 
@@ -663,7 +663,7 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
     int measureAmount_i = md->measureAtTick(lastEventTick);
     
     std::cout << "[loadMidiFile] song length = " << measureAmount_i << " measures, last_event_tick="
-              << lastEventTick << ", beat length = " << sequence->ticksPerBeat() << std::endl;
+              << lastEventTick << ", beat length = " << sequence->ticksPerQuarterNote() << std::endl;
 
     gseq->setZoom(100);
 
