@@ -1301,14 +1301,14 @@ void GraphicalTrack::onNotationTypeChange()
 
 int GraphicalTrack::getNoteStartInPixels(const int id) const
 {
-    return (int)round( m_track->getNoteStartInMidiTicks(id) * m_gsequence->getZoom() );
+    return (int)( (float)m_track->getNoteStartInMidiTicks(id) * m_gsequence->getZoom() );
 }
 
 // ---------------------------------------------------------------------------------------------------------------
 
 int GraphicalTrack::getNoteEndInPixels(const int id) const
 {
-    return (int)round( m_track->getNoteEndInMidiTicks(id) * m_gsequence->getZoom() );
+    return (int)( (float)m_track->getNoteEndInMidiTicks(id) * m_gsequence->getZoom() );
 }
 
 // ---------------------------------------------------------------------------------------------------------------

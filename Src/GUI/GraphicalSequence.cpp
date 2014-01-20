@@ -34,7 +34,7 @@ GraphicalSequence::GraphicalSequence(Sequence* s) : m_name_renderer(s->getNameMo
     reordering_newPosition  = -1;
     x_scroll_upon_copying   = -1;
     m_measure_bar           = new MeasureBar(s->getMeasureData(), this);
-    m_zoom                  = (128.0/(s->ticksPerBeat()*4));
+    m_zoom                  = (128.0/(s->ticksPerQuarterNote()*4));
     m_zoom_percent          = 100;
     m_dock_height           = 0;
     m_maximize_track_mode   = false;
@@ -229,7 +229,7 @@ void GraphicalSequence::setYScroll(int value)
 
 void GraphicalSequence::setZoom(int zoom)
 {
-    m_zoom = (zoom/100.0) * 128.0 / ((float)m_sequence->ticksPerBeat() * 4);
+    m_zoom = (float)zoom * 1.28 / ((float)m_sequence->ticksPerQuarterNote() * 4.0);
     m_zoom_percent = zoom;
 }
 

@@ -38,6 +38,7 @@
 
 #include <wx/tokenzr.h>
 
+
 namespace AriaMaestosa
 {
     EditTool g_current_edit_tool = EDIT_TOOL_PENCIL;
@@ -142,37 +143,46 @@ void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
     
     MeasureData* md = m_sequence->getMeasureData();
     MeasureBar* mb = m_gsequence->getMeasureBar();
-    
-    const int measure       = mb->measureAtPixel( Editor::getEditorXStart() );
-    const int start_x       = mb->firstPixelInMeasure( measure );
+
+    const int startMeasure  = mb->measureAtPixel(Editor::getEditorXStart());
     const int measureAmount = md->getMeasureAmount();
-    const float beatLength  = m_sequence->ticksPerBeat() * m_gsequence->getZoom();
-    float mx                = start_x;
-    const int measureID     = mb->measureAtPixel( Editor::getEditorXStart() );
-    float new_mx;
+    
+    float mx;
+    float beatLength;
+    int beatCount;
+    int beat;
 
-    for (int m=measureID; m<measureAmount; m++)
+
+    mx = mb->firstPixelInMeasure(startMeasure);
+    
+    for (int m=startMeasure; m<measureAmount; m++)
     {
-        new_mx = mb->firstPixelInMeasure(m);
-
+        beatLength = (float)(m_sequence->ticksPerQuarterNote() 
+                            * m_gsequence->getZoom()
+                            * md->getBeatSize(m));
+                                    
+        beatCount = md->getBeatCount(m)-1;
+        mx += beatLength;
+        
         // draw pale lines
         setPaleLineColor();
-        for (; mx < new_mx; mx += beatLength)
+        for (beat=0 ; beat<beatCount ; beat++)
         {
             AriaRender::line( (int)round(mx), from_y, (int)round(mx), to_y);
+            mx+=beatLength;
         }
-        mx = new_mx;
-
+        
         // draw strong line
         setStrongLineColor();
         AriaRender::line((int)round(mx), from_y, (int)round(mx), to_y);
-        mx += beatLength;
-
+        
         if (mx > Display::getWidth()) break;
 
     }//next
+    
 
     // draw lines till end of screen if we're not there yet
+    mx+=beatLength;
     const int end_of_screen = Display::getWidth();
     if (mx < end_of_screen)
     {
@@ -184,10 +194,6 @@ void Editor::drawVerticalMeasureLines(const int from_y, const int to_y)
 
     }//end if
 
-    // close last measure with a strong line
-    new_mx = mb->lastPixelInMeasure(measureAmount-1);
-    setStrongLineColor();
-    AriaRender::line((int)round(new_mx), from_y, (int)round(new_mx), to_y);
 }
 
 // ------------------------------------------------------------------------------------------------------------
@@ -625,7 +631,7 @@ void Editor::mouseUp(RelativeXCoord mousex_current, int mousey_current,
                     // click without moving
                     if (g_current_edit_tool == EDIT_TOOL_ADD and snapped_start == snapped_end) 
                     {
-                        int notelen = m_sequence->ticksPerBeat()*4 / m_track->getMagneticGrid()->getDivider();
+                        int notelen = m_sequence->ticksPerQuarterNote()*4 / m_track->getMagneticGrid()->getDivider();
                         if (m_track->getMagneticGrid()->isDotted()) notelen = notelen*1.5f;
                         addNote(snapped_start,
                                 snapped_start + notelen,
@@ -991,7 +997,7 @@ void Editor::processKeyPress(int keycode, bool commandDown, bool shiftDown)
         {
             m_track->
             action( new Action::MoveNotes(this,
-                                          -m_sequence->ticksPerBeat() * 4 /
+                                          -m_sequence->ticksPerQuarterNote() * 4 /
                                           m_track->getMagneticGrid()->getDivider(), 0, SELECTED_NOTES)
                    );
             Display::render();
@@ -1000,7 +1006,7 @@ void Editor::processKeyPress(int keycode, bool commandDown, bool shiftDown)
         {
             m_track->
             action( new Action::MoveNotes(this,
-                                          m_sequence->ticksPerBeat() * 4 /
+                                          m_sequence->ticksPerQuarterNote() * 4 /
                                           m_track->getMagneticGrid()->getDivider(), 0, SELECTED_NOTES)
                    );
             Display::render();

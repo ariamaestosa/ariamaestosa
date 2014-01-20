@@ -384,6 +384,15 @@ namespace AriaMaestosa
         
         /** @brief serializatiuon */
         void  saveToFile(wxFileOutputStream& fileout);
+        
+        float getBeatSize(int measure) const;
+        int getBeatCount(int measure) const;
+        
+        private:
+        
+        int getMeasureLengthInTicks(int num, int denom) const;
+        int getBeatCount(int numerator, int denominator) const;
+        float getBeatSize(int numerator, int denominator) const;
     };
 
     typedef OwnerPtr<MeasureData::Transaction> ScopedMeasureTransaction;

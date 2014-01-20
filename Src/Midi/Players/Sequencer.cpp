@@ -187,7 +187,7 @@ void AriaSequenceTimer::run(jdksmidi::MIDISequencer* jdksequencer, const int son
     jdksequencer->GoToTimeMs( 0 );
 
     int bpm = m_seq->getTempo();
-    const int beatlen = m_seq->ticksPerBeat();
+    const int beatlen = m_seq->ticksPerQuarterNote();
 
     double ticks_per_millis = (double)bpm * (double)beatlen / (double)60000.0;
 
@@ -242,7 +242,7 @@ void AriaSequenceTimer::run(jdksmidi::MIDISequencer* jdksequencer, const int son
                     if (sequence->playWithMetronome())
                     {
                         // past the end of the song in record mode. Play metronome
-                        const int beat = sequence->ticksPerBeat();
+                        const int beat = sequence->ticksPerQuarterNote();
                         int metronome_beat = tick - (tick % beat);
                         if (next_metronome_beat == -1 or metronome_beat > next_metronome_beat)
                         {
@@ -326,7 +326,7 @@ void AriaSequenceTimer::run(jdksmidi::MIDISequencer* jdksequencer, const int son
                 if (PlatformMidiManager::get()->isRecording() or m_seq->isLoopEnabled())
                 {
                     Sequence* seq = getMainFrame()->getCurrentSequence();
-                    tick = previous_tick + seq->ticksPerBeat();
+                    tick = previous_tick + seq->ticksPerQuarterNote();
                 }
                 else
                 {
@@ -427,7 +427,7 @@ void AriaSequenceTimer::run(jdksmidi::MIDISequencer* jdksequencer, const int son
                 getMainFrame()->GetEventHandler()->AddPendingEvent( evt );
                 
                 Sequence* seq = getMainFrame()->getCurrentSequence();
-                next_beat += seq->ticksPerBeat();
+                next_beat += seq->ticksPerQuarterNote();
             }
         }
     }

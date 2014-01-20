@@ -125,7 +125,7 @@ void Paste::perform()
     int last_tick = -1;
     
     const int copiedBeatLength = Clipboard::getBeatLength();
-    const int seqBeatLength = m_track->getSequence()->ticksPerBeat();
+    const int seqBeatLength = m_track->getSequence()->ticksPerQuarterNote();
     float scalePastedNotes = 1;
     bool needToScalePastedNotes = false;
 

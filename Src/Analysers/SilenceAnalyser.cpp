@@ -49,7 +49,7 @@ void recursivelyAnalyzeSilence(const Sequence* seq, RenderSilenceCallback render
     if (tick_length < 2) return;
     
     const MeasureData* md = seq->getMeasureData();
-    const int beatLen = seq->ticksPerBeat();
+    const int beatLen = seq->ticksPerQuarterNote();
     
     const int measure     = md->measureAtTick(tick);
     const int end_measure = md->measureAtTick(tick + tick_length - 1);

@@ -249,7 +249,7 @@ int PrintLayoutMeasure::addTrackReference(const int firstNote, GraphicalTrack* g
         }
         
         // store duration if it's the shortest yet (but ignore dead/instant-hit notes)
-        const float relativeLength = (end_tick - start_tick) / (float)(m_sequence->ticksPerBeat()*4);
+        const float relativeLength = (end_tick - start_tick) / (float)(m_sequence->ticksPerQuarterNote()*4);
         if (relativeLength < 1.0/32.0) continue;
         
         //if (currentNoteDuration < m_shortest_duration or m_shortest_duration == -1)

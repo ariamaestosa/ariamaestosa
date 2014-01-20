@@ -475,7 +475,7 @@ void ScoreAnalyser::addToVector( NoteRenderInfo& renderInfo, const bool recursio
     
     // find how to draw notes. how many flags, dotted, triplet, etc.
     // if note duration is unknown it will be split 
-    const int beat = seq->ticksPerBeat();
+    const int beat = seq->ticksPerQuarterNote();
     const float relativeLength = renderInfo.getTickLength() / (float)(beat*4);
     
     renderInfo.m_stem_type = (stemUp(renderInfo.getLevel()) ? STEM_UP : STEM_DOWN);
@@ -670,7 +670,7 @@ void ScoreAnalyser::putInTimeOrder()
 
 void ScoreAnalyser::findAndMergeChords()
 {
-    const int beatLen = m_editor->getSequence()->ticksPerBeat();
+    const int beatLen = m_editor->getSequence()->ticksPerQuarterNote();
     
     /*
      * start by merging notes playing at the same time (chords)
@@ -820,7 +820,7 @@ const bool VERBOSE_ABOUT_TRIPLETS = false;
 void ScoreAnalyser::processTriplets()
 {
     const int visibleNoteAmount = m_note_render_info.size();
-    const int beatLen = m_editor->getSequence()->ticksPerBeat();
+    const int beatLen = m_editor->getSequence()->ticksPerQuarterNote();
     
     for (int i=0; i<visibleNoteAmount; i++)
     {
@@ -997,7 +997,7 @@ void ScoreAnalyser::processTriplets()
 void ScoreAnalyser::processNoteBeam()
 {
     const int visibleNoteAmount = m_note_render_info.size();
-    const int beatLen = m_editor->getSequence()->ticksPerBeat();
+    const int beatLen = m_editor->getSequence()->ticksPerQuarterNote();
     
     // beaming
     // all beam information is stored in the first note of the serie.

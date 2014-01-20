@@ -126,7 +126,7 @@ bool AriaMaestosa::exportMidiFile(Sequence* sequence, wxString filepath)
                                              );
     
     // write the output file
-    if (not writer2.Write(numTracks, sequence->ticksPerBeat()))
+    if (not writer2.Write(numTracks, sequence->ticksPerQuarterNote()))
     {
         fprintf(stderr, "[exportMidiFile] Error writing midi file\n");
         return false;
@@ -377,13 +377,13 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdksmidi::MIDIMultiTr
     int substract_ticks;
     const bool addMetronome = (sequence->playWithMetronome() and playing);
     
-    tracks.SetClksPerBeat( sequence->ticksPerBeat() );
+    tracks.SetClksPerBeat( sequence->ticksPerQuarterNote() );
     
     MeasureData* md = sequence->getMeasureData();
     
     bool tooManyChannelsMessageShown = false;
     
-    const int past_end_time = (playing && not sequence->isLoopEnabled() ? sequence->ticksPerBeat()*4 : 0);
+    const int past_end_time = (playing && not sequence->isLoopEnabled() ? sequence->ticksPerQuarterNote()*4 : 0);
     
     if (selectionOnly)
     {
@@ -406,7 +406,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdksmidi::MIDIMultiTr
         else
         {
             // Add some time at the end for notes to fade out
-            *songLengthInTicks = trackLength + sequence->ticksPerBeat()*2;
+            *songLengthInTicks = trackLength + sequence->ticksPerQuarterNote()*2;
         }
     }
     else
@@ -806,7 +806,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdksmidi::MIDIMultiTr
     // ---- Add metronome track if enabled
     if (addMetronome)
     {
-        const int beat = sequence->ticksPerBeat();
+        const int beat = sequence->ticksPerQuarterNote();
         
         const int metronomeInstrument = 37; // 31 (stick), 56 (cowbell), 37 (side stick)
         const int metronomeVolume = 127;
@@ -925,7 +925,7 @@ void AriaMaestosa::allocAsMidiBytes(Sequence* sequence, bool selectionOnly, /*ou
                                             );
     
     // write the output data
-    if ( !writer.Write( numTracks, sequence->ticksPerBeat() ) )
+    if ( !writer.Write( numTracks, sequence->ticksPerQuarterNote() ) )
     {
         fprintf( stderr, "[allocAsMidiBytes] Error writing midi file\n");
         return;
@@ -1019,8 +1019,8 @@ int AriaMaestosa::getTimeAtTick(int tick, const Sequence* seq)
     {
         //printf("%i for %i\n", tempos[n], duration[n]);
         
-        // std::cout << " -- adding " << (int)round( ((float)duration[n] * 60.0f ) / ((float)seq->ticksPerBeat() * (float)tempos[n])) << std::endl;
-        song_duration += ((float)duration[n] * 60.0f ) / ((float)seq->ticksPerBeat() * (float)tempos[n]);
+        // std::cout << " -- adding " << (int)round( ((float)duration[n] * 60.0f ) / ((float)seq->ticksPerQuarterNote() * (float)tempos[n])) << std::endl;
+        song_duration += ((float)duration[n] * 60.0f ) / ((float)seq->ticksPerQuarterNote() * (float)tempos[n]);
     }
     
     //wxString duration_label = wxString::Format(wxString(_("Song duration :")) + wxT("  %i:%.2i"), (int)(song_duration/60), song_duration%60);
