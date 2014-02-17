@@ -18,7 +18,6 @@
 
 #include "Dialogs/WaitWindow.h"
 
-#include <iostream>
 #include "Utils.h"
 
 #include <wx/timer.h>
@@ -26,6 +25,7 @@
 #include <wx/stattext.h>
 #include <wx/gauge.h>
 #include <wx/sizer.h>
+
 
 namespace AriaMaestosa
 {
