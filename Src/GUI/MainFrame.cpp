@@ -1869,7 +1869,7 @@ void MainFrame::loadFile(const wxString& filePath)
     wxString existingFilePath;
     int size;
     bool found;
-    
+
     size = m_sequences.size();
     found = false;
     
@@ -1976,6 +1976,7 @@ void MainFrame::loadMidiFile(const wxString& filePath)
     const int old_currentSequence = m_current_sequence;
 
     addSequence(false);
+    
     setCurrentSequence( getSequenceAmount()-1 );
     getCurrentSequence()->setFilepath(filePath);
 
@@ -2042,23 +2043,28 @@ void MainFrame::reloadFile()
 {
     wxString filePath;
     Sequence* seq;
-
+    bool formerPlaybackMode;
+    
     wxLogVerbose( wxT("MainFrame::reloadFile") );
+ 
+    formerPlaybackMode = m_playback_mode;
+    if (m_playback_mode)
+    {
+        wxCommandEvent event;
+        stopClicked(event);
+    }
 
     seq = getCurrentSequence();
     filePath = seq->getFilepath();
 
     if (wxFileExists(filePath))
     {
-        WaitWindow::show(this, _("Please wait while file is reloaded."));
-
         if (filePath.EndsWith(wxT("aria")))
         {
             const bool success = AriaMaestosa::loadAriaFile(getCurrentGraphicalSequence(), filePath);
             if (not success)
             {
                 std::cout << "Loading .aria file failed." << std::endl;
-                WaitWindow::hide();
                 wxMessageBox(  _("Sorry, loading .aria file failed.") );
                 closeSequence();
                 return;
@@ -2070,7 +2076,6 @@ void MainFrame::reloadFile()
             if ( not AriaMaestosa::loadMidiFile(getCurrentGraphicalSequence(), filePath, warnings) )
             {
                 std::cout << "Loading midi file failed." << std::endl;
-                WaitWindow::hide();
                 wxMessageBox(  _("Sorry, loading midi file failed.") );
                 closeSequence();
                 return;
@@ -2080,11 +2085,15 @@ void MainFrame::reloadFile()
                 requestForScrollKeyboardEditorNotesIntoView();
             }
         }
-
-        WaitWindow::hide();
+        
         seq->clearUndoStack();
         updateVerticalScrollbar();
         Display::render();
+        if (formerPlaybackMode)
+        {
+            wxCommandEvent event;
+            playClicked(event);
+        }
     }
 }
 
