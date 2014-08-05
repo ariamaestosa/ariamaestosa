@@ -209,7 +209,7 @@ void CoreMidiOutput::note_on(const int note, const int volume, const int channel
     
     const int MESSAGESIZE = 3;
 
-    Byte noteon[MESSAGESIZE] = {0x90 | channel, note, 90};
+    Byte noteon[MESSAGESIZE] = {0x90 | channel, note, volume};
     currentpacket = MIDIPacketListAdd(packetlist, sizeof(buffer), 
                                       currentpacket, timestamp, MESSAGESIZE, noteon);
     

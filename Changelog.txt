@@ -1,6 +1,7 @@
 - Allow loop mode to keep on when invoking Aria with parameter "--reload"
 - Fix beat display for uncommon time signatures (7/8, 8/8, 2/2, ...)
 - Fix export bug when some controllers were used
+- Fix note velocity when sending playback to external device on OSX
 
 1.4.9
 - Improve duplicate track settings feature
