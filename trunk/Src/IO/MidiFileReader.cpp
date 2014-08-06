@@ -245,7 +245,12 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                     const int controllerID = event->GetController();
                     const int value = 127 - event->GetControllerValue();
 
-                    if (controllerID > 31 and controllerID < 64)
+                    if (controllerID == 0) // MSB for bank select, not supported
+                    {
+                        continue; // MSB bank change not supported
+                    }
+
+                    if (controllerID > 32 and controllerID < 64) // 32 is LSB for bank select
                     {
                         // LSB... not supported by Aria ATM
                         if (not lsb_message_printed)
@@ -298,7 +303,10 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                         continue;
                     }
 
-                    ariaTrack->addControlEvent_import(tick, value, controllerID);
+                    if (controllerID == 32) // 32 is LSB for bank select, map to 0
+                        ariaTrack->addControlEvent_import(tick, value, 0);
+                    else
+                        ariaTrack->addControlEvent_import(tick, value, controllerID);
 
                     continue;
                 }

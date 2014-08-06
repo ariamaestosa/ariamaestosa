@@ -95,10 +95,16 @@ public:
             //I18N: as in "+2 semitones"
             labelContents = _("semitones");
         }
+        else if (m_controller == 0 /* bank select */)
+        {
+            //I18N: as in "soundbank"
+            labelContents = _("bank ID");
+        }
         
         m_units = new wxChoice(panel, wxID_ANY);
         m_units->Append(labelContents, (void*)"default");
-        if (m_controller != PSEUDO_CONTROLLER_TEMPO) m_units->Append(wxT("MIDI"), (void*)"midi");
+        if (m_controller != PSEUDO_CONTROLLER_TEMPO && m_controller != 0 /* bank select */)
+            m_units->Append(wxT("MIDI"), (void*)"midi");
 
         m_units->SetSelection(0);
         
@@ -173,6 +179,23 @@ public:
                 // FIXME: remove this silly thing where Aria stores controller events as 127-midi
                 value = 127.0 - value;
             }
+        }
+        else if (m_controller == 0 /* bank select */)
+        {
+            if (not valueStr.ToDouble(&value))
+            {
+                wxBell();
+                return;
+            }
+            
+            if (value < 0.0f or value > 127.0f)
+            {
+                wxBell();
+                return;
+            }
+            
+            // FIXME: remove this silly thing where Aria stores controller events as 127-midi
+            value = 127.0 - value;
         }
         else if (m_controller == PSEUDO_CONTROLLER_TEMPO)
         {
@@ -268,7 +291,8 @@ void ControllerEditor::renderEvents()
                                                               Track::isTempoController(currentController) );
     
     if (currentController == PSEUDO_CONTROLLER_LYRICS or
-        currentController == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE)
+        currentController == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE or
+        currentController == 0 /* bank select */)
     {
         AriaRender::images();
     }
@@ -363,6 +387,38 @@ void ControllerEditor::renderEvents()
                 m_instrument_name.render(scrolled_x + 6, y);
             }
         }
+        else if (currentController == 0) /* bank select */
+        {
+            const int scrolled_x = xloc - x_scroll;
+            
+            if (scrolled_x > Editor::getEditorXStart() - 50)
+            {
+                const int y = (area_from_y + area_to_y + area_to_y)/3;
+                
+                AriaRender::primitives();
+                
+                if (tmp->getTick() >= std::min(m_selection_begin, m_selection_end) and
+                    tmp->getTick() <= std::max(m_selection_begin, m_selection_end))
+                {
+                    AriaRender::color(0, 0.75f, 0);
+                }
+                else
+                {
+                    AriaRender::color(0.6f, 0.6f, 0.6f);
+                }
+                
+                AriaRender::bordered_rect(scrolled_x - 3, y - 6, scrolled_x + 3, y);
+                
+                AriaRender::images();
+                const unsigned short value = (int)round(127.0f - tmp->getValue());
+                m_instrument_name.getModel()->setValue(to_wxString(value));
+                
+                AriaRender::color(0,0,0);
+                
+                m_instrument_name.bind();
+                m_instrument_name.render(scrolled_x + 6, y);
+            }
+        }
         else
         {
             // -------- Other events
@@ -388,7 +444,8 @@ void ControllerEditor::renderEvents()
     }// next
     
     if (currentController == PSEUDO_CONTROLLER_LYRICS or
-        currentController == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE)
+        currentController == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE or
+        currentController == 0 /* bank select */)
     {
         AriaRender::primitives();
     }
@@ -672,6 +729,15 @@ void ControllerEditor::mouseDown(RelativeXCoord x, const int y)
                                                       m_controller_choice->getControllerID()) );
             Display::render();
         }
+    }
+    
+    if (window_x >= Editor::getEditorXStart() and y > getEditorYStart() and
+        not m_graphical_track->isCollapsed() and not m_selecting and
+        m_controller_choice->getControllerID() == 0 /* bank select */)
+    {
+        wxPoint mouse(x.getRelativeTo(WINDOW), y);
+        mouse = getMainFrame()->getMainPane()->ClientToScreen(mouse);
+        new ControlChangeInput(this, x.getRelativeTo(MIDI), mouse);
     }
 }
 

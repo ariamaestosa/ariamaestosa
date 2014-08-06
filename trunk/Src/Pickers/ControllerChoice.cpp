@@ -34,7 +34,7 @@ namespace AriaMaestosa
 
 static const wxString g_controller_names[] =
 {
-    wxT(""), // 0
+    wxT("Bank select"), // 0
     wxT("Modulation"), // 1, fine 33
     wxT("Breath"), // 2
     wxT(""), // 3
@@ -231,6 +231,7 @@ ControllerChoice::ControllerChoice() : wxMenu(), m_controller_label(new Model<wx
     
     AppendSeparator();
 
+    Append( 0  , g_controller_names[0  ] ); // Bank select
     Append( 2  , g_controller_names[2  ] ); // Breath
     Append( 4  , g_controller_names[4  ] ); // Foot
     Append( 8  , g_controller_names[8  ] ); // Balance
