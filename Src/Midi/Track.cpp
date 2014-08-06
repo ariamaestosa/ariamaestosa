@@ -1748,6 +1748,38 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
                 
                 control_evt_id++;
             }
+            else if (controllerID == 0 /* bank select */)
+            {
+                if (doAddControlEvent and (time + firstNoteStartTick) <= lastTickInSong)
+                {
+                    ASSERT_E(time, >=, debug_curr_time); debug_curr_time = time;
+                    m.SetTime( time );
+ 
+                    if (DEBUG_NOTE_ORDER) printf("[DEBUG_NOTE_ORDER] %i (controller)\n", time);
+
+                    m.SetControlChange(channel,
+                                       0, // MSB
+                                       0);
+
+                    if (not midiTrack->PutEvent( m ))
+                    {
+                        std::cerr << "Error adding midi event!" << std::endl;
+                    }
+                    
+                    m.SetTime( time );
+                    m.SetControlChange(channel,
+                                       32, // for bank select, force writing the LSB
+                                       127 - (int)round(m_control_events[control_evt_id].getValue()) );
+
+                    if (not midiTrack->PutEvent( m ))
+                    {
+                        std::cerr << "Error adding midi event!" << std::endl;
+                    }
+                }
+
+                control_evt_id++;
+
+            }
             // other controller
             else if (controllerID < 128)
             {
