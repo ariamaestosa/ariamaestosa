@@ -37,13 +37,8 @@
 #include <wx/stattext.h>
 #include <iostream>
 
-static const int ID_CHECK_ALL_BUTTON = 10000;
-static const int ID_UNCHECK_ALL_BUTTON = 10001;
-
-
 namespace AriaMaestosa
 {
-    
     class BackgroundChoicePanel : public wxPanel
     {
     public:
@@ -182,12 +177,16 @@ namespace AriaMaestosa
                 // Adds selection buttons if necessary
                 if (enabledTrackCount>0)
                 {
-                     wxPanel* checkPanel = new wxPanel(this);
+                    wxPanel* checkPanel = new wxPanel(properties_panel);
                     wxBoxSizer* check_sizer = new wxBoxSizer(wxHORIZONTAL);
-                    m_checkall_btn = new wxButton(checkPanel, ID_CHECK_ALL_BUTTON, _("Check all"));
-                    m_uncheckall_btn = new wxButton(checkPanel, ID_UNCHECK_ALL_BUTTON, _("Uncheck all"));
+                    m_checkall_btn = new wxButton(checkPanel, wxID_ANY, _("Check all"));
+                    m_uncheckall_btn = new wxButton(checkPanel, wxID_ANY, _("Uncheck all"));
                     check_sizer->Add(m_checkall_btn, 1, wxEXPAND |wxALL, 5);
                     check_sizer->Add(m_uncheckall_btn, 1, wxEXPAND |wxALL, 5);
+                    
+                    m_checkall_btn->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &TrackPropertiesDialog::ckeckAllButton, this);
+                    m_uncheckall_btn->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &TrackPropertiesDialog::unckeckAllButton, this);
+    
                     check_sizer->Layout();
                     check_sizer->SetSizeHints(this);
                     check_sizer->Fit(checkPanel);
@@ -341,8 +340,6 @@ namespace AriaMaestosa
     BEGIN_EVENT_TABLE(TrackPropertiesDialog, wxDialog)
     EVT_BUTTON(wxID_OK, TrackPropertiesDialog::okButton)
     EVT_BUTTON(wxID_CANCEL, TrackPropertiesDialog::cancelButton)
-    EVT_BUTTON(ID_CHECK_ALL_BUTTON, TrackPropertiesDialog::ckeckAllButton)
-    EVT_BUTTON(ID_UNCHECK_ALL_BUTTON, TrackPropertiesDialog::unckeckAllButton)
     
     EVT_COMMAND_SCROLL_THUMBTRACK(300, TrackPropertiesDialog::volumeSlideChanging)
     EVT_COMMAND_SCROLL_THUMBRELEASE(300, TrackPropertiesDialog::volumeSlideChanging)
