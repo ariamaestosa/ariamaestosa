@@ -99,6 +99,7 @@ public:
         {
             //I18N: as in "soundbank"
             labelContents = _("bank ID");
+            m_input->SetValue("0");
         }
         
         m_units = new wxChoice(panel, wxID_ANY);
@@ -128,6 +129,11 @@ public:
         
                          
         m_input->SetFocus();
+        
+        if (m_input->GetValue().Len() > 0)
+        {
+            m_input->SetSelection(-1, -1);
+        }
     }
     
     void onChar(wxKeyEvent& evt)
@@ -580,7 +586,8 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
                     AriaRender::primitives();
                 }
             }
-            else if (m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_LYRICS)
+            else if (m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_LYRICS or
+                     m_controller_choice->getControllerID() == 0 /* bank select */)
             {
                 // no preview for this one
             }
@@ -601,7 +608,8 @@ void ControllerEditor::render(RelativeXCoord mousex_current, int mousey_current,
     
     // ----------------------- add controller events (preview) -------------------
     if (m_controller_choice->getControllerID() != PSEUDO_CONTROLLER_LYRICS and
-        m_controller_choice->getControllerID() != PSEUDO_CONTROLLER_INSTRUMENT_CHANGE)
+        m_controller_choice->getControllerID() != PSEUDO_CONTROLLER_INSTRUMENT_CHANGE and
+        m_controller_choice->getControllerID() != 0 /* bank select */)
     {
         const bool on_off = m_controller_choice->isOnOffController( m_controller_choice->getControllerID() );
         if (m_mouse_is_in_editor and m_selection_begin == -1 and not on_off)
@@ -798,8 +806,12 @@ void ControllerEditor::mouseUp(RelativeXCoord mousex_current, int mousey_current
             if (mousey_current < area_from_y) mousey_current = area_from_y;
             if (mousey_current > area_to_y)   mousey_current = area_to_y;
 
-            if (m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE) return;
-            
+            if (m_controller_choice->getControllerID() == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE or
+                m_controller_choice->getControllerID() == 0 /* bank select */)
+            {
+                return;
+            }
+                
             int tick1 = m_track->snapMidiTickToGrid( mousex_initial.getRelativeTo(MIDI), false );
             int tick2 = m_track->snapMidiTickToGrid( mousex_current.getRelativeTo(MIDI), false );
 

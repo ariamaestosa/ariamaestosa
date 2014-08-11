@@ -398,6 +398,9 @@ void ControllerChoice::renderTopLabel(const int x, const int y)
     // lyrics
     else if (m_controller_id == PSEUDO_CONTROLLER_LYRICS)     ;
 
+    // bank select
+    else if (m_controller_id == 0)     ;
+
     // instrument
     else if (m_controller_id == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE);
     
@@ -428,6 +431,9 @@ void ControllerChoice::renderBottomLabel(const int x, const int y)
     
     // lyrics
     else if (m_controller_id == PSEUDO_CONTROLLER_LYRICS)     ;
+    
+    // bank select
+    else if (m_controller_id == 0)     ;
     
     // instrument
     else if (m_controller_id == PSEUDO_CONTROLLER_INSTRUMENT_CHANGE);
