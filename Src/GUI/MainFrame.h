@@ -256,7 +256,7 @@ namespace AriaMaestosa
         }
         void SetLabelById(const int id, wxString label)
         {
-            m_toolbar->FindById(id)->SetLabel(label);
+            FindById(id)->SetLabel(label);
         }
 #endif
         CustomToolBar(wxWindow* parent);
