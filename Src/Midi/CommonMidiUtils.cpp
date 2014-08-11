@@ -383,7 +383,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdksmidi::MIDIMultiTr
     
     bool tooManyChannelsMessageShown = false;
     
-    const int past_end_time = (playing && not sequence->isLoopEnabled() ? sequence->ticksPerQuarterNote()*4 : 0);
+    const int past_end_time = (playing and not sequence->isLoopEnabled() ? sequence->ticksPerQuarterNote()*4 : 0);
     
     if (selectionOnly)
     {
@@ -400,8 +400,8 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdksmidi::MIDIMultiTr
         
         if (sequence->isLoopEnabled())
         {
-            // when looping, stop at the end of the last measure
-            *songLengthInTicks = md->lastTickInMeasure(md->measureAtTick(trackLength - 1)) - 1;
+            // when looping, stop at the measure marked as loop end
+            *songLengthInTicks = md->lastTickInMeasure(md->getLoopEndMeasure()) - substract_ticks;
         }
         else
         {
@@ -469,8 +469,8 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdksmidi::MIDIMultiTr
         
         if (sequence->isLoopEnabled())
         {
-            // when looping, stop at the end of the last measure
-            *songLengthInTicks = md->lastTickInMeasure(md->measureAtTick(*songLengthInTicks - 1)) - 1;
+            // when looping, stop at the measure marked as loop end
+            *songLengthInTicks = md->lastTickInMeasure(md->getLoopEndMeasure()) - *startTick;
         }
         
         substract_ticks = *startTick;

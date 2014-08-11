@@ -138,6 +138,7 @@ EVT_TEXT(TEMPO, MainFrame::tempoChanged)
 
 EVT_BUTTON(TIME_SIGNATURE, MainFrame::timeSigClicked)
 EVT_TEXT(BEGINNING, MainFrame::firstMeasureChanged)
+EVT_TEXT(LOOP_END_MEASURE, MainFrame::loopEndMeasureChanged)
 
 EVT_TEXT_ENTER(TEMPO, MainFrame::enterPressedInTopBar)
 EVT_TEXT_ENTER(BEGINNING, MainFrame::enterPressedInTopBar)
@@ -186,60 +187,60 @@ CustomToolBar::CustomToolBar(wxWindow* parent) : wxToolBar(parent, wxID_ANY, wxD
 
 void CustomToolBar::add(wxControl* ctrl, wxString label)
 {
-#if wxCHECK_VERSION(2,9,0)
-    // wxWidgets 3 supports labels under components in toolbar.
     AddControl(ctrl, label);
-#else
-    AddControl(ctrl);
-#endif
-
-    /*
-#ifdef __WXMAC__
-    if (not label.IsEmpty())
-    {
-        // work around wxMac limitation (labels under controls in toolbar don't seem to work)
-        // will work only if wx was patched with the supplied patch....
-        wxToolBarToolBase* tool = (wxToolBarToolBase*)FindById(ctrl->GetId());
-        if (tool != NULL) tool->SetLabel(label);
-        else std::cerr << "Failed to set label : " << label.mb_str() << std::endl;
-    }
-#endif
-     */
 }
 void CustomToolBar::realize()
 {
     Realize();
-    /*
-     wxToolBarTool* tool = (wxToolBarTool*)FindById(TIME_SIGNATURE);
-     HIToolbarItemRef ref = tool->m_toolbarItemRef;
-     HIToolbarItemSetLabel( ref , CFSTR("Time Sig") );
-     */
 }
 #else
 // my generic toolbar
 CustomToolBar::CustomToolBar(wxWindow* parent) : wxPanel(parent, wxID_ANY)
 {
-    toolbarSizer=new wxFlexGridSizer(2, 6, 1, 15);
-    this->SetSizer(toolbarSizer);
+    toolbarSizer = new wxFlexGridSizer(2, 100, 1, 15);
+    SetSizer(toolbarSizer);
+    m_is_realized = false;
 }
 
+void CustomToolBar::ClearTools()
+{
+    toolbarSizer->Clear(true);
+    labels.clear();
+    label_ids.clear();
+    label_widgets.clear();
+    delete toolbarSizer;
+    toolbarSizer = new wxFlexGridSizer(2, 100, 1, 15);
+    SetSizer(toolbarSizer);
+    m_is_realized = false;
+}
+
+void CustomToolBar::SetLabelById(const int id, wxString label)
+{
+    for (unsigned int n = 0; n < label_ids.size(); n++)
+    {
+        if (label_ids[n] == id)
+        {
+            label_widgets[n]->SetLabel(label);
+            return;
+        }
+    }
+}
 void CustomToolBar::AddTool(const int id, wxString label, wxBitmap& bmp)
 {
     wxBitmapButton* btn = new wxBitmapButton(this, id, bmp, wxDefaultPosition, wxDefaultSize,
                                              wxBU_AUTODRAW | wxBORDER_NONE);
     toolbarSizer->Add(btn, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
     labels.push_back(label);
+    label_ids.push_back(id);
 }
 
-void CustomToolBar::AddCheckTool(const int id, wxString label, wxBitmap& bmp)
+void CustomToolBar::AddCheckTool(const int id, wxString label, wxBitmap& bmp, bool checked)
 {
-#if wxCHECK_VERSION(2,9,1)
     wxBitmapToggleButton* btn = new wxBitmapToggleButton(this, id, bmp);
-#else
-    wxToggleButton* btn = new wxToggleButton(this, id, label);
-#endif
+    btn->SetValue(checked);
     toolbarSizer->Add(btn, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
     labels.push_back(label);
+    label_ids.push_back(id);
 }
 
 bool CustomToolBar::GetToolState(int toolId)
@@ -273,15 +274,26 @@ void CustomToolBar::add(wxControl* ctrl, wxString label)
 {
     toolbarSizer->Add(ctrl, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 5);
     labels.push_back(label);
+    label_ids.push_back(ctrl->GetId());
 }
 void CustomToolBar::realize()
 {
+    if (m_is_realized)
+    {
+        toolbarSizer->RecalcSizes();
+        toolbarSizer->Layout();
+        return;
+    }
+    
+    m_is_realized = true;
     const int label_amount = labels.size();
     toolbarSizer->SetCols( label_amount );
 
     for (int n=0; n<label_amount; n++)
     {
-        toolbarSizer->Add(new wxStaticText(this, wxID_ANY,  labels[n]), 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
+        wxStaticText* label_widget = new wxStaticText(this, wxID_ANY, labels[n]);
+        label_widgets.push_back(label_widget);
+        toolbarSizer->Add(label_widget, 0, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL | wxALL, 1);
     }
 }
 void CustomToolBar::SetToolNormalBitmap(const int id, wxBitmap& bmp)
@@ -404,18 +416,7 @@ void MainFrame::init(const wxArrayString& filesToOpen, bool fileInCommandLine)
     m_border_sizer->AddGrowableCol(0);
     m_border_sizer->AddGrowableRow(0);
 #endif
-
-    // a few presets
-    wxSize averageTextCtrlSize(wxDefaultSize);
-#if defined(__WXOSX_COCOA__)
-    averageTextCtrlSize.SetWidth(65);
-#else
-    averageTextCtrlSize.SetWidth(55);
-#endif
-
-    wxSize smallTextCtrlSize(wxDefaultSize);
-    smallTextCtrlSize.SetWidth(45);
-
+    
     // -------------------------- Toolbar ----------------------------
     wxLogVerbose( wxT("MainFrame::init (creating toolbar)") );
 
@@ -433,141 +434,13 @@ void MainFrame::init(const wxArrayString& filesToOpen, bool fileInCommandLine)
     }
     m_record_bitmap.LoadFile( getResourcePrefix()  + wxT("record.png") , wxBITMAP_TYPE_PNG);
 
-    wxBitmap loopBitmap;
-    loopBitmap.LoadFile( getResourcePrefix()  + wxT("loop.png") , wxBITMAP_TYPE_PNG);
-
+    m_loop_bitmap.LoadFile( getResourcePrefix()  + wxT("loop.png") , wxBITMAP_TYPE_PNG);
     m_record_down_bitmap.LoadFile( getResourcePrefix()  + wxT("record_down.png") , wxBITMAP_TYPE_PNG);
-    m_toolbar->AddTool(RECORD_CLICKED, _("Record"), m_record_bitmap);
-
     m_pause_bitmap.LoadFile( getResourcePrefix()  + wxT("pause.png") , wxBITMAP_TYPE_PNG);
     m_pause_down_bitmap.LoadFile( getResourcePrefix()  + wxT("pause_down.png") , wxBITMAP_TYPE_PNG);
-    m_toolbar->AddTool(PLAY_CLICKED, _("Play"), m_play_bitmap);
-
-    wxBitmap stopBitmap;
-    stopBitmap.LoadFile( getResourcePrefix()  + wxT("stop.png") , wxBITMAP_TYPE_PNG);
-    m_toolbar->AddTool(STOP_CLICKED, _("Stop"), stopBitmap);
-    m_toolbar->EnableTool(STOP_CLICKED, false);
-
-    m_toolbar->AddCheckTool(LOOP_CLICKED, _("Loop"), loopBitmap);
-    m_toolbar->EnableTool(LOOP_CLICKED, false);
-
-    m_toolbar->AddSeparator();
-
-    m_song_length = new SPINNER_CLASS(m_toolbar, LENGTH, to_wxString(DEFAULT_SONG_LENGTH), wxDefaultPosition,
-#if defined(__WXGTK__) || defined(__WXMSW__) || defined(__WXOSX_COCOA__)
-                              averageTextCtrlSize
-#else
-                              wxDefaultSize
-#endif
-                              , wxTE_PROCESS_ENTER);
-
-    m_song_length->SetRange(1, 9999);
-
-    //I18N: song length (number of measures)
-    m_toolbar->add(m_song_length, _("Length"));
-
-#ifdef __WXMAC__
-    wxSpinButton* songLengthSpinner;
-    m_toolbar->add(songLengthSpinner = new wxSpinButton(m_toolbar, wxID_ANY));
-    songLengthSpinner->Bind(wxEVT_SPIN_UP, &wxWorkaroundSpinCtrl::up, m_song_length);
-    songLengthSpinner->Bind(wxEVT_SPIN_DOWN, &wxWorkaroundSpinCtrl::down, m_song_length);
-#endif
+    m_stop_bitmap.LoadFile( getResourcePrefix()  + wxT("stop.png") , wxBITMAP_TYPE_PNG);
     
-#if defined(__WXMSW__)
-    m_toolbar->AddSeparator();
-    m_toolbar->AddSeparator();
-#endif
-
-    m_tempo_ctrl = new wxTextCtrl(m_toolbar, TEMPO, wxT("120"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER );
-    m_toolbar->add(m_tempo_ctrl, _("Tempo"));
-
-#if defined(__WXMSW__)
-    m_toolbar->AddSeparator();
-    m_toolbar->AddSeparator();
-#endif
-
-    m_time_sig = new wxButton(m_toolbar, TIME_SIGNATURE, wxT("4/4"));
-#if defined(__WXOSX_COCOA__)
-    m_time_sig->SetMinSize( wxSize(60, 30) );
-    m_time_sig->SetSize( wxSize(60, 30) );
-#endif
-    m_toolbar->add(m_time_sig, _("Time Sig") );
-
-    m_toolbar->AddSeparator();
-#if defined(__WXMSW__)
-    m_toolbar->AddSeparator();
-#endif
-
-    m_first_measure = new wxTextCtrl(m_toolbar, BEGINNING, wxT("1"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER);
-    m_toolbar->add(m_first_measure, _("Start"));
-
-    m_display_zoom = new SPINNER_CLASS(m_toolbar, ZOOM, wxT("100"), wxDefaultPosition,
-    #if defined(__WXGTK__) || defined(__WXMSW__) || defined(__WXOSX_COCOA__)
-                           averageTextCtrlSize
-    #else
-                           wxDefaultSize
-    #endif
-                           );
-
-    
-#if defined(__WXMSW__)
-    m_toolbar->AddSeparator();
-    m_toolbar->AddSeparator();
-#endif
-
-    m_display_zoom->SetRange(25,500);
-
-    m_toolbar->add(m_display_zoom, _("Zoom"));
-
-#ifdef __WXMAC__
-    wxSpinButton* zoomSpinner;
-    m_toolbar->add(zoomSpinner = new wxSpinButton(m_toolbar, wxID_ANY));
-    zoomSpinner->Bind(wxEVT_SPIN_UP, &wxWorkaroundSpinCtrl::up, m_display_zoom);
-    zoomSpinner->Bind(wxEVT_SPIN_DOWN, &wxWorkaroundSpinCtrl::down, m_display_zoom);
-#endif
-    
-    
-    // seems broken for now
-//#if defined(NO_WX_TOOLBAR) || wxMAJOR_VERSION > 2 || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION == 9)
-//    toolbar->AddStretchableSpace();
-//#else
-    m_toolbar->AddSeparator();
-//#endif
-
-    m_tool1_bitmap.LoadFile( getResourcePrefix()  + wxT("tool1.png") , wxBITMAP_TYPE_PNG);
-    m_tool2_bitmap.LoadFile( getResourcePrefix()  + wxT("tool2.png") , wxBITMAP_TYPE_PNG);
-
-#if !defined(__WXOSX_CARBON__)
-    /*
-    wxNotebook* test = new wxNotebook(m_toolbar, wxID_ANY);
-    wxImageList* imglist = new wxImageList();
-    int id1 = imglist->Add( wxArtProvider::GetBitmap(wxART_INFORMATION, wxART_OTHER, wxSize(32,32) ) );
-    int id2 = imglist->Add( wxArtProvider::GetBitmap(wxART_NORMAL_FILE, wxART_OTHER, wxSize(32,32) ) );
-    test->AssignImageList(imglist);
-    test->AddPage(new wxPanel(test), "A", true, id1);
-    test->AddPage(new wxPanel(test), "B", true, id2);
-    test->SetMinSize( wxSize(80, 30) );
-    test->SetSize( wxSize(80, 30) );
-    m_toolbar->add(test, _("Tool"));
-    */
-
-    m_tools_bitmap = new wxStaticBitmap(m_toolbar /* test2 */, wxID_ANY, m_tool1_bitmap);
-    //wxBitmapButton* stbmp = new wxBitmapButton(m_toolbar /* test2 */, wxID_ANY, m_tool1_bitmap,
-    //                                           wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW | wxBORDER_NONE);
-    m_tools_bitmap->Connect(m_tools_bitmap->GetId(), wxEVT_LEFT_DOWN, wxMouseEventHandler(MainFrame::onToolsBitmapMousedown), NULL, this);
-    m_tools_bitmap->Connect(m_tools_bitmap->GetId(), wxEVT_LEFT_UP, wxMouseEventHandler(MainFrame::onToolsBitmapMouseup), NULL, this);
-    m_toolbar->add(m_tools_bitmap, _("Tool"));
-#else
-    m_toolbar->AddTool(TOOL_BUTTON, _("Tool"), m_tool1_bitmap);
-#endif
-
-    m_toolbar->realize();
-
-#if defined(__WXOSX_COCOA__)
-    skinButton( m_time_sig->GetHandle() );
-    //skinToolbar( m_toolbar->GetHandle() );
-    skinFrame( MacGetTopLevelWindowRef() );
-#endif
+    initToolbar();
 
     // -------------------------- Notification Panel ----------------------------
 	{
@@ -759,6 +632,168 @@ void MainFrame::init(const wxArrayString& filesToOpen, bool fileInCommandLine)
     onShow(evt);
 #endif
     
+}
+
+void MainFrame::initToolbar()
+{
+    // a few presets
+    wxSize averageTextCtrlSize(wxDefaultSize);
+#if defined(__WXOSX_COCOA__)
+    averageTextCtrlSize.SetWidth(65);
+#else
+    averageTextCtrlSize.SetWidth(55);
+#endif
+
+    wxSize smallTextCtrlSize(wxDefaultSize);
+    smallTextCtrlSize.SetWidth(45);
+
+
+    m_toolbar->ClearTools();
+    
+    m_toolbar->AddTool(RECORD_CLICKED, _("Record"), m_record_bitmap);
+    m_toolbar->AddTool(PLAY_CLICKED, _("Play"), m_play_bitmap);
+
+    m_toolbar->AddTool(STOP_CLICKED, _("Stop"), m_stop_bitmap);
+    m_toolbar->EnableTool(STOP_CLICKED, false);
+
+    bool loop_enabled = (m_sequences.size() > 0 and getCurrentSequence()->isLoopEnabled());
+    m_toolbar->AddCheckTool(LOOP_CLICKED, _("Loop"), m_loop_bitmap, loop_enabled);
+    printf("ENABLE: %i\n", m_sequences.size() > 0);
+    m_toolbar->EnableTool(LOOP_CLICKED, m_sequences.size() > 0);
+    
+    m_toolbar->AddSeparator();
+
+    m_song_length = new SPINNER_CLASS(m_toolbar, LENGTH, to_wxString(DEFAULT_SONG_LENGTH), wxDefaultPosition,
+#if defined(__WXGTK__) || defined(__WXMSW__) || defined(__WXOSX_COCOA__)
+                              averageTextCtrlSize
+#else
+                              wxDefaultSize
+#endif
+                              , wxTE_PROCESS_ENTER);
+
+    m_song_length->SetRange(1, 9999);
+
+    //I18N: song length (number of measures)
+    m_toolbar->add(m_song_length, _("Length"));
+
+#ifdef __WXMAC__
+    wxSpinButton* songLengthSpinner;
+    m_toolbar->add(songLengthSpinner = new wxSpinButton(m_toolbar, wxID_ANY));
+    songLengthSpinner->Bind(wxEVT_SPIN_UP, &wxWorkaroundSpinCtrl::up, m_song_length);
+    songLengthSpinner->Bind(wxEVT_SPIN_DOWN, &wxWorkaroundSpinCtrl::down, m_song_length);
+#endif
+    
+#if defined(__WXMSW__)
+    m_toolbar->AddSeparator();
+    m_toolbar->AddSeparator();
+#endif
+
+    m_tempo_ctrl = new wxTextCtrl(m_toolbar, TEMPO, wxT("120"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER );
+    m_toolbar->add(m_tempo_ctrl, _("Tempo"));
+
+#if defined(__WXMSW__)
+    m_toolbar->AddSeparator();
+    m_toolbar->AddSeparator();
+#endif
+
+    m_time_sig = new wxButton(m_toolbar, TIME_SIGNATURE, wxT("4/4"));
+#if defined(__WXOSX_COCOA__)
+    m_time_sig->SetMinSize( wxSize(60, 30) );
+    m_time_sig->SetSize( wxSize(60, 30) );
+#endif
+    m_toolbar->add(m_time_sig, _("Time Sig") );
+
+    m_toolbar->AddSeparator();
+#if defined(__WXMSW__)
+    m_toolbar->AddSeparator();
+#endif
+
+    m_first_measure = new wxTextCtrl(m_toolbar, BEGINNING, wxT("1"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER);
+    m_toolbar->add(m_first_measure, _("Start"));
+    
+    //m_toolbar->AddSeparator();
+    //#if defined(__WXMSW__)
+    //m_toolbar->AddSeparator();
+    //#endif
+    
+    m_loop_end_measure = new wxTextCtrl(m_toolbar, LOOP_END_MEASURE, wxT("1"), wxDefaultPosition, wxSize(0, -1), wxTE_PROCESS_ENTER);
+    //I18N: loop end
+    m_toolbar->add(m_loop_end_measure, _("End"));
+    
+    m_display_zoom = new SPINNER_CLASS(m_toolbar, ZOOM, wxT("100"), wxDefaultPosition,
+    #if defined(__WXGTK__) || defined(__WXMSW__) || defined(__WXOSX_COCOA__)
+                           averageTextCtrlSize
+    #else
+                           wxDefaultSize
+    #endif
+                           );
+
+    
+#if defined(__WXMSW__)
+    m_toolbar->AddSeparator();
+    m_toolbar->AddSeparator();
+#endif
+
+    m_display_zoom->SetRange(25,500);
+
+    m_toolbar->add(m_display_zoom, _("Zoom"));
+
+#ifdef __WXMAC__
+    wxSpinButton* zoomSpinner;
+    m_toolbar->add(zoomSpinner = new wxSpinButton(m_toolbar, wxID_ANY));
+    zoomSpinner->Bind(wxEVT_SPIN_UP, &wxWorkaroundSpinCtrl::up, m_display_zoom);
+    zoomSpinner->Bind(wxEVT_SPIN_DOWN, &wxWorkaroundSpinCtrl::down, m_display_zoom);
+#endif
+    
+    
+    // seems broken for now
+//#if defined(NO_WX_TOOLBAR) || wxMAJOR_VERSION > 2 || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION == 9)
+//    toolbar->AddStretchableSpace();
+//#else
+    m_toolbar->AddSeparator();
+//#endif
+
+    m_tool1_bitmap.LoadFile( getResourcePrefix()  + wxT("tool1.png") , wxBITMAP_TYPE_PNG);
+    m_tool2_bitmap.LoadFile( getResourcePrefix()  + wxT("tool2.png") , wxBITMAP_TYPE_PNG);
+
+#if !defined(__WXOSX_CARBON__)
+    /*
+    wxNotebook* test = new wxNotebook(m_toolbar, wxID_ANY);
+    wxImageList* imglist = new wxImageList();
+    int id1 = imglist->Add( wxArtProvider::GetBitmap(wxART_INFORMATION, wxART_OTHER, wxSize(32,32) ) );
+    int id2 = imglist->Add( wxArtProvider::GetBitmap(wxART_NORMAL_FILE, wxART_OTHER, wxSize(32,32) ) );
+    test->AssignImageList(imglist);
+    test->AddPage(new wxPanel(test), "A", true, id1);
+    test->AddPage(new wxPanel(test), "B", true, id2);
+    test->SetMinSize( wxSize(80, 30) );
+    test->SetSize( wxSize(80, 30) );
+    m_toolbar->add(test, _("Tool"));
+    */
+
+    m_tools_bitmap = new wxStaticBitmap(m_toolbar /* test2 */, wxID_ANY, m_tool1_bitmap);
+    //wxBitmapButton* stbmp = new wxBitmapButton(m_toolbar /* test2 */, wxID_ANY, m_tool1_bitmap,
+    //                                           wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW | wxBORDER_NONE);
+    m_tools_bitmap->Connect(m_tools_bitmap->GetId(), wxEVT_LEFT_DOWN, wxMouseEventHandler(MainFrame::onToolsBitmapMousedown), NULL, this);
+    m_tools_bitmap->Connect(m_tools_bitmap->GetId(), wxEVT_LEFT_UP, wxMouseEventHandler(MainFrame::onToolsBitmapMouseup), NULL, this);
+    //I18N: tool selection tip
+    m_tools_bitmap->SetToolTip(_("Tool 1 : Draw notes\nTool 2 : Click to add notes"));
+    m_toolbar->add(m_tools_bitmap, _("Tool"));
+#else
+    m_toolbar->AddTool(TOOL_BUTTON, _("Tool"), m_tool1_bitmap);
+#endif
+
+    m_toolbar->realize();
+    
+    if (!loop_enabled)
+    {
+        m_toolbar->SetLabelById(LOOP_END_MEASURE, "");
+    }
+
+#if defined(__WXOSX_COCOA__)
+    skinButton( m_time_sig->GetHandle() );
+    //skinToolbar( m_toolbar->GetHandle() );
+    skinFrame( MacGetTopLevelWindowRef() );
+#endif
 }
 
 void MainFrame::setNotificationWarning()
@@ -1048,6 +1083,30 @@ void MainFrame::loopClicked(wxCommandEvent& evt)
 {
     bool pressed = m_toolbar->GetToolState(LOOP_CLICKED);
     getCurrentSequence()->setLoopEnabled(pressed);
+    
+    m_loop_end_measure->Enable(pressed);
+    if (not pressed)
+    {
+        m_loop_end_measure->SetSize(wxSize(0, -1));
+        m_toolbar->SetLabelById(LOOP_END_MEASURE, "");
+    }
+    else
+    {
+        if (m_loop_end_measure->GetValue() == "1")
+        {
+            int measure_count = getCurrentSequence()->getMeasureData()->getMeasureAmount();
+            m_loop_end_measure->SetValue(to_wxString(measure_count));
+            
+            // FIXME; measure IDs are sometimes 0-based, sometimes 1-based :S
+            getCurrentSequence()->getMeasureData()->setLoopEndMeasure(measure_count - 1);
+        }
+        m_loop_end_measure->SetSize(wxSize(45, -1));
+        //I18N: loop end
+        m_toolbar->SetLabelById(LOOP_END_MEASURE, _("End"));
+    }
+        
+    m_toolbar->realize();
+    Refresh();
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -1086,6 +1145,19 @@ void MainFrame::toolsEnterPlaybackMode()
     m_first_measure->Enable(false);
     m_song_length->Enable(false);
     m_tempo_ctrl->Enable(false);
+    m_loop_end_measure->Enable(false);
+    
+    Sequence* seq = getCurrentSequence();
+    if (seq->isLoopEnabled())
+    {
+        MeasureData* md = seq->getMeasureData();
+        if (md->getFirstMeasure() > md->getLoopEndMeasure())
+        {
+            // invalid loop
+            md->setLoopEndMeasure(md->getMeasureAmount());
+            m_loop_end_measure->SetValue(to_wxString(md->getMeasureAmount()));
+        }
+    }
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -1112,6 +1184,7 @@ void MainFrame::toolsExitPlaybackMode()
     m_first_measure->Enable(true);
     m_song_length->Enable(true);
     m_tempo_ctrl->Enable(true);
+    m_loop_end_measure->Enable(true);
 }
 
 // ----------------------------------------------------------------------------------------------------------
@@ -1143,6 +1216,9 @@ void MainFrame::updateTopBarAndScrollbarsForSequence(const GraphicalSequence* se
 
     // first measure
     m_first_measure->SetValue( to_wxString(measData->getFirstMeasure()+1) );
+
+    // last measure
+    m_loop_end_measure->SetValue(to_wxString(measData->getLoopEndMeasure() + 1));
 
     // time signature
     m_time_sig->SetLabel(wxString::Format(wxT("%i/%i"),
@@ -1248,6 +1324,34 @@ void MainFrame::firstMeasureChanged(wxCommandEvent& evt)
     else
     {
         md->setFirstMeasure( start-1 );
+    }
+
+    Display::render();
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void MainFrame::loopEndMeasureChanged(wxCommandEvent& evt)
+{
+    if (getSequenceAmount() == 0) return;
+
+    if (changingValues) return; // discard events thrown because the computer changes values
+
+    int start = atoi_u( m_loop_end_measure->GetValue() );
+
+    if (m_loop_end_measure->GetValue().Length() < 1) return; // text field empty, wait until user enters something to update data
+
+    MeasureData* md = getCurrentSequence()->getMeasureData();
+
+    if (not m_loop_end_measure->GetValue().IsNumber() or start < 0 or start > md->getMeasureAmount())
+    {
+        wxBell();
+
+        m_loop_end_measure->SetValue(to_wxString(md->getLoopEndMeasure() + 1));
+    }
+    else
+    {
+        md->setLoopEndMeasure( start-1 );
     }
 
     Display::render();

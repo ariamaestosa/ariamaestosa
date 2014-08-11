@@ -49,6 +49,7 @@ namespace AriaMaestosa
 
     // FIXME: remove globals
     int g_insert_at_measure = -1;
+    int g_measure_at_click = -1;
     int g_remove_from = -1;
     int g_remove_to = -1;
 
@@ -136,6 +137,7 @@ END_EVENT_TABLE()
 class UnselectedMenu : public wxMenu
 {
     wxMenuItem* deleteTimeSig;
+    wxMenuItem* setLoopEnd;
     int remove_timeSigID;
     
     GraphicalSequence* m_gseq;
@@ -148,6 +150,8 @@ public:
         Append(2, _("Insert measures"));
         remove_timeSigID = -1;
         deleteTimeSig = Append(3, _("Remove time sig change"));
+        Append(4, _("Set playback start here"));
+        setLoopEnd = Append(5, _("Set loop end here"));
         m_gseq = gseq;
     }
 
@@ -172,6 +176,11 @@ public:
         if (enabled) remove_timeSigID = timeSigID;
     }
 
+    void onBeforeShow()
+    {
+        setLoopEnd->Enable(m_gseq->getModel()->isLoopEnabled());
+    }
+    
     void removeTimeSig(wxCommandEvent& event)
     {
         int answer = wxMessageBox(_("Do you really want to remove this time sig change?"), wxT(""),
@@ -194,13 +203,27 @@ public:
             tr->eraseTimeSig(remove_timeSigID);
         }
     }
+    
+    void menuEvent_SetSongStart(wxCommandEvent& evt)
+    {
+        m_gseq->getModel()->getMeasureData()->setFirstMeasure(g_measure_at_click);
+        getMainFrame()->updateTopBarAndScrollbars();
+    }
 
+    void menuEvent_SetLoopEnd(wxCommandEvent& evt)
+    {
+        m_gseq->getModel()->getMeasureData()->setLoopEndMeasure(g_measure_at_click);
+        getMainFrame()->updateTopBarAndScrollbars();
+    }
+    
     DECLARE_EVENT_TABLE();
 };
 
 BEGIN_EVENT_TABLE(UnselectedMenu, wxMenu)
 EVT_MENU(2,UnselectedMenu::insert)
 EVT_MENU(3,UnselectedMenu::removeTimeSig)
+EVT_MENU(4,UnselectedMenu::menuEvent_SetSongStart)
+EVT_MENU(5,UnselectedMenu::menuEvent_SetLoopEnd)
 END_EVENT_TABLE()
 
 }
@@ -672,8 +695,8 @@ void MeasureBar::rightClick(int x, int y)
         {
             if (m_data->getTimeSig(n).getMeasure() == measure)
             {
-                std::cout << "trying to delete measure " << n << std::endl;
                 m_unselected_menu->enable_deleteTimeSig_item(true, n);
+                m_unselected_menu->onBeforeShow();
                 Display::popupMenu( (wxMenu*)m_unselected_menu, x, y+20);
                 return;
             }
@@ -710,8 +733,10 @@ void MeasureBar::rightClick(int x, int y)
     {
         // find between which measures the user clicked
         g_insert_at_measure = measureDivisionAt(x) - 1;
+        g_measure_at_click = measureAtPixel(x);
 
         m_unselected_menu->enable_deleteTimeSig_item(false);
+        m_unselected_menu->onBeforeShow();
         Display::popupMenu( (wxMenu*)m_unselected_menu, x, y+20);
     }
 

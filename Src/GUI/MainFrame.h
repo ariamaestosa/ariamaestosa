@@ -126,6 +126,7 @@ namespace AriaMaestosa
         ZOOM,
         LENGTH,
         BEGINNING,
+        LOOP_END_MEASURE,
         TOOL_BUTTON,
 
         SCROLLBAR_H,
@@ -225,10 +226,13 @@ namespace AriaMaestosa
       */
     class CustomToolBar : public TOOLBAR_BASE
     {
+        bool m_is_realized;
     public:
 
 #ifdef NO_WX_TOOLBAR
         std::vector<wxString> labels;
+        std::vector<int> label_ids;
+        std::vector<wxStaticText*> label_widgets;
         wxFlexGridSizer* toolbarSizer;
 #endif
 
@@ -237,12 +241,23 @@ namespace AriaMaestosa
 #ifdef NO_WX_TOOLBAR
         void AddSeparator() {}
         void AddTool(const int id, wxString label, wxBitmap& bmp);
-        void AddCheckTool(const int id, wxString label, wxBitmap& bmp);
+        void AddCheckTool(const int id, wxString label, wxBitmap& bmp, bool checked);
         void SetToolNormalBitmap(const int id, wxBitmap& bmp);
         void EnableTool(const int id, const bool enabled);
         void AddStretchableSpace();
         bool GetToolState(int id);
         void ToggleTool(int id, bool pressed);
+        void ClearTools();
+        void SetLabelById(const int id, wxString label);
+#else
+        void AddCheckTool(const int id, wxString label, wxBitmap& bmp, bool checked)
+        {
+            wxToolBar::AddCheckTool(id, label, bmp)->Toggle(checked);
+        }
+        void SetLabelById(const int id, wxString label)
+        {
+            m_toolbar->FindById(id)->SetLabel(label);
+        }
 #endif
         CustomToolBar(wxWindow* parent);
         void add(wxControl* ctrl, wxString label=wxEmptyString);
@@ -267,6 +282,7 @@ namespace AriaMaestosa
 
         wxButton*   m_time_sig;
         wxTextCtrl* m_first_measure;
+        wxTextCtrl* m_loop_end_measure;
         SPINNER_CLASS* m_song_length;
         SPINNER_CLASS* m_display_zoom;
         wxTextCtrl* m_tempo_ctrl;
@@ -286,6 +302,8 @@ namespace AriaMaestosa
 
         wxBitmap m_play_bitmap;
         wxBitmap m_pause_bitmap;
+        wxBitmap m_stop_bitmap;
+        wxBitmap m_loop_bitmap;
         wxBitmap m_pause_down_bitmap;
         wxBitmap m_record_bitmap;
         wxBitmap m_record_down_bitmap;
@@ -383,6 +401,7 @@ namespace AriaMaestosa
         MainFrame();
         void init(const wxArrayString& filesToOpen, bool fileInCommandLine);
         void initMenuBar();
+        void initToolbar();
         ~MainFrame();
 
         // top bar controls updated
@@ -399,6 +418,7 @@ namespace AriaMaestosa
         void toolButtonClicked(wxCommandEvent& evt);
         //void measureDenomChanged(wxCommandEvent& evt);
         void firstMeasureChanged(wxCommandEvent& evt);
+        void loopEndMeasureChanged(wxCommandEvent& evt);
         //void changeMeasureAmount(int i, bool throwEvent=true);
         void disableMenus(const bool disable);
 

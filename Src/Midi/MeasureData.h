@@ -83,6 +83,7 @@ namespace AriaMaestosa
         
         int m_measure_amount;
         int m_first_measure;
+        int m_loop_end_measure;
         
         bool m_expanded_mode;
         
@@ -271,7 +272,9 @@ namespace AriaMaestosa
         ~MeasureData();
         
         int   getTotalTickAmount()      const;
-        int   getFirstMeasure()         const { return m_first_measure;  }        
+        int   getFirstMeasure()         const { return m_first_measure;  }     
+        void  setLoopEndMeasure(int meas)     { m_loop_end_measure = meas; }
+        int   getLoopEndMeasure()       const { return m_loop_end_measure; }
         int   measureAtTick(int tick)   const;
         bool  isExpandedMode()          const { return m_expanded_mode;  }
         bool  isMeasureLengthConstant() const
