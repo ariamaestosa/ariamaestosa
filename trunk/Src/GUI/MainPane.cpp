@@ -780,9 +780,6 @@ bool MainPane::do_render()
                                  tick_x + 6, MEASURE_BAR_Y + 20);
         }
     }
-
-    AriaRender::lineWidth(1);
-    
     
     if (not playing)
     {
@@ -791,8 +788,29 @@ bool MainPane::do_render()
         m_right_arrow = true;
     }
 
+    // If loop enabled, show loop end measure with red line and triangle
+    if (gseq->getModel()->isLoopEnabled())
+    {
+        MeasureData* md = gseq->getModel()->getMeasureData();
+        int loop_end_tick = md->lastTickInMeasure( md->getLoopEndMeasure() );
+        RelativeXCoord coord_loop_end(loop_end_tick, MIDI, gseq);
+        
+        if (coord_loop_end.getRelativeTo(WINDOW) >= XStart and
+            coord_loop_end.getRelativeTo(WINDOW) <= XEnd)
+        {
+            const int tick_x = coord_loop_end.getRelativeTo(WINDOW);
+            AriaRender::line(tick_x, MEASURE_BAR_Y + 1,
+                             tick_x, MEASURE_BAR_Y + 20);
+            
+            AriaRender::triangle(tick_x, MEASURE_BAR_Y + 14,
+                                 tick_x, MEASURE_BAR_Y + 20,
+                                 tick_x - 6, MEASURE_BAR_Y + 20);
+        }
+    }
+    
+    AriaRender::lineWidth(1);
+    
     return true;
-
 }
 
 // -----------------------------------------------------------------------------------------------------------

@@ -34,6 +34,7 @@ MeasureData::MeasureData(Sequence* seq, int measureAmount)
     m_selected_time_sig  = 0;
     m_measure_amount     = measureAmount;
     m_first_measure      = 0;
+    m_loop_end_measure   = 0;
     m_expanded_mode      = false;
     m_sequence           = seq;
     

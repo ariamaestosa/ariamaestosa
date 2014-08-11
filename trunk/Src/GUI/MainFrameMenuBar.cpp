@@ -672,6 +672,8 @@ bool MainFrame::doSave()
         saveAriaFile(getCurrentGraphicalSequence(), getCurrentSequence()->getFilepath());
         return true;
     }
+    
+    assert(false);
 }
 
 // -----------------------------------------------------------------------------------------------------------
