@@ -249,6 +249,17 @@ namespace AriaMaestosa
         void ToggleTool(int id, bool pressed);
         void ClearTools();
         void SetLabelById(const int id, wxString label);
+        
+        void HideById(const int id)
+        {
+            FindWindow(id)->Hide();
+            Layout();
+        }
+        void ShowById(const int id)
+        {
+            FindWindow(id)->Show();
+            Layout();
+        }
 #else
         void AddCheckTool(const int id, wxString label, wxBitmap& bmp, bool checked)
         {
@@ -257,6 +268,18 @@ namespace AriaMaestosa
         void SetLabelById(const int id, wxString label)
         {
             FindById(id)->SetLabel(label);
+        }
+        void HideById(const int id)
+        {
+            wxControl* control = FindById(id)->GetControl();
+            control->SetSize(wxSize(0, -1));
+            control->Hide();
+        }
+        void ShowById(const int id)
+        {
+            wxControl* control = FindById(id)->GetControl();
+            control->SetSize(wxSize(45, -1));
+            control->Show();
         }
 #endif
         CustomToolBar(wxWindow* parent);

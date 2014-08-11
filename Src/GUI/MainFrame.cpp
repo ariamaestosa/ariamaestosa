@@ -716,7 +716,7 @@ void MainFrame::initToolbar()
     //m_toolbar->AddSeparator();
     //#endif
     
-    m_loop_end_measure = new wxTextCtrl(m_toolbar, LOOP_END_MEASURE, wxT("1"), wxDefaultPosition, wxSize(0, -1), wxTE_PROCESS_ENTER);
+    m_loop_end_measure = new wxTextCtrl(m_toolbar, LOOP_END_MEASURE, wxT("1"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER);
     //I18N: loop end
     m_toolbar->add(m_loop_end_measure, _("End"));
     
@@ -781,14 +781,16 @@ void MainFrame::initToolbar()
 #else
     m_toolbar->AddTool(TOOL_BUTTON, _("Tool"), m_tool1_bitmap);
 #endif
-
-    m_toolbar->realize();
     
     if (!loop_enabled)
     {
+        m_toolbar->realize();
         m_toolbar->SetLabelById(LOOP_END_MEASURE, "");
+        m_toolbar->HideById(LOOP_END_MEASURE);
     }
 
+    m_toolbar->realize();
+    
 #if defined(__WXOSX_COCOA__)
     skinButton( m_time_sig->GetHandle() );
     //skinToolbar( m_toolbar->GetHandle() );
@@ -1087,8 +1089,8 @@ void MainFrame::loopClicked(wxCommandEvent& evt)
     m_loop_end_measure->Enable(pressed);
     if (not pressed)
     {
-        m_loop_end_measure->SetSize(wxSize(0, -1));
         m_toolbar->SetLabelById(LOOP_END_MEASURE, "");
+        m_toolbar->HideById(LOOP_END_MEASURE);
     }
     else
     {
@@ -1100,7 +1102,7 @@ void MainFrame::loopClicked(wxCommandEvent& evt)
             // FIXME; measure IDs are sometimes 0-based, sometimes 1-based :S
             getCurrentSequence()->getMeasureData()->setLoopEndMeasure(measure_count - 1);
         }
-        m_loop_end_measure->SetSize(wxSize(45, -1));
+        m_toolbar->ShowById(LOOP_END_MEASURE);
         //I18N: loop end
         m_toolbar->SetLabelById(LOOP_END_MEASURE, _("End"));
     }
