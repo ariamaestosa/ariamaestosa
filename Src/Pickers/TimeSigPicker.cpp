@@ -239,6 +239,8 @@ void TimeSigPicker::onFocus(wxFocusEvent& evt)
       ctrl->SetFocus();
       ctrl->SetSelection(-1, -1);
     }
+    
+    evt.Skip();
 }
 
 // --------------------------------------------------------------------------------------------------------
