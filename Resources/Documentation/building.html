@@ -33,7 +33,7 @@
 </p>
 <ul>
     <li> GCC (g++). Included in the developer tools on OS X, found in repositories of all distros on Linux, MinGW on Windows (VisualStudio not supported).</li>
-    <li> <a href="http://www.wxwidgets.org">wxWidgets</a>. I am currently using 2.8.x on Linux/Windows, and 2.9.x trunk on OS X (because trunk has a couple printing bugs fixed)</li>
+    <li> <a href="http://www.wxwidgets.org">wxWidgets</a> version 3.0 or better</li>
     <li> <a href="http://www.opengl.org">OpenGL</a> if you use the OpenGL renderer, which is optional (OpenGL is included by default on mac OS X)</li>
     <li> <a href="http://www.jdkoftinoff.com/main/Free_Projects/C++_MIDI_Library/"> libjdkmidi</a> (included in the Aria source)</li>
     <li> <a href="http://www.ambiera.com/irrxml/index.html">irrXML</a> (included in the Aria source)</li>
@@ -69,13 +69,11 @@
 </p>
 
 <p>
-    <b>Installing wxWidgets :</b> First, download and install wxWidgets. I usually build static. Don't forget to enable
-    OpenGL support if you use wxWidgets 2.8. 
+    <b>Installing wxWidgets :</b> First, download and install wxWidgets. I usually build static.
 </p>
 
 <p>
-    Starting from Aria 1.2, I use wxOSX 2.9.x trunk. wxWidgets 2.8 will still work but it has a couple printing-related bugs.
-    Because wx 2.9 still has a couple bugs, patches have been included in the /OSX directory - apply them to wxWidgets before
+    A couple wx patches have been included in the /OSX directory - apply them to wxWidgets before
     building it for better results.
 </p>
 
@@ -92,11 +90,7 @@
 </p>
 
 <p>
-    Make sure <i>wx-config --libs</i> points to the 2.8 libs when run from a terminal. Mac OS X 10.4 comes with wxWidgets 2.5 pre-installed. It
-    is <b>not</b> recommended to build Aria with it. If you install wxWidgets 2.8 from source, it will default to installing in /usr/local,
-    however pre-installed 2.5 is in /usr, so be careful about conflicts. If /usr comes before /usr/local in yout PATH environment variable, you 
-    will get the 2.5 libs. For getting 2.5 out of the way quickly, just get /usr/bin/wx-config out of the way
-    (sudo mv /usr/bin/wx-config /usr/bin/wx-config-2.5). If your computer does not find wx-config, make sure /usr/local/bin is in your PATH
+    Make sure <i>wx-config --libs</i> points to the 3.0 libs when run from a terminal. If your computer does not find wx-config, make sure /usr/local/bin is in your PATH
     (or pass WXCONFIG=/usr/local/bin/wx-config to scons - see explainations below).
 </p>
 
@@ -118,12 +112,12 @@
     or Timidity plus a soundbank (more info below)
 </p>
 <p>
-    <b>Installing wxWidgets : </b> You can simply download wxWidgets 2.8 from your distribution's repositories. It needs OpenGL support enabled if
+    <b>Installing wxWidgets : </b> You can simply download wxWidgets 3.0 from your distribution's repositories. It needs OpenGL support enabled if
     you want to use the OpenGL renderer, and should be Unicode. Don't forget to install -dev packages if your distribution uses them.
     <br/><br/>If you want to build wxWidgets from source, you can use commands like (read the instructions that come with wxWidgets or wxWiki for
     more info):<br/><br/>
     <span class="code">
-    cd wxGTK2.8.x
+    cd wxGTK3.0.x
     mkdir gtk-build &amp;&amp; cd gtk-build
     ../configure --with-opengl --enable-unicode
     make
@@ -132,7 +126,7 @@
 </p>
 
 <p>
-    Make sure <i>wx-config --libs</i> points to the 2.8 libs when run from a terminal. If it does not, it is likely that your distribution's wxWidgets
+    Make sure <i>wx-config --libs</i> points to the 3.0 libs when run from a terminal. If it does not, it is likely that your distribution's wxWidgets
     (in /usr/) is picked up before the one you built (in /usr/local/). To fix this, you can pass WXCONFIG=/usr/local/bin/wx-config to scons when
     building - more info below.
 </p>
