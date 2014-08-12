@@ -17,7 +17,7 @@ AllowNoIcons=yes
 OutputDir=.
 Uninstallable=yes
 WindowVisible=no
-AppCopyright=Copyright Auria
+AppCopyright=Copyright Aria Maestosa team
 OutputBaseFilename=AriaMaestosaSetup
 UninstallDisplayIcon={app}\Aria.exe
 LicenseFile=..\license.txt
@@ -39,8 +39,8 @@ Source: "..\*.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Resources\*"; Excludes: "*.icns"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "..\international\*.mo"; DestDir: "{app}\Languages"; Flags: ignoreversion recursesubdirs
 Source: "..\license.txt"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\MinGW-4.5.0\bin\libgcc_s_dw2-1.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\MinGW-4.5.0\bin\mingwm10.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\MinGW-4.8.1\bin\libgcc_s_dw2-1.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\MinGW-4.8.1\bin\mingwm10.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 
 [Icons]
