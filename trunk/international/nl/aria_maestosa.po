@@ -4,15 +4,16 @@
 # 
 # Translators:
 # Andrea_Pio <ivan.schepens@wynns.be>, 2012
-# woutervannifterick <woutervannifterick@gmail.com>, 2013
-# woutervannifterick <woutervannifterick@gmail.com>, 2013
+# Rodolfo_Jadon, 2014
+# Wouter van Nifterick <woutervannifterick@gmail.com>, 2013
+# Wouter van Nifterick <woutervannifterick@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: Aria Maestosa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-10-02 18:51-0400\n"
-"PO-Revision-Date: 2013-10-03 08:19+0000\n"
-"Last-Translator: Auria <auria.mg@gmail.com>\n"
+"PO-Revision-Date: 2014-03-02 07:40+0000\n"
+"Last-Translator: Rodolfo_Jadon\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/ariamaestosa/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,7 +42,7 @@ msgstr "MIDI driver"
 #. I18N: In preferences
 #: Src/PreferencesData.cpp:190
 msgid "Play during edit (default value)"
-msgstr ""
+msgstr "Afspelen tijdens het bewerken (standaardwaarde)"
 
 #: Src/PreferencesData.cpp:192
 msgid "Always"
@@ -58,15 +59,15 @@ msgstr "Nooit"
 #. I18N: In preferences
 #: Src/PreferencesData.cpp:199
 msgid "Default Score View"
-msgstr ""
+msgstr "Standaard partituurweergave"
 
 #: Src/PreferencesData.cpp:201
 msgid "Both Musical and Linear"
-msgstr ""
+msgstr "Zowel muzikaal als lineair"
 
 #: Src/PreferencesData.cpp:202
 msgid "Musical Only"
-msgstr ""
+msgstr "Alleen muzikaal"
 
 #: Src/PreferencesData.cpp:203
 msgid "Linear Only"
@@ -75,7 +76,7 @@ msgstr "Alleen lineair"
 #. I18N: In preferences
 #: Src/PreferencesData.cpp:208
 msgid "Default Editor View"
-msgstr ""
+msgstr "Standaard bewerkingsweergave"
 
 #: Src/PreferencesData.cpp:210
 msgid "Keyboard"
@@ -83,7 +84,7 @@ msgstr "Toetsenbord"
 
 #: Src/PreferencesData.cpp:211
 msgid "Score"
-msgstr ""
+msgstr "Partituur"
 
 #: Src/PreferencesData.cpp:212
 msgid "Tablature"
@@ -314,7 +315,7 @@ msgstr "Even geduld aub..."
 #. I18N: - title of the copyright/info dialog
 #: Src/Dialogs/SongPropertiesDialog.cpp:85
 msgid "Song Properties"
-msgstr ""
+msgstr "Eigenschappen van het stuk"
 
 #. I18N: - title of the copyright/info dialog
 #: Src/Dialogs/SongPropertiesDialog.cpp:96
@@ -373,7 +374,7 @@ msgstr "A"
 #: Src/Dialogs/SongPropertiesDialog.cpp:373
 #, c-format
 msgid "%s Major - %s minor"
-msgstr ""
+msgstr "%s Majeur - %s mineur"
 
 #: Src/Dialogs/PresetEditor.cpp:33
 msgid "Presets"
@@ -416,15 +417,15 @@ msgstr "Voorkeuren"
 
 #: Src/Dialogs/Preferences.cpp:258
 msgid "Aria Maestosa"
-msgstr ""
+msgstr "Aria Maestosa"
 
 #: Src/Dialogs/Preferences.cpp:259
 msgid "Sound input/output"
-msgstr ""
+msgstr "Geluidsinvoer/uitvoer"
 
 #: Src/Dialogs/Preferences.cpp:260
 msgid "Edition"
-msgstr ""
+msgstr "Editie"
 
 #: Src/Dialogs/Preferences.cpp:351
 msgid "Browse..."
@@ -433,7 +434,7 @@ msgstr "Bladeren..."
 #. I18N: - in the preferences dialog
 #: Src/Dialogs/Preferences.cpp:390
 msgid "Changes will take effect next time you open the application."
-msgstr ""
+msgstr "Wijzingen worden van toepassing wanneer het programma een volgende keer gestart wordt."
 
 #: Src/Dialogs/Preferences.cpp:444
 msgid "You will need to restart Aria Maestosa for changes to be effective."
@@ -506,11 +507,11 @@ msgstr "Spoorachtergrond"
 
 #: Src/Dialogs/TrackPropertiesDialog.cpp:187
 msgid "Check all"
-msgstr ""
+msgstr "Alles aankruisen"
 
 #: Src/Dialogs/TrackPropertiesDialog.cpp:188
 msgid "Uncheck all"
-msgstr ""
+msgstr "Alles afkruisen"
 
 #: Src/Dialogs/TrackPropertiesDialog.cpp:206
 msgid "Default volume for new notes"
@@ -619,7 +620,7 @@ msgstr "Ergonis Software en %s voor het maken van EasyBeat,\n\teen uitstekend pr
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:66
 msgid "J.D. Koftinoff Software for the jdksmidi library"
-msgstr ""
+msgstr "J.D. Koftinoff Software voor de jdksmidi bibliotheek"
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:68
@@ -745,7 +746,7 @@ msgstr ""
 #. I18N: (undoable) action name
 #: Src/Actions/AddTextEvent.cpp:31
 msgid "text change"
-msgstr ""
+msgstr "Tekstwijziging"
 
 #. I18N: (undoable) action name
 #: Src/Actions/SnapNotesToGrid.cpp:28
@@ -775,7 +776,7 @@ msgstr "noot toevoegen"
 #. I18N: (undoable) action name
 #: Src/Actions/SetTrackVolume.cpp:27
 msgid "change track volume"
-msgstr ""
+msgstr "Spoorvolume wijzigen"
 
 #. I18N: (undoable) action name
 #: Src/Actions/AddTrack.cpp:37
@@ -790,7 +791,7 @@ msgstr "no(o)t(en) verplaatsen"
 #. I18N: (undoable) action name
 #: Src/Actions/UpdateGuitarTuning.cpp:29
 msgid "change guitar tuning"
-msgstr ""
+msgstr "Gitaarstemming wijzigen"
 
 #: Src/IO/AriaFileWriter.cpp:49 Src/IO/AriaFileWriter.cpp:58
 #, c-format
@@ -801,7 +802,7 @@ msgstr "Het bestand '%s' kon niet geopend worden om in te lezen"
 msgid ""
 "This MIDI file has tracks that play on multiple MIDI channels. This is not "
 "supported by Aria Maestosa."
-msgstr ""
+msgstr "Dit MIDI-bestand heeft sporen die afspelen op meerdere MIDI-kanalen. Dit wordt door Aria Maestosa niet ondersteund."
 
 #: Src/IO/MidiFileReader.cpp:185
 msgid ""
@@ -1157,7 +1158,7 @@ msgstr ""
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:208
 msgid "Castanets"
-msgstr ""
+msgstr "Castagnetten"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:210
@@ -1271,7 +1272,7 @@ msgstr "Opslaan &als..."
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:110
 msgid "&Reload"
-msgstr ""
+msgstr "&Herladen"
 
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:114
@@ -1359,7 +1360,7 @@ msgstr "&Schaal..."
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:192
 msgid "Remove O&verlapping Notes"
-msgstr ""
+msgstr "O&verlappende noten verwijderen"
 
 #. I18N: name of a menu
 #: Src/GUI/MainFrameMenuBar.cpp:204
@@ -1421,7 +1422,7 @@ msgstr ""
 #. Automatic\n* Manual
 #: Src/GUI/MainFrameMenuBar.cpp:258
 msgid "&Channel management"
-msgstr ""
+msgstr "&Kanaalbeheer"
 
 #. I18N: - the channel setting. full context : Channel management\n\n*
 #. Automatic\n* Manual
@@ -1439,7 +1440,7 @@ msgstr "&Handmatig"
 #. Always\n* On note change\n* Never
 #: Src/GUI/MainFrameMenuBar.cpp:269
 msgid "Play during &edit"
-msgstr ""
+msgstr "Afspelen tijdens het &bewerken"
 
 #. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n*
 #. Always\n* On note change\n* Never
@@ -1461,7 +1462,7 @@ msgstr "&Nooit"
 
 #: Src/GUI/MainFrameMenuBar.cpp:281
 msgid "Play with &Metronome"
-msgstr ""
+msgstr "Afspelen met &metronoom"
 
 #: Src/GUI/MainFrameMenuBar.cpp:285
 msgid "&Playthrough when recording"
@@ -1516,12 +1517,12 @@ msgstr ""
 
 #: Src/GUI/MainFrameMenuBar.cpp:657
 msgid "Warning"
-msgstr ""
+msgstr "Waarschuwing"
 
 #: Src/GUI/MainFrameMenuBar.cpp:698 Src/GUI/MainFrameMenuBar.cpp:761
 #: Src/GUI/MainFrameMenuBar.cpp:801
 msgid "Select destination file"
-msgstr ""
+msgstr "Bestemmingsbestand kiezen"
 
 #: Src/GUI/MainFrameMenuBar.cpp:699 Src/GUI/MainFrameMenuBar.cpp:738
 msgid "Aria Maestosa file"
@@ -1530,7 +1531,7 @@ msgstr "Aria Maestosa bestand"
 #: Src/GUI/MainFrameMenuBar.cpp:708 Src/GUI/MainFrameMenuBar.cpp:772
 #: Src/GUI/MainFrameMenuBar.cpp:811
 msgid "The file already exists. Do you wish to overwrite it?"
-msgstr ""
+msgstr "Het bestand bestaat al. Wil je het overschrijven?"
 
 #: Src/GUI/MainFrameMenuBar.cpp:748
 msgid "Select midi file"
@@ -1542,7 +1543,7 @@ msgstr "Midi bestand"
 
 #: Src/GUI/MainFrameMenuBar.cpp:785
 msgid "Sorry, failed to export midi file."
-msgstr ""
+msgstr "Sorry, het exporteren van het MIDI-bestand is mislukt."
 
 #: Src/GUI/MainFrameMenuBar.cpp:823
 msgid ""
@@ -1673,17 +1674,17 @@ msgstr "Sorry, het laden van het MIDI-bestand is mislukt."
 msgid ""
 "Loading the MIDI file completed successfully, but with the following "
 "warnings (the song may not sound as intended) :"
-msgstr ""
+msgstr "Het MIDI-bestand is met succes geladen, maar wel met de volgende waarschuwingen (het stuk zou anders dan bedoeld kunnen klinken):"
 
 #: Src/GUI/MainFrame.cpp:2053
 msgid "Please wait while file is reloaded."
-msgstr ""
+msgstr "Even geduld tijdens het herladen van het bestand."
 
 #: Src/GUI/MainFrame.cpp:2188
 msgid ""
 "A new version of Aria Maestosa is now available! Visit the following link to"
 " download it :"
-msgstr ""
+msgstr "Er is een nieuwe versie van Aria Maestosa beschikbaar! Ga naar de volgende link om te downloaden:"
 
 #: Src/GUI/MainFrame.cpp:2199
 msgid "An error occurred"
@@ -1711,15 +1712,15 @@ msgstr "Afsluiten"
 
 #: Src/GUI/GraphicalTrack.cpp:419
 msgid "Track volume"
-msgstr ""
+msgstr "Spoorvolume"
 
 #: Src/GUI/GraphicalTrack.cpp:423
 msgid "Mute"
-msgstr ""
+msgstr "Stil"
 
 #: Src/GUI/GraphicalTrack.cpp:427
 msgid "Solo"
-msgstr ""
+msgstr "Solo"
 
 #: Src/GUI/GraphicalTrack.cpp:433
 msgid "Maximize track"
@@ -1731,7 +1732,7 @@ msgstr ""
 
 #: Src/GUI/GraphicalTrack.cpp:459 Src/Editors/ScoreEditor.h:285
 msgid "Score Editor"
-msgstr ""
+msgstr "Partituutbewerking"
 
 #: Src/GUI/GraphicalTrack.cpp:463 Src/Editors/KeyboardEditor.h:88
 msgid "Keyboard Editor"
@@ -1784,7 +1785,7 @@ msgstr ""
 #: Src/GUI/MeasureBar.cpp:156
 #, c-format
 msgid "Insert empty measures between measures %i and %i"
-msgstr ""
+msgstr "Lege maten invoegen tussen maten %i en %i"
 
 #: Src/GUI/MeasureBar.cpp:158
 msgid "Amount: "
@@ -1837,7 +1838,7 @@ msgstr "Onbekende MIDI-poort"
 
 #: Src/Midi/Players/Mac/MacPlayerInterface.cpp:118
 msgid "Sorry, an internal error occurred during export"
-msgstr ""
+msgstr "Sorry, bij het exporteren is een interne fout opgetreden"
 
 #: Src/Midi/Players/Mac/MacPlayerInterface.cpp:157
 msgid ""
@@ -1910,7 +1911,7 @@ msgstr "Windows softwaresynthesizer"
 
 #: Src/Midi/Players/Win/WinPlayer.cpp:362
 msgid "Failed to initialize MIDI out device"
-msgstr ""
+msgstr "Het initialiseren van het MIDI uit apparaat is mislukt"
 
 #: Src/Midi/CommonMidiUtils.cpp:435 Src/Midi/CommonMidiUtils.cpp:460
 msgid ""
@@ -2243,7 +2244,7 @@ msgstr "Fluit"
 
 #: Src/Midi/InstrumentChoice.cpp:108
 msgid "Ocarina"
-msgstr ""
+msgstr "Ocarina"
 
 #: Src/Midi/InstrumentChoice.cpp:109
 msgid "Square Wave"
@@ -2707,13 +2708,13 @@ msgstr "Bewerk Presets..."
 #: Src/Pickers/KeyPicker.cpp:522
 #, c-format
 msgid "%s Major, %s minor"
-msgstr ""
+msgstr "%s Majeur, %s mineur"
 
 #. I18N: - when setting time signature, to indicate it's not constant through
 #. song
 #: Src/Pickers/TimeSigPicker.cpp:178
 msgid "Varies throughout song"
-msgstr ""
+msgstr "Varieert in de loop van het stuk"
 
 #. I18N: - when setting a wrong time signature
 #: Src/Pickers/TimeSigPicker.cpp:280

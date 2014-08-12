@@ -5,7 +5,7 @@
 # Translators:
 #   <alexisarcham@gmail.com>, 2012
 # Andrea Zanellato <zanellato.andrea@gmail.com>, 2013
-# Miotsu <davide.miozzi@gmail.com>, 2013
+# Davide Miozzi <davide.miozzi@gmail.com>, 2013
 # eagleman <giacomomargarito@yahoo.it>, 2013
 # Giuseppe D. B. <giuped@gmail.com>, 2012
 msgid ""
@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: Aria Maestosa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-10-02 18:51-0400\n"
-"PO-Revision-Date: 2013-10-03 08:19+0000\n"
+"PO-Revision-Date: 2013-11-20 11:01+0000\n"
 "Last-Translator: Auria <auria.mg@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/projects/p/ariamaestosa/language/it/)\n"
 "MIME-Version: 1.0\n"

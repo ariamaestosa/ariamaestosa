@@ -4,14 +4,14 @@
 # 
 # Translators:
 #   <alexisarcham@gmail.com>, 2012
-# Nipsky <nipsky@googlemail.com>, 2013
-# sound_m <sound_m@gmx.net>, 2013
+# Andre Jonas <nipsky@googlemail.com>, 2013
+# Mike Spaeth <sound_m@gmx.net>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: Aria Maestosa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-10-02 18:51-0400\n"
-"PO-Revision-Date: 2013-10-03 08:19+0000\n"
+"PO-Revision-Date: 2013-11-20 11:01+0000\n"
 "Last-Translator: Auria <auria.mg@gmail.com>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/ariamaestosa/language/de/)\n"
 "MIME-Version: 1.0\n"
