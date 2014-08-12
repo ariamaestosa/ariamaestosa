@@ -3,163 +3,159 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-#   <alexisarcham@gmail.com>, 2012
-# fri, 2012
-# fri, 2013
-# fri, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: Aria Maestosa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-10-02 18:51-0400\n"
-"PO-Revision-Date: 2014-07-13 08:43+0000\n"
-"Last-Translator: fri\n"
-"Language-Team: Czech (http://www.transifex.com/projects/p/ariamaestosa/language/cs/)\n"
+"PO-Revision-Date: 2014-03-14 10:13+0000\n"
+"Last-Translator: Park S.H <ddfddf2k@paran.com>\n"
+"Language-Team: Korean (http://www.transifex.com/projects/p/ariamaestosa/language/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: cs\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Language: ko\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: Src/main.cpp:338 Src/main.cpp:359
 msgid ""
 "Sorry an internal error occurred : an exception was caught unhandled : "
-msgstr "Promiňte, ale vyskytla se vnitřní chyba: S výjimkou nebylo zacházeno správně: "
+msgstr "죄송합니다. 내부 오류가 발생했습니다 : 처리되지 않는 예외 :"
 
 #: Src/PresetManager.cpp:133
 #, c-format
 msgid "Sorry, an error occurred : could not create %s"
-msgstr "Promiňte, ale vyskytla se chyba: Nepodařilo se vytvořit %s"
+msgstr "죄송합니다. 오류가 발생했습니다: %s 을(를) 생성할 수 업습니다"
 
 #: Src/PreferencesData.cpp:152
 msgid "Language"
-msgstr "Jazyk"
+msgstr "언어(Language)"
 
 #: Src/PreferencesData.cpp:178
 msgid "MIDI Driver"
-msgstr "Ovladač MIDI"
+msgstr "MIDI 드라이버"
 
 #. I18N: In preferences
 #: Src/PreferencesData.cpp:190
 msgid "Play during edit (default value)"
-msgstr "Přehrávat během úprav (výchozí hodnota)"
+msgstr "편집 도중에 재생 (기본값)"
 
 #: Src/PreferencesData.cpp:192
 msgid "Always"
-msgstr "Vždy"
+msgstr "항상"
 
 #: Src/PreferencesData.cpp:193
 msgid "On note change"
-msgstr "Při změně noty"
+msgstr "음표 변경 시"
 
 #: Src/PreferencesData.cpp:194
 msgid "Never"
-msgstr "Nikdy"
+msgstr "절대 안함"
 
 #. I18N: In preferences
 #: Src/PreferencesData.cpp:199
 msgid "Default Score View"
-msgstr "Výchozí pohled na notový zápis"
+msgstr "기본 악보 보기"
 
 #: Src/PreferencesData.cpp:201
 msgid "Both Musical and Linear"
-msgstr "Jak hudební tak přímý"
+msgstr "기보법과 선형 표기법을 함께"
 
 #: Src/PreferencesData.cpp:202
 msgid "Musical Only"
-msgstr "Jen hudební"
+msgstr "기보법만"
 
 #: Src/PreferencesData.cpp:203
 msgid "Linear Only"
-msgstr "Jen přímý"
+msgstr "선형 표기법만"
 
 #. I18N: In preferences
 #: Src/PreferencesData.cpp:208
 msgid "Default Editor View"
-msgstr "Výchozí pohled na editor"
+msgstr "기본 편집기 보기"
 
 #: Src/PreferencesData.cpp:210
 msgid "Keyboard"
-msgstr "Klávesnice"
+msgstr "건반"
 
 #: Src/PreferencesData.cpp:211
 msgid "Score"
-msgstr "Notový zápis"
+msgstr "악보"
 
 #: Src/PreferencesData.cpp:212
 msgid "Tablature"
-msgstr "Tabulatura"
+msgstr "태블러처 악보"
 
 #. I18N: In preferences
 #: Src/PreferencesData.cpp:218
 msgid "Instrument Classification"
-msgstr "Zařazení nástroje"
+msgstr "악기 분류"
 
 #: Src/PreferencesData.cpp:220
 msgid "MIDI Standard"
-msgstr "Standard MIDI"
+msgstr "MIDI 표준"
 
 #: Src/PreferencesData.cpp:230
 msgid "Soundfont"
-msgstr "Zvuková banka"
+msgstr "사운드폰트"
 
 #: Src/PreferencesData.cpp:237
 msgid "Follow playback by default"
-msgstr "Sledovat přehrávání jako výchozí nastavení"
+msgstr "재생(녹음) 위치 추적을 기본값으로"
 
 #: Src/PreferencesData.cpp:242
 msgid "Enable playthrough when recording by default"
-msgstr "Povolit přehrávání, když se nahrává, jako výchozí nastavení"
+msgstr "녹음할 때 연주하기를 기본값으로 사용"
 
 #: Src/PreferencesData.cpp:247
 msgid "Check online for new versions"
-msgstr "Sledovat internet kvůli novým verzím"
+msgstr "온라인으로 새 버전 확인"
 
 #: Src/PreferencesData.cpp:252
 msgid "Remember window location"
-msgstr "Zapamatovat si umístění okna"
+msgstr "창 위치 기억하기"
 
 #: Src/PreferencesData.cpp:284
 msgid "Automatically launch FluidSynth if needed"
-msgstr "V případě potřeby spustit FluidSynth automaticky"
+msgstr "필요하다면 FluidSynth를 자동으로 실행하기"
 
 #: Src/PreferencesData.cpp:291
 msgid "Single-instance application"
-msgstr "Program o jedné instanci"
+msgstr "하나의 프로그램만 실행 가능"
 
 #: Src/PreferencesData.cpp:297
 msgid "Show note names in piano-roll"
-msgstr "Ukázat názvy not ve válečku"
+msgstr "피아노 롤에 음표 이름 표시"
 
 #: Src/PreferencesData.cpp:303
 msgid "Restore open files from previous session"
-msgstr "Obnovit otevřené soubory z předchozího sezení"
+msgstr "이전 세션에서 열었던 파일 복원하기"
 
 #: Src/PreferencesData.cpp:334 Src/GUI/MainFrameMenuBar.cpp:351
 #: Src/GUI/MainFrameMenuBar.cpp:354 Src/GUI/MainFrame.cpp:1006
 msgid "No MIDI input"
-msgstr "Není dostupný žádný vstup MIDI"
+msgstr "MIDI 입력이 없습니다."
 
 #: Src/Dialogs/PrintSetupDialog.cpp:46
 msgid "Keyroll Printing Options"
-msgstr "Volby pro tisk svitku s notami"
+msgstr "키 롤 인쇄하기 옵션"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:57
 msgid "Size of a beat : "
-msgstr "Velikost doby: "
+msgstr "박자 길이 :"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:65
 msgid "Vertical margin between notes : "
-msgstr "Svislý okraj mezi notami: "
+msgstr "음표 사이의 수직 여백 :"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:75
 msgid "Colors"
-msgstr "Barvy"
+msgstr "색상"
 
 #. I18N: keyroll printing option
 #: Src/Dialogs/PrintSetupDialog.cpp:100
 msgid "Compact (print only key notes)"
-msgstr "Strohý (tisknout jen noty předznamenání)"
+msgstr "간소화 (주음-으뜸음-만 인쇄)"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:103 Src/Dialogs/PrintSetupDialog.cpp:726
 #: Src/Dialogs/CustomKeyDialog.cpp:163
@@ -168,21 +164,21 @@ msgstr "Strohý (tisknout jen noty předznamenání)"
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:167 Src/Dialogs/TuningDialog.cpp:54
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:545 Src/Pickers/TimeSigPicker.cpp:181
 msgid "OK"
-msgstr "OK"
+msgstr "확인"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:194
 msgid ""
 "Keyroll tracks and tablature/score tracks cannot be mixed in the same "
 "printout"
-msgstr "Stopy obsahující svitky s notami nelze ve stejném tiskovém výstupu míchat se stopami s tabulaturou nebo notovým zápisem"
+msgstr "키 롤 트랙과 태블러처/악보 트랙은 같은 인쇄물에 혼합할 수 없습니다"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:199
 msgid "No printable track selected"
-msgstr "Nevybrána žádná tisknutelná stopa"
+msgstr "선택된 인쇄가능한 트랙이 없습니다"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:236
 msgid "Calculating print layout..."
-msgstr "Počítá se  rozvržení..."
+msgstr "인쇄 배치를 계산중입니다...."
 
 #. I18N: - %s is the name of the track
 #: Src/Dialogs/PrintSetupDialog.cpp:247
@@ -190,66 +186,66 @@ msgstr "Počítá se  rozvržení..."
 msgid ""
 "Track '%s' could not be printed, since its current\n"
 "view (editor) does not support printing."
-msgstr "Stopu '%s' se nepodařilo vytisknout, protože její nynější\neditor tisk nepodporuje."
+msgstr ""
 
 #: Src/Dialogs/PrintSetupDialog.cpp:275
 msgid "An error occurred during printing."
-msgstr "Během tisku došlo k chybě."
+msgstr "인쇄를 하는 도중에 오류가 발생했습니다."
 
 #. I18N: - title of the notation-print dialog
 #: Src/Dialogs/PrintSetupDialog.cpp:511
 msgid "Print musical notation"
-msgstr "Tisk hudebního notového zápisu"
+msgstr "기보법 인쇄"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:523
 msgid "An error occurred while preparing to print."
-msgstr "Při přípravě na tisk se vyskytla chyba."
+msgstr "인쇄를 준비하는 도중에 오류가 발생했습니다."
 
 #. I18N: - in print setup dialog.
 #: Src/Dialogs/PrintSetupDialog.cpp:541
 msgid "Print..."
-msgstr "Tisk..."
+msgstr "인쇄하기..."
 
 #. I18N: - in print setup dialog.
 #: Src/Dialogs/PrintSetupDialog.cpp:544
 msgid "Current track only"
-msgstr "Pouze nynější stopu"
+msgstr "현재 트랙만"
 
 #. I18N: - in print setup dialog.
 #: Src/Dialogs/PrintSetupDialog.cpp:549
 msgid "This list of tracks"
-msgstr "Seznam stop"
+msgstr "다음 트랙 목록"
 
 #. I18N: in printing dialog
 #: Src/Dialogs/PrintSetupDialog.cpp:656
 msgid "Omit instruments that play nothing on the current line"
-msgstr "Vynechat nástroje, jež v nynějším řádku nic nepřehrávají"
+msgstr "현재 줄에 아무것도 재생되지 않는 악기를 생략한다"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:658
 msgid ""
 "If some instrument plays nothing during a long part of the song, checking "
 "this option can make the printed score tighter by eliminating empty lines"
-msgstr "Když nástroj během dlouhé části písně nic nehraje, může tato volba vytištěný notový zápis zmenšit tím, že se vynechají prázdné řádky."
+msgstr ""
 
 #: Src/Dialogs/PrintSetupDialog.cpp:672
 msgid "Page Setup"
-msgstr "Nastavení strany"
+msgstr "페이지 설정"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:678
 msgid "Paper :"
-msgstr "Papír:"
+msgstr "종이 :"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:686
 msgid "Edit Page Setup"
-msgstr "Upravit nastavení strany"
+msgstr "페이지 설정 편집"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:692
 msgid "Margins :"
-msgstr "Okraje:"
+msgstr "여백 :"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:700
 msgid "Margins"
-msgstr "Okraje"
+msgstr "여백"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:729 Src/Dialogs/CustomKeyDialog.cpp:164
 #: Src/Dialogs/SongPropertiesDialog.cpp:179 Src/Dialogs/Preferences.cpp:383
@@ -257,27 +253,27 @@ msgstr "Okraje"
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:169 Src/Dialogs/TuningDialog.cpp:57
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:546
 msgid "Cancel"
-msgstr "Zrušit"
+msgstr "취소"
 
 #: Src/Dialogs/CustomKeyDialog.cpp:38
 msgid "Custom Key Editor"
-msgstr "Editor uživatelsky stanovených předznamenání"
+msgstr "사용자정의 키 편집기"
 
 #: Src/Dialogs/CustomKeyDialog.cpp:52
 msgid "Select which notes should be part of the custom key"
-msgstr "Vyberte noty, jež mají být součástí uživatelsky stanovených předznamenání"
+msgstr "사용자 정의 키의 일부가 되게 할 음표를 선택하세요"
 
 #. I18N: in custom key editor, this is the option to edit notes on a single
 #. octave
 #: Src/Dialogs/CustomKeyDialog.cpp:97
 msgid "All Octaves are Similar"
-msgstr "Všechny oktávy jsou podobné"
+msgstr "모든 옥타브가 유사합니다"
 
 #. I18N: in custom key editor, this is the option to edit all octaves
 #. independently
 #: Src/Dialogs/CustomKeyDialog.cpp:144
 msgid "All Octaves are Independent"
-msgstr "Všechny oktávy jsou nezávislé"
+msgstr "모든 옥타브가 독립적입니다"
 
 #. I18N: in custom key editor
 #. wxButton* copySettingsBtn = new wxButton( pane, wxID_COPY, _("Copy settings
@@ -286,80 +282,80 @@ msgstr "Všechny oktávy jsou nezávislé"
 #. I18N: in the key editor
 #: Src/Dialogs/CustomKeyDialog.cpp:153
 msgid "* Checked notes are included in the key"
-msgstr "* Zaškrtnuté noty jsou zahrnuty do předznamenání"
+msgstr "* 체크된 음표는 키에 포함됩니다"
 
 #. I18N: in the key editor
 #: Src/Dialogs/CustomKeyDialog.cpp:155
 msgid "* \"Half-checked\" notes are included as accidentals"
-msgstr "* Napůl zaškrtnuté noty jsou zahrnuty jako posuvky"
+msgstr "* \"절반 체크\"된 노트는 임시음으로서 포함됩니다."
 
 #. I18N: in the key editor
 #: Src/Dialogs/CustomKeyDialog.cpp:157
 msgid ""
 "* Unchecked notes are excluded (for instance, they could be unplayable on "
 "your instrument)"
-msgstr "* Nezaškrtnuté noty jsou vyloučeny (příklad: mohly by být vaším nástrojem nezahratelné)"
+msgstr "* 체크되지 않은 음표는 제외됩니다 (예를 들어, 그 음표들을 연주할 수 없도록 만들 수 있습니다)"
 
 #: Src/Dialogs/CustomKeyDialog.cpp:165
 msgid "Save as preset..."
-msgstr "Uložit jako přednastavení..."
+msgstr "프리셋으로 저장..."
 
 #: Src/Dialogs/CustomKeyDialog.cpp:264
 msgid "Enter the name of the preset"
-msgstr "Zadat název kopie přednastavení"
+msgstr "프리셋의 이름을 입력하세요"
 
 #: Src/Dialogs/WaitWindow.cpp:69
 msgid "Please wait..."
-msgstr "Počkejte, prosím, ..."
+msgstr "기다려주세요..."
 
 #. I18N: - title of the copyright/info dialog
 #: Src/Dialogs/SongPropertiesDialog.cpp:85
 msgid "Song Properties"
-msgstr "Vlastnosti písně"
+msgstr "곡 속성"
 
 #. I18N: - title of the copyright/info dialog
 #: Src/Dialogs/SongPropertiesDialog.cpp:96
 msgid "Song name"
-msgstr "Název písně"
+msgstr "곡 이름"
 
 #. I18N: - title of the copyright/info dialog
 #: Src/Dialogs/SongPropertiesDialog.cpp:105
 msgid "Copyright"
-msgstr "Autorské právo"
+msgstr "저작권"
 
 #. I18N: - default key signature
 #: Src/Dialogs/SongPropertiesDialog.cpp:113
 msgid "Default key signature"
-msgstr "Výchozí předznamenání"
+msgstr "기본 키 서명"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:119
 msgid "None"
-msgstr "Žádný"
+msgstr "없음"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:120
 msgid "Sharps"
-msgstr "Křížky"
+msgstr "샵"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:121
 msgid "Flats"
-msgstr "Béčka"
+msgstr "플랫"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:124
 msgid "Symbols"
-msgstr "Symboly"
+msgstr "심볼"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:148 Src/GUI/MainFrame.cpp:482
 msgid "Tempo"
-msgstr "Tempo"
+msgstr "템포"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:157 Src/Pickers/TimeSigPicker.cpp:139
 msgid "Time Signature"
-msgstr "Taktové označení"
+msgstr "박자"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:169
 #: Src/Dialogs/SongPropertiesDialog.cpp:203
 msgid "Song duration :"
-msgstr "Doba trvání písně:"
+msgstr "곡 길이 :"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:348 Src/Pickers/KeyPicker.cpp:95
 #: Src/Pickers/KeyPicker.cpp:110 Src/Midi/Note.h:102 Src/Midi/Note.h:118
@@ -374,153 +370,153 @@ msgstr "A"
 #: Src/Dialogs/SongPropertiesDialog.cpp:373
 #, c-format
 msgid "%s Major - %s minor"
-msgstr "%s Dur - %s moll"
+msgstr "%s 장조 - %s 단조"
 
 #: Src/Dialogs/PresetEditor.cpp:33
 msgid "Presets"
-msgstr "Přednastavení"
+msgstr "프리셋"
 
 #: Src/Dialogs/PresetEditor.cpp:60
 msgid "Duplicate"
-msgstr "Zdvojit"
+msgstr "복제"
 
 #: Src/Dialogs/PresetEditor.cpp:62 Src/Editors/ControllerEditor.cpp:866
 #: Src/Editors/ControllerEditor.cpp:905
 msgid "Delete"
-msgstr "Smazat"
+msgstr "삭제"
 
 #: Src/Dialogs/PresetEditor.cpp:66 Src/Dialogs/AboutDialog.cpp:111
 #: Src/GUI/MainFrameMenuBar.cpp:1394
 msgid "Close"
-msgstr "Zavřít"
+msgstr "닫기"
 
 #. I18N: when duplicating a preset
 #: Src/Dialogs/PresetEditor.cpp:97
 msgid "Enter the name of the duplicate"
-msgstr "Zadat název kopie"
+msgstr "복제할 이름을 입력하세요"
 
 #: Src/Dialogs/PresetEditor.cpp:117
 msgid "Are you sure you want to delete this preset? This cannot be undone."
-msgstr "Opravdu chcete smazat toto přednastavení? Toto nelze vrátit zpět."
+msgstr "이 프리셋을 삭제하시겠습니까? 이것은 되돌릴 수 없습니다."
 
 #: Src/Dialogs/PresetEditor.cpp:118 Src/GUI/MainFrameMenuBar.cpp:709
 #: Src/GUI/MainFrameMenuBar.cpp:772 Src/GUI/MainFrameMenuBar.cpp:811
 #: Src/GUI/MainFrameMenuBar.cpp:1049 Src/GUI/MainFrameMenuBar.cpp:1168
 #: Src/GUI/MainFrameMenuBar.cpp:1252 Src/Pickers/TimeSigPicker.cpp:289
 msgid "Confirm"
-msgstr "Potvrdit"
+msgstr "확인"
 
 #. I18N: - title of the preferences dialog
 #: Src/Dialogs/Preferences.cpp:246 Src/GUI/MainPane.cpp:150
 msgid "Preferences"
-msgstr "Nastavení"
+msgstr "환경설정"
 
 #: Src/Dialogs/Preferences.cpp:258
 msgid "Aria Maestosa"
-msgstr "Aria Maestosa"
+msgstr "아리아 마에스토사"
 
 #: Src/Dialogs/Preferences.cpp:259
 msgid "Sound input/output"
-msgstr "Vstup/Výstup zvuku"
+msgstr "사운드 입력/출력"
 
 #: Src/Dialogs/Preferences.cpp:260
 msgid "Edition"
-msgstr "Verze"
+msgstr "에디션"
 
 #: Src/Dialogs/Preferences.cpp:351
 msgid "Browse..."
-msgstr "Procházet…"
+msgstr "찾아보기..."
 
 #. I18N: - in the preferences dialog
 #: Src/Dialogs/Preferences.cpp:390
 msgid "Changes will take effect next time you open the application."
-msgstr "Změny se projeví, až když tento program spustíte znovu."
+msgstr "변경사항은 다음 번에 프로그램을 실행했을 때 적용될 것입니다."
 
 #: Src/Dialogs/Preferences.cpp:444
 msgid "You will need to restart Aria Maestosa for changes to be effective."
-msgstr "Aria Maestosa bude potřeba, aby se změny projevily, spustit znovu."
+msgstr "변경사항을 적용하려면 아리아 마에스토사를 재시작 해야 합니다."
 
 #: Src/Dialogs/Preferences.cpp:467 Src/GUI/MainFrameMenuBar.cpp:737
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:587
 msgid "Select file"
-msgstr "Vybrat soubor"
+msgstr "파일 선택"
 
 #: Src/Dialogs/Preferences.cpp:468 Src/Midi/Players/Alsa/AlsaPlayer.cpp:588
 msgid "Sound Font"
-msgstr "Zvuková banka"
+msgstr "사운드 폰트"
 
 #. I18N: - title of the scale dialog
 #: Src/Dialogs/ScaleDialog.cpp:70
 msgid "Scale"
-msgstr "Změna velikosti"
+msgstr "비율"
 
 #. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
 #. selection\n* track\n* song"
 #: Src/Dialogs/ScaleDialog.cpp:111
 msgid "Scale notes in..."
-msgstr "Změnit velikost not..."
+msgstr "다음의 음표 비율"
 
 #. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
 #. selection\n* track\n* song"
 #: Src/Dialogs/ScaleDialog.cpp:115
 msgid "selection"
-msgstr "Výběr"
+msgstr "선택된 음표"
 
 #. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
 #. selection\n* track\n* song"
 #: Src/Dialogs/ScaleDialog.cpp:120
 msgid "track"
-msgstr "Stopa"
+msgstr "트랙"
 
 #. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
 #. selection\n* track\n* song"
 #: Src/Dialogs/ScaleDialog.cpp:124
 msgid "song"
-msgstr "Píseň"
+msgstr "곡"
 
 #. I18N: - in the scale dialog. full context : "relative to...\n\n* first
 #. affected note\n* song beginning"
 #: Src/Dialogs/ScaleDialog.cpp:130
 msgid "relative to..."
-msgstr "V poměru k..."
+msgstr ""
 
 #. I18N: - in the scale dialog. full context : "relative to...\n\n* first
 #. affected note\n* song beginning"
 #: Src/Dialogs/ScaleDialog.cpp:134
 msgid "first affected note"
-msgstr "První ovlivněná nota"
+msgstr ""
 
 #. I18N: - in the scale dialog. full context : "relative to...\n\n* first
 #. affected note\n* song beginning"
 #: Src/Dialogs/ScaleDialog.cpp:139
 msgid "song beginning"
-msgstr "Začátek písně"
+msgstr ""
 
 #: Src/Dialogs/TrackPropertiesDialog.cpp:135
 #, c-format
 msgid "Track '%s' Properties"
-msgstr "Vlastnosti stopy '%s'"
+msgstr "트랙 '%s' 속성"
 
 #: Src/Dialogs/TrackPropertiesDialog.cpp:162
 msgid "Track Background"
-msgstr "Pozadí stopy"
+msgstr "트랙을 배경으로 그리기"
 
 #: Src/Dialogs/TrackPropertiesDialog.cpp:187
 msgid "Check all"
-msgstr "Zaškrtnout vše"
+msgstr "전부 체크"
 
 #: Src/Dialogs/TrackPropertiesDialog.cpp:188
 msgid "Uncheck all"
-msgstr "Zrušit zaškrtnutí všeho"
+msgstr "전부 체크 풀기"
 
 #: Src/Dialogs/TrackPropertiesDialog.cpp:206
 msgid "Default volume for new notes"
-msgstr "Výchozí hlasitost nových not"
+msgstr "새 음표의 기본 음량"
 
 #. I18N: - title of the custom note select dialog
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:63
 msgid "Select notes..."
-msgstr "Vybrat noty..."
+msgstr "음표 선택하기..."
 
 #. I18N: - in custom note select dialog. full context :\n\n Select notes
 #. that...\n\n* have the same pitch\n* have a similar volume *
@@ -528,7 +524,7 @@ msgstr "Vybrat noty..."
 #. duration * are located in measures ... to ...
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:74
 msgid "Select notes that..."
-msgstr "Vybrat noty, jež..."
+msgstr "다음 조건의 음표 선택..."
 
 #. I18N: - in custom note select dialog. full context :\n\n Select notes
 #. that...\n\n* have the same pitch\n* have a similar volume *
@@ -536,7 +532,7 @@ msgstr "Vybrat noty, jež..."
 #. duration * are located in measures ... to ...
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:79
 msgid "have the same pitch"
-msgstr "mají stejnou výšku tónu"
+msgstr "동일한 높이"
 
 #. I18N: - in custom note select dialog. full context :\n\n Select notes
 #. that...\n\n* have the same pitch\n* have a similar volume *
@@ -544,7 +540,7 @@ msgstr "mají stejnou výšku tónu"
 #. duration * are located in measures ... to ...
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:91
 msgid "have a similar volume"
-msgstr "mají podobnou hlasitost"
+msgstr "비슷한 음량"
 
 #. I18N: - in custom note select dialog. full context :\n\n Select notes
 #. that...\n\n* have the same pitch\n* have a similar volume *
@@ -552,7 +548,7 @@ msgstr "mají podobnou hlasitost"
 #. duration * are located in measures ... to ...
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:110
 msgid "are on the same string"
-msgstr "jsou na stejné struně"
+msgstr ""
 
 #. I18N: - in custom note select dialog. full context :\n\n Select notes
 #. that...\n\n* have the same pitch\n* have a similar volume *
@@ -560,7 +556,7 @@ msgstr "jsou na stejné struně"
 #. duration * are located in measures ... to ...
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:115
 msgid "have the same fret"
-msgstr "jsou na stejném pražci"
+msgstr "동일한 프렛"
 
 #. I18N: - in custom note select dialog. full context :\n\n Select notes
 #. that...\n\n* have the same pitch\n* have a similar volume *
@@ -568,7 +564,7 @@ msgstr "jsou na stejném pražci"
 #. duration * are located in measures ... to ...
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:126
 msgid "have a similar duration"
-msgstr "mají podobnou délku"
+msgstr "비슷한 재생 시간"
 
 #. I18N: - in custom note select dialog. full context :\n\n Select notes
 #. that...\n\n* have the same pitch\n* have a similar volume *
@@ -576,7 +572,7 @@ msgstr "mají podobnou délku"
 #. duration * are located in measures ... to ...
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:143
 msgid "are located in measures "
-msgstr "leží v taktech "
+msgstr "소절의 위치"
 
 #. I18N: - in custom note select dialog. full context :\n\n Select notes
 #. that...\n\n* have the same pitch\n* have a similar volume *
@@ -584,30 +580,30 @@ msgstr "leží v taktech "
 #. duration * are located in measures ... to ...
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:152
 msgid " to "
-msgstr "k "
+msgstr "부터"
 
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:271
 msgid "Illegal values"
-msgstr "Neplatné hodnoty"
+msgstr "허용되지 않는 값"
 
 #: Src/Dialogs/TuningDialog.cpp:42
 msgid "Custom Tuning Editor"
-msgstr "Vlastní editor pro ladění"
+msgstr "사용자 정의 조율 편집기"
 
 #: Src/Dialogs/AboutDialog.cpp:47
 msgid "About Aria Maestosa"
-msgstr "O programu Aria Maestosa"
+msgstr "아리아 마에스토사 정보"
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:59
 #, c-format
 msgid "version %s"
-msgstr "Verze %s"
+msgstr "버전 %s"
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:62
 msgid "Thanks to:"
-msgstr "Poděkování: "
+msgstr "감사드립니다:"
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:64
@@ -615,935 +611,935 @@ msgstr "Poděkování: "
 msgid ""
 "Ergonis Software and %s for making EasyBeat,\n"
 "\ta great app that inspired Aria (www.ergonis.com)."
-msgstr "Ergonis Software a %s za práci na EasyBeat,\n\tcož je skvělý program, jenž inspiroval Aria (www.ergonis.com)."
+msgstr "아리아에 영감을 준 훌륭한 프로그램인 EasyBeat를 제작한\nErgonis Software와 %s (www.ergonis.com)."
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:66
 msgid "J.D. Koftinoff Software for the jdksmidi library"
-msgstr "J. D. Koftinoff Software za knihovnu jdksmidi"
+msgstr "jdksmidi 라이브러리의 J.D. Koftinoff Software"
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:68
 msgid "The irrXML team for their XML parser"
-msgstr "Týmu irrXML za jeich XML parser"
+msgstr "irrXML 파서의 제작팀"
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:70
 msgid "The wxWidgets team"
-msgstr "Týmu wxWidgets"
+msgstr "wxWidgets 팀"
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:72
 msgid "The Tango icon set"
-msgstr "Ikony Tango"
+msgstr "Tango 아이콘 묶음"
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:74
 msgid "Windows port by Alexis Archambault"
-msgstr "Přenesení na Windows od Alexise Archambaulta"
+msgstr "Alexis Archambault에 의한 윈도우즈 포팅"
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:76
 msgid "Translations:"
-msgstr "Překlady:"
+msgstr "번역:"
 
 #. I18N: (undoable) action name
 #: Src/Actions/ScaleSong.cpp:30
 msgid "scale song"
-msgstr "Změnit velikost sekvence"
+msgstr "노래 비율"
 
 #. I18N: (undoable) action name
 #: Src/Actions/ShiftFrets.cpp:28 Src/Actions/NumberPressed.cpp:29
 msgid "change note fret"
-msgstr "Změnit pražec"
+msgstr "음표 프렛 변경"
 
 #. I18N: (undoable) action name
 #: Src/Actions/RemoveOverlapping.cpp:31
 msgid "remove overlapping notes"
-msgstr "Odstranit překrývající se noty"
+msgstr "겹치는 음표 제거"
 
 #. I18N: (undoable) action name
 #: Src/Actions/AddControllerSlide.cpp:33
 msgid "add control slide"
-msgstr "Přidat ovládací posuvník"
+msgstr ""
 
 #. I18N: (undoable) action name
 #: Src/Actions/ShiftString.cpp:27
 msgid "string change"
-msgstr "Změna struny"
+msgstr "스트링 변경"
 
 #. I18N: (undoable) action name
 #: Src/Actions/DeleteTrack.cpp:32
 msgid "delete track"
-msgstr "Smazat stopu"
+msgstr "트랙 삭제"
 
 #. I18N: (undoable) action name
 #: Src/Actions/SetAccidentalSign.cpp:34
 msgid "accidental change"
-msgstr "Změna posuvky"
+msgstr "임시표 변경"
 
 #. I18N: (undoable) action name
 #: Src/Actions/Record.cpp:32
 msgid "record from MIDI instrument"
-msgstr "Nahrávání z nástroje MIDI"
+msgstr "MIDI 악기에서 녹음"
 
 #. I18N: (undoable) action name
 #: Src/Actions/RearrangeNotes.cpp:29
 msgid "rearrange notes"
-msgstr "Přeuspořádat vybrané noty"
+msgstr "음표 재배치"
 
 #. I18N: (undoable) action name
 #: Src/Actions/RemoveMeasures.cpp:38
 msgid "remove measure(s)"
-msgstr "Odstranit takty"
+msgstr "소절 제거"
 
 #. I18N: (undoable) action name
 #. I18N: menu item in the "edit" menu
 #: Src/Actions/ScrollNotesIntoView.cpp:37 Src/GUI/MainFrameMenuBar.cpp:199
 msgid "Scroll notes into view"
-msgstr "Posunout noty do pohledu"
+msgstr ""
 
 #. I18N: (undoable) action name
 #: Src/Actions/InsertEmptyMeasures.cpp:35
 msgid "insert measures"
-msgstr "Vložit takty"
+msgstr "소절 삽입"
 
 #. I18N: (undoable) action name
 #: Src/Actions/DeleteControllerEvent.cpp:40
 msgid "delete controller event"
-msgstr "Smazat událost ovladače"
+msgstr "컨트롤러 이벤트 삭제"
 
 #. I18N: (undoable) action name
 #: Src/Actions/Duplicate.cpp:43
 msgid "duplicate"
-msgstr "Zdvojit"
+msgstr "복제"
 
 #. I18N: (undoable) action name
 #: Src/Actions/ShiftBySemiTone.cpp:30
 msgid "change pitch"
-msgstr "Změnit výšku tónu"
+msgstr "음높이 변경"
 
 #. I18N: (undoable) action name
 #: Src/Actions/ResizeNotes.cpp:31
 msgid "resize note(s)"
-msgstr "Změnit velikost not"
+msgstr "음표 크기 변경"
 
 #. I18N: (undoable) action name
 #: Src/Actions/SetNoteVolume.cpp:27
 msgid "change note(s) volume"
-msgstr "Změnit hlasitost not"
+msgstr "음표 음량 변경"
 
 #. I18N: (undoable) action name
 #: Src/Actions/AddControlEvent.cpp:32
 msgid "add control event"
-msgstr "Přidat událost ovladače"
+msgstr "컨트롤러 이벤트 추가"
 
 #. I18N: (undoable) action name
 #: Src/Actions/DuplicateMeasures.cpp:37
 msgid "duplicate measures"
-msgstr "Zdvojit takty"
+msgstr "소절 복제"
 
 #. I18N: (undoable) action name
 #: Src/Actions/AddTextEvent.cpp:31
 msgid "text change"
-msgstr "Změna textu"
+msgstr "텍스트 변경"
 
 #. I18N: (undoable) action name
 #: Src/Actions/SnapNotesToGrid.cpp:28
 msgid "snap notes to grid"
-msgstr "Zapadnout noty do mřížky"
+msgstr "음표를 격자에 붙이기"
 
 #. I18N: (undoable) action name
 #: Src/Actions/DeleteSelected.cpp:40
 msgid "delete note(s)"
-msgstr "Smazat noty"
+msgstr "음표 삭제"
 
 #. I18N: (undoable) action name
 #: Src/Actions/Paste.cpp:42
 msgid "paste"
-msgstr "Vložit"
+msgstr "붙여넣기"
 
 #. I18N: (undoable) action name
 #: Src/Actions/ScaleTrack.cpp:30
 msgid "scale note(s)"
-msgstr "Změnit velikost not"
+msgstr "음표 비율"
 
 #. I18N: (undoable) action name
 #: Src/Actions/AddNote.cpp:39
 msgid "add note"
-msgstr "Přidat notu"
+msgstr "음표 추가"
 
 #. I18N: (undoable) action name
 #: Src/Actions/SetTrackVolume.cpp:27
 msgid "change track volume"
-msgstr "Změnit hlasitost stopy"
+msgstr "트랙 음량 변경"
 
 #. I18N: (undoable) action name
 #: Src/Actions/AddTrack.cpp:37
 msgid "add track"
-msgstr "Přidat stopu"
+msgstr "트랙 추가"
 
 #. I18N: (undoable) action name
 #: Src/Actions/MoveNotes.cpp:38
 msgid "move note(s)"
-msgstr "Posunout noty"
+msgstr "음표 이동"
 
 #. I18N: (undoable) action name
 #: Src/Actions/UpdateGuitarTuning.cpp:29
 msgid "change guitar tuning"
-msgstr "Změnit kytarové ladění"
+msgstr "기타 조율 변경"
 
 #: Src/IO/AriaFileWriter.cpp:49 Src/IO/AriaFileWriter.cpp:58
 #, c-format
 msgid "Could not open file '%s' for reading"
-msgstr "Nepodařilo se otevřít soubor '%s' pro čtení"
+msgstr "'%s'  파일을 열 수 없습니다"
 
 #: Src/IO/MidiFileReader.cpp:170
 msgid ""
 "This MIDI file has tracks that play on multiple MIDI channels. This is not "
 "supported by Aria Maestosa."
-msgstr "Tento soubor MIDI obsahuje stopy, které hrají noty na několika kanálech MIDI. To není Aria Maestosa podporováno."
+msgstr "이 MIDI 파일은 다중 MIDI 채널에 재생 트랙이 있습니다. 이것은 아리아 마에스토사가 지원하지 않습니다."
 
 #: Src/IO/MidiFileReader.cpp:185
 msgid ""
 "This MIDI file has a track that sends events on multiple MIDI channels. This"
 " is not supported by Aria Maestosa."
-msgstr "Tento soubor MIDI obsahuje stopy, která posílá noty do několika kanálů MIDI. To není Aria Maestosa podporováno."
+msgstr "이 MIDI 파일은 다중 MIDI 채널에 이벤트를 전송하는 트랙이 있습니다. 이것은 아리아 마에스토사가 지원하지 않습니다."
 
 #: Src/IO/MidiFileReader.cpp:236
 #, c-format
 msgid ""
 "This MIDI file appears to be incorrect; a note at tick %i in channel %i does"
 " not appear to have an end"
-msgstr "Zdá se, že tento soubor MIDI je nesprávný; zdá se, že nota na tiku %i v kanálu %i nemá konec"
+msgstr "이 MIDI 파일은 잘못된 것 같습니다. %i 틱(%i 채널)의 음표의 끝이 없습니다"
 
 #: Src/IO/MidiFileReader.cpp:266
 #, c-format
 msgid ""
 "This MIDI file uses controller #%i, which is not part of the MIDI standard. "
 "This information will be discarded."
-msgstr "Tento soubor MIDI používá ovladač #%i, což není součástí standardu MIDI. Tato informace bude zahozena."
+msgstr "이 MIDI 파일은 MIDI 표준이 아닌 #%i 컨트롤러를 사용합니다. 이 정보는 버려질 것입니다."
 
 #: Src/IO/MidiFileReader.cpp:276
 msgid ""
 "This MIDI file uses Registered Parameters, which are currently not supported"
 " by Aria Maestosa."
-msgstr "Tento soubor MIDI používá Registered Parameters. To nyní není Aria Maestosa podporováno."
+msgstr "이 MIDI 파일은 아직 아리아 마에스토사가 지원하지 않는 RPN을 사용합니다."
 
 #: Src/IO/MidiFileReader.cpp:280
 msgid ""
 "This MIDI files uses NRPN (Non-Registered Parameters, i.e. non-standard "
 "controllers), which are currently not supported by Aria Maestosa."
-msgstr "Tento soubor MIDI používá NRPN (Non-Registered Parameters, např. nestandardní ovladače. To není Aria Maestosa podporováno."
+msgstr "이 MIDI 파일은 아직 아리아 마에스토사가 지원하지 않는 NRPN(예를 들면, 비표준 컨트롤러)을 사용합니다."
 
 #: Src/IO/MidiFileReader.cpp:292
 msgid ""
 "This MIDI files uses Channel Mode Message, which are currently not supported"
 " by Aria Maestosa."
-msgstr "Tento soubor MIDI používá Channel Mode Message. To nyní není Aria Maestosa podporováno."
+msgstr "이 MIDI 파일은 아직 아리아 마에스토사가 지원하지 않는 채널 모드 메시지를 사용합니다."
 
 #: Src/IO/MidiFileReader.cpp:296
 #, c-format
 msgid ""
 "This MIDI file uses unsupported MIDI controller #%i. Data related to this "
 "controller will be discarded."
-msgstr "Tento soubor  používá nepodporovaný ovladač MIDI #%i, Data vztahující se k tomuto ovladačibudou zahozena."
+msgstr "이 MIDI 파일은 지원되지 않는 MIDI 컨트롤러 #%i 를 사용합니다. 이 컨트롤러와 연관된 데이터를 버려질 것입니다."
 
 #: Src/IO/MidiFileReader.cpp:536 Src/Printing/AbstractPrintableSequence.cpp:39
 #: Src/Printing/AbstractPrintableSequence.cpp:43 Src/Midi/Sequence.cpp:70
 #: Src/Midi/Sequence.cpp:118 Src/Midi/Sequence.cpp:140 Src/Midi/Track.cpp:94
 #: Src/Midi/Track.cpp:892 Src/Midi/Track.cpp:1949
 msgid "Untitled"
-msgstr "Bez názvu"
+msgstr "제목없음"
 
 #. I18N: beats per minute (tempo)
 #: Src/Editors/ControllerEditor.cpp:91
 msgid "bpm"
-msgstr "ÚZM"
+msgstr "bpm"
 
 #. I18N: as in "+2 semitones"
 #: Src/Editors/ControllerEditor.cpp:96
 msgid "semitones"
-msgstr "Půltóny"
+msgstr "세미톤"
 
 #: Src/Editors/ControllerEditor.cpp:666
 msgid "Lyrics"
-msgstr "Text písně"
+msgstr "가사"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:92
 msgid "High Q"
-msgstr "Vysoké Q"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:94
 msgid "Slap"
-msgstr "Plácnout"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:96
 msgid "Push"
-msgstr "Tlačit"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:98
 msgid "Pull"
-msgstr "Táhnout"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:100 Src/Editors/DrumEditor.cpp:112
 msgid "Stick"
-msgstr "Palička"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:102
 msgid "Square"
-msgstr "Náměstí"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:104
 msgid "Metro"
-msgstr "Metro"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:106
 msgid "Metro bell"
-msgstr "Zvonek v metru"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:108
 msgid "Bass drum 2"
-msgstr "Velký buben 2"
+msgstr "베이스 드럼 2"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:110
 msgid "Bass drum 1"
-msgstr "Velký buben 1"
+msgstr "베이스 드럼 1"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:114
 msgid "Snare"
-msgstr "Malý buben"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:116
 msgid "Clap"
-msgstr "Tlesknutí"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:118
 msgid "Snare 2"
-msgstr "Malý buben 2"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:120
 msgid "Tom 6"
-msgstr "Tom basový nízký 6"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:122
 msgid "Closed hi-hat"
-msgstr "Zavřená hajtka"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:124
 msgid "Tom 5"
-msgstr "Tom basový vysoký 5"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:126
 msgid "Pedal hi-hat"
-msgstr "Pedálová hajtka"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:128
 msgid "Tom 4"
-msgstr "Tom střední 4"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:130
 msgid "Open hi-hat"
-msgstr "Otevřená hajtka"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:132
 msgid "Tom 3"
-msgstr "Tom střední 3"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:134
 msgid "Tom 2"
-msgstr "Tom střední 2"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:136
 msgid "Crash"
-msgstr "Crash činel"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:138
 msgid "Tom 1"
-msgstr "Tom 1"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:140
 msgid "Ride"
-msgstr "Ride činel"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:142
 msgid "Chinese"
-msgstr "Čínský činel"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:144
 msgid "Ride bell"
-msgstr "Jezdecký zvonek"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:146
 msgid "Tambourine"
-msgstr "Tamburína"
+msgstr "탬버린"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:148
 msgid "Splash"
-msgstr "Splash činel"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:150
 msgid "Cowbell"
-msgstr "Kravský zvonec"
+msgstr "카우벨"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:152
 msgid "Crash 2"
-msgstr "Crash činel 2"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:154
 msgid "Vibraslap"
-msgstr "Vibraslap"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:156
 msgid "Ride 2"
-msgstr "Ride činel vysoký"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:158
 msgid "Hi bongo"
-msgstr "Vysoké bongo"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:160
 msgid "Low bongo"
-msgstr "Nízké bongo"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:162
 msgid "Mute hi conga"
-msgstr "Ztlumená vysoká konga"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:164
 msgid "Open hi conga"
-msgstr "Otevřená vysoká konga"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:166
 msgid "Low conga"
-msgstr "Nízká konga"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:168
 msgid "High timbale"
-msgstr "Vysoká timbále"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:170
 msgid "Low timbale"
-msgstr "Nízká timbále"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:172
 msgid "High agogo"
-msgstr "Vysoká agoga"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:174
 msgid "Low agogo"
-msgstr "Nízká agogo"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:176
 msgid "Cabasa"
-msgstr "Cabasa"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:178
 msgid "Maracas"
-msgstr "Rumba koule"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:180
 msgid "Short whistle"
-msgstr "Krátký hvizd"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:182
 msgid "Long whistle"
-msgstr "Dlouhý hvizd"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:184
 msgid "Short guiro"
-msgstr "Krátké guiro"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:186
 msgid "Long guiro"
-msgstr "Dlouhé guiro"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:188
 msgid "Claves"
-msgstr "Kláves"
+msgstr "클라베스"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:190
 msgid "Hi wood block"
-msgstr "Vysoký dřevěný špalíček"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:192
 msgid "Lo wood block"
-msgstr "Nízký dřevěný špalíček"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:194
 msgid "Mute cuica"
-msgstr "Ztlumená kuika"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:196
 msgid "Open cuica"
-msgstr "Otevřená kuika"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:198
 msgid "Mute triangle"
-msgstr "Ztlumený triangl"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:200
 msgid "Open triangle"
-msgstr "Otevřený triangl"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:202
 msgid "Shaker"
-msgstr "Šejkr"
+msgstr "셰이커"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:204
 msgid "Jingle Bell"
-msgstr "Rolnička"
+msgstr "징글벨"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:206
 msgid "Bell Tree"
-msgstr "Zvonkový stromek"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:208
 msgid "Castanets"
-msgstr "Kastaněty"
+msgstr "캐스터네츠"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:210
 msgid "Mute surdo"
-msgstr "Ztlumené surdo"
+msgstr ""
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:212
 msgid "Open surdo"
-msgstr "Otevřené surdo"
+msgstr ""
 
 #. I18N: percussions category name
 #: Src/Editors/DrumEditor.cpp:217
 msgid "Drumkit"
-msgstr "Sada bicích"
+msgstr ""
 
 #. I18N: percussions category name
 #: Src/Editors/DrumEditor.cpp:219
 msgid "Hi-hat"
-msgstr "Hajtka"
+msgstr ""
 
 #. I18N: percussions category name
 #: Src/Editors/DrumEditor.cpp:221
 msgid "Cymbal"
-msgstr "Činel"
+msgstr "심벌즈"
 
 #. I18N: percussions category name
 #: Src/Editors/DrumEditor.cpp:223
 msgid "Toms"
-msgstr "Tomy"
+msgstr ""
 
 #. I18N: percussions category name
 #: Src/Editors/DrumEditor.cpp:225
 msgid "African"
-msgstr "Africký"
+msgstr "아프리카"
 
 #. I18N: percussions category name
 #: Src/Editors/DrumEditor.cpp:227
 msgid "Latin"
-msgstr "Latinský"
+msgstr "라틴"
 
 #. I18N: percussions category name
 #: Src/Editors/DrumEditor.cpp:229
 msgid "Others"
-msgstr "Jiné"
+msgstr "그 외"
 
 #. I18N: percussions category name
 #: Src/Editors/DrumEditor.cpp:231 Src/Pickers/InstrumentPicker.cpp:98
 #: Src/Pickers/InstrumentPicker.cpp:117 Src/Pickers/InstrumentPicker.cpp:136
 msgid "Sound Effects"
-msgstr "Zvukové efekty"
+msgstr "음향 효과"
 
 #: Src/Renderers/wxImage.cpp:53
 msgid "Failed to load "
-msgstr "Nepodařilo se nahrát "
+msgstr "불러오기 실패"
 
 #: Src/Renderers/GLImage.cpp:52 Src/Renderers/GLImage.cpp:64
 #: Src/Renderers/GLImage.cpp:77 Src/Renderers/GLImage.cpp:87
 #: Src/Renderers/GLImage.cpp:108 Src/Renderers/GLImage.cpp:194
 msgid "Failed to load resource image"
-msgstr "Nepodařilo se nahrát zdrojový obraz."
+msgstr "리소스 이미지 불러오기 실패"
 
 #. I18N: for printing (page orientation)
 #: Src/Printing/wxEasyPrintWrapper.cpp:232
 msgid "Portrait"
-msgstr "Na výšku"
+msgstr "세로"
 
 #: Src/Printing/wxEasyPrintWrapper.cpp:232
 msgid "Landscape"
-msgstr "Na šířku"
+msgstr "가로"
 
 #. I18N: for printing (page setup)
 #: Src/Printing/wxEasyPrintWrapper.cpp:234
 #, c-format
 msgid "left = %i mm, right = %i mm,"
-msgstr "levý = %i mm, pravý = %i mm,"
+msgstr "왼쪽 = %i mm, 오른쪽 = %i mm,"
 
 #: Src/Printing/wxEasyPrintWrapper.cpp:235
 #, c-format
 msgid "top = %i mm, bottom = %i mm"
-msgstr "nahoře = %i mm, dole = %i mm"
+msgstr "위쪽 = %i mm, 아래쪽 = %i mm"
 
 #: Src/Printing/AbstractPrintableSequence.cpp:39
 msgid "Aria Maestosa song"
-msgstr "Aria Maestosa - Píseň"
+msgstr "아리아 마에스토사 노래"
 
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:84
 msgid "&New"
-msgstr "&Nový"
+msgstr "신규(&N)"
 
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:89
 msgid "&Open..."
-msgstr "&Otevřít..."
+msgstr "열기...(&O)"
 
 #: Src/GUI/MainFrameMenuBar.cpp:95
 msgid "&Recent Files"
-msgstr "&Nedávné soubory"
+msgstr "최근 파일(&R)"
 
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:100
 msgid "&Save"
-msgstr "&Uložit"
+msgstr "저장(&S)"
 
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:104
 msgid "Save &As..."
-msgstr "Uložit &jako..."
+msgstr "새 이름으로 저장...(&A)"
 
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:110
 msgid "&Reload"
-msgstr "Na&hrát znovu"
+msgstr "다시 불러오기(&R)"
 
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:114
 msgid "&Close"
-msgstr "&Zavřít"
+msgstr "닫기(&C)"
 
 #: Src/GUI/MainFrameMenuBar.cpp:118
 msgid "Song Propert&ies..."
-msgstr "&Vlastnosti písně..."
+msgstr "노래 속성...(&I)"
 
 #: Src/GUI/MainFrameMenuBar.cpp:122
 msgid "&Print..."
-msgstr "&Tisk..."
+msgstr "인쇄하기...(&P)"
 
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:129
 msgid "I&mport Midi File..."
-msgstr "&Zavést soubor MIDI..."
+msgstr "MIDI 파일 가져오기...(&M)"
 
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:132
 msgid "&Export to Midi..."
-msgstr "&Vyvést soubor MIDI..."
+msgstr "MIDI 파일로 내보내기...(&E)"
 
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:139
 msgid "E&xport to Audio..."
-msgstr "V&yvést jako zvuk..."
+msgstr "오디오로 내보내기...(&X)"
 
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:144
 msgid "&Quit"
-msgstr "&Ukončit"
+msgstr "종료(&Q)"
 
 #. I18N: name of a menu
 #: Src/GUI/MainFrameMenuBar.cpp:150
 msgid "&File"
-msgstr "&Soubor"
+msgstr "파일(&F)"
 
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:156
 msgid "&Undo"
-msgstr "&Zpět"
+msgstr "되돌리기(&U)"
 
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:163
 msgid "&Copy"
-msgstr "&Kopírovat"
+msgstr "복사(&C)"
 
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:168
 msgid "&Paste"
-msgstr "&Vložit"
+msgstr "붙여넣기(&P)"
 
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:173
 msgid "Paste at Mouse Cu&rsor"
-msgstr "Vložit v poloze &ukazovátka myši"
+msgstr "마우스 커서 위치에 붙여넣기(&R)"
 
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:177
 msgid "Select &All"
-msgstr "Vybrat vš&e"
+msgstr "전체 선택(&A)"
 
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:180
 msgid "Select &None"
-msgstr "&Zrušit výběr"
+msgstr "선택 안함(&N)"
 
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:183
 msgid "Select N&otes..."
-msgstr "Vybrat n&oty..."
+msgstr "음표 선택하기...(&O)"
 
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:187
 msgid "Snap Notes to &Grid"
-msgstr "Zapadnout noty do &mřížky"
+msgstr "음표를 격자에 붙이기(&G)"
 
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:190
 msgid "&Scale..."
-msgstr "Změnit měří&tko..."
+msgstr "비율...(&S)"
 
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:192
 msgid "Remove O&verlapping Notes"
-msgstr "Odstranit &překrývající se noty"
+msgstr "겹치는 음표 제거하기(&V)"
 
 #. I18N: name of a menu
 #: Src/GUI/MainFrameMenuBar.cpp:204
 msgid "&Edit"
-msgstr "Úp&ravy"
+msgstr "편집(&E)"
 
 #. I18N: menu item in the "track" menu
 #: Src/GUI/MainFrameMenuBar.cpp:214
 msgid "&Add Track"
-msgstr "&Přidat stopu"
+msgstr "트랙 추가(&A)"
 
 #. I18N: menu item in the "track" menu
 #: Src/GUI/MainFrameMenuBar.cpp:217
 msgid "&Duplicate Track Settings"
-msgstr "Z&dvojit nastavení stopy"
+msgstr "트랙 설정 복제(&D)"
 
 #. I18N: menu item in the "track" menu
 #: Src/GUI/MainFrameMenuBar.cpp:220
 msgid "&Delete Track"
-msgstr "Smazat stopu"
+msgstr "트랙 삭제(&D)"
 
 #. I18N: - in the track menu, allows choosing the properties of a track
 #: Src/GUI/MainFrameMenuBar.cpp:224
 msgid "&Properties..."
-msgstr "&Vlastnosti..."
+msgstr "속성...(&P)"
 
 #: Src/GUI/MainFrameMenuBar.cpp:227
 msgid "&Tracks"
-msgstr "S&topy"
+msgstr "트랙(&T)"
 
 #. I18N: In the playback menu
 #: Src/GUI/MainFrameMenuBar.cpp:233
 msgid "&Play / Pause"
-msgstr "Přehrát/Pozastavit"
+msgstr "재생 / 일시정지(&P)"
 
 #. I18N: In the playback menu
 #: Src/GUI/MainFrameMenuBar.cpp:236
 msgid "&Stop"
-msgstr "&Zastavit"
+msgstr "중지(&S)"
 
 #. I18N: In the playback menu
 #: Src/GUI/MainFrameMenuBar.cpp:238
 msgid "&Record"
-msgstr "&Nahrát"
+msgstr "녹음(&R)"
 
 #: Src/GUI/MainFrameMenuBar.cpp:241
 msgid "&Playback"
-msgstr "&Přehrávání"
+msgstr "재생(&P)"
 
 #: Src/GUI/MainFrameMenuBar.cpp:246
 msgid "&Follow Playback"
-msgstr "&Sledovat přehrávání"
+msgstr "재생(녹음) 위치 추적(&F)"
 
 #: Src/GUI/MainFrameMenuBar.cpp:250
 msgid "E&xpanded time sig management"
-msgstr "&Pokročilá správa taktového označení"
+msgstr "확장된 박자 관리(&X)"
 
 #. I18N: - the channel setting. full context : Channel management\n\n*
 #. Automatic\n* Manual
 #: Src/GUI/MainFrameMenuBar.cpp:258
 msgid "&Channel management"
-msgstr "Správa &kanálu"
+msgstr "채널 관리(&C)"
 
 #. I18N: - the channel setting. full context : Channel management\n\n*
 #. Automatic\n* Manual
 #: Src/GUI/MainFrameMenuBar.cpp:260
 msgid "&Automatic"
-msgstr "&Automatická"
+msgstr "자동(&A)"
 
 #. I18N: - the channel setting. full context : Channel management\n\n*
 #. Automatic\n* Manual
 #: Src/GUI/MainFrameMenuBar.cpp:263
 msgid "&Manual"
-msgstr "&Ruční"
+msgstr "수동(&M)"
 
 #. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n*
 #. Always\n* On note change\n* Never
 #: Src/GUI/MainFrameMenuBar.cpp:269
 msgid "Play during &edit"
-msgstr "Přehrávat během ú&prav"
+msgstr "편집 도중에 재생하기(&E)"
 
 #. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n*
 #. Always\n* On note change\n* Never
 #: Src/GUI/MainFrameMenuBar.cpp:271
 msgid "&Always"
-msgstr "&Vždy"
+msgstr "항상(&A)"
 
 #. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n*
 #. Always\n* On note change\n* Never
 #: Src/GUI/MainFrameMenuBar.cpp:274
 msgid "On note &change"
-msgstr "Při &změně noty"
+msgstr "음표 변경 시(&C)"
 
 #. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n*
 #. Always\n* On note change\n* Never
 #: Src/GUI/MainFrameMenuBar.cpp:277
 msgid "&Never"
-msgstr "&Nikdy"
+msgstr "절대 안함(&N)"
 
 #: Src/GUI/MainFrameMenuBar.cpp:281
 msgid "Play with &Metronome"
-msgstr "Hrát s &metronomem"
+msgstr "메트로놈과 함께 재생(&M)"
 
 #: Src/GUI/MainFrameMenuBar.cpp:285
 msgid "&Playthrough when recording"
-msgstr "Přehrát &celé při nahrávání"
+msgstr "녹음할 때 연주하기(&P)"
 
 #: Src/GUI/MainFrameMenuBar.cpp:289
 msgid "&Preferences..."
-msgstr "&Nastavení..."
+msgstr "환경설정...(&P)"
 
 #: Src/GUI/MainFrameMenuBar.cpp:300
 msgid "&Settings"
-msgstr "&Nastavení"
+msgstr "설정(&S)"
 
 #: Src/GUI/MainFrameMenuBar.cpp:311 Src/GUI/MainFrameMenuBar.cpp:1306
 msgid "No MIDI Output Available"
-msgstr "Není dostupný žádný výstup MIDI"
+msgstr "사용가능한 MIDI 출력이 없습니다"
 
 #: Src/GUI/MainFrameMenuBar.cpp:340
 msgid "&Output"
-msgstr "&Výstup"
+msgstr "출력(&O)"
 
 #. I18N: menu where the MIDI input source is selected
 #: Src/GUI/MainFrameMenuBar.cpp:370
 msgid "&Input"
-msgstr "Vst&up"
+msgstr "입력(&I)"
 
 #: Src/GUI/MainFrameMenuBar.cpp:376
 msgid "&About Aria Maestosa"
-msgstr "&O programu Aria Maestosa"
+msgstr "아리아 마에스토사 정보(&A)"
 
 #. I18N: - in help menu - see the help files
 #: Src/GUI/MainFrameMenuBar.cpp:378
 msgid "User's &Manual"
-msgstr "Uživatelská &příručka"
+msgstr "사용자 안내서(&M)"
 
 #: Src/GUI/MainFrameMenuBar.cpp:384
 msgid "&Help"
-msgstr "Náp&ověda"
+msgstr "도움말(&H)"
 
 #: Src/GUI/MainFrameMenuBar.cpp:529
 #, c-format
 msgid "&Undo %s"
-msgstr "&Zpět %s"
+msgstr "%s 되돌리기(&U)"
 
 #: Src/GUI/MainFrameMenuBar.cpp:540
 msgid "Can't Undo"
-msgstr "Nelze vrátit zpět"
+msgstr "되돌릴 수 없음"
 
 #: Src/GUI/MainFrameMenuBar.cpp:657
 msgid "The file no longer exists on disk. Do you want to save it anyway?"
-msgstr "Soubor už není na disku. Přesto jej chcete uložit?"
+msgstr "파일이 더이상 디스크에 존재하지 않습니다. 그래도 저장하시겠습니까?"
 
 #: Src/GUI/MainFrameMenuBar.cpp:657
 msgid "Warning"
-msgstr "Varování"
+msgstr "경고"
 
 #: Src/GUI/MainFrameMenuBar.cpp:698 Src/GUI/MainFrameMenuBar.cpp:761
 #: Src/GUI/MainFrameMenuBar.cpp:801
 msgid "Select destination file"
-msgstr "Vybrat cílový soubor"
+msgstr "대상 파일 선택"
 
 #: Src/GUI/MainFrameMenuBar.cpp:699 Src/GUI/MainFrameMenuBar.cpp:738
 msgid "Aria Maestosa file"
-msgstr "Soubor Aria Maestosa"
+msgstr "아리아 마에스토사 파일"
 
 #: Src/GUI/MainFrameMenuBar.cpp:708 Src/GUI/MainFrameMenuBar.cpp:772
 #: Src/GUI/MainFrameMenuBar.cpp:811
 msgid "The file already exists. Do you wish to overwrite it?"
-msgstr "Soubor již existuje. Opravdu ho chcete přepsat?"
+msgstr "마일이 이미 존재합니다. 덮어쓰시겠습니까?"
 
 #: Src/GUI/MainFrameMenuBar.cpp:748
 msgid "Select midi file"
-msgstr "Vybrat soubor MIDI"
+msgstr "MIDI 파일 선택"
 
 #: Src/GUI/MainFrameMenuBar.cpp:749 Src/GUI/MainFrameMenuBar.cpp:762
 msgid "Midi file"
-msgstr "Soubor MIDI"
+msgstr "MIDI 파일"
 
 #: Src/GUI/MainFrameMenuBar.cpp:785
 msgid "Sorry, failed to export midi file."
-msgstr "Promiňte, nepodařilo se vyvést soubor MIDI."
+msgstr "죄송합니다. MIDI 파일 내보내기가 실패했습니다."
 
 #: Src/GUI/MainFrameMenuBar.cpp:823
 msgid ""
@@ -1551,15 +1547,15 @@ msgid ""
 "\n"
 "Depending on the length of your file,\n"
 "this can take several minutes."
-msgstr "Počkejte, prosím, zatímco je zvukový soubor vytvářen.\n\nV závislosti na délce vašeho souboru no může několik\nminut trvat."
+msgstr "오이오 파일을 생성하는 동안 기다려 주세요.\n\n파일의 길이에 따라서,\n몇 분 정도 걸리 수 있습니다."
 
 #: Src/GUI/MainFrameMenuBar.cpp:1045
 msgid "You may not delete the last track"
-msgstr "Není povoleno smazat poslední stopu"
+msgstr "마지막 트랙은 삭제할 수 없습니다"
 
 #: Src/GUI/MainFrameMenuBar.cpp:1049
 msgid "Do you really want to delete this track?"
-msgstr "Opravdu chcete smazat tuto stopu?"
+msgstr "이 트랙을 삭제하시겠습니까?"
 
 #: Src/GUI/MainFrameMenuBar.cpp:1167
 msgid ""
@@ -1567,255 +1563,255 @@ msgid ""
 "This cannot be undone.\n"
 "\n"
 "Do you really want to continue?"
-msgstr "Když se na tomtéž kanálu přehrává více stop, budou sloučeny.\nToto nelze vrátit zpět.\nOpravdu chcete pokračovat?"
+msgstr "여러 개의 트랙이 동일한 채널에서 재생하는 경우, 트랙들이 병합됩니다.\n이 작업은 되돌릴 수 없습니다.\n\n정말로 계속하시겠습니까?"
 
 #: Src/GUI/MainFrameMenuBar.cpp:1251 Src/Pickers/TimeSigPicker.cpp:288
 msgid ""
 "Are you sure you want to go back to having a single time signature? Any time"
 " sig events you may have added will be lost. This cannot be undone."
-msgstr "Jste si jistý, že se chcete vrátit zpět, aby platilo jen jedno taktové označení? Všechny události taktových označení, které jste přidal, budou nenávratně ztraceny."
+msgstr "정말로 단일 박자로 돌아가겠습니까? 당신이 추가한 모든 박자 이벤트가 손실됩니다. 이 작업은 되돌릴 수 없습니다."
 
 #: Src/GUI/MainFrameMenuBar.cpp:1380
 msgid "Manual"
-msgstr "Ručně"
+msgstr "수동"
 
 #: Src/GUI/MainFrameMenuBar.cpp:1574
 msgid "Clear List"
-msgstr "Vyprázdnit seznam"
+msgstr "목록 비우기"
 
 #: Src/GUI/MainFrame.cpp:440
 msgid "Record"
-msgstr "Nahrávat"
+msgstr "녹음"
 
 #: Src/GUI/MainFrame.cpp:444
 msgid "Play"
-msgstr "Přehrát"
+msgstr "재생"
 
 #: Src/GUI/MainFrame.cpp:448
 msgid "Stop"
-msgstr "Zastavit"
+msgstr "정지"
 
 #: Src/GUI/MainFrame.cpp:451
 msgid "Loop"
-msgstr "Smyčka"
+msgstr "반복"
 
 #. I18N: song length (number of measures)
 #: Src/GUI/MainFrame.cpp:467
 msgid "Length"
-msgstr "Délka"
+msgstr "길이"
 
 #: Src/GUI/MainFrame.cpp:494
 msgid "Time Sig"
-msgstr "Taktové označení"
+msgstr "박자"
 
 #: Src/GUI/MainFrame.cpp:502
 msgid "Start"
-msgstr "Začátek"
+msgstr "시작"
 
 #: Src/GUI/MainFrame.cpp:520
 msgid "Zoom"
-msgstr "Zvětšení"
+msgstr "배율"
 
 #: Src/GUI/MainFrame.cpp:559 Src/GUI/MainFrame.cpp:561
 msgid "Tool"
-msgstr "Nástroj"
+msgstr "도구"
 
 #. I18N: to hide the panel that is shown when a file could not be imported
 #. successfully
 #: Src/GUI/MainFrame.cpp:600
 msgid "Hide"
-msgstr "Skrýt"
+msgstr "숨김"
 
 #: Src/GUI/MainFrame.cpp:1008
 msgid "Please select an input port from the 'input' menu before recording"
-msgstr "Vyberte, prosím, před nahráváním vstupní přípojku z nabídky Vstup"
+msgstr "녹음하기 전에 '입력' 메뉴에서 입력 포트를 선택해 주세요"
 
 #: Src/GUI/MainFrame.cpp:1732
 #, c-format
 msgid ""
 "You have unsaved changes in sequence '%s'. Do you want to save them before "
 "proceeding?"
-msgstr "Máte neuložené změny v sekvenci '%s'. Chcete je před pokračováním uložit?"
+msgstr "'%s' 시퀀스에 저장되지 않는 변경내용이 있습니다. 진행하기 전에 저장하시겠습니까?"
 
 #: Src/GUI/MainFrame.cpp:1734
 msgid "Selecting 'Yes' will save your document before closing"
-msgstr "Volba Ano váš dokument před zavřením uloží"
+msgstr "'예'를 선택하면 문서를 닫기전에 저장합니다"
 
 #: Src/GUI/MainFrame.cpp:1735
 msgid "Selecting 'No' will discard unsaved changes"
-msgstr "Volba Ne neuložené změny zahodí"
+msgstr "'아니오'를 선택하면 저장되지 않은 변경사항을 버립니다"
 
 #: Src/GUI/MainFrame.cpp:1736
 msgid "Selecting 'Cancel' will cancel exiting the application"
-msgstr "Volba Zrušit zruší ukončení programu"
+msgstr "'취소'를 선택하면 응용 프로그램 종료를 취소합니다."
 
 #. I18N: title of dialog shown when exiting without saving
 #: Src/GUI/MainFrame.cpp:1741
 msgid "Unsaved changes in sequence"
-msgstr "Neuložené změny v sekvenci"
+msgstr "시퀀스에 저장되지 않은 변경내용이 있습니다"
 
 #: Src/GUI/MainFrame.cpp:1913
 msgid "Unknown file type: "
-msgstr "Neznámý typ souboru: "
+msgstr "알 수 없는 파일 형식:"
 
 #: Src/GUI/MainFrame.cpp:1940 Src/GUI/MainFrame.cpp:2062
 msgid "Sorry, loading .aria file failed."
-msgstr "Promiňte, nahrání souboru .aria se nezdařilo."
+msgstr "죄송합니다. .aria 파일 불러오기가 실패했습니다."
 
 #: Src/GUI/MainFrame.cpp:1982
 msgid "Please wait while midi file is loading."
-msgstr "Počkejte, prosím, zatímco se nahrává soubor MIDI.\t"
+msgstr "MIDI 파일을 불러오는 동안 기다려주세요."
 
 #: Src/GUI/MainFrame.cpp:1989 Src/GUI/MainFrame.cpp:2074
 msgid "Sorry, loading midi file failed."
-msgstr "Promiňte, nahrání souboru MIDI se nezdařilo."
+msgstr "죄송합니다. MIDI 파일 불러오기가 실패했습니다."
 
 #: Src/GUI/MainFrame.cpp:2013
 msgid ""
 "Loading the MIDI file completed successfully, but with the following "
 "warnings (the song may not sound as intended) :"
-msgstr "Nahrání souboru MIDI bylo dokončeno úspěšně, ale s následujícími varováními (píseň nemusí znít tak, jak bylo zamýšleno):"
+msgstr "MIDI 파일 불러오기가 성공적으로 완료했습니다. 하지만 다음의 경고가 있습니다 (노래가 의도한 대로 소리내지 못할지도 모릅니다) :"
 
 #: Src/GUI/MainFrame.cpp:2053
 msgid "Please wait while file is reloaded."
-msgstr "Počkejte, prosím, zatímco se soubor nahrává znovu.\t"
+msgstr "파일을 다시 읽어올 때까지 기다려 주세요."
 
 #: Src/GUI/MainFrame.cpp:2188
 msgid ""
 "A new version of Aria Maestosa is now available! Visit the following link to"
 " download it :"
-msgstr "Je dostupná novější verze programu Aria Maestosa. Navštivte následující odkaz a stáhněte jej:"
+msgstr "이제 새 버전의 아리아 마에스토사를 사용할 수 있습니다! 다음 링크를 방문해서 다운로드하세요 :"
 
 #: Src/GUI/MainFrame.cpp:2199
 msgid "An error occurred"
-msgstr "Došlo k chybě"
+msgstr "오류 발생"
 
 #: Src/GUI/MainPane.cpp:147
 msgid "Create a new sequence"
-msgstr "Vytvořit novou sekvenci"
+msgstr "새 시퀀스 만들기"
 
 #: Src/GUI/MainPane.cpp:148
 msgid "Open a saved sequence"
-msgstr "Otevřít uloženou sekvenci"
+msgstr "저장된 시퀀스 열기"
 
 #: Src/GUI/MainPane.cpp:149
 msgid "Import a MIDI file"
-msgstr "Zavést soubor MIDI"
+msgstr "MIDI 파일 가져오기"
 
 #: Src/GUI/MainPane.cpp:151
 msgid "Help"
-msgstr "Nápověda"
+msgstr "도움말"
 
 #: Src/GUI/MainPane.cpp:152
 msgid "Exit"
-msgstr "Ukončit"
+msgstr "나가기"
 
 #: Src/GUI/GraphicalTrack.cpp:419
 msgid "Track volume"
-msgstr "Hlasitost stopy"
+msgstr "트랙 음량"
 
 #: Src/GUI/GraphicalTrack.cpp:423
 msgid "Mute"
-msgstr "Ztlumit"
+msgstr "음소거"
 
 #: Src/GUI/GraphicalTrack.cpp:427
 msgid "Solo"
-msgstr "Sólo"
+msgstr "독주"
 
 #: Src/GUI/GraphicalTrack.cpp:433
 msgid "Maximize track"
-msgstr "Zvětšit stopu"
+msgstr "트랙 최대화"
 
 #: Src/GUI/GraphicalTrack.cpp:437
 msgid "Dock track"
-msgstr "Ukotvit stopu"
+msgstr ""
 
 #: Src/GUI/GraphicalTrack.cpp:459 Src/Editors/ScoreEditor.h:285
 msgid "Score Editor"
-msgstr "Editor notového zápisu"
+msgstr "악보 편집기"
 
 #: Src/GUI/GraphicalTrack.cpp:463 Src/Editors/KeyboardEditor.h:88
 msgid "Keyboard Editor"
-msgstr "Editor kláves"
+msgstr "건반 편집기"
 
 #: Src/GUI/GraphicalTrack.cpp:467 Src/Editors/GuitarEditor.h:63
 msgid "Tablature Editor"
-msgstr "Editor tabulatury"
+msgstr "태블러처 악보 편집기"
 
 #: Src/GUI/GraphicalTrack.cpp:471 Src/Editors/DrumEditor.h:103
 msgid "Drum Editor"
-msgstr "Editor bicích"
+msgstr "드럼 편집기"
 
 #: Src/GUI/GraphicalTrack.cpp:475 Src/Editors/ControllerEditor.h:171
 msgid "Controller Editor"
-msgstr "Editor ovladače"
+msgstr "컨트롤러 편집기"
 
 #: Src/GUI/GraphicalTrack.cpp:779
 msgid "Choose a new track title."
-msgstr "Vybrat nový název stopy."
+msgstr "새 트랙 제목을 선택하세요."
 
 #: Src/GUI/GraphicalTrack.cpp:836
 msgid "Enter the ID of the channel this track should play in"
-msgstr "Zadejte číslo kanálu, v němž se má tato stopa přehrávat"
+msgstr ""
 
 #: Src/GUI/GraphicalTrack.cpp:838
 msgid "Channel choice"
-msgstr "Volba kanálu"
+msgstr "채널 선택"
 
 #: Src/GUI/MeasureBar.cpp:70
 msgid "Remove selected measures"
-msgstr "Odstranit vybrané takty"
+msgstr "선택한 소절 삭제"
 
 #: Src/GUI/MeasureBar.cpp:71
 msgid "Duplicate selected measures"
-msgstr "Zdvojit vybrané takty"
+msgstr "선택한 소절 복제"
 
 #: Src/GUI/MeasureBar.cpp:97
 msgid "Do you really want to remove selected measures?"
-msgstr "Opravdu chcete odstranit vybrané takty?"
+msgstr "선택한 소절을 삭제하시겠습니까?"
 
 #: Src/GUI/MeasureBar.cpp:148
 msgid "Insert measures"
-msgstr "Vložit takty"
+msgstr "소절 삽입"
 
 #: Src/GUI/MeasureBar.cpp:150
 msgid "Remove time sig change"
-msgstr "Odstranit změnu taktového označení"
+msgstr "박자 변경을 제거"
 
 #: Src/GUI/MeasureBar.cpp:156
 #, c-format
 msgid "Insert empty measures between measures %i and %i"
-msgstr "Vložit prázdné takty mezi takty %i a %i"
+msgstr "%i 그리고 %i 소절 사이에 빈 소절을 삽입합니다"
 
 #: Src/GUI/MeasureBar.cpp:158
 msgid "Amount: "
-msgstr "Množství: "
+msgstr "수량:"
 
 #: Src/GUI/MeasureBar.cpp:177
 msgid "Do you really want to remove this time sig change?"
-msgstr "Opravdu chcete odstranit tuto změnu taktového označení?"
+msgstr "박자 변경을 제거하시겠습니까?"
 
 #: Src/GUI/MeasureBar.cpp:183
 msgid "You can't remove the first time signature change."
-msgstr "Nemůžete odstranit první změnu taktového označení."
+msgstr "첫 번째 박자 변경을 제거할 수 없습니다."
 
 #: Src/Midi/Players/PlatformMidiManager.cpp:65
 msgid "Bad binary, no MIDI driver was compiled in!"
-msgstr "Špatný spustitelný soubor. Nebyl sestaven žádný ovladač MIDI!"
+msgstr "잘못된 바이너리, MIDI 드라이버가 컴파일 되지 않았습니다!"
 
 #: Src/Midi/Players/PlatformMidiManager.cpp:285
 msgid "Sorry, no MIDI input port is available"
-msgstr "Promiňte, není dostupná žádná přípojka pro vstup MIDI"
+msgstr "죄송합니다. MIDI 입력 포트를 사용할 수 없습니다."
 
 #: Src/Midi/Players/PlatformMidiManager.cpp:313
 #: Src/Midi/Players/PlatformMidiManager.cpp:332
 msgid "Sorry, failed to open the selected MIDI input port"
-msgstr "Promiňte, nepodařilo se otevřít vybranou přípojku pro vstup MIDI"
+msgstr "죄송합니다. 선택한 MIDI 입력 포트를 여는데 실패했습니다"
 
 #: Src/Midi/Players/Example/ExamplePlayer.cpp:179
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:443
 msgid "WAV file"
-msgstr "Soubor WAV"
+msgstr "WAV 파일"
 
 #: Src/Midi/Players/Mac/AudioUnitOutput.cpp:772
 #: Src/Midi/Players/Mac/AudioUnitOutput.cpp:805
@@ -1825,795 +1821,795 @@ msgstr "Soubor WAV"
 msgid ""
 "An error has occurred when connecting to the MIDI output device with "
 "AudioUnit; audio playback may be unavailable"
-msgstr "Při připojování se k zařízení pro výstup MIDI s AudioUnit se vyskytla chyba. Přehrávání zvuku nemusí být dostupné"
+msgstr "AudioUnit으로 MIDI 출력 장치에 접속할 때 오류가 발생했습니다. 오디오 재생이 불가능할 수도 있습니다."
 
 #: Src/Midi/Players/Mac/AudioUnitOutput.cpp:783
 #: Src/Midi/Players/Mac/AudioUnitOutput.cpp:794
 msgid "Sorry, failed to set custom soundfont."
-msgstr "Promiňte, ale nepodařilo se nastavit vlastní zvukovou banku."
+msgstr "죄송합니다. 사용자 정의된 사운드폰트를 설정하는데 실패했습니다."
 
 #: Src/Midi/Players/Mac/CoreMIDIOutput.cpp:189
 msgid "Unknown MIDI port : "
-msgstr "Neznámá přípojka MIDI: "
+msgstr "알 수 없는 MIDI 포트 :"
 
 #: Src/Midi/Players/Mac/MacPlayerInterface.cpp:118
 msgid "Sorry, an internal error occurred during export"
-msgstr "Promiňte, při vyvádění se vyskytla vnitřní chyba"
+msgstr "죄송합니다. 내보내기를 진행하는 도중에 내부 오류가 발생했습니다."
 
 #: Src/Midi/Players/Mac/MacPlayerInterface.cpp:157
 msgid ""
 "Sorry, exporting to audio could not complete successfully. Please include "
 "the following error code when reporting the issue :"
-msgstr "Promiňte, vyvedení do audia se nepodařilo úspěšně dokončit. Zahrňte, prosím, následující kód chyby, až tento problém budete hlásit."
+msgstr "죄송합니다. 오디오로 내보내기가 성공적으로 완료하지 못했습니다. 문제를 보고할 때 다음과 같은 오류 코드를 포함하십시오 :"
 
 #: Src/Midi/Players/Mac/MacPlayerInterface.cpp:293
 #: Src/Midi/Players/Mac/MacPlayerInterface.cpp:297
 #: Src/Midi/Players/Mac/MacPlayerInterface.cpp:346
 msgid "OSX Software Synthesizer"
-msgstr "Softwarový syntetizátor OSX"
+msgstr "OSX 소프트웨어 신디사이저"
 
 #: Src/Midi/Players/Mac/MacPlayerInterface.cpp:329
 msgid "AIFF file"
-msgstr "Soubor AIFF"
+msgstr "AIFF 파일"
 
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:257
 msgid ""
 "Failed to open ALSA device, sound will be unavailable (you can try selecting"
 " another output device from the 'Output' menu)"
-msgstr "Nepodařilo se otevřít přípojku ALSA. Zvuk nebude dostupný (můžete vyzkoušet vybrat jiné výstupní zařízení v nabídce Výstup)"
+msgstr "ALSA 장치를 여는데 실패했습니다. 사운드를 이용할 수 없을 것입니다 ('출력' 메뉴에서 다른 출력 장치 선택을 시도할 수 있습니다)"
 
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:505
 msgid "Settings"
-msgstr "Nastavení"
+msgstr "설정"
 
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:514
 msgid "Choose the MIDI engine to use to render the file"
-msgstr "Vybrat stroj MIDI, který se použije na udělání souboru"
+msgstr "파일을 렌더링하는데 사용할 MIDI 엔진을 선택하세요"
 
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:520
 msgid "MIDI Engine"
-msgstr "Stroj MIDI"
+msgstr "MIDI 엔진"
 
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:527
 msgid "Fluidsynth Soundfont"
-msgstr "Zvuková banka FluidSynth"
+msgstr "Fluidsynth 사운드폰트"
 
 #: Src/Midi/Players/Alsa/AlsaPort.cpp:46
 msgid "Failed to open ALSA port."
-msgstr "Nepodařilo se otevřít přípojku ALSA."
+msgstr "ALSA 포트를 여는데 실패했습니다."
 
 #: Src/Midi/Players/Alsa/AlsaPort.cpp:172
 msgid "No midi port found, no sound will be available."
-msgstr "Nebyla nalezena žádná přípojka Midi, z toho důvodu není možný žádný zvuk."
+msgstr "MIDI 포트를 발견하지 못해서 사운드를 사용할 수 없습니다."
 
 #: Src/Midi/Players/Alsa/AlsaPort.cpp:260
 #, c-format
 msgid "The selected ALSA device (%s) could not be opened."
-msgstr "Vybrané zařízení ALSA (%s) se nepodařilo otevřít."
+msgstr "선택된 ALSA 장치 (%s)를 열 수 없습니다."
 
 #: Src/Midi/Players/Alsa/AlsaPort.cpp:442
 msgid "Loading "
-msgstr "Nahrává se"
+msgstr "불러오는 중"
 
 #: Src/Midi/Players/Jack/JackMidiManager.cpp:231
 msgid "Jack"
-msgstr "JACK"
+msgstr ""
 
 #: Src/Midi/Players/NullDevice.cpp:65
 msgid "No sound available"
-msgstr "Není dostupný žádný zvuk"
+msgstr "사용가능한 사운드 없음"
 
 #: Src/Midi/Players/Win/WinPlayer.cpp:300
 #: Src/Midi/Players/Win/WinPlayer.cpp:331
 #: Src/Midi/Players/Win/WinPlayer.cpp:335
 msgid "Windows Software Synthesizer"
-msgstr "Softwarový syntetizátor Windows"
+msgstr "윈도우즈 소프트웨어 신디사이저"
 
 #: Src/Midi/Players/Win/WinPlayer.cpp:362
 msgid "Failed to initialize MIDI out device"
-msgstr "Nepodařilo se inicializovat zařízení pro výstup MIDI"
+msgstr "MIDI 출력 장치 초기화 실패"
 
 #: Src/Midi/CommonMidiUtils.cpp:435 Src/Midi/CommonMidiUtils.cpp:460
 msgid ""
 "WARNING: this song has too many\n"
 "channels, expect unpredictable output"
-msgstr "Varování: Tato píseň má příliš kanálů,\nočekávejte nepředvídatelný výstup."
+msgstr ""
 
 #: Src/Midi/Sequence.cpp:906
 msgid ""
 "Warning : you are opening a file saved with a version of\n"
 "Aria Maestosa more recent than the version you currently have.\n"
 "It may not open correctly."
-msgstr "Pozor: Otevíráte soubor, který byl uložen novější verzí Aria Maestosa\nnež je ta vaše.\nMohlo by se stát, že se soubor neotevře správně."
+msgstr ""
 
 #: Src/Midi/InstrumentChoice.cpp:29
 msgid "Acoustic Grand Piano"
-msgstr "Akustické křídlo"
+msgstr "어쿠스틱 그랜드 피아노"
 
 #: Src/Midi/InstrumentChoice.cpp:30
 msgid "Bright Acoustic Piano"
-msgstr "Otevřené piano"
+msgstr "브라이트 어쿠스틱 피아노"
 
 #: Src/Midi/InstrumentChoice.cpp:31
 msgid "Electric Grand Piano"
-msgstr "Elektrické křídlo"
+msgstr "전자 그랜드 피아노"
 
 #: Src/Midi/InstrumentChoice.cpp:32
 msgid "Honky-Tonk Piano"
-msgstr "Honky-tonk piano"
+msgstr "홍키통크 피아노"
 
 #: Src/Midi/InstrumentChoice.cpp:33
 msgid "Electric Piano 1"
-msgstr "Elektrický klavír 1"
+msgstr "전자 피아노 1"
 
 #: Src/Midi/InstrumentChoice.cpp:34
 msgid "Electric Piano 2"
-msgstr "Elektrický klavír 2"
+msgstr "전자 피아노 2"
 
 #: Src/Midi/InstrumentChoice.cpp:35
 msgid "Harpsichord"
-msgstr "Cembalo"
+msgstr "하프시코드"
 
 #: Src/Midi/InstrumentChoice.cpp:36
 msgid "Clavinet"
-msgstr "Clavinet"
+msgstr "클라비넷"
 
 #: Src/Midi/InstrumentChoice.cpp:37
 msgid "Celesta"
-msgstr "Celesta"
+msgstr "첼레스타"
 
 #: Src/Midi/InstrumentChoice.cpp:38
 msgid "Glockenspiel"
-msgstr "Zvonkohra"
+msgstr "철금"
 
 #: Src/Midi/InstrumentChoice.cpp:39
 msgid "Music Box"
-msgstr "Hrací skříňka"
+msgstr "오르골"
 
 #: Src/Midi/InstrumentChoice.cpp:40
 msgid "Vibraphone"
-msgstr "Vibrafon"
+msgstr "비브라폰"
 
 #: Src/Midi/InstrumentChoice.cpp:41
 msgid "Marimba"
-msgstr "Marimba"
+msgstr "마림바"
 
 #: Src/Midi/InstrumentChoice.cpp:42
 msgid "Xylophone"
-msgstr "Xylofon"
+msgstr "실로폰"
 
 #: Src/Midi/InstrumentChoice.cpp:43
 msgid "Tubular Bells"
-msgstr "Koncertní zvony"
+msgstr "튜블러 벨"
 
 #: Src/Midi/InstrumentChoice.cpp:44
 msgid "Dulcimer"
-msgstr "Dulcimer (citera)"
+msgstr "덜시머"
 
 #: Src/Midi/InstrumentChoice.cpp:45
 msgid "Drawbar Organ"
-msgstr "Natahovací varhany"
+msgstr "드로우바 오르간"
 
 #: Src/Midi/InstrumentChoice.cpp:46
 msgid "Percussive Organ"
-msgstr "Perkusivní varhany"
+msgstr "퍼커시브 오르간"
 
 #: Src/Midi/InstrumentChoice.cpp:47
 msgid "Rock Organ"
-msgstr "Rockové varhany"
+msgstr "락 오르간"
 
 #: Src/Midi/InstrumentChoice.cpp:48
 msgid "Church Organ"
-msgstr "Kostelní varhany"
+msgstr "파이프 오르간"
 
 #: Src/Midi/InstrumentChoice.cpp:49
 msgid "Reed Organ"
-msgstr "Jazýčkové varhany"
+msgstr "리드 오르간"
 
 #: Src/Midi/InstrumentChoice.cpp:50
 msgid "Accordion"
-msgstr "Akordeon"
+msgstr "아코디언"
 
 #: Src/Midi/InstrumentChoice.cpp:51
 msgid "Harmonica"
-msgstr "Harmonika"
+msgstr "하모니카"
 
 #: Src/Midi/InstrumentChoice.cpp:52
 msgid "Tango Accordion"
-msgstr "Tango harmonika (akordeon)"
+msgstr "탱고 아코디언"
 
 #: Src/Midi/InstrumentChoice.cpp:53
 msgid "Nylon String Guitar"
-msgstr "Kytara s nylonovými strunami"
+msgstr "나일론 줄 기타"
 
 #: Src/Midi/InstrumentChoice.cpp:54
 msgid "Steel String Guitar"
-msgstr "Kytara s kovovými strunami (westernová)"
+msgstr "금속 줄 기타"
 
 #: Src/Midi/InstrumentChoice.cpp:55
 msgid "Jazz Guitar"
-msgstr "Džezová kytara"
+msgstr "재즈 기타"
 
 #: Src/Midi/InstrumentChoice.cpp:56
 msgid "Clean Electric Guitar"
-msgstr "Čistá elektrická kytara"
+msgstr "클린 전자 기타"
 
 #: Src/Midi/InstrumentChoice.cpp:57
 msgid "Muted Electric Guitar"
-msgstr "Ztlumená elektrická kytara"
+msgstr "뮤트 전자 기타"
 
 #: Src/Midi/InstrumentChoice.cpp:58
 msgid "Overdrive Guitar"
-msgstr "Přepálená kytara"
+msgstr "오버드라이브 기타"
 
 #: Src/Midi/InstrumentChoice.cpp:59
 msgid "Distortion Guitar"
-msgstr "Zkreslená elektrická kytara"
+msgstr "디스토션 기타"
 
 #: Src/Midi/InstrumentChoice.cpp:60
 msgid "Guitar Harmonics"
-msgstr "Libozvučná kytara"
+msgstr "기타 하모닉스"
 
 #: Src/Midi/InstrumentChoice.cpp:61
 msgid "Acoustic Bass"
-msgstr "Kontrabas (prsty - pizzicato)"
+msgstr "어쿠스틱 베이스"
 
 #: Src/Midi/InstrumentChoice.cpp:62
 msgid "Fingered Bass"
-msgstr "Brnkaný bas"
+msgstr "핑거 베이스"
 
 #: Src/Midi/InstrumentChoice.cpp:63
 msgid "Picked Bass"
-msgstr "Vybrnkávaný bas"
+msgstr "피크 베이스"
 
 #: Src/Midi/InstrumentChoice.cpp:64
 msgid "Fretless Bass"
-msgstr "Bezpražcová baskytara"
+msgstr "프렛리스"
 
 #: Src/Midi/InstrumentChoice.cpp:65
 msgid "Slap Bass 1"
-msgstr "Slap baskytara 1"
+msgstr "슬랩 베이스 1"
 
 #: Src/Midi/InstrumentChoice.cpp:66
 msgid "Slap Bass 2"
-msgstr "Slap baskytara 2"
+msgstr "슬랩 베이스 2"
 
 #: Src/Midi/InstrumentChoice.cpp:67
 msgid "Synth Bass 1"
-msgstr "Syntetizátorová baskytara 1"
+msgstr "신스 베이스 1"
 
 #: Src/Midi/InstrumentChoice.cpp:68
 msgid "Synth Bass 2"
-msgstr "Syntetizátorová baskytara 2"
+msgstr "신스 베이스 2"
 
 #: Src/Midi/InstrumentChoice.cpp:69
 msgid "Violin"
-msgstr "Housle"
+msgstr "바이올린"
 
 #: Src/Midi/InstrumentChoice.cpp:70
 msgid "Viola"
-msgstr "Viola"
+msgstr "비올라"
 
 #: Src/Midi/InstrumentChoice.cpp:71
 msgid "Cello"
-msgstr "Violoncello"
+msgstr "첼로"
 
 #: Src/Midi/InstrumentChoice.cpp:72
 msgid "Contrabass"
-msgstr "Kontrabas"
+msgstr "콘트라베이스"
 
 #: Src/Midi/InstrumentChoice.cpp:73
 msgid "Tremolo Strings"
-msgstr "Smyčce tremolo"
+msgstr "트레몰로 스트링"
 
 #: Src/Midi/InstrumentChoice.cpp:74
 msgid "Pizzicato Strings"
-msgstr "Smyčce pizzicato"
+msgstr "피치카토 스트링"
 
 #: Src/Midi/InstrumentChoice.cpp:75
 msgid "Orchestral Harp"
-msgstr "Orchestrální harfa"
+msgstr "오케스트라 하프"
 
 #: Src/Midi/InstrumentChoice.cpp:76
 msgid "Timpani"
-msgstr "Kotle"
+msgstr "팀파니"
 
 #: Src/Midi/InstrumentChoice.cpp:77
 msgid "String Ensemble 1"
-msgstr "Smyčcový sbor rychlý 1"
+msgstr "스트링 앙상블 1"
 
 #: Src/Midi/InstrumentChoice.cpp:78
 msgid "String Ensemble 2"
-msgstr "Smyčcový sbor pomalý 2"
+msgstr "스트링 앙상블 2"
 
 #: Src/Midi/InstrumentChoice.cpp:79
 msgid "Synth Strings 1"
-msgstr "Syntetizátorové smyčce 1"
+msgstr "신스 스트링 1"
 
 #: Src/Midi/InstrumentChoice.cpp:80
 msgid "Synth Strings 2"
-msgstr "Syntetizátorové smyčce 2"
+msgstr "신스 스트링 2"
 
 #: Src/Midi/InstrumentChoice.cpp:81
 msgid "Choir (ahh)"
-msgstr "Sborové á"
+msgstr "성가대 (아)"
 
 #: Src/Midi/InstrumentChoice.cpp:82
 msgid "Choir (ooh)"
-msgstr "Sborové ó"
+msgstr "성가대 (오)"
 
 #: Src/Midi/InstrumentChoice.cpp:83
 msgid "Synth Voice"
-msgstr "Syntetický hlas"
+msgstr "신스 보이스"
 
 #: Src/Midi/InstrumentChoice.cpp:84
 msgid "Orchestral Hit"
-msgstr "Orchestrální akcent"
+msgstr "오케스트라 히트"
 
 #: Src/Midi/InstrumentChoice.cpp:85
 msgid "Trumpet"
-msgstr "Trubka"
+msgstr "트럼펫"
 
 #: Src/Midi/InstrumentChoice.cpp:86
 msgid "Trombone"
-msgstr "Pozoun"
+msgstr "트롬본"
 
 #: Src/Midi/InstrumentChoice.cpp:87
 msgid "Tuba"
-msgstr "Tuba"
+msgstr "튜바"
 
 #: Src/Midi/InstrumentChoice.cpp:88
 msgid "Muted Trumpet"
-msgstr "Trumpeta s dusítkem"
+msgstr "뮤트 트럼펫"
 
 #: Src/Midi/InstrumentChoice.cpp:89
 msgid "French Horn"
-msgstr "Lesní roh"
+msgstr "프랑스 호른"
 
 #: Src/Midi/InstrumentChoice.cpp:90
 msgid "Brass Section"
-msgstr "Žesťová sekce"
+msgstr "브라스 섹션"
 
 #: Src/Midi/InstrumentChoice.cpp:91
 msgid "Synth Brass 1"
-msgstr "Syntetizátorové žestě 1"
+msgstr "신스 브라스 1"
 
 #: Src/Midi/InstrumentChoice.cpp:92
 msgid "Synth Brass 2"
-msgstr "Syntetizátorové žestě 2"
+msgstr "신스 브라스 2"
 
 #: Src/Midi/InstrumentChoice.cpp:93
 msgid "Soprano Sax"
-msgstr "Sopránový saxofon"
+msgstr "소프라노 색소폰"
 
 #: Src/Midi/InstrumentChoice.cpp:94
 msgid "Alto Sax"
-msgstr "Altový saxofon"
+msgstr "알토 색소폰"
 
 #: Src/Midi/InstrumentChoice.cpp:95
 msgid "Tenor Sax"
-msgstr "Tenorový saxofon"
+msgstr "테너 색소폰"
 
 #: Src/Midi/InstrumentChoice.cpp:96
 msgid "Baritone Sax"
-msgstr "Barytonový saxofon"
+msgstr "바리톤 색소폰"
 
 #: Src/Midi/InstrumentChoice.cpp:97
 msgid "Oboe"
-msgstr "Hoboj"
+msgstr "오보에"
 
 #: Src/Midi/InstrumentChoice.cpp:98
 msgid "English Horn"
-msgstr "Anglický roh"
+msgstr "영국 호른"
 
 #: Src/Midi/InstrumentChoice.cpp:99
 msgid "Bassoon"
-msgstr "Fagot"
+msgstr "바순"
 
 #: Src/Midi/InstrumentChoice.cpp:100
 msgid "Clarinet"
-msgstr "Klarinet"
+msgstr "클라리넷"
 
 #: Src/Midi/InstrumentChoice.cpp:101
 msgid "Piccolo"
-msgstr "Pikola"
+msgstr "피콜로"
 
 #: Src/Midi/InstrumentChoice.cpp:102
 msgid "Flute"
-msgstr "Flétna"
+msgstr "플루트"
 
 #: Src/Midi/InstrumentChoice.cpp:103
 msgid "Recorder"
-msgstr "Zobcová flétna"
+msgstr "리코더"
 
 #: Src/Midi/InstrumentChoice.cpp:104
 msgid "Pan Flute"
-msgstr "Syrinx (Panova flétna)"
+msgstr "팬 플루트"
 
 #: Src/Midi/InstrumentChoice.cpp:105
 msgid "Blown Bottle"
-msgstr "Foukání přes láhev"
+msgstr "블로운 보틀"
 
 #: Src/Midi/InstrumentChoice.cpp:106
 msgid "Shakuachi"
-msgstr "Šakuhači"
+msgstr "샤쿠하치"
 
 #: Src/Midi/InstrumentChoice.cpp:107
 msgid "Whistle"
-msgstr "Píšťalka"
+msgstr "휘파람"
 
 #: Src/Midi/InstrumentChoice.cpp:108
 msgid "Ocarina"
-msgstr "Okarína"
+msgstr "오카리나"
 
 #: Src/Midi/InstrumentChoice.cpp:109
 msgid "Square Wave"
-msgstr "Syntetické sólo 1 (obdélník)"
+msgstr "구형파"
 
 #: Src/Midi/InstrumentChoice.cpp:110
 msgid "Sawtooth wave"
-msgstr "Syntetické sólo 2 (pila)"
+msgstr "톱니파"
 
 #: Src/Midi/InstrumentChoice.cpp:111
 msgid "Caliope"
-msgstr "Syntetické sólo 3 (calliope - parní varhany)"
+msgstr "칼리오페"
 
 #: Src/Midi/InstrumentChoice.cpp:112
 msgid "Chiff"
-msgstr "Syntetické sólo 4 (chiff, se vzduchem)"
+msgstr "치프"
 
 #: Src/Midi/InstrumentChoice.cpp:113
 msgid "Charang"
-msgstr "Syntetické sólo 5 (charang)"
+msgstr "챠랑"
 
 #: Src/Midi/InstrumentChoice.cpp:114
 msgid "Synth Voice 2"
-msgstr "Syntetické sólo 6 (hlas)"
+msgstr "신스 보이스 2"
 
 #: Src/Midi/InstrumentChoice.cpp:115
 msgid "Fifths"
-msgstr "Syntetické sólo 7 (pila s kvintou)"
+msgstr "5도"
 
 #: Src/Midi/InstrumentChoice.cpp:116
 msgid "Bass and Lead"
-msgstr "Syntetické sólo 8 (bas + sólo)"
+msgstr "베이스와 리드"
 
 #: Src/Midi/InstrumentChoice.cpp:117
 msgid "New Age"
-msgstr "Plocha 1 (fantazie)"
+msgstr "뉴에이지"
 
 #: Src/Midi/InstrumentChoice.cpp:118
 msgid "Warm"
-msgstr "Plocha 2 (teplá)"
+msgstr "따뜻한"
 
 #: Src/Midi/InstrumentChoice.cpp:119
 msgid "Polysynth"
-msgstr "Plocha 3 (polyfonní syntetizér)"
+msgstr "폴리신스"
 
 #: Src/Midi/InstrumentChoice.cpp:120
 msgid "Choir"
-msgstr "Plocha 4 (sborový zvuk)"
+msgstr "성가대"
 
 #: Src/Midi/InstrumentChoice.cpp:121 Src/Pickers/InstrumentPicker.cpp:133
 msgid "Bowed"
-msgstr "Plocha 5 (skleněná harmonika)"
+msgstr "굽은"
 
 #: Src/Midi/InstrumentChoice.cpp:122
 msgid "Metallic"
-msgstr "Plocha 6 (kovová)"
+msgstr "메탈"
 
 #: Src/Midi/InstrumentChoice.cpp:123
 msgid "Halo"
-msgstr "Plocha 7 (světelný kruh)"
+msgstr "후광"
 
 #: Src/Midi/InstrumentChoice.cpp:124
 msgid "Sweep"
-msgstr "Plocha 8 (sweep)"
+msgstr "쓸어내림"
 
 #: Src/Midi/InstrumentChoice.cpp:125
 msgid "Rain"
-msgstr "FX 1 (ledový déšť)"
+msgstr "비"
 
 #: Src/Midi/InstrumentChoice.cpp:126
 msgid "Sound Track"
-msgstr "FX 2 (soundtrack)"
+msgstr "사운드트랙"
 
 #: Src/Midi/InstrumentChoice.cpp:127
 msgid "Crystal"
-msgstr "FX 3 (křišťál)"
+msgstr "크리스탈"
 
 #: Src/Midi/InstrumentChoice.cpp:128
 msgid "Atmosphere"
-msgstr "FX 4 (atmosféra)"
+msgstr "분위기"
 
 #: Src/Midi/InstrumentChoice.cpp:129
 msgid "Brightness"
-msgstr "FX 5 (jas)"
+msgstr "밝음"
 
 #: Src/Midi/InstrumentChoice.cpp:130
 msgid "Goblins"
-msgstr "FX 6 (skřítci)"
+msgstr "고블린"
 
 #: Src/Midi/InstrumentChoice.cpp:131
 msgid "Drops"
-msgstr "FX 7 (ozvěny)"
+msgstr "에코"
 
 #: Src/Midi/InstrumentChoice.cpp:132
 msgid "Star Theme"
-msgstr "FX 8 (sci-fi)"
+msgstr "별 테마"
 
 #: Src/Midi/InstrumentChoice.cpp:133
 msgid "Sitar"
-msgstr "Sitár"
+msgstr "시타르"
 
 #: Src/Midi/InstrumentChoice.cpp:134
 msgid "Banjo"
-msgstr "Bendžo"
+msgstr "밴조"
 
 #: Src/Midi/InstrumentChoice.cpp:135
 msgid "Shamisen"
-msgstr "Šamisen"
+msgstr "샤미센"
 
 #: Src/Midi/InstrumentChoice.cpp:136
 msgid "Koto"
-msgstr "Koto"
+msgstr "거문고"
 
 #: Src/Midi/InstrumentChoice.cpp:137
 msgid "Kalimba"
-msgstr "Kalimba"
+msgstr "칼림바"
 
 #: Src/Midi/InstrumentChoice.cpp:138
 msgid "Bagpipe"
-msgstr "Dudy"
+msgstr "백파이프"
 
 #: Src/Midi/InstrumentChoice.cpp:139
 msgid "Fiddle"
-msgstr "Skřipky"
+msgstr "피들"
 
 #: Src/Midi/InstrumentChoice.cpp:140
 msgid "Shanai"
-msgstr "Šenai"
+msgstr "샤나이"
 
 #: Src/Midi/InstrumentChoice.cpp:141
 msgid "Tinkle Bell"
-msgstr "Rolničky"
+msgstr "팅클 벨"
 
 #: Src/Midi/InstrumentChoice.cpp:142
 msgid "Agogo"
-msgstr "Agogo"
+msgstr "아고고"
 
 #: Src/Midi/InstrumentChoice.cpp:143
 msgid "Steel Drums"
-msgstr "Kovové bubny"
+msgstr "스틸 드럼"
 
 #: Src/Midi/InstrumentChoice.cpp:144
 msgid "Woodblock"
-msgstr "Dřevěný blok"
+msgstr "우드블록"
 
 #: Src/Midi/InstrumentChoice.cpp:145
 msgid "Taiko Drum"
-msgstr "Buben taiko"
+msgstr "타이고 북"
 
 #: Src/Midi/InstrumentChoice.cpp:146
 msgid "Melodic Drum"
-msgstr "Melodický tom"
+msgstr "멜로딕 드럼"
 
 #: Src/Midi/InstrumentChoice.cpp:147
 msgid "Synth Drum"
-msgstr "Syntetický buben"
+msgstr "신스 드럼"
 
 #: Src/Midi/InstrumentChoice.cpp:148
 msgid "Reverse Cymbal"
-msgstr "Zvuk činelu pozpátku"
+msgstr "역 심벌즈"
 
 #: Src/Midi/InstrumentChoice.cpp:149
 msgid "Guitar Fret Noise"
-msgstr "Hluk kytarového pražce"
+msgstr "기타 프렛 노이즈"
 
 #: Src/Midi/InstrumentChoice.cpp:150
 msgid "Breath Noise"
-msgstr "Dech"
+msgstr "브레스 노이즈"
 
 #: Src/Midi/InstrumentChoice.cpp:151
 msgid "Seashore"
-msgstr "Mořský příboj"
+msgstr "해변"
 
 #: Src/Midi/InstrumentChoice.cpp:152
 msgid "Bird Tweet"
-msgstr "Ptačí zpěv"
+msgstr "새소리"
 
 #: Src/Midi/InstrumentChoice.cpp:153
 msgid "Telephone Ring"
-msgstr "Telefonní zvonek"
+msgstr "전화 벨"
 
 #: Src/Midi/InstrumentChoice.cpp:154
 msgid "Helicopter"
-msgstr "Vrtulník"
+msgstr "헬리콥터"
 
 #: Src/Midi/InstrumentChoice.cpp:155
 msgid "Applause"
-msgstr "Potlesk"
+msgstr "갈채"
 
 #: Src/Midi/InstrumentChoice.cpp:156
 msgid "Gunshot"
-msgstr "Výstřel"
+msgstr "총성"
 
 #: Src/Midi/DrumChoice.cpp:30
 msgid "Standard"
-msgstr "Standardní"
+msgstr "표준"
 
 #: Src/Midi/DrumChoice.cpp:31
 msgid "Room kit"
-msgstr "Pokojová výbava"
+msgstr ""
 
 #: Src/Midi/DrumChoice.cpp:32
 msgid "Power kit"
-msgstr "Výkonná výbava"
+msgstr ""
 
 #: Src/Midi/DrumChoice.cpp:33
 msgid "Electronic"
-msgstr "Elektronický zvuk"
+msgstr "일렉트로닉"
 
 #: Src/Midi/DrumChoice.cpp:34
 msgid "Analog"
-msgstr "Analog"
+msgstr "아날로그"
 
 #: Src/Midi/DrumChoice.cpp:35
 msgid "Jazz"
-msgstr "Džez"
+msgstr "재즈"
 
 #: Src/Midi/DrumChoice.cpp:36
 msgid "Brush"
-msgstr "Štětec"
+msgstr ""
 
 #: Src/Midi/DrumChoice.cpp:37
 msgid "Orchestral"
-msgstr "Orchestrální"
+msgstr "오케스트라"
 
 #: Src/Midi/DrumChoice.cpp:38
 msgid "Special Effects"
-msgstr "Zvláštní účinky"
+msgstr "특수효과"
 
 #: Src/Midi/DrumChoice.cpp:40
 msgid "Invalid Drumkit"
-msgstr "Neplatná sada bicích"
+msgstr ""
 
 #: Src/Pickers/MagneticGridPicker.cpp:43
 msgid "Triplet"
-msgstr "Triola"
+msgstr ""
 
 #: Src/Pickers/MagneticGridPicker.cpp:44
 msgid "Dotted"
-msgstr "Tečkovaná nota"
+msgstr ""
 
 #: Src/Pickers/InstrumentPicker.cpp:83 Src/Pickers/InstrumentPicker.cpp:104
 #: Src/Pickers/InstrumentPicker.cpp:124
 msgid "Piano"
-msgstr "Klavír"
+msgstr "피아노"
 
 #: Src/Pickers/InstrumentPicker.cpp:84
 msgid "Chromatic Percussion"
-msgstr "Chromatické bicí"
+msgstr ""
 
 #: Src/Pickers/InstrumentPicker.cpp:85 Src/Pickers/InstrumentPicker.cpp:106
 #: Src/Pickers/InstrumentPicker.cpp:125
 msgid "Organ"
-msgstr "Varhany"
+msgstr "오르간"
 
 #: Src/Pickers/InstrumentPicker.cpp:86 Src/Pickers/InstrumentPicker.cpp:107
 #: Src/Pickers/InstrumentPicker.cpp:131
 msgid "Guitar"
-msgstr "Kytara"
+msgstr "기타"
 
 #: Src/Pickers/InstrumentPicker.cpp:87 Src/Pickers/InstrumentPicker.cpp:108
 #: Src/Pickers/InstrumentPicker.cpp:134
 msgid "Bass"
-msgstr "Basová kytara"
+msgstr "베이스"
 
 #: Src/Pickers/InstrumentPicker.cpp:88
 msgid "Strings"
-msgstr "Smyčcové nástroje"
+msgstr "현악기"
 
 #: Src/Pickers/InstrumentPicker.cpp:89
 msgid "Ensemble"
-msgstr "Soubor"
+msgstr "합주 악기"
 
 #: Src/Pickers/InstrumentPicker.cpp:90 Src/Pickers/InstrumentPicker.cpp:111
 #: Src/Pickers/InstrumentPicker.cpp:126
 msgid "Brass"
-msgstr "Žesťové nástroje"
+msgstr "금관 악기"
 
 #: Src/Pickers/InstrumentPicker.cpp:91 Src/Pickers/InstrumentPicker.cpp:112
 #: Src/Pickers/InstrumentPicker.cpp:129
 msgid "Reed"
-msgstr "Plátkové nástroje"
+msgstr "리드 악기"
 
 #: Src/Pickers/InstrumentPicker.cpp:92 Src/Pickers/InstrumentPicker.cpp:130
 msgid "Pipe"
-msgstr "Píšťalka"
+msgstr "단관 악기"
 
 #: Src/Pickers/InstrumentPicker.cpp:93 Src/Pickers/InstrumentPicker.cpp:114
 #: Src/Pickers/InstrumentPicker.cpp:128
 msgid "Synth Lead"
-msgstr "Syntetické sólo"
+msgstr "신스 리드"
 
 #: Src/Pickers/InstrumentPicker.cpp:94
 msgid "Synth Pad"
-msgstr "Syntetická plocha"
+msgstr "신드 패드"
 
 #: Src/Pickers/InstrumentPicker.cpp:95
 msgid "Synth Effects"
-msgstr "Syntetické efekty"
+msgstr "신스 이펙트"
 
 #: Src/Pickers/InstrumentPicker.cpp:96 Src/Pickers/InstrumentPicker.cpp:115
 msgid "Ethnic"
-msgstr "Etnická"
+msgstr ""
 
 #: Src/Pickers/InstrumentPicker.cpp:97
 msgid "Percussive"
-msgstr "Bicí"
+msgstr "타악기"
 
 #: Src/Pickers/InstrumentPicker.cpp:105
 msgid "Chromatic"
-msgstr "Chromatická"
+msgstr ""
 
 #: Src/Pickers/InstrumentPicker.cpp:109
 msgid "Strings and Orchestra"
-msgstr "Smyčce a orchestr"
+msgstr "현악기와 오케스트라"
 
 #: Src/Pickers/InstrumentPicker.cpp:110
 msgid "Choirs, Pads and Voices"
-msgstr "Akordy, plochy a hlasy"
+msgstr "성가대, 발소리, 목소리"
 
 #: Src/Pickers/InstrumentPicker.cpp:113
 msgid "Flutes and Pipe"
-msgstr "Flétny a píšťalka"
+msgstr "플루트, 파이프"
 
 #: Src/Pickers/InstrumentPicker.cpp:116 Src/Pickers/InstrumentPicker.cpp:135
 msgid "Percussion"
-msgstr "Bicí nástroje"
+msgstr "타악기"
 
 #: Src/Pickers/InstrumentPicker.cpp:127
 msgid "Pads"
-msgstr "Plocha"
+msgstr ""
 
 #: Src/Pickers/InstrumentPicker.cpp:132
 msgid "Plucked"
-msgstr "Drnkací"
+msgstr ""
 
 #: Src/Pickers/TuningPicker.cpp:62
 msgid "Rearrange selected notes"
-msgstr "Přeuspořádat vybrané noty"
+msgstr "선택된 노트 재배치하기"
 
 #. I18N: - in the view settings for score editor. whether to show notes in a
 #. traditional musical way.
 #: Src/Pickers/KeyPicker.cpp:80
 msgid "Musical notation"
-msgstr "Hudební notový zápis"
+msgstr "기보법"
 
 #. I18N: - in the view settings for score editor. whether to show notes in a
 #. "computer" linear way.
 #: Src/Pickers/KeyPicker.cpp:82
 msgid "Linear Notation"
-msgstr "Přímý notový zápis"
+msgstr "선형 표기법"
 
 #: Src/Pickers/KeyPicker.cpp:85
 msgid "G Clef"
-msgstr "Houslový klíč"
+msgstr "G Clef"
 
 #: Src/Pickers/KeyPicker.cpp:86
 msgid "F Clef"
-msgstr "Basový klíč"
+msgstr "F Clef"
 
 #. I18N: - show score an octave higher
 #: Src/Pickers/KeyPicker.cpp:88
 msgid "Octave +1"
-msgstr "Oktáva +1"
+msgstr "옥타브 +1"
 
 #. I18N: - show score an octave lower
 #: Src/Pickers/KeyPicker.cpp:90
 msgid "Octave -1"
-msgstr "Oktáva -1"
+msgstr "옥타브 -1"
 
 #: Src/Pickers/KeyPicker.cpp:99 Src/Pickers/KeyPicker.cpp:109
 #: Src/Midi/Note.h:109 Src/Midi/Note.h:125
@@ -2633,29 +2629,29 @@ msgstr "D"
 #: Src/Pickers/KeyPicker.cpp:100 Src/Pickers/KeyPicker.cpp:103
 #: Src/Midi/Note.h:101 Src/Midi/Note.h:117
 msgid "B"
-msgstr "H"
+msgstr "B"
 
 #: Src/Pickers/KeyPicker.cpp:101 Src/Pickers/KeyPicker.cpp:104
 #: Src/Midi/Note.h:108
 msgid "F#"
-msgstr "Fis"
+msgstr "F#"
 
 #: Src/Pickers/KeyPicker.cpp:102 Src/Pickers/KeyPicker.cpp:105
 #: Src/Midi/Note.h:103
 msgid "C#"
-msgstr "Cis"
+msgstr "C#"
 
 #: Src/Pickers/KeyPicker.cpp:103 Src/Midi/Note.h:110
 msgid "G#"
-msgstr "Gis"
+msgstr "G#"
 
 #: Src/Pickers/KeyPicker.cpp:104 Src/Midi/Note.h:105
 msgid "D#"
-msgstr "Dis"
+msgstr "D#"
 
 #: Src/Pickers/KeyPicker.cpp:105 Src/Midi/Note.h:100
 msgid "A#"
-msgstr "Ais"
+msgstr "A#"
 
 #: Src/Pickers/KeyPicker.cpp:108 Src/Pickers/KeyPicker.cpp:111
 #: Src/Midi/Note.h:107 Src/Midi/Note.h:123
@@ -2665,96 +2661,96 @@ msgstr "F"
 #: Src/Pickers/KeyPicker.cpp:109 Src/Pickers/KeyPicker.cpp:112
 #: Src/Midi/Note.h:116
 msgid "Bb"
-msgstr "Hes"
+msgstr "Bb"
 
 #: Src/Pickers/KeyPicker.cpp:110 Src/Pickers/KeyPicker.cpp:113
 #: Src/Midi/Note.h:121
 msgid "Eb"
-msgstr "Es"
+msgstr "Eb"
 
 #: Src/Pickers/KeyPicker.cpp:111 Src/Pickers/KeyPicker.cpp:114
 #: Src/Midi/Note.h:126
 msgid "Ab"
-msgstr "As"
+msgstr "Ab"
 
 #: Src/Pickers/KeyPicker.cpp:112 Src/Midi/Note.h:119
 msgid "Db"
-msgstr "Des"
+msgstr "Db"
 
 #: Src/Pickers/KeyPicker.cpp:113 Src/Midi/Note.h:124
 msgid "Gb"
-msgstr "Ges"
+msgstr "Gb"
 
 #: Src/Pickers/KeyPicker.cpp:114
 msgid "Cb"
-msgstr "Ces"
+msgstr "Cb"
 
 #: Src/Pickers/KeyPicker.cpp:127
 msgid "Guess Key"
-msgstr "Doporučená tónina"
+msgstr ""
 
 #: Src/Pickers/KeyPicker.cpp:128
 msgid "Custom Key"
-msgstr "Vlastní předznamenání"
+msgstr ""
 
 #: Src/Pickers/KeyPicker.cpp:153
 msgid "User presets"
-msgstr "Uživatelská přednastavení"
+msgstr "사용자 프리셋"
 
 #: Src/Pickers/KeyPicker.cpp:166
 msgid "Edit Presets..."
-msgstr "Upravit přednastavení..."
+msgstr "프리셋 편집하기..."
 
 #: Src/Pickers/KeyPicker.cpp:522
 #, c-format
 msgid "%s Major, %s minor"
-msgstr "%s Dur, %s moll"
+msgstr "%s 장조, %s 단조"
 
 #. I18N: - when setting time signature, to indicate it's not constant through
 #. song
 #: Src/Pickers/TimeSigPicker.cpp:178
 msgid "Varies throughout song"
-msgstr "Mění se během písně"
+msgstr ""
 
 #. I18N: - when setting a wrong time signature
 #: Src/Pickers/TimeSigPicker.cpp:280
 msgid "Denominator must be a power of 2"
-msgstr "Jmenovatel musí být mocninou 2"
+msgstr ""
 
 #. I18N: - in controller, when a controller can only be on/off
 #: Src/Pickers/ControllerChoice.cpp:194
 msgid "On"
-msgstr "Zapnuto"
+msgstr "켜짐"
 
 #. I18N: - in controller, when a controller can only be on/off
 #: Src/Pickers/ControllerChoice.cpp:196
 msgid "Off"
-msgstr "Vypnuto"
+msgstr "꺼짐"
 
 #. I18N: - in controller, for a controller with min/max range
 #: Src/Pickers/ControllerChoice.cpp:198
 msgid "Min"
-msgstr "Nejméně"
+msgstr "최소"
 
 #. I18N: - in controller, for a controller with min/max range
 #: Src/Pickers/ControllerChoice.cpp:200
 msgid "Max"
-msgstr "Nejvíce"
+msgstr "최대"
 
 #. I18N: - when setting pan in controller
 #: Src/Pickers/ControllerChoice.cpp:202
 msgid "Left"
-msgstr "Vlevo"
+msgstr "왼쪽"
 
 #. I18N: - when setting pan in controller
 #: Src/Pickers/ControllerChoice.cpp:204
 msgid "Right"
-msgstr "Vpravo"
+msgstr "오른쪽"
 
 #: Src/Pickers/VolumeSlider.cpp:132
 msgid "volume"
-msgstr "Hlasitost"
+msgstr "음량"
 
 #: Src/PreferencesData.h:63
 msgid "System soundbank"
-msgstr "Zvuková banka systému"
+msgstr "시스템 사운드뱅크"

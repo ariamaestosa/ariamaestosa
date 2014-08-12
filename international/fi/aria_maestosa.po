@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# lanurmi <lanurmi@iki.fi>, 2012
-# lanurmi <lanurmi@iki.fi>, 2013
+# Lauri Nurmi <lanurmi@iki.fi>, 2012
+# Lauri Nurmi <lanurmi@iki.fi>, 2013-2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Aria Maestosa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-10-02 18:51-0400\n"
-"PO-Revision-Date: 2013-10-03 08:19+0000\n"
-"Last-Translator: Auria <auria.mg@gmail.com>\n"
+"PO-Revision-Date: 2014-03-28 22:52+0000\n"
+"Last-Translator: Lauri Nurmi <lanurmi@iki.fi>\n"
 "Language-Team: Finnish (http://www.transifex.com/projects/p/ariamaestosa/language/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -362,12 +362,12 @@ msgstr "Kappaleen kesto:"
 #: Src/Dialogs/SongPropertiesDialog.cpp:348 Src/Pickers/KeyPicker.cpp:95
 #: Src/Pickers/KeyPicker.cpp:110 Src/Midi/Note.h:102 Src/Midi/Note.h:118
 msgid "C"
-msgstr "D"
+msgstr "C"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:348 Src/Pickers/KeyPicker.cpp:95
 #: Src/Pickers/KeyPicker.cpp:101 Src/Midi/Note.h:99 Src/Midi/Note.h:115
 msgid "A"
-msgstr "B"
+msgstr "A"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:373
 #, c-format
@@ -427,7 +427,7 @@ msgstr ""
 
 #: Src/Dialogs/Preferences.cpp:351
 msgid "Browse..."
-msgstr ""
+msgstr "Selaa..."
 
 #. I18N: - in the preferences dialog
 #: Src/Dialogs/Preferences.cpp:390
@@ -628,7 +628,7 @@ msgstr ""
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:70
 msgid "The wxWidgets team"
-msgstr ""
+msgstr "wxWidgets-tiimi"
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:72
@@ -1211,13 +1211,13 @@ msgstr ""
 
 #: Src/Renderers/wxImage.cpp:53
 msgid "Failed to load "
-msgstr ""
+msgstr "Lataaminen epäonnistui"
 
 #: Src/Renderers/GLImage.cpp:52 Src/Renderers/GLImage.cpp:64
 #: Src/Renderers/GLImage.cpp:77 Src/Renderers/GLImage.cpp:87
 #: Src/Renderers/GLImage.cpp:108 Src/Renderers/GLImage.cpp:194
 msgid "Failed to load resource image"
-msgstr ""
+msgstr "Kuvaresurssin lataaminen epäonnistui"
 
 #. I18N: for printing (page orientation)
 #: Src/Printing/wxEasyPrintWrapper.cpp:232
@@ -1476,7 +1476,7 @@ msgstr "&Asetukset"
 
 #: Src/GUI/MainFrameMenuBar.cpp:311 Src/GUI/MainFrameMenuBar.cpp:1306
 msgid "No MIDI Output Available"
-msgstr ""
+msgstr "MIDI-lähtöä ei ole käytettävissä"
 
 #: Src/GUI/MainFrameMenuBar.cpp:340
 msgid "&Output"
@@ -1954,7 +1954,7 @@ msgstr "Cembalo"
 
 #: Src/Midi/InstrumentChoice.cpp:36
 msgid "Clavinet"
-msgstr ""
+msgstr "Klavinetti"
 
 #: Src/Midi/InstrumentChoice.cpp:37
 msgid "Celesta"
@@ -2022,7 +2022,7 @@ msgstr "Tangoharmonikka"
 
 #: Src/Midi/InstrumentChoice.cpp:53
 msgid "Nylon String Guitar"
-msgstr ""
+msgstr "Nailonkielinen kitara"
 
 #: Src/Midi/InstrumentChoice.cpp:54
 msgid "Steel String Guitar"
@@ -2458,7 +2458,7 @@ msgstr ""
 
 #: Src/Midi/DrumChoice.cpp:35
 msgid "Jazz"
-msgstr "Jazz 1"
+msgstr "Jazz"
 
 #: Src/Midi/DrumChoice.cpp:36
 msgid "Brush"
@@ -2616,22 +2616,22 @@ msgstr ""
 #: Src/Pickers/KeyPicker.cpp:99 Src/Pickers/KeyPicker.cpp:109
 #: Src/Midi/Note.h:109 Src/Midi/Note.h:125
 msgid "G"
-msgstr "A"
+msgstr "G"
 
 #: Src/Pickers/KeyPicker.cpp:99 Src/Pickers/KeyPicker.cpp:102
 #: Src/Midi/Note.h:106 Src/Midi/Note.h:122
 msgid "E"
-msgstr "F"
+msgstr "E"
 
 #: Src/Pickers/KeyPicker.cpp:100 Src/Pickers/KeyPicker.cpp:108
 #: Src/Midi/Note.h:104 Src/Midi/Note.h:120
 msgid "D"
-msgstr "E"
+msgstr "D"
 
 #: Src/Pickers/KeyPicker.cpp:100 Src/Pickers/KeyPicker.cpp:103
 #: Src/Midi/Note.h:101 Src/Midi/Note.h:117
 msgid "B"
-msgstr "General MIDI Device"
+msgstr "H"
 
 #: Src/Pickers/KeyPicker.cpp:101 Src/Pickers/KeyPicker.cpp:104
 #: Src/Midi/Note.h:108
@@ -2658,26 +2658,26 @@ msgstr "A#"
 #: Src/Pickers/KeyPicker.cpp:108 Src/Pickers/KeyPicker.cpp:111
 #: Src/Midi/Note.h:107 Src/Midi/Note.h:123
 msgid "F"
-msgstr "G"
+msgstr "F"
 
 #: Src/Pickers/KeyPicker.cpp:109 Src/Pickers/KeyPicker.cpp:112
 #: Src/Midi/Note.h:116
 msgid "Bb"
-msgstr "note name"
+msgstr "Hb"
 
 #: Src/Pickers/KeyPicker.cpp:110 Src/Pickers/KeyPicker.cpp:113
 #: Src/Midi/Note.h:121
 msgid "Eb"
-msgstr "note name"
+msgstr "Eb"
 
 #: Src/Pickers/KeyPicker.cpp:111 Src/Pickers/KeyPicker.cpp:114
 #: Src/Midi/Note.h:126
 msgid "Ab"
-msgstr "note name"
+msgstr "Ab"
 
 #: Src/Pickers/KeyPicker.cpp:112 Src/Midi/Note.h:119
 msgid "Db"
-msgstr "note name"
+msgstr "Db"
 
 #: Src/Pickers/KeyPicker.cpp:113 Src/Midi/Note.h:124
 msgid "Gb"

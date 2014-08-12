@@ -5,14 +5,14 @@
 # Translators:
 # AlexisA <alexis.archambault@libertysurf.fr>, 2012
 # Guss Gaviria <gustarom@gmail.com>, 2012
-# michelbg <michel.barreno@gmail.com>, 2013
+# Michel Barreno <michel.barreno@gmail.com>, 2013-2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Aria Maestosa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-10-02 18:51-0400\n"
-"PO-Revision-Date: 2013-10-26 10:26+0000\n"
-"Last-Translator: michelbg <michel.barreno@gmail.com>\n"
+"PO-Revision-Date: 2014-07-01 23:24+0000\n"
+"Last-Translator: Michel Barreno <michel.barreno@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/ariamaestosa/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -92,11 +92,11 @@ msgstr "Tablatura"
 #. I18N: In preferences
 #: Src/PreferencesData.cpp:218
 msgid "Instrument Classification"
-msgstr ""
+msgstr "Clasificación de los instrumentos"
 
 #: Src/PreferencesData.cpp:220
 msgid "MIDI Standard"
-msgstr ""
+msgstr "Estándar MIDI"
 
 #: Src/PreferencesData.cpp:230
 msgid "Soundfont"
@@ -124,11 +124,11 @@ msgstr "Ejecutar automáticamente FluidSynth si es necesario"
 
 #: Src/PreferencesData.cpp:291
 msgid "Single-instance application"
-msgstr ""
+msgstr "Una instancia de la aplicación"
 
 #: Src/PreferencesData.cpp:297
 msgid "Show note names in piano-roll"
-msgstr ""
+msgstr "Mostrar nombre de notas en piano-roll"
 
 #: Src/PreferencesData.cpp:303
 msgid "Restore open files from previous session"
@@ -314,7 +314,7 @@ msgstr "Espere por favor..."
 #. I18N: - title of the copyright/info dialog
 #: Src/Dialogs/SongPropertiesDialog.cpp:85
 msgid "Song Properties"
-msgstr ""
+msgstr "Propiedades de la canción"
 
 #. I18N: - title of the copyright/info dialog
 #: Src/Dialogs/SongPropertiesDialog.cpp:96
@@ -333,7 +333,7 @@ msgstr ""
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:119
 msgid "None"
-msgstr ""
+msgstr "Ninguno"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:120
 msgid "Sharps"
@@ -363,12 +363,12 @@ msgstr "Duración de la canción :"
 #: Src/Dialogs/SongPropertiesDialog.cpp:348 Src/Pickers/KeyPicker.cpp:95
 #: Src/Pickers/KeyPicker.cpp:110 Src/Midi/Note.h:102 Src/Midi/Note.h:118
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:348 Src/Pickers/KeyPicker.cpp:95
 #: Src/Pickers/KeyPicker.cpp:101 Src/Midi/Note.h:99 Src/Midi/Note.h:115
 msgid "A"
-msgstr ""
+msgstr "A"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:373
 #, c-format
@@ -614,12 +614,12 @@ msgstr "Gracias a:"
 msgid ""
 "Ergonis Software and %s for making EasyBeat,\n"
 "\ta great app that inspired Aria (www.ergonis.com)."
-msgstr ""
+msgstr "Ergonis Software and %s for making EasyBeat,\n\ta great app that inspired Aria (www.ergonis.com)."
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:66
 msgid "J.D. Koftinoff Software for the jdksmidi library"
-msgstr ""
+msgstr "J.D. Koftinoff Software para la biblioteca jdksmidi"
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:68
@@ -700,7 +700,7 @@ msgstr "remover compás(es)"
 #. I18N: menu item in the "edit" menu
 #: Src/Actions/ScrollNotesIntoView.cpp:37 Src/GUI/MainFrameMenuBar.cpp:199
 msgid "Scroll notes into view"
-msgstr ""
+msgstr "Desplazar notas"
 
 #. I18N: (undoable) action name
 #: Src/Actions/InsertEmptyMeasures.cpp:35
@@ -740,7 +740,7 @@ msgstr "añadir evento de control"
 #. I18N: (undoable) action name
 #: Src/Actions/DuplicateMeasures.cpp:37
 msgid "duplicate measures"
-msgstr ""
+msgstr "duplicar acordes"
 
 #. I18N: (undoable) action name
 #: Src/Actions/AddTextEvent.cpp:31
@@ -775,7 +775,7 @@ msgstr "añadir nota"
 #. I18N: (undoable) action name
 #: Src/Actions/SetTrackVolume.cpp:27
 msgid "change track volume"
-msgstr ""
+msgstr "Cambiar volumen de la pista"
 
 #. I18N: (undoable) action name
 #: Src/Actions/AddTrack.cpp:37
@@ -1082,7 +1082,7 @@ msgstr ""
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:178
 msgid "Maracas"
-msgstr ""
+msgstr "Maracas"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:180
@@ -1137,7 +1137,7 @@ msgstr ""
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:200
 msgid "Open triangle"
-msgstr ""
+msgstr "Triángulo abierto"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:202
@@ -1157,7 +1157,7 @@ msgstr ""
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:208
 msgid "Castanets"
-msgstr ""
+msgstr "Castañuelas"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:210
@@ -1172,43 +1172,43 @@ msgstr ""
 #. I18N: percussions category name
 #: Src/Editors/DrumEditor.cpp:217
 msgid "Drumkit"
-msgstr ""
+msgstr "Batería"
 
 #. I18N: percussions category name
 #: Src/Editors/DrumEditor.cpp:219
 msgid "Hi-hat"
-msgstr ""
+msgstr "Hi-hat"
 
 #. I18N: percussions category name
 #: Src/Editors/DrumEditor.cpp:221
 msgid "Cymbal"
-msgstr ""
+msgstr "Címbalo"
 
 #. I18N: percussions category name
 #: Src/Editors/DrumEditor.cpp:223
 msgid "Toms"
-msgstr ""
+msgstr "Toms"
 
 #. I18N: percussions category name
 #: Src/Editors/DrumEditor.cpp:225
 msgid "African"
-msgstr ""
+msgstr "Africano"
 
 #. I18N: percussions category name
 #: Src/Editors/DrumEditor.cpp:227
 msgid "Latin"
-msgstr ""
+msgstr "Latino"
 
 #. I18N: percussions category name
 #: Src/Editors/DrumEditor.cpp:229
 msgid "Others"
-msgstr ""
+msgstr "Otros"
 
 #. I18N: percussions category name
 #: Src/Editors/DrumEditor.cpp:231 Src/Pickers/InstrumentPicker.cpp:98
 #: Src/Pickers/InstrumentPicker.cpp:117 Src/Pickers/InstrumentPicker.cpp:136
 msgid "Sound Effects"
-msgstr ""
+msgstr "Efectos de sonido"
 
 #: Src/Renderers/wxImage.cpp:53
 msgid "Failed to load "
@@ -1271,7 +1271,7 @@ msgstr "Guardar &Como..."
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:110
 msgid "&Reload"
-msgstr ""
+msgstr "&Recargar"
 
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:114
@@ -1280,7 +1280,7 @@ msgstr "&Cerrar"
 
 #: Src/GUI/MainFrameMenuBar.cpp:118
 msgid "Song Propert&ies..."
-msgstr ""
+msgstr "Prop&iedades de la canción..."
 
 #: Src/GUI/MainFrameMenuBar.cpp:122
 msgid "&Print..."
@@ -1677,13 +1677,13 @@ msgstr "La carga del archivo MIDI se ha completado satisfactoriamente, pero con 
 
 #: Src/GUI/MainFrame.cpp:2053
 msgid "Please wait while file is reloaded."
-msgstr ""
+msgstr "Espere mientras el archivo carga."
 
 #: Src/GUI/MainFrame.cpp:2188
 msgid ""
 "A new version of Aria Maestosa is now available! Visit the following link to"
 " download it :"
-msgstr ""
+msgstr "Está disponible una nueva versión de Aria Maestosa. Visite el siguiente vínculo para descargarla:"
 
 #: Src/GUI/MainFrame.cpp:2199
 msgid "An error occurred"
@@ -1711,19 +1711,19 @@ msgstr "Salir"
 
 #: Src/GUI/GraphicalTrack.cpp:419
 msgid "Track volume"
-msgstr ""
+msgstr "Volumen de la pista"
 
 #: Src/GUI/GraphicalTrack.cpp:423
 msgid "Mute"
-msgstr ""
+msgstr "Silencio"
 
 #: Src/GUI/GraphicalTrack.cpp:427
 msgid "Solo"
-msgstr ""
+msgstr "Solo"
 
 #: Src/GUI/GraphicalTrack.cpp:433
 msgid "Maximize track"
-msgstr ""
+msgstr "Maximizar pista"
 
 #: Src/GUI/GraphicalTrack.cpp:437
 msgid "Dock track"
@@ -1875,7 +1875,7 @@ msgstr "Motor MIDI"
 
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:527
 msgid "Fluidsynth Soundfont"
-msgstr ""
+msgstr "Soundfont Fluidsynth"
 
 #: Src/Midi/Players/Alsa/AlsaPort.cpp:46
 msgid "Failed to open ALSA port."
@@ -1927,523 +1927,523 @@ msgstr "AVISO : Está abriendo un archivo guardado con una versión de\nAria Mae
 
 #: Src/Midi/InstrumentChoice.cpp:29
 msgid "Acoustic Grand Piano"
-msgstr "Acoustic Grand Piano"
+msgstr "Piano acústico de cola"
 
 #: Src/Midi/InstrumentChoice.cpp:30
 msgid "Bright Acoustic Piano"
-msgstr ""
+msgstr "Piano acústico brillante"
 
 #: Src/Midi/InstrumentChoice.cpp:31
 msgid "Electric Grand Piano"
-msgstr ""
+msgstr "Piano eléctrico de cola"
 
 #: Src/Midi/InstrumentChoice.cpp:32
 msgid "Honky-Tonk Piano"
-msgstr ""
+msgstr "Pianola"
 
 #: Src/Midi/InstrumentChoice.cpp:33
 msgid "Electric Piano 1"
-msgstr ""
+msgstr "Piano Rhodes"
 
 #: Src/Midi/InstrumentChoice.cpp:34
 msgid "Electric Piano 2"
-msgstr ""
+msgstr "Piano eléctrico"
 
 #: Src/Midi/InstrumentChoice.cpp:35
 msgid "Harpsichord"
-msgstr ""
+msgstr "Clavecín"
 
 #: Src/Midi/InstrumentChoice.cpp:36
 msgid "Clavinet"
-msgstr ""
+msgstr "Clavecín electrónico"
 
 #: Src/Midi/InstrumentChoice.cpp:37
 msgid "Celesta"
-msgstr ""
+msgstr "Celesta"
 
 #: Src/Midi/InstrumentChoice.cpp:38
 msgid "Glockenspiel"
-msgstr ""
+msgstr "Armónica de metal (lira)"
 
 #: Src/Midi/InstrumentChoice.cpp:39
 msgid "Music Box"
-msgstr ""
+msgstr "Cajita de música"
 
 #: Src/Midi/InstrumentChoice.cpp:40
 msgid "Vibraphone"
-msgstr ""
+msgstr "Vibráfono"
 
 #: Src/Midi/InstrumentChoice.cpp:41
 msgid "Marimba"
-msgstr ""
+msgstr "Marimba"
 
 #: Src/Midi/InstrumentChoice.cpp:42
 msgid "Xylophone"
-msgstr ""
+msgstr "Xilófono"
 
 #: Src/Midi/InstrumentChoice.cpp:43
 msgid "Tubular Bells"
-msgstr ""
+msgstr "Campanas tubulares"
 
 #: Src/Midi/InstrumentChoice.cpp:44
 msgid "Dulcimer"
-msgstr ""
+msgstr "Dulcémele"
 
 #: Src/Midi/InstrumentChoice.cpp:45
 msgid "Drawbar Organ"
-msgstr ""
+msgstr "Órgano Hammond"
 
 #: Src/Midi/InstrumentChoice.cpp:46
 msgid "Percussive Organ"
-msgstr ""
+msgstr "Órgano percutido"
 
 #: Src/Midi/InstrumentChoice.cpp:47
 msgid "Rock Organ"
-msgstr ""
+msgstr "Órgano de música rock"
 
 #: Src/Midi/InstrumentChoice.cpp:48
 msgid "Church Organ"
-msgstr ""
+msgstr "Órgano de iglesia"
 
 #: Src/Midi/InstrumentChoice.cpp:49
 msgid "Reed Organ"
-msgstr ""
+msgstr "Órgano de lengüetas"
 
 #: Src/Midi/InstrumentChoice.cpp:50
 msgid "Accordion"
-msgstr ""
+msgstr "Acordeón"
 
 #: Src/Midi/InstrumentChoice.cpp:51
 msgid "Harmonica"
-msgstr ""
+msgstr "Armónica"
 
 #: Src/Midi/InstrumentChoice.cpp:52
 msgid "Tango Accordion"
-msgstr ""
+msgstr "Bandoneón"
 
 #: Src/Midi/InstrumentChoice.cpp:53
 msgid "Nylon String Guitar"
-msgstr ""
+msgstr "Guitarra española"
 
 #: Src/Midi/InstrumentChoice.cpp:54
 msgid "Steel String Guitar"
-msgstr ""
+msgstr "Guitarra sajona"
 
 #: Src/Midi/InstrumentChoice.cpp:55
 msgid "Jazz Guitar"
-msgstr ""
+msgstr "Guitarra eléctrica (sonido jazz)"
 
 #: Src/Midi/InstrumentChoice.cpp:56
 msgid "Clean Electric Guitar"
-msgstr ""
+msgstr "Guitarra eléctrica (sonido nítido)"
 
 #: Src/Midi/InstrumentChoice.cpp:57
 msgid "Muted Electric Guitar"
-msgstr ""
+msgstr "Guitarra eléctrica (en sordina)"
 
 #: Src/Midi/InstrumentChoice.cpp:58
 msgid "Overdrive Guitar"
-msgstr ""
+msgstr "Guitarra sobremodulada"
 
 #: Src/Midi/InstrumentChoice.cpp:59
 msgid "Distortion Guitar"
-msgstr ""
+msgstr "Guitarra distorsionada"
 
 #: Src/Midi/InstrumentChoice.cpp:60
 msgid "Guitar Harmonics"
-msgstr ""
+msgstr "Armónicos de guitarra"
 
 #: Src/Midi/InstrumentChoice.cpp:61
 msgid "Acoustic Bass"
-msgstr ""
+msgstr "Contrabajo acústico"
 
 #: Src/Midi/InstrumentChoice.cpp:62
 msgid "Fingered Bass"
-msgstr ""
+msgstr "Bajo eléctrico (dedaje)"
 
 #: Src/Midi/InstrumentChoice.cpp:63
 msgid "Picked Bass"
-msgstr ""
+msgstr "Bajo eléctrico (plectro)"
 
 #: Src/Midi/InstrumentChoice.cpp:64
 msgid "Fretless Bass"
-msgstr ""
+msgstr "Bajo sin trastes"
 
 #: Src/Midi/InstrumentChoice.cpp:65
 msgid "Slap Bass 1"
-msgstr ""
+msgstr "Bajo golpeado 1"
 
 #: Src/Midi/InstrumentChoice.cpp:66
 msgid "Slap Bass 2"
-msgstr ""
+msgstr "Bajo golpeado 2"
 
 #: Src/Midi/InstrumentChoice.cpp:67
 msgid "Synth Bass 1"
-msgstr ""
+msgstr "Bajo sintetizado 1"
 
 #: Src/Midi/InstrumentChoice.cpp:68
 msgid "Synth Bass 2"
-msgstr ""
+msgstr "Bajo sintetizado 2"
 
 #: Src/Midi/InstrumentChoice.cpp:69
 msgid "Violin"
-msgstr ""
+msgstr "Violín"
 
 #: Src/Midi/InstrumentChoice.cpp:70
 msgid "Viola"
-msgstr ""
+msgstr "Viola"
 
 #: Src/Midi/InstrumentChoice.cpp:71
 msgid "Cello"
-msgstr ""
+msgstr "Violoncello"
 
 #: Src/Midi/InstrumentChoice.cpp:72
 msgid "Contrabass"
-msgstr ""
+msgstr "Contrabajo acústico"
 
 #: Src/Midi/InstrumentChoice.cpp:73
 msgid "Tremolo Strings"
-msgstr ""
+msgstr "Cuerdas en trémolo"
 
 #: Src/Midi/InstrumentChoice.cpp:74
 msgid "Pizzicato Strings"
-msgstr ""
+msgstr "Cuerdas en pizzicato"
 
 #: Src/Midi/InstrumentChoice.cpp:75
 msgid "Orchestral Harp"
-msgstr ""
+msgstr "Arpa clásica"
 
 #: Src/Midi/InstrumentChoice.cpp:76
 msgid "Timpani"
-msgstr ""
+msgstr "Timbales"
 
 #: Src/Midi/InstrumentChoice.cpp:77
 msgid "String Ensemble 1"
-msgstr ""
+msgstr "Orquesta de cuerdas 1"
 
 #: Src/Midi/InstrumentChoice.cpp:78
 msgid "String Ensemble 2"
-msgstr ""
+msgstr "Orquesta de cuerdas 2"
 
 #: Src/Midi/InstrumentChoice.cpp:79
 msgid "Synth Strings 1"
-msgstr ""
+msgstr "Cuerdas sintetizadas 1"
 
 #: Src/Midi/InstrumentChoice.cpp:80
 msgid "Synth Strings 2"
-msgstr ""
+msgstr "Cuerdas sintetizadas 2"
 
 #: Src/Midi/InstrumentChoice.cpp:81
 msgid "Choir (ahh)"
-msgstr ""
+msgstr "Coro (aes)"
 
 #: Src/Midi/InstrumentChoice.cpp:82
 msgid "Choir (ooh)"
-msgstr ""
+msgstr "Coro (oes)"
 
 #: Src/Midi/InstrumentChoice.cpp:83
 msgid "Synth Voice"
-msgstr ""
+msgstr "Voz sintetizada"
 
 #: Src/Midi/InstrumentChoice.cpp:84
 msgid "Orchestral Hit"
-msgstr ""
+msgstr "Tutti orquestal"
 
 #: Src/Midi/InstrumentChoice.cpp:85
 msgid "Trumpet"
-msgstr ""
+msgstr "Trompeta"
 
 #: Src/Midi/InstrumentChoice.cpp:86
 msgid "Trombone"
-msgstr ""
+msgstr "Trombón"
 
 #: Src/Midi/InstrumentChoice.cpp:87
 msgid "Tuba"
-msgstr ""
+msgstr "Tuba"
 
 #: Src/Midi/InstrumentChoice.cpp:88
 msgid "Muted Trumpet"
-msgstr ""
+msgstr "Trompeta con sordina"
 
 #: Src/Midi/InstrumentChoice.cpp:89
 msgid "French Horn"
-msgstr ""
+msgstr "Cuernos franceses"
 
 #: Src/Midi/InstrumentChoice.cpp:90
 msgid "Brass Section"
-msgstr ""
+msgstr "Conjunto de bronces"
 
 #: Src/Midi/InstrumentChoice.cpp:91
 msgid "Synth Brass 1"
-msgstr ""
+msgstr "Bronces sintetizados 1"
 
 #: Src/Midi/InstrumentChoice.cpp:92
 msgid "Synth Brass 2"
-msgstr ""
+msgstr "Bronces sintetizados 2"
 
 #: Src/Midi/InstrumentChoice.cpp:93
 msgid "Soprano Sax"
-msgstr ""
+msgstr "Saxofón soprano"
 
 #: Src/Midi/InstrumentChoice.cpp:94
 msgid "Alto Sax"
-msgstr ""
+msgstr "Saxofón contralto"
 
 #: Src/Midi/InstrumentChoice.cpp:95
 msgid "Tenor Sax"
-msgstr ""
+msgstr "Saxofón tenor"
 
 #: Src/Midi/InstrumentChoice.cpp:96
 msgid "Baritone Sax"
-msgstr ""
+msgstr "Saxofón barítono"
 
 #: Src/Midi/InstrumentChoice.cpp:97
 msgid "Oboe"
-msgstr ""
+msgstr "Oboe"
 
 #: Src/Midi/InstrumentChoice.cpp:98
 msgid "English Horn"
-msgstr ""
+msgstr "Cuerno inglés"
 
 #: Src/Midi/InstrumentChoice.cpp:99
 msgid "Bassoon"
-msgstr ""
+msgstr "Fagot"
 
 #: Src/Midi/InstrumentChoice.cpp:100
 msgid "Clarinet"
-msgstr ""
+msgstr "Clarinete"
 
 #: Src/Midi/InstrumentChoice.cpp:101
 msgid "Piccolo"
-msgstr ""
+msgstr "Flautín (píccolo)"
 
 #: Src/Midi/InstrumentChoice.cpp:102
 msgid "Flute"
-msgstr ""
+msgstr "Flauta traversa"
 
 #: Src/Midi/InstrumentChoice.cpp:103
 msgid "Recorder"
-msgstr ""
+msgstr "Flauta dulce"
 
 #: Src/Midi/InstrumentChoice.cpp:104
 msgid "Pan Flute"
-msgstr ""
+msgstr "Flauta de pan (zampoña o siringa)"
 
 #: Src/Midi/InstrumentChoice.cpp:105
 msgid "Blown Bottle"
-msgstr ""
+msgstr "Silbato de botella"
 
 #: Src/Midi/InstrumentChoice.cpp:106
 msgid "Shakuachi"
-msgstr ""
+msgstr "Shakuhachi (flauta oriental)"
 
 #: Src/Midi/InstrumentChoice.cpp:107
 msgid "Whistle"
-msgstr ""
+msgstr "Silbato (pito)"
 
 #: Src/Midi/InstrumentChoice.cpp:108
 msgid "Ocarina"
-msgstr ""
+msgstr "Ocarina"
 
 #: Src/Midi/InstrumentChoice.cpp:109
 msgid "Square Wave"
-msgstr ""
+msgstr "Solo 1 (onda cuadrada)"
 
 #: Src/Midi/InstrumentChoice.cpp:110
 msgid "Sawtooth wave"
-msgstr ""
+msgstr "Solo 2 (onda diente de sierra)"
 
 #: Src/Midi/InstrumentChoice.cpp:111
 msgid "Caliope"
-msgstr ""
+msgstr "Solo 3 (órgano de Vapor sintetizado)"
 
 #: Src/Midi/InstrumentChoice.cpp:112
 msgid "Chiff"
-msgstr ""
+msgstr "Solo 4 (viento)"
 
 #: Src/Midi/InstrumentChoice.cpp:113
 msgid "Charang"
-msgstr ""
+msgstr "Solo 5 (charango)"
 
 #: Src/Midi/InstrumentChoice.cpp:114
 msgid "Synth Voice 2"
-msgstr ""
+msgstr "Solo 6 (voz)"
 
 #: Src/Midi/InstrumentChoice.cpp:115
 msgid "Fifths"
-msgstr ""
+msgstr "Solo 7 (quintas)"
 
 #: Src/Midi/InstrumentChoice.cpp:116
 msgid "Bass and Lead"
-msgstr ""
+msgstr "Solo 8 (bajos)"
 
 #: Src/Midi/InstrumentChoice.cpp:117
 msgid "New Age"
-msgstr ""
+msgstr "Colchón 1 (fantasía / New Age)"
 
 #: Src/Midi/InstrumentChoice.cpp:118
 msgid "Warm"
-msgstr ""
+msgstr "Colchón 2 (sonido cálido)"
 
 #: Src/Midi/InstrumentChoice.cpp:119
 msgid "Polysynth"
-msgstr ""
+msgstr "Colchón 3 (sintetizador polifónico)"
 
 #: Src/Midi/InstrumentChoice.cpp:120
 msgid "Choir"
-msgstr ""
+msgstr "Colchón 4 (coro espacial)"
 
 #: Src/Midi/InstrumentChoice.cpp:121 Src/Pickers/InstrumentPicker.cpp:133
 msgid "Bowed"
-msgstr ""
+msgstr "Colchón 5 (vidrio frotado)"
 
 #: Src/Midi/InstrumentChoice.cpp:122
 msgid "Metallic"
-msgstr ""
+msgstr "Colchón 6 (sonido metálico)"
 
 #: Src/Midi/InstrumentChoice.cpp:123
 msgid "Halo"
-msgstr ""
+msgstr "Colchón 7 (aureola)"
 
 #: Src/Midi/InstrumentChoice.cpp:124
 msgid "Sweep"
-msgstr ""
+msgstr "Colchón 8 (onda de barrido)"
 
 #: Src/Midi/InstrumentChoice.cpp:125
 msgid "Rain"
-msgstr ""
+msgstr "Efecto 1 (lluvia de hielo)"
 
 #: Src/Midi/InstrumentChoice.cpp:126
 msgid "Sound Track"
-msgstr ""
+msgstr "Efecto 2 (banda sonora)"
 
 #: Src/Midi/InstrumentChoice.cpp:127
 msgid "Crystal"
-msgstr ""
+msgstr "Efecto 3 (cristal)"
 
 #: Src/Midi/InstrumentChoice.cpp:128
 msgid "Atmosphere"
-msgstr ""
+msgstr "Efecto 4 (atmósfera)"
 
 #: Src/Midi/InstrumentChoice.cpp:129
 msgid "Brightness"
-msgstr ""
+msgstr "Efecto 5 (brillantez)"
 
 #: Src/Midi/InstrumentChoice.cpp:130
 msgid "Goblins"
-msgstr ""
+msgstr "Efecto 6 (fantasmas)"
 
 #: Src/Midi/InstrumentChoice.cpp:131
 msgid "Drops"
-msgstr ""
+msgstr "Efecto 7 (ecos)"
 
 #: Src/Midi/InstrumentChoice.cpp:132
 msgid "Star Theme"
-msgstr ""
+msgstr "Efecto 8 (ciencia ficción)"
 
 #: Src/Midi/InstrumentChoice.cpp:133
 msgid "Sitar"
-msgstr ""
+msgstr "Sitar hindú"
 
 #: Src/Midi/InstrumentChoice.cpp:134
 msgid "Banjo"
-msgstr ""
+msgstr "Banjo"
 
 #: Src/Midi/InstrumentChoice.cpp:135
 msgid "Shamisen"
-msgstr ""
+msgstr "Shamisen (guitarra oriental de 3 cuerdas)"
 
 #: Src/Midi/InstrumentChoice.cpp:136
 msgid "Koto"
-msgstr ""
+msgstr "Koto (cítara oriental)"
 
 #: Src/Midi/InstrumentChoice.cpp:137
 msgid "Kalimba"
-msgstr ""
+msgstr "Kalimba"
 
 #: Src/Midi/InstrumentChoice.cpp:138
 msgid "Bagpipe"
-msgstr ""
+msgstr "Gaita"
 
 #: Src/Midi/InstrumentChoice.cpp:139
 msgid "Fiddle"
-msgstr ""
+msgstr "Fídula (violín rústico)"
 
 #: Src/Midi/InstrumentChoice.cpp:140
 msgid "Shanai"
-msgstr ""
+msgstr "Shenai (oboe hindú)"
 
 #: Src/Midi/InstrumentChoice.cpp:141
 msgid "Tinkle Bell"
-msgstr ""
+msgstr "Campanita tintineante"
 
 #: Src/Midi/InstrumentChoice.cpp:142
 msgid "Agogo"
-msgstr ""
+msgstr "Gong (campana agogó)"
 
 #: Src/Midi/InstrumentChoice.cpp:143
 msgid "Steel Drums"
-msgstr ""
+msgstr "Tambor metálico de Trinidad y Tobago"
 
 #: Src/Midi/InstrumentChoice.cpp:144
 msgid "Woodblock"
-msgstr ""
+msgstr "Caja de madera"
 
 #: Src/Midi/InstrumentChoice.cpp:145
 msgid "Taiko Drum"
-msgstr ""
+msgstr "Taiko (tambor oriental)"
 
 #: Src/Midi/InstrumentChoice.cpp:146
 msgid "Melodic Drum"
-msgstr ""
+msgstr "Tambores melódicos"
 
 #: Src/Midi/InstrumentChoice.cpp:147
 msgid "Synth Drum"
-msgstr ""
+msgstr "Tambor sintetizado"
 
 #: Src/Midi/InstrumentChoice.cpp:148
 msgid "Reverse Cymbal"
-msgstr ""
+msgstr "Platillo de corte inverso"
 
 #: Src/Midi/InstrumentChoice.cpp:149
 msgid "Guitar Fret Noise"
-msgstr ""
+msgstr "Sonido de frotación"
 
 #: Src/Midi/InstrumentChoice.cpp:150
 msgid "Breath Noise"
-msgstr ""
+msgstr "Sonido de respiración"
 
 #: Src/Midi/InstrumentChoice.cpp:151
 msgid "Seashore"
-msgstr ""
+msgstr "Oleaje (playa)"
 
 #: Src/Midi/InstrumentChoice.cpp:152
 msgid "Bird Tweet"
-msgstr ""
+msgstr "Pájaros"
 
 #: Src/Midi/InstrumentChoice.cpp:153
 msgid "Telephone Ring"
-msgstr ""
+msgstr "Timbre telefónico"
 
 #: Src/Midi/InstrumentChoice.cpp:154
 msgid "Helicopter"
-msgstr ""
+msgstr "Helicóptero"
 
 #: Src/Midi/InstrumentChoice.cpp:155
 msgid "Applause"
-msgstr ""
+msgstr "Aplausos"
 
 #: Src/Midi/InstrumentChoice.cpp:156
 msgid "Gunshot"
-msgstr ""
+msgstr "Disparo"
 
 #: Src/Midi/DrumChoice.cpp:30
 msgid "Standard"
-msgstr ""
+msgstr "Estándar"
 
 #: Src/Midi/DrumChoice.cpp:31
 msgid "Room kit"
-msgstr ""
+msgstr "Room kit"
 
 #: Src/Midi/DrumChoice.cpp:32
 msgid "Power kit"
@@ -2451,15 +2451,15 @@ msgstr ""
 
 #: Src/Midi/DrumChoice.cpp:33
 msgid "Electronic"
-msgstr ""
+msgstr "Electrónico"
 
 #: Src/Midi/DrumChoice.cpp:34
 msgid "Analog"
-msgstr ""
+msgstr "Analógico"
 
 #: Src/Midi/DrumChoice.cpp:35
 msgid "Jazz"
-msgstr ""
+msgstr "Jazz"
 
 #: Src/Midi/DrumChoice.cpp:36
 msgid "Brush"
@@ -2467,11 +2467,11 @@ msgstr ""
 
 #: Src/Midi/DrumChoice.cpp:37
 msgid "Orchestral"
-msgstr ""
+msgstr "Orquesta"
 
 #: Src/Midi/DrumChoice.cpp:38
 msgid "Special Effects"
-msgstr ""
+msgstr "Efectos especiales"
 
 #: Src/Midi/DrumChoice.cpp:40
 msgid "Invalid Drumkit"
@@ -2488,97 +2488,97 @@ msgstr "Con Punto"
 #: Src/Pickers/InstrumentPicker.cpp:83 Src/Pickers/InstrumentPicker.cpp:104
 #: Src/Pickers/InstrumentPicker.cpp:124
 msgid "Piano"
-msgstr ""
+msgstr "Piano"
 
 #: Src/Pickers/InstrumentPicker.cpp:84
 msgid "Chromatic Percussion"
-msgstr ""
+msgstr "Percusión cromática"
 
 #: Src/Pickers/InstrumentPicker.cpp:85 Src/Pickers/InstrumentPicker.cpp:106
 #: Src/Pickers/InstrumentPicker.cpp:125
 msgid "Organ"
-msgstr ""
+msgstr "Órgano"
 
 #: Src/Pickers/InstrumentPicker.cpp:86 Src/Pickers/InstrumentPicker.cpp:107
 #: Src/Pickers/InstrumentPicker.cpp:131
 msgid "Guitar"
-msgstr ""
+msgstr "Guitarra"
 
 #: Src/Pickers/InstrumentPicker.cpp:87 Src/Pickers/InstrumentPicker.cpp:108
 #: Src/Pickers/InstrumentPicker.cpp:134
 msgid "Bass"
-msgstr ""
+msgstr "Bajo"
 
 #: Src/Pickers/InstrumentPicker.cpp:88
 msgid "Strings"
-msgstr ""
+msgstr "Cuerdas"
 
 #: Src/Pickers/InstrumentPicker.cpp:89
 msgid "Ensemble"
-msgstr ""
+msgstr "Orchestra"
 
 #: Src/Pickers/InstrumentPicker.cpp:90 Src/Pickers/InstrumentPicker.cpp:111
 #: Src/Pickers/InstrumentPicker.cpp:126
 msgid "Brass"
-msgstr ""
+msgstr "Vientos-metal"
 
 #: Src/Pickers/InstrumentPicker.cpp:91 Src/Pickers/InstrumentPicker.cpp:112
 #: Src/Pickers/InstrumentPicker.cpp:129
 msgid "Reed"
-msgstr ""
+msgstr "Lengüeta"
 
 #: Src/Pickers/InstrumentPicker.cpp:92 Src/Pickers/InstrumentPicker.cpp:130
 msgid "Pipe"
-msgstr ""
+msgstr "Chiflo"
 
 #: Src/Pickers/InstrumentPicker.cpp:93 Src/Pickers/InstrumentPicker.cpp:114
 #: Src/Pickers/InstrumentPicker.cpp:128
 msgid "Synth Lead"
-msgstr ""
+msgstr "Lead sintético"
 
 #: Src/Pickers/InstrumentPicker.cpp:94
 msgid "Synth Pad"
-msgstr ""
+msgstr "Pad sintético"
 
 #: Src/Pickers/InstrumentPicker.cpp:95
 msgid "Synth Effects"
-msgstr ""
+msgstr "Efectos sintéticos"
 
 #: Src/Pickers/InstrumentPicker.cpp:96 Src/Pickers/InstrumentPicker.cpp:115
 msgid "Ethnic"
-msgstr ""
+msgstr "Étnico"
 
 #: Src/Pickers/InstrumentPicker.cpp:97
 msgid "Percussive"
-msgstr ""
+msgstr "De percusión"
 
 #: Src/Pickers/InstrumentPicker.cpp:105
 msgid "Chromatic"
-msgstr ""
+msgstr "Cromático"
 
 #: Src/Pickers/InstrumentPicker.cpp:109
 msgid "Strings and Orchestra"
-msgstr ""
+msgstr "Cuerdas y orquesta"
 
 #: Src/Pickers/InstrumentPicker.cpp:110
 msgid "Choirs, Pads and Voices"
-msgstr ""
+msgstr "Coros, pads y voces"
 
 #: Src/Pickers/InstrumentPicker.cpp:113
 msgid "Flutes and Pipe"
-msgstr ""
+msgstr "Flautas y chiflos"
 
 #: Src/Pickers/InstrumentPicker.cpp:116 Src/Pickers/InstrumentPicker.cpp:135
 msgid "Percussion"
-msgstr ""
+msgstr "Percusión"
 
 #: Src/Pickers/InstrumentPicker.cpp:127
 msgid "Pads"
-msgstr ""
+msgstr "Pads"
 
 #: Src/Pickers/InstrumentPicker.cpp:132
 msgid "Plucked"
-msgstr ""
+msgstr "Plucked"
 
 #: Src/Pickers/TuningPicker.cpp:62
 msgid "Rearrange selected notes"
@@ -2617,76 +2617,76 @@ msgstr "Octava -1"
 #: Src/Pickers/KeyPicker.cpp:99 Src/Pickers/KeyPicker.cpp:109
 #: Src/Midi/Note.h:109 Src/Midi/Note.h:125
 msgid "G"
-msgstr ""
+msgstr "G"
 
 #: Src/Pickers/KeyPicker.cpp:99 Src/Pickers/KeyPicker.cpp:102
 #: Src/Midi/Note.h:106 Src/Midi/Note.h:122
 msgid "E"
-msgstr ""
+msgstr "E"
 
 #: Src/Pickers/KeyPicker.cpp:100 Src/Pickers/KeyPicker.cpp:108
 #: Src/Midi/Note.h:104 Src/Midi/Note.h:120
 msgid "D"
-msgstr ""
+msgstr "D"
 
 #: Src/Pickers/KeyPicker.cpp:100 Src/Pickers/KeyPicker.cpp:103
 #: Src/Midi/Note.h:101 Src/Midi/Note.h:117
 msgid "B"
-msgstr ""
+msgstr "B"
 
 #: Src/Pickers/KeyPicker.cpp:101 Src/Pickers/KeyPicker.cpp:104
 #: Src/Midi/Note.h:108
 msgid "F#"
-msgstr ""
+msgstr "F#"
 
 #: Src/Pickers/KeyPicker.cpp:102 Src/Pickers/KeyPicker.cpp:105
 #: Src/Midi/Note.h:103
 msgid "C#"
-msgstr ""
+msgstr "C#"
 
 #: Src/Pickers/KeyPicker.cpp:103 Src/Midi/Note.h:110
 msgid "G#"
-msgstr ""
+msgstr "G#"
 
 #: Src/Pickers/KeyPicker.cpp:104 Src/Midi/Note.h:105
 msgid "D#"
-msgstr ""
+msgstr "D#"
 
 #: Src/Pickers/KeyPicker.cpp:105 Src/Midi/Note.h:100
 msgid "A#"
-msgstr ""
+msgstr "A#"
 
 #: Src/Pickers/KeyPicker.cpp:108 Src/Pickers/KeyPicker.cpp:111
 #: Src/Midi/Note.h:107 Src/Midi/Note.h:123
 msgid "F"
-msgstr ""
+msgstr "F"
 
 #: Src/Pickers/KeyPicker.cpp:109 Src/Pickers/KeyPicker.cpp:112
 #: Src/Midi/Note.h:116
 msgid "Bb"
-msgstr ""
+msgstr "Bb"
 
 #: Src/Pickers/KeyPicker.cpp:110 Src/Pickers/KeyPicker.cpp:113
 #: Src/Midi/Note.h:121
 msgid "Eb"
-msgstr ""
+msgstr "Eb"
 
 #: Src/Pickers/KeyPicker.cpp:111 Src/Pickers/KeyPicker.cpp:114
 #: Src/Midi/Note.h:126
 msgid "Ab"
-msgstr ""
+msgstr "Ab"
 
 #: Src/Pickers/KeyPicker.cpp:112 Src/Midi/Note.h:119
 msgid "Db"
-msgstr ""
+msgstr "Db"
 
 #: Src/Pickers/KeyPicker.cpp:113 Src/Midi/Note.h:124
 msgid "Gb"
-msgstr ""
+msgstr "Gb"
 
 #: Src/Pickers/KeyPicker.cpp:114
 msgid "Cb"
-msgstr ""
+msgstr "Cb"
 
 #: Src/Pickers/KeyPicker.cpp:127
 msgid "Guess Key"
@@ -2756,4 +2756,4 @@ msgstr "volumen"
 
 #: Src/PreferencesData.h:63
 msgid "System soundbank"
-msgstr ""
+msgstr "Banco de sonidos del sistema"

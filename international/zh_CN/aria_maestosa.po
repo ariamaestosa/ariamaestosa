@@ -3,14 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# scilenso <scilenso@gmail.com>, 2014
 # scilenso <scilenso@gmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: Aria Maestosa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-10-02 18:51-0400\n"
-"PO-Revision-Date: 2013-10-03 08:19+0000\n"
-"Last-Translator: Auria <auria.mg@gmail.com>\n"
+"PO-Revision-Date: 2014-01-29 08:35+0000\n"
+"Last-Translator: scilenso <scilenso@gmail.com>\n"
 "Language-Team: Chinese (China) (GB2312) (http://www.transifex.com/projects/p/ariamaestosa/language/zh_CN.GB2312/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -118,7 +119,7 @@ msgstr "记住窗口位置"
 
 #: Src/PreferencesData.cpp:284
 msgid "Automatically launch FluidSynth if needed"
-msgstr ""
+msgstr "如果需要，自动启动FluidSynth"
 
 #: Src/PreferencesData.cpp:291
 msgid "Single-instance application"
@@ -130,7 +131,7 @@ msgstr "在滚动琴键上显示音符名"
 
 #: Src/PreferencesData.cpp:303
 msgid "Restore open files from previous session"
-msgstr ""
+msgstr "从先前进程恢复打开的文件"
 
 #: Src/PreferencesData.cpp:334 Src/GUI/MainFrameMenuBar.cpp:351
 #: Src/GUI/MainFrameMenuBar.cpp:354 Src/GUI/MainFrame.cpp:1006
@@ -312,7 +313,7 @@ msgstr "请稍等…"
 #. I18N: - title of the copyright/info dialog
 #: Src/Dialogs/SongPropertiesDialog.cpp:85
 msgid "Song Properties"
-msgstr ""
+msgstr "歌曲属性"
 
 #. I18N: - title of the copyright/info dialog
 #: Src/Dialogs/SongPropertiesDialog.cpp:96
@@ -327,23 +328,23 @@ msgstr "版权"
 #. I18N: - default key signature
 #: Src/Dialogs/SongPropertiesDialog.cpp:113
 msgid "Default key signature"
-msgstr ""
+msgstr "默认key升降记号"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:119
 msgid "None"
-msgstr ""
+msgstr "无"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:120
 msgid "Sharps"
-msgstr ""
+msgstr "升半音"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:121
 msgid "Flats"
-msgstr ""
+msgstr "降半音"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:124
 msgid "Symbols"
-msgstr ""
+msgstr "符号"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:148 Src/GUI/MainFrame.cpp:482
 msgid "Tempo"
@@ -371,7 +372,7 @@ msgstr "A"
 #: Src/Dialogs/SongPropertiesDialog.cpp:373
 #, c-format
 msgid "%s Major - %s minor"
-msgstr ""
+msgstr "%s 大调 - %s 小调"
 
 #: Src/Dialogs/PresetEditor.cpp:33
 msgid "Presets"
@@ -414,15 +415,15 @@ msgstr "首选项"
 
 #: Src/Dialogs/Preferences.cpp:258
 msgid "Aria Maestosa"
-msgstr ""
+msgstr "Aria Maestosa"
 
 #: Src/Dialogs/Preferences.cpp:259
 msgid "Sound input/output"
-msgstr ""
+msgstr "声音输入/输出"
 
 #: Src/Dialogs/Preferences.cpp:260
 msgid "Edition"
-msgstr ""
+msgstr "版本"
 
 #: Src/Dialogs/Preferences.cpp:351
 msgid "Browse..."
@@ -431,7 +432,7 @@ msgstr "浏览…"
 #. I18N: - in the preferences dialog
 #: Src/Dialogs/Preferences.cpp:390
 msgid "Changes will take effect next time you open the application."
-msgstr ""
+msgstr "更改会在下次启动应用时生效。"
 
 #: Src/Dialogs/Preferences.cpp:444
 msgid "You will need to restart Aria Maestosa for changes to be effective."
@@ -504,11 +505,11 @@ msgstr "音轨背景"
 
 #: Src/Dialogs/TrackPropertiesDialog.cpp:187
 msgid "Check all"
-msgstr ""
+msgstr "选择所有"
 
 #: Src/Dialogs/TrackPropertiesDialog.cpp:188
 msgid "Uncheck all"
-msgstr ""
+msgstr "所有都不选"
 
 #: Src/Dialogs/TrackPropertiesDialog.cpp:206
 msgid "Default volume for new notes"
@@ -617,12 +618,12 @@ msgstr ""
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:66
 msgid "J.D. Koftinoff Software for the jdksmidi library"
-msgstr ""
+msgstr "J.D. Koftinoff Software for the jdksmidi library"
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:68
 msgid "The irrXML team for their XML parser"
-msgstr ""
+msgstr "The irrXML team for their XML parser"
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:70
@@ -708,7 +709,7 @@ msgstr "插入小节"
 #. I18N: (undoable) action name
 #: Src/Actions/DeleteControllerEvent.cpp:40
 msgid "delete controller event"
-msgstr ""
+msgstr "删除控制器事件"
 
 #. I18N: (undoable) action name
 #: Src/Actions/Duplicate.cpp:43
@@ -738,7 +739,7 @@ msgstr "添加控制事件"
 #. I18N: (undoable) action name
 #: Src/Actions/DuplicateMeasures.cpp:37
 msgid "duplicate measures"
-msgstr ""
+msgstr "复制小节"
 
 #. I18N: (undoable) action name
 #: Src/Actions/AddTextEvent.cpp:31
@@ -773,7 +774,7 @@ msgstr "添加音符"
 #. I18N: (undoable) action name
 #: Src/Actions/SetTrackVolume.cpp:27
 msgid "change track volume"
-msgstr ""
+msgstr "改变音轨音量"
 
 #. I18N: (undoable) action name
 #: Src/Actions/AddTrack.cpp:37
@@ -865,7 +866,7 @@ msgstr "半音"
 
 #: Src/Editors/ControllerEditor.cpp:666
 msgid "Lyrics"
-msgstr ""
+msgstr "歌词"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:92
@@ -1254,7 +1255,7 @@ msgstr "打开"
 
 #: Src/GUI/MainFrameMenuBar.cpp:95
 msgid "&Recent Files"
-msgstr ""
+msgstr "最近文档"
 
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:100
@@ -1278,7 +1279,7 @@ msgstr "关闭"
 
 #: Src/GUI/MainFrameMenuBar.cpp:118
 msgid "Song Propert&ies..."
-msgstr ""
+msgstr "歌曲属性"
 
 #: Src/GUI/MainFrameMenuBar.cpp:122
 msgid "&Print..."
@@ -1510,11 +1511,11 @@ msgstr "无法取消"
 
 #: Src/GUI/MainFrameMenuBar.cpp:657
 msgid "The file no longer exists on disk. Do you want to save it anyway?"
-msgstr ""
+msgstr "文件在磁盘上不再存在，您希望无论如何保存它吗？"
 
 #: Src/GUI/MainFrameMenuBar.cpp:657
 msgid "Warning"
-msgstr ""
+msgstr "警告"
 
 #: Src/GUI/MainFrameMenuBar.cpp:698 Src/GUI/MainFrameMenuBar.cpp:761
 #: Src/GUI/MainFrameMenuBar.cpp:801
@@ -1578,7 +1579,7 @@ msgstr "手动"
 
 #: Src/GUI/MainFrameMenuBar.cpp:1574
 msgid "Clear List"
-msgstr ""
+msgstr "清除列表"
 
 #: Src/GUI/MainFrame.cpp:440
 msgid "Record"
@@ -1644,7 +1645,7 @@ msgstr "选择“否”将会丢弃未保存的更改"
 
 #: Src/GUI/MainFrame.cpp:1736
 msgid "Selecting 'Cancel' will cancel exiting the application"
-msgstr "选择“取消”将会取消退出本程序"
+msgstr "选择“取消”将会返回本程序"
 
 #. I18N: title of dialog shown when exiting without saving
 #: Src/GUI/MainFrame.cpp:1741
@@ -1709,15 +1710,15 @@ msgstr "退出"
 
 #: Src/GUI/GraphicalTrack.cpp:419
 msgid "Track volume"
-msgstr ""
+msgstr "音轨音量"
 
 #: Src/GUI/GraphicalTrack.cpp:423
 msgid "Mute"
-msgstr ""
+msgstr "无声"
 
 #: Src/GUI/GraphicalTrack.cpp:427
 msgid "Solo"
-msgstr ""
+msgstr "独奏"
 
 #: Src/GUI/GraphicalTrack.cpp:433
 msgid "Maximize track"
@@ -1765,7 +1766,7 @@ msgstr "移除选择的小节"
 
 #: Src/GUI/MeasureBar.cpp:71
 msgid "Duplicate selected measures"
-msgstr ""
+msgstr "复制选中的小节"
 
 #: Src/GUI/MeasureBar.cpp:97
 msgid "Do you really want to remove selected measures?"
@@ -1782,7 +1783,7 @@ msgstr "移除拍号更改"
 #: Src/GUI/MeasureBar.cpp:156
 #, c-format
 msgid "Insert empty measures between measures %i and %i"
-msgstr ""
+msgstr "在小节 %i 和 %i 间插入空白小节"
 
 #: Src/GUI/MeasureBar.cpp:158
 msgid "Amount: "
@@ -1835,7 +1836,7 @@ msgstr "未知的MIDI端口"
 
 #: Src/Midi/Players/Mac/MacPlayerInterface.cpp:118
 msgid "Sorry, an internal error occurred during export"
-msgstr ""
+msgstr "很遗憾，输出时出现了内部错误"
 
 #: Src/Midi/Players/Mac/MacPlayerInterface.cpp:157
 msgid ""
@@ -1890,7 +1891,7 @@ msgstr "所选的ALSA设备 (%s) 无法打开。"
 
 #: Src/Midi/Players/Alsa/AlsaPort.cpp:442
 msgid "Loading "
-msgstr ""
+msgstr "载入中"
 
 #: Src/Midi/Players/Jack/JackMidiManager.cpp:231
 msgid "Jack"
@@ -2705,13 +2706,13 @@ msgstr "编辑预设置"
 #: Src/Pickers/KeyPicker.cpp:522
 #, c-format
 msgid "%s Major, %s minor"
-msgstr ""
+msgstr "%s 大调, %s 小调"
 
 #. I18N: - when setting time signature, to indicate it's not constant through
 #. song
 #: Src/Pickers/TimeSigPicker.cpp:178
 msgid "Varies throughout song"
-msgstr ""
+msgstr "作用于整首歌曲"
 
 #. I18N: - when setting a wrong time signature
 #: Src/Pickers/TimeSigPicker.cpp:280
@@ -2754,4 +2755,4 @@ msgstr "音量"
 
 #: Src/PreferencesData.h:63
 msgid "System soundbank"
-msgstr ""
+msgstr "系统音色库"
