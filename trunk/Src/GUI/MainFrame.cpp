@@ -689,7 +689,8 @@ void MainFrame::initToolbar()
 #endif
 
     m_tempo_ctrl = new wxTextCtrl(m_toolbar, TEMPO, wxT("120"), wxDefaultPosition, smallTextCtrlSize, wxTE_PROCESS_ENTER );
-    m_toolbar->add(m_tempo_ctrl, _("Tempo"));
+    m_tempo_ctrl->SetToolTip(_("This is the initial tempo of the song, see the Controller Editor for tempo variations"));
+    m_toolbar->add(m_tempo_ctrl, _("Initial tempo"));
 
 #if defined(__WXMSW__)
     m_toolbar->AddSeparator();
