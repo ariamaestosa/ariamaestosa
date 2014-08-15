@@ -566,13 +566,13 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
         x = x1 + getEditorXStart() + 1;
         
-        AriaRender::bordered_rect(x, y1, x2 + getEditorXStart() - 1, y2);
+        AriaRender::bordered_rect(x, y1 + 1, x2 + getEditorXStart() - 1, y2 - 1);
         
         if (showNoteNames)
         {
             AriaRender::images();
             applyInvertedColor(ariaColor);
-            AriaRender::renderString(getNoteName(pitch), x+1, y2, x2 + getEditorXStart() - x + 1);
+            AriaRender::renderString(getNoteName(pitch), x+1, y2 + 1, x2 + getEditorXStart() - x + 1);
         }
     }
 
