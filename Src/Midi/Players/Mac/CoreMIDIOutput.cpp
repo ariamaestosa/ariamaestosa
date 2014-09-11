@@ -111,6 +111,7 @@ static CFStringRef ConnectedEndpointName(MIDIEndpointRef endpoint)
                         connObjectType == kMIDIObjectType_ExternalDestination) {
                         // Connected to an external device's endpoint (10.3 and later).
                         str = EndpointName((OpaqueMIDIEndpoint*)(connObject), true);
+                        //str = EndpointName(connObject, true);
                     } else {
                         // Connected to an external device (10.2) (or something else, catch-all)
                         str = NULL;
@@ -294,8 +295,11 @@ void CoreMidiOutput::pitch_bend(const int value, const int channel)
     
     const int MESSAGESIZE = 3;
     
+    int c1 = (value & 0x7F);
+    int c2 = ((value >> 7) & 0x7F);
+    
     currentpacket = MIDIPacketListInit(packetlist);
-    Byte noteoff[MESSAGESIZE] = {0xE0 | channel, value & 0xFF, (value & 0xFF00) >> 8};
+    Byte noteoff[MESSAGESIZE] = {0xE0 | channel, c1, c2};
     currentpacket = MIDIPacketListAdd(packetlist, sizeof(buffer), 
                                       currentpacket, timestamp, MESSAGESIZE, noteoff);
     
