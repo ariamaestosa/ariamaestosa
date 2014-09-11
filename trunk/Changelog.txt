@@ -1,3 +1,6 @@
+1.4.11
+- Fixed pitch bend on OSX when sending playback to external device
+
 1.4.10
 - Enable looping a sub-portion of a song
 - Add support for bank select controller
