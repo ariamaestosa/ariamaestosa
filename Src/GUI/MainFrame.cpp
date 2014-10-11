@@ -208,7 +208,7 @@ void CustomToolBar::ClearTools()
     labels.clear();
     label_ids.clear();
     label_widgets.clear();
-    delete toolbarSizer;
+    SetSizer(NULL); // also deletes the previous sizer
     toolbarSizer = new wxFlexGridSizer(2, 100, 1, 15);
     SetSizer(toolbarSizer);
     m_is_realized = false;

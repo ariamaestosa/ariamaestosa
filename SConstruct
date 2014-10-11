@@ -280,9 +280,9 @@ def compile_Aria(which_os):
         is_wx_3 = (wxversion[0] == '3' or (wxversion[0] == '2' and wxversion[2] == '9'))
         if is_wx_3:
             if renderer == "opengl":
-                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,adv,gl,net,webview'])
+                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,adv,gl,net'])
             else:
-                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,adv,net,webview'])
+                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,adv,net'])
         else:
             if renderer == "opengl":
                 env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,adv,net,gl'])
