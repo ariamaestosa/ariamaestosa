@@ -166,10 +166,12 @@ void PlatformMidiManager::recordCallback(double deltatime, std::vector<unsigned 
         
         switch (messageType)
         {
-            case 0x90:
-            case 0x80:
+            case 0x90: // NOTE ON
+            case 0x80: // NOTE OFF
                 if (messageType == 0x90 and value2 > 0)
                 {
+                    // Note On
+                    
                     //printf("NOTE ON on channel %i; note : %i velocity : %i\n", channel, value, value2);
                     
                     // FIXME: we are in a thread, not all players may be thread-safe!!
@@ -180,6 +182,8 @@ void PlatformMidiManager::recordCallback(double deltatime, std::vector<unsigned 
                 }
                 else
                 {
+                    // Note off
+                    
                     //printf("NOTE OFF on channel %i; note : %i velocity : %i\n", channel, value, value2);
                     
                     // FIXME: we are in a thread, not all players may be thread-safe!!
@@ -193,7 +197,9 @@ void PlatformMidiManager::recordCallback(double deltatime, std::vector<unsigned 
                         if (self->m_record_action != NULL)
                         {
                             wxMutexLocker lock(self->m_record_action_queue_lock);
-                            self->m_record_action_queue.push_back(new Action::AddNote(131 - value,
+                            int channel = self->m_record_target->getChannel();
+                            // TODO: remove 131 - value old crap
+                            self->m_record_action_queue.push_back(new Action::AddNote((channel == 9 ? value : 131 - value),
                                                                                       n.m_note_on_tick,
                                                                                       now_tick,
                                                                                       n.m_velocity,
