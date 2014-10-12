@@ -1,4 +1,5 @@
 1.4.11
+- Fix bug when recording drum tracks
 - Fixed pitch bend on OSX when sending playback to external device
 
 1.4.10
