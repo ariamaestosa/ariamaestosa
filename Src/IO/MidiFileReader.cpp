@@ -597,6 +597,8 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
             }
         }
 
+        sequence->sortTextEvents();
+
         // check if we're in one-track-one-channel mode. by the way, make sure all tracks with the
         // same channel use the same instrument
         const int trackAmount_inAriaSeq = sequence->getTrackAmount();
