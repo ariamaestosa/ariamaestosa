@@ -2106,6 +2106,8 @@ void MainFrame::loadMidiFile(const wxString& filePath)
     // change song name
     getCurrentSequence()->setSequenceFilename( extractTitle(filePath) );
 
+    ASSERT(getCurrentSequence()->invariant());
+
     // if a song is currently playing, it needs to stay on top
     if (PlatformMidiManager::get()->isPlaying() or m_paused) setCurrentSequence(old_currentSequence);
    
