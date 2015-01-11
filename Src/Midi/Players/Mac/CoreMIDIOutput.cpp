@@ -251,10 +251,10 @@ void CoreMidiOutput::prog_change(const int instrument, const int channel)
     MIDIPacketList *packetlist = (MIDIPacketList*)buffer;
     MIDIPacket *currentpacket = MIDIPacketListInit(packetlist);
     
-    const int MESSAGESIZE = 3;
+    const int MESSAGESIZE = 2;
     
     currentpacket = MIDIPacketListInit(packetlist);
-    Byte noteoff[MESSAGESIZE] = {0xC0 | channel, instrument, 0 /* unused byte */};
+    Byte noteoff[MESSAGESIZE] = {0xC0 | channel, instrument};
     currentpacket = MIDIPacketListAdd(packetlist, sizeof(buffer), 
                                       currentpacket, timestamp, MESSAGESIZE, noteoff);
     
