@@ -5,14 +5,14 @@
 # Translators:
 #   <alexisarcham@gmail.com>, 2012
 # fri, 2012
-# fri, 2013
+# fri, 2013-2014
 # fri, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: Aria Maestosa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-02 18:51-0400\n"
-"PO-Revision-Date: 2014-07-13 08:43+0000\n"
+"POT-Creation-Date: 2014-08-12 20:06-0400\n"
+"PO-Revision-Date: 2014-08-13 05:40+0000\n"
 "Last-Translator: fri\n"
 "Language-Team: Czech (http://www.transifex.com/projects/p/ariamaestosa/language/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -21,124 +21,296 @@ msgstr ""
 "Language: cs\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: Src/main.cpp:338 Src/main.cpp:359
-msgid ""
-"Sorry an internal error occurred : an exception was caught unhandled : "
-msgstr "Promiňte, ale vyskytla se vnitřní chyba: S výjimkou nebylo zacházeno správně: "
+#: Src/Renderers/wxImage.cpp:53
+msgid "Failed to load "
+msgstr "Nepodařilo se nahrát "
 
-#: Src/PresetManager.cpp:133
+#: Src/Renderers/GLImage.cpp:52 Src/Renderers/GLImage.cpp:64
+#: Src/Renderers/GLImage.cpp:77 Src/Renderers/GLImage.cpp:87
+#: Src/Renderers/GLImage.cpp:108 Src/Renderers/GLImage.cpp:194
+msgid "Failed to load resource image"
+msgstr "Nepodařilo se nahrát zdrojový obraz."
+
+#. I18N: (undoable) action name
+#: Src/Actions/Record.cpp:32
+msgid "record from MIDI instrument"
+msgstr "Nahrávání z nástroje MIDI"
+
+#. I18N: (undoable) action name
+#: Src/Actions/InsertEmptyMeasures.cpp:35
+msgid "insert measures"
+msgstr "Vložit takty"
+
+#. I18N: (undoable) action name
+#: Src/Actions/DeleteSelected.cpp:40
+msgid "delete note(s)"
+msgstr "Smazat noty"
+
+#. I18N: (undoable) action name
+#: Src/Actions/DeleteControllerEvent.cpp:40
+msgid "delete controller event"
+msgstr "Smazat událost ovladače"
+
+#. I18N: (undoable) action name
+#: Src/Actions/ShiftFrets.cpp:28 Src/Actions/NumberPressed.cpp:29
+msgid "change note fret"
+msgstr "Změnit pražec"
+
+#. I18N: (undoable) action name
+#: Src/Actions/DeleteTrack.cpp:32
+msgid "delete track"
+msgstr "Smazat stopu"
+
+#. I18N: (undoable) action name
+#: Src/Actions/SetNoteVolume.cpp:27
+msgid "change note(s) volume"
+msgstr "Změnit hlasitost not"
+
+#. I18N: (undoable) action name
+#: Src/Actions/ShiftString.cpp:27
+msgid "string change"
+msgstr "Změna struny"
+
+#. I18N: (undoable) action name
+#: Src/Actions/Duplicate.cpp:43
+msgid "duplicate"
+msgstr "Zdvojit"
+
+#. I18N: (undoable) action name
+#: Src/Actions/ResizeNotes.cpp:31
+msgid "resize note(s)"
+msgstr "Změnit velikost not"
+
+#. I18N: (undoable) action name
+#: Src/Actions/SetTrackVolume.cpp:27
+msgid "change track volume"
+msgstr "Změnit hlasitost stopy"
+
+#. I18N: (undoable) action name
+#: Src/Actions/AddControllerSlide.cpp:33
+msgid "add control slide"
+msgstr "Přidat ovládací posuvník"
+
+#. I18N: (undoable) action name
+#: Src/Actions/SetAccidentalSign.cpp:34
+msgid "accidental change"
+msgstr "Změna posuvky"
+
+#. I18N: (undoable) action name
+#: Src/Actions/RearrangeNotes.cpp:29
+msgid "rearrange notes"
+msgstr "Přeuspořádat vybrané noty"
+
+#. I18N: (undoable) action name
+#: Src/Actions/RemoveOverlapping.cpp:31
+msgid "remove overlapping notes"
+msgstr "Odstranit překrývající se noty"
+
+#. I18N: (undoable) action name
+#: Src/Actions/SnapNotesToGrid.cpp:28
+msgid "snap notes to grid"
+msgstr "Zapadnout noty do mřížky"
+
+#. I18N: (undoable) action name
+#: Src/Actions/Paste.cpp:42
+msgid "paste"
+msgstr "Vložit"
+
+#. I18N: (undoable) action name
+#: Src/Actions/MoveNotes.cpp:38
+msgid "move note(s)"
+msgstr "Posunout noty"
+
+#. I18N: (undoable) action name
+#: Src/Actions/AddTrack.cpp:37
+msgid "add track"
+msgstr "Přidat stopu"
+
+#. I18N: (undoable) action name
+#: Src/Actions/ShiftBySemiTone.cpp:30
+msgid "change pitch"
+msgstr "Změnit výšku tónu"
+
+#. I18N: (undoable) action name
+#: Src/Actions/UpdateGuitarTuning.cpp:29
+msgid "change guitar tuning"
+msgstr "Změnit kytarové ladění"
+
+#. I18N: (undoable) action name
+#: Src/Actions/ScaleSong.cpp:30
+msgid "scale song"
+msgstr "Změnit velikost sekvence"
+
+#. I18N: (undoable) action name
+#: Src/Actions/AddNote.cpp:39
+msgid "add note"
+msgstr "Přidat notu"
+
+#. I18N: (undoable) action name
+#: Src/Actions/AddTextEvent.cpp:31
+msgid "text change"
+msgstr "Změna textu"
+
+#. I18N: (undoable) action name
+#: Src/Actions/AddControlEvent.cpp:32
+msgid "add control event"
+msgstr "Přidat událost ovladače"
+
+#. I18N: (undoable) action name
+#: Src/Actions/DuplicateMeasures.cpp:37
+msgid "duplicate measures"
+msgstr "Zdvojit takty"
+
+#. I18N: (undoable) action name
+#. I18N: menu item in the "edit" menu
+#: Src/Actions/ScrollNotesIntoView.cpp:37 Src/GUI/MainFrameMenuBar.cpp:199
+msgid "Scroll notes into view"
+msgstr "Posunout noty do pohledu"
+
+#. I18N: (undoable) action name
+#: Src/Actions/ScaleTrack.cpp:30
+msgid "scale note(s)"
+msgstr "Změnit velikost not"
+
+#. I18N: (undoable) action name
+#: Src/Actions/RemoveMeasures.cpp:38
+msgid "remove measure(s)"
+msgstr "Odstranit takty"
+
+#: Src/Dialogs/WaitWindow.cpp:69
+msgid "Please wait..."
+msgstr "Počkejte, prosím, ..."
+
+#. I18N: - title of the copyright/info dialog
+#: Src/Dialogs/SongPropertiesDialog.cpp:85
+msgid "Song Properties"
+msgstr "Vlastnosti písně"
+
+#. I18N: - title of the copyright/info dialog
+#: Src/Dialogs/SongPropertiesDialog.cpp:96
+msgid "Song name"
+msgstr "Název písně"
+
+#. I18N: - title of the copyright/info dialog
+#: Src/Dialogs/SongPropertiesDialog.cpp:105
+msgid "Copyright"
+msgstr "Autorské právo"
+
+#. I18N: - default key signature
+#: Src/Dialogs/SongPropertiesDialog.cpp:113
+msgid "Default key signature"
+msgstr "Výchozí předznamenání"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:119
+msgid "None"
+msgstr "Žádný"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:120
+msgid "Sharps"
+msgstr "Křížky"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:121
+msgid "Flats"
+msgstr "Béčka"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:124
+msgid "Symbols"
+msgstr "Symboly"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:148
+msgid "Tempo"
+msgstr "Tempo"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:157 Src/Pickers/TimeSigPicker.cpp:139
+msgid "Time Signature"
+msgstr "Taktové označení"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:169
+#: Src/Dialogs/SongPropertiesDialog.cpp:203
+msgid "Song duration :"
+msgstr "Doba trvání písně:"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:174
+#: Src/Dialogs/CustomKeyDialog.cpp:163 Src/Dialogs/PrintSetupDialog.cpp:103
+#: Src/Dialogs/PrintSetupDialog.cpp:726 Src/Dialogs/Preferences.cpp:382
+#: Src/Dialogs/CustomNoteSelectDialog.cpp:167 Src/Dialogs/TuningDialog.cpp:54
+#: Src/Dialogs/ScaleDialog.cpp:152 Src/Dialogs/TrackPropertiesDialog.cpp:230
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:545 Src/Pickers/TimeSigPicker.cpp:181
+msgid "OK"
+msgstr "OK"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:179
+#: Src/Dialogs/CustomKeyDialog.cpp:164 Src/Dialogs/PrintSetupDialog.cpp:729
+#: Src/Dialogs/Preferences.cpp:383 Src/Dialogs/CustomNoteSelectDialog.cpp:169
+#: Src/Dialogs/TuningDialog.cpp:57 Src/Dialogs/ScaleDialog.cpp:148
+#: Src/Dialogs/TrackPropertiesDialog.cpp:233
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:546
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:348 Src/Pickers/KeyPicker.cpp:95
+#: Src/Pickers/KeyPicker.cpp:110 Src/Midi/Note.h:102 Src/Midi/Note.h:118
+msgid "C"
+msgstr "C"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:348 Src/Pickers/KeyPicker.cpp:95
+#: Src/Pickers/KeyPicker.cpp:101 Src/Midi/Note.h:99 Src/Midi/Note.h:115
+msgid "A"
+msgstr "A"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:373
 #, c-format
-msgid "Sorry, an error occurred : could not create %s"
-msgstr "Promiňte, ale vyskytla se chyba: Nepodařilo se vytvořit %s"
+msgid "%s Major - %s minor"
+msgstr "%s Dur - %s moll"
 
-#: Src/PreferencesData.cpp:152
-msgid "Language"
-msgstr "Jazyk"
+#: Src/Dialogs/CustomKeyDialog.cpp:38
+msgid "Custom Key Editor"
+msgstr "Editor uživatelsky stanovených předznamenání"
 
-#: Src/PreferencesData.cpp:178
-msgid "MIDI Driver"
-msgstr "Ovladač MIDI"
+#: Src/Dialogs/CustomKeyDialog.cpp:52
+msgid "Select which notes should be part of the custom key"
+msgstr "Vyberte noty, jež mají být součástí uživatelsky stanovených předznamenání"
 
-#. I18N: In preferences
-#: Src/PreferencesData.cpp:190
-msgid "Play during edit (default value)"
-msgstr "Přehrávat během úprav (výchozí hodnota)"
+#. I18N: in custom key editor, this is the option to edit notes on a single
+#. octave
+#: Src/Dialogs/CustomKeyDialog.cpp:97
+msgid "All Octaves are Similar"
+msgstr "Všechny oktávy jsou podobné"
 
-#: Src/PreferencesData.cpp:192
-msgid "Always"
-msgstr "Vždy"
+#. I18N: in custom key editor, this is the option to edit all octaves
+#. independently
+#: Src/Dialogs/CustomKeyDialog.cpp:144
+msgid "All Octaves are Independent"
+msgstr "Všechny oktávy jsou nezávislé"
 
-#: Src/PreferencesData.cpp:193
-msgid "On note change"
-msgstr "Při změně noty"
+#. I18N: in custom key editor
+#. wxButton* copySettingsBtn = new wxButton( pane, wxID_COPY, _("Copy settings
+#. from another track...") );
+#. over_sizer->Add(copySettingsBtn, 0, wxALL, 5);
+#. I18N: in the key editor
+#: Src/Dialogs/CustomKeyDialog.cpp:153
+msgid "* Checked notes are included in the key"
+msgstr "* Zaškrtnuté noty jsou zahrnuty do předznamenání"
 
-#: Src/PreferencesData.cpp:194
-msgid "Never"
-msgstr "Nikdy"
+#. I18N: in the key editor
+#: Src/Dialogs/CustomKeyDialog.cpp:155
+msgid "* \"Half-checked\" notes are included as accidentals"
+msgstr "* Napůl zaškrtnuté noty jsou zahrnuty jako posuvky"
 
-#. I18N: In preferences
-#: Src/PreferencesData.cpp:199
-msgid "Default Score View"
-msgstr "Výchozí pohled na notový zápis"
+#. I18N: in the key editor
+#: Src/Dialogs/CustomKeyDialog.cpp:157
+msgid ""
+"* Unchecked notes are excluded (for instance, they could be unplayable on "
+"your instrument)"
+msgstr "* Nezaškrtnuté noty jsou vyloučeny (příklad: mohly by být vaším nástrojem nezahratelné)"
 
-#: Src/PreferencesData.cpp:201
-msgid "Both Musical and Linear"
-msgstr "Jak hudební tak přímý"
+#: Src/Dialogs/CustomKeyDialog.cpp:165
+msgid "Save as preset..."
+msgstr "Uložit jako přednastavení..."
 
-#: Src/PreferencesData.cpp:202
-msgid "Musical Only"
-msgstr "Jen hudební"
-
-#: Src/PreferencesData.cpp:203
-msgid "Linear Only"
-msgstr "Jen přímý"
-
-#. I18N: In preferences
-#: Src/PreferencesData.cpp:208
-msgid "Default Editor View"
-msgstr "Výchozí pohled na editor"
-
-#: Src/PreferencesData.cpp:210
-msgid "Keyboard"
-msgstr "Klávesnice"
-
-#: Src/PreferencesData.cpp:211
-msgid "Score"
-msgstr "Notový zápis"
-
-#: Src/PreferencesData.cpp:212
-msgid "Tablature"
-msgstr "Tabulatura"
-
-#. I18N: In preferences
-#: Src/PreferencesData.cpp:218
-msgid "Instrument Classification"
-msgstr "Zařazení nástroje"
-
-#: Src/PreferencesData.cpp:220
-msgid "MIDI Standard"
-msgstr "Standard MIDI"
-
-#: Src/PreferencesData.cpp:230
-msgid "Soundfont"
-msgstr "Zvuková banka"
-
-#: Src/PreferencesData.cpp:237
-msgid "Follow playback by default"
-msgstr "Sledovat přehrávání jako výchozí nastavení"
-
-#: Src/PreferencesData.cpp:242
-msgid "Enable playthrough when recording by default"
-msgstr "Povolit přehrávání, když se nahrává, jako výchozí nastavení"
-
-#: Src/PreferencesData.cpp:247
-msgid "Check online for new versions"
-msgstr "Sledovat internet kvůli novým verzím"
-
-#: Src/PreferencesData.cpp:252
-msgid "Remember window location"
-msgstr "Zapamatovat si umístění okna"
-
-#: Src/PreferencesData.cpp:284
-msgid "Automatically launch FluidSynth if needed"
-msgstr "V případě potřeby spustit FluidSynth automaticky"
-
-#: Src/PreferencesData.cpp:291
-msgid "Single-instance application"
-msgstr "Program o jedné instanci"
-
-#: Src/PreferencesData.cpp:297
-msgid "Show note names in piano-roll"
-msgstr "Ukázat názvy not ve válečku"
-
-#: Src/PreferencesData.cpp:303
-msgid "Restore open files from previous session"
-msgstr "Obnovit otevřené soubory z předchozího sezení"
-
-#: Src/PreferencesData.cpp:334 Src/GUI/MainFrameMenuBar.cpp:351
-#: Src/GUI/MainFrameMenuBar.cpp:354 Src/GUI/MainFrame.cpp:1006
-msgid "No MIDI input"
-msgstr "Není dostupný žádný vstup MIDI"
+#: Src/Dialogs/CustomKeyDialog.cpp:264
+msgid "Enter the name of the preset"
+msgstr "Zadat název kopie přednastavení"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:46
 msgid "Keyroll Printing Options"
@@ -160,15 +332,6 @@ msgstr "Barvy"
 #: Src/Dialogs/PrintSetupDialog.cpp:100
 msgid "Compact (print only key notes)"
 msgstr "Strohý (tisknout jen noty předznamenání)"
-
-#: Src/Dialogs/PrintSetupDialog.cpp:103 Src/Dialogs/PrintSetupDialog.cpp:726
-#: Src/Dialogs/CustomKeyDialog.cpp:163
-#: Src/Dialogs/SongPropertiesDialog.cpp:174 Src/Dialogs/Preferences.cpp:382
-#: Src/Dialogs/ScaleDialog.cpp:152 Src/Dialogs/TrackPropertiesDialog.cpp:231
-#: Src/Dialogs/CustomNoteSelectDialog.cpp:167 Src/Dialogs/TuningDialog.cpp:54
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:545 Src/Pickers/TimeSigPicker.cpp:181
-msgid "OK"
-msgstr "OK"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:194
 msgid ""
@@ -251,165 +414,6 @@ msgstr "Okraje:"
 msgid "Margins"
 msgstr "Okraje"
 
-#: Src/Dialogs/PrintSetupDialog.cpp:729 Src/Dialogs/CustomKeyDialog.cpp:164
-#: Src/Dialogs/SongPropertiesDialog.cpp:179 Src/Dialogs/Preferences.cpp:383
-#: Src/Dialogs/ScaleDialog.cpp:148 Src/Dialogs/TrackPropertiesDialog.cpp:234
-#: Src/Dialogs/CustomNoteSelectDialog.cpp:169 Src/Dialogs/TuningDialog.cpp:57
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:546
-msgid "Cancel"
-msgstr "Zrušit"
-
-#: Src/Dialogs/CustomKeyDialog.cpp:38
-msgid "Custom Key Editor"
-msgstr "Editor uživatelsky stanovených předznamenání"
-
-#: Src/Dialogs/CustomKeyDialog.cpp:52
-msgid "Select which notes should be part of the custom key"
-msgstr "Vyberte noty, jež mají být součástí uživatelsky stanovených předznamenání"
-
-#. I18N: in custom key editor, this is the option to edit notes on a single
-#. octave
-#: Src/Dialogs/CustomKeyDialog.cpp:97
-msgid "All Octaves are Similar"
-msgstr "Všechny oktávy jsou podobné"
-
-#. I18N: in custom key editor, this is the option to edit all octaves
-#. independently
-#: Src/Dialogs/CustomKeyDialog.cpp:144
-msgid "All Octaves are Independent"
-msgstr "Všechny oktávy jsou nezávislé"
-
-#. I18N: in custom key editor
-#. wxButton* copySettingsBtn = new wxButton( pane, wxID_COPY, _("Copy settings
-#. from another track...") );
-#. over_sizer->Add(copySettingsBtn, 0, wxALL, 5);
-#. I18N: in the key editor
-#: Src/Dialogs/CustomKeyDialog.cpp:153
-msgid "* Checked notes are included in the key"
-msgstr "* Zaškrtnuté noty jsou zahrnuty do předznamenání"
-
-#. I18N: in the key editor
-#: Src/Dialogs/CustomKeyDialog.cpp:155
-msgid "* \"Half-checked\" notes are included as accidentals"
-msgstr "* Napůl zaškrtnuté noty jsou zahrnuty jako posuvky"
-
-#. I18N: in the key editor
-#: Src/Dialogs/CustomKeyDialog.cpp:157
-msgid ""
-"* Unchecked notes are excluded (for instance, they could be unplayable on "
-"your instrument)"
-msgstr "* Nezaškrtnuté noty jsou vyloučeny (příklad: mohly by být vaším nástrojem nezahratelné)"
-
-#: Src/Dialogs/CustomKeyDialog.cpp:165
-msgid "Save as preset..."
-msgstr "Uložit jako přednastavení..."
-
-#: Src/Dialogs/CustomKeyDialog.cpp:264
-msgid "Enter the name of the preset"
-msgstr "Zadat název kopie přednastavení"
-
-#: Src/Dialogs/WaitWindow.cpp:69
-msgid "Please wait..."
-msgstr "Počkejte, prosím, ..."
-
-#. I18N: - title of the copyright/info dialog
-#: Src/Dialogs/SongPropertiesDialog.cpp:85
-msgid "Song Properties"
-msgstr "Vlastnosti písně"
-
-#. I18N: - title of the copyright/info dialog
-#: Src/Dialogs/SongPropertiesDialog.cpp:96
-msgid "Song name"
-msgstr "Název písně"
-
-#. I18N: - title of the copyright/info dialog
-#: Src/Dialogs/SongPropertiesDialog.cpp:105
-msgid "Copyright"
-msgstr "Autorské právo"
-
-#. I18N: - default key signature
-#: Src/Dialogs/SongPropertiesDialog.cpp:113
-msgid "Default key signature"
-msgstr "Výchozí předznamenání"
-
-#: Src/Dialogs/SongPropertiesDialog.cpp:119
-msgid "None"
-msgstr "Žádný"
-
-#: Src/Dialogs/SongPropertiesDialog.cpp:120
-msgid "Sharps"
-msgstr "Křížky"
-
-#: Src/Dialogs/SongPropertiesDialog.cpp:121
-msgid "Flats"
-msgstr "Béčka"
-
-#: Src/Dialogs/SongPropertiesDialog.cpp:124
-msgid "Symbols"
-msgstr "Symboly"
-
-#: Src/Dialogs/SongPropertiesDialog.cpp:148 Src/GUI/MainFrame.cpp:482
-msgid "Tempo"
-msgstr "Tempo"
-
-#: Src/Dialogs/SongPropertiesDialog.cpp:157 Src/Pickers/TimeSigPicker.cpp:139
-msgid "Time Signature"
-msgstr "Taktové označení"
-
-#: Src/Dialogs/SongPropertiesDialog.cpp:169
-#: Src/Dialogs/SongPropertiesDialog.cpp:203
-msgid "Song duration :"
-msgstr "Doba trvání písně:"
-
-#: Src/Dialogs/SongPropertiesDialog.cpp:348 Src/Pickers/KeyPicker.cpp:95
-#: Src/Pickers/KeyPicker.cpp:110 Src/Midi/Note.h:102 Src/Midi/Note.h:118
-msgid "C"
-msgstr "C"
-
-#: Src/Dialogs/SongPropertiesDialog.cpp:348 Src/Pickers/KeyPicker.cpp:95
-#: Src/Pickers/KeyPicker.cpp:101 Src/Midi/Note.h:99 Src/Midi/Note.h:115
-msgid "A"
-msgstr "A"
-
-#: Src/Dialogs/SongPropertiesDialog.cpp:373
-#, c-format
-msgid "%s Major - %s minor"
-msgstr "%s Dur - %s moll"
-
-#: Src/Dialogs/PresetEditor.cpp:33
-msgid "Presets"
-msgstr "Přednastavení"
-
-#: Src/Dialogs/PresetEditor.cpp:60
-msgid "Duplicate"
-msgstr "Zdvojit"
-
-#: Src/Dialogs/PresetEditor.cpp:62 Src/Editors/ControllerEditor.cpp:866
-#: Src/Editors/ControllerEditor.cpp:905
-msgid "Delete"
-msgstr "Smazat"
-
-#: Src/Dialogs/PresetEditor.cpp:66 Src/Dialogs/AboutDialog.cpp:111
-#: Src/GUI/MainFrameMenuBar.cpp:1394
-msgid "Close"
-msgstr "Zavřít"
-
-#. I18N: when duplicating a preset
-#: Src/Dialogs/PresetEditor.cpp:97
-msgid "Enter the name of the duplicate"
-msgstr "Zadat název kopie"
-
-#: Src/Dialogs/PresetEditor.cpp:117
-msgid "Are you sure you want to delete this preset? This cannot be undone."
-msgstr "Opravdu chcete smazat toto přednastavení? Toto nelze vrátit zpět."
-
-#: Src/Dialogs/PresetEditor.cpp:118 Src/GUI/MainFrameMenuBar.cpp:709
-#: Src/GUI/MainFrameMenuBar.cpp:772 Src/GUI/MainFrameMenuBar.cpp:811
-#: Src/GUI/MainFrameMenuBar.cpp:1049 Src/GUI/MainFrameMenuBar.cpp:1168
-#: Src/GUI/MainFrameMenuBar.cpp:1252 Src/Pickers/TimeSigPicker.cpp:289
-msgid "Confirm"
-msgstr "Potvrdit"
-
 #. I18N: - title of the preferences dialog
 #: Src/Dialogs/Preferences.cpp:246 Src/GUI/MainPane.cpp:150
 msgid "Preferences"
@@ -440,7 +444,7 @@ msgstr "Změny se projeví, až když tento program spustíte znovu."
 msgid "You will need to restart Aria Maestosa for changes to be effective."
 msgstr "Aria Maestosa bude potřeba, aby se změny projevily, spustit znovu."
 
-#: Src/Dialogs/Preferences.cpp:467 Src/GUI/MainFrameMenuBar.cpp:737
+#: Src/Dialogs/Preferences.cpp:467 Src/GUI/MainFrameMenuBar.cpp:739
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:587
 msgid "Select file"
 msgstr "Vybrat soubor"
@@ -449,73 +453,39 @@ msgstr "Vybrat soubor"
 msgid "Sound Font"
 msgstr "Zvuková banka"
 
-#. I18N: - title of the scale dialog
-#: Src/Dialogs/ScaleDialog.cpp:70
-msgid "Scale"
-msgstr "Změna velikosti"
+#: Src/Dialogs/PresetEditor.cpp:33
+msgid "Presets"
+msgstr "Přednastavení"
 
-#. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
-#. selection\n* track\n* song"
-#: Src/Dialogs/ScaleDialog.cpp:111
-msgid "Scale notes in..."
-msgstr "Změnit velikost not..."
+#: Src/Dialogs/PresetEditor.cpp:60
+msgid "Duplicate"
+msgstr "Zdvojit"
 
-#. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
-#. selection\n* track\n* song"
-#: Src/Dialogs/ScaleDialog.cpp:115
-msgid "selection"
-msgstr "Výběr"
+#: Src/Dialogs/PresetEditor.cpp:62 Src/Editors/ControllerEditor.cpp:944
+#: Src/Editors/ControllerEditor.cpp:983
+msgid "Delete"
+msgstr "Smazat"
 
-#. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
-#. selection\n* track\n* song"
-#: Src/Dialogs/ScaleDialog.cpp:120
-msgid "track"
-msgstr "Stopa"
+#: Src/Dialogs/PresetEditor.cpp:66 Src/Dialogs/AboutDialog.cpp:111
+#: Src/GUI/MainFrameMenuBar.cpp:1396
+msgid "Close"
+msgstr "Zavřít"
 
-#. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
-#. selection\n* track\n* song"
-#: Src/Dialogs/ScaleDialog.cpp:124
-msgid "song"
-msgstr "Píseň"
+#. I18N: when duplicating a preset
+#: Src/Dialogs/PresetEditor.cpp:97
+msgid "Enter the name of the duplicate"
+msgstr "Zadat název kopie"
 
-#. I18N: - in the scale dialog. full context : "relative to...\n\n* first
-#. affected note\n* song beginning"
-#: Src/Dialogs/ScaleDialog.cpp:130
-msgid "relative to..."
-msgstr "V poměru k..."
+#: Src/Dialogs/PresetEditor.cpp:117
+msgid "Are you sure you want to delete this preset? This cannot be undone."
+msgstr "Opravdu chcete smazat toto přednastavení? Toto nelze vrátit zpět."
 
-#. I18N: - in the scale dialog. full context : "relative to...\n\n* first
-#. affected note\n* song beginning"
-#: Src/Dialogs/ScaleDialog.cpp:134
-msgid "first affected note"
-msgstr "První ovlivněná nota"
-
-#. I18N: - in the scale dialog. full context : "relative to...\n\n* first
-#. affected note\n* song beginning"
-#: Src/Dialogs/ScaleDialog.cpp:139
-msgid "song beginning"
-msgstr "Začátek písně"
-
-#: Src/Dialogs/TrackPropertiesDialog.cpp:135
-#, c-format
-msgid "Track '%s' Properties"
-msgstr "Vlastnosti stopy '%s'"
-
-#: Src/Dialogs/TrackPropertiesDialog.cpp:162
-msgid "Track Background"
-msgstr "Pozadí stopy"
-
-#: Src/Dialogs/TrackPropertiesDialog.cpp:187
-msgid "Check all"
-msgstr "Zaškrtnout vše"
-
-#: Src/Dialogs/TrackPropertiesDialog.cpp:188
-msgid "Uncheck all"
-msgstr "Zrušit zaškrtnutí všeho"
-
-#: Src/Dialogs/TrackPropertiesDialog.cpp:206
-msgid "Default volume for new notes"
-msgstr "Výchozí hlasitost nových not"
+#: Src/Dialogs/PresetEditor.cpp:118 Src/GUI/MainFrameMenuBar.cpp:711
+#: Src/GUI/MainFrameMenuBar.cpp:774 Src/GUI/MainFrameMenuBar.cpp:813
+#: Src/GUI/MainFrameMenuBar.cpp:1051 Src/GUI/MainFrameMenuBar.cpp:1170
+#: Src/GUI/MainFrameMenuBar.cpp:1254 Src/Pickers/TimeSigPicker.cpp:291
+msgid "Confirm"
+msgstr "Potvrdit"
 
 #. I18N: - title of the custom note select dialog
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:63
@@ -594,6 +564,74 @@ msgstr "Neplatné hodnoty"
 msgid "Custom Tuning Editor"
 msgstr "Vlastní editor pro ladění"
 
+#. I18N: - title of the scale dialog
+#: Src/Dialogs/ScaleDialog.cpp:70
+msgid "Scale"
+msgstr "Změna velikosti"
+
+#. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
+#. selection\n* track\n* song"
+#: Src/Dialogs/ScaleDialog.cpp:111
+msgid "Scale notes in..."
+msgstr "Změnit velikost not..."
+
+#. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
+#. selection\n* track\n* song"
+#: Src/Dialogs/ScaleDialog.cpp:115
+msgid "selection"
+msgstr "Výběr"
+
+#. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
+#. selection\n* track\n* song"
+#: Src/Dialogs/ScaleDialog.cpp:120
+msgid "track"
+msgstr "Stopa"
+
+#. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
+#. selection\n* track\n* song"
+#: Src/Dialogs/ScaleDialog.cpp:124
+msgid "song"
+msgstr "Píseň"
+
+#. I18N: - in the scale dialog. full context : "relative to...\n\n* first
+#. affected note\n* song beginning"
+#: Src/Dialogs/ScaleDialog.cpp:130
+msgid "relative to..."
+msgstr "V poměru k..."
+
+#. I18N: - in the scale dialog. full context : "relative to...\n\n* first
+#. affected note\n* song beginning"
+#: Src/Dialogs/ScaleDialog.cpp:134
+msgid "first affected note"
+msgstr "První ovlivněná nota"
+
+#. I18N: - in the scale dialog. full context : "relative to...\n\n* first
+#. affected note\n* song beginning"
+#: Src/Dialogs/ScaleDialog.cpp:139
+msgid "song beginning"
+msgstr "Začátek písně"
+
+#: Src/Dialogs/TrackPropertiesDialog.cpp:130
+#, c-format
+msgid "Track '%s' Properties"
+msgstr "Vlastnosti stopy '%s'"
+
+#: Src/Dialogs/TrackPropertiesDialog.cpp:157
+msgid "Track Background"
+msgstr "Pozadí stopy"
+
+#: Src/Dialogs/TrackPropertiesDialog.cpp:182
+msgid "Check all"
+msgstr "Zaškrtnout vše"
+
+#: Src/Dialogs/TrackPropertiesDialog.cpp:183
+msgid "Uncheck all"
+msgstr "Zrušit zaškrtnutí všeho"
+
+#: Src/Dialogs/TrackPropertiesDialog.cpp:205
+msgid "Default volume for new notes"
+msgstr "Výchozí hlasitost nových not"
+
 #: Src/Dialogs/AboutDialog.cpp:47
 msgid "About Aria Maestosa"
 msgstr "O programu Aria Maestosa"
@@ -647,603 +685,200 @@ msgstr "Přenesení na Windows od Alexise Archambaulta"
 msgid "Translations:"
 msgstr "Překlady:"
 
-#. I18N: (undoable) action name
-#: Src/Actions/ScaleSong.cpp:30
-msgid "scale song"
-msgstr "Změnit velikost sekvence"
+#: Src/GUI/MainPane.cpp:147
+msgid "Create a new sequence"
+msgstr "Vytvořit novou sekvenci"
 
-#. I18N: (undoable) action name
-#: Src/Actions/ShiftFrets.cpp:28 Src/Actions/NumberPressed.cpp:29
-msgid "change note fret"
-msgstr "Změnit pražec"
+#: Src/GUI/MainPane.cpp:148
+msgid "Open a saved sequence"
+msgstr "Otevřít uloženou sekvenci"
 
-#. I18N: (undoable) action name
-#: Src/Actions/RemoveOverlapping.cpp:31
-msgid "remove overlapping notes"
-msgstr "Odstranit překrývající se noty"
+#: Src/GUI/MainPane.cpp:149
+msgid "Import a MIDI file"
+msgstr "Zavést soubor MIDI"
 
-#. I18N: (undoable) action name
-#: Src/Actions/AddControllerSlide.cpp:33
-msgid "add control slide"
-msgstr "Přidat ovládací posuvník"
+#: Src/GUI/MainPane.cpp:151
+msgid "Help"
+msgstr "Nápověda"
 
-#. I18N: (undoable) action name
-#: Src/Actions/ShiftString.cpp:27
-msgid "string change"
-msgstr "Změna struny"
+#: Src/GUI/MainPane.cpp:152
+msgid "Exit"
+msgstr "Ukončit"
 
-#. I18N: (undoable) action name
-#: Src/Actions/DeleteTrack.cpp:32
-msgid "delete track"
-msgstr "Smazat stopu"
+#. I18N: to hide the panel that is shown when a file could not be imported
+#. successfully
+#: Src/GUI/MainFrame.cpp:473
+msgid "Hide"
+msgstr "Skrýt"
 
-#. I18N: (undoable) action name
-#: Src/Actions/SetAccidentalSign.cpp:34
-msgid "accidental change"
-msgstr "Změna posuvky"
+#: Src/GUI/MainFrame.cpp:653
+msgid "Record"
+msgstr "Nahrávat"
 
-#. I18N: (undoable) action name
-#: Src/Actions/Record.cpp:32
-msgid "record from MIDI instrument"
-msgstr "Nahrávání z nástroje MIDI"
+#: Src/GUI/MainFrame.cpp:654
+msgid "Play"
+msgstr "Přehrát"
 
-#. I18N: (undoable) action name
-#: Src/Actions/RearrangeNotes.cpp:29
-msgid "rearrange notes"
-msgstr "Přeuspořádat vybrané noty"
+#: Src/GUI/MainFrame.cpp:656
+msgid "Stop"
+msgstr "Zastavit"
 
-#. I18N: (undoable) action name
-#: Src/Actions/RemoveMeasures.cpp:38
-msgid "remove measure(s)"
-msgstr "Odstranit takty"
+#: Src/GUI/MainFrame.cpp:660
+msgid "Loop"
+msgstr "Smyčka"
 
-#. I18N: (undoable) action name
-#. I18N: menu item in the "edit" menu
-#: Src/Actions/ScrollNotesIntoView.cpp:37 Src/GUI/MainFrameMenuBar.cpp:199
-msgid "Scroll notes into view"
-msgstr "Posunout noty do pohledu"
+#. I18N: song length (number of measures)
+#: Src/GUI/MainFrame.cpp:677
+msgid "Length"
+msgstr "Délka"
 
-#. I18N: (undoable) action name
-#: Src/Actions/InsertEmptyMeasures.cpp:35
-msgid "insert measures"
+#: Src/GUI/MainFrame.cpp:692
+msgid ""
+"This is the initial tempo of the song, see the Controller Editor for tempo "
+"variations"
+msgstr "Toto je počáteční tempo písně. Podívejte se na editor ovladačů na změny tempa"
+
+#: Src/GUI/MainFrame.cpp:693
+msgid "Initial tempo"
+msgstr "Počáteční tempo"
+
+#: Src/GUI/MainFrame.cpp:705
+msgid "Time Sig"
+msgstr "Taktové označení"
+
+#: Src/GUI/MainFrame.cpp:713
+msgid "Start"
+msgstr "Začátek"
+
+#. I18N: loop end
+#: Src/GUI/MainFrame.cpp:722 Src/GUI/MainFrame.cpp:1108
+msgid "End"
+msgstr "Konec"
+
+#: Src/GUI/MainFrame.cpp:740
+msgid "Zoom"
+msgstr "Zvětšení"
+
+#. I18N: tool selection tip
+#: Src/GUI/MainFrame.cpp:780
+msgid ""
+"Tool 1 : Draw notes\n"
+"Tool 2 : Click to add notes"
+msgstr "Nástroj 1 : Kreslit noty\nNástroj 2 : Klepnout pro přidání not"
+
+#: Src/GUI/MainFrame.cpp:781 Src/GUI/MainFrame.cpp:783
+msgid "Tool"
+msgstr "Nástroj"
+
+#: Src/GUI/MainFrame.cpp:1044 Src/GUI/MainFrameMenuBar.cpp:351
+#: Src/GUI/MainFrameMenuBar.cpp:354 Src/PreferencesData.cpp:334
+msgid "No MIDI input"
+msgstr "Není dostupný žádný vstup MIDI"
+
+#: Src/GUI/MainFrame.cpp:1046
+msgid "Please select an input port from the 'input' menu before recording"
+msgstr "Vyberte, prosím, před nahráváním vstupní přípojku z nabídky Vstup"
+
+#: Src/GUI/MainFrame.cpp:1839
+#, c-format
+msgid ""
+"You have unsaved changes in sequence '%s'. Do you want to save them before "
+"proceeding?"
+msgstr "Máte neuložené změny v sekvenci '%s'. Chcete je před pokračováním uložit?"
+
+#: Src/GUI/MainFrame.cpp:1841
+msgid "Selecting 'Yes' will save your document before closing"
+msgstr "Volba Ano váš dokument před zavřením uloží"
+
+#: Src/GUI/MainFrame.cpp:1842
+msgid "Selecting 'No' will discard unsaved changes"
+msgstr "Volba Ne neuložené změny zahodí"
+
+#: Src/GUI/MainFrame.cpp:1843
+msgid "Selecting 'Cancel' will cancel exiting the application"
+msgstr "Volba Zrušit zruší ukončení programu"
+
+#. I18N: title of dialog shown when exiting without saving
+#: Src/GUI/MainFrame.cpp:1848
+msgid "Unsaved changes in sequence"
+msgstr "Neuložené změny v sekvenci"
+
+#: Src/GUI/MainFrame.cpp:2020
+msgid "Unknown file type: "
+msgstr "Neznámý typ souboru: "
+
+#: Src/GUI/MainFrame.cpp:2047 Src/GUI/MainFrame.cpp:2175
+msgid "Sorry, loading .aria file failed."
+msgstr "Promiňte, nahrání souboru .aria se nezdařilo."
+
+#: Src/GUI/MainFrame.cpp:2090
+msgid "Please wait while midi file is loading."
+msgstr "Počkejte, prosím, zatímco se nahrává soubor MIDI.\t"
+
+#: Src/GUI/MainFrame.cpp:2097 Src/GUI/MainFrame.cpp:2186
+msgid "Sorry, loading midi file failed."
+msgstr "Promiňte, nahrání souboru MIDI se nezdařilo."
+
+#: Src/GUI/MainFrame.cpp:2121
+msgid ""
+"Loading the MIDI file completed successfully, but with the following "
+"warnings (the song may not sound as intended) :"
+msgstr "Nahrání souboru MIDI bylo dokončeno úspěšně, ale s následujícími varováními (píseň nemusí znít tak, jak bylo zamýšleno):"
+
+#: Src/GUI/MainFrame.cpp:2304
+msgid ""
+"A new version of Aria Maestosa is now available! Visit the following link to"
+" download it :"
+msgstr "Je dostupná novější verze programu Aria Maestosa. Navštivte následující odkaz a stáhněte jej:"
+
+#: Src/GUI/MainFrame.cpp:2315
+msgid "An error occurred"
+msgstr "Došlo k chybě"
+
+#: Src/GUI/MeasureBar.cpp:71
+msgid "Remove selected measures"
+msgstr "Odstranit vybrané takty"
+
+#: Src/GUI/MeasureBar.cpp:72
+msgid "Duplicate selected measures"
+msgstr "Zdvojit vybrané takty"
+
+#: Src/GUI/MeasureBar.cpp:98
+msgid "Do you really want to remove selected measures?"
+msgstr "Opravdu chcete odstranit vybrané takty?"
+
+#: Src/GUI/MeasureBar.cpp:150
+msgid "Insert measures"
 msgstr "Vložit takty"
 
-#. I18N: (undoable) action name
-#: Src/Actions/DeleteControllerEvent.cpp:40
-msgid "delete controller event"
-msgstr "Smazat událost ovladače"
+#: Src/GUI/MeasureBar.cpp:152
+msgid "Remove time sig change"
+msgstr "Odstranit změnu taktového označení"
 
-#. I18N: (undoable) action name
-#: Src/Actions/Duplicate.cpp:43
-msgid "duplicate"
-msgstr "Zdvojit"
+#: Src/GUI/MeasureBar.cpp:153
+msgid "Set playback start here"
+msgstr "Stanovit začátek přehrávání zde"
 
-#. I18N: (undoable) action name
-#: Src/Actions/ShiftBySemiTone.cpp:30
-msgid "change pitch"
-msgstr "Změnit výšku tónu"
+#: Src/GUI/MeasureBar.cpp:154
+msgid "Set loop end here"
+msgstr "Stanovit konec smyčky zde"
 
-#. I18N: (undoable) action name
-#: Src/Actions/ResizeNotes.cpp:31
-msgid "resize note(s)"
-msgstr "Změnit velikost not"
-
-#. I18N: (undoable) action name
-#: Src/Actions/SetNoteVolume.cpp:27
-msgid "change note(s) volume"
-msgstr "Změnit hlasitost not"
-
-#. I18N: (undoable) action name
-#: Src/Actions/AddControlEvent.cpp:32
-msgid "add control event"
-msgstr "Přidat událost ovladače"
-
-#. I18N: (undoable) action name
-#: Src/Actions/DuplicateMeasures.cpp:37
-msgid "duplicate measures"
-msgstr "Zdvojit takty"
-
-#. I18N: (undoable) action name
-#: Src/Actions/AddTextEvent.cpp:31
-msgid "text change"
-msgstr "Změna textu"
-
-#. I18N: (undoable) action name
-#: Src/Actions/SnapNotesToGrid.cpp:28
-msgid "snap notes to grid"
-msgstr "Zapadnout noty do mřížky"
-
-#. I18N: (undoable) action name
-#: Src/Actions/DeleteSelected.cpp:40
-msgid "delete note(s)"
-msgstr "Smazat noty"
-
-#. I18N: (undoable) action name
-#: Src/Actions/Paste.cpp:42
-msgid "paste"
-msgstr "Vložit"
-
-#. I18N: (undoable) action name
-#: Src/Actions/ScaleTrack.cpp:30
-msgid "scale note(s)"
-msgstr "Změnit velikost not"
-
-#. I18N: (undoable) action name
-#: Src/Actions/AddNote.cpp:39
-msgid "add note"
-msgstr "Přidat notu"
-
-#. I18N: (undoable) action name
-#: Src/Actions/SetTrackVolume.cpp:27
-msgid "change track volume"
-msgstr "Změnit hlasitost stopy"
-
-#. I18N: (undoable) action name
-#: Src/Actions/AddTrack.cpp:37
-msgid "add track"
-msgstr "Přidat stopu"
-
-#. I18N: (undoable) action name
-#: Src/Actions/MoveNotes.cpp:38
-msgid "move note(s)"
-msgstr "Posunout noty"
-
-#. I18N: (undoable) action name
-#: Src/Actions/UpdateGuitarTuning.cpp:29
-msgid "change guitar tuning"
-msgstr "Změnit kytarové ladění"
-
-#: Src/IO/AriaFileWriter.cpp:49 Src/IO/AriaFileWriter.cpp:58
+#: Src/GUI/MeasureBar.cpp:160
 #, c-format
-msgid "Could not open file '%s' for reading"
-msgstr "Nepodařilo se otevřít soubor '%s' pro čtení"
-
-#: Src/IO/MidiFileReader.cpp:170
-msgid ""
-"This MIDI file has tracks that play on multiple MIDI channels. This is not "
-"supported by Aria Maestosa."
-msgstr "Tento soubor MIDI obsahuje stopy, které hrají noty na několika kanálech MIDI. To není Aria Maestosa podporováno."
-
-#: Src/IO/MidiFileReader.cpp:185
-msgid ""
-"This MIDI file has a track that sends events on multiple MIDI channels. This"
-" is not supported by Aria Maestosa."
-msgstr "Tento soubor MIDI obsahuje stopy, která posílá noty do několika kanálů MIDI. To není Aria Maestosa podporováno."
-
-#: Src/IO/MidiFileReader.cpp:236
-#, c-format
-msgid ""
-"This MIDI file appears to be incorrect; a note at tick %i in channel %i does"
-" not appear to have an end"
-msgstr "Zdá se, že tento soubor MIDI je nesprávný; zdá se, že nota na tiku %i v kanálu %i nemá konec"
-
-#: Src/IO/MidiFileReader.cpp:266
-#, c-format
-msgid ""
-"This MIDI file uses controller #%i, which is not part of the MIDI standard. "
-"This information will be discarded."
-msgstr "Tento soubor MIDI používá ovladač #%i, což není součástí standardu MIDI. Tato informace bude zahozena."
-
-#: Src/IO/MidiFileReader.cpp:276
-msgid ""
-"This MIDI file uses Registered Parameters, which are currently not supported"
-" by Aria Maestosa."
-msgstr "Tento soubor MIDI používá Registered Parameters. To nyní není Aria Maestosa podporováno."
-
-#: Src/IO/MidiFileReader.cpp:280
-msgid ""
-"This MIDI files uses NRPN (Non-Registered Parameters, i.e. non-standard "
-"controllers), which are currently not supported by Aria Maestosa."
-msgstr "Tento soubor MIDI používá NRPN (Non-Registered Parameters, např. nestandardní ovladače. To není Aria Maestosa podporováno."
-
-#: Src/IO/MidiFileReader.cpp:292
-msgid ""
-"This MIDI files uses Channel Mode Message, which are currently not supported"
-" by Aria Maestosa."
-msgstr "Tento soubor MIDI používá Channel Mode Message. To nyní není Aria Maestosa podporováno."
-
-#: Src/IO/MidiFileReader.cpp:296
-#, c-format
-msgid ""
-"This MIDI file uses unsupported MIDI controller #%i. Data related to this "
-"controller will be discarded."
-msgstr "Tento soubor  používá nepodporovaný ovladač MIDI #%i, Data vztahující se k tomuto ovladačibudou zahozena."
-
-#: Src/IO/MidiFileReader.cpp:536 Src/Printing/AbstractPrintableSequence.cpp:39
-#: Src/Printing/AbstractPrintableSequence.cpp:43 Src/Midi/Sequence.cpp:70
-#: Src/Midi/Sequence.cpp:118 Src/Midi/Sequence.cpp:140 Src/Midi/Track.cpp:94
-#: Src/Midi/Track.cpp:892 Src/Midi/Track.cpp:1949
-msgid "Untitled"
-msgstr "Bez názvu"
-
-#. I18N: beats per minute (tempo)
-#: Src/Editors/ControllerEditor.cpp:91
-msgid "bpm"
-msgstr "ÚZM"
-
-#. I18N: as in "+2 semitones"
-#: Src/Editors/ControllerEditor.cpp:96
-msgid "semitones"
-msgstr "Půltóny"
-
-#: Src/Editors/ControllerEditor.cpp:666
-msgid "Lyrics"
-msgstr "Text písně"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:92
-msgid "High Q"
-msgstr "Vysoké Q"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:94
-msgid "Slap"
-msgstr "Plácnout"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:96
-msgid "Push"
-msgstr "Tlačit"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:98
-msgid "Pull"
-msgstr "Táhnout"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:100 Src/Editors/DrumEditor.cpp:112
-msgid "Stick"
-msgstr "Palička"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:102
-msgid "Square"
-msgstr "Náměstí"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:104
-msgid "Metro"
-msgstr "Metro"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:106
-msgid "Metro bell"
-msgstr "Zvonek v metru"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:108
-msgid "Bass drum 2"
-msgstr "Velký buben 2"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:110
-msgid "Bass drum 1"
-msgstr "Velký buben 1"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:114
-msgid "Snare"
-msgstr "Malý buben"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:116
-msgid "Clap"
-msgstr "Tlesknutí"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:118
-msgid "Snare 2"
-msgstr "Malý buben 2"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:120
-msgid "Tom 6"
-msgstr "Tom basový nízký 6"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:122
-msgid "Closed hi-hat"
-msgstr "Zavřená hajtka"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:124
-msgid "Tom 5"
-msgstr "Tom basový vysoký 5"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:126
-msgid "Pedal hi-hat"
-msgstr "Pedálová hajtka"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:128
-msgid "Tom 4"
-msgstr "Tom střední 4"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:130
-msgid "Open hi-hat"
-msgstr "Otevřená hajtka"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:132
-msgid "Tom 3"
-msgstr "Tom střední 3"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:134
-msgid "Tom 2"
-msgstr "Tom střední 2"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:136
-msgid "Crash"
-msgstr "Crash činel"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:138
-msgid "Tom 1"
-msgstr "Tom 1"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:140
-msgid "Ride"
-msgstr "Ride činel"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:142
-msgid "Chinese"
-msgstr "Čínský činel"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:144
-msgid "Ride bell"
-msgstr "Jezdecký zvonek"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:146
-msgid "Tambourine"
-msgstr "Tamburína"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:148
-msgid "Splash"
-msgstr "Splash činel"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:150
-msgid "Cowbell"
-msgstr "Kravský zvonec"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:152
-msgid "Crash 2"
-msgstr "Crash činel 2"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:154
-msgid "Vibraslap"
-msgstr "Vibraslap"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:156
-msgid "Ride 2"
-msgstr "Ride činel vysoký"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:158
-msgid "Hi bongo"
-msgstr "Vysoké bongo"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:160
-msgid "Low bongo"
-msgstr "Nízké bongo"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:162
-msgid "Mute hi conga"
-msgstr "Ztlumená vysoká konga"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:164
-msgid "Open hi conga"
-msgstr "Otevřená vysoká konga"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:166
-msgid "Low conga"
-msgstr "Nízká konga"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:168
-msgid "High timbale"
-msgstr "Vysoká timbále"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:170
-msgid "Low timbale"
-msgstr "Nízká timbále"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:172
-msgid "High agogo"
-msgstr "Vysoká agoga"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:174
-msgid "Low agogo"
-msgstr "Nízká agogo"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:176
-msgid "Cabasa"
-msgstr "Cabasa"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:178
-msgid "Maracas"
-msgstr "Rumba koule"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:180
-msgid "Short whistle"
-msgstr "Krátký hvizd"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:182
-msgid "Long whistle"
-msgstr "Dlouhý hvizd"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:184
-msgid "Short guiro"
-msgstr "Krátké guiro"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:186
-msgid "Long guiro"
-msgstr "Dlouhé guiro"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:188
-msgid "Claves"
-msgstr "Kláves"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:190
-msgid "Hi wood block"
-msgstr "Vysoký dřevěný špalíček"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:192
-msgid "Lo wood block"
-msgstr "Nízký dřevěný špalíček"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:194
-msgid "Mute cuica"
-msgstr "Ztlumená kuika"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:196
-msgid "Open cuica"
-msgstr "Otevřená kuika"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:198
-msgid "Mute triangle"
-msgstr "Ztlumený triangl"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:200
-msgid "Open triangle"
-msgstr "Otevřený triangl"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:202
-msgid "Shaker"
-msgstr "Šejkr"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:204
-msgid "Jingle Bell"
-msgstr "Rolnička"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:206
-msgid "Bell Tree"
-msgstr "Zvonkový stromek"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:208
-msgid "Castanets"
-msgstr "Kastaněty"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:210
-msgid "Mute surdo"
-msgstr "Ztlumené surdo"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:212
-msgid "Open surdo"
-msgstr "Otevřené surdo"
-
-#. I18N: percussions category name
-#: Src/Editors/DrumEditor.cpp:217
-msgid "Drumkit"
-msgstr "Sada bicích"
-
-#. I18N: percussions category name
-#: Src/Editors/DrumEditor.cpp:219
-msgid "Hi-hat"
-msgstr "Hajtka"
-
-#. I18N: percussions category name
-#: Src/Editors/DrumEditor.cpp:221
-msgid "Cymbal"
-msgstr "Činel"
-
-#. I18N: percussions category name
-#: Src/Editors/DrumEditor.cpp:223
-msgid "Toms"
-msgstr "Tomy"
-
-#. I18N: percussions category name
-#: Src/Editors/DrumEditor.cpp:225
-msgid "African"
-msgstr "Africký"
-
-#. I18N: percussions category name
-#: Src/Editors/DrumEditor.cpp:227
-msgid "Latin"
-msgstr "Latinský"
-
-#. I18N: percussions category name
-#: Src/Editors/DrumEditor.cpp:229
-msgid "Others"
-msgstr "Jiné"
-
-#. I18N: percussions category name
-#: Src/Editors/DrumEditor.cpp:231 Src/Pickers/InstrumentPicker.cpp:98
-#: Src/Pickers/InstrumentPicker.cpp:117 Src/Pickers/InstrumentPicker.cpp:136
-msgid "Sound Effects"
-msgstr "Zvukové efekty"
-
-#: Src/Renderers/wxImage.cpp:53
-msgid "Failed to load "
-msgstr "Nepodařilo se nahrát "
-
-#: Src/Renderers/GLImage.cpp:52 Src/Renderers/GLImage.cpp:64
-#: Src/Renderers/GLImage.cpp:77 Src/Renderers/GLImage.cpp:87
-#: Src/Renderers/GLImage.cpp:108 Src/Renderers/GLImage.cpp:194
-msgid "Failed to load resource image"
-msgstr "Nepodařilo se nahrát zdrojový obraz."
-
-#. I18N: for printing (page orientation)
-#: Src/Printing/wxEasyPrintWrapper.cpp:232
-msgid "Portrait"
-msgstr "Na výšku"
-
-#: Src/Printing/wxEasyPrintWrapper.cpp:232
-msgid "Landscape"
-msgstr "Na šířku"
-
-#. I18N: for printing (page setup)
-#: Src/Printing/wxEasyPrintWrapper.cpp:234
-#, c-format
-msgid "left = %i mm, right = %i mm,"
-msgstr "levý = %i mm, pravý = %i mm,"
-
-#: Src/Printing/wxEasyPrintWrapper.cpp:235
-#, c-format
-msgid "top = %i mm, bottom = %i mm"
-msgstr "nahoře = %i mm, dole = %i mm"
-
-#: Src/Printing/AbstractPrintableSequence.cpp:39
-msgid "Aria Maestosa song"
-msgstr "Aria Maestosa - Píseň"
+msgid "Insert empty measures between measures %i and %i"
+msgstr "Vložit prázdné takty mezi takty %i a %i"
+
+#: Src/GUI/MeasureBar.cpp:162
+msgid "Amount: "
+msgstr "Množství: "
+
+#: Src/GUI/MeasureBar.cpp:186
+msgid "Do you really want to remove this time sig change?"
+msgstr "Opravdu chcete odstranit tuto změnu taktového označení?"
+
+#: Src/GUI/MeasureBar.cpp:192
+msgid "You can't remove the first time signature change."
+msgstr "Nemůžete odstranit první změnu taktového označení."
 
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:84
@@ -1476,7 +1111,7 @@ msgstr "&Nastavení..."
 msgid "&Settings"
 msgstr "&Nastavení"
 
-#: Src/GUI/MainFrameMenuBar.cpp:311 Src/GUI/MainFrameMenuBar.cpp:1306
+#: Src/GUI/MainFrameMenuBar.cpp:311 Src/GUI/MainFrameMenuBar.cpp:1308
 msgid "No MIDI Output Available"
 msgstr "Není dostupný žádný výstup MIDI"
 
@@ -1519,33 +1154,33 @@ msgstr "Soubor už není na disku. Přesto jej chcete uložit?"
 msgid "Warning"
 msgstr "Varování"
 
-#: Src/GUI/MainFrameMenuBar.cpp:698 Src/GUI/MainFrameMenuBar.cpp:761
-#: Src/GUI/MainFrameMenuBar.cpp:801
+#: Src/GUI/MainFrameMenuBar.cpp:700 Src/GUI/MainFrameMenuBar.cpp:763
+#: Src/GUI/MainFrameMenuBar.cpp:803
 msgid "Select destination file"
 msgstr "Vybrat cílový soubor"
 
-#: Src/GUI/MainFrameMenuBar.cpp:699 Src/GUI/MainFrameMenuBar.cpp:738
+#: Src/GUI/MainFrameMenuBar.cpp:701 Src/GUI/MainFrameMenuBar.cpp:740
 msgid "Aria Maestosa file"
 msgstr "Soubor Aria Maestosa"
 
-#: Src/GUI/MainFrameMenuBar.cpp:708 Src/GUI/MainFrameMenuBar.cpp:772
-#: Src/GUI/MainFrameMenuBar.cpp:811
+#: Src/GUI/MainFrameMenuBar.cpp:710 Src/GUI/MainFrameMenuBar.cpp:774
+#: Src/GUI/MainFrameMenuBar.cpp:813
 msgid "The file already exists. Do you wish to overwrite it?"
 msgstr "Soubor již existuje. Opravdu ho chcete přepsat?"
 
-#: Src/GUI/MainFrameMenuBar.cpp:748
+#: Src/GUI/MainFrameMenuBar.cpp:750
 msgid "Select midi file"
 msgstr "Vybrat soubor MIDI"
 
-#: Src/GUI/MainFrameMenuBar.cpp:749 Src/GUI/MainFrameMenuBar.cpp:762
+#: Src/GUI/MainFrameMenuBar.cpp:751 Src/GUI/MainFrameMenuBar.cpp:764
 msgid "Midi file"
 msgstr "Soubor MIDI"
 
-#: Src/GUI/MainFrameMenuBar.cpp:785
+#: Src/GUI/MainFrameMenuBar.cpp:787
 msgid "Sorry, failed to export midi file."
 msgstr "Promiňte, nepodařilo se vyvést soubor MIDI."
 
-#: Src/GUI/MainFrameMenuBar.cpp:823
+#: Src/GUI/MainFrameMenuBar.cpp:825
 msgid ""
 "Please wait while audio file is being generated.\n"
 "\n"
@@ -1553,15 +1188,15 @@ msgid ""
 "this can take several minutes."
 msgstr "Počkejte, prosím, zatímco je zvukový soubor vytvářen.\n\nV závislosti na délce vašeho souboru no může několik\nminut trvat."
 
-#: Src/GUI/MainFrameMenuBar.cpp:1045
+#: Src/GUI/MainFrameMenuBar.cpp:1047
 msgid "You may not delete the last track"
 msgstr "Není povoleno smazat poslední stopu"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1049
+#: Src/GUI/MainFrameMenuBar.cpp:1051
 msgid "Do you really want to delete this track?"
 msgstr "Opravdu chcete smazat tuto stopu?"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1167
+#: Src/GUI/MainFrameMenuBar.cpp:1169
 msgid ""
 "If multiple tracks play on the same channel, they will be merged.\n"
 "This cannot be undone.\n"
@@ -1569,146 +1204,19 @@ msgid ""
 "Do you really want to continue?"
 msgstr "Když se na tomtéž kanálu přehrává více stop, budou sloučeny.\nToto nelze vrátit zpět.\nOpravdu chcete pokračovat?"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1251 Src/Pickers/TimeSigPicker.cpp:288
+#: Src/GUI/MainFrameMenuBar.cpp:1253 Src/Pickers/TimeSigPicker.cpp:290
 msgid ""
 "Are you sure you want to go back to having a single time signature? Any time"
 " sig events you may have added will be lost. This cannot be undone."
 msgstr "Jste si jistý, že se chcete vrátit zpět, aby platilo jen jedno taktové označení? Všechny události taktových označení, které jste přidal, budou nenávratně ztraceny."
 
-#: Src/GUI/MainFrameMenuBar.cpp:1380
+#: Src/GUI/MainFrameMenuBar.cpp:1382
 msgid "Manual"
 msgstr "Ručně"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1574
+#: Src/GUI/MainFrameMenuBar.cpp:1576
 msgid "Clear List"
 msgstr "Vyprázdnit seznam"
-
-#: Src/GUI/MainFrame.cpp:440
-msgid "Record"
-msgstr "Nahrávat"
-
-#: Src/GUI/MainFrame.cpp:444
-msgid "Play"
-msgstr "Přehrát"
-
-#: Src/GUI/MainFrame.cpp:448
-msgid "Stop"
-msgstr "Zastavit"
-
-#: Src/GUI/MainFrame.cpp:451
-msgid "Loop"
-msgstr "Smyčka"
-
-#. I18N: song length (number of measures)
-#: Src/GUI/MainFrame.cpp:467
-msgid "Length"
-msgstr "Délka"
-
-#: Src/GUI/MainFrame.cpp:494
-msgid "Time Sig"
-msgstr "Taktové označení"
-
-#: Src/GUI/MainFrame.cpp:502
-msgid "Start"
-msgstr "Začátek"
-
-#: Src/GUI/MainFrame.cpp:520
-msgid "Zoom"
-msgstr "Zvětšení"
-
-#: Src/GUI/MainFrame.cpp:559 Src/GUI/MainFrame.cpp:561
-msgid "Tool"
-msgstr "Nástroj"
-
-#. I18N: to hide the panel that is shown when a file could not be imported
-#. successfully
-#: Src/GUI/MainFrame.cpp:600
-msgid "Hide"
-msgstr "Skrýt"
-
-#: Src/GUI/MainFrame.cpp:1008
-msgid "Please select an input port from the 'input' menu before recording"
-msgstr "Vyberte, prosím, před nahráváním vstupní přípojku z nabídky Vstup"
-
-#: Src/GUI/MainFrame.cpp:1732
-#, c-format
-msgid ""
-"You have unsaved changes in sequence '%s'. Do you want to save them before "
-"proceeding?"
-msgstr "Máte neuložené změny v sekvenci '%s'. Chcete je před pokračováním uložit?"
-
-#: Src/GUI/MainFrame.cpp:1734
-msgid "Selecting 'Yes' will save your document before closing"
-msgstr "Volba Ano váš dokument před zavřením uloží"
-
-#: Src/GUI/MainFrame.cpp:1735
-msgid "Selecting 'No' will discard unsaved changes"
-msgstr "Volba Ne neuložené změny zahodí"
-
-#: Src/GUI/MainFrame.cpp:1736
-msgid "Selecting 'Cancel' will cancel exiting the application"
-msgstr "Volba Zrušit zruší ukončení programu"
-
-#. I18N: title of dialog shown when exiting without saving
-#: Src/GUI/MainFrame.cpp:1741
-msgid "Unsaved changes in sequence"
-msgstr "Neuložené změny v sekvenci"
-
-#: Src/GUI/MainFrame.cpp:1913
-msgid "Unknown file type: "
-msgstr "Neznámý typ souboru: "
-
-#: Src/GUI/MainFrame.cpp:1940 Src/GUI/MainFrame.cpp:2062
-msgid "Sorry, loading .aria file failed."
-msgstr "Promiňte, nahrání souboru .aria se nezdařilo."
-
-#: Src/GUI/MainFrame.cpp:1982
-msgid "Please wait while midi file is loading."
-msgstr "Počkejte, prosím, zatímco se nahrává soubor MIDI.\t"
-
-#: Src/GUI/MainFrame.cpp:1989 Src/GUI/MainFrame.cpp:2074
-msgid "Sorry, loading midi file failed."
-msgstr "Promiňte, nahrání souboru MIDI se nezdařilo."
-
-#: Src/GUI/MainFrame.cpp:2013
-msgid ""
-"Loading the MIDI file completed successfully, but with the following "
-"warnings (the song may not sound as intended) :"
-msgstr "Nahrání souboru MIDI bylo dokončeno úspěšně, ale s následujícími varováními (píseň nemusí znít tak, jak bylo zamýšleno):"
-
-#: Src/GUI/MainFrame.cpp:2053
-msgid "Please wait while file is reloaded."
-msgstr "Počkejte, prosím, zatímco se soubor nahrává znovu.\t"
-
-#: Src/GUI/MainFrame.cpp:2188
-msgid ""
-"A new version of Aria Maestosa is now available! Visit the following link to"
-" download it :"
-msgstr "Je dostupná novější verze programu Aria Maestosa. Navštivte následující odkaz a stáhněte jej:"
-
-#: Src/GUI/MainFrame.cpp:2199
-msgid "An error occurred"
-msgstr "Došlo k chybě"
-
-#: Src/GUI/MainPane.cpp:147
-msgid "Create a new sequence"
-msgstr "Vytvořit novou sekvenci"
-
-#: Src/GUI/MainPane.cpp:148
-msgid "Open a saved sequence"
-msgstr "Otevřít uloženou sekvenci"
-
-#: Src/GUI/MainPane.cpp:149
-msgid "Import a MIDI file"
-msgstr "Zavést soubor MIDI"
-
-#: Src/GUI/MainPane.cpp:151
-msgid "Help"
-msgstr "Nápověda"
-
-#: Src/GUI/MainPane.cpp:152
-msgid "Exit"
-msgstr "Ukončit"
 
 #: Src/GUI/GraphicalTrack.cpp:419
 msgid "Track volume"
@@ -1748,7 +1256,7 @@ msgstr "Editor bicích"
 
 #: Src/GUI/GraphicalTrack.cpp:475 Src/Editors/ControllerEditor.h:171
 msgid "Controller Editor"
-msgstr "Editor ovladače"
+msgstr "Editor ovladačů"
 
 #: Src/GUI/GraphicalTrack.cpp:779
 msgid "Choose a new track title."
@@ -1762,169 +1270,11 @@ msgstr "Zadejte číslo kanálu, v němž se má tato stopa přehrávat"
 msgid "Channel choice"
 msgstr "Volba kanálu"
 
-#: Src/GUI/MeasureBar.cpp:70
-msgid "Remove selected measures"
-msgstr "Odstranit vybrané takty"
-
-#: Src/GUI/MeasureBar.cpp:71
-msgid "Duplicate selected measures"
-msgstr "Zdvojit vybrané takty"
-
-#: Src/GUI/MeasureBar.cpp:97
-msgid "Do you really want to remove selected measures?"
-msgstr "Opravdu chcete odstranit vybrané takty?"
-
-#: Src/GUI/MeasureBar.cpp:148
-msgid "Insert measures"
-msgstr "Vložit takty"
-
-#: Src/GUI/MeasureBar.cpp:150
-msgid "Remove time sig change"
-msgstr "Odstranit změnu taktového označení"
-
-#: Src/GUI/MeasureBar.cpp:156
-#, c-format
-msgid "Insert empty measures between measures %i and %i"
-msgstr "Vložit prázdné takty mezi takty %i a %i"
-
-#: Src/GUI/MeasureBar.cpp:158
-msgid "Amount: "
-msgstr "Množství: "
-
-#: Src/GUI/MeasureBar.cpp:177
-msgid "Do you really want to remove this time sig change?"
-msgstr "Opravdu chcete odstranit tuto změnu taktového označení?"
-
-#: Src/GUI/MeasureBar.cpp:183
-msgid "You can't remove the first time signature change."
-msgstr "Nemůžete odstranit první změnu taktového označení."
-
-#: Src/Midi/Players/PlatformMidiManager.cpp:65
-msgid "Bad binary, no MIDI driver was compiled in!"
-msgstr "Špatný spustitelný soubor. Nebyl sestaven žádný ovladač MIDI!"
-
-#: Src/Midi/Players/PlatformMidiManager.cpp:285
-msgid "Sorry, no MIDI input port is available"
-msgstr "Promiňte, není dostupná žádná přípojka pro vstup MIDI"
-
-#: Src/Midi/Players/PlatformMidiManager.cpp:313
-#: Src/Midi/Players/PlatformMidiManager.cpp:332
-msgid "Sorry, failed to open the selected MIDI input port"
-msgstr "Promiňte, nepodařilo se otevřít vybranou přípojku pro vstup MIDI"
-
-#: Src/Midi/Players/Example/ExamplePlayer.cpp:179
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:443
-msgid "WAV file"
-msgstr "Soubor WAV"
-
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:772
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:805
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:823
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:834
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:844
-msgid ""
-"An error has occurred when connecting to the MIDI output device with "
-"AudioUnit; audio playback may be unavailable"
-msgstr "Při připojování se k zařízení pro výstup MIDI s AudioUnit se vyskytla chyba. Přehrávání zvuku nemusí být dostupné"
-
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:783
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:794
-msgid "Sorry, failed to set custom soundfont."
-msgstr "Promiňte, ale nepodařilo se nastavit vlastní zvukovou banku."
-
-#: Src/Midi/Players/Mac/CoreMIDIOutput.cpp:189
-msgid "Unknown MIDI port : "
-msgstr "Neznámá přípojka MIDI: "
-
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:118
-msgid "Sorry, an internal error occurred during export"
-msgstr "Promiňte, při vyvádění se vyskytla vnitřní chyba"
-
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:157
-msgid ""
-"Sorry, exporting to audio could not complete successfully. Please include "
-"the following error code when reporting the issue :"
-msgstr "Promiňte, vyvedení do audia se nepodařilo úspěšně dokončit. Zahrňte, prosím, následující kód chyby, až tento problém budete hlásit."
-
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:293
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:297
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:346
-msgid "OSX Software Synthesizer"
-msgstr "Softwarový syntetizátor OSX"
-
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:329
-msgid "AIFF file"
-msgstr "Soubor AIFF"
-
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:257
-msgid ""
-"Failed to open ALSA device, sound will be unavailable (you can try selecting"
-" another output device from the 'Output' menu)"
-msgstr "Nepodařilo se otevřít přípojku ALSA. Zvuk nebude dostupný (můžete vyzkoušet vybrat jiné výstupní zařízení v nabídce Výstup)"
-
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:505
-msgid "Settings"
-msgstr "Nastavení"
-
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:514
-msgid "Choose the MIDI engine to use to render the file"
-msgstr "Vybrat stroj MIDI, který se použije na udělání souboru"
-
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:520
-msgid "MIDI Engine"
-msgstr "Stroj MIDI"
-
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:527
-msgid "Fluidsynth Soundfont"
-msgstr "Zvuková banka FluidSynth"
-
-#: Src/Midi/Players/Alsa/AlsaPort.cpp:46
-msgid "Failed to open ALSA port."
-msgstr "Nepodařilo se otevřít přípojku ALSA."
-
-#: Src/Midi/Players/Alsa/AlsaPort.cpp:172
-msgid "No midi port found, no sound will be available."
-msgstr "Nebyla nalezena žádná přípojka Midi, z toho důvodu není možný žádný zvuk."
-
-#: Src/Midi/Players/Alsa/AlsaPort.cpp:260
-#, c-format
-msgid "The selected ALSA device (%s) could not be opened."
-msgstr "Vybrané zařízení ALSA (%s) se nepodařilo otevřít."
-
-#: Src/Midi/Players/Alsa/AlsaPort.cpp:442
-msgid "Loading "
-msgstr "Nahrává se"
-
-#: Src/Midi/Players/Jack/JackMidiManager.cpp:231
-msgid "Jack"
-msgstr "JACK"
-
-#: Src/Midi/Players/NullDevice.cpp:65
-msgid "No sound available"
-msgstr "Není dostupný žádný zvuk"
-
-#: Src/Midi/Players/Win/WinPlayer.cpp:300
-#: Src/Midi/Players/Win/WinPlayer.cpp:331
-#: Src/Midi/Players/Win/WinPlayer.cpp:335
-msgid "Windows Software Synthesizer"
-msgstr "Softwarový syntetizátor Windows"
-
-#: Src/Midi/Players/Win/WinPlayer.cpp:362
-msgid "Failed to initialize MIDI out device"
-msgstr "Nepodařilo se inicializovat zařízení pro výstup MIDI"
-
 #: Src/Midi/CommonMidiUtils.cpp:435 Src/Midi/CommonMidiUtils.cpp:460
 msgid ""
 "WARNING: this song has too many\n"
 "channels, expect unpredictable output"
 msgstr "Varování: Tato píseň má příliš kanálů,\nočekávejte nepředvídatelný výstup."
-
-#: Src/Midi/Sequence.cpp:906
-msgid ""
-"Warning : you are opening a file saved with a version of\n"
-"Aria Maestosa more recent than the version you currently have.\n"
-"It may not open correctly."
-msgstr "Pozor: Otevíráte soubor, který byl uložen novější verzí Aria Maestosa\nnež je ta vaše.\nMohlo by se stát, že se soubor neotevře správně."
 
 #: Src/Midi/InstrumentChoice.cpp:29
 msgid "Acoustic Grand Piano"
@@ -2438,6 +1788,14 @@ msgstr "Potlesk"
 msgid "Gunshot"
 msgstr "Výstřel"
 
+#: Src/Midi/Track.cpp:94 Src/Midi/Track.cpp:892 Src/Midi/Track.cpp:1984
+#: Src/Midi/Sequence.cpp:70 Src/Midi/Sequence.cpp:118
+#: Src/Midi/Sequence.cpp:140 Src/IO/MidiFileReader.cpp:544
+#: Src/Printing/AbstractPrintableSequence.cpp:39
+#: Src/Printing/AbstractPrintableSequence.cpp:43
+msgid "Untitled"
+msgstr "Bez názvu"
+
 #: Src/Midi/DrumChoice.cpp:30
 msgid "Standard"
 msgstr "Standardní"
@@ -2478,112 +1836,171 @@ msgstr "Zvláštní účinky"
 msgid "Invalid Drumkit"
 msgstr "Neplatná sada bicích"
 
-#: Src/Pickers/MagneticGridPicker.cpp:43
-msgid "Triplet"
-msgstr "Triola"
+#: Src/Midi/Players/Win/WinPlayer.cpp:300
+#: Src/Midi/Players/Win/WinPlayer.cpp:331
+#: Src/Midi/Players/Win/WinPlayer.cpp:335
+msgid "Windows Software Synthesizer"
+msgstr "Softwarový syntetizátor Windows"
 
-#: Src/Pickers/MagneticGridPicker.cpp:44
-msgid "Dotted"
-msgstr "Tečkovaná nota"
+#: Src/Midi/Players/Win/WinPlayer.cpp:362
+msgid "Failed to initialize MIDI out device"
+msgstr "Nepodařilo se inicializovat zařízení pro výstup MIDI"
 
-#: Src/Pickers/InstrumentPicker.cpp:83 Src/Pickers/InstrumentPicker.cpp:104
-#: Src/Pickers/InstrumentPicker.cpp:124
-msgid "Piano"
-msgstr "Klavír"
+#: Src/Midi/Players/Mac/CoreMIDIOutput.cpp:189
+msgid "Unknown MIDI port : "
+msgstr "Neznámá přípojka MIDI: "
 
-#: Src/Pickers/InstrumentPicker.cpp:84
-msgid "Chromatic Percussion"
-msgstr "Chromatické bicí"
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:118
+msgid "Sorry, an internal error occurred during export"
+msgstr "Promiňte, při vyvádění se vyskytla vnitřní chyba"
 
-#: Src/Pickers/InstrumentPicker.cpp:85 Src/Pickers/InstrumentPicker.cpp:106
-#: Src/Pickers/InstrumentPicker.cpp:125
-msgid "Organ"
-msgstr "Varhany"
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:157
+msgid ""
+"Sorry, exporting to audio could not complete successfully. Please include "
+"the following error code when reporting the issue :"
+msgstr "Promiňte, vyvedení do audia se nepodařilo úspěšně dokončit. Zahrňte, prosím, následující kód chyby, až tento problém budete hlásit."
 
-#: Src/Pickers/InstrumentPicker.cpp:86 Src/Pickers/InstrumentPicker.cpp:107
-#: Src/Pickers/InstrumentPicker.cpp:131
-msgid "Guitar"
-msgstr "Kytara"
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:293
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:297
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:346
+msgid "OSX Software Synthesizer"
+msgstr "Softwarový syntetizátor OSX"
 
-#: Src/Pickers/InstrumentPicker.cpp:87 Src/Pickers/InstrumentPicker.cpp:108
-#: Src/Pickers/InstrumentPicker.cpp:134
-msgid "Bass"
-msgstr "Basová kytara"
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:329
+msgid "AIFF file"
+msgstr "Soubor AIFF"
 
-#: Src/Pickers/InstrumentPicker.cpp:88
-msgid "Strings"
-msgstr "Smyčcové nástroje"
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:772
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:805
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:823
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:834
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:844
+msgid ""
+"An error has occurred when connecting to the MIDI output device with "
+"AudioUnit; audio playback may be unavailable"
+msgstr "Při připojování se k zařízení pro výstup MIDI s AudioUnit se vyskytla chyba. Přehrávání zvuku nemusí být dostupné"
 
-#: Src/Pickers/InstrumentPicker.cpp:89
-msgid "Ensemble"
-msgstr "Soubor"
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:783
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:794
+msgid "Sorry, failed to set custom soundfont."
+msgstr "Promiňte, ale nepodařilo se nastavit vlastní zvukovou banku."
 
-#: Src/Pickers/InstrumentPicker.cpp:90 Src/Pickers/InstrumentPicker.cpp:111
-#: Src/Pickers/InstrumentPicker.cpp:126
-msgid "Brass"
-msgstr "Žesťové nástroje"
+#: Src/Midi/Players/Example/ExamplePlayer.cpp:179
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:443
+msgid "WAV file"
+msgstr "Soubor WAV"
 
-#: Src/Pickers/InstrumentPicker.cpp:91 Src/Pickers/InstrumentPicker.cpp:112
-#: Src/Pickers/InstrumentPicker.cpp:129
-msgid "Reed"
-msgstr "Plátkové nástroje"
+#: Src/Midi/Players/Alsa/AlsaPort.cpp:46
+msgid "Failed to open ALSA port."
+msgstr "Nepodařilo se otevřít přípojku ALSA."
 
-#: Src/Pickers/InstrumentPicker.cpp:92 Src/Pickers/InstrumentPicker.cpp:130
-msgid "Pipe"
-msgstr "Píšťalka"
+#: Src/Midi/Players/Alsa/AlsaPort.cpp:172
+msgid "No midi port found, no sound will be available."
+msgstr "Nebyla nalezena žádná přípojka Midi, z toho důvodu není možný žádný zvuk."
 
-#: Src/Pickers/InstrumentPicker.cpp:93 Src/Pickers/InstrumentPicker.cpp:114
-#: Src/Pickers/InstrumentPicker.cpp:128
-msgid "Synth Lead"
-msgstr "Syntetické sólo"
+#: Src/Midi/Players/Alsa/AlsaPort.cpp:260
+#, c-format
+msgid "The selected ALSA device (%s) could not be opened."
+msgstr "Vybrané zařízení ALSA (%s) se nepodařilo otevřít."
 
-#: Src/Pickers/InstrumentPicker.cpp:94
-msgid "Synth Pad"
-msgstr "Syntetická plocha"
+#: Src/Midi/Players/Alsa/AlsaPort.cpp:442
+msgid "Loading "
+msgstr "Nahrává se"
 
-#: Src/Pickers/InstrumentPicker.cpp:95
-msgid "Synth Effects"
-msgstr "Syntetické efekty"
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:257
+msgid ""
+"Failed to open ALSA device, sound will be unavailable (you can try selecting"
+" another output device from the 'Output' menu)"
+msgstr "Nepodařilo se otevřít přípojku ALSA. Zvuk nebude dostupný (můžete vyzkoušet vybrat jiné výstupní zařízení v nabídce Výstup)"
 
-#: Src/Pickers/InstrumentPicker.cpp:96 Src/Pickers/InstrumentPicker.cpp:115
-msgid "Ethnic"
-msgstr "Etnická"
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:505
+msgid "Settings"
+msgstr "Nastavení"
 
-#: Src/Pickers/InstrumentPicker.cpp:97
-msgid "Percussive"
-msgstr "Bicí"
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:514
+msgid "Choose the MIDI engine to use to render the file"
+msgstr "Vybrat stroj MIDI, který se použije na udělání souboru"
 
-#: Src/Pickers/InstrumentPicker.cpp:105
-msgid "Chromatic"
-msgstr "Chromatická"
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:520
+msgid "MIDI Engine"
+msgstr "Stroj MIDI"
 
-#: Src/Pickers/InstrumentPicker.cpp:109
-msgid "Strings and Orchestra"
-msgstr "Smyčce a orchestr"
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:527
+msgid "Fluidsynth Soundfont"
+msgstr "Zvuková banka FluidSynth"
 
-#: Src/Pickers/InstrumentPicker.cpp:110
-msgid "Choirs, Pads and Voices"
-msgstr "Akordy, plochy a hlasy"
+#: Src/Midi/Players/Jack/JackMidiManager.cpp:231
+msgid "Jack"
+msgstr "JACK"
 
-#: Src/Pickers/InstrumentPicker.cpp:113
-msgid "Flutes and Pipe"
-msgstr "Flétny a píšťalka"
+#: Src/Midi/Players/NullDevice.cpp:65
+msgid "No sound available"
+msgstr "Není dostupný žádný zvuk"
 
-#: Src/Pickers/InstrumentPicker.cpp:116 Src/Pickers/InstrumentPicker.cpp:135
-msgid "Percussion"
-msgstr "Bicí nástroje"
+#: Src/Midi/Players/PlatformMidiManager.cpp:65
+msgid "Bad binary, no MIDI driver was compiled in!"
+msgstr "Špatný spustitelný soubor. Nebyl sestaven žádný ovladač MIDI!"
 
-#: Src/Pickers/InstrumentPicker.cpp:127
-msgid "Pads"
-msgstr "Plocha"
+#: Src/Midi/Players/PlatformMidiManager.cpp:285
+msgid "Sorry, no MIDI input port is available"
+msgstr "Promiňte, není dostupná žádná přípojka pro vstup MIDI"
 
-#: Src/Pickers/InstrumentPicker.cpp:132
-msgid "Plucked"
-msgstr "Drnkací"
+#: Src/Midi/Players/PlatformMidiManager.cpp:313
+#: Src/Midi/Players/PlatformMidiManager.cpp:332
+msgid "Sorry, failed to open the selected MIDI input port"
+msgstr "Promiňte, nepodařilo se otevřít vybranou přípojku pro vstup MIDI"
+
+#: Src/Midi/Sequence.cpp:906
+msgid ""
+"Warning : you are opening a file saved with a version of\n"
+"Aria Maestosa more recent than the version you currently have.\n"
+"It may not open correctly."
+msgstr "Pozor: Otevíráte soubor, který byl uložen novější verzí Aria Maestosa\nnež je ta vaše.\nMohlo by se stát, že se soubor neotevře správně."
+
+#. I18N: - in controller, when a controller can only be on/off
+#: Src/Pickers/ControllerChoice.cpp:194
+msgid "On"
+msgstr "Zapnuto"
+
+#. I18N: - in controller, when a controller can only be on/off
+#: Src/Pickers/ControllerChoice.cpp:196
+msgid "Off"
+msgstr "Vypnuto"
+
+#. I18N: - in controller, for a controller with min/max range
+#: Src/Pickers/ControllerChoice.cpp:198
+msgid "Min"
+msgstr "Nejméně"
+
+#. I18N: - in controller, for a controller with min/max range
+#: Src/Pickers/ControllerChoice.cpp:200
+msgid "Max"
+msgstr "Nejvíce"
+
+#. I18N: - when setting pan in controller
+#: Src/Pickers/ControllerChoice.cpp:202
+msgid "Left"
+msgstr "Vlevo"
+
+#. I18N: - when setting pan in controller
+#: Src/Pickers/ControllerChoice.cpp:204
+msgid "Right"
+msgstr "Vpravo"
 
 #: Src/Pickers/TuningPicker.cpp:62
 msgid "Rearrange selected notes"
 msgstr "Přeuspořádat vybrané noty"
+
+#. I18N: - when setting time signature, to indicate it's not constant through
+#. song
+#: Src/Pickers/TimeSigPicker.cpp:178
+msgid "Varies throughout song"
+msgstr "Mění se během písně"
+
+#. I18N: - when setting a wrong time signature
+#: Src/Pickers/TimeSigPicker.cpp:282
+msgid "Denominator must be a power of 2"
+msgstr "Jmenovatel musí být mocninou 2"
 
 #. I18N: - in the view settings for score editor. whether to show notes in a
 #. traditional musical way.
@@ -2710,50 +2127,666 @@ msgstr "Upravit přednastavení..."
 msgid "%s Major, %s minor"
 msgstr "%s Dur, %s moll"
 
-#. I18N: - when setting time signature, to indicate it's not constant through
-#. song
-#: Src/Pickers/TimeSigPicker.cpp:178
-msgid "Varies throughout song"
-msgstr "Mění se během písně"
-
-#. I18N: - when setting a wrong time signature
-#: Src/Pickers/TimeSigPicker.cpp:280
-msgid "Denominator must be a power of 2"
-msgstr "Jmenovatel musí být mocninou 2"
-
-#. I18N: - in controller, when a controller can only be on/off
-#: Src/Pickers/ControllerChoice.cpp:194
-msgid "On"
-msgstr "Zapnuto"
-
-#. I18N: - in controller, when a controller can only be on/off
-#: Src/Pickers/ControllerChoice.cpp:196
-msgid "Off"
-msgstr "Vypnuto"
-
-#. I18N: - in controller, for a controller with min/max range
-#: Src/Pickers/ControllerChoice.cpp:198
-msgid "Min"
-msgstr "Nejméně"
-
-#. I18N: - in controller, for a controller with min/max range
-#: Src/Pickers/ControllerChoice.cpp:200
-msgid "Max"
-msgstr "Nejvíce"
-
-#. I18N: - when setting pan in controller
-#: Src/Pickers/ControllerChoice.cpp:202
-msgid "Left"
-msgstr "Vlevo"
-
-#. I18N: - when setting pan in controller
-#: Src/Pickers/ControllerChoice.cpp:204
-msgid "Right"
-msgstr "Vpravo"
-
 #: Src/Pickers/VolumeSlider.cpp:132
 msgid "volume"
 msgstr "Hlasitost"
+
+#: Src/Pickers/MagneticGridPicker.cpp:43
+msgid "Triplet"
+msgstr "Triola"
+
+#: Src/Pickers/MagneticGridPicker.cpp:44
+msgid "Dotted"
+msgstr "Tečkovaná nota"
+
+#: Src/Pickers/InstrumentPicker.cpp:83 Src/Pickers/InstrumentPicker.cpp:104
+#: Src/Pickers/InstrumentPicker.cpp:124
+msgid "Piano"
+msgstr "Klavír"
+
+#: Src/Pickers/InstrumentPicker.cpp:84
+msgid "Chromatic Percussion"
+msgstr "Chromatické bicí"
+
+#: Src/Pickers/InstrumentPicker.cpp:85 Src/Pickers/InstrumentPicker.cpp:106
+#: Src/Pickers/InstrumentPicker.cpp:125
+msgid "Organ"
+msgstr "Varhany"
+
+#: Src/Pickers/InstrumentPicker.cpp:86 Src/Pickers/InstrumentPicker.cpp:107
+#: Src/Pickers/InstrumentPicker.cpp:131
+msgid "Guitar"
+msgstr "Kytara"
+
+#: Src/Pickers/InstrumentPicker.cpp:87 Src/Pickers/InstrumentPicker.cpp:108
+#: Src/Pickers/InstrumentPicker.cpp:134
+msgid "Bass"
+msgstr "Basová kytara"
+
+#: Src/Pickers/InstrumentPicker.cpp:88
+msgid "Strings"
+msgstr "Smyčcové nástroje"
+
+#: Src/Pickers/InstrumentPicker.cpp:89
+msgid "Ensemble"
+msgstr "Soubor"
+
+#: Src/Pickers/InstrumentPicker.cpp:90 Src/Pickers/InstrumentPicker.cpp:111
+#: Src/Pickers/InstrumentPicker.cpp:126
+msgid "Brass"
+msgstr "Žesťové nástroje"
+
+#: Src/Pickers/InstrumentPicker.cpp:91 Src/Pickers/InstrumentPicker.cpp:112
+#: Src/Pickers/InstrumentPicker.cpp:129
+msgid "Reed"
+msgstr "Plátkové nástroje"
+
+#: Src/Pickers/InstrumentPicker.cpp:92 Src/Pickers/InstrumentPicker.cpp:130
+msgid "Pipe"
+msgstr "Píšťalka"
+
+#: Src/Pickers/InstrumentPicker.cpp:93 Src/Pickers/InstrumentPicker.cpp:114
+#: Src/Pickers/InstrumentPicker.cpp:128
+msgid "Synth Lead"
+msgstr "Syntetické sólo"
+
+#: Src/Pickers/InstrumentPicker.cpp:94
+msgid "Synth Pad"
+msgstr "Syntetická plocha"
+
+#: Src/Pickers/InstrumentPicker.cpp:95
+msgid "Synth Effects"
+msgstr "Syntetické efekty"
+
+#: Src/Pickers/InstrumentPicker.cpp:96 Src/Pickers/InstrumentPicker.cpp:115
+msgid "Ethnic"
+msgstr "Etnická"
+
+#: Src/Pickers/InstrumentPicker.cpp:97
+msgid "Percussive"
+msgstr "Bicí"
+
+#. I18N: percussions category name
+#: Src/Pickers/InstrumentPicker.cpp:98 Src/Pickers/InstrumentPicker.cpp:117
+#: Src/Pickers/InstrumentPicker.cpp:136 Src/Editors/DrumEditor.cpp:231
+msgid "Sound Effects"
+msgstr "Zvukové efekty"
+
+#: Src/Pickers/InstrumentPicker.cpp:105
+msgid "Chromatic"
+msgstr "Chromatická"
+
+#: Src/Pickers/InstrumentPicker.cpp:109
+msgid "Strings and Orchestra"
+msgstr "Smyčce a orchestr"
+
+#: Src/Pickers/InstrumentPicker.cpp:110
+msgid "Choirs, Pads and Voices"
+msgstr "Akordy, plochy a hlasy"
+
+#: Src/Pickers/InstrumentPicker.cpp:113
+msgid "Flutes and Pipe"
+msgstr "Flétny a píšťalka"
+
+#: Src/Pickers/InstrumentPicker.cpp:116 Src/Pickers/InstrumentPicker.cpp:135
+msgid "Percussion"
+msgstr "Bicí nástroje"
+
+#: Src/Pickers/InstrumentPicker.cpp:127
+msgid "Pads"
+msgstr "Plocha"
+
+#: Src/Pickers/InstrumentPicker.cpp:132
+msgid "Plucked"
+msgstr "Drnkací"
+
+#: Src/PreferencesData.cpp:152
+msgid "Language"
+msgstr "Jazyk"
+
+#: Src/PreferencesData.cpp:178
+msgid "MIDI Driver"
+msgstr "Ovladač MIDI"
+
+#. I18N: In preferences
+#: Src/PreferencesData.cpp:190
+msgid "Play during edit (default value)"
+msgstr "Přehrávat během úprav (výchozí hodnota)"
+
+#: Src/PreferencesData.cpp:192
+msgid "Always"
+msgstr "Vždy"
+
+#: Src/PreferencesData.cpp:193
+msgid "On note change"
+msgstr "Při změně noty"
+
+#: Src/PreferencesData.cpp:194
+msgid "Never"
+msgstr "Nikdy"
+
+#. I18N: In preferences
+#: Src/PreferencesData.cpp:199
+msgid "Default Score View"
+msgstr "Výchozí pohled na notový zápis"
+
+#: Src/PreferencesData.cpp:201
+msgid "Both Musical and Linear"
+msgstr "Jak hudební tak přímý"
+
+#: Src/PreferencesData.cpp:202
+msgid "Musical Only"
+msgstr "Jen hudební"
+
+#: Src/PreferencesData.cpp:203
+msgid "Linear Only"
+msgstr "Jen přímý"
+
+#. I18N: In preferences
+#: Src/PreferencesData.cpp:208
+msgid "Default Editor View"
+msgstr "Výchozí pohled na editor"
+
+#: Src/PreferencesData.cpp:210
+msgid "Keyboard"
+msgstr "Klávesnice"
+
+#: Src/PreferencesData.cpp:211
+msgid "Score"
+msgstr "Notový zápis"
+
+#: Src/PreferencesData.cpp:212
+msgid "Tablature"
+msgstr "Tabulatura"
+
+#. I18N: In preferences
+#: Src/PreferencesData.cpp:218
+msgid "Instrument Classification"
+msgstr "Zařazení nástroje"
+
+#: Src/PreferencesData.cpp:220
+msgid "MIDI Standard"
+msgstr "Standard MIDI"
+
+#: Src/PreferencesData.cpp:230
+msgid "Soundfont"
+msgstr "Zvuková banka"
+
+#: Src/PreferencesData.cpp:237
+msgid "Follow playback by default"
+msgstr "Sledovat přehrávání jako výchozí nastavení"
+
+#: Src/PreferencesData.cpp:242
+msgid "Enable playthrough when recording by default"
+msgstr "Povolit přehrávání, když se nahrává, jako výchozí nastavení"
+
+#: Src/PreferencesData.cpp:247
+msgid "Check online for new versions"
+msgstr "Sledovat internet kvůli novým verzím"
+
+#: Src/PreferencesData.cpp:252
+msgid "Remember window location"
+msgstr "Zapamatovat si umístění okna"
+
+#: Src/PreferencesData.cpp:284
+msgid "Automatically launch FluidSynth if needed"
+msgstr "V případě potřeby spustit FluidSynth automaticky"
+
+#: Src/PreferencesData.cpp:291
+msgid "Single-instance application"
+msgstr "Program o jedné instanci"
+
+#: Src/PreferencesData.cpp:297
+msgid "Show note names in piano-roll"
+msgstr "Ukázat názvy not ve válečku"
+
+#: Src/PreferencesData.cpp:303
+msgid "Restore open files from previous session"
+msgstr "Obnovit otevřené soubory z předchozího sezení"
+
+#: Src/main.cpp:338 Src/main.cpp:359
+msgid ""
+"Sorry an internal error occurred : an exception was caught unhandled : "
+msgstr "Promiňte, ale vyskytla se vnitřní chyba: S výjimkou nebylo zacházeno správně: "
+
+#: Src/IO/AriaFileWriter.cpp:49 Src/IO/AriaFileWriter.cpp:58
+#, c-format
+msgid "Could not open file '%s' for reading"
+msgstr "Nepodařilo se otevřít soubor '%s' pro čtení"
+
+#: Src/IO/MidiFileReader.cpp:170
+msgid ""
+"This MIDI file has tracks that play on multiple MIDI channels. This is not "
+"supported by Aria Maestosa."
+msgstr "Tento soubor MIDI obsahuje stopy, které hrají noty na několika kanálech MIDI. To není Aria Maestosa podporováno."
+
+#: Src/IO/MidiFileReader.cpp:185
+msgid ""
+"This MIDI file has a track that sends events on multiple MIDI channels. This"
+" is not supported by Aria Maestosa."
+msgstr "Tento soubor MIDI obsahuje stopy, která posílá noty do několika kanálů MIDI. To není Aria Maestosa podporováno."
+
+#: Src/IO/MidiFileReader.cpp:236
+#, c-format
+msgid ""
+"This MIDI file appears to be incorrect; a note at tick %i in channel %i does"
+" not appear to have an end"
+msgstr "Zdá se, že tento soubor MIDI je nesprávný; zdá se, že nota na tiku %i v kanálu %i nemá konec"
+
+#: Src/IO/MidiFileReader.cpp:271
+#, c-format
+msgid ""
+"This MIDI file uses controller #%i, which is not part of the MIDI standard. "
+"This information will be discarded."
+msgstr "Tento soubor MIDI používá ovladač #%i, což není součástí standardu MIDI. Tato informace bude zahozena."
+
+#: Src/IO/MidiFileReader.cpp:281
+msgid ""
+"This MIDI file uses Registered Parameters, which are currently not supported"
+" by Aria Maestosa."
+msgstr "Tento soubor MIDI používá Registered Parameters. To nyní není Aria Maestosa podporováno."
+
+#: Src/IO/MidiFileReader.cpp:285
+msgid ""
+"This MIDI files uses NRPN (Non-Registered Parameters, i.e. non-standard "
+"controllers), which are currently not supported by Aria Maestosa."
+msgstr "Tento soubor MIDI používá NRPN (Non-Registered Parameters, např. nestandardní ovladače. To není Aria Maestosa podporováno."
+
+#: Src/IO/MidiFileReader.cpp:297
+msgid ""
+"This MIDI files uses Channel Mode Message, which are currently not supported"
+" by Aria Maestosa."
+msgstr "Tento soubor MIDI používá Channel Mode Message. To nyní není Aria Maestosa podporováno."
+
+#: Src/IO/MidiFileReader.cpp:301
+#, c-format
+msgid ""
+"This MIDI file uses unsupported MIDI controller #%i. Data related to this "
+"controller will be discarded."
+msgstr "Tento soubor  používá nepodporovaný ovladač MIDI #%i, Data vztahující se k tomuto ovladačibudou zahozena."
+
+#: Src/PresetManager.cpp:133
+#, c-format
+msgid "Sorry, an error occurred : could not create %s"
+msgstr "Promiňte, ale vyskytla se chyba: Nepodařilo se vytvořit %s"
+
+#: Src/Printing/AbstractPrintableSequence.cpp:39
+msgid "Aria Maestosa song"
+msgstr "Aria Maestosa - Píseň"
+
+#. I18N: for printing (page orientation)
+#: Src/Printing/wxEasyPrintWrapper.cpp:232
+msgid "Portrait"
+msgstr "Na výšku"
+
+#: Src/Printing/wxEasyPrintWrapper.cpp:232
+msgid "Landscape"
+msgstr "Na šířku"
+
+#. I18N: for printing (page setup)
+#: Src/Printing/wxEasyPrintWrapper.cpp:234
+#, c-format
+msgid "left = %i mm, right = %i mm,"
+msgstr "levý = %i mm, pravý = %i mm,"
+
+#: Src/Printing/wxEasyPrintWrapper.cpp:235
+#, c-format
+msgid "top = %i mm, bottom = %i mm"
+msgstr "nahoře = %i mm, dole = %i mm"
+
+#. I18N: beats per minute (tempo)
+#: Src/Editors/ControllerEditor.cpp:91
+msgid "bpm"
+msgstr "ÚZM"
+
+#. I18N: as in "+2 semitones"
+#: Src/Editors/ControllerEditor.cpp:96
+msgid "semitones"
+msgstr "Půltóny"
+
+#. I18N: as in "soundbank"
+#: Src/Editors/ControllerEditor.cpp:101
+msgid "bank ID"
+msgstr "ID banky"
+
+#: Src/Editors/ControllerEditor.cpp:731
+msgid "Lyrics"
+msgstr "Text písně"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:92
+msgid "High Q"
+msgstr "Vysoké Q"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:94
+msgid "Slap"
+msgstr "Plácnout"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:96
+msgid "Push"
+msgstr "Tlačit"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:98
+msgid "Pull"
+msgstr "Táhnout"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:100 Src/Editors/DrumEditor.cpp:112
+msgid "Stick"
+msgstr "Palička"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:102
+msgid "Square"
+msgstr "Náměstí"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:104
+msgid "Metro"
+msgstr "Metro"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:106
+msgid "Metro bell"
+msgstr "Zvonek v metru"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:108
+msgid "Bass drum 2"
+msgstr "Velký buben 2"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:110
+msgid "Bass drum 1"
+msgstr "Velký buben 1"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:114
+msgid "Snare"
+msgstr "Malý buben"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:116
+msgid "Clap"
+msgstr "Tlesknutí"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:118
+msgid "Snare 2"
+msgstr "Malý buben 2"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:120
+msgid "Tom 6"
+msgstr "Tom basový nízký 6"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:122
+msgid "Closed hi-hat"
+msgstr "Zavřená hajtka"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:124
+msgid "Tom 5"
+msgstr "Tom basový vysoký 5"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:126
+msgid "Pedal hi-hat"
+msgstr "Pedálová hajtka"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:128
+msgid "Tom 4"
+msgstr "Tom střední 4"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:130
+msgid "Open hi-hat"
+msgstr "Otevřená hajtka"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:132
+msgid "Tom 3"
+msgstr "Tom střední 3"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:134
+msgid "Tom 2"
+msgstr "Tom střední 2"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:136
+msgid "Crash"
+msgstr "Crash činel"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:138
+msgid "Tom 1"
+msgstr "Tom 1"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:140
+msgid "Ride"
+msgstr "Ride činel"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:142
+msgid "Chinese"
+msgstr "Čínský činel"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:144
+msgid "Ride bell"
+msgstr "Jezdecký zvonek"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:146
+msgid "Tambourine"
+msgstr "Tamburína"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:148
+msgid "Splash"
+msgstr "Splash činel"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:150
+msgid "Cowbell"
+msgstr "Kravský zvonec"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:152
+msgid "Crash 2"
+msgstr "Crash činel 2"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:154
+msgid "Vibraslap"
+msgstr "Vibraslap"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:156
+msgid "Ride 2"
+msgstr "Ride činel vysoký"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:158
+msgid "Hi bongo"
+msgstr "Vysoké bongo"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:160
+msgid "Low bongo"
+msgstr "Nízké bongo"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:162
+msgid "Mute hi conga"
+msgstr "Ztlumená vysoká konga"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:164
+msgid "Open hi conga"
+msgstr "Otevřená vysoká konga"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:166
+msgid "Low conga"
+msgstr "Nízká konga"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:168
+msgid "High timbale"
+msgstr "Vysoká timbále"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:170
+msgid "Low timbale"
+msgstr "Nízká timbále"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:172
+msgid "High agogo"
+msgstr "Vysoká agoga"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:174
+msgid "Low agogo"
+msgstr "Nízká agogo"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:176
+msgid "Cabasa"
+msgstr "Cabasa"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:178
+msgid "Maracas"
+msgstr "Rumba koule"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:180
+msgid "Short whistle"
+msgstr "Krátký hvizd"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:182
+msgid "Long whistle"
+msgstr "Dlouhý hvizd"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:184
+msgid "Short guiro"
+msgstr "Krátké guiro"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:186
+msgid "Long guiro"
+msgstr "Dlouhé guiro"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:188
+msgid "Claves"
+msgstr "Kláves"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:190
+msgid "Hi wood block"
+msgstr "Vysoký dřevěný špalíček"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:192
+msgid "Lo wood block"
+msgstr "Nízký dřevěný špalíček"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:194
+msgid "Mute cuica"
+msgstr "Ztlumená kuika"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:196
+msgid "Open cuica"
+msgstr "Otevřená kuika"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:198
+msgid "Mute triangle"
+msgstr "Ztlumený triangl"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:200
+msgid "Open triangle"
+msgstr "Otevřený triangl"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:202
+msgid "Shaker"
+msgstr "Šejkr"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:204
+msgid "Jingle Bell"
+msgstr "Rolnička"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:206
+msgid "Bell Tree"
+msgstr "Zvonkový stromek"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:208
+msgid "Castanets"
+msgstr "Kastaněty"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:210
+msgid "Mute surdo"
+msgstr "Ztlumené surdo"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:212
+msgid "Open surdo"
+msgstr "Otevřené surdo"
+
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:217
+msgid "Drumkit"
+msgstr "Sada bicích"
+
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:219
+msgid "Hi-hat"
+msgstr "Hajtka"
+
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:221
+msgid "Cymbal"
+msgstr "Činel"
+
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:223
+msgid "Toms"
+msgstr "Tomy"
+
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:225
+msgid "African"
+msgstr "Africký"
+
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:227
+msgid "Latin"
+msgstr "Latinský"
+
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:229
+msgid "Others"
+msgstr "Jiné"
 
 #: Src/PreferencesData.h:63
 msgid "System soundbank"

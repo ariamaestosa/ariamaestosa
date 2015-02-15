@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Aria Maestosa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-02 18:51-0400\n"
-"PO-Revision-Date: 2014-03-14 10:13+0000\n"
-"Last-Translator: Park S.H <ddfddf2k@paran.com>\n"
+"POT-Creation-Date: 2014-08-12 20:06-0400\n"
+"PO-Revision-Date: 2014-08-13 00:17+0000\n"
+"Last-Translator: Auria <auria.mg@gmail.com>\n"
 "Language-Team: Korean (http://www.transifex.com/projects/p/ariamaestosa/language/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,124 +17,296 @@ msgstr ""
 "Language: ko\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: Src/main.cpp:338 Src/main.cpp:359
-msgid ""
-"Sorry an internal error occurred : an exception was caught unhandled : "
-msgstr "죄송합니다. 내부 오류가 발생했습니다 : 처리되지 않는 예외 :"
+#: Src/Renderers/wxImage.cpp:53
+msgid "Failed to load "
+msgstr "불러오기 실패"
 
-#: Src/PresetManager.cpp:133
+#: Src/Renderers/GLImage.cpp:52 Src/Renderers/GLImage.cpp:64
+#: Src/Renderers/GLImage.cpp:77 Src/Renderers/GLImage.cpp:87
+#: Src/Renderers/GLImage.cpp:108 Src/Renderers/GLImage.cpp:194
+msgid "Failed to load resource image"
+msgstr "리소스 이미지 불러오기 실패"
+
+#. I18N: (undoable) action name
+#: Src/Actions/Record.cpp:32
+msgid "record from MIDI instrument"
+msgstr "MIDI 악기에서 녹음"
+
+#. I18N: (undoable) action name
+#: Src/Actions/InsertEmptyMeasures.cpp:35
+msgid "insert measures"
+msgstr "소절 삽입"
+
+#. I18N: (undoable) action name
+#: Src/Actions/DeleteSelected.cpp:40
+msgid "delete note(s)"
+msgstr "음표 삭제"
+
+#. I18N: (undoable) action name
+#: Src/Actions/DeleteControllerEvent.cpp:40
+msgid "delete controller event"
+msgstr "컨트롤러 이벤트 삭제"
+
+#. I18N: (undoable) action name
+#: Src/Actions/ShiftFrets.cpp:28 Src/Actions/NumberPressed.cpp:29
+msgid "change note fret"
+msgstr "음표 프렛 변경"
+
+#. I18N: (undoable) action name
+#: Src/Actions/DeleteTrack.cpp:32
+msgid "delete track"
+msgstr "트랙 삭제"
+
+#. I18N: (undoable) action name
+#: Src/Actions/SetNoteVolume.cpp:27
+msgid "change note(s) volume"
+msgstr "음표 음량 변경"
+
+#. I18N: (undoable) action name
+#: Src/Actions/ShiftString.cpp:27
+msgid "string change"
+msgstr "스트링 변경"
+
+#. I18N: (undoable) action name
+#: Src/Actions/Duplicate.cpp:43
+msgid "duplicate"
+msgstr "복제"
+
+#. I18N: (undoable) action name
+#: Src/Actions/ResizeNotes.cpp:31
+msgid "resize note(s)"
+msgstr "음표 크기 변경"
+
+#. I18N: (undoable) action name
+#: Src/Actions/SetTrackVolume.cpp:27
+msgid "change track volume"
+msgstr "트랙 음량 변경"
+
+#. I18N: (undoable) action name
+#: Src/Actions/AddControllerSlide.cpp:33
+msgid "add control slide"
+msgstr ""
+
+#. I18N: (undoable) action name
+#: Src/Actions/SetAccidentalSign.cpp:34
+msgid "accidental change"
+msgstr "임시표 변경"
+
+#. I18N: (undoable) action name
+#: Src/Actions/RearrangeNotes.cpp:29
+msgid "rearrange notes"
+msgstr "음표 재배치"
+
+#. I18N: (undoable) action name
+#: Src/Actions/RemoveOverlapping.cpp:31
+msgid "remove overlapping notes"
+msgstr "겹치는 음표 제거"
+
+#. I18N: (undoable) action name
+#: Src/Actions/SnapNotesToGrid.cpp:28
+msgid "snap notes to grid"
+msgstr "음표를 격자에 붙이기"
+
+#. I18N: (undoable) action name
+#: Src/Actions/Paste.cpp:42
+msgid "paste"
+msgstr "붙여넣기"
+
+#. I18N: (undoable) action name
+#: Src/Actions/MoveNotes.cpp:38
+msgid "move note(s)"
+msgstr "음표 이동"
+
+#. I18N: (undoable) action name
+#: Src/Actions/AddTrack.cpp:37
+msgid "add track"
+msgstr "트랙 추가"
+
+#. I18N: (undoable) action name
+#: Src/Actions/ShiftBySemiTone.cpp:30
+msgid "change pitch"
+msgstr "음높이 변경"
+
+#. I18N: (undoable) action name
+#: Src/Actions/UpdateGuitarTuning.cpp:29
+msgid "change guitar tuning"
+msgstr "기타 조율 변경"
+
+#. I18N: (undoable) action name
+#: Src/Actions/ScaleSong.cpp:30
+msgid "scale song"
+msgstr "노래 비율"
+
+#. I18N: (undoable) action name
+#: Src/Actions/AddNote.cpp:39
+msgid "add note"
+msgstr "음표 추가"
+
+#. I18N: (undoable) action name
+#: Src/Actions/AddTextEvent.cpp:31
+msgid "text change"
+msgstr "텍스트 변경"
+
+#. I18N: (undoable) action name
+#: Src/Actions/AddControlEvent.cpp:32
+msgid "add control event"
+msgstr "컨트롤러 이벤트 추가"
+
+#. I18N: (undoable) action name
+#: Src/Actions/DuplicateMeasures.cpp:37
+msgid "duplicate measures"
+msgstr "소절 복제"
+
+#. I18N: (undoable) action name
+#. I18N: menu item in the "edit" menu
+#: Src/Actions/ScrollNotesIntoView.cpp:37 Src/GUI/MainFrameMenuBar.cpp:199
+msgid "Scroll notes into view"
+msgstr ""
+
+#. I18N: (undoable) action name
+#: Src/Actions/ScaleTrack.cpp:30
+msgid "scale note(s)"
+msgstr "음표 비율"
+
+#. I18N: (undoable) action name
+#: Src/Actions/RemoveMeasures.cpp:38
+msgid "remove measure(s)"
+msgstr "소절 제거"
+
+#: Src/Dialogs/WaitWindow.cpp:69
+msgid "Please wait..."
+msgstr "기다려주세요..."
+
+#. I18N: - title of the copyright/info dialog
+#: Src/Dialogs/SongPropertiesDialog.cpp:85
+msgid "Song Properties"
+msgstr "곡 속성"
+
+#. I18N: - title of the copyright/info dialog
+#: Src/Dialogs/SongPropertiesDialog.cpp:96
+msgid "Song name"
+msgstr "곡 이름"
+
+#. I18N: - title of the copyright/info dialog
+#: Src/Dialogs/SongPropertiesDialog.cpp:105
+msgid "Copyright"
+msgstr "저작권"
+
+#. I18N: - default key signature
+#: Src/Dialogs/SongPropertiesDialog.cpp:113
+msgid "Default key signature"
+msgstr "기본 키 서명"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:119
+msgid "None"
+msgstr "없음"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:120
+msgid "Sharps"
+msgstr "샵"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:121
+msgid "Flats"
+msgstr "플랫"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:124
+msgid "Symbols"
+msgstr "심볼"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:148
+msgid "Tempo"
+msgstr "템포"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:157 Src/Pickers/TimeSigPicker.cpp:139
+msgid "Time Signature"
+msgstr "박자"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:169
+#: Src/Dialogs/SongPropertiesDialog.cpp:203
+msgid "Song duration :"
+msgstr "곡 길이 :"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:174
+#: Src/Dialogs/CustomKeyDialog.cpp:163 Src/Dialogs/PrintSetupDialog.cpp:103
+#: Src/Dialogs/PrintSetupDialog.cpp:726 Src/Dialogs/Preferences.cpp:382
+#: Src/Dialogs/CustomNoteSelectDialog.cpp:167 Src/Dialogs/TuningDialog.cpp:54
+#: Src/Dialogs/ScaleDialog.cpp:152 Src/Dialogs/TrackPropertiesDialog.cpp:230
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:545 Src/Pickers/TimeSigPicker.cpp:181
+msgid "OK"
+msgstr "확인"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:179
+#: Src/Dialogs/CustomKeyDialog.cpp:164 Src/Dialogs/PrintSetupDialog.cpp:729
+#: Src/Dialogs/Preferences.cpp:383 Src/Dialogs/CustomNoteSelectDialog.cpp:169
+#: Src/Dialogs/TuningDialog.cpp:57 Src/Dialogs/ScaleDialog.cpp:148
+#: Src/Dialogs/TrackPropertiesDialog.cpp:233
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:546
+msgid "Cancel"
+msgstr "취소"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:348 Src/Pickers/KeyPicker.cpp:95
+#: Src/Pickers/KeyPicker.cpp:110 Src/Midi/Note.h:102 Src/Midi/Note.h:118
+msgid "C"
+msgstr "C"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:348 Src/Pickers/KeyPicker.cpp:95
+#: Src/Pickers/KeyPicker.cpp:101 Src/Midi/Note.h:99 Src/Midi/Note.h:115
+msgid "A"
+msgstr "A"
+
+#: Src/Dialogs/SongPropertiesDialog.cpp:373
 #, c-format
-msgid "Sorry, an error occurred : could not create %s"
-msgstr "죄송합니다. 오류가 발생했습니다: %s 을(를) 생성할 수 업습니다"
+msgid "%s Major - %s minor"
+msgstr "%s 장조 - %s 단조"
 
-#: Src/PreferencesData.cpp:152
-msgid "Language"
-msgstr "언어(Language)"
+#: Src/Dialogs/CustomKeyDialog.cpp:38
+msgid "Custom Key Editor"
+msgstr "사용자정의 키 편집기"
 
-#: Src/PreferencesData.cpp:178
-msgid "MIDI Driver"
-msgstr "MIDI 드라이버"
+#: Src/Dialogs/CustomKeyDialog.cpp:52
+msgid "Select which notes should be part of the custom key"
+msgstr "사용자 정의 키의 일부가 되게 할 음표를 선택하세요"
 
-#. I18N: In preferences
-#: Src/PreferencesData.cpp:190
-msgid "Play during edit (default value)"
-msgstr "편집 도중에 재생 (기본값)"
+#. I18N: in custom key editor, this is the option to edit notes on a single
+#. octave
+#: Src/Dialogs/CustomKeyDialog.cpp:97
+msgid "All Octaves are Similar"
+msgstr "모든 옥타브가 유사합니다"
 
-#: Src/PreferencesData.cpp:192
-msgid "Always"
-msgstr "항상"
+#. I18N: in custom key editor, this is the option to edit all octaves
+#. independently
+#: Src/Dialogs/CustomKeyDialog.cpp:144
+msgid "All Octaves are Independent"
+msgstr "모든 옥타브가 독립적입니다"
 
-#: Src/PreferencesData.cpp:193
-msgid "On note change"
-msgstr "음표 변경 시"
+#. I18N: in custom key editor
+#. wxButton* copySettingsBtn = new wxButton( pane, wxID_COPY, _("Copy settings
+#. from another track...") );
+#. over_sizer->Add(copySettingsBtn, 0, wxALL, 5);
+#. I18N: in the key editor
+#: Src/Dialogs/CustomKeyDialog.cpp:153
+msgid "* Checked notes are included in the key"
+msgstr "* 체크된 음표는 키에 포함됩니다"
 
-#: Src/PreferencesData.cpp:194
-msgid "Never"
-msgstr "절대 안함"
+#. I18N: in the key editor
+#: Src/Dialogs/CustomKeyDialog.cpp:155
+msgid "* \"Half-checked\" notes are included as accidentals"
+msgstr "* \"절반 체크\"된 노트는 임시음으로서 포함됩니다."
 
-#. I18N: In preferences
-#: Src/PreferencesData.cpp:199
-msgid "Default Score View"
-msgstr "기본 악보 보기"
+#. I18N: in the key editor
+#: Src/Dialogs/CustomKeyDialog.cpp:157
+msgid ""
+"* Unchecked notes are excluded (for instance, they could be unplayable on "
+"your instrument)"
+msgstr "* 체크되지 않은 음표는 제외됩니다 (예를 들어, 그 음표들을 연주할 수 없도록 만들 수 있습니다)"
 
-#: Src/PreferencesData.cpp:201
-msgid "Both Musical and Linear"
-msgstr "기보법과 선형 표기법을 함께"
+#: Src/Dialogs/CustomKeyDialog.cpp:165
+msgid "Save as preset..."
+msgstr "프리셋으로 저장..."
 
-#: Src/PreferencesData.cpp:202
-msgid "Musical Only"
-msgstr "기보법만"
-
-#: Src/PreferencesData.cpp:203
-msgid "Linear Only"
-msgstr "선형 표기법만"
-
-#. I18N: In preferences
-#: Src/PreferencesData.cpp:208
-msgid "Default Editor View"
-msgstr "기본 편집기 보기"
-
-#: Src/PreferencesData.cpp:210
-msgid "Keyboard"
-msgstr "건반"
-
-#: Src/PreferencesData.cpp:211
-msgid "Score"
-msgstr "악보"
-
-#: Src/PreferencesData.cpp:212
-msgid "Tablature"
-msgstr "태블러처 악보"
-
-#. I18N: In preferences
-#: Src/PreferencesData.cpp:218
-msgid "Instrument Classification"
-msgstr "악기 분류"
-
-#: Src/PreferencesData.cpp:220
-msgid "MIDI Standard"
-msgstr "MIDI 표준"
-
-#: Src/PreferencesData.cpp:230
-msgid "Soundfont"
-msgstr "사운드폰트"
-
-#: Src/PreferencesData.cpp:237
-msgid "Follow playback by default"
-msgstr "재생(녹음) 위치 추적을 기본값으로"
-
-#: Src/PreferencesData.cpp:242
-msgid "Enable playthrough when recording by default"
-msgstr "녹음할 때 연주하기를 기본값으로 사용"
-
-#: Src/PreferencesData.cpp:247
-msgid "Check online for new versions"
-msgstr "온라인으로 새 버전 확인"
-
-#: Src/PreferencesData.cpp:252
-msgid "Remember window location"
-msgstr "창 위치 기억하기"
-
-#: Src/PreferencesData.cpp:284
-msgid "Automatically launch FluidSynth if needed"
-msgstr "필요하다면 FluidSynth를 자동으로 실행하기"
-
-#: Src/PreferencesData.cpp:291
-msgid "Single-instance application"
-msgstr "하나의 프로그램만 실행 가능"
-
-#: Src/PreferencesData.cpp:297
-msgid "Show note names in piano-roll"
-msgstr "피아노 롤에 음표 이름 표시"
-
-#: Src/PreferencesData.cpp:303
-msgid "Restore open files from previous session"
-msgstr "이전 세션에서 열었던 파일 복원하기"
-
-#: Src/PreferencesData.cpp:334 Src/GUI/MainFrameMenuBar.cpp:351
-#: Src/GUI/MainFrameMenuBar.cpp:354 Src/GUI/MainFrame.cpp:1006
-msgid "No MIDI input"
-msgstr "MIDI 입력이 없습니다."
+#: Src/Dialogs/CustomKeyDialog.cpp:264
+msgid "Enter the name of the preset"
+msgstr "프리셋의 이름을 입력하세요"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:46
 msgid "Keyroll Printing Options"
@@ -156,15 +328,6 @@ msgstr "색상"
 #: Src/Dialogs/PrintSetupDialog.cpp:100
 msgid "Compact (print only key notes)"
 msgstr "간소화 (주음-으뜸음-만 인쇄)"
-
-#: Src/Dialogs/PrintSetupDialog.cpp:103 Src/Dialogs/PrintSetupDialog.cpp:726
-#: Src/Dialogs/CustomKeyDialog.cpp:163
-#: Src/Dialogs/SongPropertiesDialog.cpp:174 Src/Dialogs/Preferences.cpp:382
-#: Src/Dialogs/ScaleDialog.cpp:152 Src/Dialogs/TrackPropertiesDialog.cpp:231
-#: Src/Dialogs/CustomNoteSelectDialog.cpp:167 Src/Dialogs/TuningDialog.cpp:54
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:545 Src/Pickers/TimeSigPicker.cpp:181
-msgid "OK"
-msgstr "확인"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:194
 msgid ""
@@ -247,165 +410,6 @@ msgstr "여백 :"
 msgid "Margins"
 msgstr "여백"
 
-#: Src/Dialogs/PrintSetupDialog.cpp:729 Src/Dialogs/CustomKeyDialog.cpp:164
-#: Src/Dialogs/SongPropertiesDialog.cpp:179 Src/Dialogs/Preferences.cpp:383
-#: Src/Dialogs/ScaleDialog.cpp:148 Src/Dialogs/TrackPropertiesDialog.cpp:234
-#: Src/Dialogs/CustomNoteSelectDialog.cpp:169 Src/Dialogs/TuningDialog.cpp:57
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:546
-msgid "Cancel"
-msgstr "취소"
-
-#: Src/Dialogs/CustomKeyDialog.cpp:38
-msgid "Custom Key Editor"
-msgstr "사용자정의 키 편집기"
-
-#: Src/Dialogs/CustomKeyDialog.cpp:52
-msgid "Select which notes should be part of the custom key"
-msgstr "사용자 정의 키의 일부가 되게 할 음표를 선택하세요"
-
-#. I18N: in custom key editor, this is the option to edit notes on a single
-#. octave
-#: Src/Dialogs/CustomKeyDialog.cpp:97
-msgid "All Octaves are Similar"
-msgstr "모든 옥타브가 유사합니다"
-
-#. I18N: in custom key editor, this is the option to edit all octaves
-#. independently
-#: Src/Dialogs/CustomKeyDialog.cpp:144
-msgid "All Octaves are Independent"
-msgstr "모든 옥타브가 독립적입니다"
-
-#. I18N: in custom key editor
-#. wxButton* copySettingsBtn = new wxButton( pane, wxID_COPY, _("Copy settings
-#. from another track...") );
-#. over_sizer->Add(copySettingsBtn, 0, wxALL, 5);
-#. I18N: in the key editor
-#: Src/Dialogs/CustomKeyDialog.cpp:153
-msgid "* Checked notes are included in the key"
-msgstr "* 체크된 음표는 키에 포함됩니다"
-
-#. I18N: in the key editor
-#: Src/Dialogs/CustomKeyDialog.cpp:155
-msgid "* \"Half-checked\" notes are included as accidentals"
-msgstr "* \"절반 체크\"된 노트는 임시음으로서 포함됩니다."
-
-#. I18N: in the key editor
-#: Src/Dialogs/CustomKeyDialog.cpp:157
-msgid ""
-"* Unchecked notes are excluded (for instance, they could be unplayable on "
-"your instrument)"
-msgstr "* 체크되지 않은 음표는 제외됩니다 (예를 들어, 그 음표들을 연주할 수 없도록 만들 수 있습니다)"
-
-#: Src/Dialogs/CustomKeyDialog.cpp:165
-msgid "Save as preset..."
-msgstr "프리셋으로 저장..."
-
-#: Src/Dialogs/CustomKeyDialog.cpp:264
-msgid "Enter the name of the preset"
-msgstr "프리셋의 이름을 입력하세요"
-
-#: Src/Dialogs/WaitWindow.cpp:69
-msgid "Please wait..."
-msgstr "기다려주세요..."
-
-#. I18N: - title of the copyright/info dialog
-#: Src/Dialogs/SongPropertiesDialog.cpp:85
-msgid "Song Properties"
-msgstr "곡 속성"
-
-#. I18N: - title of the copyright/info dialog
-#: Src/Dialogs/SongPropertiesDialog.cpp:96
-msgid "Song name"
-msgstr "곡 이름"
-
-#. I18N: - title of the copyright/info dialog
-#: Src/Dialogs/SongPropertiesDialog.cpp:105
-msgid "Copyright"
-msgstr "저작권"
-
-#. I18N: - default key signature
-#: Src/Dialogs/SongPropertiesDialog.cpp:113
-msgid "Default key signature"
-msgstr "기본 키 서명"
-
-#: Src/Dialogs/SongPropertiesDialog.cpp:119
-msgid "None"
-msgstr "없음"
-
-#: Src/Dialogs/SongPropertiesDialog.cpp:120
-msgid "Sharps"
-msgstr "샵"
-
-#: Src/Dialogs/SongPropertiesDialog.cpp:121
-msgid "Flats"
-msgstr "플랫"
-
-#: Src/Dialogs/SongPropertiesDialog.cpp:124
-msgid "Symbols"
-msgstr "심볼"
-
-#: Src/Dialogs/SongPropertiesDialog.cpp:148 Src/GUI/MainFrame.cpp:482
-msgid "Tempo"
-msgstr "템포"
-
-#: Src/Dialogs/SongPropertiesDialog.cpp:157 Src/Pickers/TimeSigPicker.cpp:139
-msgid "Time Signature"
-msgstr "박자"
-
-#: Src/Dialogs/SongPropertiesDialog.cpp:169
-#: Src/Dialogs/SongPropertiesDialog.cpp:203
-msgid "Song duration :"
-msgstr "곡 길이 :"
-
-#: Src/Dialogs/SongPropertiesDialog.cpp:348 Src/Pickers/KeyPicker.cpp:95
-#: Src/Pickers/KeyPicker.cpp:110 Src/Midi/Note.h:102 Src/Midi/Note.h:118
-msgid "C"
-msgstr "C"
-
-#: Src/Dialogs/SongPropertiesDialog.cpp:348 Src/Pickers/KeyPicker.cpp:95
-#: Src/Pickers/KeyPicker.cpp:101 Src/Midi/Note.h:99 Src/Midi/Note.h:115
-msgid "A"
-msgstr "A"
-
-#: Src/Dialogs/SongPropertiesDialog.cpp:373
-#, c-format
-msgid "%s Major - %s minor"
-msgstr "%s 장조 - %s 단조"
-
-#: Src/Dialogs/PresetEditor.cpp:33
-msgid "Presets"
-msgstr "프리셋"
-
-#: Src/Dialogs/PresetEditor.cpp:60
-msgid "Duplicate"
-msgstr "복제"
-
-#: Src/Dialogs/PresetEditor.cpp:62 Src/Editors/ControllerEditor.cpp:866
-#: Src/Editors/ControllerEditor.cpp:905
-msgid "Delete"
-msgstr "삭제"
-
-#: Src/Dialogs/PresetEditor.cpp:66 Src/Dialogs/AboutDialog.cpp:111
-#: Src/GUI/MainFrameMenuBar.cpp:1394
-msgid "Close"
-msgstr "닫기"
-
-#. I18N: when duplicating a preset
-#: Src/Dialogs/PresetEditor.cpp:97
-msgid "Enter the name of the duplicate"
-msgstr "복제할 이름을 입력하세요"
-
-#: Src/Dialogs/PresetEditor.cpp:117
-msgid "Are you sure you want to delete this preset? This cannot be undone."
-msgstr "이 프리셋을 삭제하시겠습니까? 이것은 되돌릴 수 없습니다."
-
-#: Src/Dialogs/PresetEditor.cpp:118 Src/GUI/MainFrameMenuBar.cpp:709
-#: Src/GUI/MainFrameMenuBar.cpp:772 Src/GUI/MainFrameMenuBar.cpp:811
-#: Src/GUI/MainFrameMenuBar.cpp:1049 Src/GUI/MainFrameMenuBar.cpp:1168
-#: Src/GUI/MainFrameMenuBar.cpp:1252 Src/Pickers/TimeSigPicker.cpp:289
-msgid "Confirm"
-msgstr "확인"
-
 #. I18N: - title of the preferences dialog
 #: Src/Dialogs/Preferences.cpp:246 Src/GUI/MainPane.cpp:150
 msgid "Preferences"
@@ -436,7 +440,7 @@ msgstr "변경사항은 다음 번에 프로그램을 실행했을 때 적용될
 msgid "You will need to restart Aria Maestosa for changes to be effective."
 msgstr "변경사항을 적용하려면 아리아 마에스토사를 재시작 해야 합니다."
 
-#: Src/Dialogs/Preferences.cpp:467 Src/GUI/MainFrameMenuBar.cpp:737
+#: Src/Dialogs/Preferences.cpp:467 Src/GUI/MainFrameMenuBar.cpp:739
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:587
 msgid "Select file"
 msgstr "파일 선택"
@@ -445,73 +449,39 @@ msgstr "파일 선택"
 msgid "Sound Font"
 msgstr "사운드 폰트"
 
-#. I18N: - title of the scale dialog
-#: Src/Dialogs/ScaleDialog.cpp:70
-msgid "Scale"
-msgstr "비율"
+#: Src/Dialogs/PresetEditor.cpp:33
+msgid "Presets"
+msgstr "프리셋"
 
-#. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
-#. selection\n* track\n* song"
-#: Src/Dialogs/ScaleDialog.cpp:111
-msgid "Scale notes in..."
-msgstr "다음의 음표 비율"
+#: Src/Dialogs/PresetEditor.cpp:60
+msgid "Duplicate"
+msgstr "복제"
 
-#. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
-#. selection\n* track\n* song"
-#: Src/Dialogs/ScaleDialog.cpp:115
-msgid "selection"
-msgstr "선택된 음표"
+#: Src/Dialogs/PresetEditor.cpp:62 Src/Editors/ControllerEditor.cpp:944
+#: Src/Editors/ControllerEditor.cpp:983
+msgid "Delete"
+msgstr "삭제"
 
-#. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
-#. selection\n* track\n* song"
-#: Src/Dialogs/ScaleDialog.cpp:120
-msgid "track"
-msgstr "트랙"
+#: Src/Dialogs/PresetEditor.cpp:66 Src/Dialogs/AboutDialog.cpp:111
+#: Src/GUI/MainFrameMenuBar.cpp:1396
+msgid "Close"
+msgstr "닫기"
 
-#. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
-#. selection\n* track\n* song"
-#: Src/Dialogs/ScaleDialog.cpp:124
-msgid "song"
-msgstr "곡"
+#. I18N: when duplicating a preset
+#: Src/Dialogs/PresetEditor.cpp:97
+msgid "Enter the name of the duplicate"
+msgstr "복제할 이름을 입력하세요"
 
-#. I18N: - in the scale dialog. full context : "relative to...\n\n* first
-#. affected note\n* song beginning"
-#: Src/Dialogs/ScaleDialog.cpp:130
-msgid "relative to..."
-msgstr ""
+#: Src/Dialogs/PresetEditor.cpp:117
+msgid "Are you sure you want to delete this preset? This cannot be undone."
+msgstr "이 프리셋을 삭제하시겠습니까? 이것은 되돌릴 수 없습니다."
 
-#. I18N: - in the scale dialog. full context : "relative to...\n\n* first
-#. affected note\n* song beginning"
-#: Src/Dialogs/ScaleDialog.cpp:134
-msgid "first affected note"
-msgstr ""
-
-#. I18N: - in the scale dialog. full context : "relative to...\n\n* first
-#. affected note\n* song beginning"
-#: Src/Dialogs/ScaleDialog.cpp:139
-msgid "song beginning"
-msgstr ""
-
-#: Src/Dialogs/TrackPropertiesDialog.cpp:135
-#, c-format
-msgid "Track '%s' Properties"
-msgstr "트랙 '%s' 속성"
-
-#: Src/Dialogs/TrackPropertiesDialog.cpp:162
-msgid "Track Background"
-msgstr "트랙을 배경으로 그리기"
-
-#: Src/Dialogs/TrackPropertiesDialog.cpp:187
-msgid "Check all"
-msgstr "전부 체크"
-
-#: Src/Dialogs/TrackPropertiesDialog.cpp:188
-msgid "Uncheck all"
-msgstr "전부 체크 풀기"
-
-#: Src/Dialogs/TrackPropertiesDialog.cpp:206
-msgid "Default volume for new notes"
-msgstr "새 음표의 기본 음량"
+#: Src/Dialogs/PresetEditor.cpp:118 Src/GUI/MainFrameMenuBar.cpp:711
+#: Src/GUI/MainFrameMenuBar.cpp:774 Src/GUI/MainFrameMenuBar.cpp:813
+#: Src/GUI/MainFrameMenuBar.cpp:1051 Src/GUI/MainFrameMenuBar.cpp:1170
+#: Src/GUI/MainFrameMenuBar.cpp:1254 Src/Pickers/TimeSigPicker.cpp:291
+msgid "Confirm"
+msgstr "확인"
 
 #. I18N: - title of the custom note select dialog
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:63
@@ -590,6 +560,74 @@ msgstr "허용되지 않는 값"
 msgid "Custom Tuning Editor"
 msgstr "사용자 정의 조율 편집기"
 
+#. I18N: - title of the scale dialog
+#: Src/Dialogs/ScaleDialog.cpp:70
+msgid "Scale"
+msgstr "비율"
+
+#. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
+#. selection\n* track\n* song"
+#: Src/Dialogs/ScaleDialog.cpp:111
+msgid "Scale notes in..."
+msgstr "다음의 음표 비율"
+
+#. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
+#. selection\n* track\n* song"
+#: Src/Dialogs/ScaleDialog.cpp:115
+msgid "selection"
+msgstr "선택된 음표"
+
+#. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
+#. selection\n* track\n* song"
+#: Src/Dialogs/ScaleDialog.cpp:120
+msgid "track"
+msgstr "트랙"
+
+#. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
+#. selection\n* track\n* song"
+#: Src/Dialogs/ScaleDialog.cpp:124
+msgid "song"
+msgstr "곡"
+
+#. I18N: - in the scale dialog. full context : "relative to...\n\n* first
+#. affected note\n* song beginning"
+#: Src/Dialogs/ScaleDialog.cpp:130
+msgid "relative to..."
+msgstr ""
+
+#. I18N: - in the scale dialog. full context : "relative to...\n\n* first
+#. affected note\n* song beginning"
+#: Src/Dialogs/ScaleDialog.cpp:134
+msgid "first affected note"
+msgstr ""
+
+#. I18N: - in the scale dialog. full context : "relative to...\n\n* first
+#. affected note\n* song beginning"
+#: Src/Dialogs/ScaleDialog.cpp:139
+msgid "song beginning"
+msgstr ""
+
+#: Src/Dialogs/TrackPropertiesDialog.cpp:130
+#, c-format
+msgid "Track '%s' Properties"
+msgstr "트랙 '%s' 속성"
+
+#: Src/Dialogs/TrackPropertiesDialog.cpp:157
+msgid "Track Background"
+msgstr "트랙을 배경으로 그리기"
+
+#: Src/Dialogs/TrackPropertiesDialog.cpp:182
+msgid "Check all"
+msgstr "전부 체크"
+
+#: Src/Dialogs/TrackPropertiesDialog.cpp:183
+msgid "Uncheck all"
+msgstr "전부 체크 풀기"
+
+#: Src/Dialogs/TrackPropertiesDialog.cpp:205
+msgid "Default volume for new notes"
+msgstr "새 음표의 기본 음량"
+
 #: Src/Dialogs/AboutDialog.cpp:47
 msgid "About Aria Maestosa"
 msgstr "아리아 마에스토사 정보"
@@ -643,603 +681,200 @@ msgstr "Alexis Archambault에 의한 윈도우즈 포팅"
 msgid "Translations:"
 msgstr "번역:"
 
-#. I18N: (undoable) action name
-#: Src/Actions/ScaleSong.cpp:30
-msgid "scale song"
-msgstr "노래 비율"
+#: Src/GUI/MainPane.cpp:147
+msgid "Create a new sequence"
+msgstr "새 시퀀스 만들기"
 
-#. I18N: (undoable) action name
-#: Src/Actions/ShiftFrets.cpp:28 Src/Actions/NumberPressed.cpp:29
-msgid "change note fret"
-msgstr "음표 프렛 변경"
+#: Src/GUI/MainPane.cpp:148
+msgid "Open a saved sequence"
+msgstr "저장된 시퀀스 열기"
 
-#. I18N: (undoable) action name
-#: Src/Actions/RemoveOverlapping.cpp:31
-msgid "remove overlapping notes"
-msgstr "겹치는 음표 제거"
+#: Src/GUI/MainPane.cpp:149
+msgid "Import a MIDI file"
+msgstr "MIDI 파일 가져오기"
 
-#. I18N: (undoable) action name
-#: Src/Actions/AddControllerSlide.cpp:33
-msgid "add control slide"
+#: Src/GUI/MainPane.cpp:151
+msgid "Help"
+msgstr "도움말"
+
+#: Src/GUI/MainPane.cpp:152
+msgid "Exit"
+msgstr "나가기"
+
+#. I18N: to hide the panel that is shown when a file could not be imported
+#. successfully
+#: Src/GUI/MainFrame.cpp:473
+msgid "Hide"
+msgstr "숨김"
+
+#: Src/GUI/MainFrame.cpp:653
+msgid "Record"
+msgstr "녹음"
+
+#: Src/GUI/MainFrame.cpp:654
+msgid "Play"
+msgstr "재생"
+
+#: Src/GUI/MainFrame.cpp:656
+msgid "Stop"
+msgstr "정지"
+
+#: Src/GUI/MainFrame.cpp:660
+msgid "Loop"
+msgstr "반복"
+
+#. I18N: song length (number of measures)
+#: Src/GUI/MainFrame.cpp:677
+msgid "Length"
+msgstr "길이"
+
+#: Src/GUI/MainFrame.cpp:692
+msgid ""
+"This is the initial tempo of the song, see the Controller Editor for tempo "
+"variations"
 msgstr ""
 
-#. I18N: (undoable) action name
-#: Src/Actions/ShiftString.cpp:27
-msgid "string change"
-msgstr "스트링 변경"
-
-#. I18N: (undoable) action name
-#: Src/Actions/DeleteTrack.cpp:32
-msgid "delete track"
-msgstr "트랙 삭제"
-
-#. I18N: (undoable) action name
-#: Src/Actions/SetAccidentalSign.cpp:34
-msgid "accidental change"
-msgstr "임시표 변경"
-
-#. I18N: (undoable) action name
-#: Src/Actions/Record.cpp:32
-msgid "record from MIDI instrument"
-msgstr "MIDI 악기에서 녹음"
-
-#. I18N: (undoable) action name
-#: Src/Actions/RearrangeNotes.cpp:29
-msgid "rearrange notes"
-msgstr "음표 재배치"
-
-#. I18N: (undoable) action name
-#: Src/Actions/RemoveMeasures.cpp:38
-msgid "remove measure(s)"
-msgstr "소절 제거"
-
-#. I18N: (undoable) action name
-#. I18N: menu item in the "edit" menu
-#: Src/Actions/ScrollNotesIntoView.cpp:37 Src/GUI/MainFrameMenuBar.cpp:199
-msgid "Scroll notes into view"
+#: Src/GUI/MainFrame.cpp:693
+msgid "Initial tempo"
 msgstr ""
 
-#. I18N: (undoable) action name
-#: Src/Actions/InsertEmptyMeasures.cpp:35
-msgid "insert measures"
+#: Src/GUI/MainFrame.cpp:705
+msgid "Time Sig"
+msgstr "박자"
+
+#: Src/GUI/MainFrame.cpp:713
+msgid "Start"
+msgstr "시작"
+
+#. I18N: loop end
+#: Src/GUI/MainFrame.cpp:722 Src/GUI/MainFrame.cpp:1108
+msgid "End"
+msgstr ""
+
+#: Src/GUI/MainFrame.cpp:740
+msgid "Zoom"
+msgstr "배율"
+
+#. I18N: tool selection tip
+#: Src/GUI/MainFrame.cpp:780
+msgid ""
+"Tool 1 : Draw notes\n"
+"Tool 2 : Click to add notes"
+msgstr ""
+
+#: Src/GUI/MainFrame.cpp:781 Src/GUI/MainFrame.cpp:783
+msgid "Tool"
+msgstr "도구"
+
+#: Src/GUI/MainFrame.cpp:1044 Src/GUI/MainFrameMenuBar.cpp:351
+#: Src/GUI/MainFrameMenuBar.cpp:354 Src/PreferencesData.cpp:334
+msgid "No MIDI input"
+msgstr "MIDI 입력이 없습니다."
+
+#: Src/GUI/MainFrame.cpp:1046
+msgid "Please select an input port from the 'input' menu before recording"
+msgstr "녹음하기 전에 '입력' 메뉴에서 입력 포트를 선택해 주세요"
+
+#: Src/GUI/MainFrame.cpp:1839
+#, c-format
+msgid ""
+"You have unsaved changes in sequence '%s'. Do you want to save them before "
+"proceeding?"
+msgstr "'%s' 시퀀스에 저장되지 않는 변경내용이 있습니다. 진행하기 전에 저장하시겠습니까?"
+
+#: Src/GUI/MainFrame.cpp:1841
+msgid "Selecting 'Yes' will save your document before closing"
+msgstr "'예'를 선택하면 문서를 닫기전에 저장합니다"
+
+#: Src/GUI/MainFrame.cpp:1842
+msgid "Selecting 'No' will discard unsaved changes"
+msgstr "'아니오'를 선택하면 저장되지 않은 변경사항을 버립니다"
+
+#: Src/GUI/MainFrame.cpp:1843
+msgid "Selecting 'Cancel' will cancel exiting the application"
+msgstr "'취소'를 선택하면 응용 프로그램 종료를 취소합니다."
+
+#. I18N: title of dialog shown when exiting without saving
+#: Src/GUI/MainFrame.cpp:1848
+msgid "Unsaved changes in sequence"
+msgstr "시퀀스에 저장되지 않은 변경내용이 있습니다"
+
+#: Src/GUI/MainFrame.cpp:2020
+msgid "Unknown file type: "
+msgstr "알 수 없는 파일 형식:"
+
+#: Src/GUI/MainFrame.cpp:2047 Src/GUI/MainFrame.cpp:2175
+msgid "Sorry, loading .aria file failed."
+msgstr "죄송합니다. .aria 파일 불러오기가 실패했습니다."
+
+#: Src/GUI/MainFrame.cpp:2090
+msgid "Please wait while midi file is loading."
+msgstr "MIDI 파일을 불러오는 동안 기다려주세요."
+
+#: Src/GUI/MainFrame.cpp:2097 Src/GUI/MainFrame.cpp:2186
+msgid "Sorry, loading midi file failed."
+msgstr "죄송합니다. MIDI 파일 불러오기가 실패했습니다."
+
+#: Src/GUI/MainFrame.cpp:2121
+msgid ""
+"Loading the MIDI file completed successfully, but with the following "
+"warnings (the song may not sound as intended) :"
+msgstr "MIDI 파일 불러오기가 성공적으로 완료했습니다. 하지만 다음의 경고가 있습니다 (노래가 의도한 대로 소리내지 못할지도 모릅니다) :"
+
+#: Src/GUI/MainFrame.cpp:2304
+msgid ""
+"A new version of Aria Maestosa is now available! Visit the following link to"
+" download it :"
+msgstr "이제 새 버전의 아리아 마에스토사를 사용할 수 있습니다! 다음 링크를 방문해서 다운로드하세요 :"
+
+#: Src/GUI/MainFrame.cpp:2315
+msgid "An error occurred"
+msgstr "오류 발생"
+
+#: Src/GUI/MeasureBar.cpp:71
+msgid "Remove selected measures"
+msgstr "선택한 소절 삭제"
+
+#: Src/GUI/MeasureBar.cpp:72
+msgid "Duplicate selected measures"
+msgstr "선택한 소절 복제"
+
+#: Src/GUI/MeasureBar.cpp:98
+msgid "Do you really want to remove selected measures?"
+msgstr "선택한 소절을 삭제하시겠습니까?"
+
+#: Src/GUI/MeasureBar.cpp:150
+msgid "Insert measures"
 msgstr "소절 삽입"
 
-#. I18N: (undoable) action name
-#: Src/Actions/DeleteControllerEvent.cpp:40
-msgid "delete controller event"
-msgstr "컨트롤러 이벤트 삭제"
+#: Src/GUI/MeasureBar.cpp:152
+msgid "Remove time sig change"
+msgstr "박자 변경을 제거"
 
-#. I18N: (undoable) action name
-#: Src/Actions/Duplicate.cpp:43
-msgid "duplicate"
-msgstr "복제"
+#: Src/GUI/MeasureBar.cpp:153
+msgid "Set playback start here"
+msgstr ""
 
-#. I18N: (undoable) action name
-#: Src/Actions/ShiftBySemiTone.cpp:30
-msgid "change pitch"
-msgstr "음높이 변경"
+#: Src/GUI/MeasureBar.cpp:154
+msgid "Set loop end here"
+msgstr ""
 
-#. I18N: (undoable) action name
-#: Src/Actions/ResizeNotes.cpp:31
-msgid "resize note(s)"
-msgstr "음표 크기 변경"
-
-#. I18N: (undoable) action name
-#: Src/Actions/SetNoteVolume.cpp:27
-msgid "change note(s) volume"
-msgstr "음표 음량 변경"
-
-#. I18N: (undoable) action name
-#: Src/Actions/AddControlEvent.cpp:32
-msgid "add control event"
-msgstr "컨트롤러 이벤트 추가"
-
-#. I18N: (undoable) action name
-#: Src/Actions/DuplicateMeasures.cpp:37
-msgid "duplicate measures"
-msgstr "소절 복제"
-
-#. I18N: (undoable) action name
-#: Src/Actions/AddTextEvent.cpp:31
-msgid "text change"
-msgstr "텍스트 변경"
-
-#. I18N: (undoable) action name
-#: Src/Actions/SnapNotesToGrid.cpp:28
-msgid "snap notes to grid"
-msgstr "음표를 격자에 붙이기"
-
-#. I18N: (undoable) action name
-#: Src/Actions/DeleteSelected.cpp:40
-msgid "delete note(s)"
-msgstr "음표 삭제"
-
-#. I18N: (undoable) action name
-#: Src/Actions/Paste.cpp:42
-msgid "paste"
-msgstr "붙여넣기"
-
-#. I18N: (undoable) action name
-#: Src/Actions/ScaleTrack.cpp:30
-msgid "scale note(s)"
-msgstr "음표 비율"
-
-#. I18N: (undoable) action name
-#: Src/Actions/AddNote.cpp:39
-msgid "add note"
-msgstr "음표 추가"
-
-#. I18N: (undoable) action name
-#: Src/Actions/SetTrackVolume.cpp:27
-msgid "change track volume"
-msgstr "트랙 음량 변경"
-
-#. I18N: (undoable) action name
-#: Src/Actions/AddTrack.cpp:37
-msgid "add track"
-msgstr "트랙 추가"
-
-#. I18N: (undoable) action name
-#: Src/Actions/MoveNotes.cpp:38
-msgid "move note(s)"
-msgstr "음표 이동"
-
-#. I18N: (undoable) action name
-#: Src/Actions/UpdateGuitarTuning.cpp:29
-msgid "change guitar tuning"
-msgstr "기타 조율 변경"
-
-#: Src/IO/AriaFileWriter.cpp:49 Src/IO/AriaFileWriter.cpp:58
+#: Src/GUI/MeasureBar.cpp:160
 #, c-format
-msgid "Could not open file '%s' for reading"
-msgstr "'%s'  파일을 열 수 없습니다"
-
-#: Src/IO/MidiFileReader.cpp:170
-msgid ""
-"This MIDI file has tracks that play on multiple MIDI channels. This is not "
-"supported by Aria Maestosa."
-msgstr "이 MIDI 파일은 다중 MIDI 채널에 재생 트랙이 있습니다. 이것은 아리아 마에스토사가 지원하지 않습니다."
-
-#: Src/IO/MidiFileReader.cpp:185
-msgid ""
-"This MIDI file has a track that sends events on multiple MIDI channels. This"
-" is not supported by Aria Maestosa."
-msgstr "이 MIDI 파일은 다중 MIDI 채널에 이벤트를 전송하는 트랙이 있습니다. 이것은 아리아 마에스토사가 지원하지 않습니다."
-
-#: Src/IO/MidiFileReader.cpp:236
-#, c-format
-msgid ""
-"This MIDI file appears to be incorrect; a note at tick %i in channel %i does"
-" not appear to have an end"
-msgstr "이 MIDI 파일은 잘못된 것 같습니다. %i 틱(%i 채널)의 음표의 끝이 없습니다"
-
-#: Src/IO/MidiFileReader.cpp:266
-#, c-format
-msgid ""
-"This MIDI file uses controller #%i, which is not part of the MIDI standard. "
-"This information will be discarded."
-msgstr "이 MIDI 파일은 MIDI 표준이 아닌 #%i 컨트롤러를 사용합니다. 이 정보는 버려질 것입니다."
-
-#: Src/IO/MidiFileReader.cpp:276
-msgid ""
-"This MIDI file uses Registered Parameters, which are currently not supported"
-" by Aria Maestosa."
-msgstr "이 MIDI 파일은 아직 아리아 마에스토사가 지원하지 않는 RPN을 사용합니다."
-
-#: Src/IO/MidiFileReader.cpp:280
-msgid ""
-"This MIDI files uses NRPN (Non-Registered Parameters, i.e. non-standard "
-"controllers), which are currently not supported by Aria Maestosa."
-msgstr "이 MIDI 파일은 아직 아리아 마에스토사가 지원하지 않는 NRPN(예를 들면, 비표준 컨트롤러)을 사용합니다."
-
-#: Src/IO/MidiFileReader.cpp:292
-msgid ""
-"This MIDI files uses Channel Mode Message, which are currently not supported"
-" by Aria Maestosa."
-msgstr "이 MIDI 파일은 아직 아리아 마에스토사가 지원하지 않는 채널 모드 메시지를 사용합니다."
-
-#: Src/IO/MidiFileReader.cpp:296
-#, c-format
-msgid ""
-"This MIDI file uses unsupported MIDI controller #%i. Data related to this "
-"controller will be discarded."
-msgstr "이 MIDI 파일은 지원되지 않는 MIDI 컨트롤러 #%i 를 사용합니다. 이 컨트롤러와 연관된 데이터를 버려질 것입니다."
-
-#: Src/IO/MidiFileReader.cpp:536 Src/Printing/AbstractPrintableSequence.cpp:39
-#: Src/Printing/AbstractPrintableSequence.cpp:43 Src/Midi/Sequence.cpp:70
-#: Src/Midi/Sequence.cpp:118 Src/Midi/Sequence.cpp:140 Src/Midi/Track.cpp:94
-#: Src/Midi/Track.cpp:892 Src/Midi/Track.cpp:1949
-msgid "Untitled"
-msgstr "제목없음"
-
-#. I18N: beats per minute (tempo)
-#: Src/Editors/ControllerEditor.cpp:91
-msgid "bpm"
-msgstr "bpm"
-
-#. I18N: as in "+2 semitones"
-#: Src/Editors/ControllerEditor.cpp:96
-msgid "semitones"
-msgstr "세미톤"
-
-#: Src/Editors/ControllerEditor.cpp:666
-msgid "Lyrics"
-msgstr "가사"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:92
-msgid "High Q"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:94
-msgid "Slap"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:96
-msgid "Push"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:98
-msgid "Pull"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:100 Src/Editors/DrumEditor.cpp:112
-msgid "Stick"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:102
-msgid "Square"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:104
-msgid "Metro"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:106
-msgid "Metro bell"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:108
-msgid "Bass drum 2"
-msgstr "베이스 드럼 2"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:110
-msgid "Bass drum 1"
-msgstr "베이스 드럼 1"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:114
-msgid "Snare"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:116
-msgid "Clap"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:118
-msgid "Snare 2"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:120
-msgid "Tom 6"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:122
-msgid "Closed hi-hat"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:124
-msgid "Tom 5"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:126
-msgid "Pedal hi-hat"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:128
-msgid "Tom 4"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:130
-msgid "Open hi-hat"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:132
-msgid "Tom 3"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:134
-msgid "Tom 2"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:136
-msgid "Crash"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:138
-msgid "Tom 1"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:140
-msgid "Ride"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:142
-msgid "Chinese"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:144
-msgid "Ride bell"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:146
-msgid "Tambourine"
-msgstr "탬버린"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:148
-msgid "Splash"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:150
-msgid "Cowbell"
-msgstr "카우벨"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:152
-msgid "Crash 2"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:154
-msgid "Vibraslap"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:156
-msgid "Ride 2"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:158
-msgid "Hi bongo"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:160
-msgid "Low bongo"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:162
-msgid "Mute hi conga"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:164
-msgid "Open hi conga"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:166
-msgid "Low conga"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:168
-msgid "High timbale"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:170
-msgid "Low timbale"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:172
-msgid "High agogo"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:174
-msgid "Low agogo"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:176
-msgid "Cabasa"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:178
-msgid "Maracas"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:180
-msgid "Short whistle"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:182
-msgid "Long whistle"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:184
-msgid "Short guiro"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:186
-msgid "Long guiro"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:188
-msgid "Claves"
-msgstr "클라베스"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:190
-msgid "Hi wood block"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:192
-msgid "Lo wood block"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:194
-msgid "Mute cuica"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:196
-msgid "Open cuica"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:198
-msgid "Mute triangle"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:200
-msgid "Open triangle"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:202
-msgid "Shaker"
-msgstr "셰이커"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:204
-msgid "Jingle Bell"
-msgstr "징글벨"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:206
-msgid "Bell Tree"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:208
-msgid "Castanets"
-msgstr "캐스터네츠"
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:210
-msgid "Mute surdo"
-msgstr ""
-
-#. I18N: drum name
-#: Src/Editors/DrumEditor.cpp:212
-msgid "Open surdo"
-msgstr ""
-
-#. I18N: percussions category name
-#: Src/Editors/DrumEditor.cpp:217
-msgid "Drumkit"
-msgstr ""
-
-#. I18N: percussions category name
-#: Src/Editors/DrumEditor.cpp:219
-msgid "Hi-hat"
-msgstr ""
-
-#. I18N: percussions category name
-#: Src/Editors/DrumEditor.cpp:221
-msgid "Cymbal"
-msgstr "심벌즈"
-
-#. I18N: percussions category name
-#: Src/Editors/DrumEditor.cpp:223
-msgid "Toms"
-msgstr ""
-
-#. I18N: percussions category name
-#: Src/Editors/DrumEditor.cpp:225
-msgid "African"
-msgstr "아프리카"
-
-#. I18N: percussions category name
-#: Src/Editors/DrumEditor.cpp:227
-msgid "Latin"
-msgstr "라틴"
-
-#. I18N: percussions category name
-#: Src/Editors/DrumEditor.cpp:229
-msgid "Others"
-msgstr "그 외"
-
-#. I18N: percussions category name
-#: Src/Editors/DrumEditor.cpp:231 Src/Pickers/InstrumentPicker.cpp:98
-#: Src/Pickers/InstrumentPicker.cpp:117 Src/Pickers/InstrumentPicker.cpp:136
-msgid "Sound Effects"
-msgstr "음향 효과"
-
-#: Src/Renderers/wxImage.cpp:53
-msgid "Failed to load "
-msgstr "불러오기 실패"
-
-#: Src/Renderers/GLImage.cpp:52 Src/Renderers/GLImage.cpp:64
-#: Src/Renderers/GLImage.cpp:77 Src/Renderers/GLImage.cpp:87
-#: Src/Renderers/GLImage.cpp:108 Src/Renderers/GLImage.cpp:194
-msgid "Failed to load resource image"
-msgstr "리소스 이미지 불러오기 실패"
-
-#. I18N: for printing (page orientation)
-#: Src/Printing/wxEasyPrintWrapper.cpp:232
-msgid "Portrait"
-msgstr "세로"
-
-#: Src/Printing/wxEasyPrintWrapper.cpp:232
-msgid "Landscape"
-msgstr "가로"
-
-#. I18N: for printing (page setup)
-#: Src/Printing/wxEasyPrintWrapper.cpp:234
-#, c-format
-msgid "left = %i mm, right = %i mm,"
-msgstr "왼쪽 = %i mm, 오른쪽 = %i mm,"
-
-#: Src/Printing/wxEasyPrintWrapper.cpp:235
-#, c-format
-msgid "top = %i mm, bottom = %i mm"
-msgstr "위쪽 = %i mm, 아래쪽 = %i mm"
-
-#: Src/Printing/AbstractPrintableSequence.cpp:39
-msgid "Aria Maestosa song"
-msgstr "아리아 마에스토사 노래"
+msgid "Insert empty measures between measures %i and %i"
+msgstr "%i 그리고 %i 소절 사이에 빈 소절을 삽입합니다"
+
+#: Src/GUI/MeasureBar.cpp:162
+msgid "Amount: "
+msgstr "수량:"
+
+#: Src/GUI/MeasureBar.cpp:186
+msgid "Do you really want to remove this time sig change?"
+msgstr "박자 변경을 제거하시겠습니까?"
+
+#: Src/GUI/MeasureBar.cpp:192
+msgid "You can't remove the first time signature change."
+msgstr "첫 번째 박자 변경을 제거할 수 없습니다."
 
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:84
@@ -1472,7 +1107,7 @@ msgstr "환경설정...(&P)"
 msgid "&Settings"
 msgstr "설정(&S)"
 
-#: Src/GUI/MainFrameMenuBar.cpp:311 Src/GUI/MainFrameMenuBar.cpp:1306
+#: Src/GUI/MainFrameMenuBar.cpp:311 Src/GUI/MainFrameMenuBar.cpp:1308
 msgid "No MIDI Output Available"
 msgstr "사용가능한 MIDI 출력이 없습니다"
 
@@ -1515,33 +1150,33 @@ msgstr "파일이 더이상 디스크에 존재하지 않습니다. 그래도 �
 msgid "Warning"
 msgstr "경고"
 
-#: Src/GUI/MainFrameMenuBar.cpp:698 Src/GUI/MainFrameMenuBar.cpp:761
-#: Src/GUI/MainFrameMenuBar.cpp:801
+#: Src/GUI/MainFrameMenuBar.cpp:700 Src/GUI/MainFrameMenuBar.cpp:763
+#: Src/GUI/MainFrameMenuBar.cpp:803
 msgid "Select destination file"
 msgstr "대상 파일 선택"
 
-#: Src/GUI/MainFrameMenuBar.cpp:699 Src/GUI/MainFrameMenuBar.cpp:738
+#: Src/GUI/MainFrameMenuBar.cpp:701 Src/GUI/MainFrameMenuBar.cpp:740
 msgid "Aria Maestosa file"
 msgstr "아리아 마에스토사 파일"
 
-#: Src/GUI/MainFrameMenuBar.cpp:708 Src/GUI/MainFrameMenuBar.cpp:772
-#: Src/GUI/MainFrameMenuBar.cpp:811
+#: Src/GUI/MainFrameMenuBar.cpp:710 Src/GUI/MainFrameMenuBar.cpp:774
+#: Src/GUI/MainFrameMenuBar.cpp:813
 msgid "The file already exists. Do you wish to overwrite it?"
 msgstr "마일이 이미 존재합니다. 덮어쓰시겠습니까?"
 
-#: Src/GUI/MainFrameMenuBar.cpp:748
+#: Src/GUI/MainFrameMenuBar.cpp:750
 msgid "Select midi file"
 msgstr "MIDI 파일 선택"
 
-#: Src/GUI/MainFrameMenuBar.cpp:749 Src/GUI/MainFrameMenuBar.cpp:762
+#: Src/GUI/MainFrameMenuBar.cpp:751 Src/GUI/MainFrameMenuBar.cpp:764
 msgid "Midi file"
 msgstr "MIDI 파일"
 
-#: Src/GUI/MainFrameMenuBar.cpp:785
+#: Src/GUI/MainFrameMenuBar.cpp:787
 msgid "Sorry, failed to export midi file."
 msgstr "죄송합니다. MIDI 파일 내보내기가 실패했습니다."
 
-#: Src/GUI/MainFrameMenuBar.cpp:823
+#: Src/GUI/MainFrameMenuBar.cpp:825
 msgid ""
 "Please wait while audio file is being generated.\n"
 "\n"
@@ -1549,15 +1184,15 @@ msgid ""
 "this can take several minutes."
 msgstr "오이오 파일을 생성하는 동안 기다려 주세요.\n\n파일의 길이에 따라서,\n몇 분 정도 걸리 수 있습니다."
 
-#: Src/GUI/MainFrameMenuBar.cpp:1045
+#: Src/GUI/MainFrameMenuBar.cpp:1047
 msgid "You may not delete the last track"
 msgstr "마지막 트랙은 삭제할 수 없습니다"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1049
+#: Src/GUI/MainFrameMenuBar.cpp:1051
 msgid "Do you really want to delete this track?"
 msgstr "이 트랙을 삭제하시겠습니까?"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1167
+#: Src/GUI/MainFrameMenuBar.cpp:1169
 msgid ""
 "If multiple tracks play on the same channel, they will be merged.\n"
 "This cannot be undone.\n"
@@ -1565,146 +1200,19 @@ msgid ""
 "Do you really want to continue?"
 msgstr "여러 개의 트랙이 동일한 채널에서 재생하는 경우, 트랙들이 병합됩니다.\n이 작업은 되돌릴 수 없습니다.\n\n정말로 계속하시겠습니까?"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1251 Src/Pickers/TimeSigPicker.cpp:288
+#: Src/GUI/MainFrameMenuBar.cpp:1253 Src/Pickers/TimeSigPicker.cpp:290
 msgid ""
 "Are you sure you want to go back to having a single time signature? Any time"
 " sig events you may have added will be lost. This cannot be undone."
 msgstr "정말로 단일 박자로 돌아가겠습니까? 당신이 추가한 모든 박자 이벤트가 손실됩니다. 이 작업은 되돌릴 수 없습니다."
 
-#: Src/GUI/MainFrameMenuBar.cpp:1380
+#: Src/GUI/MainFrameMenuBar.cpp:1382
 msgid "Manual"
 msgstr "수동"
 
-#: Src/GUI/MainFrameMenuBar.cpp:1574
+#: Src/GUI/MainFrameMenuBar.cpp:1576
 msgid "Clear List"
 msgstr "목록 비우기"
-
-#: Src/GUI/MainFrame.cpp:440
-msgid "Record"
-msgstr "녹음"
-
-#: Src/GUI/MainFrame.cpp:444
-msgid "Play"
-msgstr "재생"
-
-#: Src/GUI/MainFrame.cpp:448
-msgid "Stop"
-msgstr "정지"
-
-#: Src/GUI/MainFrame.cpp:451
-msgid "Loop"
-msgstr "반복"
-
-#. I18N: song length (number of measures)
-#: Src/GUI/MainFrame.cpp:467
-msgid "Length"
-msgstr "길이"
-
-#: Src/GUI/MainFrame.cpp:494
-msgid "Time Sig"
-msgstr "박자"
-
-#: Src/GUI/MainFrame.cpp:502
-msgid "Start"
-msgstr "시작"
-
-#: Src/GUI/MainFrame.cpp:520
-msgid "Zoom"
-msgstr "배율"
-
-#: Src/GUI/MainFrame.cpp:559 Src/GUI/MainFrame.cpp:561
-msgid "Tool"
-msgstr "도구"
-
-#. I18N: to hide the panel that is shown when a file could not be imported
-#. successfully
-#: Src/GUI/MainFrame.cpp:600
-msgid "Hide"
-msgstr "숨김"
-
-#: Src/GUI/MainFrame.cpp:1008
-msgid "Please select an input port from the 'input' menu before recording"
-msgstr "녹음하기 전에 '입력' 메뉴에서 입력 포트를 선택해 주세요"
-
-#: Src/GUI/MainFrame.cpp:1732
-#, c-format
-msgid ""
-"You have unsaved changes in sequence '%s'. Do you want to save them before "
-"proceeding?"
-msgstr "'%s' 시퀀스에 저장되지 않는 변경내용이 있습니다. 진행하기 전에 저장하시겠습니까?"
-
-#: Src/GUI/MainFrame.cpp:1734
-msgid "Selecting 'Yes' will save your document before closing"
-msgstr "'예'를 선택하면 문서를 닫기전에 저장합니다"
-
-#: Src/GUI/MainFrame.cpp:1735
-msgid "Selecting 'No' will discard unsaved changes"
-msgstr "'아니오'를 선택하면 저장되지 않은 변경사항을 버립니다"
-
-#: Src/GUI/MainFrame.cpp:1736
-msgid "Selecting 'Cancel' will cancel exiting the application"
-msgstr "'취소'를 선택하면 응용 프로그램 종료를 취소합니다."
-
-#. I18N: title of dialog shown when exiting without saving
-#: Src/GUI/MainFrame.cpp:1741
-msgid "Unsaved changes in sequence"
-msgstr "시퀀스에 저장되지 않은 변경내용이 있습니다"
-
-#: Src/GUI/MainFrame.cpp:1913
-msgid "Unknown file type: "
-msgstr "알 수 없는 파일 형식:"
-
-#: Src/GUI/MainFrame.cpp:1940 Src/GUI/MainFrame.cpp:2062
-msgid "Sorry, loading .aria file failed."
-msgstr "죄송합니다. .aria 파일 불러오기가 실패했습니다."
-
-#: Src/GUI/MainFrame.cpp:1982
-msgid "Please wait while midi file is loading."
-msgstr "MIDI 파일을 불러오는 동안 기다려주세요."
-
-#: Src/GUI/MainFrame.cpp:1989 Src/GUI/MainFrame.cpp:2074
-msgid "Sorry, loading midi file failed."
-msgstr "죄송합니다. MIDI 파일 불러오기가 실패했습니다."
-
-#: Src/GUI/MainFrame.cpp:2013
-msgid ""
-"Loading the MIDI file completed successfully, but with the following "
-"warnings (the song may not sound as intended) :"
-msgstr "MIDI 파일 불러오기가 성공적으로 완료했습니다. 하지만 다음의 경고가 있습니다 (노래가 의도한 대로 소리내지 못할지도 모릅니다) :"
-
-#: Src/GUI/MainFrame.cpp:2053
-msgid "Please wait while file is reloaded."
-msgstr "파일을 다시 읽어올 때까지 기다려 주세요."
-
-#: Src/GUI/MainFrame.cpp:2188
-msgid ""
-"A new version of Aria Maestosa is now available! Visit the following link to"
-" download it :"
-msgstr "이제 새 버전의 아리아 마에스토사를 사용할 수 있습니다! 다음 링크를 방문해서 다운로드하세요 :"
-
-#: Src/GUI/MainFrame.cpp:2199
-msgid "An error occurred"
-msgstr "오류 발생"
-
-#: Src/GUI/MainPane.cpp:147
-msgid "Create a new sequence"
-msgstr "새 시퀀스 만들기"
-
-#: Src/GUI/MainPane.cpp:148
-msgid "Open a saved sequence"
-msgstr "저장된 시퀀스 열기"
-
-#: Src/GUI/MainPane.cpp:149
-msgid "Import a MIDI file"
-msgstr "MIDI 파일 가져오기"
-
-#: Src/GUI/MainPane.cpp:151
-msgid "Help"
-msgstr "도움말"
-
-#: Src/GUI/MainPane.cpp:152
-msgid "Exit"
-msgstr "나가기"
 
 #: Src/GUI/GraphicalTrack.cpp:419
 msgid "Track volume"
@@ -1758,168 +1266,10 @@ msgstr ""
 msgid "Channel choice"
 msgstr "채널 선택"
 
-#: Src/GUI/MeasureBar.cpp:70
-msgid "Remove selected measures"
-msgstr "선택한 소절 삭제"
-
-#: Src/GUI/MeasureBar.cpp:71
-msgid "Duplicate selected measures"
-msgstr "선택한 소절 복제"
-
-#: Src/GUI/MeasureBar.cpp:97
-msgid "Do you really want to remove selected measures?"
-msgstr "선택한 소절을 삭제하시겠습니까?"
-
-#: Src/GUI/MeasureBar.cpp:148
-msgid "Insert measures"
-msgstr "소절 삽입"
-
-#: Src/GUI/MeasureBar.cpp:150
-msgid "Remove time sig change"
-msgstr "박자 변경을 제거"
-
-#: Src/GUI/MeasureBar.cpp:156
-#, c-format
-msgid "Insert empty measures between measures %i and %i"
-msgstr "%i 그리고 %i 소절 사이에 빈 소절을 삽입합니다"
-
-#: Src/GUI/MeasureBar.cpp:158
-msgid "Amount: "
-msgstr "수량:"
-
-#: Src/GUI/MeasureBar.cpp:177
-msgid "Do you really want to remove this time sig change?"
-msgstr "박자 변경을 제거하시겠습니까?"
-
-#: Src/GUI/MeasureBar.cpp:183
-msgid "You can't remove the first time signature change."
-msgstr "첫 번째 박자 변경을 제거할 수 없습니다."
-
-#: Src/Midi/Players/PlatformMidiManager.cpp:65
-msgid "Bad binary, no MIDI driver was compiled in!"
-msgstr "잘못된 바이너리, MIDI 드라이버가 컴파일 되지 않았습니다!"
-
-#: Src/Midi/Players/PlatformMidiManager.cpp:285
-msgid "Sorry, no MIDI input port is available"
-msgstr "죄송합니다. MIDI 입력 포트를 사용할 수 없습니다."
-
-#: Src/Midi/Players/PlatformMidiManager.cpp:313
-#: Src/Midi/Players/PlatformMidiManager.cpp:332
-msgid "Sorry, failed to open the selected MIDI input port"
-msgstr "죄송합니다. 선택한 MIDI 입력 포트를 여는데 실패했습니다"
-
-#: Src/Midi/Players/Example/ExamplePlayer.cpp:179
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:443
-msgid "WAV file"
-msgstr "WAV 파일"
-
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:772
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:805
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:823
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:834
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:844
-msgid ""
-"An error has occurred when connecting to the MIDI output device with "
-"AudioUnit; audio playback may be unavailable"
-msgstr "AudioUnit으로 MIDI 출력 장치에 접속할 때 오류가 발생했습니다. 오디오 재생이 불가능할 수도 있습니다."
-
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:783
-#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:794
-msgid "Sorry, failed to set custom soundfont."
-msgstr "죄송합니다. 사용자 정의된 사운드폰트를 설정하는데 실패했습니다."
-
-#: Src/Midi/Players/Mac/CoreMIDIOutput.cpp:189
-msgid "Unknown MIDI port : "
-msgstr "알 수 없는 MIDI 포트 :"
-
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:118
-msgid "Sorry, an internal error occurred during export"
-msgstr "죄송합니다. 내보내기를 진행하는 도중에 내부 오류가 발생했습니다."
-
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:157
-msgid ""
-"Sorry, exporting to audio could not complete successfully. Please include "
-"the following error code when reporting the issue :"
-msgstr "죄송합니다. 오디오로 내보내기가 성공적으로 완료하지 못했습니다. 문제를 보고할 때 다음과 같은 오류 코드를 포함하십시오 :"
-
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:293
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:297
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:346
-msgid "OSX Software Synthesizer"
-msgstr "OSX 소프트웨어 신디사이저"
-
-#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:329
-msgid "AIFF file"
-msgstr "AIFF 파일"
-
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:257
-msgid ""
-"Failed to open ALSA device, sound will be unavailable (you can try selecting"
-" another output device from the 'Output' menu)"
-msgstr "ALSA 장치를 여는데 실패했습니다. 사운드를 이용할 수 없을 것입니다 ('출력' 메뉴에서 다른 출력 장치 선택을 시도할 수 있습니다)"
-
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:505
-msgid "Settings"
-msgstr "설정"
-
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:514
-msgid "Choose the MIDI engine to use to render the file"
-msgstr "파일을 렌더링하는데 사용할 MIDI 엔진을 선택하세요"
-
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:520
-msgid "MIDI Engine"
-msgstr "MIDI 엔진"
-
-#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:527
-msgid "Fluidsynth Soundfont"
-msgstr "Fluidsynth 사운드폰트"
-
-#: Src/Midi/Players/Alsa/AlsaPort.cpp:46
-msgid "Failed to open ALSA port."
-msgstr "ALSA 포트를 여는데 실패했습니다."
-
-#: Src/Midi/Players/Alsa/AlsaPort.cpp:172
-msgid "No midi port found, no sound will be available."
-msgstr "MIDI 포트를 발견하지 못해서 사운드를 사용할 수 없습니다."
-
-#: Src/Midi/Players/Alsa/AlsaPort.cpp:260
-#, c-format
-msgid "The selected ALSA device (%s) could not be opened."
-msgstr "선택된 ALSA 장치 (%s)를 열 수 없습니다."
-
-#: Src/Midi/Players/Alsa/AlsaPort.cpp:442
-msgid "Loading "
-msgstr "불러오는 중"
-
-#: Src/Midi/Players/Jack/JackMidiManager.cpp:231
-msgid "Jack"
-msgstr ""
-
-#: Src/Midi/Players/NullDevice.cpp:65
-msgid "No sound available"
-msgstr "사용가능한 사운드 없음"
-
-#: Src/Midi/Players/Win/WinPlayer.cpp:300
-#: Src/Midi/Players/Win/WinPlayer.cpp:331
-#: Src/Midi/Players/Win/WinPlayer.cpp:335
-msgid "Windows Software Synthesizer"
-msgstr "윈도우즈 소프트웨어 신디사이저"
-
-#: Src/Midi/Players/Win/WinPlayer.cpp:362
-msgid "Failed to initialize MIDI out device"
-msgstr "MIDI 출력 장치 초기화 실패"
-
 #: Src/Midi/CommonMidiUtils.cpp:435 Src/Midi/CommonMidiUtils.cpp:460
 msgid ""
 "WARNING: this song has too many\n"
 "channels, expect unpredictable output"
-msgstr ""
-
-#: Src/Midi/Sequence.cpp:906
-msgid ""
-"Warning : you are opening a file saved with a version of\n"
-"Aria Maestosa more recent than the version you currently have.\n"
-"It may not open correctly."
 msgstr ""
 
 #: Src/Midi/InstrumentChoice.cpp:29
@@ -2434,6 +1784,14 @@ msgstr "갈채"
 msgid "Gunshot"
 msgstr "총성"
 
+#: Src/Midi/Track.cpp:94 Src/Midi/Track.cpp:892 Src/Midi/Track.cpp:1984
+#: Src/Midi/Sequence.cpp:70 Src/Midi/Sequence.cpp:118
+#: Src/Midi/Sequence.cpp:140 Src/IO/MidiFileReader.cpp:544
+#: Src/Printing/AbstractPrintableSequence.cpp:39
+#: Src/Printing/AbstractPrintableSequence.cpp:43
+msgid "Untitled"
+msgstr "제목없음"
+
 #: Src/Midi/DrumChoice.cpp:30
 msgid "Standard"
 msgstr "표준"
@@ -2474,112 +1832,171 @@ msgstr "특수효과"
 msgid "Invalid Drumkit"
 msgstr ""
 
-#: Src/Pickers/MagneticGridPicker.cpp:43
-msgid "Triplet"
+#: Src/Midi/Players/Win/WinPlayer.cpp:300
+#: Src/Midi/Players/Win/WinPlayer.cpp:331
+#: Src/Midi/Players/Win/WinPlayer.cpp:335
+msgid "Windows Software Synthesizer"
+msgstr "윈도우즈 소프트웨어 신디사이저"
+
+#: Src/Midi/Players/Win/WinPlayer.cpp:362
+msgid "Failed to initialize MIDI out device"
+msgstr "MIDI 출력 장치 초기화 실패"
+
+#: Src/Midi/Players/Mac/CoreMIDIOutput.cpp:189
+msgid "Unknown MIDI port : "
+msgstr "알 수 없는 MIDI 포트 :"
+
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:118
+msgid "Sorry, an internal error occurred during export"
+msgstr "죄송합니다. 내보내기를 진행하는 도중에 내부 오류가 발생했습니다."
+
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:157
+msgid ""
+"Sorry, exporting to audio could not complete successfully. Please include "
+"the following error code when reporting the issue :"
+msgstr "죄송합니다. 오디오로 내보내기가 성공적으로 완료하지 못했습니다. 문제를 보고할 때 다음과 같은 오류 코드를 포함하십시오 :"
+
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:293
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:297
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:346
+msgid "OSX Software Synthesizer"
+msgstr "OSX 소프트웨어 신디사이저"
+
+#: Src/Midi/Players/Mac/MacPlayerInterface.cpp:329
+msgid "AIFF file"
+msgstr "AIFF 파일"
+
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:772
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:805
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:823
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:834
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:844
+msgid ""
+"An error has occurred when connecting to the MIDI output device with "
+"AudioUnit; audio playback may be unavailable"
+msgstr "AudioUnit으로 MIDI 출력 장치에 접속할 때 오류가 발생했습니다. 오디오 재생이 불가능할 수도 있습니다."
+
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:783
+#: Src/Midi/Players/Mac/AudioUnitOutput.cpp:794
+msgid "Sorry, failed to set custom soundfont."
+msgstr "죄송합니다. 사용자 정의된 사운드폰트를 설정하는데 실패했습니다."
+
+#: Src/Midi/Players/Example/ExamplePlayer.cpp:179
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:443
+msgid "WAV file"
+msgstr "WAV 파일"
+
+#: Src/Midi/Players/Alsa/AlsaPort.cpp:46
+msgid "Failed to open ALSA port."
+msgstr "ALSA 포트를 여는데 실패했습니다."
+
+#: Src/Midi/Players/Alsa/AlsaPort.cpp:172
+msgid "No midi port found, no sound will be available."
+msgstr "MIDI 포트를 발견하지 못해서 사운드를 사용할 수 없습니다."
+
+#: Src/Midi/Players/Alsa/AlsaPort.cpp:260
+#, c-format
+msgid "The selected ALSA device (%s) could not be opened."
+msgstr "선택된 ALSA 장치 (%s)를 열 수 없습니다."
+
+#: Src/Midi/Players/Alsa/AlsaPort.cpp:442
+msgid "Loading "
+msgstr "불러오는 중"
+
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:257
+msgid ""
+"Failed to open ALSA device, sound will be unavailable (you can try selecting"
+" another output device from the 'Output' menu)"
+msgstr "ALSA 장치를 여는데 실패했습니다. 사운드를 이용할 수 없을 것입니다 ('출력' 메뉴에서 다른 출력 장치 선택을 시도할 수 있습니다)"
+
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:505
+msgid "Settings"
+msgstr "설정"
+
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:514
+msgid "Choose the MIDI engine to use to render the file"
+msgstr "파일을 렌더링하는데 사용할 MIDI 엔진을 선택하세요"
+
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:520
+msgid "MIDI Engine"
+msgstr "MIDI 엔진"
+
+#: Src/Midi/Players/Alsa/AlsaPlayer.cpp:527
+msgid "Fluidsynth Soundfont"
+msgstr "Fluidsynth 사운드폰트"
+
+#: Src/Midi/Players/Jack/JackMidiManager.cpp:231
+msgid "Jack"
 msgstr ""
 
-#: Src/Pickers/MagneticGridPicker.cpp:44
-msgid "Dotted"
+#: Src/Midi/Players/NullDevice.cpp:65
+msgid "No sound available"
+msgstr "사용가능한 사운드 없음"
+
+#: Src/Midi/Players/PlatformMidiManager.cpp:65
+msgid "Bad binary, no MIDI driver was compiled in!"
+msgstr "잘못된 바이너리, MIDI 드라이버가 컴파일 되지 않았습니다!"
+
+#: Src/Midi/Players/PlatformMidiManager.cpp:285
+msgid "Sorry, no MIDI input port is available"
+msgstr "죄송합니다. MIDI 입력 포트를 사용할 수 없습니다."
+
+#: Src/Midi/Players/PlatformMidiManager.cpp:313
+#: Src/Midi/Players/PlatformMidiManager.cpp:332
+msgid "Sorry, failed to open the selected MIDI input port"
+msgstr "죄송합니다. 선택한 MIDI 입력 포트를 여는데 실패했습니다"
+
+#: Src/Midi/Sequence.cpp:906
+msgid ""
+"Warning : you are opening a file saved with a version of\n"
+"Aria Maestosa more recent than the version you currently have.\n"
+"It may not open correctly."
 msgstr ""
 
-#: Src/Pickers/InstrumentPicker.cpp:83 Src/Pickers/InstrumentPicker.cpp:104
-#: Src/Pickers/InstrumentPicker.cpp:124
-msgid "Piano"
-msgstr "피아노"
+#. I18N: - in controller, when a controller can only be on/off
+#: Src/Pickers/ControllerChoice.cpp:194
+msgid "On"
+msgstr "켜짐"
 
-#: Src/Pickers/InstrumentPicker.cpp:84
-msgid "Chromatic Percussion"
-msgstr ""
+#. I18N: - in controller, when a controller can only be on/off
+#: Src/Pickers/ControllerChoice.cpp:196
+msgid "Off"
+msgstr "꺼짐"
 
-#: Src/Pickers/InstrumentPicker.cpp:85 Src/Pickers/InstrumentPicker.cpp:106
-#: Src/Pickers/InstrumentPicker.cpp:125
-msgid "Organ"
-msgstr "오르간"
+#. I18N: - in controller, for a controller with min/max range
+#: Src/Pickers/ControllerChoice.cpp:198
+msgid "Min"
+msgstr "최소"
 
-#: Src/Pickers/InstrumentPicker.cpp:86 Src/Pickers/InstrumentPicker.cpp:107
-#: Src/Pickers/InstrumentPicker.cpp:131
-msgid "Guitar"
-msgstr "기타"
+#. I18N: - in controller, for a controller with min/max range
+#: Src/Pickers/ControllerChoice.cpp:200
+msgid "Max"
+msgstr "최대"
 
-#: Src/Pickers/InstrumentPicker.cpp:87 Src/Pickers/InstrumentPicker.cpp:108
-#: Src/Pickers/InstrumentPicker.cpp:134
-msgid "Bass"
-msgstr "베이스"
+#. I18N: - when setting pan in controller
+#: Src/Pickers/ControllerChoice.cpp:202
+msgid "Left"
+msgstr "왼쪽"
 
-#: Src/Pickers/InstrumentPicker.cpp:88
-msgid "Strings"
-msgstr "현악기"
-
-#: Src/Pickers/InstrumentPicker.cpp:89
-msgid "Ensemble"
-msgstr "합주 악기"
-
-#: Src/Pickers/InstrumentPicker.cpp:90 Src/Pickers/InstrumentPicker.cpp:111
-#: Src/Pickers/InstrumentPicker.cpp:126
-msgid "Brass"
-msgstr "금관 악기"
-
-#: Src/Pickers/InstrumentPicker.cpp:91 Src/Pickers/InstrumentPicker.cpp:112
-#: Src/Pickers/InstrumentPicker.cpp:129
-msgid "Reed"
-msgstr "리드 악기"
-
-#: Src/Pickers/InstrumentPicker.cpp:92 Src/Pickers/InstrumentPicker.cpp:130
-msgid "Pipe"
-msgstr "단관 악기"
-
-#: Src/Pickers/InstrumentPicker.cpp:93 Src/Pickers/InstrumentPicker.cpp:114
-#: Src/Pickers/InstrumentPicker.cpp:128
-msgid "Synth Lead"
-msgstr "신스 리드"
-
-#: Src/Pickers/InstrumentPicker.cpp:94
-msgid "Synth Pad"
-msgstr "신드 패드"
-
-#: Src/Pickers/InstrumentPicker.cpp:95
-msgid "Synth Effects"
-msgstr "신스 이펙트"
-
-#: Src/Pickers/InstrumentPicker.cpp:96 Src/Pickers/InstrumentPicker.cpp:115
-msgid "Ethnic"
-msgstr ""
-
-#: Src/Pickers/InstrumentPicker.cpp:97
-msgid "Percussive"
-msgstr "타악기"
-
-#: Src/Pickers/InstrumentPicker.cpp:105
-msgid "Chromatic"
-msgstr ""
-
-#: Src/Pickers/InstrumentPicker.cpp:109
-msgid "Strings and Orchestra"
-msgstr "현악기와 오케스트라"
-
-#: Src/Pickers/InstrumentPicker.cpp:110
-msgid "Choirs, Pads and Voices"
-msgstr "성가대, 발소리, 목소리"
-
-#: Src/Pickers/InstrumentPicker.cpp:113
-msgid "Flutes and Pipe"
-msgstr "플루트, 파이프"
-
-#: Src/Pickers/InstrumentPicker.cpp:116 Src/Pickers/InstrumentPicker.cpp:135
-msgid "Percussion"
-msgstr "타악기"
-
-#: Src/Pickers/InstrumentPicker.cpp:127
-msgid "Pads"
-msgstr ""
-
-#: Src/Pickers/InstrumentPicker.cpp:132
-msgid "Plucked"
-msgstr ""
+#. I18N: - when setting pan in controller
+#: Src/Pickers/ControllerChoice.cpp:204
+msgid "Right"
+msgstr "오른쪽"
 
 #: Src/Pickers/TuningPicker.cpp:62
 msgid "Rearrange selected notes"
 msgstr "선택된 노트 재배치하기"
+
+#. I18N: - when setting time signature, to indicate it's not constant through
+#. song
+#: Src/Pickers/TimeSigPicker.cpp:178
+msgid "Varies throughout song"
+msgstr ""
+
+#. I18N: - when setting a wrong time signature
+#: Src/Pickers/TimeSigPicker.cpp:282
+msgid "Denominator must be a power of 2"
+msgstr ""
 
 #. I18N: - in the view settings for score editor. whether to show notes in a
 #. traditional musical way.
@@ -2706,50 +2123,666 @@ msgstr "프리셋 편집하기..."
 msgid "%s Major, %s minor"
 msgstr "%s 장조, %s 단조"
 
-#. I18N: - when setting time signature, to indicate it's not constant through
-#. song
-#: Src/Pickers/TimeSigPicker.cpp:178
-msgid "Varies throughout song"
-msgstr ""
-
-#. I18N: - when setting a wrong time signature
-#: Src/Pickers/TimeSigPicker.cpp:280
-msgid "Denominator must be a power of 2"
-msgstr ""
-
-#. I18N: - in controller, when a controller can only be on/off
-#: Src/Pickers/ControllerChoice.cpp:194
-msgid "On"
-msgstr "켜짐"
-
-#. I18N: - in controller, when a controller can only be on/off
-#: Src/Pickers/ControllerChoice.cpp:196
-msgid "Off"
-msgstr "꺼짐"
-
-#. I18N: - in controller, for a controller with min/max range
-#: Src/Pickers/ControllerChoice.cpp:198
-msgid "Min"
-msgstr "최소"
-
-#. I18N: - in controller, for a controller with min/max range
-#: Src/Pickers/ControllerChoice.cpp:200
-msgid "Max"
-msgstr "최대"
-
-#. I18N: - when setting pan in controller
-#: Src/Pickers/ControllerChoice.cpp:202
-msgid "Left"
-msgstr "왼쪽"
-
-#. I18N: - when setting pan in controller
-#: Src/Pickers/ControllerChoice.cpp:204
-msgid "Right"
-msgstr "오른쪽"
-
 #: Src/Pickers/VolumeSlider.cpp:132
 msgid "volume"
 msgstr "음량"
+
+#: Src/Pickers/MagneticGridPicker.cpp:43
+msgid "Triplet"
+msgstr ""
+
+#: Src/Pickers/MagneticGridPicker.cpp:44
+msgid "Dotted"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:83 Src/Pickers/InstrumentPicker.cpp:104
+#: Src/Pickers/InstrumentPicker.cpp:124
+msgid "Piano"
+msgstr "피아노"
+
+#: Src/Pickers/InstrumentPicker.cpp:84
+msgid "Chromatic Percussion"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:85 Src/Pickers/InstrumentPicker.cpp:106
+#: Src/Pickers/InstrumentPicker.cpp:125
+msgid "Organ"
+msgstr "오르간"
+
+#: Src/Pickers/InstrumentPicker.cpp:86 Src/Pickers/InstrumentPicker.cpp:107
+#: Src/Pickers/InstrumentPicker.cpp:131
+msgid "Guitar"
+msgstr "기타"
+
+#: Src/Pickers/InstrumentPicker.cpp:87 Src/Pickers/InstrumentPicker.cpp:108
+#: Src/Pickers/InstrumentPicker.cpp:134
+msgid "Bass"
+msgstr "베이스"
+
+#: Src/Pickers/InstrumentPicker.cpp:88
+msgid "Strings"
+msgstr "현악기"
+
+#: Src/Pickers/InstrumentPicker.cpp:89
+msgid "Ensemble"
+msgstr "합주 악기"
+
+#: Src/Pickers/InstrumentPicker.cpp:90 Src/Pickers/InstrumentPicker.cpp:111
+#: Src/Pickers/InstrumentPicker.cpp:126
+msgid "Brass"
+msgstr "금관 악기"
+
+#: Src/Pickers/InstrumentPicker.cpp:91 Src/Pickers/InstrumentPicker.cpp:112
+#: Src/Pickers/InstrumentPicker.cpp:129
+msgid "Reed"
+msgstr "리드 악기"
+
+#: Src/Pickers/InstrumentPicker.cpp:92 Src/Pickers/InstrumentPicker.cpp:130
+msgid "Pipe"
+msgstr "단관 악기"
+
+#: Src/Pickers/InstrumentPicker.cpp:93 Src/Pickers/InstrumentPicker.cpp:114
+#: Src/Pickers/InstrumentPicker.cpp:128
+msgid "Synth Lead"
+msgstr "신스 리드"
+
+#: Src/Pickers/InstrumentPicker.cpp:94
+msgid "Synth Pad"
+msgstr "신드 패드"
+
+#: Src/Pickers/InstrumentPicker.cpp:95
+msgid "Synth Effects"
+msgstr "신스 이펙트"
+
+#: Src/Pickers/InstrumentPicker.cpp:96 Src/Pickers/InstrumentPicker.cpp:115
+msgid "Ethnic"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:97
+msgid "Percussive"
+msgstr "타악기"
+
+#. I18N: percussions category name
+#: Src/Pickers/InstrumentPicker.cpp:98 Src/Pickers/InstrumentPicker.cpp:117
+#: Src/Pickers/InstrumentPicker.cpp:136 Src/Editors/DrumEditor.cpp:231
+msgid "Sound Effects"
+msgstr "음향 효과"
+
+#: Src/Pickers/InstrumentPicker.cpp:105
+msgid "Chromatic"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:109
+msgid "Strings and Orchestra"
+msgstr "현악기와 오케스트라"
+
+#: Src/Pickers/InstrumentPicker.cpp:110
+msgid "Choirs, Pads and Voices"
+msgstr "성가대, 발소리, 목소리"
+
+#: Src/Pickers/InstrumentPicker.cpp:113
+msgid "Flutes and Pipe"
+msgstr "플루트, 파이프"
+
+#: Src/Pickers/InstrumentPicker.cpp:116 Src/Pickers/InstrumentPicker.cpp:135
+msgid "Percussion"
+msgstr "타악기"
+
+#: Src/Pickers/InstrumentPicker.cpp:127
+msgid "Pads"
+msgstr ""
+
+#: Src/Pickers/InstrumentPicker.cpp:132
+msgid "Plucked"
+msgstr ""
+
+#: Src/PreferencesData.cpp:152
+msgid "Language"
+msgstr "언어(Language)"
+
+#: Src/PreferencesData.cpp:178
+msgid "MIDI Driver"
+msgstr "MIDI 드라이버"
+
+#. I18N: In preferences
+#: Src/PreferencesData.cpp:190
+msgid "Play during edit (default value)"
+msgstr "편집 도중에 재생 (기본값)"
+
+#: Src/PreferencesData.cpp:192
+msgid "Always"
+msgstr "항상"
+
+#: Src/PreferencesData.cpp:193
+msgid "On note change"
+msgstr "음표 변경 시"
+
+#: Src/PreferencesData.cpp:194
+msgid "Never"
+msgstr "절대 안함"
+
+#. I18N: In preferences
+#: Src/PreferencesData.cpp:199
+msgid "Default Score View"
+msgstr "기본 악보 보기"
+
+#: Src/PreferencesData.cpp:201
+msgid "Both Musical and Linear"
+msgstr "기보법과 선형 표기법을 함께"
+
+#: Src/PreferencesData.cpp:202
+msgid "Musical Only"
+msgstr "기보법만"
+
+#: Src/PreferencesData.cpp:203
+msgid "Linear Only"
+msgstr "선형 표기법만"
+
+#. I18N: In preferences
+#: Src/PreferencesData.cpp:208
+msgid "Default Editor View"
+msgstr "기본 편집기 보기"
+
+#: Src/PreferencesData.cpp:210
+msgid "Keyboard"
+msgstr "건반"
+
+#: Src/PreferencesData.cpp:211
+msgid "Score"
+msgstr "악보"
+
+#: Src/PreferencesData.cpp:212
+msgid "Tablature"
+msgstr "태블러처 악보"
+
+#. I18N: In preferences
+#: Src/PreferencesData.cpp:218
+msgid "Instrument Classification"
+msgstr "악기 분류"
+
+#: Src/PreferencesData.cpp:220
+msgid "MIDI Standard"
+msgstr "MIDI 표준"
+
+#: Src/PreferencesData.cpp:230
+msgid "Soundfont"
+msgstr "사운드폰트"
+
+#: Src/PreferencesData.cpp:237
+msgid "Follow playback by default"
+msgstr "재생(녹음) 위치 추적을 기본값으로"
+
+#: Src/PreferencesData.cpp:242
+msgid "Enable playthrough when recording by default"
+msgstr "녹음할 때 연주하기를 기본값으로 사용"
+
+#: Src/PreferencesData.cpp:247
+msgid "Check online for new versions"
+msgstr "온라인으로 새 버전 확인"
+
+#: Src/PreferencesData.cpp:252
+msgid "Remember window location"
+msgstr "창 위치 기억하기"
+
+#: Src/PreferencesData.cpp:284
+msgid "Automatically launch FluidSynth if needed"
+msgstr "필요하다면 FluidSynth를 자동으로 실행하기"
+
+#: Src/PreferencesData.cpp:291
+msgid "Single-instance application"
+msgstr "하나의 프로그램만 실행 가능"
+
+#: Src/PreferencesData.cpp:297
+msgid "Show note names in piano-roll"
+msgstr "피아노 롤에 음표 이름 표시"
+
+#: Src/PreferencesData.cpp:303
+msgid "Restore open files from previous session"
+msgstr "이전 세션에서 열었던 파일 복원하기"
+
+#: Src/main.cpp:338 Src/main.cpp:359
+msgid ""
+"Sorry an internal error occurred : an exception was caught unhandled : "
+msgstr "죄송합니다. 내부 오류가 발생했습니다 : 처리되지 않는 예외 :"
+
+#: Src/IO/AriaFileWriter.cpp:49 Src/IO/AriaFileWriter.cpp:58
+#, c-format
+msgid "Could not open file '%s' for reading"
+msgstr "'%s'  파일을 열 수 없습니다"
+
+#: Src/IO/MidiFileReader.cpp:170
+msgid ""
+"This MIDI file has tracks that play on multiple MIDI channels. This is not "
+"supported by Aria Maestosa."
+msgstr "이 MIDI 파일은 다중 MIDI 채널에 재생 트랙이 있습니다. 이것은 아리아 마에스토사가 지원하지 않습니다."
+
+#: Src/IO/MidiFileReader.cpp:185
+msgid ""
+"This MIDI file has a track that sends events on multiple MIDI channels. This"
+" is not supported by Aria Maestosa."
+msgstr "이 MIDI 파일은 다중 MIDI 채널에 이벤트를 전송하는 트랙이 있습니다. 이것은 아리아 마에스토사가 지원하지 않습니다."
+
+#: Src/IO/MidiFileReader.cpp:236
+#, c-format
+msgid ""
+"This MIDI file appears to be incorrect; a note at tick %i in channel %i does"
+" not appear to have an end"
+msgstr "이 MIDI 파일은 잘못된 것 같습니다. %i 틱(%i 채널)의 음표의 끝이 없습니다"
+
+#: Src/IO/MidiFileReader.cpp:271
+#, c-format
+msgid ""
+"This MIDI file uses controller #%i, which is not part of the MIDI standard. "
+"This information will be discarded."
+msgstr "이 MIDI 파일은 MIDI 표준이 아닌 #%i 컨트롤러를 사용합니다. 이 정보는 버려질 것입니다."
+
+#: Src/IO/MidiFileReader.cpp:281
+msgid ""
+"This MIDI file uses Registered Parameters, which are currently not supported"
+" by Aria Maestosa."
+msgstr "이 MIDI 파일은 아직 아리아 마에스토사가 지원하지 않는 RPN을 사용합니다."
+
+#: Src/IO/MidiFileReader.cpp:285
+msgid ""
+"This MIDI files uses NRPN (Non-Registered Parameters, i.e. non-standard "
+"controllers), which are currently not supported by Aria Maestosa."
+msgstr "이 MIDI 파일은 아직 아리아 마에스토사가 지원하지 않는 NRPN(예를 들면, 비표준 컨트롤러)을 사용합니다."
+
+#: Src/IO/MidiFileReader.cpp:297
+msgid ""
+"This MIDI files uses Channel Mode Message, which are currently not supported"
+" by Aria Maestosa."
+msgstr "이 MIDI 파일은 아직 아리아 마에스토사가 지원하지 않는 채널 모드 메시지를 사용합니다."
+
+#: Src/IO/MidiFileReader.cpp:301
+#, c-format
+msgid ""
+"This MIDI file uses unsupported MIDI controller #%i. Data related to this "
+"controller will be discarded."
+msgstr "이 MIDI 파일은 지원되지 않는 MIDI 컨트롤러 #%i 를 사용합니다. 이 컨트롤러와 연관된 데이터를 버려질 것입니다."
+
+#: Src/PresetManager.cpp:133
+#, c-format
+msgid "Sorry, an error occurred : could not create %s"
+msgstr "죄송합니다. 오류가 발생했습니다: %s 을(를) 생성할 수 업습니다"
+
+#: Src/Printing/AbstractPrintableSequence.cpp:39
+msgid "Aria Maestosa song"
+msgstr "아리아 마에스토사 노래"
+
+#. I18N: for printing (page orientation)
+#: Src/Printing/wxEasyPrintWrapper.cpp:232
+msgid "Portrait"
+msgstr "세로"
+
+#: Src/Printing/wxEasyPrintWrapper.cpp:232
+msgid "Landscape"
+msgstr "가로"
+
+#. I18N: for printing (page setup)
+#: Src/Printing/wxEasyPrintWrapper.cpp:234
+#, c-format
+msgid "left = %i mm, right = %i mm,"
+msgstr "왼쪽 = %i mm, 오른쪽 = %i mm,"
+
+#: Src/Printing/wxEasyPrintWrapper.cpp:235
+#, c-format
+msgid "top = %i mm, bottom = %i mm"
+msgstr "위쪽 = %i mm, 아래쪽 = %i mm"
+
+#. I18N: beats per minute (tempo)
+#: Src/Editors/ControllerEditor.cpp:91
+msgid "bpm"
+msgstr "bpm"
+
+#. I18N: as in "+2 semitones"
+#: Src/Editors/ControllerEditor.cpp:96
+msgid "semitones"
+msgstr "세미톤"
+
+#. I18N: as in "soundbank"
+#: Src/Editors/ControllerEditor.cpp:101
+msgid "bank ID"
+msgstr ""
+
+#: Src/Editors/ControllerEditor.cpp:731
+msgid "Lyrics"
+msgstr "가사"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:92
+msgid "High Q"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:94
+msgid "Slap"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:96
+msgid "Push"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:98
+msgid "Pull"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:100 Src/Editors/DrumEditor.cpp:112
+msgid "Stick"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:102
+msgid "Square"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:104
+msgid "Metro"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:106
+msgid "Metro bell"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:108
+msgid "Bass drum 2"
+msgstr "베이스 드럼 2"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:110
+msgid "Bass drum 1"
+msgstr "베이스 드럼 1"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:114
+msgid "Snare"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:116
+msgid "Clap"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:118
+msgid "Snare 2"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:120
+msgid "Tom 6"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:122
+msgid "Closed hi-hat"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:124
+msgid "Tom 5"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:126
+msgid "Pedal hi-hat"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:128
+msgid "Tom 4"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:130
+msgid "Open hi-hat"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:132
+msgid "Tom 3"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:134
+msgid "Tom 2"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:136
+msgid "Crash"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:138
+msgid "Tom 1"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:140
+msgid "Ride"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:142
+msgid "Chinese"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:144
+msgid "Ride bell"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:146
+msgid "Tambourine"
+msgstr "탬버린"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:148
+msgid "Splash"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:150
+msgid "Cowbell"
+msgstr "카우벨"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:152
+msgid "Crash 2"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:154
+msgid "Vibraslap"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:156
+msgid "Ride 2"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:158
+msgid "Hi bongo"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:160
+msgid "Low bongo"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:162
+msgid "Mute hi conga"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:164
+msgid "Open hi conga"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:166
+msgid "Low conga"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:168
+msgid "High timbale"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:170
+msgid "Low timbale"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:172
+msgid "High agogo"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:174
+msgid "Low agogo"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:176
+msgid "Cabasa"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:178
+msgid "Maracas"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:180
+msgid "Short whistle"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:182
+msgid "Long whistle"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:184
+msgid "Short guiro"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:186
+msgid "Long guiro"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:188
+msgid "Claves"
+msgstr "클라베스"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:190
+msgid "Hi wood block"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:192
+msgid "Lo wood block"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:194
+msgid "Mute cuica"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:196
+msgid "Open cuica"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:198
+msgid "Mute triangle"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:200
+msgid "Open triangle"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:202
+msgid "Shaker"
+msgstr "셰이커"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:204
+msgid "Jingle Bell"
+msgstr "징글벨"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:206
+msgid "Bell Tree"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:208
+msgid "Castanets"
+msgstr "캐스터네츠"
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:210
+msgid "Mute surdo"
+msgstr ""
+
+#. I18N: drum name
+#: Src/Editors/DrumEditor.cpp:212
+msgid "Open surdo"
+msgstr ""
+
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:217
+msgid "Drumkit"
+msgstr ""
+
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:219
+msgid "Hi-hat"
+msgstr ""
+
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:221
+msgid "Cymbal"
+msgstr "심벌즈"
+
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:223
+msgid "Toms"
+msgstr ""
+
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:225
+msgid "African"
+msgstr "아프리카"
+
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:227
+msgid "Latin"
+msgstr "라틴"
+
+#. I18N: percussions category name
+#: Src/Editors/DrumEditor.cpp:229
+msgid "Others"
+msgstr "그 외"
 
 #: Src/PreferencesData.h:63
 msgid "System soundbank"
