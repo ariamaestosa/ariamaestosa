@@ -252,10 +252,10 @@ def compile_Aria(which_os):
             sys.exit(1)
            
         winCppFlags = ['-mthreads', '-DHAVE_W32API_H', '-D__WXMSW__', '-D_UNICODE', '-I' + wxHomePath + '\lib\gcc_dll\mswu',
-                       '-I' + wxHomePath + '\include', '-DWXUSINGDLL', '-Wno-ctor-dtor-privacy'] 
+                       '-I' + wxHomePath + '\include', '-DWXUSINGDLL', '-Wno-ctor-dtor-privacy', '-std=gnu++11'] 
 
-        winLdFlags = ['-mthreads', '-L' + wxHomePath + '\lib\gcc_dll', '-lwxbase30u_gcc_custom', '-lwxmsw30u_core_gcc_custom',
-                      '-lwxmsw30u_adv_gcc_custom', '-lwxbase30u_net_gcc_custom', '-lwxtiff', '-lwxjpeg', '-lwxpng',
+        winLdFlags = ['-mthreads', '-L' + wxHomePath + '\lib\gcc_dll', '-lwxbase30u_gcc_cl', '-lwxmsw30u_core_gcc_cl',
+                      '-lwxmsw30u_adv_gcc_cl', '-lwxbase30u_net_gcc_cl', '-lwxtiff', '-lwxjpeg', '-lwxpng',
                       '-lwxzlib', '-lwxregexu', '-lwxexpat', '-lkernel32', '-luser32', '-lgdi32', '-lcomdlg32', '-lwxregexu', '-lwinspool',
                       '-lwinmm', '-lshell32', '-lcomctl32', '-lole32', '-loleaut32', '-luuid', '-lrpcrt4', '-ladvapi32', '-lwsock32']
         
@@ -280,9 +280,9 @@ def compile_Aria(which_os):
         is_wx_3 = (wxversion[0] == '3' or (wxversion[0] == '2' and wxversion[2] == '9'))
         if is_wx_3:
             if renderer == "opengl":
-                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,adv,gl,net'])
+                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,adv,gl,net,webview'])
             else:
-                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,adv,net'])
+                env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,adv,net,webview'])
         else:
             if renderer == "opengl":
                 env.ParseConfig( [WXCONFIG] + ['--cppflags','--libs','core,base,adv,net,gl'])
