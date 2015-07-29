@@ -332,14 +332,7 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                     programChanges++;
                     if (programChanges > 1)
                     {
-                        int current = (channel == 9 ? ariaTrack->getDrumKit() : ariaTrack->getInstrument());
-                        
-                        // only warn if there are multiple _different_ instrument changes
-                        if (instrument != current)
-                        {
-                            ariaTrack->addControlEvent_import(tick, event->GetPGValue(), PSEUDO_CONTROLLER_INSTRUMENT_CHANGE);
-                            current = instrument;                    
-                        }
+                        ariaTrack->addControlEvent_import(tick, event->GetPGValue(), PSEUDO_CONTROLLER_INSTRUMENT_CHANGE);
                     }
                     else
                     {

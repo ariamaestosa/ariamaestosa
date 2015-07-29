@@ -3,6 +3,7 @@
 - Fixed pitch bend on OSX when sending playback to external device
 - Improve behavior when importing a MIDI file with invalid lyrics events
 - Fix program change events on OSX when sending output to external device
+- Fix importing program changes
 
 1.4.10
 - Enable looping a sub-portion of a song
