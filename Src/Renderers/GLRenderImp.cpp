@@ -273,7 +273,6 @@ public:
     {
     }
 };
-    DEFINE_SINGLETON( NumberRendererSingleton );
 
 void renderNumber(const int number, const int x, const int y)
 {
@@ -351,6 +350,9 @@ void endScissors()
 }
 
 }
+
+DEFINE_SINGLETON( AriaRender::NumberRendererSingleton );
 }
+
 
 #endif

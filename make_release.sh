@@ -14,10 +14,10 @@ fi
 
 echo "making packgage for version $VERSION"
 
-USE_WX_CONFIG="/Developer/svn/wxWidgets/cocoa_build/wx-config "
+USE_WX_CONFIG="/Developer/svn/wxWidgets/cocoa_build2/wx-config "
 OUTPUT="$HOME/Desktop/aria-build/"
-ADDITIONAL_BUILD_FLAGS="-isysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.5 -Wfatal-errors"
-ADDITIONAL_LINK_FLAGS="-isysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.5"
+ADDITIONAL_BUILD_FLAGS="-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -mmacosx-version-min=10.9 -Wfatal-errors"
+ADDITIONAL_LINK_FLAGS="-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -mmacosx-version-min=10.9"
 
 #--------- copy repository -----
 rm -rf $OUTPUT
@@ -42,29 +42,19 @@ tar cj --exclude '.svn' --exclude '.DS_Store' --exclude '.sconsign' -f "./AriaSr
 cd $OUTPUT/build
 
 # ------ build mac binaries -----
-#cd libjdkmidi
-#./configure
-#sed 's/CXXFLAGS=/CXXFLAGS=-isysroot \/Developer\/SDKs\/MacOSX10.5.sdk -mmacosx-version-min=10.5 -arch ppc -arch i386/' < GNUMakefile > GNUMakefile1
-#sed 's/LDFLAGS=/LDFLAGS=-isysroot \/Developer\/SDKs\/MacOSX10.5.sdk -mmacosx-version-min=10.5 -arch ppc -arch i386/' < GNUMakefile1 > GNUMakefile2
-#sed 's/CXX=g++/CXX=g++-4.0/' < GNUMakefile2 > GNUMakefile3
-#sed 's/CC=gcc/CC=gcc-4.0/' < GNUMakefile3 > GNUMakefile4
-#rm GNUMakefile3
-#rm GNUMakefile2
-#rm GNUMakefile1
-#rm GNUMakefile
-#mv GNUMakefile4 GNUMakefile
-#make -f GNUMakefile clean
-#make -f GNUMakefile all
-#cd ..
-
-python scons/scons.py config=release WXCONFIG=$USE_WX_CONFIG CXXFLAGS="$ADDITIONAL_BUILD_FLAGS" LDFLAGS="$ADDITIONAL_LINK_FLAGS" compiler_arch=32bit -j 2
+echo "Building..."
+export CXX="/usr/bin/llvm-g++"
+export CC="/usr/bin/llvm-gcc"
+export LD="/usr/bin/llvm-g++"
+python scons/scons.py config=release WXCONFIG=$USE_WX_CONFIG CC="/usr/bin/llvm-gcc" CXX="/usr/bin/llvm-g++" LD="/uasr/bin/llvm-g++" CXXFLAGS="$ADDITIONAL_BUILD_FLAGS" LDFLAGS="$ADDITIONAL_LINK_FLAGS" compiler_arch=32bit -j 2
 python scons/scons.py install
 
+echo "Copying..."
 mkdir -p "$OUTPUT/AriaMaestosa-$VERSION/"
 cp -R "$OUTPUT/build/Aria Maestosa.app" "$OUTPUT/AriaMaestosa-$VERSION"
 cp "./license.txt" "$OUTPUT/AriaMaestosa-$VERSION/license.txt"
 
-# find "$OUTPUT/AriaMaestosa-$VERSION/" -name ".svn" -exec rm -rf '{}' \;
+# find "$OUTPUT/AriaMaestaosa-$VERSION/" -name ".svn" -exec rm -rf '{}' \;
 
 #zip -9 -r "$OUTPUT/AriaMaestosa-$VERSION" foo
 #rm -rf "$OUTPUT/AriaMaestosa-$VERSION"
