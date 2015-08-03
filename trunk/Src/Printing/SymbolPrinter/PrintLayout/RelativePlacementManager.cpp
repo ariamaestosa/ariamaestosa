@@ -95,6 +95,7 @@ int RelativePlacementManager::getInterestingTickNoAdd(const int tick, const int 
     }
 }
 
+#ifndef NDEBUG
 UNIT_TEST( TestAddingAndFindingInterestingTicks )
 {
     //throw std::logic_error("C'est normal que ça échoue!!");
@@ -188,6 +189,7 @@ UNIT_TEST( TestAddingAndFindingInterestingTicks )
     require( testObj.m_all_interesting_ticks[4].m_tick == 17, "fifth added item was correctly added" );
 
 }
+#endif
 
 // ----------------------------------------------------------------------------------------------------------------
 
