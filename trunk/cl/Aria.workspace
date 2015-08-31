@@ -2,12 +2,17 @@
 <CodeLite_Workspace Name="Aria" Database="./Aria.tags">
   <Project Name="Aria" Path="Aria.project" Active="Yes"/>
   <BuildMatrix>
-    <WorkspaceConfiguration Name="Debug" Selected="yes">
-      <Project Name="wx28" ConfigName="Debug"/>
+    <WorkspaceConfiguration Name="WinDebug" Selected="yes">
+      <Project Name="Aria" ConfigName="windows_debug"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="WinRelease" Selected="no">
+      <Project Name="wx28" ConfigName="Release"/>
+      <Project Name="Aria" ConfigName="linux_release"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="UnixDebug" Selected="no">
       <Project Name="Aria" ConfigName="linux_debug"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Release" Selected="no">
-      <Project Name="wx28" ConfigName="Release"/>
+    <WorkspaceConfiguration Name="UnixRelease" Selected="yes">
       <Project Name="Aria" ConfigName="linux_release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
