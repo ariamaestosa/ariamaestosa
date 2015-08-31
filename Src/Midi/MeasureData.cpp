@@ -261,7 +261,7 @@ int MeasureData::measureAtTick(int tick) const
             // might be trying to determine needed song length (FIXME: this should not read the
             // importing bool from the sequence, whether to extrapolate should be a parameter)
             const int last_id = m_time_sig_changes.size()-1;
-            tick -= m_time_sig_changes[ last_id ].getTick();
+            tick -= m_time_sig_changes[ last_id ].getTickCache();
             
             const int answer =  (int)(
                                       m_time_sig_changes[ last_id ].getMeasure() +
@@ -301,7 +301,7 @@ int MeasureData::firstTickInMeasure(int id) const
         // allow going a little past 'official' song end to account for rounding errors, etc. (FIXME?)
         if (id >= (int)m_measure_info.size())
         {
-            if (id > (int)m_measure_info.size()+50){ ASSERT(false); } // but not too far, to detect corrupt values
+            if (id > (int)m_measure_info.size()+500){ ASSERT(false); } // but not too far, to detect corrupt values
             
             return m_measure_info[m_measure_info.size()-1].endTick;
         }
@@ -509,8 +509,8 @@ void MeasureData::updateMeasureInfo()
     float tick = 0;
     int timg_sig_event = 0;
 
-    ASSERT_E(timg_sig_event,<,m_time_sig_changes.size());
-    m_time_sig_changes[timg_sig_event].setTick(0);
+    //ASSERT_E(timg_sig_event,<,m_time_sig_changes.size());
+    //m_time_sig_changes[timg_sig_event].setTickCache(0);
     //m_time_sig_changes[timg_sig_event].pixel = 0;
 
     for (int n=0; n<amount; n++)
@@ -520,7 +520,7 @@ void MeasureData::updateMeasureInfo()
             m_time_sig_changes[timg_sig_event+1].getMeasure() == n)
         {
             timg_sig_event++;
-            m_time_sig_changes[timg_sig_event].setTick((int)round( tick ));
+            //m_time_sig_changes[timg_sig_event].setTickCache((int)round( tick ));
             //m_time_sig_changes[timg_sig_event].pixel = (int)round( tick * zoom );
         }
 
@@ -567,6 +567,12 @@ void MeasureData::updateMeasureInfo()
         m_listeners[n]->onMeasureDataChange(0);
     }
     
+    for (int n = 0; n < m_time_sig_changes.size(); n++)
+    {
+        int measure = m_time_sig_changes[n].getMeasure();
+        m_time_sig_changes[n].setTickCache(firstTickInMeasure(measure));
+    }
+    
     ASSERT_E(m_measure_amount, ==, (int)m_measure_info.size());
 }
 
@@ -611,18 +617,18 @@ void MeasureData::addTimeSigChange_import(int tick, int num, int denom)
         }
 
         // when an event already exists at the beginning, don't add another one, just modify it
-        if (m_time_sig_changes[0].getTick() == 0)
+        if (m_time_sig_changes[0].getTickCache() == 0)
         {
             m_time_sig_changes[0].setNum(num);
             m_time_sig_changes[0].setDenom(denom);
-            m_time_sig_changes[0].setTick(0);
+            m_time_sig_changes[0].setTickCache(0);
             m_time_sig_changes[0].setMeasure(0);
             last_event_tick = 0;
             return;
         }
         else
         {
-            std::cerr << "Unexpected!! tick is " << m_time_sig_changes[0].getTick() << std::endl;
+            std::cerr << "Unexpected!! tick is " << m_time_sig_changes[0].getTickCache() << std::endl;
         }
     }
     else
