@@ -33,7 +33,7 @@ namespace AriaMaestosa
         int m_num;
         
         /** A cache only */
-        int m_tick;
+        int m_tick_cache;
         
     public:
         LEAK_CHECK();
@@ -41,7 +41,7 @@ namespace AriaMaestosa
         /**
           * @param tick  The cached tick value only, will be overwritten
           */
-        TimeSigChange(int measure, int tick, int num, int denom);
+        TimeSigChange(int measure, int tickCache, int num, int denom);
         
         int getMeasure() const { return m_measure; }
         int getDenom  () const { return m_denom;   }
@@ -52,11 +52,14 @@ namespace AriaMaestosa
         void setNum    (int newValue) { m_num     = newValue; }
         
         /** Set the cached tick value */
-        void setTick   (int newValue) { m_tick    = newValue; }
+        void setTickCache(int newValue) 
+        { 
+            ASSERT_E(newValue, >=, 0);
+            m_tick_cache = newValue; 
+        }
         
         /** Get the cached tick value */
-        int getTick   () const { return m_tick;    }
-
+        int getTickCache() const { ASSERT(m_tick_cache != -1); return m_tick_cache;    }
     };
     
 }

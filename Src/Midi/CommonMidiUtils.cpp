@@ -144,21 +144,27 @@ void AriaMaestosa::addTimeSigFromVector(int n, int amount, MeasureData* measureD
                                         jdksmidi::MIDIMultiTrack& tracks, int substract_ticks)
 {
     jdksmidi::MIDITimedBigMessage m;
-    int tick_time =measureData->firstTickInMeasure( measureData->getTimeSig(n).getMeasure() ) - substract_ticks < 0;
-    if (tick_time)
+    int measure = measureData->getTimeSig(n).getMeasure();
+    if (measure > measureData->getMeasureAmount())
+        return; // event is past the end
+    
+    int tick = measureData->firstTickInMeasure(measure) - substract_ticks;
+    
+    if (tick < 0)
     {
-        if ((n + 1 < amount and measureData->firstTickInMeasure( measureData->getTimeSig(n+1).getMeasure() ) > substract_ticks) or
+        if ((n + 1 < amount and measureData->firstTickInMeasure(measureData->getTimeSig(n+1).getMeasure() ) - substract_ticks > 0) or
             n + 1 == amount)
         {
-            tick_time = 0; // we need to consider event because it's the last and will affect future measures
+            // we need to consider event because it's the last and will affect future measures
         }
         else
         {
-            return; // event does not affect anything not in played measures, ignore it
+            return; // event does not affect anything in played measures, ignore it
         }
         
     }
-    m.SetTime( measureData->firstTickInMeasure( measureData->getTimeSig(n).getMeasure() ) - substract_ticks );
+    
+    m.SetTime(tick);
     
     float denom = (float)log(measureData->getTimeSig(n).getDenom())/(float)log(2);
     m.SetTimeSig( measureData->getTimeSig(n).getNum(), (int)denom );
@@ -191,7 +197,7 @@ void AriaMaestosa::addTempoEventFromSequenceVector(int n, int amount, Sequence* 
         }
         
     }
-    
+        
     m.SetTime( tempo_time );
     m.SetTempo32( convertTempoBendToBPM(sequence->getTempoEvent(n)->getValue()) * 32.0
                  // tempo is stored as bpm * 32, giving 1/32 bpm resolution
@@ -271,6 +277,7 @@ void merge( ptr_vector<IMergeSource>& sources )
                 if (min_tick == -1 or sources[n].getNextTick() < min_tick)
                 {
                     min_tick = sources[n].getNextTick();
+                    ASSERT_E(min_tick, >=, 0);
                     min = sources.get(n);
                 }
             }
@@ -611,7 +618,9 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdksmidi::MIDIMultiTr
             }
             virtual int getNextTick()
             {
-                return m_md->getTimeSig(i).getTick();
+                int tick = m_md->getTimeSig(i).getTickCache();
+                ASSERT_E(tick, >=, 0);
+                return tick;
             }
             virtual void pop()
             {
@@ -643,7 +652,9 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdksmidi::MIDIMultiTr
             }
             virtual int getNextTick()
             {
-                return m_seq->getTempoEvent(i)->getTick();
+                int tick = m_seq->getTempoEvent(i)->getTick();
+                ASSERT_E(tick, >=, 0);
+                return tick;
             }
             virtual void pop()
             {
@@ -675,7 +686,9 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdksmidi::MIDIMultiTr
             }
             virtual int getNextTick()
             {
-                return m_seq->getTextEvents()[i].getTick();
+                int tick = m_seq->getTextEvents()[i].getTick();
+                ASSERT_E(tick, >=, 0);
+                return tick;
             }
             virtual void pop()
             {
