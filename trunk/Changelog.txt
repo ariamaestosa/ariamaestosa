@@ -1,3 +1,6 @@
+1.4.12
+- Fix bug with time signature changes
+
 1.4.11
 - Fix bug when recording drum tracks
 - Fixed pitch bend on OSX when sending playback to external device

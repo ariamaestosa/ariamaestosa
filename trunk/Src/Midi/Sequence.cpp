@@ -416,6 +416,7 @@ int Sequence::getLastTickInSequence() const
             }
         }
     }
+    
     return tick;
 }
 
