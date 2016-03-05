@@ -1468,8 +1468,12 @@ void MainFrame::addRecentFile(const wxString& path)
     for (iter = menuItemlist.begin(); iter != menuItemlist.end() && !found; ++iter)
     {
         menuItem = *iter;
-        usedIdsArray[menuItem->GetId()-MENU_FILE_LOAD_RECENT_FILE] = true;
-        found = (areFilesIdentical(menuItem->GetItemLabelText(), path));
+        int idx = menuItem->GetId()-MENU_FILE_LOAD_RECENT_FILE;
+        if (idx >= 0 && idx < MAX_RECENT_FILE_COUNT)
+        {
+            usedIdsArray[idx] = true;
+            found = (areFilesIdentical(menuItem->GetItemLabelText(), path));
+        }
     }
     
     if (found)
