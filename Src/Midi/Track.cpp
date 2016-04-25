@@ -1448,7 +1448,8 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
         }
     }
     
-    // Set pitch bend range
+    // TODO: Set pitch bend range
+    /*
     {
         jdksmidi::MIDITimedBigMessage m;
 
@@ -1490,7 +1491,7 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
             std::cout << "Error adding event" << std::endl;
             ASSERT(false);
         }
-    }
+    }*/
 
     // set instrument
     {
