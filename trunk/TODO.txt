@@ -22,6 +22,10 @@ NOTE: sorry, this is very raw :)
 
 ************************* NEW FEATURES TO ADD: *************************
 
+* It would be nice to be able to click on the record button, but activate the recording with the first note that is sent to Aria through the MIDI interface
+
+* High DPI support
+
 * Add clicktrack/metronome
     * Add sound selection to preferences (+ option to have a different sound on first measure beat?
                                          (+ option to have a different sound on half-beats?)

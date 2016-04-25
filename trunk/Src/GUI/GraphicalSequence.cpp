@@ -469,7 +469,7 @@ void GraphicalSequence::selectNone()
 
 void GraphicalSequence::saveToFile(wxFileOutputStream& fileout)
 {
-    
+    writeData("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n", fileout);
     writeData(wxT("<seqview xscroll=\"") + to_wxString(m_x_scroll_in_pixels) +
               wxT("\" yscroll=\"")       + to_wxString(y_scroll) +
               wxT("\" zoom=\"")          + to_wxString(m_zoom_percent) +

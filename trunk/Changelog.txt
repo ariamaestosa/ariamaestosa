@@ -1,5 +1,7 @@
 1.4.12
 - Fix bug with time signature changes
+- Fix potential crash
+- Fix issue with unicode characters in track names
 
 1.4.11
 - Fix bug when recording drum tracks

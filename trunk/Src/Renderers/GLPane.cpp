@@ -33,7 +33,11 @@ using namespace AriaMaestosa;
 // -------------------------------------------------------------------------------------------------------
 
 GLPane::GLPane(wxWindow* parent, int* args) :
+#if wxCHECK_VERSION(3,1,0)
+    wxGLCanvas(parent, wxID_ANY, args)
+#else
     wxGLCanvas(parent, wxID_ANY,  wxDefaultPosition, wxDefaultSize, 0, wxT("GLCanvas"),  args)
+#endif
 {
     m_context = new wxGLContext(this);
     /*
@@ -57,7 +61,10 @@ GLPane::~GLPane()
 
 void GLPane::resized(wxSizeEvent& evt)
 {
+#if wxCHECK_VERSION(3,1,0)
+#else
     wxGLCanvas::OnSize(evt);
+#endif
 
     initOpenGLFor2D();
     Refresh();
