@@ -31,6 +31,7 @@
 #ifdef WIN32
 #include "jdksmidi/driverwin32.h"
 
+#ifdef _DISABLED_CODE_
 namespace jdksmidi
 {
 
@@ -278,5 +279,8 @@ void CALLBACK MIDIDriverWin32::win32_midi_in (
 }
 
 }
+
+#endif
+
 #endif
 

@@ -1447,6 +1447,50 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
             ASSERT(false);
         }
     }
+    
+    // Set pitch bend range
+    {
+        jdksmidi::MIDITimedBigMessage m;
+
+        // Controllers 0x65 + 0x64 : select registered parameter 0 (pitch bend range)
+
+        m.SetTime(0);
+        m.SetControlChange(channel, 0x65, 0);
+
+        if (not midiTrack->PutEvent( m ))
+        {
+            std::cerr << "Error adding event" << std::endl;
+            ASSERT(false);
+        }
+
+        m.SetTime(0);
+        m.SetControlChange(channel, 0x64, 0);
+
+        if (not midiTrack->PutEvent( m ))
+        {
+            std::cout << "Error adding event" << std::endl;
+            ASSERT(false);
+        }
+        
+        // Controllers 0x06 and 0x26 : payload data for registered parameter
+        m.SetTime(0);
+        m.SetControlChange(channel, 0x06, 24); // 24 semi-tones
+        
+        if (not midiTrack->PutEvent( m ))
+        {
+            std::cout << "Error adding event" << std::endl;
+            ASSERT(false);
+        }
+        
+        m.SetTime(0);
+        m.SetControlChange(channel, 0x26, 0);
+        
+        if (not midiTrack->PutEvent( m ))
+        {
+            std::cout << "Error adding event" << std::endl;
+            ASSERT(false);
+        }
+    }
 
     // set instrument
     {
@@ -1833,14 +1877,17 @@ void Track::saveToFile(wxFileOutputStream& fileout)
     reorderNoteOffVector();
     reorderControlVector();
 
-    writeData(wxT("\n<track name=\"") + m_track_name->getValue() +
-              wxT("\" id=\"") + to_wxString(m_track_id) +
-              wxT("\" channel=\"") + to_wxString(m_channel) +
-              (m_muted ? wxT("\" muted=\"true") : wxT("") )  +
-              (m_soloed ? wxT("\" soloed=\"true") : wxT("") )  +
-              wxT("\" volume=\"") + to_wxString(m_volume) +
-              wxT("\" default_volume=\"") + to_wxString(m_default_volume) +
-              wxT("\">\n"), fileout );
+    wxString name = m_track_name->getValue();
+    wxString xml_line = wxString::Format("\n<track name=\"%s\" id=\"%i\" channel=\"%i\" muted=\"%s\" soloed=\"%s\" volume=\"%i\" default_volume=\"%i\">\n",
+        name,
+        m_track_id,
+        m_channel,
+        m_muted ? "true" : "false",
+        m_soloed ? "true" : "false",
+        m_volume,
+        m_default_volume
+    );
+    writeData(xml_line, fileout );
 
     switch (m_key_type)
     {

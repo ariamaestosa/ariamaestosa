@@ -73,7 +73,8 @@ void assertFailed(wxString message)
 
 void writeData(wxString data, wxFileOutputStream& fileout)
 {
-    fileout.Write( data.mb_str(), data.size());
+    wxCharBuffer buffer = data.ToUTF8();
+    fileout.Write((const char*)buffer, buffer.length());
 }
 
 wxString extract_filename(wxString filepath)

@@ -254,10 +254,13 @@ def compile_Aria(which_os):
         winCppFlags = ['-mthreads', '-DHAVE_W32API_H', '-D__WXMSW__', '-D_UNICODE', '-I' + wxHomePath + '\lib\gcc_dll\mswu',
                        '-I' + wxHomePath + '\include', '-DWXUSINGDLL', '-Wno-ctor-dtor-privacy', '-std=gnu++11'] 
 
-        winLdFlags = ['-mthreads', '-L' + wxHomePath + '\lib\gcc_dll', '-lwxbase30u_gcc_cl', '-lwxmsw30u_core_gcc_cl',
-                      '-lwxmsw30u_adv_gcc_cl', '-lwxbase30u_net_gcc_cl', '-lwxtiff', '-lwxjpeg', '-lwxpng',
+        winLdFlags = ['-mthreads', '-L' + wxHomePath + '\lib\gcc_dll', '-lwxbase310u_gcc_custom', '-lwxmsw310u_core_gcc_custom',
+                      '-lwxmsw310u_adv_gcc_custom', '-lwxbase310u_net_gcc_custom', '-lwxtiff', '-lwxjpeg', '-lwxpng',
                       '-lwxzlib', '-lwxregexu', '-lwxexpat', '-lkernel32', '-luser32', '-lgdi32', '-lcomdlg32', '-lwxregexu', '-lwinspool',
                       '-lwinmm', '-lshell32', '-lcomctl32', '-lole32', '-loleaut32', '-luuid', '-lrpcrt4', '-ladvapi32', '-lwsock32']
+        
+        if renderer == "opengl":
+            winLdFlags = winLdFlags + ['-lopengl32','-lwxmsw310u_gl_gcc_custom','-lglu32']
         
         print "Build flags :", winCppFlags
         print "Link flags :", winLdFlags
