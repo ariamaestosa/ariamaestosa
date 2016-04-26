@@ -3,8 +3,8 @@
 
 [Setup]
 AppName=Aria Maestosa
-AppVerName=Aria Maestosa 1.4.11
-VersionInfoVersion=1.4.11
+AppVerName=Aria Maestosa 1.4.12
+VersionInfoVersion=1.4.12
 AppPublisher=
 AppPublisherURL=http://ariamaestosa.sourceforge.net/
 AppSupportURL=
@@ -39,8 +39,8 @@ Source: "..\*.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Resources\*"; Excludes: "*.icns"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "..\international\*.mo"; DestDir: "{app}\Languages"; Flags: ignoreversion recursesubdirs
 Source: "..\license.txt"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\MinGW-4.8.1\bin\libgcc_s_dw2-1.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\MinGW-4.8.1\bin\mingwm10.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\TDM-GCC-64\bin\libgcc_s_dw2-1.dll"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "C:\TDM-GCC-64\bin\mingwm10.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 
 [Icons]
