@@ -1879,6 +1879,7 @@ void Track::saveToFile(wxFileOutputStream& fileout)
     reorderControlVector();
 
     wxString name = m_track_name->getValue();
+    name.Replace("\"", "&quot;");
     wxString xml_line = wxString::Format("\n<track name=\"%s\" id=\"%i\" channel=\"%i\" muted=\"%s\" soloed=\"%s\" volume=\"%i\" default_volume=\"%i\">\n",
         name,
         m_track_id,
