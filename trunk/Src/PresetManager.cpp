@@ -20,6 +20,7 @@
 #include <wx/stdpaths.h>
 #include <wx/msgdlg.h>
 #include <wx/filename.h>
+#include <wx/msgdlg.h>
 
 #include "UnitTest.h"
 
