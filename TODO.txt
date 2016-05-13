@@ -31,6 +31,8 @@ NOTE: sorry, this is very raw :)
                                          (+ option to have a different sound on half-beats?)
     * Add "enabled by default" option to preferences
 
+* different output devices per track
+    
 * score print :
     * red images
     - X notes not printed right (nor handled correctly in score editor anyway)
