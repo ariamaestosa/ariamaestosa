@@ -57,7 +57,11 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
     OwnerPtr<Sequence::Import> import(sequence->startImport());
 
     // the stream used to read the input file
+#ifdef WIN32
+    jdksmidi::MIDIFileReadStreamFile rs( (const wchar_t*)filepath.wc_str() );
+#else
     jdksmidi::MIDIFileReadStreamFile rs( filepath.mb_str() );
+#endif
 
     // the object which will hold all the tracks
     jdksmidi::MIDIMultiTrack jdksequence;

@@ -1,3 +1,5 @@
+- Fix encoding issue when exporting to midi on windows
+
 1.4.12
 - Fix bug with time signature changes
 - Fix potential crash
