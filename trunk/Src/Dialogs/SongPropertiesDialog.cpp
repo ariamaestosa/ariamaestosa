@@ -140,16 +140,16 @@ public:
                                     wxTE_READONLY|wxTRANSPARENT_WINDOW, wxDefaultValidator, _T("ID_TEXTCTRL"));
 	    keySymbolAmountBoxSizer->Add(m_tonalitiesTextCtrl, 1, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 15);
 
-        m_boxSizer->Add(keySymbolAmountBoxSizer, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+        m_boxSizer->Add(keySymbolAmountBoxSizer, 1, wxALL|wxEXPAND, 5);
     
-    
+        
         //I18N: - tempo
         wxBoxSizer* tempoBoxSizer = new wxBoxSizer(wxHORIZONTAL);
         wxStaticText* tempoStaticText = new wxStaticText(this, wxID_ANY, _("Tempo"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
         tempoBoxSizer->Add(tempoStaticText, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
         m_tempoSpinCtrl = new wxSpinCtrl(this, wxID_ANY, wxT("120"), wxDefaultPosition, wxDLG_UNIT(this,wxSize(35,-1)), 0, 10, 1000, 120, _T("ID_TEMPO_SPINCTRL"));
         tempoBoxSizer->Add(m_tempoSpinCtrl, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-        m_boxSizer->Add(tempoBoxSizer, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+        m_boxSizer->Add(tempoBoxSizer, 0, wxALL|wxEXPAND, 5);
         
         
         //I18N: - time signature
@@ -162,7 +162,7 @@ public:
         timeSignatureBoxSizer->Add(slashStaticText, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
         m_denominatorSpinCtrl = new wxSpinCtrl(this, wxID_ANY, wxT("4"), wxDefaultPosition, textboxSize, 0, 1, 100, 4, _T("ID_BOTTOM_SPINCTRL"));
         timeSignatureBoxSizer->Add(m_denominatorSpinCtrl, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-        m_boxSizer->Add(timeSignatureBoxSizer, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+        m_boxSizer->Add(timeSignatureBoxSizer, 0, wxALL|wxEXPAND, 5);
 
     
         // song length
@@ -173,11 +173,11 @@ public:
         // ok button
         m_okBtn = new wxButton( this, wxID_OK, _("OK"));
         m_okBtn->SetDefault();
-        m_boxSizer->Add( m_okBtn, 0, wxALL, 0 );
+        //m_boxSizer->Add( m_okBtn, 0, wxALL, 0 );
 
         // cancel button
         m_cancelBtn = new wxButton( this, wxID_CANCEL, _("Cancel"));
-        m_boxSizer->Add( m_cancelBtn, 0, wxALL, 0 );
+        //m_boxSizer->Add( m_cancelBtn, 0, wxALL, 0 );
 
         wxStdDialogButtonSizer* stdDialogButtonSizer = new wxStdDialogButtonSizer();
         stdDialogButtonSizer->AddButton(m_okBtn);
