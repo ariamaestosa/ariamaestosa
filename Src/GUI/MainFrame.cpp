@@ -465,7 +465,7 @@ void MainFrame::init(const wxArrayString& filesToOpen, bool fileInCommandLine)
                                                   wxT("http://ariamaestosa.sourceforge.net/download.html"));
         m_notification_link->SetForegroundColour(wxColor(0, 44, 166));
         m_notification_link->SetBackgroundColour(wxColor(170,214,250));
-        subsizer->Add(m_notification_link, 0, wxALIGN_CENTER_VERTICAL);
+        subsizer->Add(m_notification_link, 0, 0);
         m_notification_link->Hide();
 #endif
         
