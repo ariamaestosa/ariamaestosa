@@ -199,9 +199,9 @@ void AriaMaestosa::addTempoEventFromSequenceVector(int n, int amount, Sequence* 
     }
         
     m.SetTime( tempo_time );
-    m.SetTempo32( convertTempoBendToBPM(sequence->getTempoEvent(n)->getValue()) * 32.0
-                 // tempo is stored as bpm * 32, giving 1/32 bpm resolution
-                 );
+    // tempo is stored as bpm * 32, giving 1/32 bpm resolution
+    double tempo = convertTempoBendToBPM(sequence->getTempoEvent(n)->getValue()) * 32.0;
+    m.SetTempo32(tempo);
     
     if (not tracks.GetTrack(0)->PutEvent( m ))
     {
@@ -960,7 +960,7 @@ float AriaMaestosa::convertTempoBendToBPM(float val)
 
 float AriaMaestosa::convertBPMToTempoBend(float tempo)
 {
-    return 127 - (int)((tempo - 20.0)/380.0*128.0);
+    return 127.0 - ((tempo - 20.0)/380.0*128.0);
 }
 
 // ----------------------------------------------------------------------------------------------------------
