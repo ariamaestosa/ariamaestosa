@@ -1522,14 +1522,10 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
         jdksmidi::MIDISystemExclusive sysex((unsigned char*)(const char*)track_name.mb_str(wxConvUTF8),
                                            track_name.size()+1, track_name.size()+1, false);
         */
-
-        int size = track_name.size()+1;
-        char* charTrackName;
-        charTrackName = new char[size];
-        memcpy(charTrackName, track_name.mb_str(), size);
-        charTrackName[size-1] = '\0';
-        jdksmidi::MIDISystemExclusive sysex((unsigned char*)charTrackName, size, size, false);
-
+        
+        wxCharBuffer nameBuffer = track_name.ToUTF8();
+        int len = strlen(nameBuffer.data());
+        jdksmidi::MIDISystemExclusive sysex((unsigned char*)nameBuffer.data(), len, len, false);
         m.CopySysEx( &sysex );
         m.SetTime( 0 );
         if (not midiTrack->PutEvent( m ))
@@ -1537,7 +1533,6 @@ int Track::addMidiEvents(jdksmidi::MIDITrack* midiTrack,
             std::cout << "Error adding event" << std::endl;
             ASSERT(FALSE);
         }
-        delete[] charTrackName;
     }
 
     // set maximum volume
