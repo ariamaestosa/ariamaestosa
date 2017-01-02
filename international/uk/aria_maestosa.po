@@ -3,234 +3,229 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# AlexisA <alexisarcham@gmail.com>, 2012
-# Guss Gaviria <gustarom@gmail.com>, 2012
-# Juan Camilo Montoya <jolimk@gmail.com>, 2014
-# Michel Barreno, 2013-2014
-# William Beltrán <wbeltranc@gmail.com>, 2016
-# William Beltrán <wbeltranc@gmail.com>, 2015
+# Igor Pogorily <lionpif.gwb@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Aria Maestosa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-08-12 20:06-0400\n"
 "PO-Revision-Date: 2017-01-02 19:59+0000\n"
-"Last-Translator: William Beltrán <wbeltranc@gmail.com>\n"
-"Language-Team: Spanish (http://www.transifex.com/auria/ariamaestosa/language/es/)\n"
+"Last-Translator: Igor Pogorily <lionpif.gwb@gmail.com>\n"
+"Language-Team: Ukrainian (Ukraine) (http://www.transifex.com/auria/ariamaestosa/language/uk_UA/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: uk_UA\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: Src/Renderers/wxImage.cpp:53
 msgid "Failed to load "
-msgstr "Falló al cargar "
+msgstr "Не вдалося завантажити"
 
 #: Src/Renderers/GLImage.cpp:52 Src/Renderers/GLImage.cpp:64
 #: Src/Renderers/GLImage.cpp:77 Src/Renderers/GLImage.cpp:87
 #: Src/Renderers/GLImage.cpp:108 Src/Renderers/GLImage.cpp:194
 msgid "Failed to load resource image"
-msgstr "Falló al cargar la imagen de recurso"
+msgstr "Не вдалося завантажити зображення ресурсу"
 
 #. I18N: (undoable) action name
 #: Src/Actions/Record.cpp:32
 msgid "record from MIDI instrument"
-msgstr "grabar desde instrumento MIDI"
+msgstr "записувати з MIDI-інструмента"
 
 #. I18N: (undoable) action name
 #: Src/Actions/InsertEmptyMeasures.cpp:35
 msgid "insert measures"
-msgstr "insertar compases"
+msgstr "вставити треки"
 
 #. I18N: (undoable) action name
 #: Src/Actions/DeleteSelected.cpp:40
 msgid "delete note(s)"
-msgstr "borrar nota(s)"
+msgstr "видалити ноту(и)"
 
 #. I18N: (undoable) action name
 #: Src/Actions/DeleteControllerEvent.cpp:40
 msgid "delete controller event"
-msgstr "eliminar evento de controlador"
+msgstr "видалити подію керування"
 
 #. I18N: (undoable) action name
 #: Src/Actions/ShiftFrets.cpp:28 Src/Actions/NumberPressed.cpp:29
 msgid "change note fret"
-msgstr "cambiar traste de nota"
+msgstr "змінити нотний лад"
 
 #. I18N: (undoable) action name
 #: Src/Actions/DeleteTrack.cpp:32
 msgid "delete track"
-msgstr "borrar pista"
+msgstr "видалити трек"
 
 #. I18N: (undoable) action name
 #: Src/Actions/SetNoteVolume.cpp:27
 msgid "change note(s) volume"
-msgstr "cambiar volumen de nota(s)"
+msgstr "змінити гучність нот(и)"
 
 #. I18N: (undoable) action name
 #: Src/Actions/ShiftString.cpp:27
 msgid "string change"
-msgstr "cambiar de cuerda"
+msgstr "зміна рядка"
 
 #. I18N: (undoable) action name
 #: Src/Actions/Duplicate.cpp:43
 msgid "duplicate"
-msgstr "duplicar"
+msgstr "дублікат"
 
 #. I18N: (undoable) action name
 #: Src/Actions/ResizeNotes.cpp:31
 msgid "resize note(s)"
-msgstr "redimensionar nota(s)"
+msgstr "змінити розмір нот(и)"
 
 #. I18N: (undoable) action name
 #: Src/Actions/SetTrackVolume.cpp:27
 msgid "change track volume"
-msgstr "Cambiar volumen de la pista"
+msgstr "змінити гучність трека"
 
 #. I18N: (undoable) action name
 #: Src/Actions/AddControllerSlide.cpp:33
 msgid "add control slide"
-msgstr "añadir curva de controlador"
+msgstr "додати слайд керування"
 
 #. I18N: (undoable) action name
 #: Src/Actions/SetAccidentalSign.cpp:34
 msgid "accidental change"
-msgstr "cambio accidental"
+msgstr "випадкові зміни"
 
 #. I18N: (undoable) action name
 #: Src/Actions/RearrangeNotes.cpp:29
 msgid "rearrange notes"
-msgstr "reorganizar notas"
+msgstr "перевпорядкувати ноти"
 
 #. I18N: (undoable) action name
 #: Src/Actions/RemoveOverlapping.cpp:31
 msgid "remove overlapping notes"
-msgstr "remover notas superpuestas"
+msgstr "видалити перекриті ноти"
 
 #. I18N: (undoable) action name
 #: Src/Actions/SnapNotesToGrid.cpp:28
 msgid "snap notes to grid"
-msgstr "ajustar notas a la rejilla"
+msgstr "прив'язати ноти до сітки"
 
 #. I18N: (undoable) action name
 #: Src/Actions/Paste.cpp:42
 msgid "paste"
-msgstr "pegar"
+msgstr "вставити"
 
 #. I18N: (undoable) action name
 #: Src/Actions/MoveNotes.cpp:38
 msgid "move note(s)"
-msgstr "mover nota(s)"
+msgstr "перемістити ноту(и)"
 
 #. I18N: (undoable) action name
 #: Src/Actions/AddTrack.cpp:37
 msgid "add track"
-msgstr "añadir pista"
+msgstr "додати трек"
 
 #. I18N: (undoable) action name
 #: Src/Actions/ShiftBySemiTone.cpp:30
 msgid "change pitch"
-msgstr "cambiar tono"
+msgstr "змінити тональність"
 
 #. I18N: (undoable) action name
 #: Src/Actions/UpdateGuitarTuning.cpp:29
 msgid "change guitar tuning"
-msgstr "cambiar afinación de la guitarra"
+msgstr "змінити налаштування гітари"
 
 #. I18N: (undoable) action name
 #: Src/Actions/ScaleSong.cpp:30
 msgid "scale song"
-msgstr "escalar canción"
+msgstr "масштаб пісні"
 
 #. I18N: (undoable) action name
 #: Src/Actions/AddNote.cpp:39
 msgid "add note"
-msgstr "añadir nota"
+msgstr "додати ноту"
 
 #. I18N: (undoable) action name
 #: Src/Actions/AddTextEvent.cpp:31
 msgid "text change"
-msgstr "cambiar texto"
+msgstr "зміна тексту"
 
 #. I18N: (undoable) action name
 #: Src/Actions/AddControlEvent.cpp:32
 msgid "add control event"
-msgstr "añadir evento de control"
+msgstr "додати подію керування"
 
 #. I18N: (undoable) action name
 #: Src/Actions/DuplicateMeasures.cpp:37
 msgid "duplicate measures"
-msgstr "duplicar acordes"
+msgstr "повторювані такти"
 
 #. I18N: (undoable) action name
 #. I18N: menu item in the "edit" menu
 #: Src/Actions/ScrollNotesIntoView.cpp:37 Src/GUI/MainFrameMenuBar.cpp:199
 msgid "Scroll notes into view"
-msgstr "Desplazar notas"
+msgstr "Прокручувати ноти при перегляді"
 
 #. I18N: (undoable) action name
 #: Src/Actions/ScaleTrack.cpp:30
 msgid "scale note(s)"
-msgstr "escalar nota(s)"
+msgstr "масштаб нот(и)"
 
 #. I18N: (undoable) action name
 #: Src/Actions/RemoveMeasures.cpp:38
 msgid "remove measure(s)"
-msgstr "remover compás(es)"
+msgstr "видалити такт(и)"
 
 #: Src/Dialogs/WaitWindow.cpp:69
 msgid "Please wait..."
-msgstr "Espere por favor..."
+msgstr "Будь-ласка, зачекайте..."
 
 #. I18N: - title of the copyright/info dialog
 #: Src/Dialogs/SongPropertiesDialog.cpp:85
 msgid "Song Properties"
-msgstr "Propiedades de la canción"
+msgstr "Властивості пісні"
 
 #. I18N: - title of the copyright/info dialog
 #: Src/Dialogs/SongPropertiesDialog.cpp:96
 msgid "Song name"
-msgstr "Nombre de la canción"
+msgstr "Назва пісні"
 
 #. I18N: - title of the copyright/info dialog
 #: Src/Dialogs/SongPropertiesDialog.cpp:105
 msgid "Copyright"
-msgstr "Derechos de autor"
+msgstr "Авторське право"
 
 #. I18N: - default key signature
 #: Src/Dialogs/SongPropertiesDialog.cpp:113
 msgid "Default key signature"
-msgstr "Armadura por defecto"
+msgstr "Тональність за замовчанням"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:119
 msgid "None"
-msgstr "Ninguno"
+msgstr "Жоден"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:120
 msgid "Sharps"
-msgstr "Sostenido"
+msgstr "Дієзи"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:121
 msgid "Flats"
-msgstr "Bemol"
+msgstr "Бемолі"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:124
 msgid "Symbols"
-msgstr "Símbolos"
+msgstr "Символи"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:148
 msgid "Tempo"
-msgstr "Tempo"
+msgstr "Темп"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:157 Src/Pickers/TimeSigPicker.cpp:139
 msgid "Time Signature"
-msgstr "Marca de Tiempo"
+msgstr "Розмір"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:169
 #: Src/Dialogs/SongPropertiesDialog.cpp:203
 msgid "Song duration :"
-msgstr "Duración de la canción :"
+msgstr "Тривалість пісні:"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:174
 #: Src/Dialogs/CustomKeyDialog.cpp:163 Src/Dialogs/PrintSetupDialog.cpp:103
@@ -239,7 +234,7 @@ msgstr "Duración de la canción :"
 #: Src/Dialogs/ScaleDialog.cpp:152 Src/Dialogs/TrackPropertiesDialog.cpp:230
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:545 Src/Pickers/TimeSigPicker.cpp:181
 msgid "OK"
-msgstr "SÍ"
+msgstr "Ок"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:179
 #: Src/Dialogs/CustomKeyDialog.cpp:164 Src/Dialogs/PrintSetupDialog.cpp:729
@@ -248,7 +243,7 @@ msgstr "SÍ"
 #: Src/Dialogs/TrackPropertiesDialog.cpp:233
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:546
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr "Скасувати"
 
 #: Src/Dialogs/SongPropertiesDialog.cpp:348 Src/Pickers/KeyPicker.cpp:95
 #: Src/Pickers/KeyPicker.cpp:110 Src/Midi/Note.h:102 Src/Midi/Note.h:118
@@ -263,27 +258,27 @@ msgstr "A"
 #: Src/Dialogs/SongPropertiesDialog.cpp:373
 #, c-format
 msgid "%s Major - %s minor"
-msgstr "%s Mayor - %s menor"
+msgstr "%s мажор - %s мінор"
 
 #: Src/Dialogs/CustomKeyDialog.cpp:38
 msgid "Custom Key Editor"
-msgstr "Editor de Armadura Personalizada"
+msgstr "Редактор користувацької тональності"
 
 #: Src/Dialogs/CustomKeyDialog.cpp:52
 msgid "Select which notes should be part of the custom key"
-msgstr "Seleccionar que notas deben hacer parte de la armadura personalizada"
+msgstr "Обрати, які ноти мають бути частиною користувацької тональності"
 
 #. I18N: in custom key editor, this is the option to edit notes on a single
 #. octave
 #: Src/Dialogs/CustomKeyDialog.cpp:97
 msgid "All Octaves are Similar"
-msgstr "Todas las Octavas son Similares"
+msgstr "Всі октави є однаковими"
 
 #. I18N: in custom key editor, this is the option to edit all octaves
 #. independently
 #: Src/Dialogs/CustomKeyDialog.cpp:144
 msgid "All Octaves are Independent"
-msgstr "Todas las Octavas son Independientes"
+msgstr "Всі октави, є незалежними"
 
 #. I18N: in custom key editor
 #. wxButton* copySettingsBtn = new wxButton( pane, wxID_COPY, _("Copy settings
@@ -292,62 +287,62 @@ msgstr "Todas las Octavas son Independientes"
 #. I18N: in the key editor
 #: Src/Dialogs/CustomKeyDialog.cpp:153
 msgid "* Checked notes are included in the key"
-msgstr "* Las notas marcadas son incluidas en la armadura"
+msgstr "* Позначені ноти включені до тональності"
 
 #. I18N: in the key editor
 #: Src/Dialogs/CustomKeyDialog.cpp:155
 msgid "* \"Half-checked\" notes are included as accidentals"
-msgstr "* Las notas a \"medio-marcar\" son incluidas como accidentales"
+msgstr "* \"Напівпозначені\" ноти додані як випадкові"
 
 #. I18N: in the key editor
 #: Src/Dialogs/CustomKeyDialog.cpp:157
 msgid ""
 "* Unchecked notes are excluded (for instance, they could be unplayable on "
 "your instrument)"
-msgstr "* Las notas no marcadas son excluidas (por ejemplo, podrían no ser reproducibles en su instrumento)"
+msgstr "* Непозначені ноти виключаються (наприклад, вони можуть не програватись на вашому інструменті)"
 
 #: Src/Dialogs/CustomKeyDialog.cpp:165
 msgid "Save as preset..."
-msgstr "Guardar como preajuste..."
+msgstr "Зберегти як пресет..."
 
 #: Src/Dialogs/CustomKeyDialog.cpp:264
 msgid "Enter the name of the preset"
-msgstr "Introducir nombre del preajuste"
+msgstr "Введіть ім'я пресета"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:46
 msgid "Keyroll Printing Options"
-msgstr "Opciones de impresión de teclado"
+msgstr "Параметри друку списку клавіш"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:57
 msgid "Size of a beat : "
-msgstr "Medida del tempo : "
+msgstr "Розмір удару :"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:65
 msgid "Vertical margin between notes : "
-msgstr "Margen vertical entre las notas : "
+msgstr "Вертикальні відступи між нотами : "
 
 #: Src/Dialogs/PrintSetupDialog.cpp:75
 msgid "Colors"
-msgstr "Colores"
+msgstr "Кольори"
 
 #. I18N: keyroll printing option
 #: Src/Dialogs/PrintSetupDialog.cpp:100
 msgid "Compact (print only key notes)"
-msgstr "Compactar (imprime sólo tónicas)"
+msgstr "Компактно (друк лише ключових нот)"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:194
 msgid ""
 "Keyroll tracks and tablature/score tracks cannot be mixed in the same "
 "printout"
-msgstr "Pistas de teclado y pistas de tablatura/partitura no pueden ser combinadas en la misma impresión"
+msgstr "Треки списку клавіш і табулатури/треки нот не можуть змішуватись у роздруківці"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:199
 msgid "No printable track selected"
-msgstr "Ninguna pista imprimible ha sido seleccionada"
+msgstr "Вибраний трек не для друку"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:236
 msgid "Calculating print layout..."
-msgstr "Calculando diseño de la impresión..."
+msgstr "Підготування шарів для друку..."
 
 #. I18N: - %s is the name of the track
 #: Src/Dialogs/PrintSetupDialog.cpp:247
@@ -355,71 +350,71 @@ msgstr "Calculando diseño de la impresión..."
 msgid ""
 "Track '%s' could not be printed, since its current\n"
 "view (editor) does not support printing."
-msgstr "La pista '%s' no se pudo imprimir, ya que su vista\nactual (editor) no admite impresión."
+msgstr "Трек '%s' може не друкуватися, оскільки поточний\nпереглядач (редактор) не підтримує друк."
 
 #: Src/Dialogs/PrintSetupDialog.cpp:275
 msgid "An error occurred during printing."
-msgstr "Un error ha ocurrido durante la impresión."
+msgstr "Сталася помилка під час друку."
 
 #. I18N: - title of the notation-print dialog
 #: Src/Dialogs/PrintSetupDialog.cpp:511
 msgid "Print musical notation"
-msgstr "Imprimir notación musical"
+msgstr "Друк нотого аркуша"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:523
 msgid "An error occurred while preparing to print."
-msgstr "Un error ha ocurrido mientras se preparaba para imprimir."
+msgstr "Сталася помилка під час підготовки до друку."
 
 #. I18N: - in print setup dialog.
 #: Src/Dialogs/PrintSetupDialog.cpp:541
 msgid "Print..."
-msgstr "Imprimir..."
+msgstr "Друк..."
 
 #. I18N: - in print setup dialog.
 #: Src/Dialogs/PrintSetupDialog.cpp:544
 msgid "Current track only"
-msgstr "Sólo la pista actual"
+msgstr "Лише поточний трек"
 
 #. I18N: - in print setup dialog.
 #: Src/Dialogs/PrintSetupDialog.cpp:549
 msgid "This list of tracks"
-msgstr "Esta lista de pistas"
+msgstr "Цей список треків"
 
 #. I18N: in printing dialog
 #: Src/Dialogs/PrintSetupDialog.cpp:656
 msgid "Omit instruments that play nothing on the current line"
-msgstr "Omitir instrumentos que no tocan nada en la línea actual"
+msgstr "Пропустити інструменти, які нічого не грають на поточній лінії"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:658
 msgid ""
 "If some instrument plays nothing during a long part of the song, checking "
 "this option can make the printed score tighter by eliminating empty lines"
-msgstr "Si algún instrumento no toca nada durante una parte larga de la canción, marcando esta opción puede hacer más estrecha la partitura imprimida eliminando líneas vacías."
+msgstr "Якщо якийсь інструмент нічого не грає велику частині пісні, позначення цього пункту може зробити надруковані ноти щільнішими, усуваючи порожні лінії"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:672
 msgid "Page Setup"
-msgstr "Configuración de Página"
+msgstr "Параметри сторінки"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:678
 msgid "Paper :"
-msgstr "Papel :"
+msgstr "Папір :"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:686
 msgid "Edit Page Setup"
-msgstr "Editar Configuración de Página"
+msgstr "Змінити параметри сторінки"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:692
 msgid "Margins :"
-msgstr "Margenes :"
+msgstr "Відступи :"
 
 #: Src/Dialogs/PrintSetupDialog.cpp:700
 msgid "Margins"
-msgstr "Margenes"
+msgstr "Відступи"
 
 #. I18N: - title of the preferences dialog
 #: Src/Dialogs/Preferences.cpp:246 Src/GUI/MainPane.cpp:150
 msgid "Preferences"
-msgstr "Preferencias"
+msgstr "Налаштування"
 
 #: Src/Dialogs/Preferences.cpp:258
 msgid "Aria Maestosa"
@@ -427,72 +422,72 @@ msgstr "Aria Maestosa"
 
 #: Src/Dialogs/Preferences.cpp:259
 msgid "Sound input/output"
-msgstr "Entrada/Salida de sonido"
+msgstr "Введення/виведення звука"
 
 #: Src/Dialogs/Preferences.cpp:260
 msgid "Edition"
-msgstr "Edición"
+msgstr "Редагування"
 
 #: Src/Dialogs/Preferences.cpp:351
 msgid "Browse..."
-msgstr "Explorar..."
+msgstr "Перегляд..."
 
 #. I18N: - in the preferences dialog
 #: Src/Dialogs/Preferences.cpp:390
 msgid "Changes will take effect next time you open the application."
-msgstr "Los cambios tendrán efecto al reiniciar la aplicación."
+msgstr "Зміни наберуть сили під час наступного відкриття програми."
 
 #: Src/Dialogs/Preferences.cpp:444
 msgid "You will need to restart Aria Maestosa for changes to be effective."
-msgstr "Necesita reiniciar Aria Maestosa para que los cambios surtan efecto."
+msgstr "Вам потрібно буде перезапустити Aria Maestosa, щоб зміни набули чинності."
 
 #: Src/Dialogs/Preferences.cpp:467 Src/GUI/MainFrameMenuBar.cpp:739
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:587
 msgid "Select file"
-msgstr "Seleccionar archivo"
+msgstr "Обрати файл"
 
 #: Src/Dialogs/Preferences.cpp:468 Src/Midi/Players/Alsa/AlsaPlayer.cpp:588
 msgid "Sound Font"
-msgstr "Sound Font"
+msgstr "Набір звуків"
 
 #: Src/Dialogs/PresetEditor.cpp:33
 msgid "Presets"
-msgstr "Preajustes"
+msgstr "Пресети"
 
 #: Src/Dialogs/PresetEditor.cpp:60
 msgid "Duplicate"
-msgstr "Duplicar"
+msgstr "Дублікат"
 
 #: Src/Dialogs/PresetEditor.cpp:62 Src/Editors/ControllerEditor.cpp:944
 #: Src/Editors/ControllerEditor.cpp:983
 msgid "Delete"
-msgstr "Borrar"
+msgstr "Видалити"
 
 #: Src/Dialogs/PresetEditor.cpp:66 Src/Dialogs/AboutDialog.cpp:111
 #: Src/GUI/MainFrameMenuBar.cpp:1396
 msgid "Close"
-msgstr "Cerrar"
+msgstr "Закрити"
 
 #. I18N: when duplicating a preset
 #: Src/Dialogs/PresetEditor.cpp:97
 msgid "Enter the name of the duplicate"
-msgstr "Introducir nombre del duplicado"
+msgstr "Введіть ім'я дублікату"
 
 #: Src/Dialogs/PresetEditor.cpp:117
 msgid "Are you sure you want to delete this preset? This cannot be undone."
-msgstr "¿Está seguro que desea borrar este preajuste?"
+msgstr "Ви дійсно бажаєте видалити цей пресет? Це не може бути скасованим."
 
 #: Src/Dialogs/PresetEditor.cpp:118 Src/GUI/MainFrameMenuBar.cpp:711
 #: Src/GUI/MainFrameMenuBar.cpp:774 Src/GUI/MainFrameMenuBar.cpp:813
 #: Src/GUI/MainFrameMenuBar.cpp:1051 Src/GUI/MainFrameMenuBar.cpp:1170
 #: Src/GUI/MainFrameMenuBar.cpp:1254 Src/Pickers/TimeSigPicker.cpp:291
 msgid "Confirm"
-msgstr "Confirmar"
+msgstr "Підтвердити"
 
 #. I18N: - title of the custom note select dialog
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:63
 msgid "Select notes..."
-msgstr "Seleccionar notas..."
+msgstr "Виділити ноти..."
 
 #. I18N: - in custom note select dialog. full context :\n\n Select notes
 #. that...\n\n* have the same pitch\n* have a similar volume *
@@ -500,7 +495,7 @@ msgstr "Seleccionar notas..."
 #. duration * are located in measures ... to ...
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:74
 msgid "Select notes that..."
-msgstr "Seleccionar notas que..."
+msgstr "Виділити ноти, що..."
 
 #. I18N: - in custom note select dialog. full context :\n\n Select notes
 #. that...\n\n* have the same pitch\n* have a similar volume *
@@ -508,7 +503,7 @@ msgstr "Seleccionar notas que..."
 #. duration * are located in measures ... to ...
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:79
 msgid "have the same pitch"
-msgstr "tienen el mismo tono"
+msgstr "мають таку ж тональність"
 
 #. I18N: - in custom note select dialog. full context :\n\n Select notes
 #. that...\n\n* have the same pitch\n* have a similar volume *
@@ -516,7 +511,7 @@ msgstr "tienen el mismo tono"
 #. duration * are located in measures ... to ...
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:91
 msgid "have a similar volume"
-msgstr "tienen un volumen similar"
+msgstr "мають таку ж гучність"
 
 #. I18N: - in custom note select dialog. full context :\n\n Select notes
 #. that...\n\n* have the same pitch\n* have a similar volume *
@@ -524,7 +519,7 @@ msgstr "tienen un volumen similar"
 #. duration * are located in measures ... to ...
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:110
 msgid "are on the same string"
-msgstr "están en la misma cuerda"
+msgstr "розташовані на одній лінії"
 
 #. I18N: - in custom note select dialog. full context :\n\n Select notes
 #. that...\n\n* have the same pitch\n* have a similar volume *
@@ -532,7 +527,7 @@ msgstr "están en la misma cuerda"
 #. duration * are located in measures ... to ...
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:115
 msgid "have the same fret"
-msgstr "tienen el mismo traste"
+msgstr "мають такий же лад"
 
 #. I18N: - in custom note select dialog. full context :\n\n Select notes
 #. that...\n\n* have the same pitch\n* have a similar volume *
@@ -540,7 +535,7 @@ msgstr "tienen el mismo traste"
 #. duration * are located in measures ... to ...
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:126
 msgid "have a similar duration"
-msgstr "tienen una duración similar"
+msgstr "мають таку ж тривалість"
 
 #. I18N: - in custom note select dialog. full context :\n\n Select notes
 #. that...\n\n* have the same pitch\n* have a similar volume *
@@ -548,7 +543,7 @@ msgstr "tienen una duración similar"
 #. duration * are located in measures ... to ...
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:143
 msgid "are located in measures "
-msgstr "están situadas en los compases "
+msgstr "розташовані в тактах"
 
 #. I18N: - in custom note select dialog. full context :\n\n Select notes
 #. that...\n\n* have the same pitch\n* have a similar volume *
@@ -556,98 +551,98 @@ msgstr "están situadas en los compases "
 #. duration * are located in measures ... to ...
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:152
 msgid " to "
-msgstr " a "
+msgstr "до"
 
 #: Src/Dialogs/CustomNoteSelectDialog.cpp:271
 msgid "Illegal values"
-msgstr "Valores ilegales"
+msgstr "Невірні значення"
 
 #: Src/Dialogs/TuningDialog.cpp:42
 msgid "Custom Tuning Editor"
-msgstr "Editor de Afinación Personalizada"
+msgstr "Редактор користувацьких налаштувань"
 
 #. I18N: - title of the scale dialog
 #: Src/Dialogs/ScaleDialog.cpp:70
 msgid "Scale"
-msgstr "Escala"
+msgstr "Масштаб"
 
 #. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
 #. selection\n* track\n* song"
 #: Src/Dialogs/ScaleDialog.cpp:111
 msgid "Scale notes in..."
-msgstr "Escalar notas en..."
+msgstr "Масштаб ноти в..."
 
 #. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
 #. selection\n* track\n* song"
 #: Src/Dialogs/ScaleDialog.cpp:115
 msgid "selection"
-msgstr "selección"
+msgstr "виділенні"
 
 #. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
 #. selection\n* track\n* song"
 #: Src/Dialogs/ScaleDialog.cpp:120
 msgid "track"
-msgstr "pista"
+msgstr "треку"
 
 #. I18N: - in the scale dialog. full context : "Scale notes in...\n\n*
 #. selection\n* track\n* song"
 #: Src/Dialogs/ScaleDialog.cpp:124
 msgid "song"
-msgstr "canción"
+msgstr "пісні"
 
 #. I18N: - in the scale dialog. full context : "relative to...\n\n* first
 #. affected note\n* song beginning"
 #: Src/Dialogs/ScaleDialog.cpp:130
 msgid "relative to..."
-msgstr "relativo a..."
+msgstr "відносно..."
 
 #. I18N: - in the scale dialog. full context : "relative to...\n\n* first
 #. affected note\n* song beginning"
 #: Src/Dialogs/ScaleDialog.cpp:134
 msgid "first affected note"
-msgstr "primera nota afectada"
+msgstr "першої постраждалої ноти"
 
 #. I18N: - in the scale dialog. full context : "relative to...\n\n* first
 #. affected note\n* song beginning"
 #: Src/Dialogs/ScaleDialog.cpp:139
 msgid "song beginning"
-msgstr "principio de la canción"
+msgstr "початку пісні"
 
 #: Src/Dialogs/TrackPropertiesDialog.cpp:130
 #, c-format
 msgid "Track '%s' Properties"
-msgstr "Propiedades de la Pista '%s'"
+msgstr "Властивості трека '%s'"
 
 #: Src/Dialogs/TrackPropertiesDialog.cpp:157
 msgid "Track Background"
-msgstr "Fondo de la Pista"
+msgstr "Тло трека"
 
 #: Src/Dialogs/TrackPropertiesDialog.cpp:182
 msgid "Check all"
-msgstr "Marcar todo"
+msgstr "Позначити все"
 
 #: Src/Dialogs/TrackPropertiesDialog.cpp:183
 msgid "Uncheck all"
-msgstr "Desmarcar todo"
+msgstr "Зняти всі позначки"
 
 #: Src/Dialogs/TrackPropertiesDialog.cpp:205
 msgid "Default volume for new notes"
-msgstr "Volumen predeterminado para notas nuevas"
+msgstr "Гучність нових нот за замовчанням"
 
 #: Src/Dialogs/AboutDialog.cpp:47
 msgid "About Aria Maestosa"
-msgstr "Acerca de Aria Maestosa"
+msgstr "Про Aria Maestosa"
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:59
 #, c-format
 msgid "version %s"
-msgstr "versión %s"
+msgstr "версія %s"
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:62
 msgid "Thanks to:"
-msgstr "Gracias a:"
+msgstr "Подяка:"
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:64
@@ -655,532 +650,532 @@ msgstr "Gracias a:"
 msgid ""
 "Ergonis Software and %s for making EasyBeat,\n"
 "\ta great app that inspired Aria (www.ergonis.com)."
-msgstr "Ergonis Software and %s for making EasyBeat,\n\ta great app that inspired Aria (www.ergonis.com)."
+msgstr "Ergonis Software і %s за створення EasyBeat,\n\t великої програми, яка надихнула Aria (www.ergonis.com)."
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:66
 msgid "J.D. Koftinoff Software for the jdksmidi library"
-msgstr "J.D. Koftinoff Software para la biblioteca jdksmidi"
+msgstr "J.D. Koftinoff Software за бібліотеку jdksmidi"
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:68
 msgid "The irrXML team for their XML parser"
-msgstr "El equipo irrXML por su analizador XML"
+msgstr "Команді IrrXML за їх XML аналізатор"
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:70
 msgid "The wxWidgets team"
-msgstr "El equipo de wxWidgets"
+msgstr "Команді wxWidgets"
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:72
 msgid "The Tango icon set"
-msgstr "El set de iconos Tango"
+msgstr "Набір іконок Танго"
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:74
 msgid "Windows port by Alexis Archambault"
-msgstr "Port para Windows por Alexis Archambault"
+msgstr "Alexis Archambault за портування на Windows"
 
 #. I18N: - in about dialog
 #: Src/Dialogs/AboutDialog.cpp:76
 msgid "Translations:"
-msgstr "Traducciones:"
+msgstr "Переклади:"
 
 #: Src/GUI/MainPane.cpp:147
 msgid "Create a new sequence"
-msgstr "Crear una nueva secuencia"
+msgstr "Створити нову послідовність"
 
 #: Src/GUI/MainPane.cpp:148
 msgid "Open a saved sequence"
-msgstr "Abrir una secuencia guardada"
+msgstr "Відкрити збережену послідовність"
 
 #: Src/GUI/MainPane.cpp:149
 msgid "Import a MIDI file"
-msgstr "Importar un archivo MIDI..."
+msgstr "Імпортувати MIDI-файл"
 
 #: Src/GUI/MainPane.cpp:151
 msgid "Help"
-msgstr "Ayuda"
+msgstr "Допомога"
 
 #: Src/GUI/MainPane.cpp:152
 msgid "Exit"
-msgstr "Salir"
+msgstr "Вихід"
 
 #. I18N: to hide the panel that is shown when a file could not be imported
 #. successfully
 #: Src/GUI/MainFrame.cpp:473
 msgid "Hide"
-msgstr "Ocultar"
+msgstr "Приховати"
 
 #: Src/GUI/MainFrame.cpp:653
 msgid "Record"
-msgstr "Grabar"
+msgstr "Запис"
 
 #: Src/GUI/MainFrame.cpp:654
 msgid "Play"
-msgstr "Reproducir"
+msgstr "Грати"
 
 #: Src/GUI/MainFrame.cpp:656
 msgid "Stop"
-msgstr "Detener"
+msgstr "Зупинити"
 
 #: Src/GUI/MainFrame.cpp:660
 msgid "Loop"
-msgstr "Loop"
+msgstr "Цикл"
 
 #. I18N: song length (number of measures)
 #: Src/GUI/MainFrame.cpp:677
 msgid "Length"
-msgstr "Longitud"
+msgstr "Довжина"
 
 #: Src/GUI/MainFrame.cpp:692
 msgid ""
 "This is the initial tempo of the song, see the Controller Editor for tempo "
 "variations"
-msgstr "Este es el tempo inicial de la canción, ver el Editor de Controlador para variaciones del tempo"
+msgstr "Це початковий темп пісні, для зміни темпу дивіться Редактор контролера"
 
 #: Src/GUI/MainFrame.cpp:693
 msgid "Initial tempo"
-msgstr "Tempo Inicial"
+msgstr "Початковий темп"
 
 #: Src/GUI/MainFrame.cpp:705
 msgid "Time Sig"
-msgstr "Marca de tiempo"
+msgstr "Розмір"
 
 #: Src/GUI/MainFrame.cpp:713
 msgid "Start"
-msgstr "Empezar"
+msgstr "Старт"
 
 #. I18N: loop end
 #: Src/GUI/MainFrame.cpp:722 Src/GUI/MainFrame.cpp:1108
 msgid "End"
-msgstr "Fin"
+msgstr "Кінець"
 
 #: Src/GUI/MainFrame.cpp:740
 msgid "Zoom"
-msgstr "Zoom"
+msgstr "Масштаб"
 
 #. I18N: tool selection tip
 #: Src/GUI/MainFrame.cpp:780
 msgid ""
 "Tool 1 : Draw notes\n"
 "Tool 2 : Click to add notes"
-msgstr "Herramienta 1: Dibujar notas\nHerramienta 2: Click para agregar notas"
+msgstr "Інструмент 1: Малювати ноти\nІнструмент 2: Додавати ноти"
 
 #: Src/GUI/MainFrame.cpp:781 Src/GUI/MainFrame.cpp:783
 msgid "Tool"
-msgstr "Herramienta"
+msgstr "Інструмент"
 
 #: Src/GUI/MainFrame.cpp:1044 Src/GUI/MainFrameMenuBar.cpp:351
 #: Src/GUI/MainFrameMenuBar.cpp:354 Src/PreferencesData.cpp:334
 msgid "No MIDI input"
-msgstr "No hay entrada MIDI"
+msgstr "Немає MIDI введення"
 
 #: Src/GUI/MainFrame.cpp:1046
 msgid "Please select an input port from the 'input' menu before recording"
-msgstr "Por favor seleccione un puerto de entrada desde el menú \"entrada\" antes de grabar"
+msgstr "Будь-ласка, оберіть порт введення у меню 'введення' перед записом"
 
 #: Src/GUI/MainFrame.cpp:1839
 #, c-format
 msgid ""
 "You have unsaved changes in sequence '%s'. Do you want to save them before "
 "proceeding?"
-msgstr "Tiene cambios no guardados en la secuencia '%s'. ¿Desea guardarlos antes de continuar?"
+msgstr "Ви маєте незбережені зміни в послідовності '%s '. Ви хочете зберегти їх, перш ніж продовжити?"
 
 #: Src/GUI/MainFrame.cpp:1841
 msgid "Selecting 'Yes' will save your document before closing"
-msgstr "Seleccionando \"Sí\" guardará su documento antes de cerrar"
+msgstr "Вибір 'Так' збереже документ перед закриттям"
 
 #: Src/GUI/MainFrame.cpp:1842
 msgid "Selecting 'No' will discard unsaved changes"
-msgstr "Seleccionando \"No\" desechará los cambios no guardados"
+msgstr "Вибір 'Ні' скасує незбережені зміни"
 
 #: Src/GUI/MainFrame.cpp:1843
 msgid "Selecting 'Cancel' will cancel exiting the application"
-msgstr "Seleccionando \"Cancelar\" cancelará el cierre de la aplicación"
+msgstr "Вибір 'Скасувати' скасує вихід із програми"
 
 #. I18N: title of dialog shown when exiting without saving
 #: Src/GUI/MainFrame.cpp:1848
 msgid "Unsaved changes in sequence"
-msgstr "Cambios no guardados en la secuencia"
+msgstr "Не збережено зміни в послідовності"
 
 #: Src/GUI/MainFrame.cpp:2020
 msgid "Unknown file type: "
-msgstr "Tipo de archivo desconocido: "
+msgstr "Файл невідомого типу: "
 
 #: Src/GUI/MainFrame.cpp:2047 Src/GUI/MainFrame.cpp:2175
 msgid "Sorry, loading .aria file failed."
-msgstr "Lo siento, falló la carga del archivo .aria"
+msgstr "На жаль завантаження .aria файлу не вдалося."
 
 #: Src/GUI/MainFrame.cpp:2090
 msgid "Please wait while midi file is loading."
-msgstr "Por favor espere mientras se carga el archivo MIDI."
+msgstr "Зачекайте, будь-ласка, midi-файл завантажується."
 
 #: Src/GUI/MainFrame.cpp:2097 Src/GUI/MainFrame.cpp:2186
 msgid "Sorry, loading midi file failed."
-msgstr "Lo siento, falló la carga del archivo MIDI."
+msgstr "На жаль завантаження midi-файлу не вдалося."
 
 #: Src/GUI/MainFrame.cpp:2121
 msgid ""
 "Loading the MIDI file completed successfully, but with the following "
 "warnings (the song may not sound as intended) :"
-msgstr "La carga del archivo MIDI se ha completado satisfactoriamente, pero con las siguientes advertencias (puede que la canción no suene como se desea) :"
+msgstr "Завантаження MIDI-файлу завершено успішно, але є такі попередження (пісня може не звучати як треба) :"
 
 #: Src/GUI/MainFrame.cpp:2304
 msgid ""
 "A new version of Aria Maestosa is now available! Visit the following link to"
 " download it :"
-msgstr "Está disponible una nueva versión de Aria Maestosa. Visite el siguiente vínculo para descargarla:"
+msgstr "Тепер доступна нова версія Aria Maestosa! Відвідати наступне посилання для завантаження :"
 
 #: Src/GUI/MainFrame.cpp:2315
 msgid "An error occurred"
-msgstr "Un error ha ocurrido"
+msgstr "Сталася помилка"
 
 #: Src/GUI/MeasureBar.cpp:71
 msgid "Remove selected measures"
-msgstr "Remover compases seleccionados"
+msgstr "Видалити вибрані такти"
 
 #: Src/GUI/MeasureBar.cpp:72
 msgid "Duplicate selected measures"
-msgstr "Duplicar compases seleccionados"
+msgstr "Дублювати виділені такти"
 
 #: Src/GUI/MeasureBar.cpp:98
 msgid "Do you really want to remove selected measures?"
-msgstr "¿Desea eliminar los compases seleccionados?"
+msgstr "Ви дійсно бажаєте видалити вибрані такти?"
 
 #: Src/GUI/MeasureBar.cpp:150
 msgid "Insert measures"
-msgstr "Insertar compases"
+msgstr "Вставити такти"
 
 #: Src/GUI/MeasureBar.cpp:152
 msgid "Remove time sig change"
-msgstr "Remover el cambio de marca de tiempo"
+msgstr "Видалити зміни розміру"
 
 #: Src/GUI/MeasureBar.cpp:153
 msgid "Set playback start here"
-msgstr "Ajustar inicio de reproducción aquí"
+msgstr "Встановити тут початок відтворення"
 
 #: Src/GUI/MeasureBar.cpp:154
 msgid "Set loop end here"
-msgstr "Ajustar fin del loop aquí"
+msgstr "Встановити тут завершення циклу"
 
 #: Src/GUI/MeasureBar.cpp:160
 #, c-format
 msgid "Insert empty measures between measures %i and %i"
-msgstr "Insertar compases vacíos entre  %i y %i"
+msgstr "Вставити порожні такти між тактами %i та %i"
 
 #: Src/GUI/MeasureBar.cpp:162
 msgid "Amount: "
-msgstr "Cantidad: "
+msgstr "Кількість:"
 
 #: Src/GUI/MeasureBar.cpp:186
 msgid "Do you really want to remove this time sig change?"
-msgstr "¿Desea remover este cambio de marca de tiempo?"
+msgstr "Ви дійсно бажаєте видалити зміни цього розміру?"
 
 #: Src/GUI/MeasureBar.cpp:192
 msgid "You can't remove the first time signature change."
-msgstr "No se puede remover el primer cambio de marca de tiempo."
+msgstr "Першу зміну музичного розміру видалити не можна."
 
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:84
 msgid "&New"
-msgstr "&Nuevo"
+msgstr "&Новий"
 
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:89
 msgid "&Open..."
-msgstr "&Abrir..."
+msgstr "&Відкрити..."
 
 #: Src/GUI/MainFrameMenuBar.cpp:95
 msgid "&Recent Files"
-msgstr "Archivos &recientes"
+msgstr "&Останні файли"
 
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:100
 msgid "&Save"
-msgstr "&Guardar"
+msgstr "&Зберегти"
 
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:104
 msgid "Save &As..."
-msgstr "Guardar &Como..."
+msgstr "&Зберегти як..."
 
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:110
 msgid "&Reload"
-msgstr "&Recargar"
+msgstr "&Перезавантажити"
 
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:114
 msgid "&Close"
-msgstr "&Cerrar"
+msgstr "&Закрити"
 
 #: Src/GUI/MainFrameMenuBar.cpp:118
 msgid "Song Propert&ies..."
-msgstr "Prop&iedades de la canción..."
+msgstr "&Властивості пісні..."
 
 #: Src/GUI/MainFrameMenuBar.cpp:122
 msgid "&Print..."
-msgstr "Im&primir"
+msgstr "&Друк..."
 
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:129
 msgid "I&mport Midi File..."
-msgstr "I&mportar Archivo MIDI..."
+msgstr "&Імпорт Midi файлу..."
 
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:132
 msgid "&Export to Midi..."
-msgstr "&Exportar a MIDI..."
+msgstr "&Експорт до Midi..."
 
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:139
 msgid "E&xport to Audio..."
-msgstr "E&xportar a Audio..."
+msgstr "&Експорт до аудіо..."
 
 #. I18N: menu item in the "file" menu
 #: Src/GUI/MainFrameMenuBar.cpp:144
 msgid "&Quit"
-msgstr "&Salir"
+msgstr "&Вихід"
 
 #. I18N: name of a menu
 #: Src/GUI/MainFrameMenuBar.cpp:150
 msgid "&File"
-msgstr "&Archivo"
+msgstr "&Файл"
 
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:156
 msgid "&Undo"
-msgstr "&Deshacer"
+msgstr "&Скасувати"
 
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:163
 msgid "&Copy"
-msgstr "&Copiar"
+msgstr "&Копіювати"
 
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:168
 msgid "&Paste"
-msgstr "&Pegar"
+msgstr "&Вставити"
 
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:173
 msgid "Paste at Mouse Cu&rsor"
-msgstr "Pegar al Cu&rsor del Ratón"
+msgstr "&Вставити під курсор миші"
 
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:177
 msgid "Select &All"
-msgstr "Seleccionar &Todo"
+msgstr "&Виділити все"
 
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:180
 msgid "Select &None"
-msgstr "Seleccionar &Nada"
+msgstr "&Зняти виділення"
 
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:183
 msgid "Select N&otes..."
-msgstr "Seleccionar N&otas..."
+msgstr "&Виділити ноти..."
 
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:187
 msgid "Snap Notes to &Grid"
-msgstr "Ajustar Notas a la &Rejilla"
+msgstr "&Прив'язати ноти до сітки"
 
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:190
 msgid "&Scale..."
-msgstr "&Escala..."
+msgstr "&Масштаб..."
 
 #. I18N: menu item in the "edit" menu
 #: Src/GUI/MainFrameMenuBar.cpp:192
 msgid "Remove O&verlapping Notes"
-msgstr "Remover notas S&uperpuestas"
+msgstr "&Видалити ноти, які перекриваються"
 
 #. I18N: name of a menu
 #: Src/GUI/MainFrameMenuBar.cpp:204
 msgid "&Edit"
-msgstr "&Editar"
+msgstr "&Редагувати"
 
 #. I18N: menu item in the "track" menu
 #: Src/GUI/MainFrameMenuBar.cpp:214
 msgid "&Add Track"
-msgstr "&Añadir Pista"
+msgstr "&Додати трек"
 
 #. I18N: menu item in the "track" menu
 #: Src/GUI/MainFrameMenuBar.cpp:217
 msgid "&Duplicate Track Settings"
-msgstr "&Duplicar configuración de la pista"
+msgstr "&Дублювати параметри трека"
 
 #. I18N: menu item in the "track" menu
 #: Src/GUI/MainFrameMenuBar.cpp:220
 msgid "&Delete Track"
-msgstr "&Eliminar Pista"
+msgstr "&Видалити трек"
 
 #. I18N: - in the track menu, allows choosing the properties of a track
 #: Src/GUI/MainFrameMenuBar.cpp:224
 msgid "&Properties..."
-msgstr "&Propiedades..."
+msgstr "&Властивості..."
 
 #: Src/GUI/MainFrameMenuBar.cpp:227
 msgid "&Tracks"
-msgstr "&Pistas"
+msgstr "&Треки"
 
 #. I18N: In the playback menu
 #: Src/GUI/MainFrameMenuBar.cpp:233
 msgid "&Play / Pause"
-msgstr "&Reproducción / Pausa"
+msgstr "&Відтворення / Пауза"
 
 #. I18N: In the playback menu
 #: Src/GUI/MainFrameMenuBar.cpp:236
 msgid "&Stop"
-msgstr "&Detener"
+msgstr "&Зупинити"
 
 #. I18N: In the playback menu
 #: Src/GUI/MainFrameMenuBar.cpp:238
 msgid "&Record"
-msgstr "&Grabación"
+msgstr "&Записати"
 
 #: Src/GUI/MainFrameMenuBar.cpp:241
 msgid "&Playback"
-msgstr "&Reproducción"
+msgstr "&Відтворення"
 
 #: Src/GUI/MainFrameMenuBar.cpp:246
 msgid "&Follow Playback"
-msgstr "&Seguir a la Reproducción"
+msgstr "&Йти за відтворенням"
 
 #: Src/GUI/MainFrameMenuBar.cpp:250
 msgid "E&xpanded time sig management"
-msgstr "Manejo de marca de tiempo e&xpandida"
+msgstr "&Розширене керування розміром"
 
 #. I18N: - the channel setting. full context : Channel management\n\n*
 #. Automatic\n* Manual
 #: Src/GUI/MainFrameMenuBar.cpp:258
 msgid "&Channel management"
-msgstr "Manejo de &canales"
+msgstr "&Керування каналами"
 
 #. I18N: - the channel setting. full context : Channel management\n\n*
 #. Automatic\n* Manual
 #: Src/GUI/MainFrameMenuBar.cpp:260
 msgid "&Automatic"
-msgstr "&Automático"
+msgstr "&Автоматичне"
 
 #. I18N: - the channel setting. full context : Channel management\n\n*
 #. Automatic\n* Manual
 #: Src/GUI/MainFrameMenuBar.cpp:263
 msgid "&Manual"
-msgstr "&Manual"
+msgstr "&Ручне"
 
 #. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n*
 #. Always\n* On note change\n* Never
 #: Src/GUI/MainFrameMenuBar.cpp:269
 msgid "Play during &edit"
-msgstr "Reproducir durante la &edición"
+msgstr "&Грати під час редагування"
 
 #. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n*
 #. Always\n* On note change\n* Never
 #: Src/GUI/MainFrameMenuBar.cpp:271
 msgid "&Always"
-msgstr "&Siempre"
+msgstr "&Завжди"
 
 #. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n*
 #. Always\n* On note change\n* Never
 #: Src/GUI/MainFrameMenuBar.cpp:274
 msgid "On note &change"
-msgstr "En el &cambio de nota"
+msgstr "&При зміні ноти"
 
 #. I18N: - the note playback setting. full context :\n\nPlay during edit\n\n*
 #. Always\n* On note change\n* Never
 #: Src/GUI/MainFrameMenuBar.cpp:277
 msgid "&Never"
-msgstr "&Nunca"
+msgstr "&Ніколи"
 
 #: Src/GUI/MainFrameMenuBar.cpp:281
 msgid "Play with &Metronome"
-msgstr "Reproducir con &Metrónomo"
+msgstr "Грати з &Метрономом"
 
 #: Src/GUI/MainFrameMenuBar.cpp:285
 msgid "&Playthrough when recording"
-msgstr "&Reproducir durante la grabación"
+msgstr "&Відтворення під час запису"
 
 #: Src/GUI/MainFrameMenuBar.cpp:289
 msgid "&Preferences..."
-msgstr "&Preferencias..."
+msgstr "&Налаштування..."
 
 #: Src/GUI/MainFrameMenuBar.cpp:300
 msgid "&Settings"
-msgstr "&Ajustes"
+msgstr "&Параметри"
 
 #: Src/GUI/MainFrameMenuBar.cpp:311 Src/GUI/MainFrameMenuBar.cpp:1308
 msgid "No MIDI Output Available"
-msgstr "No Hay Una Salida MIDI Disponible"
+msgstr "Відсутнє MIDI виведення"
 
 #: Src/GUI/MainFrameMenuBar.cpp:340
 msgid "&Output"
-msgstr "&Salida"
+msgstr "&Виведення"
 
 #. I18N: menu where the MIDI input source is selected
 #: Src/GUI/MainFrameMenuBar.cpp:370
 msgid "&Input"
-msgstr "&Entrada"
+msgstr "&Введення"
 
 #: Src/GUI/MainFrameMenuBar.cpp:376
 msgid "&About Aria Maestosa"
-msgstr "&Acerca de Aria Maestosa"
+msgstr "&Про Aria Maestosa"
 
 #. I18N: - in help menu - see the help files
 #: Src/GUI/MainFrameMenuBar.cpp:378
 msgid "User's &Manual"
-msgstr "&Manual de Usuario"
+msgstr "&Керівництво користувача"
 
 #: Src/GUI/MainFrameMenuBar.cpp:384
 msgid "&Help"
-msgstr "&Ayuda"
+msgstr "&Допомога"
 
 #: Src/GUI/MainFrameMenuBar.cpp:529
 #, c-format
 msgid "&Undo %s"
-msgstr "&Deshacer %s"
+msgstr "&Скасувати %s"
 
 #: Src/GUI/MainFrameMenuBar.cpp:540
 msgid "Can't Undo"
-msgstr "No se puede Deshacer"
+msgstr "Не можна скасувати"
 
 #: Src/GUI/MainFrameMenuBar.cpp:657
 msgid "The file no longer exists on disk. Do you want to save it anyway?"
-msgstr "El archivo ya no existe en el disco. ¿Desea guardarlo de todos modos?"
+msgstr "Файл більше не існує на диску. Ви хочете, все одно зберегти його?"
 
 #: Src/GUI/MainFrameMenuBar.cpp:657
 msgid "Warning"
-msgstr "Advertencia"
+msgstr "Попередження"
 
 #: Src/GUI/MainFrameMenuBar.cpp:700 Src/GUI/MainFrameMenuBar.cpp:763
 #: Src/GUI/MainFrameMenuBar.cpp:803
 msgid "Select destination file"
-msgstr "Seleccionar archivo de destino"
+msgstr "Обрати файл призначення"
 
 #: Src/GUI/MainFrameMenuBar.cpp:701 Src/GUI/MainFrameMenuBar.cpp:740
 msgid "Aria Maestosa file"
-msgstr "Archivo Aria Maestosa"
+msgstr "Файл Aria Maestosa"
 
 #: Src/GUI/MainFrameMenuBar.cpp:710 Src/GUI/MainFrameMenuBar.cpp:774
 #: Src/GUI/MainFrameMenuBar.cpp:813
 msgid "The file already exists. Do you wish to overwrite it?"
-msgstr "El archivo ya existe. ¿Desea sobreescribirlo?"
+msgstr "Файл вже існує. Ви бажаєте перезаписати його?"
 
 #: Src/GUI/MainFrameMenuBar.cpp:750
 msgid "Select midi file"
-msgstr "Seleccionar archivo MIDI"
+msgstr "Обрати midi-файл"
 
 #: Src/GUI/MainFrameMenuBar.cpp:751 Src/GUI/MainFrameMenuBar.cpp:764
 msgid "Midi file"
-msgstr "Archivo MIDI"
+msgstr "MIDI-файл"
 
 #: Src/GUI/MainFrameMenuBar.cpp:787
 msgid "Sorry, failed to export midi file."
-msgstr "Lo siento, falló al exportar el archivo MIDI."
+msgstr "На жаль не вдалось експортувати midi-файл."
 
 #: Src/GUI/MainFrameMenuBar.cpp:825
 msgid ""
@@ -1188,15 +1183,15 @@ msgid ""
 "\n"
 "Depending on the length of your file,\n"
 "this can take several minutes."
-msgstr "Por favor espere mientras se genera el archivo de audio.\n\nDependiendo de la duración del archivo,\nesto puede tardar varios minutos."
+msgstr "Зачекайте, будь-ласка, доки створюється аудіо-файл.\n\nВ залежності від довжини вашого файлу\nце може зайняти кілька хвилин."
 
 #: Src/GUI/MainFrameMenuBar.cpp:1047
 msgid "You may not delete the last track"
-msgstr "No se puede eliminar la ultima pista"
+msgstr "Ви не можете видалити останній трек"
 
 #: Src/GUI/MainFrameMenuBar.cpp:1051
 msgid "Do you really want to delete this track?"
-msgstr "¿Realmente quiere borrar esta pista?"
+msgstr "Ви дійсно хочете видалити цей трек?"
 
 #: Src/GUI/MainFrameMenuBar.cpp:1169
 msgid ""
@@ -1204,591 +1199,591 @@ msgid ""
 "This cannot be undone.\n"
 "\n"
 "Do you really want to continue?"
-msgstr "Si se reproducen múltiples pistas en un mismo canal, estas serán fusionadas.\nEsto no se puede deshacer.\n\n¿Desea continuar?"
+msgstr "Якщо кілька треків грати на тому ж каналі, вони будуть об'єднані.\nЦе не може бути скасованим.\n\nВи дійсно бажаєте продовжити?"
 
 #: Src/GUI/MainFrameMenuBar.cpp:1253 Src/Pickers/TimeSigPicker.cpp:290
 msgid ""
 "Are you sure you want to go back to having a single time signature? Any time"
 " sig events you may have added will be lost. This cannot be undone."
-msgstr "¿Está seguro de que quiere volver a tener una sola marca de tiempo? Cualquier evento de marca de tiempo que haya añadido será eliminado. Esto no puede deshacerse."
+msgstr "Ви впевнені, що хочете, повернутися до єдиного розміру? Усі дії, що Ви зробили з розмірами, буде втрачено. Це не може бути скасованим."
 
 #: Src/GUI/MainFrameMenuBar.cpp:1382
 msgid "Manual"
-msgstr "Manual"
+msgstr "Ручне"
 
 #: Src/GUI/MainFrameMenuBar.cpp:1576
 msgid "Clear List"
-msgstr "Limpiar lista"
+msgstr "Очистити список"
 
 #: Src/GUI/GraphicalTrack.cpp:419
 msgid "Track volume"
-msgstr "Volumen de la pista"
+msgstr "Гучність треку"
 
 #: Src/GUI/GraphicalTrack.cpp:423
 msgid "Mute"
-msgstr "Silencio"
+msgstr "Тиша"
 
 #: Src/GUI/GraphicalTrack.cpp:427
 msgid "Solo"
-msgstr "Solo"
+msgstr "Соло"
 
 #: Src/GUI/GraphicalTrack.cpp:433
 msgid "Maximize track"
-msgstr "Maximizar pista"
+msgstr "Максимізувати трек"
 
 #: Src/GUI/GraphicalTrack.cpp:437
 msgid "Dock track"
-msgstr ""
+msgstr "Док-трек"
 
 #: Src/GUI/GraphicalTrack.cpp:459 Src/Editors/ScoreEditor.h:285
 msgid "Score Editor"
-msgstr "Editor de Partitura"
+msgstr "Нотний редактор"
 
 #: Src/GUI/GraphicalTrack.cpp:463 Src/Editors/KeyboardEditor.h:88
 msgid "Keyboard Editor"
-msgstr "Editor de Teclado"
+msgstr "Редактор клавіатури"
 
 #: Src/GUI/GraphicalTrack.cpp:467 Src/Editors/GuitarEditor.h:63
 msgid "Tablature Editor"
-msgstr "Editor de Tablatura"
+msgstr "Редактор табулатури"
 
 #: Src/GUI/GraphicalTrack.cpp:471 Src/Editors/DrumEditor.h:103
 msgid "Drum Editor"
-msgstr "Editor de Percusión"
+msgstr "Редактор барабана"
 
 #: Src/GUI/GraphicalTrack.cpp:475 Src/Editors/ControllerEditor.h:171
 msgid "Controller Editor"
-msgstr "Editor de Controlador"
+msgstr "Редактор контролера"
 
 #: Src/GUI/GraphicalTrack.cpp:779
 msgid "Choose a new track title."
-msgstr "Elija un nuevo título de pista."
+msgstr "Оберіть назву нового трека."
 
 #: Src/GUI/GraphicalTrack.cpp:836
 msgid "Enter the ID of the channel this track should play in"
-msgstr "Introduzca el ID del canal en cual debe reproducirse esta pista"
+msgstr "Введіть Ідентифікатор каналу відтворення цього трека"
 
 #: Src/GUI/GraphicalTrack.cpp:838
 msgid "Channel choice"
-msgstr "Elección de canal"
+msgstr "Вибір каналу"
 
 #: Src/Midi/CommonMidiUtils.cpp:435 Src/Midi/CommonMidiUtils.cpp:460
 msgid ""
 "WARNING: this song has too many\n"
 "channels, expect unpredictable output"
-msgstr "AVISO: Esta canción tiene muchos canales,\nse espera una salida impredecible"
+msgstr "Увага: ця пісня має занадто багато\nканалів, очікуються непередбачувані виведення"
 
 #: Src/Midi/InstrumentChoice.cpp:29
 msgid "Acoustic Grand Piano"
-msgstr "Piano acústico de cola"
+msgstr "Акустичний рояль"
 
 #: Src/Midi/InstrumentChoice.cpp:30
 msgid "Bright Acoustic Piano"
-msgstr "Piano acústico brillante"
+msgstr "Яскраве акустичне фортепіано"
 
 #: Src/Midi/InstrumentChoice.cpp:31
 msgid "Electric Grand Piano"
-msgstr "Piano eléctrico de cola"
+msgstr "Електричний рояль"
 
 #: Src/Midi/InstrumentChoice.cpp:32
 msgid "Honky-Tonk Piano"
-msgstr "Pianola"
+msgstr "Механічне фортепіано"
 
 #: Src/Midi/InstrumentChoice.cpp:33
 msgid "Electric Piano 1"
-msgstr "Piano Rhodes"
+msgstr "Електричне фортепіано 1"
 
 #: Src/Midi/InstrumentChoice.cpp:34
 msgid "Electric Piano 2"
-msgstr "Piano eléctrico"
+msgstr "Електричне фортепіано 2"
 
 #: Src/Midi/InstrumentChoice.cpp:35
 msgid "Harpsichord"
-msgstr "Clavecín"
+msgstr "Клавесин"
 
 #: Src/Midi/InstrumentChoice.cpp:36
 msgid "Clavinet"
-msgstr "Clavecín electrónico"
+msgstr "Клавінет"
 
 #: Src/Midi/InstrumentChoice.cpp:37
 msgid "Celesta"
-msgstr "Celesta"
+msgstr "Челеста"
 
 #: Src/Midi/InstrumentChoice.cpp:38
 msgid "Glockenspiel"
-msgstr "Armónica de metal (lira)"
+msgstr "Металофон"
 
 #: Src/Midi/InstrumentChoice.cpp:39
 msgid "Music Box"
-msgstr "Cajita de música"
+msgstr "Музичний автомат"
 
 #: Src/Midi/InstrumentChoice.cpp:40
 msgid "Vibraphone"
-msgstr "Vibráfono"
+msgstr "Вібрафон"
 
 #: Src/Midi/InstrumentChoice.cpp:41
 msgid "Marimba"
-msgstr "Marimba"
+msgstr "Маримба"
 
 #: Src/Midi/InstrumentChoice.cpp:42
 msgid "Xylophone"
-msgstr "Xilófono"
+msgstr "Ксилофон"
 
 #: Src/Midi/InstrumentChoice.cpp:43
 msgid "Tubular Bells"
-msgstr "Campanas tubulares"
+msgstr "Оркестрові дзвони"
 
 #: Src/Midi/InstrumentChoice.cpp:44
 msgid "Dulcimer"
-msgstr "Dulcémele"
+msgstr "Цимбали"
 
 #: Src/Midi/InstrumentChoice.cpp:45
 msgid "Drawbar Organ"
-msgstr "Órgano Hammond"
+msgstr "Орган Гаммонда"
 
 #: Src/Midi/InstrumentChoice.cpp:46
 msgid "Percussive Organ"
-msgstr "Órgano percutido"
+msgstr "Перкусивний орган"
 
 #: Src/Midi/InstrumentChoice.cpp:47
 msgid "Rock Organ"
-msgstr "Órgano de música rock"
+msgstr "Рок-орган"
 
 #: Src/Midi/InstrumentChoice.cpp:48
 msgid "Church Organ"
-msgstr "Órgano de iglesia"
+msgstr "Церковний орган"
 
 #: Src/Midi/InstrumentChoice.cpp:49
 msgid "Reed Organ"
-msgstr "Órgano de lengüetas"
+msgstr "Язичковий орган"
 
 #: Src/Midi/InstrumentChoice.cpp:50
 msgid "Accordion"
-msgstr "Acordeón"
+msgstr "Акордеон"
 
 #: Src/Midi/InstrumentChoice.cpp:51
 msgid "Harmonica"
-msgstr "Armónica"
+msgstr "Губна гармоніка"
 
 #: Src/Midi/InstrumentChoice.cpp:52
 msgid "Tango Accordion"
-msgstr "Bandoneón"
+msgstr "Танго-акордеон"
 
 #: Src/Midi/InstrumentChoice.cpp:53
 msgid "Nylon String Guitar"
-msgstr "Guitarra española"
+msgstr "Гітара з нейлоновими струнами"
 
 #: Src/Midi/InstrumentChoice.cpp:54
 msgid "Steel String Guitar"
-msgstr "Guitarra sajona"
+msgstr "Гітара зі сталевими струнами"
 
 #: Src/Midi/InstrumentChoice.cpp:55
 msgid "Jazz Guitar"
-msgstr "Guitarra eléctrica (sonido jazz)"
+msgstr "Джаз-гітара"
 
 #: Src/Midi/InstrumentChoice.cpp:56
 msgid "Clean Electric Guitar"
-msgstr "Guitarra eléctrica (sonido nítido)"
+msgstr "Чиста електрогітара"
 
 #: Src/Midi/InstrumentChoice.cpp:57
 msgid "Muted Electric Guitar"
-msgstr "Guitarra eléctrica (en sordina)"
+msgstr "Приглушена електрогітара"
 
 #: Src/Midi/InstrumentChoice.cpp:58
 msgid "Overdrive Guitar"
-msgstr "Guitarra sobremodulada"
+msgstr "Перевантажена гітара"
 
 #: Src/Midi/InstrumentChoice.cpp:59
 msgid "Distortion Guitar"
-msgstr "Guitarra distorsionada"
+msgstr "Спотворена гітара"
 
 #: Src/Midi/InstrumentChoice.cpp:60
 msgid "Guitar Harmonics"
-msgstr "Armónicos de guitarra"
+msgstr "Гармоніки гітари"
 
 #: Src/Midi/InstrumentChoice.cpp:61
 msgid "Acoustic Bass"
-msgstr "Contrabajo acústico"
+msgstr "Акустичний бас"
 
 #: Src/Midi/InstrumentChoice.cpp:62
 msgid "Fingered Bass"
-msgstr "Bajo eléctrico (dedaje)"
+msgstr "Бас пальцями"
 
 #: Src/Midi/InstrumentChoice.cpp:63
 msgid "Picked Bass"
-msgstr "Bajo eléctrico (plectro)"
+msgstr "Picked бас"
 
 #: Src/Midi/InstrumentChoice.cpp:64
 msgid "Fretless Bass"
-msgstr "Bajo sin trastes"
+msgstr "Безладовий бас"
 
 #: Src/Midi/InstrumentChoice.cpp:65
 msgid "Slap Bass 1"
-msgstr "Bajo golpeado 1"
+msgstr "Ляпас-бас 1"
 
 #: Src/Midi/InstrumentChoice.cpp:66
 msgid "Slap Bass 2"
-msgstr "Bajo golpeado 2"
+msgstr "Ляпас-бас 2"
 
 #: Src/Midi/InstrumentChoice.cpp:67
 msgid "Synth Bass 1"
-msgstr "Bajo sintetizado 1"
+msgstr "Синтез-бас 1"
 
 #: Src/Midi/InstrumentChoice.cpp:68
 msgid "Synth Bass 2"
-msgstr "Bajo sintetizado 2"
+msgstr "Синтез-бас 2"
 
 #: Src/Midi/InstrumentChoice.cpp:69
 msgid "Violin"
-msgstr "Violín"
+msgstr "Скрипка"
 
 #: Src/Midi/InstrumentChoice.cpp:70
 msgid "Viola"
-msgstr "Viola"
+msgstr "Альт"
 
 #: Src/Midi/InstrumentChoice.cpp:71
 msgid "Cello"
-msgstr "Violoncello"
+msgstr "Віолончель"
 
 #: Src/Midi/InstrumentChoice.cpp:72
 msgid "Contrabass"
-msgstr "Contrabajo acústico"
+msgstr "Контрабас"
 
 #: Src/Midi/InstrumentChoice.cpp:73
 msgid "Tremolo Strings"
-msgstr "Cuerdas en trémolo"
+msgstr "Тремоло струнних"
 
 #: Src/Midi/InstrumentChoice.cpp:74
 msgid "Pizzicato Strings"
-msgstr "Cuerdas en pizzicato"
+msgstr "Піццикато струнних"
 
 #: Src/Midi/InstrumentChoice.cpp:75
 msgid "Orchestral Harp"
-msgstr "Arpa clásica"
+msgstr "Оркестрова арфа"
 
 #: Src/Midi/InstrumentChoice.cpp:76
 msgid "Timpani"
-msgstr "Timbales"
+msgstr "Литаври"
 
 #: Src/Midi/InstrumentChoice.cpp:77
 msgid "String Ensemble 1"
-msgstr "Orquesta de cuerdas 1"
+msgstr "Струнний ансамбль 1"
 
 #: Src/Midi/InstrumentChoice.cpp:78
 msgid "String Ensemble 2"
-msgstr "Orquesta de cuerdas 2"
+msgstr "Струнний ансамбль 2"
 
 #: Src/Midi/InstrumentChoice.cpp:79
 msgid "Synth Strings 1"
-msgstr "Cuerdas sintetizadas 1"
+msgstr "Синтез-струнні 1"
 
 #: Src/Midi/InstrumentChoice.cpp:80
 msgid "Synth Strings 2"
-msgstr "Cuerdas sintetizadas 2"
+msgstr "Синтез-струнні 2"
 
 #: Src/Midi/InstrumentChoice.cpp:81
 msgid "Choir (ahh)"
-msgstr "Coro (aes)"
+msgstr "Хор (ах)"
 
 #: Src/Midi/InstrumentChoice.cpp:82
 msgid "Choir (ooh)"
-msgstr "Coro (oes)"
+msgstr "Хор (ох)"
 
 #: Src/Midi/InstrumentChoice.cpp:83
 msgid "Synth Voice"
-msgstr "Voz sintetizada"
+msgstr "Синтез голоса"
 
 #: Src/Midi/InstrumentChoice.cpp:84
 msgid "Orchestral Hit"
-msgstr "Tutti orquestal"
+msgstr "Оркестровий удар"
 
 #: Src/Midi/InstrumentChoice.cpp:85
 msgid "Trumpet"
-msgstr "Trompeta"
+msgstr "Труба"
 
 #: Src/Midi/InstrumentChoice.cpp:86
 msgid "Trombone"
-msgstr "Trombón"
+msgstr "Тромбон"
 
 #: Src/Midi/InstrumentChoice.cpp:87
 msgid "Tuba"
-msgstr "Tuba"
+msgstr "Туба"
 
 #: Src/Midi/InstrumentChoice.cpp:88
 msgid "Muted Trumpet"
-msgstr "Trompeta con sordina"
+msgstr "Приглушена труба"
 
 #: Src/Midi/InstrumentChoice.cpp:89
 msgid "French Horn"
-msgstr "Cuernos franceses"
+msgstr "Валторна"
 
 #: Src/Midi/InstrumentChoice.cpp:90
 msgid "Brass Section"
-msgstr "Conjunto de bronces"
+msgstr "Секція духових"
 
 #: Src/Midi/InstrumentChoice.cpp:91
 msgid "Synth Brass 1"
-msgstr "Bronces sintetizados 1"
+msgstr "Синтез-духові 1"
 
 #: Src/Midi/InstrumentChoice.cpp:92
 msgid "Synth Brass 2"
-msgstr "Bronces sintetizados 2"
+msgstr "Синтез-духові 2"
 
 #: Src/Midi/InstrumentChoice.cpp:93
 msgid "Soprano Sax"
-msgstr "Saxofón soprano"
+msgstr "Сопрано-саксофон"
 
 #: Src/Midi/InstrumentChoice.cpp:94
 msgid "Alto Sax"
-msgstr "Saxofón contralto"
+msgstr "Альт-саксофон"
 
 #: Src/Midi/InstrumentChoice.cpp:95
 msgid "Tenor Sax"
-msgstr "Saxofón tenor"
+msgstr "Тенор-саксофон"
 
 #: Src/Midi/InstrumentChoice.cpp:96
 msgid "Baritone Sax"
-msgstr "Saxofón barítono"
+msgstr "Баритон-саксофон"
 
 #: Src/Midi/InstrumentChoice.cpp:97
 msgid "Oboe"
-msgstr "Oboe"
+msgstr "Гобой"
 
 #: Src/Midi/InstrumentChoice.cpp:98
 msgid "English Horn"
-msgstr "Cuerno inglés"
+msgstr "Англійський ріжок"
 
 #: Src/Midi/InstrumentChoice.cpp:99
 msgid "Bassoon"
-msgstr "Fagot"
+msgstr "Фагот"
 
 #: Src/Midi/InstrumentChoice.cpp:100
 msgid "Clarinet"
-msgstr "Clarinete"
+msgstr "Кларнет"
 
 #: Src/Midi/InstrumentChoice.cpp:101
 msgid "Piccolo"
-msgstr "Flautín (píccolo)"
+msgstr "Пікколо"
 
 #: Src/Midi/InstrumentChoice.cpp:102
 msgid "Flute"
-msgstr "Flauta traversa"
+msgstr "Флейта"
 
 #: Src/Midi/InstrumentChoice.cpp:103
 msgid "Recorder"
-msgstr "Flauta dulce"
+msgstr "Рекордер"
 
 #: Src/Midi/InstrumentChoice.cpp:104
 msgid "Pan Flute"
-msgstr "Flauta de pan (zampoña o siringa)"
+msgstr "Пан-флейта"
 
 #: Src/Midi/InstrumentChoice.cpp:105
 msgid "Blown Bottle"
-msgstr "Silbato de botella"
+msgstr "Пляшка"
 
 #: Src/Midi/InstrumentChoice.cpp:106
 msgid "Shakuachi"
-msgstr "Shakuhachi (flauta oriental)"
+msgstr "Сякухаті"
 
 #: Src/Midi/InstrumentChoice.cpp:107
 msgid "Whistle"
-msgstr "Silbato (pito)"
+msgstr "Свисток"
 
 #: Src/Midi/InstrumentChoice.cpp:108
 msgid "Ocarina"
-msgstr "Ocarina"
+msgstr "Окарина"
 
 #: Src/Midi/InstrumentChoice.cpp:109
 msgid "Square Wave"
-msgstr "Solo 1 (onda cuadrada)"
+msgstr "Меандр"
 
 #: Src/Midi/InstrumentChoice.cpp:110
 msgid "Sawtooth wave"
-msgstr "Solo 2 (onda diente de sierra)"
+msgstr "Пилкоподібна хвиля"
 
 #: Src/Midi/InstrumentChoice.cpp:111
 msgid "Caliope"
-msgstr "Solo 3 (órgano de Vapor sintetizado)"
+msgstr "Каліопа"
 
 #: Src/Midi/InstrumentChoice.cpp:112
 msgid "Chiff"
-msgstr "Solo 4 (viento)"
+msgstr "Chiff"
 
 #: Src/Midi/InstrumentChoice.cpp:113
 msgid "Charang"
-msgstr "Solo 5 (charango)"
+msgstr "Чаранго"
 
 #: Src/Midi/InstrumentChoice.cpp:114
 msgid "Synth Voice 2"
-msgstr "Solo 6 (voz)"
+msgstr "Синтез голоса 2"
 
 #: Src/Midi/InstrumentChoice.cpp:115
 msgid "Fifths"
-msgstr "Solo 7 (quintas)"
+msgstr "Fifths"
 
 #: Src/Midi/InstrumentChoice.cpp:116
 msgid "Bass and Lead"
-msgstr "Solo 8 (bajos)"
+msgstr "Бас і Лід"
 
 #: Src/Midi/InstrumentChoice.cpp:117
 msgid "New Age"
-msgstr "Colchón 1 (fantasía / New Age)"
+msgstr "Новий вік"
 
 #: Src/Midi/InstrumentChoice.cpp:118
 msgid "Warm"
-msgstr "Colchón 2 (sonido cálido)"
+msgstr "Warm"
 
 #: Src/Midi/InstrumentChoice.cpp:119
 msgid "Polysynth"
-msgstr "Colchón 3 (sintetizador polifónico)"
+msgstr "Полісинтез"
 
 #: Src/Midi/InstrumentChoice.cpp:120
 msgid "Choir"
-msgstr "Colchón 4 (coro espacial)"
+msgstr "Хор"
 
 #: Src/Midi/InstrumentChoice.cpp:121 Src/Pickers/InstrumentPicker.cpp:133
 msgid "Bowed"
-msgstr "Colchón 5 (vidrio frotado)"
+msgstr "Смичкові"
 
 #: Src/Midi/InstrumentChoice.cpp:122
 msgid "Metallic"
-msgstr "Colchón 6 (sonido metálico)"
+msgstr "Металеві"
 
 #: Src/Midi/InstrumentChoice.cpp:123
 msgid "Halo"
-msgstr "Colchón 7 (aureola)"
+msgstr "Хало"
 
 #: Src/Midi/InstrumentChoice.cpp:124
 msgid "Sweep"
-msgstr "Colchón 8 (onda de barrido)"
+msgstr "Sweep"
 
 #: Src/Midi/InstrumentChoice.cpp:125
 msgid "Rain"
-msgstr "Efecto 1 (lluvia de hielo)"
+msgstr "Дощ"
 
 #: Src/Midi/InstrumentChoice.cpp:126
 msgid "Sound Track"
-msgstr "Efecto 2 (banda sonora)"
+msgstr "Звуковий трек"
 
 #: Src/Midi/InstrumentChoice.cpp:127
 msgid "Crystal"
-msgstr "Efecto 3 (cristal)"
+msgstr "Кристал"
 
 #: Src/Midi/InstrumentChoice.cpp:128
 msgid "Atmosphere"
-msgstr "Efecto 4 (atmósfera)"
+msgstr "Атмосфера"
 
 #: Src/Midi/InstrumentChoice.cpp:129
 msgid "Brightness"
-msgstr "Efecto 5 (brillantez)"
+msgstr "Яскравість"
 
 #: Src/Midi/InstrumentChoice.cpp:130
 msgid "Goblins"
-msgstr "Efecto 6 (fantasmas)"
+msgstr "Гобліни"
 
 #: Src/Midi/InstrumentChoice.cpp:131
 msgid "Drops"
-msgstr "Efecto 7 (ecos)"
+msgstr "Краплі"
 
 #: Src/Midi/InstrumentChoice.cpp:132
 msgid "Star Theme"
-msgstr "Efecto 8 (ciencia ficción)"
+msgstr "Тема \"Зірка\""
 
 #: Src/Midi/InstrumentChoice.cpp:133
 msgid "Sitar"
-msgstr "Sitar hindú"
+msgstr "Ситар"
 
 #: Src/Midi/InstrumentChoice.cpp:134
 msgid "Banjo"
-msgstr "Banjo"
+msgstr "Банджо"
 
 #: Src/Midi/InstrumentChoice.cpp:135
 msgid "Shamisen"
-msgstr "Shamisen (guitarra oriental de 3 cuerdas)"
+msgstr "Сямісен"
 
 #: Src/Midi/InstrumentChoice.cpp:136
 msgid "Koto"
-msgstr "Koto (cítara oriental)"
+msgstr "Кото"
 
 #: Src/Midi/InstrumentChoice.cpp:137
 msgid "Kalimba"
-msgstr "Kalimba"
+msgstr "Калімба"
 
 #: Src/Midi/InstrumentChoice.cpp:138
 msgid "Bagpipe"
-msgstr "Gaita"
+msgstr "Волинка"
 
 #: Src/Midi/InstrumentChoice.cpp:139
 msgid "Fiddle"
-msgstr "Fídula (violín rústico)"
+msgstr "Скрипки"
 
 #: Src/Midi/InstrumentChoice.cpp:140
 msgid "Shanai"
-msgstr "Shenai (oboe hindú)"
+msgstr "Шахнаї"
 
 #: Src/Midi/InstrumentChoice.cpp:141
 msgid "Tinkle Bell"
-msgstr "Campanita tintineante"
+msgstr "Дзвіночок"
 
 #: Src/Midi/InstrumentChoice.cpp:142
 msgid "Agogo"
-msgstr "Gong (campana agogó)"
+msgstr "Агого"
 
 #: Src/Midi/InstrumentChoice.cpp:143
 msgid "Steel Drums"
-msgstr "Tambor metálico de Trinidad y Tobago"
+msgstr "Сталеві барабани"
 
 #: Src/Midi/InstrumentChoice.cpp:144
 msgid "Woodblock"
-msgstr "Caja de madera"
+msgstr "Дерев'яний блок"
 
 #: Src/Midi/InstrumentChoice.cpp:145
 msgid "Taiko Drum"
-msgstr "Taiko (tambor oriental)"
+msgstr "Барабан-тайко"
 
 #: Src/Midi/InstrumentChoice.cpp:146
 msgid "Melodic Drum"
-msgstr "Tambores melódicos"
+msgstr "Мелодійний барабан"
 
 #: Src/Midi/InstrumentChoice.cpp:147
 msgid "Synth Drum"
-msgstr "Tambor sintetizado"
+msgstr "Синтез-барабан"
 
 #: Src/Midi/InstrumentChoice.cpp:148
 msgid "Reverse Cymbal"
-msgstr "Platillo de corte inverso"
+msgstr "Зворотні тарілки"
 
 #: Src/Midi/InstrumentChoice.cpp:149
 msgid "Guitar Fret Noise"
-msgstr "Sonido de frotación"
+msgstr "Шум лада гітари"
 
 #: Src/Midi/InstrumentChoice.cpp:150
 msgid "Breath Noise"
-msgstr "Sonido de respiración"
+msgstr "Шум дихання"
 
 #: Src/Midi/InstrumentChoice.cpp:151
 msgid "Seashore"
-msgstr "Oleaje (playa)"
+msgstr "Берег моря"
 
 #: Src/Midi/InstrumentChoice.cpp:152
 msgid "Bird Tweet"
-msgstr "Pájaros"
+msgstr "Цвірінькання"
 
 #: Src/Midi/InstrumentChoice.cpp:153
 msgid "Telephone Ring"
-msgstr "Timbre telefónico"
+msgstr "Телефонний дзвінок"
 
 #: Src/Midi/InstrumentChoice.cpp:154
 msgid "Helicopter"
-msgstr "Helicóptero"
+msgstr "Гелікоптер"
 
 #: Src/Midi/InstrumentChoice.cpp:155
 msgid "Applause"
-msgstr "Aplausos"
+msgstr "Оплески"
 
 #: Src/Midi/InstrumentChoice.cpp:156
 msgid "Gunshot"
-msgstr "Disparo"
+msgstr "Постріл"
 
 #: Src/Midi/Track.cpp:94 Src/Midi/Track.cpp:892 Src/Midi/Track.cpp:1984
 #: Src/Midi/Sequence.cpp:70 Src/Midi/Sequence.cpp:118
@@ -1796,11 +1791,11 @@ msgstr "Disparo"
 #: Src/Printing/AbstractPrintableSequence.cpp:39
 #: Src/Printing/AbstractPrintableSequence.cpp:43
 msgid "Untitled"
-msgstr "Sin Título"
+msgstr "Без назви"
 
 #: Src/Midi/DrumChoice.cpp:30
 msgid "Standard"
-msgstr "Estándar"
+msgstr "Стандарт"
 
 #: Src/Midi/DrumChoice.cpp:31
 msgid "Room kit"
@@ -1808,69 +1803,69 @@ msgstr "Room kit"
 
 #: Src/Midi/DrumChoice.cpp:32
 msgid "Power kit"
-msgstr "Kit de poder"
+msgstr "Power kit"
 
 #: Src/Midi/DrumChoice.cpp:33
 msgid "Electronic"
-msgstr "Electrónico"
+msgstr "Електронні"
 
 #: Src/Midi/DrumChoice.cpp:34
 msgid "Analog"
-msgstr "Analógico"
+msgstr "Аналогові"
 
 #: Src/Midi/DrumChoice.cpp:35
 msgid "Jazz"
-msgstr "Jazz"
+msgstr "Джаз"
 
 #: Src/Midi/DrumChoice.cpp:36
 msgid "Brush"
-msgstr "Cepillo"
+msgstr "Щітка"
 
 #: Src/Midi/DrumChoice.cpp:37
 msgid "Orchestral"
-msgstr "Orquesta"
+msgstr "Оркестрові"
 
 #: Src/Midi/DrumChoice.cpp:38
 msgid "Special Effects"
-msgstr "Efectos especiales"
+msgstr "Спецефекти"
 
 #: Src/Midi/DrumChoice.cpp:40
 msgid "Invalid Drumkit"
-msgstr "Batería invalida"
+msgstr "Неприпустима барабанна установка"
 
 #: Src/Midi/Players/Win/WinPlayer.cpp:300
 #: Src/Midi/Players/Win/WinPlayer.cpp:331
 #: Src/Midi/Players/Win/WinPlayer.cpp:335
 msgid "Windows Software Synthesizer"
-msgstr "Sintetizador por software de Windows"
+msgstr "Програмний синтезатор Windows"
 
 #: Src/Midi/Players/Win/WinPlayer.cpp:362
 msgid "Failed to initialize MIDI out device"
-msgstr "Falló al inicializar el dispositivo de salida MIDI"
+msgstr "Не вдалося ініціалізувати пристрій виведення MIDI"
 
 #: Src/Midi/Players/Mac/CoreMIDIOutput.cpp:189
 msgid "Unknown MIDI port : "
-msgstr "Puerto MIDI desconocido:"
+msgstr "Невідомий MIDI порт:"
 
 #: Src/Midi/Players/Mac/MacPlayerInterface.cpp:118
 msgid "Sorry, an internal error occurred during export"
-msgstr "Lo sentimos, ha ocurrido un error interno al exportar"
+msgstr "На жаль сталась внутрішня помилка під час експортування"
 
 #: Src/Midi/Players/Mac/MacPlayerInterface.cpp:157
 msgid ""
 "Sorry, exporting to audio could not complete successfully. Please include "
 "the following error code when reporting the issue :"
-msgstr "Lo siento, la exportación de audio no se pudo completar satisfactoriamente. Por favor incluya el siguiente código de error cuando reporte el problema :"
+msgstr "На жаль експорт в аудіо не може бути завершено. Будь-ласка, долучіть код помилки при складанні звітності :"
 
 #: Src/Midi/Players/Mac/MacPlayerInterface.cpp:293
 #: Src/Midi/Players/Mac/MacPlayerInterface.cpp:297
 #: Src/Midi/Players/Mac/MacPlayerInterface.cpp:346
 msgid "OSX Software Synthesizer"
-msgstr "Sintetizador por Software de OSX"
+msgstr "Програмний синтезатор OSX"
 
 #: Src/Midi/Players/Mac/MacPlayerInterface.cpp:329
 msgid "AIFF file"
-msgstr "Archivo AIFF"
+msgstr "Файл AIFF"
 
 #: Src/Midi/Players/Mac/AudioUnitOutput.cpp:772
 #: Src/Midi/Players/Mac/AudioUnitOutput.cpp:805
@@ -1880,159 +1875,159 @@ msgstr "Archivo AIFF"
 msgid ""
 "An error has occurred when connecting to the MIDI output device with "
 "AudioUnit; audio playback may be unavailable"
-msgstr "Un error ha ocurrido mientras se conectaba el depositivo de salida MIDI con AudioUnit; puede que la reproducción de audio no esté disponible"
+msgstr "Сталася помилка під час підключення до пристрою MIDI виводу з AudioUnit; відтворення аудіо може бути недоступне"
 
 #: Src/Midi/Players/Mac/AudioUnitOutput.cpp:783
 #: Src/Midi/Players/Mac/AudioUnitOutput.cpp:794
 msgid "Sorry, failed to set custom soundfont."
-msgstr "Lo siento, falló la carga del Soundfont personalizado."
+msgstr "На жаль не вдалось встановити користувацький soundfont."
 
 #: Src/Midi/Players/Example/ExamplePlayer.cpp:179
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:443
 msgid "WAV file"
-msgstr "Archivo WAV"
+msgstr "WAV файл"
 
 #: Src/Midi/Players/Alsa/AlsaPort.cpp:46
 msgid "Failed to open ALSA port."
-msgstr "Falló al abrir el puerto ALSA."
+msgstr "Не вдалося відкрити порт ALSA."
 
 #: Src/Midi/Players/Alsa/AlsaPort.cpp:172
 msgid "No midi port found, no sound will be available."
-msgstr "No se encontró un puerto MIDI, el sonido no estará disponible."
+msgstr "Порт midi не знайдено, звук не буде доступним."
 
 #: Src/Midi/Players/Alsa/AlsaPort.cpp:260
 #, c-format
 msgid "The selected ALSA device (%s) could not be opened."
-msgstr "El depositivo ALSA seleccionado (%s) no pudo ser abierto."
+msgstr "Не вдалося відкрити вибраний ALSA пристрій (%s)."
 
 #: Src/Midi/Players/Alsa/AlsaPort.cpp:442
 msgid "Loading "
-msgstr "Cargando"
+msgstr "Завантаження"
 
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:257
 msgid ""
 "Failed to open ALSA device, sound will be unavailable (you can try selecting"
 " another output device from the 'Output' menu)"
-msgstr "Falló al abrir el dispositivo ALSA, el sonido no estará disponible (puede probar a seleccionar otro dispositivo de salida desde el menú \"Salida\")"
+msgstr "Не вдалося відкрити пристрій ALSA, звук буде недоступним (можна спробувати обрати інший пристрій виведення з меню 'Виведення')"
 
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:505
 msgid "Settings"
-msgstr "Configuración"
+msgstr "Параметри"
 
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:514
 msgid "Choose the MIDI engine to use to render the file"
-msgstr "Elegir el motor MIDI para renderizar el archivo"
+msgstr "Оберіть MIDI двигун, для використання при відтворенні файла"
 
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:520
 msgid "MIDI Engine"
-msgstr "Motor MIDI"
+msgstr "MIDI двигун"
 
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:527
 msgid "Fluidsynth Soundfont"
-msgstr "Soundfont Fluidsynth"
+msgstr "FluidSynth; Soundfont"
 
 #: Src/Midi/Players/Jack/JackMidiManager.cpp:231
 msgid "Jack"
-msgstr "Jack"
+msgstr "Роз'єм"
 
 #: Src/Midi/Players/NullDevice.cpp:65
 msgid "No sound available"
-msgstr "Sonido no disponible"
+msgstr "Немає звуку"
 
 #: Src/Midi/Players/PlatformMidiManager.cpp:65
 msgid "Bad binary, no MIDI driver was compiled in!"
-msgstr "¡Binario malo, ningún controlador MIDI fue compilado!"
+msgstr "Помилка кода, немає MIDI драйвера!"
 
 #: Src/Midi/Players/PlatformMidiManager.cpp:285
 msgid "Sorry, no MIDI input port is available"
-msgstr "Lo siento, ningún puerto de entrada MIDI está disponible"
+msgstr "На жаль немає доступного  MIDI порта введення"
 
 #: Src/Midi/Players/PlatformMidiManager.cpp:313
 #: Src/Midi/Players/PlatformMidiManager.cpp:332
 msgid "Sorry, failed to open the selected MIDI input port"
-msgstr "Lo siento, falló al abrir el puerto de entrada MIDI seleccionado"
+msgstr "На жаль не вдалось відкрити вибраний MIDI порт введення"
 
 #: Src/Midi/Sequence.cpp:906
 msgid ""
 "Warning : you are opening a file saved with a version of\n"
 "Aria Maestosa more recent than the version you currently have.\n"
 "It may not open correctly."
-msgstr "AVISO : Está abriendo un archivo guardado con una versión de\nAria Maestosa más reciente que la versión que tiene actualmente.\nTal vez, no se abrirá correctamente."
+msgstr "Увага: ви відкриваєте файл, збережений у версії\nAria Maestosa новішій, ніж у вас.\nВін може відкритись не коректно."
 
 #. I18N: - in controller, when a controller can only be on/off
 #: Src/Pickers/ControllerChoice.cpp:194
 msgid "On"
-msgstr "Encendido"
+msgstr "Увімкнено"
 
 #. I18N: - in controller, when a controller can only be on/off
 #: Src/Pickers/ControllerChoice.cpp:196
 msgid "Off"
-msgstr "Apagado"
+msgstr "Вимкнено"
 
 #. I18N: - in controller, for a controller with min/max range
 #: Src/Pickers/ControllerChoice.cpp:198
 msgid "Min"
-msgstr "Mín"
+msgstr "Мінімум"
 
 #. I18N: - in controller, for a controller with min/max range
 #: Src/Pickers/ControllerChoice.cpp:200
 msgid "Max"
-msgstr "Máx"
+msgstr "Максимум"
 
 #. I18N: - when setting pan in controller
 #: Src/Pickers/ControllerChoice.cpp:202
 msgid "Left"
-msgstr "Izquierda"
+msgstr "Ліворуч"
 
 #. I18N: - when setting pan in controller
 #: Src/Pickers/ControllerChoice.cpp:204
 msgid "Right"
-msgstr "Derecha"
+msgstr "Праворуч"
 
 #: Src/Pickers/TuningPicker.cpp:62
 msgid "Rearrange selected notes"
-msgstr "Reorganizar las notas seleccionadas"
+msgstr "Перевпорядкувати вибрані ноти"
 
 #. I18N: - when setting time signature, to indicate it's not constant through
 #. song
 #: Src/Pickers/TimeSigPicker.cpp:178
 msgid "Varies throughout song"
-msgstr "Varia durante la canción"
+msgstr "Варіюється по усій пісні"
 
 #. I18N: - when setting a wrong time signature
 #: Src/Pickers/TimeSigPicker.cpp:282
 msgid "Denominator must be a power of 2"
-msgstr "El denominador debe ser una potencia de 2"
+msgstr "Знаменник має бути не меншим 2"
 
 #. I18N: - in the view settings for score editor. whether to show notes in a
 #. traditional musical way.
 #: Src/Pickers/KeyPicker.cpp:80
 msgid "Musical notation"
-msgstr "Notación musical"
+msgstr "Музична нотація"
 
 #. I18N: - in the view settings for score editor. whether to show notes in a
 #. "computer" linear way.
 #: Src/Pickers/KeyPicker.cpp:82
 msgid "Linear Notation"
-msgstr "Notación lineal"
+msgstr "Лінійна нотація"
 
 #: Src/Pickers/KeyPicker.cpp:85
 msgid "G Clef"
-msgstr "Clave de Sol"
+msgstr "G ключ"
 
 #: Src/Pickers/KeyPicker.cpp:86
 msgid "F Clef"
-msgstr "Clave de Fa"
+msgstr "F ключ"
 
 #. I18N: - show score an octave higher
 #: Src/Pickers/KeyPicker.cpp:88
 msgid "Octave +1"
-msgstr "Octava +1"
+msgstr "Октава +1"
 
 #. I18N: - show score an octave lower
 #: Src/Pickers/KeyPicker.cpp:90
 msgid "Octave -1"
-msgstr "Octava -1"
+msgstr "Октава -1"
 
 #: Src/Pickers/KeyPicker.cpp:99 Src/Pickers/KeyPicker.cpp:109
 #: Src/Midi/Note.h:109 Src/Midi/Note.h:125
@@ -2110,205 +2105,205 @@ msgstr "Cb"
 
 #: Src/Pickers/KeyPicker.cpp:127
 msgid "Guess Key"
-msgstr "Adivinar Armadura"
+msgstr "Невідома тональність"
 
 #: Src/Pickers/KeyPicker.cpp:128
 msgid "Custom Key"
-msgstr "Armadura Personalizada"
+msgstr "Користувацька тональність"
 
 #: Src/Pickers/KeyPicker.cpp:153
 msgid "User presets"
-msgstr "Preajustes del usuario"
+msgstr "Користувацькі пресети"
 
 #: Src/Pickers/KeyPicker.cpp:166
 msgid "Edit Presets..."
-msgstr "Editar Preajustes..."
+msgstr "Редагувати пресети..."
 
 #: Src/Pickers/KeyPicker.cpp:522
 #, c-format
 msgid "%s Major, %s minor"
-msgstr "%s mayor, %s menor"
+msgstr "%s мажор, %s мінор"
 
 #: Src/Pickers/VolumeSlider.cpp:132
 msgid "volume"
-msgstr "volumen"
+msgstr "гучність"
 
 #: Src/Pickers/MagneticGridPicker.cpp:43
 msgid "Triplet"
-msgstr "Tresillo"
+msgstr "Триплет"
 
 #: Src/Pickers/MagneticGridPicker.cpp:44
 msgid "Dotted"
-msgstr "Con Punto"
+msgstr "Крапки"
 
 #: Src/Pickers/InstrumentPicker.cpp:83 Src/Pickers/InstrumentPicker.cpp:104
 #: Src/Pickers/InstrumentPicker.cpp:124
 msgid "Piano"
-msgstr "Piano"
+msgstr "Фортепіано"
 
 #: Src/Pickers/InstrumentPicker.cpp:84
 msgid "Chromatic Percussion"
-msgstr "Percusión cromática"
+msgstr "Хроматична перкусія"
 
 #: Src/Pickers/InstrumentPicker.cpp:85 Src/Pickers/InstrumentPicker.cpp:106
 #: Src/Pickers/InstrumentPicker.cpp:125
 msgid "Organ"
-msgstr "Órgano"
+msgstr "Орган"
 
 #: Src/Pickers/InstrumentPicker.cpp:86 Src/Pickers/InstrumentPicker.cpp:107
 #: Src/Pickers/InstrumentPicker.cpp:131
 msgid "Guitar"
-msgstr "Guitarra"
+msgstr "Гітара"
 
 #: Src/Pickers/InstrumentPicker.cpp:87 Src/Pickers/InstrumentPicker.cpp:108
 #: Src/Pickers/InstrumentPicker.cpp:134
 msgid "Bass"
-msgstr "Bajo"
+msgstr "Бас"
 
 #: Src/Pickers/InstrumentPicker.cpp:88
 msgid "Strings"
-msgstr "Cuerdas"
+msgstr "Струнні"
 
 #: Src/Pickers/InstrumentPicker.cpp:89
 msgid "Ensemble"
-msgstr "Orchestra"
+msgstr "Ансамбль"
 
 #: Src/Pickers/InstrumentPicker.cpp:90 Src/Pickers/InstrumentPicker.cpp:111
 #: Src/Pickers/InstrumentPicker.cpp:126
 msgid "Brass"
-msgstr "Vientos-metal"
+msgstr "Мідні духові"
 
 #: Src/Pickers/InstrumentPicker.cpp:91 Src/Pickers/InstrumentPicker.cpp:112
 #: Src/Pickers/InstrumentPicker.cpp:129
 msgid "Reed"
-msgstr "Lengüeta"
+msgstr "Язичкові"
 
 #: Src/Pickers/InstrumentPicker.cpp:92 Src/Pickers/InstrumentPicker.cpp:130
 msgid "Pipe"
-msgstr "Chiflo"
+msgstr "Труби"
 
 #: Src/Pickers/InstrumentPicker.cpp:93 Src/Pickers/InstrumentPicker.cpp:114
 #: Src/Pickers/InstrumentPicker.cpp:128
 msgid "Synth Lead"
-msgstr "Lead sintético"
+msgstr "Синтез лід-гітари"
 
 #: Src/Pickers/InstrumentPicker.cpp:94
 msgid "Synth Pad"
-msgstr "Pad sintético"
+msgstr "Синтез-пад"
 
 #: Src/Pickers/InstrumentPicker.cpp:95
 msgid "Synth Effects"
-msgstr "Efectos sintéticos"
+msgstr "Синтез-ефекти"
 
 #: Src/Pickers/InstrumentPicker.cpp:96 Src/Pickers/InstrumentPicker.cpp:115
 msgid "Ethnic"
-msgstr "Étnico"
+msgstr "Етнічні"
 
 #: Src/Pickers/InstrumentPicker.cpp:97
 msgid "Percussive"
-msgstr "De percusión"
+msgstr "Перкусивні"
 
 #. I18N: percussions category name
 #: Src/Pickers/InstrumentPicker.cpp:98 Src/Pickers/InstrumentPicker.cpp:117
 #: Src/Pickers/InstrumentPicker.cpp:136 Src/Editors/DrumEditor.cpp:231
 msgid "Sound Effects"
-msgstr "Efectos de sonido"
+msgstr "Звукові ефекти"
 
 #: Src/Pickers/InstrumentPicker.cpp:105
 msgid "Chromatic"
-msgstr "Cromático"
+msgstr "Хроматичні"
 
 #: Src/Pickers/InstrumentPicker.cpp:109
 msgid "Strings and Orchestra"
-msgstr "Cuerdas y orquesta"
+msgstr "Струнні та оркестр"
 
 #: Src/Pickers/InstrumentPicker.cpp:110
 msgid "Choirs, Pads and Voices"
-msgstr "Coros, pads y voces"
+msgstr "Хори, пади і голоси"
 
 #: Src/Pickers/InstrumentPicker.cpp:113
 msgid "Flutes and Pipe"
-msgstr "Flautas y chiflos"
+msgstr "Флейти і труби"
 
 #: Src/Pickers/InstrumentPicker.cpp:116 Src/Pickers/InstrumentPicker.cpp:135
 msgid "Percussion"
-msgstr "Percusión"
+msgstr "Перкусія"
 
 #: Src/Pickers/InstrumentPicker.cpp:127
 msgid "Pads"
-msgstr "Pads"
+msgstr "Пади"
 
 #: Src/Pickers/InstrumentPicker.cpp:132
 msgid "Plucked"
-msgstr "Plucked"
+msgstr "Щипкові"
 
 #: Src/PreferencesData.cpp:152
 msgid "Language"
-msgstr "Idioma"
+msgstr "Мова"
 
 #: Src/PreferencesData.cpp:178
 msgid "MIDI Driver"
-msgstr "Controlador MIDI"
+msgstr "MIDI драйвер"
 
 #. I18N: In preferences
 #: Src/PreferencesData.cpp:190
 msgid "Play during edit (default value)"
-msgstr "Reproducir durante la edición (valor por defecto)"
+msgstr "Грати під час редагування (за замовчанням)"
 
 #: Src/PreferencesData.cpp:192
 msgid "Always"
-msgstr "Siempre"
+msgstr "Завжди"
 
 #: Src/PreferencesData.cpp:193
 msgid "On note change"
-msgstr "En cambio de nota"
+msgstr "При зміні ноти"
 
 #: Src/PreferencesData.cpp:194
 msgid "Never"
-msgstr "Nunca"
+msgstr "Ніколи"
 
 #. I18N: In preferences
 #: Src/PreferencesData.cpp:199
 msgid "Default Score View"
-msgstr "Vista de Partitura Por Defecto"
+msgstr "Вигляд нот за замовчанням"
 
 #: Src/PreferencesData.cpp:201
 msgid "Both Musical and Linear"
-msgstr "Ambos Musical y Lineal"
+msgstr "Музично-лінійний"
 
 #: Src/PreferencesData.cpp:202
 msgid "Musical Only"
-msgstr "Musical Solamente"
+msgstr "Тільки музичний"
 
 #: Src/PreferencesData.cpp:203
 msgid "Linear Only"
-msgstr "Lineal Solamente"
+msgstr "Тільки лінійний"
 
 #. I18N: In preferences
 #: Src/PreferencesData.cpp:208
 msgid "Default Editor View"
-msgstr "Vista de Editor Por Defecto"
+msgstr "Вигляд редактора за замовчанням"
 
 #: Src/PreferencesData.cpp:210
 msgid "Keyboard"
-msgstr "Teclado"
+msgstr "Клавіатура"
 
 #: Src/PreferencesData.cpp:211
 msgid "Score"
-msgstr "Partitura"
+msgstr "Ноти"
 
 #: Src/PreferencesData.cpp:212
 msgid "Tablature"
-msgstr "Tablatura"
+msgstr "Табулатура"
 
 #. I18N: In preferences
 #: Src/PreferencesData.cpp:218
 msgid "Instrument Classification"
-msgstr "Clasificación de los instrumentos"
+msgstr "Класифікація інструментів"
 
 #: Src/PreferencesData.cpp:220
 msgid "MIDI Standard"
-msgstr "Estándar MIDI"
+msgstr "MIDI стандарт"
 
 #: Src/PreferencesData.cpp:230
 msgid "Soundfont"
@@ -2316,379 +2311,379 @@ msgstr "Soundfont"
 
 #: Src/PreferencesData.cpp:237
 msgid "Follow playback by default"
-msgstr "Seguir la reproducción por defecto"
+msgstr "Йти за відтворенням за замовчанням"
 
 #: Src/PreferencesData.cpp:242
 msgid "Enable playthrough when recording by default"
-msgstr "Permitir la reproducción mientras se graba por defecto"
+msgstr "Увімкнути відтворення під час запису за замовчанням"
 
 #: Src/PreferencesData.cpp:247
 msgid "Check online for new versions"
-msgstr "Verificar en linea por una nueva versión"
+msgstr "Перевіряти наявність нових версій"
 
 #: Src/PreferencesData.cpp:252
 msgid "Remember window location"
-msgstr "Recordar ubicación de ventana"
+msgstr "Запам'ятовувати розташування вікна"
 
 #: Src/PreferencesData.cpp:284
 msgid "Automatically launch FluidSynth if needed"
-msgstr "Ejecutar automáticamente FluidSynth si es necesario"
+msgstr "Якщо необхідно, автоматично запустити FluidSynth"
 
 #: Src/PreferencesData.cpp:291
 msgid "Single-instance application"
-msgstr "Una instancia de la aplicación"
+msgstr "Одноразове застосування"
 
 #: Src/PreferencesData.cpp:297
 msgid "Show note names in piano-roll"
-msgstr "Mostrar nombre de notas en piano-roll"
+msgstr "Показувати назву ноти у піано-рол"
 
 #: Src/PreferencesData.cpp:303
 msgid "Restore open files from previous session"
-msgstr "Restaurar archivos abiertos de la sesión anterior"
+msgstr "Відновити відкриті файли з попереднього сеансу"
 
 #: Src/main.cpp:338 Src/main.cpp:359
 msgid ""
 "Sorry an internal error occurred : an exception was caught unhandled : "
-msgstr "Lo siento, un error interno ha ocurrido : una excepción no pudo ser controlada : "
+msgstr "На жаль сталась внутрішня помилка : виключення сталося через :"
 
 #: Src/IO/AriaFileWriter.cpp:49 Src/IO/AriaFileWriter.cpp:58
 #, c-format
 msgid "Could not open file '%s' for reading"
-msgstr "No se puede abrir el archivo '%s' para lectura"
+msgstr "Не вдалося відкрити файл '%s' для читання"
 
 #: Src/IO/MidiFileReader.cpp:170
 msgid ""
 "This MIDI file has tracks that play on multiple MIDI channels. This is not "
 "supported by Aria Maestosa."
-msgstr "Este archivo MIDI tiene pistas que se reproducen en múltiples canales MIDI. Esta función no está soportada en esta versión de Aria Maestosa."
+msgstr "MIDI-файл має треки, що грають на кількох каналах MIDI. Це не підтримується в Aria Maestosa."
 
 #: Src/IO/MidiFileReader.cpp:185
 msgid ""
 "This MIDI file has a track that sends events on multiple MIDI channels. This"
 " is not supported by Aria Maestosa."
-msgstr "Este archivo MIDI tiene una pista que envía eventos en múltiples canales MIDI. Esta función no está soportada en esta versión de Aria Maestosa."
+msgstr "MIDI-файл має трек, який посилає події на кілька каналів MIDI. Це не підтримується в Aria Maestosa."
 
 #: Src/IO/MidiFileReader.cpp:236
 #, c-format
 msgid ""
 "This MIDI file appears to be incorrect; a note at tick %i in channel %i does"
 " not appear to have an end"
-msgstr "Este archivo MIDI parece estar erróneo; una nota en el tick %i en el canal %i parece no tener un final"
+msgstr "MIDI-файл, як видається, є хибним; нота в такті %i в каналі %i, здається, не має кінця"
 
 #: Src/IO/MidiFileReader.cpp:271
 #, c-format
 msgid ""
 "This MIDI file uses controller #%i, which is not part of the MIDI standard. "
 "This information will be discarded."
-msgstr "Este archivo MIDI usa el controlador #%i, el cual no hace parte del estándar MIDI. Esta información será descartada."
+msgstr "MIDI-файл використовує контролер #%i, який не є частиною стандарту MIDI. Ця інформація не буде використовуватися."
 
 #: Src/IO/MidiFileReader.cpp:281
 msgid ""
 "This MIDI file uses Registered Parameters, which are currently not supported"
 " by Aria Maestosa."
-msgstr "Este archivo MIDI usa parámetros registrados. Esta función no está soportada en esta versión de Aria Maestosa."
+msgstr "MIDI-файл використовує зареєстровані параметри, які наразі не підтримуються в Aria Maestosa."
 
 #: Src/IO/MidiFileReader.cpp:285
 msgid ""
 "This MIDI files uses NRPN (Non-Registered Parameters, i.e. non-standard "
 "controllers), which are currently not supported by Aria Maestosa."
-msgstr "Este archivo MIDI usa Parámetros No Registrados (PNR, estos no son controladores estándares). Esta función no está soportada en esta versión de Aria Maestosa."
+msgstr "MIDI-файл використовує NRPN (Незареєстровані параметри, наприклад, нестандартні контролери), що наразі не підтримується в Aria Maestosa."
 
 #: Src/IO/MidiFileReader.cpp:297
 msgid ""
 "This MIDI files uses Channel Mode Message, which are currently not supported"
 " by Aria Maestosa."
-msgstr "Este archivo MIDI usa Mensajes en Modo Canal. Esta función no está soportada en esta versión de Aria Maestosa."
+msgstr "MIDI-файл використовує режим повідомлення в каналі, що наразі не підтримується в Aria Maestosa."
 
 #: Src/IO/MidiFileReader.cpp:301
 #, c-format
 msgid ""
 "This MIDI file uses unsupported MIDI controller #%i. Data related to this "
 "controller will be discarded."
-msgstr "Este archivo MIDI usa un controlador MIDI no soportado: #%i. Los datos relacionados a este controlador serán descartados."
+msgstr "MIDI-файл використовує непідтримуваний MIDI-контролер #%i. Дані, пов'язані з цим контролером буде відкинуто."
 
 #: Src/PresetManager.cpp:133
 #, c-format
 msgid "Sorry, an error occurred : could not create %s"
-msgstr "Lo siento, un error ocurrió : no se pudo crear %s"
+msgstr "На жаль виникла помилка: не вдалося створити %s"
 
 #: Src/Printing/AbstractPrintableSequence.cpp:39
 msgid "Aria Maestosa song"
-msgstr "Canción de Aria Maestosa"
+msgstr "Пісня Aria Maestosa"
 
 #. I18N: for printing (page orientation)
 #: Src/Printing/wxEasyPrintWrapper.cpp:232
 msgid "Portrait"
-msgstr "Retrato"
+msgstr "Портрет"
 
 #: Src/Printing/wxEasyPrintWrapper.cpp:232
 msgid "Landscape"
-msgstr "Apaisado"
+msgstr "Краєвид"
 
 #. I18N: for printing (page setup)
 #: Src/Printing/wxEasyPrintWrapper.cpp:234
 #, c-format
 msgid "left = %i mm, right = %i mm,"
-msgstr "izquierda = %i mm, derecha = %i mm,"
+msgstr "ліворуч = %i мм, праворуч = %i мм,"
 
 #: Src/Printing/wxEasyPrintWrapper.cpp:235
 #, c-format
 msgid "top = %i mm, bottom = %i mm"
-msgstr "arriba = %i mm, abajo = %i mm"
+msgstr "зверху = %i мм, знизу = %i мм"
 
 #. I18N: beats per minute (tempo)
 #: Src/Editors/ControllerEditor.cpp:91
 msgid "bpm"
-msgstr "bpm"
+msgstr "ударів за хвилину"
 
 #. I18N: as in "+2 semitones"
 #: Src/Editors/ControllerEditor.cpp:96
 msgid "semitones"
-msgstr "semitonos"
+msgstr "напівтони"
 
 #. I18N: as in "soundbank"
 #: Src/Editors/ControllerEditor.cpp:101
 msgid "bank ID"
-msgstr "Identificación bancaria"
+msgstr "ID банку"
 
 #: Src/Editors/ControllerEditor.cpp:731
 msgid "Lyrics"
-msgstr "Letra"
+msgstr "Тексти"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:92
 msgid "High Q"
-msgstr "Alta calidad"
+msgstr "High Q"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:94
 msgid "Slap"
-msgstr "Golpe"
+msgstr "Ляпас"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:96
 msgid "Push"
-msgstr "Empujar"
+msgstr "Push"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:98
 msgid "Pull"
-msgstr "Halar"
+msgstr "Pull"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:100 Src/Editors/DrumEditor.cpp:112
 msgid "Stick"
-msgstr "Palo"
+msgstr "Палиці"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:102
 msgid "Square"
-msgstr "Cuadrado"
+msgstr "Square"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:104
 msgid "Metro"
-msgstr "Metro"
+msgstr "Метро"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:106
 msgid "Metro bell"
-msgstr "Campana de metro"
+msgstr "Дзвін метро"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:108
 msgid "Bass drum 2"
-msgstr "Bombo 2"
+msgstr "Барабан 2"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:110
 msgid "Bass drum 1"
-msgstr "Bombo 1"
+msgstr "Барабан 1"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:114
 msgid "Snare"
-msgstr "Tambor"
+msgstr "Барабанчик"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:116
 msgid "Clap"
-msgstr "Aplauso"
+msgstr "Плескання"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:118
 msgid "Snare 2"
-msgstr "Tambor 2"
+msgstr "Барабанчик 2"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:120
 msgid "Tom 6"
-msgstr ""
+msgstr "Том 6"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:122
 msgid "Closed hi-hat"
-msgstr "Charles cerrado"
+msgstr "Закриті"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:124
 msgid "Tom 5"
-msgstr ""
+msgstr "Том 5"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:126
 msgid "Pedal hi-hat"
-msgstr "Pedal charles"
+msgstr "Педаль"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:128
 msgid "Tom 4"
-msgstr ""
+msgstr "Том 4"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:130
 msgid "Open hi-hat"
-msgstr "Charles abierto"
+msgstr "Відкриті"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:132
 msgid "Tom 3"
-msgstr ""
+msgstr "Том 3"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:134
 msgid "Tom 2"
-msgstr ""
+msgstr "Том 2"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:136
 msgid "Crash"
-msgstr "Estruendo"
+msgstr "Тарілки"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:138
 msgid "Tom 1"
-msgstr ""
+msgstr "Том 1"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:140
 msgid "Ride"
-msgstr ""
+msgstr "Ride"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:142
 msgid "Chinese"
-msgstr ""
+msgstr "Китайські"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:144
 msgid "Ride bell"
-msgstr "Campana de paseo"
+msgstr "Ride дзвін"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:146
 msgid "Tambourine"
-msgstr "Pandereta"
+msgstr "Бубон"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:148
 msgid "Splash"
-msgstr "Chapoteo"
+msgstr "Сплеск"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:150
 msgid "Cowbell"
-msgstr "Cencerro"
+msgstr "Cowbell"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:152
 msgid "Crash 2"
-msgstr "Estruendo 2"
+msgstr "Тарілки 2"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:154
 msgid "Vibraslap"
-msgstr "Vibraslap"
+msgstr "Вібраляпас"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:156
 msgid "Ride 2"
-msgstr ""
+msgstr "Ride 2"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:158
 msgid "Hi bongo"
-msgstr "Bongo alto"
+msgstr "Hi бонго"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:160
 msgid "Low bongo"
-msgstr "Bongo bajo"
+msgstr "Low бонго"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:162
 msgid "Mute hi conga"
-msgstr ""
+msgstr "Mute hi конга"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:164
 msgid "Open hi conga"
-msgstr ""
+msgstr "Open hi конга"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:166
 msgid "Low conga"
-msgstr "Conga baja"
+msgstr "Low конга"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:168
 msgid "High timbale"
-msgstr "Timbal alto"
+msgstr "High тімбале"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:170
 msgid "Low timbale"
-msgstr "Timbal bajo"
+msgstr "Low тімбале"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:172
 msgid "High agogo"
-msgstr "Agogo alto"
+msgstr "High агого"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:174
 msgid "Low agogo"
-msgstr "Agogo bajo"
+msgstr "Low агого"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:176
 msgid "Cabasa"
-msgstr "Cabasa"
+msgstr "Кабаса"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:178
 msgid "Maracas"
-msgstr "Maracas"
+msgstr "Маракаси"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:180
 msgid "Short whistle"
-msgstr "Silbato corto"
+msgstr "Сюрчок"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:182
 msgid "Long whistle"
-msgstr "Silbato largo"
+msgstr "Сюрчання"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:184
 msgid "Short guiro"
-msgstr "Guiro corto"
+msgstr "Short гуїро"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:186
 msgid "Long guiro"
-msgstr "Guiro largo"
+msgstr "Long гуїро"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:188
@@ -2698,67 +2693,67 @@ msgstr "Claves"
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:190
 msgid "Hi wood block"
-msgstr ""
+msgstr "Hi woodblock"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:192
 msgid "Lo wood block"
-msgstr ""
+msgstr "Low woodblock"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:194
 msgid "Mute cuica"
-msgstr ""
+msgstr "Mute куїка"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:196
 msgid "Open cuica"
-msgstr ""
+msgstr "Open куїка"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:198
 msgid "Mute triangle"
-msgstr "Triangulo mudo"
+msgstr "Mute triangle"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:200
 msgid "Open triangle"
-msgstr "Triángulo abierto"
+msgstr "Open triangle"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:202
 msgid "Shaker"
-msgstr "Sacudidor"
+msgstr "Шейкер"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:204
 msgid "Jingle Bell"
-msgstr "Cascabel"
+msgstr "Веселі дзвони"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:206
 msgid "Bell Tree"
-msgstr ""
+msgstr "Дзвіночки"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:208
 msgid "Castanets"
-msgstr "Castañuelas"
+msgstr "Кастаньєти"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:210
 msgid "Mute surdo"
-msgstr ""
+msgstr "Mute сурдо"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:212
 msgid "Open surdo"
-msgstr ""
+msgstr "Open сурдо"
 
 #. I18N: percussions category name
 #: Src/Editors/DrumEditor.cpp:217
 msgid "Drumkit"
-msgstr "Batería"
+msgstr "Барабанна установка"
 
 #. I18N: percussions category name
 #: Src/Editors/DrumEditor.cpp:219
@@ -2768,28 +2763,28 @@ msgstr "Hi-hat"
 #. I18N: percussions category name
 #: Src/Editors/DrumEditor.cpp:221
 msgid "Cymbal"
-msgstr "Címbalo"
+msgstr "Тарілки"
 
 #. I18N: percussions category name
 #: Src/Editors/DrumEditor.cpp:223
 msgid "Toms"
-msgstr "Toms"
+msgstr "Томи"
 
 #. I18N: percussions category name
 #: Src/Editors/DrumEditor.cpp:225
 msgid "African"
-msgstr "Africano"
+msgstr "Африканські"
 
 #. I18N: percussions category name
 #: Src/Editors/DrumEditor.cpp:227
 msgid "Latin"
-msgstr "Latino"
+msgstr "Латинські"
 
 #. I18N: percussions category name
 #: Src/Editors/DrumEditor.cpp:229
 msgid "Others"
-msgstr "Otros"
+msgstr "Інші"
 
 #: Src/PreferencesData.h:63
 msgid "System soundbank"
-msgstr "Banco de sonidos del sistema"
+msgstr "Системний банк звуків"
