@@ -539,19 +539,16 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdksmidi::MIDIMultiTr
         // copyright
         if (not sequence->getCopyright().IsEmpty())
         {
-            
             jdksmidi::MIDITimedBigMessage m;
             
             m.SetText( 2 );
             m.SetByte1( 2 );
             
-            // FIXME - I removed strcpy, but not sure it works anymore...
-            jdksmidi::MIDISystemExclusive sysex( (unsigned char*)(const char*)sequence->getCopyright().mb_str(wxConvUTF8),
-                                               sequence->getCopyright().size()+1,
-                                               sequence->getCopyright().size()+1, false);
+            wxCharBuffer copyrightBuffer = sequence->getCopyright().ToUTF8();
+            int len = strlen(copyrightBuffer.data());
+            jdksmidi::MIDISystemExclusive sysex((unsigned char*)copyrightBuffer.data(), len, len, false);
             
             m.CopySysEx( &sysex );
-            
             m.SetTime( 0 );
             
             if (not tracks.GetTrack(0)->PutEvent( m ))
@@ -569,10 +566,9 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdksmidi::MIDIMultiTr
             m.SetText( 3 );
             m.SetByte1( 3 );
             
-            // FIXME - I removed strcpy, but not sure it works anymore...
-            jdksmidi::MIDISystemExclusive sysex( (unsigned char*)(const char*)sequence->getInternalName().mb_str(wxConvUTF8),
-                                               sequence->getInternalName().size()+1,
-                                               sequence->getInternalName().size()+1, false);
+            wxCharBuffer nameBuffer = sequence->getInternalName().ToUTF8();
+            int len = strlen(nameBuffer.data());
+            jdksmidi::MIDISystemExclusive sysex((unsigned char*)nameBuffer.data(), len, len, false);
             
             m.CopySysEx( &sysex );
             m.SetTime( 0 );

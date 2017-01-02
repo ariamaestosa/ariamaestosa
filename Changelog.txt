@@ -1,5 +1,6 @@
 - Fix encoding issue when exporting to midi on windows
-- Fix track name encoding
+- Fix track name encoding when exporting to MIDI
+- Fix song name and copyright encoding when exporting to MIDI
 - Fix tempo rounding issue
 
 1.4.12
