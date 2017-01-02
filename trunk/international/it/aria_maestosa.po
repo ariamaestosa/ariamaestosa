@@ -6,16 +6,17 @@
 #   <alexisarcham@gmail.com>, 2012
 # Andrea Zanellato <zanellato.andrea@gmail.com>, 2013
 # Davide Miozzi <davide.miozzi@gmail.com>, 2013
-# eagleman <giacomomargarito@yahoo.it>, 2013
+# eagleman <giacomomargarito@yahoo.it>, 2013,2015
+# GIULIO BELLI <javagio5@yahoo.it>, 2016
 # Giuseppe D. B. <giuped@gmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: Aria Maestosa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-08-12 20:06-0400\n"
-"PO-Revision-Date: 2014-08-13 00:17+0000\n"
-"Last-Translator: Auria <auria.mg@gmail.com>\n"
-"Language-Team: Italian (http://www.transifex.com/projects/p/ariamaestosa/language/it/)\n"
+"PO-Revision-Date: 2017-01-02 19:59+0000\n"
+"Last-Translator: GIULIO BELLI <javagio5@yahoo.it>\n"
+"Language-Team: Italian (http://www.transifex.com/auria/ariamaestosa/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -50,7 +51,7 @@ msgstr "cancella nota/e"
 #. I18N: (undoable) action name
 #: Src/Actions/DeleteControllerEvent.cpp:40
 msgid "delete controller event"
-msgstr ""
+msgstr "elimina controllore eventi"
 
 #. I18N: (undoable) action name
 #: Src/Actions/ShiftFrets.cpp:28 Src/Actions/NumberPressed.cpp:29
@@ -70,7 +71,7 @@ msgstr "cambia volume nota/e"
 #. I18N: (undoable) action name
 #: Src/Actions/ShiftString.cpp:27
 msgid "string change"
-msgstr "modifica stringa"
+msgstr "cambio corda"
 
 #. I18N: (undoable) action name
 #: Src/Actions/Duplicate.cpp:43
@@ -150,7 +151,7 @@ msgstr "aggiungi nota"
 #. I18N: (undoable) action name
 #: Src/Actions/AddTextEvent.cpp:31
 msgid "text change"
-msgstr ""
+msgstr "modifica del testo"
 
 #. I18N: (undoable) action name
 #: Src/Actions/AddControlEvent.cpp:32
@@ -262,7 +263,7 @@ msgstr "A"
 #: Src/Dialogs/SongPropertiesDialog.cpp:373
 #, c-format
 msgid "%s Major - %s minor"
-msgstr ""
+msgstr "%s Maggiore - %s minore"
 
 #: Src/Dialogs/CustomKeyDialog.cpp:38
 msgid "Custom Key Editor"
@@ -737,11 +738,11 @@ msgstr "Lunghezza"
 msgid ""
 "This is the initial tempo of the song, see the Controller Editor for tempo "
 "variations"
-msgstr ""
+msgstr "Questo è il tempo iniziale della canzone, vedi l' Editor Controller per le variazioni del tempo"
 
 #: Src/GUI/MainFrame.cpp:693
 msgid "Initial tempo"
-msgstr ""
+msgstr "Tempo inizio"
 
 #: Src/GUI/MainFrame.cpp:705
 msgid "Time Sig"
@@ -754,7 +755,7 @@ msgstr "Inizio"
 #. I18N: loop end
 #: Src/GUI/MainFrame.cpp:722 Src/GUI/MainFrame.cpp:1108
 msgid "End"
-msgstr ""
+msgstr "Fine"
 
 #: Src/GUI/MainFrame.cpp:740
 msgid "Zoom"
@@ -765,7 +766,7 @@ msgstr "Zoom"
 msgid ""
 "Tool 1 : Draw notes\n"
 "Tool 2 : Click to add notes"
-msgstr ""
+msgstr "Tool 1: Disegna le note\nTool 2: Clicca per aggiungere le note"
 
 #: Src/GUI/MainFrame.cpp:781 Src/GUI/MainFrame.cpp:783
 msgid "Tool"
@@ -858,11 +859,11 @@ msgstr "Elimina modifica del metro"
 
 #: Src/GUI/MeasureBar.cpp:153
 msgid "Set playback start here"
-msgstr ""
+msgstr "Imposta qui partenza riproduzione"
 
 #: Src/GUI/MeasureBar.cpp:154
 msgid "Set loop end here"
-msgstr ""
+msgstr "Imposta qui fine loop"
 
 #: Src/GUI/MeasureBar.cpp:160
 #, c-format
@@ -1149,11 +1150,11 @@ msgstr "Impossibile Annullare"
 
 #: Src/GUI/MainFrameMenuBar.cpp:657
 msgid "The file no longer exists on disk. Do you want to save it anyway?"
-msgstr ""
+msgstr "Il file non esiste più sul disco. Vuoi salvarlo comunque?"
 
 #: Src/GUI/MainFrameMenuBar.cpp:657
 msgid "Warning"
-msgstr ""
+msgstr "Avviso"
 
 #: Src/GUI/MainFrameMenuBar.cpp:700 Src/GUI/MainFrameMenuBar.cpp:763
 #: Src/GUI/MainFrameMenuBar.cpp:803
@@ -1237,7 +1238,7 @@ msgstr "Massimizza traccia"
 
 #: Src/GUI/GraphicalTrack.cpp:437
 msgid "Dock track"
-msgstr ""
+msgstr "Traccia guida"
 
 #: Src/GUI/GraphicalTrack.cpp:459 Src/Editors/ScoreEditor.h:285
 msgid "Score Editor"
@@ -1853,7 +1854,7 @@ msgstr "Porta MIDI sconosciuta : "
 
 #: Src/Midi/Players/Mac/MacPlayerInterface.cpp:118
 msgid "Sorry, an internal error occurred during export"
-msgstr ""
+msgstr "Purtroppo c'è stato un errore interno durante l'esportazione"
 
 #: Src/Midi/Players/Mac/MacPlayerInterface.cpp:157
 msgid ""
@@ -2126,7 +2127,7 @@ msgstr "Modifica Preimpostati..."
 #: Src/Pickers/KeyPicker.cpp:522
 #, c-format
 msgid "%s Major, %s minor"
-msgstr ""
+msgstr "%s Maggore, %s minore"
 
 #: Src/Pickers/VolumeSlider.cpp:132
 msgid "volume"
@@ -2180,20 +2181,20 @@ msgstr "Ottone"
 #: Src/Pickers/InstrumentPicker.cpp:91 Src/Pickers/InstrumentPicker.cpp:112
 #: Src/Pickers/InstrumentPicker.cpp:129
 msgid "Reed"
-msgstr ""
+msgstr "Ancia"
 
 #: Src/Pickers/InstrumentPicker.cpp:92 Src/Pickers/InstrumentPicker.cpp:130
 msgid "Pipe"
-msgstr ""
+msgstr "Flauto"
 
 #: Src/Pickers/InstrumentPicker.cpp:93 Src/Pickers/InstrumentPicker.cpp:114
 #: Src/Pickers/InstrumentPicker.cpp:128
 msgid "Synth Lead"
-msgstr ""
+msgstr "Voce principale - Synth Lead"
 
 #: Src/Pickers/InstrumentPicker.cpp:94
 msgid "Synth Pad"
-msgstr ""
+msgstr "Voce accompagnamento -Synth Pad"
 
 #: Src/Pickers/InstrumentPicker.cpp:95
 msgid "Synth Effects"
@@ -2235,7 +2236,7 @@ msgstr "Percussione"
 
 #: Src/Pickers/InstrumentPicker.cpp:127
 msgid "Pads"
-msgstr ""
+msgstr "Violini - Pads"
 
 #: Src/Pickers/InstrumentPicker.cpp:132
 msgid "Plucked"
@@ -2448,11 +2449,11 @@ msgstr "Semitoni"
 #. I18N: as in "soundbank"
 #: Src/Editors/ControllerEditor.cpp:101
 msgid "bank ID"
-msgstr ""
+msgstr "Identificatore banco"
 
 #: Src/Editors/ControllerEditor.cpp:731
 msgid "Lyrics"
-msgstr ""
+msgstr "Testo"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:92
@@ -2467,32 +2468,32 @@ msgstr "Slap"
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:96
 msgid "Push"
-msgstr ""
+msgstr "Premi"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:98
 msgid "Pull"
-msgstr ""
+msgstr "Tira"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:100 Src/Editors/DrumEditor.cpp:112
 msgid "Stick"
-msgstr ""
+msgstr "Attacca"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:102
 msgid "Square"
-msgstr ""
+msgstr "Quadra"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:104
 msgid "Metro"
-msgstr ""
+msgstr "Metro"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:106
 msgid "Metro bell"
-msgstr ""
+msgstr "Campanella"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:108
@@ -2512,7 +2513,7 @@ msgstr "Rullante"
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:116
 msgid "Clap"
-msgstr ""
+msgstr "Battimano"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:118
@@ -2607,7 +2608,7 @@ msgstr "Crash 2"
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:154
 msgid "Vibraslap"
-msgstr ""
+msgstr "Vibrafono"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:156
@@ -2617,47 +2618,47 @@ msgstr "Ride 2"
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:158
 msgid "Hi bongo"
-msgstr ""
+msgstr "Bongo alto"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:160
 msgid "Low bongo"
-msgstr ""
+msgstr "Bongo basso"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:162
 msgid "Mute hi conga"
-msgstr ""
+msgstr "conga alto muto"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:164
 msgid "Open hi conga"
-msgstr ""
+msgstr "conga alto aperto"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:166
 msgid "Low conga"
-msgstr ""
+msgstr "conga basso"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:168
 msgid "High timbale"
-msgstr ""
+msgstr "Timpano alto"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:170
 msgid "Low timbale"
-msgstr ""
+msgstr "Timpano basso"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:172
 msgid "High agogo"
-msgstr ""
+msgstr "Agogo alto"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:174
 msgid "Low agogo"
-msgstr ""
+msgstr "Agogo basso"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:176
@@ -2682,12 +2683,12 @@ msgstr "Fischio lungo"
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:184
 msgid "Short guiro"
-msgstr ""
+msgstr "Guiro corto"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:186
 msgid "Long guiro"
-msgstr ""
+msgstr "Guiro lungo"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:188
@@ -2697,22 +2698,22 @@ msgstr "Legnetti"
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:190
 msgid "Hi wood block"
-msgstr ""
+msgstr "Cassa di legno alta"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:192
 msgid "Lo wood block"
-msgstr ""
+msgstr "Cassa di legno bassa"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:194
 msgid "Mute cuica"
-msgstr ""
+msgstr "Culca chiusa"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:196
 msgid "Open cuica"
-msgstr ""
+msgstr "Culca aperta"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:198
@@ -2727,17 +2728,17 @@ msgstr "Triangolo"
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:202
 msgid "Shaker"
-msgstr ""
+msgstr "Shaker"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:204
 msgid "Jingle Bell"
-msgstr ""
+msgstr "Campanellino"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:206
 msgid "Bell Tree"
-msgstr ""
+msgstr "Campana ad anelli  - Bell Tree"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:208
@@ -2747,17 +2748,17 @@ msgstr "Nacchere"
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:210
 msgid "Mute surdo"
-msgstr ""
+msgstr "Surdo chiuso"
 
 #. I18N: drum name
 #: Src/Editors/DrumEditor.cpp:212
 msgid "Open surdo"
-msgstr ""
+msgstr "Surdo aperto"
 
 #. I18N: percussions category name
 #: Src/Editors/DrumEditor.cpp:217
 msgid "Drumkit"
-msgstr ""
+msgstr "Kit percussioni"
 
 #. I18N: percussions category name
 #: Src/Editors/DrumEditor.cpp:219

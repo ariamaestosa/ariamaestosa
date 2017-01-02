@@ -4,14 +4,15 @@
 # 
 # Translators:
 #   <alexisarcham@gmail.com>, 2012
+# Conservador Ressurge, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Aria Maestosa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-08-12 20:06-0400\n"
-"PO-Revision-Date: 2014-08-13 00:17+0000\n"
-"Last-Translator: Auria <auria.mg@gmail.com>\n"
-"Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/ariamaestosa/language/pt_BR/)\n"
+"PO-Revision-Date: 2017-01-02 19:59+0000\n"
+"Last-Translator: Conservador Ressurge\n"
+"Language-Team: Portuguese (Brazil) (http://www.transifex.com/auria/ariamaestosa/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,7 +21,7 @@ msgstr ""
 
 #: Src/Renderers/wxImage.cpp:53
 msgid "Failed to load "
-msgstr "Falha ao carregar "
+msgstr "Falha ao carregar"
 
 #: Src/Renderers/GLImage.cpp:52 Src/Renderers/GLImage.cpp:64
 #: Src/Renderers/GLImage.cpp:77 Src/Renderers/GLImage.cpp:87
@@ -146,7 +147,7 @@ msgstr "adicionar nota"
 #. I18N: (undoable) action name
 #: Src/Actions/AddTextEvent.cpp:31
 msgid "text change"
-msgstr ""
+msgstr "Mudar texto"
 
 #. I18N: (undoable) action name
 #: Src/Actions/AddControlEvent.cpp:32
@@ -426,7 +427,7 @@ msgstr ""
 
 #: Src/Dialogs/Preferences.cpp:260
 msgid "Edition"
-msgstr ""
+msgstr "Edição"
 
 #: Src/Dialogs/Preferences.cpp:351
 msgid "Browse..."
@@ -435,7 +436,7 @@ msgstr "Procurar..."
 #. I18N: - in the preferences dialog
 #: Src/Dialogs/Preferences.cpp:390
 msgid "Changes will take effect next time you open the application."
-msgstr ""
+msgstr "As alterações entrarão em vigor na próxima vez em que o aplicativo for iniciado"
 
 #: Src/Dialogs/Preferences.cpp:444
 msgid "You will need to restart Aria Maestosa for changes to be effective."
@@ -750,7 +751,7 @@ msgstr "Início"
 #. I18N: loop end
 #: Src/GUI/MainFrame.cpp:722 Src/GUI/MainFrame.cpp:1108
 msgid "End"
-msgstr ""
+msgstr "Fim"
 
 #: Src/GUI/MainFrame.cpp:740
 msgid "Zoom"
@@ -1149,7 +1150,7 @@ msgstr ""
 
 #: Src/GUI/MainFrameMenuBar.cpp:657
 msgid "Warning"
-msgstr ""
+msgstr " Advertência"
 
 #: Src/GUI/MainFrameMenuBar.cpp:700 Src/GUI/MainFrameMenuBar.cpp:763
 #: Src/GUI/MainFrameMenuBar.cpp:803
@@ -1849,7 +1850,7 @@ msgstr "Porta MIDI desconhecida:"
 
 #: Src/Midi/Players/Mac/MacPlayerInterface.cpp:118
 msgid "Sorry, an internal error occurred during export"
-msgstr ""
+msgstr "Desculpe, ocorreu um erro interno durante a exportação"
 
 #: Src/Midi/Players/Mac/MacPlayerInterface.cpp:157
 msgid ""
@@ -1902,7 +1903,7 @@ msgstr "O dispositivo ALSA (%s) não pode ser aberto."
 
 #: Src/Midi/Players/Alsa/AlsaPort.cpp:442
 msgid "Loading "
-msgstr ""
+msgstr "Carregando"
 
 #: Src/Midi/Players/Alsa/AlsaPlayer.cpp:257
 msgid ""
