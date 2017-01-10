@@ -1,3 +1,5 @@
+- Fix arrow keys on windows when using the OpenGL renderer
+
 1.4.13
 - Fix encoding issue when exporting to midi on windows
 - Fix track name encoding when exporting to MIDI

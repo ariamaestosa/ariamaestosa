@@ -34,12 +34,14 @@ using namespace AriaMaestosa;
 
 GLPane::GLPane(wxWindow* parent, int* args) :
 #if wxCHECK_VERSION(3,1,0)
-    wxGLCanvas(parent, wxID_ANY, args)
+    wxGLCanvas(parent, wxID_ANY, args, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS)
 #else
-    wxGLCanvas(parent, wxID_ANY,  wxDefaultPosition, wxDefaultSize, 0, wxT("GLCanvas"),  args)
+    wxGLCanvas(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS, wxT("GLCanvas"),  args)
 #endif
 {
     m_context = new wxGLContext(this);
+    
+    //Bind(wxEVT_CHAR, &GLPane::OnCharEvent, this);
     /*
 #if wxCHECK_VERSION(2,9,1)
     SetBackgroundStyle(wxBG_STYLE_PAINT);
@@ -57,6 +59,14 @@ GLPane::~GLPane()
 {
 }
 
+// -------------------------------------------------------------------------------------------------------
+
+/*
+void GLPane::OnCharEvent(wxKeyEvent& evt)
+{
+    printf("CHAR EVENT\n");
+}
+*/
 // -------------------------------------------------------------------------------------------------------
 
 void GLPane::resized(wxSizeEvent& evt)
