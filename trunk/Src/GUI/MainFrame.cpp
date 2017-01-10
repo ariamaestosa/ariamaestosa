@@ -96,6 +96,20 @@ namespace AriaMaestosa
 static const int SCROLL_NOTES_INTO_VIEW_DELAY = 200;
 static const int SCROLL_NOTES_INTO_VIEW_TIMER = 10000;
 
+class MyCustomScrollbar : public wxScrollBar
+{
+public:
+    MyCustomScrollbar(wxWindow* parent, wxWindowID id, long style) :
+        wxScrollBar(parent, id, wxDefaultPosition, wxDefaultSize, style)
+    {
+    
+    }
+    
+    virtual bool AcceptsFocus() const override { return false; } 
+    
+    virtual bool AcceptsFocusFromKeyboard() const override { return false; }
+};
+
 
 // ----------------------------------------------------------------------------------------------------------
 // ----------------------------------------------------------------------------------------------------------
@@ -502,8 +516,7 @@ void MainFrame::init(const wxArrayString& filesToOpen, bool fileInCommandLine)
     // -------------------------- Vertical Scrollbar ----------------------------
     wxLogVerbose( wxT("MainFrame::init (creating scrollbars)") );
 
-    m_vertical_scrollbar = new wxScrollBar(m_main_panel, SCROLLBAR_V,
-                                           wxDefaultPosition, wxDefaultSize, wxSB_VERTICAL);
+    m_vertical_scrollbar = new MyCustomScrollbar(m_main_panel, SCROLLBAR_V, wxSB_VERTICAL);
 
     m_vertical_scrollbar->SetScrollbar(0   /* position*/,
                                        530 /* viewable height / thumb size*/,
@@ -514,7 +527,7 @@ void MainFrame::init(const wxArrayString& filesToOpen, bool fileInCommandLine)
 
 
     // -------------------------- Horizontal Scrollbar ----------------------------
-    m_horizontal_scrollbar = new wxScrollBar(m_main_panel, SCROLLBAR_H);
+    m_horizontal_scrollbar = new MyCustomScrollbar(m_main_panel, SCROLLBAR_H, wxSB_HORIZONTAL);
     wxBoxSizer* h_sizer = new wxBoxSizer(wxHORIZONTAL);
     m_status_text = new wxStaticText(m_main_panel, wxID_ANY, wxT(""));
     m_status_text->SetMinSize( wxSize(90, -1) );

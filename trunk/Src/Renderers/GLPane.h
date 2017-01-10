@@ -45,6 +45,7 @@ namespace AriaMaestosa
         ~GLPane();
 
         virtual void resized(wxSizeEvent& evt);
+        //void OnCharEvent(wxKeyEvent& evt);
 
         // size
         int getWidth();
