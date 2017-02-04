@@ -37,7 +37,11 @@
 namespace AriaMaestosa
 {
     const int first_string_position = 17;
+#ifdef LARGE_FONTS
+    const int y_step = 15;
+#else
     const int y_step = 10;
+#endif
 
     class GuitarNoteNamesSingleton : public AriaRenderArray, public Singleton<GuitarNoteNamesSingleton>
     {
@@ -65,7 +69,8 @@ GuitarEditor::GuitarEditor(GraphicalTrack* track) : Editor(track)
     m_mouse_is_in_editor = false;
     m_clicked_on_note    = false;
     m_last_clicked_note  = -1;
-
+    m_y_step = y_step;
+    
     GuitarNoteNamesSingleton::getInstance()->setFont( getStringNameFont() );
 
     // set standard tuning by default (FIXME: don't duplicate the tuning from the tuning picker)

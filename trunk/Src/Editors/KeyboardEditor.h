@@ -33,8 +33,12 @@ namespace AriaMaestosa
     
     class KeyboardEditor : public Editor
     {
+#ifdef LARGE_FONTS
+        static const int Y_STEP_HEIGHT = 13;
+#else
         static const int Y_STEP_HEIGHT = 10;
-        
+#endif
+
         AriaRenderArray m_sharp_notes_names;
         AriaRenderArray m_flat_notes_names;
         

@@ -54,7 +54,11 @@ static const float BLACK_THRESHOLD = 0.85f;
 
 // note track
 static const int NOTE_TRACK_WIDTH = 30;
+#ifdef LARGE_FONTS
+static const int NOTE_TRACK_HEIGHT = 156;
+#else
 static const int NOTE_TRACK_HEIGHT = 121;
+#endif
 static const int NOTE_COUNT = 12;
 static const int NOTE_HEIGHT = NOTE_TRACK_HEIGHT/NOTE_COUNT;
 static const int NOTE_X_PADDING = 2;
@@ -79,6 +83,8 @@ KeyboardEditor::KeyboardEditor(GraphicalTrack* track) : Editor(track)
     Note12 note12;
     int octave;
     wxFont drumFont = getDrumNamesFont();
+    
+    m_y_step = NOTE_HEIGHT;
     
     m_resizing_mode = false;
     m_sb_position = 0.5;
@@ -242,17 +248,17 @@ void KeyboardEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mouse
 }
 
 // -----------------------------------------------------------------------------------------------------------
-    
+
 int KeyboardEditor::getYScrollInPixels()
 {
-    return (int)( m_sb_position*(120*11 - m_height - 20) );
+    return (int)( m_sb_position*(NOTE_TRACK_HEIGHT*11 - m_height - 20) );
 }
 
 // -----------------------------------------------------------------------------------------------------------
-    
+
 void KeyboardEditor::setYScrollInPixels(int y)
 {
-    m_sb_position = float(y) / float(120*11 - m_height - 20);
+    m_sb_position = float(y) / float(NOTE_TRACK_HEIGHT*11 - m_height - 20);
     if (m_sb_position > 1.0f) m_sb_position = 1.0f;
     else if (m_sb_position < 0.0f) m_sb_position = 0.0f;
 }
@@ -699,9 +705,9 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     
     for (int g_octaveID=0; g_octaveID<11; g_octaveID++)
     {
-        int g_octave_y = g_octaveID*120 - getYScrollInPixels();
+        int g_octave_y = g_octaveID*NOTE_TRACK_HEIGHT - getYScrollInPixels();
         
-        if (g_octave_y > -120 and g_octave_y < m_height + 20)
+        if (g_octave_y > -NOTE_TRACK_HEIGHT and g_octave_y < m_height + 20)
         {
             const int keyboard_image_x = getEditorXStart() - NOTE_TRACK_WIDTH;
             
@@ -716,7 +722,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             // octave number
             AriaRender::images();
             AriaRender::color(0,0,0);
-            AriaRender::renderNumber(9-g_octaveID, 30, getEditorYStart()+1 + g_octave_y + 120/2);
+            AriaRender::renderNumber(9-g_octaveID, 30, getEditorYStart()+1 + g_octave_y + NOTE_TRACK_HEIGHT/2);
             
         }//end if
     }//next
