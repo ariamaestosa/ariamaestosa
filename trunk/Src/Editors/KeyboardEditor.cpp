@@ -54,13 +54,7 @@ static const float BLACK_THRESHOLD = 0.85f;
 
 // note track
 static const int NOTE_TRACK_WIDTH = 30;
-#ifdef LARGE_FONTS
-static const int NOTE_TRACK_HEIGHT = 156;
-#else
-static const int NOTE_TRACK_HEIGHT = 121;
-#endif
 static const int NOTE_COUNT = 12;
-static const int NOTE_HEIGHT = NOTE_TRACK_HEIGHT/NOTE_COUNT;
 static const int NOTE_X_PADDING = 2;
 static const int NOTE_RESIZING_MODE_SPAN = 4; // in pixels
 
@@ -84,7 +78,13 @@ KeyboardEditor::KeyboardEditor(GraphicalTrack* track) : Editor(track)
     int octave;
     wxFont drumFont = getDrumNamesFont();
     
-    m_y_step = NOTE_HEIGHT;
+#ifdef LARGE_FONTS
+    m_octave_height = 156;
+    m_y_step = 13; //m_octave_height/NOTE_COUNT;
+#else
+    m_octave_height = 121;
+    m_y_step = 10; //m_octave_height/NOTE_COUNT;
+#endif
     
     m_resizing_mode = false;
     m_sb_position = 0.5;
@@ -192,7 +192,7 @@ NoteSearchResult KeyboardEditor::noteAt(RelativeXCoord x, const int y, int& note
     {
         const int x1 = m_graphical_track->getNoteStartInPixels(n) - m_gsequence->getXScrollInPixels();
         const int x2 = m_graphical_track->getNoteEndInPixels(n)   - m_gsequence->getXScrollInPixels();
-        const int y1 = m_track->getNotePitchID(n)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels();
+        const int y1 = m_track->getNotePitchID(n)*m_y_step + getEditorYStart() - getYScrollInPixels();
 
         if (x_edit > x1 and x_edit < x2 and y > y1 and y < y1+12)
         {
@@ -235,7 +235,7 @@ void KeyboardEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mouse
         const int y   = levelToY(from_note);
 
         if (x1 > mouse_x_min + xscroll and x2 < mouse_x_max + xscroll and
-            y + Y_STEP_HEIGHT/2 > mouse_y_min and y + Y_STEP_HEIGHT/2 < mouse_y_max )
+            y + m_y_step/2 > mouse_y_min and y + m_y_step/2 < mouse_y_max )
         {
             m_graphical_track->selectNote(n, true);
         }
@@ -251,14 +251,14 @@ void KeyboardEditor::selectNotesInRect(RelativeXCoord& mousex_current, int mouse
 
 int KeyboardEditor::getYScrollInPixels()
 {
-    return (int)( m_sb_position*(NOTE_TRACK_HEIGHT*11 - m_height - 20) );
+    return (int)( m_sb_position*(m_octave_height*11 - m_height - 20) );
 }
 
 // -----------------------------------------------------------------------------------------------------------
 
 void KeyboardEditor::setYScrollInPixels(int y)
 {
-    m_sb_position = float(y) / float(NOTE_TRACK_HEIGHT*11 - m_height - 20);
+    m_sb_position = float(y) / float(m_octave_height*11 - m_height - 20);
     if (m_sb_position > 1.0f) m_sb_position = 1.0f;
     else if (m_sb_position < 0.0f) m_sb_position = 0.0f;
 }
@@ -416,9 +416,9 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
     // ------------------ draw lined background ----------------
 
-    int levelid = getYScrollInPixels()/Y_STEP_HEIGHT;
+    int levelid = getYScrollInPixels()/m_y_step;
     const int yscroll = getYScrollInPixels();
-    const int last_note = ( yscroll + getYEnd() - getEditorYStart() )/Y_STEP_HEIGHT;
+    const int last_note = ( yscroll + getYEnd() - getEditorYStart() )/m_y_step;
     const int editor_x1 = getEditorXStart();
     const int editor_x2 = getXEnd();
 
@@ -554,7 +554,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             ariaColor.set(1.0f, 0.0f, 0.0f, 1.0f);
         }
         else if (m_selecting and x1 > mouse_x_min and x2 < mouse_x_max and
-                 y1 + Y_STEP_HEIGHT/2 > mouse_y_min and y1 + Y_STEP_HEIGHT/2 < mouse_y_max)
+                 y1 + m_y_step/2 > mouse_y_min and y1 + m_y_step/2 < mouse_y_max)
         {
             ariaColor.set(0.94f, 1.0f, 0.0f, 1.0f);
         }
@@ -610,9 +610,9 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
 
             if (not (preview_x1 < 0 or preview_x2 < 0) and preview_x2 > preview_x1)
             {
-                const int y1 = ((mousey_initial - getEditorYStart() + getYScrollInPixels())/Y_STEP_HEIGHT)*Y_STEP_HEIGHT +
+                const int y1 = ((mousey_initial - getEditorYStart() + getYScrollInPixels())/m_y_step)*m_y_step +
                                 getEditorYStart() - getYScrollInPixels();
-                const int y2 = y1 + Y_STEP_HEIGHT;
+                const int y2 = y1 + m_y_step;
                                 
                 ariaColor.set(1, 0.85, 0, 1.0);
                 
@@ -626,7 +626,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
                     AriaRender::images();
                     applyInvertedColor(ariaColor);
        
-                    AriaRender::renderString(getNoteName( (y2 - getEditorYStart() + getYScrollInPixels())/ Y_STEP_HEIGHT - 1 ),
+                    AriaRender::renderString(getNoteName( (y2 - getEditorYStart() + getYScrollInPixels())/ m_y_step - 1 ),
                                              preview_x1 + getEditorXStart(), 
                                              y2,
                                              preview_x2 - preview_x1);
@@ -671,7 +671,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             int y_difference = mousey_current - mousey_initial;
 
             const int x_step_move = (int)( m_track->snapMidiTickToGrid(x_difference, false) * m_gsequence->getZoom() );
-            const int y_step_move = (int)round( (float)y_difference/ (float)Y_STEP_HEIGHT );
+            const int y_step_move = (int)round( (float)y_difference/ (float)m_y_step );
 
             // move a single note
             if (m_last_clicked_note != -1)
@@ -705,9 +705,9 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
     
     for (int g_octaveID=0; g_octaveID<11; g_octaveID++)
     {
-        int g_octave_y = g_octaveID*NOTE_TRACK_HEIGHT - getYScrollInPixels();
+        int g_octave_y = g_octaveID*m_octave_height - getYScrollInPixels();
         
-        if (g_octave_y > -NOTE_TRACK_HEIGHT and g_octave_y < m_height + 20)
+        if (g_octave_y > -m_octave_height and g_octave_y < m_height + 20)
         {
             const int keyboard_image_x = getEditorXStart() - NOTE_TRACK_WIDTH;
             
@@ -722,7 +722,7 @@ void KeyboardEditor::render(RelativeXCoord mousex_current, int mousey_current,
             // octave number
             AriaRender::images();
             AriaRender::color(0,0,0);
-            AriaRender::renderNumber(9-g_octaveID, 30, getEditorYStart()+1 + g_octave_y + NOTE_TRACK_HEIGHT/2);
+            AriaRender::renderNumber(9-g_octaveID, 30, getEditorYStart()+1 + g_octave_y + m_octave_height/2);
             
         }//end if
     }//next
@@ -864,20 +864,20 @@ void KeyboardEditor::drawNoteTrack(int x, int y, bool focus)
     naturalNotesBackgroundColor = focus ? m_white_color : m_gray_color;
     AriaRender::primitives();
     applyColor(naturalNotesBackgroundColor);
-    AriaRender::bordered_rect(x, y, x + NOTE_TRACK_WIDTH, y + NOTE_TRACK_HEIGHT);
+    AriaRender::bordered_rect(x, y, x + NOTE_TRACK_WIDTH, y + m_octave_height);
     
     // Draw key rectangles
     alteredNotesIt = 1;
     applyColor(m_black_color);
     while (alteredNotesIt<NOTE_COUNT)
     {
-        AriaRender::rect(x, y + alteredNotesIt*NOTE_HEIGHT, 
-                         x + NOTE_TRACK_WIDTH+1, y + (alteredNotesIt+1)*NOTE_HEIGHT);
+        AriaRender::rect(x, y + alteredNotesIt*m_y_step, 
+                         x + NOTE_TRACK_WIDTH+1, y + (alteredNotesIt+1)*m_y_step);
         alteredNotesIt += 2;
         if (alteredNotesIt == 7)
         {
-            AriaRender::line(x, y + alteredNotesIt*NOTE_HEIGHT-1, 
-                             x + NOTE_TRACK_WIDTH+1, y + alteredNotesIt*NOTE_HEIGHT-1);
+            AriaRender::line(x, y + alteredNotesIt*m_y_step-1, 
+                             x + NOTE_TRACK_WIDTH+1, y + alteredNotesIt*m_y_step-1);
            
             alteredNotesIt = 8;
         }
@@ -903,11 +903,11 @@ void KeyboardEditor::drawNoteTrack(int x, int y, bool focus)
     {
         if (displayFlatNotes)
         {
-            m_flat_notes_names.get(i - 60).render(x + NOTE_X_PADDING, y + (i-59)*NOTE_HEIGHT + NOTE_NAME_Y_POS_OFFSET);
+            m_flat_notes_names.get(i - 60).render(x + NOTE_X_PADDING, y + (i-59)*m_y_step + NOTE_NAME_Y_POS_OFFSET);
         }
         else
         {
-            m_sharp_notes_names.get(i - 60).render(x + NOTE_X_PADDING, y + (i-59)*NOTE_HEIGHT + NOTE_NAME_Y_POS_OFFSET);
+            m_sharp_notes_names.get(i - 60).render(x + NOTE_X_PADDING, y + (i-59)*m_y_step + NOTE_NAME_Y_POS_OFFSET);
         }
     
         isNoteAltered = not isNoteAltered;
@@ -934,9 +934,9 @@ void KeyboardEditor::drawMovedNote(int noteId, int x_step_move, int y_step_move,
     AriaRender::primitives();
     applyColor(ariaColor);
     AriaRender::rect(x1 + x_step_move + getEditorXStart(),
-                     (y + y_step_move)*Y_STEP_HEIGHT + 1 + getEditorYStart() - getYScrollInPixels(),
+                     (y + y_step_move)*m_y_step + 1 + getEditorYStart() - getYScrollInPixels(),
                      x2 - 1 + x_step_move + getEditorXStart(),
-                     (y + y_step_move + 1)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels());
+                     (y + y_step_move + 1)*m_y_step + getEditorYStart() - getYScrollInPixels());
 
 
     if (showNoteNames)
@@ -946,7 +946,7 @@ void KeyboardEditor::drawMovedNote(int noteId, int x_step_move, int y_step_move,
 
         AriaRender::renderString(getNoteName(y + y_step_move),
                                  x1 + x_step_move + getEditorXStart(),
-                                 (y + y_step_move + 1)*Y_STEP_HEIGHT + 1 + getEditorYStart() - getYScrollInPixels(),
+                                 (y + y_step_move + 1)*m_y_step + 1 + getEditorYStart() - getYScrollInPixels(),
                                  x2 - x1 -1);
 
         AriaRender::primitives();
@@ -963,9 +963,9 @@ void KeyboardEditor::drawResizedNote(int noteId, int x_step_resize, const AriaCo
     AriaRender::primitives();
     applyColor(ariaColor);
     AriaRender::rect(x1 + getEditorXStart(),
-                     y*Y_STEP_HEIGHT + 1 + getEditorYStart() - getYScrollInPixels(),
+                     y*m_y_step + 1 + getEditorYStart() - getYScrollInPixels(),
                      std::max(x1 + getEditorXStart(), x2 - 1 + x_step_resize + getEditorXStart()),
-                     (y + 1)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels());
+                     (y + 1)*m_y_step + getEditorYStart() - getYScrollInPixels());
                     
     if (showNoteNames)
     {
@@ -974,7 +974,7 @@ void KeyboardEditor::drawResizedNote(int noteId, int x_step_resize, const AriaCo
 
         AriaRender::renderString(getNoteName(y),
                                  x1 + getEditorXStart(),
-                                 (y + 1)*Y_STEP_HEIGHT + 1 + getEditorYStart() - getYScrollInPixels(),
+                                 (y + 1)*m_y_step + 1 + getEditorYStart() - getYScrollInPixels(),
                                  std::max(0, x2 + x_step_resize - x1  -1));
 
         AriaRender::primitives();
@@ -1020,7 +1020,7 @@ NoteSearchResult KeyboardEditor::flownOverNoteAt(RelativeXCoord x, const int y, 
         const int x2 = m_graphical_track->getNoteEndInPixels(n)   - xOffset;
         const int xResize = x2 - NOTE_RESIZING_MODE_SPAN;
         
-        const int y1 = m_track->getNotePitchID(n)*Y_STEP_HEIGHT + getEditorYStart() - getYScrollInPixels();
+        const int y1 = m_track->getNotePitchID(n)*m_y_step + getEditorYStart() - getYScrollInPixels();
 
         if (x_edit > x1 and x_edit < x2 and y > y1 and y < y1+12)
         {
