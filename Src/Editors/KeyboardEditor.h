@@ -33,12 +33,6 @@ namespace AriaMaestosa
     
     class KeyboardEditor : public Editor
     {
-#ifdef LARGE_FONTS
-        static const int Y_STEP_HEIGHT = 13;
-#else
-        static const int Y_STEP_HEIGHT = 10;
-#endif
-
         AriaRenderArray m_sharp_notes_names;
         AriaRenderArray m_flat_notes_names;
         
@@ -56,17 +50,17 @@ namespace AriaMaestosa
 
         int levelToLocalY(const int level)
         {
-            return level*Y_STEP_HEIGHT+1;
+            return level*m_y_step+1;
         }
         
         int levelToY(const int level)
         {
-            return level*Y_STEP_HEIGHT+1 + getEditorYStart() - getYScrollInPixels();
+            return level*m_y_step+1 + getEditorYStart() - getYScrollInPixels();
         }
         
         int levelsInView() const
         {
-            return (getYEnd() - getEditorYStart()) / Y_STEP_HEIGHT;
+            return (getYEnd() - getEditorYStart()) / m_y_step;
         }
         
         /** implemented from base class Editor's required interface */
@@ -117,6 +111,7 @@ namespace AriaMaestosa
         AriaColor m_gray_color;
         bool m_resizing_mode;
         
+        int m_octave_height;
     
         wxString getNoteName(int pitchID, bool addOctave = true);
         void applyColor(AriaColor color);
