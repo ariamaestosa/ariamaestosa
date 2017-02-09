@@ -59,16 +59,19 @@ class wxWorkaroundSpinCtrl : public wxTextCtrl
     int min, max;
 public:
     wxWorkaroundSpinCtrl(wxWindow* parent, int id, const wxString& value, const wxPoint& point, const wxSize& size, long style=0)
-    : wxTextCtrl(parent, id, value, point, wxSize(45, -1), style, wxIntegerValidator<int>())
+    : wxTextCtrl(parent, id, value, point, wxSize(45, -1), style/*, wxIntegerValidator<int>()*/)
     {
         min = 0;
-        max = 100;
+        max = 300;
+        //dynamic_cast<wxIntegerValidator<int>*>(GetValidator())->SetRange(min, max);
+        this->Connect(this->GetId(), wxEVT_KILL_FOCUS, wxFocusEventHandler(wxWorkaroundSpinCtrl::onKillFocus), 0, this);
     }
     
     void SetRange(int a, int b)
     {
         min = a;
         max = b;
+        //dynamic_cast<wxIntegerValidator<int>*>(GetValidator())->SetRange(a, b);
     }
     
     void SetValue(int val)
@@ -84,12 +87,28 @@ public:
     void up(wxSpinEvent& evt)
     {
         int v = GetValue() + 1;
-        if (v <= max) SetValue(v);
+        if (v <= max) 
+            SetValue(v);
     }
     void down(wxSpinEvent& evt)
     {
         int v = GetValue() - 1;
-        if (v >= min) SetValue(v);
+        if (v >= min) 
+            SetValue(v);
+    }
+
+    void onKillFocus(wxFocusEvent& evt)
+    {
+        long val;
+        if (!wxTextCtrl::GetValue().ToLong(&val))
+        {
+            SetValue(100);
+        }
+
+        if (val < min)
+            SetValue(min);
+        else if (val > max)
+            SetValue(max);
     }
 };
 #define SPINNER_CLASS wxWorkaroundSpinCtrl
