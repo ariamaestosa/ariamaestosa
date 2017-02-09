@@ -692,6 +692,8 @@ void MainFrame::initToolbar()
 #ifdef __WXMAC__
     wxSpinButton* songLengthSpinner;
     m_toolbar->add(songLengthSpinner = new wxSpinButton(m_toolbar, wxID_ANY));
+    songLengthSpinner->SetRange(0, 10000);
+    songLengthSpinner->SetValue(5000);
     songLengthSpinner->Bind(wxEVT_SPIN_UP, &wxWorkaroundSpinCtrl::up, m_song_length);
     songLengthSpinner->Bind(wxEVT_SPIN_DOWN, &wxWorkaroundSpinCtrl::down, m_song_length);
 #endif
@@ -755,6 +757,8 @@ void MainFrame::initToolbar()
 #ifdef __WXMAC__
     wxSpinButton* zoomSpinner;
     m_toolbar->add(zoomSpinner = new wxSpinButton(m_toolbar, wxID_ANY));
+    zoomSpinner->SetRange(0, 10000);
+    zoomSpinner->SetValue(5000);
     zoomSpinner->Bind(wxEVT_SPIN_UP, &wxWorkaroundSpinCtrl::up, m_display_zoom);
     zoomSpinner->Bind(wxEVT_SPIN_DOWN, &wxWorkaroundSpinCtrl::down, m_display_zoom);
 #endif
