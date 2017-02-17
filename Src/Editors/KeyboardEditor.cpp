@@ -78,11 +78,13 @@ KeyboardEditor::KeyboardEditor(GraphicalTrack* track) : Editor(track)
     int octave;
     wxFont drumFont = getDrumNamesFont();
     
+//#define LARGE_FONTS
+
 #ifdef LARGE_FONTS
     m_octave_height = 156;
     m_y_step = 13; //m_octave_height/NOTE_COUNT;
 #else
-    m_octave_height = 121;
+    m_octave_height = 120;
     m_y_step = 10; //m_octave_height/NOTE_COUNT;
 #endif
     
