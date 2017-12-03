@@ -11,6 +11,7 @@
 #include <jack/jack.h>
 #include <jack/midiport.h>
 #include <wx/wx.h>
+#include <jdksmidi/utils.h>
 #include <jdksmidi/multitrack.h>
 #include <jdksmidi/sequencer.h>
 #include "Midi/CommonMidiUtils.h"
