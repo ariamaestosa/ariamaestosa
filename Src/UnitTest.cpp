@@ -219,6 +219,11 @@ void UnitTestCase::showMenu()
     
     TestCaseList::Node* from = TestCaseList::getEffectiveRoot();
     
+    if (from == NULL) {
+        std::cerr << "Error: Unit tests were not compiled into this binary." << std::endl;
+        exit(1);
+    }
+    
     std::cout << "==== UNIT TESTS ===\n";
     std::cout << "(0) [group] All Tests\n";
     printTree(from, 0);
