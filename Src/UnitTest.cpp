@@ -226,7 +226,7 @@ void UnitTestCase::showMenu()
     std::cout << "----\n";
     std::cout << "Make a choice : \n";
     std::cout << "\n> ";
-    fflush(stdout);
+    std::cout.flush();
     
     int choice;
     std::cin >> choice;
