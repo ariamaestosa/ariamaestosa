@@ -73,6 +73,7 @@
 #include <wx/tglbtn.h>
 #include <wx/hyperlink.h>
 #include <wx/timer.h>
+#include <wx/stdpaths.h>
 
 #ifdef __WXMAC__
 #include <ApplicationServices/ApplicationServices.h>
@@ -409,7 +410,7 @@ void MainFrame::init(const wxArrayString& filesToOpen, bool fileInCommandLine)
     changingValues = true;
     m_files_to_open = filesToOpen;
     m_file_in_command_line = fileInCommandLine;
-    m_current_dir = ::wxGetCwd();
+    m_current_dir = wxStandardPaths::Get().GetAppDocumentsDir();
 
     Centre();
 
