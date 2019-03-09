@@ -293,9 +293,9 @@ void merge( ptr_vector<IMergeSource>& sources )
     }
 }
 
-const int* MergeTestData = (int[]){1,2,4,6,8,12,14,17,19,23}; 
-const int* MergeTestData2 = (int[]){5,8,12,15,25,46,48,70,71,72}; 
-const int* MergeTestData3 = (int[]){3,3,4,5,6,6,7,8,9,10};
+const int MergeTestData[] = {1,2,4,6,8,12,14,17,19,23};
+const int MergeTestData2[] = {5,8,12,15,25,46,48,70,71,72};
+const int MergeTestData3[] = {3,3,4,5,6,6,7,8,9,10};
 
 UNIT_TEST( MergeTest )
 {
