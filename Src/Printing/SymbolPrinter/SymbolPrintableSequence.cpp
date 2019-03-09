@@ -28,6 +28,8 @@
 
 #include <wx/dc.h>
 
+#include <algorithm>
+
 using namespace AriaMaestosa;
 
 const static bool LOGGING = false;

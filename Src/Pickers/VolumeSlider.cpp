@@ -23,6 +23,7 @@
 #include "Actions/SetTrackVolume.h"
 
 #include <iostream>
+#include <algorithm>
 #include "Utils.h"
 #include "AriaCore.h"
 

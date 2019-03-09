@@ -56,6 +56,7 @@ namespace AriaMaestosa
 }
 using namespace AriaMaestosa;
 
+#include <algorithm>
 
 // ----------------------------------------------------------------------------------------------------------
 

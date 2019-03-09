@@ -21,6 +21,8 @@
 #include "Midi/MeasureData.h"
 #include "Midi/Sequence.h"
 
+#include <algorithm>
+
 using namespace AriaMaestosa;
 using namespace AriaMaestosa::SilenceAnalyser;
 

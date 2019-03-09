@@ -16,6 +16,7 @@
 
 
 #include <cmath>
+#include <algorithm>
 #include "Utils.h"
 
 #include "Actions/EditAction.h"

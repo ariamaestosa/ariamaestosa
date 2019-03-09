@@ -22,6 +22,8 @@
 #include "Printing/SymbolPrinter/PrintLayout/LayoutPage.h"
 #include "Printing/SymbolPrinter/SymbolPrintableSequence.h"
 
+#include <algorithm>
+
 using namespace AriaMaestosa;
 
 const static bool LOGGING = false;

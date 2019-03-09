@@ -42,6 +42,8 @@
 class wxGraphicsContext;
 #endif
 
+#include <algorithm>
+
 const bool LOGGING = false;
 #define BE_VERBOSE 0
 

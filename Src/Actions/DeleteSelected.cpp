@@ -27,6 +27,7 @@
 
 #include "UnitTest.h"
 #include <cmath>
+#include <algorithm>
 
 #include <wx/intl.h>
 

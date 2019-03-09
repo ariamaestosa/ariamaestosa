@@ -23,6 +23,8 @@
 #include <wx/intl.h>
 #include <wx/utils.h>
 
+#include <algorithm>
+
 using namespace AriaMaestosa::Action;
 
 

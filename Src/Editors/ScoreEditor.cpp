@@ -37,6 +37,7 @@
 #include "AriaCore.h"
 
 #include <string>
+#include <algorithm>
 
 /**
  * Explainations:

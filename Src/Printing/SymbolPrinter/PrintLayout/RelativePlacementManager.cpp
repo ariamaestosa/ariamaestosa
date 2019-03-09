@@ -21,6 +21,7 @@
 #include <iostream>
 #include <cmath>
 #include <cassert>
+#include <algorithm>
 
 #include "Midi/MeasureData.h"
 #include "Printing/RenderRoutines.h"

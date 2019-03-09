@@ -39,6 +39,7 @@
 
 #include <string>
 #include <cmath>
+#include <algorithm>
 
 #include <wx/minifram.h>
 #include <wx/sizer.h>

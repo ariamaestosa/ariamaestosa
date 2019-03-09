@@ -10,6 +10,8 @@
 #include <wx/dcprint.h>
 #include <wx/dcmemory.h>
 
+#include <algorithm>
+
 #ifdef __WXMAC__
 
 #if wxMAJOR_VERSION > 2 || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION == 9)

@@ -16,6 +16,7 @@
 
 
 #include <cmath>
+#include <algorithm>
 
 #include "Editors/KeyboardEditor.h"
 
