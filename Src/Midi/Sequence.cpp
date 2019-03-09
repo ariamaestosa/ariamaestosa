@@ -878,7 +878,6 @@ bool Sequence::readFromFile(irr::io::IrrXMLReader* xml, GraphicalSequence* gseq)
     
     tracks.clearAndDeleteAll();
     
-    once
     {
         ScopedMeasureITransaction tr(m_measure_data->startImportTransaction());
         
