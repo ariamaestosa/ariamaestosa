@@ -229,6 +229,8 @@ bool wxWidgetApp::OnInit()
         std::cout << "[main] detected another Aria instance" << std::endl;
         if (!handleSingleInstance())
         {
+            wxMessageBox(_("Detected another Aria instance running; cannot continue."),
+                _("Error"), wxICON_ERROR);
             return false;
         }
     }
