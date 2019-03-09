@@ -23,7 +23,8 @@ public:
 #else
 // silly trick to not bloat the executable with unit test code in release mode; since the template is
 // never instantiated the code will be discarded
-#define UNIT_TEST( NAME ) template<typename T> void NAME()
+// give it a different name to avoid conflicting with a forward declared class
+#define UNIT_TEST( NAME ) template<typename T> void NAME ## _uninstantiated()
 #endif
 
 #define require( CONDITION, MESSAGE ) if (!( CONDITION ))                          \
