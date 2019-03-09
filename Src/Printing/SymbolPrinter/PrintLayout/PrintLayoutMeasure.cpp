@@ -95,13 +95,8 @@ bool PrintLayoutMeasure::calculateIfMeasureIsSameAs(PrintLayoutMeasure& checkMea
          we will match each notes from the first measure to the identical one in the second.
          If ever one note failes to be matched, then the 2 measures are different.
          */
-        int noteMatched_this[noteAmount];
-        int noteMatched_other[noteAmount];
-        for (int n=0; n<noteAmount; n++)
-        {
-            noteMatched_this[n] = false;
-            noteMatched_other[n] = false;
-        }
+        std::vector<int> noteMatched_this(noteAmount, false);
+        std::vector<int> noteMatched_other(noteAmount, false);
         
         for (int checkNote_this=0; checkNote_this<=noteAmount; checkNote_this++)
         {

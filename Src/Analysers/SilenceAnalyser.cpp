@@ -190,8 +190,7 @@ void AriaMaestosa::SilenceAnalyser::findSilences(const Sequence* seq, RenderSile
                                                  const int last_visible_measure, const int silences_y, void* userdata)
 {
     const int visible_measure_amount = last_visible_measure-first_visible_measure+1;
-    bool measure_empty[visible_measure_amount+1];
-    for (int i=0; i<=visible_measure_amount; i++) measure_empty[i] = true;
+    std::vector<bool> measure_empty(visible_measure_amount+1, true);
     
     const MeasureData* md = seq->getMeasureData();
     

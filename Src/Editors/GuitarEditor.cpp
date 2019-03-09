@@ -119,15 +119,9 @@ void GuitarEditor::render(RelativeXCoord mousex_current, int mousey_current,
                         getXEnd(), getEditorYStart() + first_string_position + n*m_y_step);
     }
 
-    int lastNote[stringCount];
-    int lastNoteTick[stringCount];
+    std::vector<int> lastNote(stringCount, -1);
+    std::vector<int> lastNoteTick(stringCount, -1);
     
-    for (int n=0; n<stringCount; n++)
-    {
-        lastNote[n] = -1;
-        lastNoteTick[n] = -1;
-    }
-
     // ---------------------- draw notes ----------------------------
     const int noteAmount = m_track->getNoteAmount();
     
