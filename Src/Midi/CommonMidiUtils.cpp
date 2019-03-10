@@ -403,7 +403,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdksmidi::MIDIMultiTr
         
         substract_ticks = *startTick;
         
-        if (trackLength == -1) return -1; // nothing to play in track (empty track - play nothing)
+        if (trackLength == -1) return false; // nothing to play in track (empty track - play nothing)
         
         if (sequence->isLoopEnabled())
         {
@@ -485,7 +485,7 @@ bool AriaMaestosa::makeJDKMidiSequence(Sequence* sequence, jdksmidi::MIDIMultiTr
     }
     
     
-    if (*songLengthInTicks < 1) return -1; // nothing to play at all (empty song - play nothing)
+    if (*songLengthInTicks < 1) return false; // nothing to play at all (empty song - play nothing)
     *numTracks = sequence->getTrackAmount()+1;
     
     // ---- default tempo
