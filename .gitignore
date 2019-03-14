@@ -1,0 +1,6 @@
+*.dll
+*.exe
+*.o
+cl/.codelite
+.sconsign.dblite
+scons/scons-local-1.3.0.d20100626
