@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CodeLite_Workspace Name="Aria" Database="./Aria.tags">
+<CodeLite_Workspace Name="Aria" Database="./Aria.tags" Version="10.0.0">
   <Project Name="Aria" Path="Aria.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="WinDebug" Selected="yes">

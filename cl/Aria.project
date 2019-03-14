@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CodeLite_Project Name="Aria" InternalType="GUI">
+<CodeLite_Project Name="Aria" InternalType="GUI" Version="10.0.0">
   <Plugins>
     <Plugin Name="qmake">
-      <![CDATA[00030001N0011linux_debug0000000000000001N0013linux_release0000000000000001N0015windows_release000000000000]]>
+      <![CDATA[00040001N0011linux_debug0000000000000001N0013linux_release0000000000000001N0013windows_debug0000000000000001N0015windows_release000000000000]]>
     </Plugin>
     <Plugin Name="CMakePlugin">
       <![CDATA[[{
@@ -430,7 +430,8 @@
         <Library Value="asound"/>
       </Linker>
       <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
-      <General OutputFile="./Aria" IntermediateDirectory="../_build/linux_debug" Command="./Aria" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="E:/mmg/Developer/Projects/aria" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <General OutputFile="./Aria" IntermediateDirectory="../_build/linux_debug" Command="./Aria" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="D:\mmg\Developer\Projects\aria-git" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <BuildSystem Name="Default"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[]]>
       </Environment>
@@ -449,7 +450,7 @@
         <SingleFileCommand/>
         <MakefileGenerationCommand/>
         <ThirdPartyToolName>None</ThirdPartyToolName>
-        <WorkingDirectory>E:\mmg\Developer\Projects\aria</WorkingDirectory>
+        <WorkingDirectory>..</WorkingDirectory>
       </CustomBuild>
       <AdditionalRules>
         <CustomPostBuild/>
@@ -478,6 +479,7 @@
       </Linker>
       <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
       <General OutputFile="../bin/aria" IntermediateDirectory="../_build/linux_release" Command="../bin/aria" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="../bin" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <BuildSystem Name="Default"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[]]>
       </Environment>
@@ -526,7 +528,8 @@
         <Library Value="asound"/>
       </Linker>
       <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
-      <General OutputFile="./Aria" IntermediateDirectory="../_build/linux_debug" Command="./Aria" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="E:/mmg/Developer/Projects/aria" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <General OutputFile="./Aria" IntermediateDirectory="../_build/linux_debug" Command="./Aria" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory=".." PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <BuildSystem Name="Default"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[]]>
       </Environment>
@@ -540,12 +543,12 @@
       <CustomBuild Enabled="yes">
         <RebuildCommand/>
         <CleanCommand/>
-        <BuildCommand>C:\Python27\python.exe scons/scons.py config=debug WX_HOME=C:\wxWidgets-3.0.1</BuildCommand>
+        <BuildCommand>C:\Python27\python.exe scons/scons.py config=debug WX_HOME=C:\wxWidgets-3.1.2 renderer=opengl -j3</BuildCommand>
         <PreprocessFileCommand/>
         <SingleFileCommand/>
         <MakefileGenerationCommand/>
         <ThirdPartyToolName>None</ThirdPartyToolName>
-        <WorkingDirectory>E:\mmg\Developer\Projects\aria</WorkingDirectory>
+        <WorkingDirectory>..</WorkingDirectory>
       </CustomBuild>
       <AdditionalRules>
         <CustomPostBuild/>
@@ -573,7 +576,8 @@
         <Library Value="asound"/>
       </Linker>
       <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
-      <General OutputFile="../bin/aria" IntermediateDirectory="../_build/linux_release" Command="../bin/aria" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="../bin" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <General OutputFile="../bin/aria" IntermediateDirectory="../_build/linux_release" Command="../bin/aria" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory=".." PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <BuildSystem Name="Default"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[]]>
       </Environment>
@@ -593,7 +597,7 @@
         <SingleFileCommand/>
         <MakefileGenerationCommand/>
         <ThirdPartyToolName>None</ThirdPartyToolName>
-        <WorkingDirectory/>
+        <WorkingDirectory>..</WorkingDirectory>
       </CustomBuild>
       <AdditionalRules>
         <CustomPostBuild/>
