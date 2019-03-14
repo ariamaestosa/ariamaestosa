@@ -1417,6 +1417,8 @@ public:
 
 void MainFrame::menuEvent_manual(wxCommandEvent& evt)
 {
+    wxLaunchDefaultBrowser("https://ariamaestosa.github.io/ariamaestosa/man.html");
+    /*
     wxString sep = wxFileName::GetPathSeparator();
     wxString path_to_docs =  getResourcePrefix() + wxT("Documentation") + sep + wxT("man.html");
 
@@ -1438,6 +1440,7 @@ void MainFrame::menuEvent_manual(wxCommandEvent& evt)
                      wxT(" does not appear to exist).\nTry visiting ariamaestosa.sf.net instead."));
     }
 #endif
+ */
 }
 
 void MainFrame::updateCurrentDir(wxString& path)
