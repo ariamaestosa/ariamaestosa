@@ -10,7 +10,6 @@ os:
   - osx
 compiler:
   - gcc
-  - clang
 
 matrix:
   fast_finish: true
@@ -29,7 +28,7 @@ addons:
     - libgl1-mesa-dev
     - libjpeg-dev
     - libpng-dev
-    - libwxwidgets
+    - libwxgtk3.0-dev
     - pkg-config
     - zlib1g-dev
 
