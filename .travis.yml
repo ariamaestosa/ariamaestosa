@@ -1,0 +1,43 @@
+# Travis-CI configuration file for SuperTuxKart 
+#
+# Configuration manual:
+# http://docs.travis-ci.com/user/build-configuration/
+#
+sudo: false
+language: cpp
+os:
+  - linux
+  - osx
+compiler:
+  - gcc
+  - clang
+
+matrix:
+  fast_finish: true
+
+env:
+  matrix:
+    - BUILD_TYPE="Release"
+
+addons:
+  apt:
+    packages:
+    - build-essential
+    - libbluetooth-dev
+    - libcurl4-gnutls-dev
+    - libfreetype6-dev
+    - libgl1-mesa-dev
+    - libjpeg-dev
+    - libpng-dev
+    - libwxwidgets
+    - pkg-config
+    - zlib1g-dev
+
+before_script:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update && brew bundle; fi
+
+script:
+  - mkdir "build"
+  - cd "build"
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then python scons/scons.py -j3; fi
+  - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then python scons/scons.py -j3; fi
