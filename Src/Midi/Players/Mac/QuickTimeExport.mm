@@ -29,8 +29,10 @@
 #import "QuickTimeExport.h"
 
 
-QTMovie* movie = nil;
 
+#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_12
+QTMovie* movie = nil;
+#endif
 
 bool QuickTimeExport::qtkit_setData(char* data_bytes, int bytes_length)
 {
