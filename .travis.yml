@@ -56,7 +56,8 @@ deploy:
   #file_glob: true
   file: build.zip
   skip_cleanup: true
-  #on:
+  on:
+    all_branches: true
   #  tags: true
   #  #all_branches: true
   #  #on: production
