@@ -49,10 +49,10 @@ before_deploy:
 
 deploy:
   provider: releases
-  github_token: $GITHUB_TOKEN
+  #github_token: $GITHUB_TOKEN
   #api_key: "GITHUB OAUTH TOKEN"
-  #user: "GITHUB USERNAME"
-  #password: "GITHUB PASSWORD"
+  user: $GITHUB_USERNAME
+  password: $GITHUB_PASSWORD
   #file_glob: true
   file: build.zip
   skip_cleanup: true
