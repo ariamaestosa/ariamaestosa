@@ -11,6 +11,8 @@ os:
 compiler:
   - gcc
 
+dist: bionic
+
 matrix:
   fast_finish: true
 
@@ -29,7 +31,7 @@ addons:
     - libjpeg-dev
     - libpng-dev
     - libwxgtk3.0-dev
-    - libwxgtk-webview3.0-gtk3-dev
+    - libwxgtk-webview3.0-dev
     - pkg-config
     - zlib1g-dev
     - libasound2-dev
