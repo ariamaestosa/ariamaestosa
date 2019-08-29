@@ -303,17 +303,17 @@ OSStatus SetUpGraph (AUGraph &inGraph, UInt32 numFrames, Float64 &sampleRate, bo
 		{
 			if (outputUnit == 0) {
 				outputUnit = unit;
-				require_noerr (result = AUGraphNodeInfo(inGraph, node, 0, &outputUnit), home);
+				__Require_noErr (result = AUGraphNodeInfo(inGraph, node, 0, &outputUnit), home);
 				
 				if (!isOffline) {
 					// these two properties are only applicable if its a device we're playing too
-					require_noerr (result = AudioUnitSetProperty (outputUnit, 
+					__Require_noErr (result = AudioUnitSetProperty (outputUnit, 
                                                                      kAudioDevicePropertyBufferFrameSize, 
                                                                      kAudioUnitScope_Output, 0,
                                                                      &numFrames, sizeof(numFrames)), home);
                     
                     /*
-					require_noerr (result = AudioUnitAddPropertyListener (outputUnit, 
+					__Require_noErr (result = AudioUnitAddPropertyListener (outputUnit, 
                                                                              kAudioDeviceProcessorOverload, 
                                                                              OverlaodListenerProc, 0), home);
                     */
@@ -322,21 +322,21 @@ OSStatus SetUpGraph (AUGraph &inGraph, UInt32 numFrames, Float64 &sampleRate, bo
 					UInt32 theSize;
 					theSize = sizeof(sampleRate);
 					
-					require_noerr (result = AudioUnitGetProperty (outputUnit,
+					__Require_noErr (result = AudioUnitGetProperty (outputUnit,
                                                                      kAudioUnitProperty_SampleRate,
                                                                      kAudioUnitScope_Output, 0,
                                                                      &sampleRate, &theSize), home);
 				} else {
                     // remove device output node and add generic output
-					require_noerr (result = AUGraphRemoveNode (inGraph, node), home);
+					__Require_noErr (result = AUGraphRemoveNode (inGraph, node), home);
 					desc.componentSubType = kAudioUnitSubType_GenericOutput;
-					require_noerr (result = AUGraphAddNode (inGraph, &desc, &node), home);
-					require_noerr (result = AUGraphNodeInfo(inGraph, node, NULL, &unit), home);
+					__Require_noErr (result = AUGraphAddNode (inGraph, &desc, &node), home);
+					__Require_noErr (result = AUGraphNodeInfo(inGraph, node, NULL, &unit), home);
 					outputUnit = unit;
 					outputNode = node;
 					
 					// we render the output offline at the desired sample rate
-					require_noerr (result = AudioUnitSetProperty (outputUnit,
+					__Require_noErr (result = AudioUnitSetProperty (outputUnit,
                                                                      kAudioUnitProperty_SampleRate,
                                                                      kAudioUnitScope_Output, 0,
                                                                      &sampleRate, sizeof(sampleRate)), home);
@@ -352,10 +352,10 @@ OSStatus SetUpGraph (AUGraph &inGraph, UInt32 numFrames, Float64 &sampleRate, bo
 			if (outputUnit) {	
                 // reconnect up to the output unit if we're offline
 				if (isOffline && desc.componentType != kAudioUnitType_MusicDevice) {
-					require_noerr (result = AUGraphConnectNodeInput (inGraph, node, 0, outputNode, 0), home);
+					__Require_noErr (result = AUGraphConnectNodeInput (inGraph, node, 0, outputNode, 0), home);
 				}
 				
-				require_noerr (result = AudioUnitSetProperty (unit,
+				__Require_noErr (result = AudioUnitSetProperty (unit,
                                                                  kAudioUnitProperty_SampleRate,
                                                                  kAudioUnitScope_Output, 0,
                                                                  &sampleRate, sizeof(sampleRate)), home);
@@ -363,7 +363,7 @@ OSStatus SetUpGraph (AUGraph &inGraph, UInt32 numFrames, Float64 &sampleRate, bo
                 
 			}
 		}
-		require_noerr (result = AudioUnitSetProperty (unit, kAudioUnitProperty_MaximumFramesPerSlice,
+		__Require_noErr (result = AudioUnitSetProperty (unit, kAudioUnitProperty_MaximumFramesPerSlice,
                                                          kAudioUnitScope_Global, 0,
                                                          &numFrames, sizeof(numFrames)), home);
 	}
@@ -402,23 +402,23 @@ OSStatus GetSynthFromGraph (AUGraph& inGraph, AudioUnit& outSynth)
 {	
 	UInt32 nodeCount;
 	OSStatus result = noErr;
-	require_noerr (result = AUGraphGetNodeCount (inGraph, &nodeCount), fail);
+	__Require_noErr (result = AUGraphGetNodeCount (inGraph, &nodeCount), fail);
 	
 	for (UInt32 i = 0; i < nodeCount; ++i) 
 	{
 		AUNode node;
-		require_noerr (result = AUGraphGetIndNode(inGraph, i, &node), fail);
+		__Require_noErr (result = AUGraphGetIndNode(inGraph, i, &node), fail);
         
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
         AudioComponentDescription desc;
 #else
         ComponentDescription desc;
 #endif
-		require_noerr (result = AUGraphNodeInfo(inGraph, node, &desc, 0), fail);
+		__Require_noErr (result = AUGraphNodeInfo(inGraph, node, &desc, 0), fail);
 		
 		if (desc.componentType == kAudioUnitType_MusicDevice) 
 		{
-			require_noerr (result = AUGraphNodeInfo(inGraph, node, 0, &outSynth), fail);
+			__Require_noErr (result = AUGraphNodeInfo(inGraph, node, 0, &outSynth), fail);
 			return noErr;
 		}
 	}
@@ -525,7 +525,7 @@ bool AudioUnitOutput::outputToDisk(const char* outputFilePath,
         if (!trackSet.empty() && (trackSet.find(i) == trackSet.end()))
         {
             Boolean mute = true;
-            require_noerr (result = MusicTrackSetProperty(track, kSequenceTrackProperty_MuteStatus, &mute, sizeof(mute)), fail);
+            __Require_noErr (result = MusicTrackSetProperty(track, kSequenceTrackProperty_MuteStatus, &mute, sizeof(mute)), fail);
         }
         */
     }
@@ -724,7 +724,7 @@ enum Controllers
 void AudioUnitOutput::programChange(uint8_t progChangeNum, uint8_t midiChannelInUse)
 {
     OSStatus result;
-    require_noerr (result = MusicDeviceMIDIEvent(m_synth_unit, 
+    __Require_noErr (result = MusicDeviceMIDIEvent(m_synth_unit, 
                                                  kMidiMessage_ProgramChange << 4 | midiChannelInUse, 
                                                  progChangeNum, 0,
                                                  0 /*sample offset*/), home_programChange);
@@ -741,7 +741,7 @@ home_programChange:
 void AudioUnitOutput::setBank(uint8_t midiChannelInUse)
 {
     OSStatus result;
-    require_noerr (result = MusicDeviceMIDIEvent(m_synth_unit, 
+    __Require_noErr (result = MusicDeviceMIDIEvent(m_synth_unit, 
                                                  kMidiMessage_ControlChange << 4 | midiChannelInUse, 
                                                  kController_BankMSBControl, 0,
                                                  0 /*sample offset*/), home_setBank);
@@ -872,7 +872,7 @@ void AudioUnitOutput::note_on(const int note, const int volume, const int channe
     UInt32 noteOnCommand = kMidiMessage_NoteOn << 4 | channel;
     
     // note on
-    require_noerr (result = MusicDeviceMIDIEvent(m_synth_unit, noteOnCommand, note, volume, 0), home);
+    __Require_noErr (result = MusicDeviceMIDIEvent(m_synth_unit, noteOnCommand, note, volume, 0), home);
     
 home:
     
@@ -887,7 +887,7 @@ void AudioUnitOutput::note_off(const int note, const int channel)
     UInt32 noteOnCommand = kMidiMessage_NoteOn << 4 | channel;
     
     // note off
-    require_noerr (result = MusicDeviceMIDIEvent(m_synth_unit, noteOnCommand, note, 0, 0), home);
+    __Require_noErr (result = MusicDeviceMIDIEvent(m_synth_unit, noteOnCommand, note, 0, 0), home);
     
 home:
     
@@ -902,7 +902,7 @@ void AudioUnitOutput::prog_change(const int instrument, const int channel)
     UInt32 progamChange = kMidiMessage_ProgramChange << 4 | channel;
     
     // set instrument
-    require_noerr (result = MusicDeviceMIDIEvent(m_synth_unit, progamChange, instrument, 0, 0), home);
+    __Require_noErr (result = MusicDeviceMIDIEvent(m_synth_unit, progamChange, instrument, 0, 0), home);
     
 home:
     
@@ -914,7 +914,7 @@ home:
 void AudioUnitOutput::controlchange(const int controller, const int value, const int channel)
 {
     OSStatus result;
-    require_noerr (result = MusicDeviceMIDIEvent(m_synth_unit, 
+    __Require_noErr (result = MusicDeviceMIDIEvent(m_synth_unit, 
                                                  kMidiMessage_ControlChange << 4 | channel, 
                                                  controller, value,
                                                  0 /*sample offset*/), home_setBank);
@@ -930,7 +930,7 @@ home_setBank:
 void AudioUnitOutput::pitch_bend(const int value, const int channel)
 {
     OSStatus result;
-    require_noerr (result = MusicDeviceMIDIEvent(m_synth_unit, 
+    __Require_noErr (result = MusicDeviceMIDIEvent(m_synth_unit, 
                                                  kMidiMessage_PitchBend << 4 | channel, 
                                                  (value & 0x7F), ((value >> 7) & 0x7F),
                                                  0 /*sample offset*/), home_setBank);

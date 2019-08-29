@@ -29,6 +29,7 @@ addons:
     - libjpeg-dev
     - libpng-dev
     - libwxgtk3.0-dev
+    - libwxgtk-webview3.0-gtk3-dev
     - pkg-config
     - zlib1g-dev
     - libasound2-dev
