@@ -20,8 +20,11 @@
 
 #import <Foundation/Foundation.h>
 #import <Foundation/NSError.h>
+
+#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_12
 #import <QTKit/QTMovie.h>
 #import <QTKit/QTDataReference.h>
+#endif
 
 #import "QuickTimeExport.h"
 
@@ -31,6 +34,7 @@ QTMovie* movie = nil;
 
 bool QuickTimeExport::qtkit_setData(char* data_bytes, int bytes_length)
 {
+    #if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_12
     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
     
     NSData* data = [NSData dataWithBytes:data_bytes length:bytes_length];
@@ -58,10 +62,14 @@ bool QuickTimeExport::qtkit_setData(char* data_bytes, int bytes_length)
     
     [pool release];
     return true;
+    #else
+    return false;
+    #endif
 }
 
 bool QuickTimeExport::qtkit_exportToAiff(const char* filename)
 {
+    #if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_12
     printf("[QuickTimeExport] QTKit will save to %s\n", filename);
     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
     
@@ -86,6 +94,9 @@ bool QuickTimeExport::qtkit_exportToAiff(const char* filename)
     
     [pool release];
 	return success;
+    #else
+    return false;
+    #endif
 }
 
 #endif
