@@ -1,1 +1,2 @@
 brew "wxwidgets"
+brew "dylibbundler"

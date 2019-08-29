@@ -42,3 +42,22 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then python scons/scons.py -j3; fi
   - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then python scons/scons.py -j3; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then python scons/scons.py install; fi
+
+# https://docs.travis-ci.com/user/deployment/releases/
+before_deploy:
+  - zip -r build.zip .
+
+deploy:
+  provider: releases
+  github_token: $GITHUB_TOKEN
+  #api_key: "GITHUB OAUTH TOKEN"
+  #user: "GITHUB USERNAME"
+  #password: "GITHUB PASSWORD"
+  #file_glob: true
+  file: build.zip
+  skip_cleanup: true
+  #on:
+  #  tags: true
+  #  #all_branches: true
+  #  #on: production
+    
