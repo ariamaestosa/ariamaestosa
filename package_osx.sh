@@ -6,7 +6,7 @@ dylibbundler -od -b -x "./AriaMaestosa.app/Contents/MacOS/AriaMaestosa" -d "./Ar
 
 echo "patching libraries..."
 #Work around the likely bug in dylibbundler leading in copying two exemplars of the same dylib with different names instead of creating symlinks or changing the dependency name in the depending binaries
-pushd $PROJECT_ROOT/output/wxFormBuilder.app/Contents/libs/
+pushd ./AriaMaestosa.app/Contents/libs/
 wx_version="$(wx-config --version|cut -c1-3)"
 for lib in $(ls libwx_*.dylib); do
   lib_basename="${lib%%\-*}"
