@@ -1,25 +1,16 @@
-# Travis-CI configuration file for Aria 
-#
-# Configuration manual:
-# http://docs.travis-ci.com/user/build-configuration/
-#
 sudo: false
 language: cpp
 os:
-  - linux
-  - osx
+- linux
+- osx
 compiler:
-  - gcc
-
+- gcc
 dist: bionic
-
 matrix:
   fast_finish: true
-
 env:
   matrix:
-    - BUILD_TYPE="Release"
-
+  - BUILD_TYPE="Release"
 addons:
   apt:
     packages:
@@ -34,31 +25,19 @@ addons:
     - pkg-config
     - zlib1g-dev
     - libasound2-dev
-
 before_script:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update && brew bundle; fi
-
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update && brew bundle; fi
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then python scons/scons.py -j3; fi
-  - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then python scons/scons.py -j3; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then python scons/scons.py install; fi
-
-# https://docs.travis-ci.com/user/deployment/releases/
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then python scons/scons.py -j3; fi
+- if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then python scons/scons.py -j3; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then python scons/scons.py install; fi
 before_deploy:
-  - zip -r build.zip .
-
+- zip -r build.zip .
 deploy:
   provider: releases
-  #github_token: $GITHUB_TOKEN
-  #api_key: "GITHUB OAUTH TOKEN"
-  user: $GITHUB_USERNAME
-  password: $GITHUB_PASSWORD
-  #file_glob: true
+  api_key:
+    secure: $API_KEY
   file: build.zip
-  skip_cleanup: true
   on:
-    all_branches: true
-  #  tags: true
-  #  #all_branches: true
-  #  #on: production
-    
+    repo: ariamaestosa/ariamaestosa
+    branch: TravisRelease
