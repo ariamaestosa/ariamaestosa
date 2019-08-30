@@ -30,8 +30,7 @@ before_script:
 script:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then python scons/scons.py -j3; fi
 - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then python scons/scons.py -j3; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then python scons/scons.py install; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then dylibbundler -od -b -x "./AriaMaestosa.app/Contents/MacOS/AriaMaestosa" -d "./AriaMaestosa.app/Contents/libs/" -p @executable_path/../libs/; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./package_osx.sh; fi
 before_deploy:
 - zip -r "build_$TRAVIS_OS_NAME.zip" .
 deploy:
