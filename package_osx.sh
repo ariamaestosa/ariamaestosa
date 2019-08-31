@@ -2,7 +2,7 @@ echo "python scons/scons.py install"
 python scons/scons.py install
 
 echo "dylibbundler"
-dylibbundler -od -b -x "./AriaMaestosa.app/Contents/MacOS/AriaMaestosa" -d "./AriaMaestosa.app/Contents/libs/" -p @executable_path/../libs/; fi
+dylibbundler -od -b -x "./AriaMaestosa.app/Contents/MacOS/AriaMaestosa" -d "./AriaMaestosa.app/Contents/libs/" -p @executable_path/../libs/
 
 echo "patching libraries..."
 #Work around the likely bug in dylibbundler leading in copying two exemplars of the same dylib with different names instead of creating symlinks or changing the dependency name in the depending binaries
