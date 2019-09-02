@@ -65,7 +65,7 @@
 
 
 <p>
-    You will need to install Developer Tools from the mac OS X install disc. You need OS X 10.4.
+    You will need to install Developer Tools/XCode.
 </p>
 
 <p>
@@ -82,15 +82,13 @@
     
     <br/><br/>
     <span class="code">
-    ../configure --with-cocoa --with-libjpeg=builtin --with-libpng=builtin --with-regex=builtin
-        --without-libtiff --with-zlib=builtin --with-expat=builtin --disable-shared
-        --enable-macosx_arch=i386 --with-macosx-version-min=10.5
-        --with-macosx-sdk=/Developer/SDKs/MacOSX10.5.sdk
+    ../configure --with-cocoa --with-libjpeg=builtin --with-libpng=builtin --with-regex=builtin --without-libtiff
+        --with-zlib=builtin --with-expat=builtin --disable-shared --enable-macosx_arch=x86_64 --with-liblzma=no
     </span>
 </p>
 
 <p>
-    Make sure <i>wx-config --libs</i> points to the 3.0 libs when run from a terminal. If your computer does not find wx-config, make sure /usr/local/bin is in your PATH
+    Make sure <i>wx-config --libs</i> points to the 3.x libs when run from a terminal. If your computer does not find wx-config, make sure /usr/local/bin is in your PATH
     (or pass WXCONFIG=/usr/local/bin/wx-config to scons - see explainations below).
 </p>
 
@@ -175,7 +173,34 @@
 <h2>Compiling</h2>
 
 <script type="text/javascript">
-    writeSectionTop('osx linux', 'Compiling Aria (OS X / Linux)', ['osx.png', 'linux.png']);
+    writeSectionTop('osx', 'Compiling Aria (OS X)', ['osx.png']);
+</script>
+
+<p>
+    You are now ready to build Aria itself. All you need to do is type the scons command :
+</p>
+
+<p>
+    <span class="code">
+    python scons/scons.py CXXFLAGS="-mmacosx-version-min=10.7" -j2 LDFLAGS="-stdlib=libstdc++"
+    </span>
+</p>
+
+<p>
+    This will do a release build with default wxWidgets. Issue <i>python scons/scons.py --help</i> for a summary of all possible options,
+    like to get a debug build or to use a different wxWidgets build.
+</p>
+
+<script type="text/javascript">
+    writeSectionBottom();
+</script>
+
+<div>
+    <br/>
+</div>
+
+<script type="text/javascript">
+    writeSectionTop('linux', 'Compiling Aria (Linux)', ['linux.png']);
 </script>
 
 <p>
