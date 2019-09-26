@@ -152,6 +152,7 @@ EVT_TOOL(LOOP_CLICKED,   MainFrame::loopClicked)
 EVT_TEXT(TEMPO, MainFrame::tempoChanged)
 
 EVT_BUTTON(TIME_SIGNATURE, MainFrame::timeSigClicked)
+
 EVT_TEXT(BEGINNING, MainFrame::firstMeasureChanged)
 EVT_TEXT(LOOP_END_MEASURE, MainFrame::loopEndMeasureChanged)
 
@@ -164,11 +165,7 @@ EVT_SPINCTRL(ZOOM, MainFrame::zoomChanged)
 EVT_TEXT(LENGTH, MainFrame::songLengthTextChanged)
 EVT_TEXT(ZOOM, MainFrame::zoomTextChanged)
 
-#ifdef NO_WX_TOOLBAR
 EVT_BUTTON(TOOL_BUTTON, MainFrame::toolButtonClicked)
-#else
-EVT_TOOL(TOOL_BUTTON, MainFrame::toolButtonClicked)
-#endif
 
 EVT_COMMAND  (DESTROY_SLIDER_EVENT_ID, wxEVT_DESTROY_VOLUME_SLIDER, MainFrame::evt_freeVolumeSlider)
 EVT_COMMAND  (DESTROY_TIMESIG_EVENT_ID, wxEVT_DESTROY_TIMESIG_PICKER, MainFrame::evt_freeTimeSigPicker)
@@ -775,31 +772,12 @@ void MainFrame::initToolbar()
     m_tool1_bitmap.LoadFile( getResourcePrefix()  + wxT("tool1.png") , wxBITMAP_TYPE_PNG);
     m_tool2_bitmap.LoadFile( getResourcePrefix()  + wxT("tool2.png") , wxBITMAP_TYPE_PNG);
 
-#if !defined(__WXOSX_CARBON__)
-    /*
-    wxNotebook* test = new wxNotebook(m_toolbar, wxID_ANY);
-    wxImageList* imglist = new wxImageList();
-    int id1 = imglist->Add( wxArtProvider::GetBitmap(wxART_INFORMATION, wxART_OTHER, wxSize(32,32) ) );
-    int id2 = imglist->Add( wxArtProvider::GetBitmap(wxART_NORMAL_FILE, wxART_OTHER, wxSize(32,32) ) );
-    test->AssignImageList(imglist);
-    test->AddPage(new wxPanel(test), "A", true, id1);
-    test->AddPage(new wxPanel(test), "B", true, id2);
-    test->SetMinSize( wxSize(80, 30) );
-    test->SetSize( wxSize(80, 30) );
-    m_toolbar->add(test, _("Tool"));
-    */
+    m_tool_button = new wxBitmapButton(m_toolbar /* test2 */, TOOL_BUTTON, m_tool1_bitmap,
+                                               wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW | wxBORDER_NONE);
 
-    m_tools_bitmap = new wxStaticBitmap(m_toolbar /* test2 */, wxID_ANY, m_tool1_bitmap);
-    //wxBitmapButton* stbmp = new wxBitmapButton(m_toolbar /* test2 */, wxID_ANY, m_tool1_bitmap,
-    //                                           wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW | wxBORDER_NONE);
-    m_tools_bitmap->Connect(m_tools_bitmap->GetId(), wxEVT_LEFT_DOWN, wxMouseEventHandler(MainFrame::onToolsBitmapMousedown), NULL, this);
-    m_tools_bitmap->Connect(m_tools_bitmap->GetId(), wxEVT_LEFT_UP, wxMouseEventHandler(MainFrame::onToolsBitmapMouseup), NULL, this);
     //I18N: tool selection tip
-    m_tools_bitmap->SetToolTip(_("Tool 1 : Draw notes\nTool 2 : Click to add notes"));
-    m_toolbar->add(m_tools_bitmap, _("Tool"));
-#else
-    m_toolbar->AddTool(TOOL_BUTTON, _("Tool"), m_tool1_bitmap);
-#endif
+    m_tool_button->SetToolTip(_("Tool 1 : Draw notes\nTool 2 : Click to add notes"));
+    m_toolbar->add(m_tool_button, _("Tool"));
     
     if (!loop_enabled)
     {
@@ -1514,12 +1492,12 @@ void MainFrame::toolButtonClicked(wxCommandEvent& evt)
     EditTool currTool = Editor::getCurrentTool();
     if (currTool == EDIT_TOOL_PENCIL)
     {
-        m_toolbar->SetToolNormalBitmap(TOOL_BUTTON, m_tool2_bitmap);
+        m_tool_button->SetBitmap(m_tool2_bitmap);
         Editor::setEditTool(EDIT_TOOL_ADD);
     }
     else if (currTool == EDIT_TOOL_ADD)
     {
-        m_toolbar->SetToolNormalBitmap(TOOL_BUTTON, m_tool1_bitmap);
+        m_tool_button->SetBitmap(m_tool1_bitmap);
         Editor::setEditTool(EDIT_TOOL_PENCIL);
     }
     else
@@ -1560,39 +1538,6 @@ void MainFrame::songLengthChanged(wxSpinEvent& evt)
     }
 
 }
-
-// ----------------------------------------------------------------------------------------------------------
-
-#if !defined(__WXOSX_CARBON__)
-
-void MainFrame::onToolsBitmapMousedown(wxMouseEvent& evt)
-{
-    //wxSize size = m_tools_bitmap->GetSize();
-    //wxPoint pos = m_tools_bitmap->GetPosition();
-    //printf("mouse down %i,%i (m_tools_bitmap = %i,%i size = %i, %i)\n", evt.GetX(), evt.GetY(), pos.x, pos.y,
-    //       size.GetWidth(), size.GetHeight());
-
-    //EditTool currTool = Editor::getCurrentTool();
-    if (evt.GetX()> 34)
-    {
-        m_tools_bitmap->SetBitmap(m_tool2_bitmap);
-        Editor::setEditTool(EDIT_TOOL_ADD);
-    }
-    else if (evt.GetX() < 34)
-    {
-        m_tools_bitmap->SetBitmap(m_tool1_bitmap);
-        Editor::setEditTool(EDIT_TOOL_PENCIL);
-    }
-}
-
-// ----------------------------------------------------------------------------------------------------------
-
-void MainFrame::onToolsBitmapMouseup(wxMouseEvent& evt)
-{
-    //printf("mouse up\n");
-}
-
-#endif
 
 // ----------------------------------------------------------------------------------------------------------
 // ----------------------------------------------------------------------------------------------------------

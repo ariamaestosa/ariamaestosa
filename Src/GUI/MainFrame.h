@@ -49,6 +49,7 @@ class wxBoxSizer;
 class wxStaticBitmap;
 class wxTimer;
 class wxTimerEvent;
+class wxBitmapButton;
 
 #ifdef __WXMAC__
 #include <wx/textctrl.h>
@@ -368,6 +369,7 @@ namespace AriaMaestosa
         wxPanel*         m_notification_panel;
         wxStaticText*    m_notification_text;
         wxStaticBitmap*  m_notification_icon;
+        wxBitmapButton*  m_tool_button;
 
 #if wxCHECK_VERSION(2,9,1)
         wxGenericHyperlinkCtrl* m_notification_link;
@@ -406,12 +408,7 @@ namespace AriaMaestosa
         bool m_file_in_command_line;
         
         std::map<int, wxTimer*> m_timer_map;
-       
-#if !defined(__WXOSX_CARBON__)
-        wxStaticBitmap* m_tools_bitmap;
-        void onToolsBitmapMousedown(wxMouseEvent& evt);
-        void onToolsBitmapMouseup(wxMouseEvent& evt);
-#endif
+        
         void updateCurrentDir(wxString& path);
 
         wxArrayString m_files_to_open;
