@@ -1,0 +1,1 @@
+This folder needs to exist even if empty so that mac OS knows english is a supported language
