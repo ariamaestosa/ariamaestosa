@@ -1,1 +1,1 @@
-You can find a detailed compilation guide at /Resources/Documentation/building.html.
+You can find a detailed compilation guide at docs/building.html .
