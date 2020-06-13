@@ -106,14 +106,14 @@ def main_Aria_func():
         elif os.uname()[0] == 'Darwin':
             which_os = "macosx"
         else:
-            print "!! Unknown operating system '" + os.uname()[0] + "', defaulting to Unix"
+            print("!! Unknown operating system '" + os.uname()[0] + "', defaulting to Unix")
             which_os = "unix"
 
     if not which_os in ["netbsd", "linux", "macosx", "unix", "windows"]:
-        print "!! Unknown operating system '" + which_os + "', please specify 'platform=[linux/macosx/unix/windows/netbsd]'"
+        print("!! Unknown operating system '" + which_os + "', please specify 'platform=[linux/macosx/unix/windows/netbsd]'")
         sys.exit(0) 
     
-    print">> Operating system : " + which_os 
+    print(">> Operating system : " + which_os)
 
     # check what to do
     if 'uninstall' in COMMAND_LINE_TARGETS:
@@ -121,7 +121,7 @@ def main_Aria_func():
         if which_os in ["linux", "unix", "netbsd"]:
             uninstall_Aria_unix()
         else:
-            print "!! Unknown operation or system (uninstall is not valid on your system)"
+            print("!! Unknown operation or system (uninstall is not valid on your system)")
             sys.exit(0)
     elif 'install' in COMMAND_LINE_TARGETS:
         # install
@@ -130,7 +130,7 @@ def main_Aria_func():
         elif which_os == "macosx":
             install_Aria_mac()
         else:
-            print "!! Unknown operation or system (install is not valid on your system)"
+            print("!! Unknown operation or system (install is not valid on your system)")
             sys.exit(0)     
     else:
         # compile
@@ -147,10 +147,10 @@ def install_Aria_mac():
     sys_command("cp -r ./OSX/*.icns ./Aria\ Maestosa.app/Contents/Resources/.")
     sys_command("touch ./Aria\ Maestosa.app")
 
-    print "*** Cleaning up..."
+    print("*** Cleaning up...")
     os.system("cd ./Aria\ Maestosa.app && find . -name \".svn\" -exec rm -rf '{}' \;")
     
-    print "*** Done"
+    print("*** Done")
     sys.exit(0)
 
 # ---------------------------- Uninstall Linux -----------------------------
@@ -161,10 +161,10 @@ def uninstall_Aria_unix():
     prefix = ARGUMENTS.get('prefix', 0)
     
     if prefix == 0:
-        print ">> No prefix specified, defaulting to /usr/local/"
+        print(">> No prefix specified, defaulting to /usr/local/")
         prefix = '/usr/local/'
     else:
-         print ">> Prefix: " + prefix
+         print(">> Prefix: " + prefix)
     
     if prefix[-1] != "/":
         prefix += "/"
@@ -177,16 +177,16 @@ def uninstall_Aria_unix():
     os.system("rm " + app_path)
     os.system("rm " + locale_path + "*/LC_MESSAGES/aria_maestosa.mo")
 
-    print "\n*** Uninstall done"
+    print("\n*** Uninstall done")
     sys.exit(0)
 
 # -- small helper func
 # executes a command on the system shell and prints it to stdout
 def sys_command(command):
-    print command
+    print(command)
     return_status = os.system(command)
     if return_status != 0:
-        print "An error occured"
+        print("An error occured")
         sys.exit(0)
         
 # ---------------------------- Compile -----------------------------
@@ -204,16 +204,16 @@ def compile_Aria(which_os):
     env['ENV']['PATH'] = os.environ.get('PATH')
     
     if 'CXX' in os.environ:
-        print ">> Using compiler " + os.environ['CXX']
+        print(">> Using compiler " + os.environ['CXX'])
         env.Replace(CXX = os.environ['CXX'])
 
     # check build style
     build_type = ARGUMENTS.get('config', 'release')
     if build_type != 'release' and build_type != 'debug':
-        print "!! Unknown build config " + build_type
+        print("!! Unknown build config " + build_type)
         sys.exit(0) 
         
-    print ">> Build type : " + build_type
+    print(">> Build type : " + build_type)
     
     # check renderer
     if which_os == "macosx":
@@ -221,10 +221,10 @@ def compile_Aria(which_os):
     else:
         renderer = ARGUMENTS.get('renderer', 'wxwidgets')
     if renderer != 'opengl' and renderer != 'wxwidgets':
-        print "!! Unknown renderer " + renderer
+        print("!! Unknown renderer " + renderer)
         sys.exit(0)
 
-    print ">> Renderer : " + renderer
+    print(">> Renderer : " + renderer)
     if renderer == 'opengl':
         env.Append(CCFLAGS=['-DRENDERER_OPENGL'])
     elif renderer == 'wxwidgets':
@@ -233,16 +233,16 @@ def compile_Aria(which_os):
     # Check architecture
     compiler_arch = ARGUMENTS.get('compiler_arch', platform.architecture(env['CXX']))[0]
     if compiler_arch != '32bit' and compiler_arch != '64bit':
-        print 'Invalid architecture : ', compiler_arch, '; assuming 32bit'
+        print('Invalid architecture : ', compiler_arch, '; assuming 32bit')
         compiler_arch = '32bit'
         
-    print ">> Architecture : " + compiler_arch
+    print(">> Architecture : " + compiler_arch)
     
     # add wxWidgets flags
     # check if user defined his own WXCONFIG, else use defaults
     WXCONFIG = ARGUMENTS.get('WXCONFIG', 'wx-config')
     if which_os != 'windows':
-        print ">> wx-config : " + WXCONFIG
+        print(">> wx-config : " + WXCONFIG)
         
     if which_os == 'windows':
     
@@ -262,12 +262,12 @@ def compile_Aria(which_os):
         if renderer == "opengl":
             winLdFlags = winLdFlags + ['-lopengl32','-lwxmsw312u_gl_gcc_custom','-lglu32']
         
-        print "Build flags :", winCppFlags
-        print "Link flags :", winLdFlags
+        print("Build flags :", winCppFlags)
+        print("Link flags :", winLdFlags)
         
         try:
             command = ["windres", "--include-dir="+wxHomePath+"\include", "--input", "win32\Aria.rc", "--output", "msvcr.o"]
-            print command
+            print(command)
             out = subprocess.Popen(command, stdout = subprocess.PIPE, stderr = subprocess.PIPE).communicate()
         except:
             sys.stderr.write("could not execute 'windres', is mingw installed?\n")
@@ -278,8 +278,8 @@ def compile_Aria(which_os):
         # Ugly hack : wx flags need to appear at the end of the command, but scons doesn't support that, so I need to hack their link command
         env['LINKCOM']     = '$LINK -o $TARGET $LINKFLAGS $SOURCES $_LIBDIRFLAGS $_LIBFLAGS ' + (' -mwindows ' if build_type == 'release' else '') + ' '.join(winLdFlags)
     else:
-        wxversion = subprocess.check_output([WXCONFIG,"--version"]).strip()
-        print ">> wxWidgets version : " + wxversion
+        wxversion = subprocess.check_output([WXCONFIG,"--version"]).decode().strip()
+        print(">> wxWidgets version : " + wxversion)
         is_wx_3 = (wxversion[0] == '3' or (wxversion[0] == '2' and wxversion[2] == '9'))
         if is_wx_3:
             if renderer == "opengl":
@@ -308,16 +308,16 @@ def compile_Aria(which_os):
             env.Append(CCFLAGS=['-O2','-DNDEBUG=1'])
     
     else:
-        print 'Unknown build type, cannot continue'
+        print('Unknown build type, cannot continue')
         sys.exit(0)
         
     # init common header search paths
     env.Append(CPPPATH = ['./Src','.','./libjdkmidi/include','./rtmidi'])
 
-    print " "
+    print(" ")
 
     # add common sources
-    print "*** Adding source files"
+    print("*** Adding source files")
     
     sources = []
     for file in RecursiveGlob(".", "*.cpp"):
@@ -341,7 +341,7 @@ def compile_Aria(which_os):
     # OS X (QTKit, CoreAudio, audiotoolbox)
     if which_os == "macosx":
 
-        print "*** Adding mac source files and libraries"
+        print("*** Adding mac source files and libraries")
         env.Append(CCFLAGS=['-D_MAC_QUICKTIME_COREAUDIO'])
         sources = sources + ['Src/Midi/Players/Mac/QuickTimeExport.mm','Src/GUI/Machelper.mm']
         env.Append(CPPPATH=['Src/Midi/Players/Mac'])
@@ -365,7 +365,7 @@ def compile_Aria(which_os):
     # NetBSD, FreeBSD (Alsa/tiMidity)
     elif which_os == "netbsd":
     
-        print "*** Adding Alsa libraries and defines"
+        print("*** Adding Alsa libraries and defines")
         
         if renderer == 'opengl':
             env.Append(CCFLAGS=['-DwxUSE_GLCANVAS=1'])
@@ -389,7 +389,7 @@ def compile_Aria(which_os):
     # linux (Alsa/tiMidity)
     elif which_os == "linux":
     
-        print "*** Adding Alsa libraries and defines"
+        print("*** Adding Alsa libraries and defines")
         
         if renderer == 'opengl':
             env.Append(CCFLAGS=['-DwxUSE_GLCANVAS=1'])
@@ -415,7 +415,7 @@ def compile_Aria(which_os):
         env.ParseConfig( 'pkg-config --libs glib-2.0' )
         
     elif which_os == "unix":
-        print "*** Adding libraries and defines for Unix"
+        print("*** Adding libraries and defines for Unix")
         
         if renderer == 'opengl':
             env.Append(CCFLAGS=['-DwxUSE_GLCANVAS=1'])
@@ -436,7 +436,7 @@ def compile_Aria(which_os):
 
     else:
     
-        print "\n\n/!\\ Platform ", which_os, " is unknown"
+        print("\n\n/!\\ Platform ", which_os, " is unknown")
         sys.exit(0)
 
 
@@ -449,11 +449,11 @@ def compile_Aria(which_os):
     # **************************************** COMPILE ********************************************
     # *********************************************************************************************
     
-    print " "
-    print "====================="
-    print "     Setup done "
-    print "====================="
-    print " "
+    print(" ")
+    print("=====================")
+    print("     Setup done ")
+    print("=====================")
+    print(" ")
 
     # compile to .o
     object_list = env.Object(source = sources)
@@ -471,14 +471,14 @@ def compile_Aria(which_os):
         prefix = ARGUMENTS.get('prefix', 0)
     
         if prefix == 0:
-            print ">> No prefix specified, defaulting to /usr/local/"
+            print(">> No prefix specified, defaulting to /usr/local/")
             prefix = '/usr/local/'
         else:
-            print ">> Prefix : " + prefix
+            print(">> Prefix : " + prefix)
 
         # set umask so created directories have the correct permissions
         try:
-            umask = os.umask(022)
+            umask = os.umask(0o022)
         except OSError:     # ignore on systems that don't support umask
             pass
     
@@ -495,7 +495,7 @@ def compile_Aria(which_os):
         env.Command( executable_target, executable,
         [
         Copy("$TARGET","$SOURCE"),
-        Chmod("$TARGET", 0775),
+        Chmod("$TARGET", 0o0775),
         ])        
 
 
@@ -513,7 +513,7 @@ def compile_Aria(which_os):
             env.Command( target, source,
             [
             Copy("$TARGET","$SOURCE"),
-            Chmod("$TARGET", 0664),
+            Chmod("$TARGET", 0o0664),
             ])
 
         # install .mo files
