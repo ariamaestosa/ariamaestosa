@@ -33,7 +33,7 @@ using namespace AriaMaestosa::Action;
 
 // ----------------------------------------------------------------------------------------------------------
 
-MoveNotes::MoveNotes(Editor* editor, const int relativeX, const int relativeY, const int noteID) :
+MoveNotes::MoveNotes(AriaMaestosa::Editor* editor, const int relativeX, const int relativeY, const int noteID) :
     //I18N: (undoable) action name
     SingleTrackAction( _("move note(s)") )
 {
