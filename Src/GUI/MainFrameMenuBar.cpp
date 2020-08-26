@@ -1417,7 +1417,7 @@ public:
 
 void MainFrame::menuEvent_manual(wxCommandEvent& evt)
 {
-    wxLaunchDefaultBrowser("https://ariamaestosa.github.io/ariamaestosa/man.html");
+    wxLaunchDefaultBrowser("https://ariamaestosa.github.io/ariamaestosa/docs/man.html");
     /*
     wxString sep = wxFileName::GetPathSeparator();
     wxString path_to_docs =  getResourcePrefix() + wxT("Documentation") + sep + wxT("man.html");
