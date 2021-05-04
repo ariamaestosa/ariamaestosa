@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CodeLite_Project Name="Aria" InternalType="GUI" Version="10.0.0">
+<CodeLite_Project Name="Aria" InternalType="GUI" Version="11000">
   <Plugins>
     <Plugin Name="qmake">
       <![CDATA[00040001N0011linux_debug0000000000000001N0013linux_release0000000000000001N0013windows_debug0000000000000001N0015windows_release000000000000]]>
