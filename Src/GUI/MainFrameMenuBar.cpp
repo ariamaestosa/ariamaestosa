@@ -499,6 +499,11 @@ void MainFrame::updateMenuBarToSequence()
     Sequence* sequence = getCurrentSequence();
     ChannelManagementType channelMode = sequence->getChannelManagementType();
 
+    wxString fileTitle = extractTitle(sequence->getFilepath());
+    SetTitle(wxString::Format("%s - %s",
+        fileTitle.empty() ? _("Untitled") : fileTitle.c_str(),
+        wxT("Aria Maestosa")));
+
     if (channelMode == CHANNEL_AUTO)
     {
         m_channel_management_automatic->Check(true);
