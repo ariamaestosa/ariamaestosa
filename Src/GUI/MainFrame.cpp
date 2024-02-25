@@ -1883,6 +1883,11 @@ bool MainFrame::closeSequence(int id_arg) // -1 means current
     m_paused = false;
     m_toolbar->SetToolNormalBitmap(PLAY_CLICKED, m_play_bitmap);
 
+    if (m_sequences.size() == 0)
+    {
+        SetTitle(wxT("Aria Maestosa"));
+    }
+
     /*
     if (m_sequences.size() == 0)
     {
@@ -2052,8 +2057,9 @@ void MainFrame::loadAriaFile(const wxString& filePath)
     const int old_currentSequence = m_current_sequence;
 
     addSequence(false);
+    // must set filepath before setCurrentSequence, which uses it.
+    m_sequences[getSequenceAmount()-1].getModel()->setFilepath(filePath);
     setCurrentSequence( getSequenceAmount()-1 );
-    getCurrentSequence()->setFilepath( filePath );
 
     //WaitWindow::show(this, _("Please wait while .aria file is loading.") );
 

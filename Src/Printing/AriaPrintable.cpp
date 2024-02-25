@@ -169,6 +169,7 @@ wxPrinterError AriaPrintable::print()
     ASSERT(m_seq->isLayoutCalculated());
 
 #ifdef __WXMAC__
+    wxString oldTitle = getMainFrame()->GetTitle();
     // change window title so any generated PDF is given the right name
     getMainFrame()->SetTitle(AbstractPrintableSequence::getTitle(m_seq->getSequence()));
 #endif
@@ -181,7 +182,7 @@ wxPrinterError AriaPrintable::print()
     const bool success = printer.Print(NULL, m_printer_manager, true /* show dialog */);
 
 #ifdef __WXMAC__
-    getMainFrame()->SetTitle(wxT("Aria Maestosa"));
+    getMainFrame()->SetTitle(oldTitle);
 #endif
 
     wxPrinterError output = wxPrinter::GetLastError();
