@@ -674,6 +674,10 @@ bool MainFrame::doSave()
     }
     
     assert(false);
+
+    // Shouldn't be possible to end up here, but return
+    // something to silence compiler warnings.
+    return false;
 }
 
 // -----------------------------------------------------------------------------------------------------------
