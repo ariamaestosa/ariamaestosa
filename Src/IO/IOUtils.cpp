@@ -196,6 +196,13 @@ wxString getResourcePrefix()
         
 #elif defined(__WXMSW__)
     
+        static wxString env_path = wxGetenv("ARIA_MAESTOSA_DATA");
+
+        if (not env_path.IsEmpty())
+        {
+            return env_path + wxFileName::GetPathSeparator();
+        }
+
         static bool app_in_place = wxFileExists(
                 extract_path(wxStandardPaths::Get().GetExecutablePath()) +
                 wxFileName::GetPathSeparator() + wxT("Resources") +
