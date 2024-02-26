@@ -12,7 +12,7 @@
  *
  */
 
-#ifdef __WIN32__
+#ifdef _WIN32
 
 #include "jdksmidi/world.h"
 #include "jdksmidi/multitrack.h"

@@ -37,7 +37,7 @@
 
 // RtMidi: Version 1.0.15
 
-#if defined(__WIN32__)
+#if defined(_WIN32)
 // Addition for Aria Maestosa over the original rtmidi sources
 // must include wx/wx.h before win32 is included otherwise we have unicode issues
 #include <wx/wx.h>
@@ -52,7 +52,7 @@
 #define __LINUX_ALSASEQ__ 1
 #elif defined(USE_JACK)
 #define __LINUX_JACK__ 1
-#elif defined(__WIN32__)
+#elif defined(_WIN32)
 #define __WINDOWS_MM__ 1
 #endif
 

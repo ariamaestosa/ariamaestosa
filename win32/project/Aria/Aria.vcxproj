@@ -1,0 +1,417 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\irrXML\irrXML.cpp" />
+    <ClCompile Include="..\..\..\rtmidi\RtMidi.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\AddControlEvent.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\AddControllerSlide.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\AddNote.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\AddTextEvent.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\AddTrack.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\DeleteControllerEvent.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\DeleteSelected.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\DeleteTrack.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\Duplicate.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\DuplicateMeasures.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\EditAction.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\InsertEmptyMeasures.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\MoveNotes.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\NumberPressed.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\Paste.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\RearrangeNotes.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\Record.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\RemoveMeasures.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\RemoveOverlapping.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\ResizeNotes.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\ScaleSong.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\ScaleTrack.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\ScrollNotesIntoView.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\SetAccidentalSign.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\SetNoteVolume.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\SetTrackVolume.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\ShiftBySemiTone.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\ShiftFrets.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\ShiftString.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\SnapNotesToGrid.cpp" />
+    <ClCompile Include="..\..\..\Src\Actions\UpdateGuitarTuning.cpp" />
+    <ClCompile Include="..\..\..\Src\Analysers\ScoreAnalyser.cpp" />
+    <ClCompile Include="..\..\..\Src\Analysers\SilenceAnalyser.cpp" />
+    <ClCompile Include="..\..\..\Src\AriaCore.cpp" />
+    <ClCompile Include="..\..\..\Src\Clipboard.cpp" />
+    <ClCompile Include="..\..\..\Src\Dialogs\AboutDialog.cpp" />
+    <ClCompile Include="..\..\..\Src\Dialogs\CustomKeyDialog.cpp" />
+    <ClCompile Include="..\..\..\Src\Dialogs\CustomNoteSelectDialog.cpp" />
+    <ClCompile Include="..\..\..\Src\Dialogs\Preferences.cpp" />
+    <ClCompile Include="..\..\..\Src\Dialogs\PresetEditor.cpp" />
+    <ClCompile Include="..\..\..\Src\Dialogs\PrintSetupDialog.cpp" />
+    <ClCompile Include="..\..\..\Src\Dialogs\ScaleDialog.cpp" />
+    <ClCompile Include="..\..\..\Src\Dialogs\SongPropertiesDialog.cpp" />
+    <ClCompile Include="..\..\..\Src\Dialogs\TrackPropertiesDialog.cpp" />
+    <ClCompile Include="..\..\..\Src\Dialogs\TuningDialog.cpp" />
+    <ClCompile Include="..\..\..\Src\Dialogs\WaitWindow.cpp" />
+    <ClCompile Include="..\..\..\Src\Editors\ControllerEditor.cpp" />
+    <ClCompile Include="..\..\..\Src\Editors\DrumEditor.cpp" />
+    <ClCompile Include="..\..\..\Src\Editors\Editor.cpp" />
+    <ClCompile Include="..\..\..\Src\Editors\GuitarEditor.cpp" />
+    <ClCompile Include="..\..\..\Src\Editors\KeyboardEditor.cpp" />
+    <ClCompile Include="..\..\..\Src\Editors\RelativeXCoord.cpp" />
+    <ClCompile Include="..\..\..\Src\Editors\ScoreEditor.cpp" />
+    <ClCompile Include="..\..\..\Src\GUI\GraphicalSequence.cpp" />
+    <ClCompile Include="..\..\..\Src\GUI\GraphicalTrack.cpp" />
+    <ClCompile Include="..\..\..\Src\GUI\ImageProvider.cpp" />
+    <ClCompile Include="..\..\..\Src\GUI\MainFrame.cpp" />
+    <ClCompile Include="..\..\..\Src\GUI\MainFrameMenuBar.cpp" />
+    <ClCompile Include="..\..\..\Src\GUI\MainPane.cpp" />
+    <ClCompile Include="..\..\..\Src\GUI\MeasureBar.cpp" />
+    <ClCompile Include="..\..\..\Src\IO\AriaFileWriter.cpp" />
+    <ClCompile Include="..\..\..\Src\IO\IOUtils.cpp" />
+    <ClCompile Include="..\..\..\Src\IO\MidiFileReader.cpp" />
+    <ClCompile Include="..\..\..\Src\IO\MidiToMemoryStream.cpp" />
+    <ClCompile Include="..\..\..\Src\languages.cpp" />
+    <ClCompile Include="..\..\..\Src\LeakCheck.cpp" />
+    <ClCompile Include="..\..\..\Src\main.cpp" />
+    <ClCompile Include="..\..\..\Src\Midi\CommonMidiUtils.cpp" />
+    <ClCompile Include="..\..\..\Src\Midi\ControllerEvent.cpp" />
+    <ClCompile Include="..\..\..\Src\Midi\DrumChoice.cpp" />
+    <ClCompile Include="..\..\..\Src\Midi\GuitarTuning.cpp" />
+    <ClCompile Include="..\..\..\Src\Midi\InstrumentChoice.cpp" />
+    <ClCompile Include="..\..\..\Src\Midi\KeyPresets.cpp" />
+    <ClCompile Include="..\..\..\Src\Midi\MagneticGrid.cpp" />
+    <ClCompile Include="..\..\..\Src\Midi\MeasureData.cpp" />
+    <ClCompile Include="..\..\..\Src\Midi\Note.cpp" />
+    <ClCompile Include="..\..\..\Src\Midi\Players\Alsa\AlsaNotePlayer.cpp" />
+    <ClCompile Include="..\..\..\Src\Midi\Players\Alsa\AlsaPlayer.cpp" />
+    <ClCompile Include="..\..\..\Src\Midi\Players\Alsa\AlsaPort.cpp" />
+    <ClCompile Include="..\..\..\Src\Midi\Players\Example\ExamplePlayer.cpp" />
+    <ClCompile Include="..\..\..\Src\Midi\Players\Jack\JackMidiManager.cpp" />
+    <ClCompile Include="..\..\..\Src\Midi\Players\Mac\MacPlayerInterface.cpp" />
+    <ClCompile Include="..\..\..\Src\Midi\Players\NullDevice.cpp" />
+    <ClCompile Include="..\..\..\Src\Midi\Players\PlatformMidiManager.cpp" />
+    <ClCompile Include="..\..\..\Src\Midi\Players\Sequencer.cpp" />
+    <ClCompile Include="..\..\..\Src\Midi\Players\Win\WinPlayer.cpp" />
+    <ClCompile Include="..\..\..\Src\Midi\Sequence.cpp" />
+    <ClCompile Include="..\..\..\Src\Midi\TimeSigChange.cpp" />
+    <ClCompile Include="..\..\..\Src\Midi\Track.cpp" />
+    <ClCompile Include="..\..\..\Src\Pickers\ControllerChoice.cpp" />
+    <ClCompile Include="..\..\..\Src\Pickers\DrumPicker.cpp" />
+    <ClCompile Include="..\..\..\Src\Pickers\InstrumentPicker.cpp" />
+    <ClCompile Include="..\..\..\Src\Pickers\KeyPicker.cpp" />
+    <ClCompile Include="..\..\..\Src\Pickers\MagneticGridPicker.cpp" />
+    <ClCompile Include="..\..\..\Src\Pickers\NotePickerWidget.cpp" />
+    <ClCompile Include="..\..\..\Src\Pickers\TimeSigPicker.cpp" />
+    <ClCompile Include="..\..\..\Src\Pickers\TuningPicker.cpp" />
+    <ClCompile Include="..\..\..\Src\Pickers\VolumeSlider.cpp" />
+    <ClCompile Include="..\..\..\Src\PreferencesData.cpp" />
+    <ClCompile Include="..\..\..\Src\PresetManager.cpp" />
+    <ClCompile Include="..\..\..\Src\Printing\AbstractPrintableSequence.cpp" />
+    <ClCompile Include="..\..\..\Src\Printing\AriaPrintable.cpp" />
+    <ClCompile Include="..\..\..\Src\Printing\KeyrollPrintableSequence.cpp" />
+    <ClCompile Include="..\..\..\Src\Printing\RenderRoutines.cpp" />
+    <ClCompile Include="..\..\..\Src\Printing\SymbolPrinter\EditorPrintable.cpp" />
+    <ClCompile Include="..\..\..\Src\Printing\SymbolPrinter\PrintLayout\LayoutElement.cpp" />
+    <ClCompile Include="..\..\..\Src\Printing\SymbolPrinter\PrintLayout\PrintLayoutAbstract.cpp" />
+    <ClCompile Include="..\..\..\Src\Printing\SymbolPrinter\PrintLayout\PrintLayoutLine.cpp" />
+    <ClCompile Include="..\..\..\Src\Printing\SymbolPrinter\PrintLayout\PrintLayoutMeasure.cpp" />
+    <ClCompile Include="..\..\..\Src\Printing\SymbolPrinter\PrintLayout\PrintLayoutNumeric.cpp" />
+    <ClCompile Include="..\..\..\Src\Printing\SymbolPrinter\PrintLayout\RelativePlacementManager.cpp" />
+    <ClCompile Include="..\..\..\Src\Printing\SymbolPrinter\ScorePrint.cpp" />
+    <ClCompile Include="..\..\..\Src\Printing\SymbolPrinter\SymbolPrintableSequence.cpp" />
+    <ClCompile Include="..\..\..\Src\Printing\SymbolPrinter\TabPrint.cpp" />
+    <ClCompile Include="..\..\..\Src\Printing\wxEasyPrintWrapper.cpp" />
+    <ClCompile Include="..\..\..\Src\Renderers\AbstractDrawable.cpp" />
+    <ClCompile Include="..\..\..\Src\Renderers\GLDrawable.cpp" />
+    <ClCompile Include="..\..\..\Src\Renderers\GLImage.cpp" />
+    <ClCompile Include="..\..\..\Src\Renderers\GLPane.cpp" />
+    <ClCompile Include="..\..\..\Src\Renderers\GLRenderImp.cpp" />
+    <ClCompile Include="..\..\..\Src\Renderers\GLwxString.cpp" />
+    <ClCompile Include="..\..\..\Src\Renderers\wxDCString.cpp" />
+    <ClCompile Include="..\..\..\Src\Renderers\wxDrawable.cpp" />
+    <ClCompile Include="..\..\..\Src\Renderers\wxImage.cpp" />
+    <ClCompile Include="..\..\..\Src\Renderers\wxRenderImp.cpp" />
+    <ClCompile Include="..\..\..\Src\Renderers\wxRenderPane.cpp" />
+    <ClCompile Include="..\..\..\Src\Singleton.cpp" />
+    <ClCompile Include="..\..\..\Src\UnitTest.cpp" />
+    <ClCompile Include="..\..\..\Src\UnitTestUtils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\irrXML\CXMLReaderImpl.h" />
+    <ClInclude Include="..\..\..\irrXML\fast_atof.h" />
+    <ClInclude Include="..\..\..\irrXML\heapsort.h" />
+    <ClInclude Include="..\..\..\irrXML\irrArray.h" />
+    <ClInclude Include="..\..\..\irrXML\irrString.h" />
+    <ClInclude Include="..\..\..\irrXML\irrTypes.h" />
+    <ClInclude Include="..\..\..\irrXML\irrXML.h" />
+    <ClInclude Include="..\..\..\rtmidi\RtError.h" />
+    <ClInclude Include="..\..\..\rtmidi\RtMidi.h" />
+    <ClInclude Include="..\..\..\Src\Actions\AddControlEvent.h" />
+    <ClInclude Include="..\..\..\Src\Actions\AddControllerSlide.h" />
+    <ClInclude Include="..\..\..\Src\Actions\AddNote.h" />
+    <ClInclude Include="..\..\..\Src\Actions\AddTextEvent.h" />
+    <ClInclude Include="..\..\..\Src\Actions\AddTrack.h" />
+    <ClInclude Include="..\..\..\Src\Actions\DeleteControllerEvent.h" />
+    <ClInclude Include="..\..\..\Src\Actions\DeleteSelected.h" />
+    <ClInclude Include="..\..\..\Src\Actions\DeleteTrack.h" />
+    <ClInclude Include="..\..\..\Src\Actions\Duplicate.h" />
+    <ClInclude Include="..\..\..\Src\Actions\DuplicateMeasures.h" />
+    <ClInclude Include="..\..\..\Src\Actions\EditAction.h" />
+    <ClInclude Include="..\..\..\Src\Actions\InsertEmptyMeasures.h" />
+    <ClInclude Include="..\..\..\Src\Actions\MoveNotes.h" />
+    <ClInclude Include="..\..\..\Src\Actions\NumberPressed.h" />
+    <ClInclude Include="..\..\..\Src\Actions\Paste.h" />
+    <ClInclude Include="..\..\..\Src\Actions\RearrangeNotes.h" />
+    <ClInclude Include="..\..\..\Src\Actions\Record.h" />
+    <ClInclude Include="..\..\..\Src\Actions\RemoveMeasures.h" />
+    <ClInclude Include="..\..\..\Src\Actions\RemoveOverlapping.h" />
+    <ClInclude Include="..\..\..\Src\Actions\ResizeNotes.h" />
+    <ClInclude Include="..\..\..\Src\Actions\ScaleSong.h" />
+    <ClInclude Include="..\..\..\Src\Actions\ScaleTrack.h" />
+    <ClInclude Include="..\..\..\Src\Actions\ScrollNotesIntoView.h" />
+    <ClInclude Include="..\..\..\Src\Actions\SetAccidentalSign.h" />
+    <ClInclude Include="..\..\..\Src\Actions\SetNoteVolume.h" />
+    <ClInclude Include="..\..\..\Src\Actions\SetTrackVolume.h" />
+    <ClInclude Include="..\..\..\Src\Actions\ShiftBySemiTone.h" />
+    <ClInclude Include="..\..\..\Src\Actions\ShiftFrets.h" />
+    <ClInclude Include="..\..\..\Src\Actions\ShiftString.h" />
+    <ClInclude Include="..\..\..\Src\Actions\SnapNotesToGrid.h" />
+    <ClInclude Include="..\..\..\Src\Actions\UpdateGuitarTuning.h" />
+    <ClInclude Include="..\..\..\Src\Analysers\ScoreAnalyser.h" />
+    <ClInclude Include="..\..\..\Src\Analysers\SilenceAnalyser.h" />
+    <ClInclude Include="..\..\..\Src\AriaCore.h" />
+    <ClInclude Include="..\..\..\Src\Clipboard.h" />
+    <ClInclude Include="..\..\..\Src\Dialogs\AboutDialog.h" />
+    <ClInclude Include="..\..\..\Src\Dialogs\CustomKeyDialog.h" />
+    <ClInclude Include="..\..\..\Src\Dialogs\CustomNoteSelectDialog.h" />
+    <ClInclude Include="..\..\..\Src\Dialogs\Preferences.h" />
+    <ClInclude Include="..\..\..\Src\Dialogs\PresetEditor.h" />
+    <ClInclude Include="..\..\..\Src\Dialogs\PrintSetupDialog.h" />
+    <ClInclude Include="..\..\..\Src\Dialogs\ScaleDialog.h" />
+    <ClInclude Include="..\..\..\Src\Dialogs\SongPropertiesDialog.h" />
+    <ClInclude Include="..\..\..\Src\Dialogs\TrackPropertiesDialog.h" />
+    <ClInclude Include="..\..\..\Src\Dialogs\TuningDialog.h" />
+    <ClInclude Include="..\..\..\Src\Dialogs\WaitWindow.h" />
+    <ClInclude Include="..\..\..\Src\Editors\ControllerEditor.h" />
+    <ClInclude Include="..\..\..\Src\Editors\DrumEditor.h" />
+    <ClInclude Include="..\..\..\Src\Editors\Editor.h" />
+    <ClInclude Include="..\..\..\Src\Editors\GuitarEditor.h" />
+    <ClInclude Include="..\..\..\Src\Editors\KeyboardEditor.h" />
+    <ClInclude Include="..\..\..\Src\Editors\RelativeXCoord.h" />
+    <ClInclude Include="..\..\..\Src\Editors\ScoreEditor.h" />
+    <ClInclude Include="..\..\..\Src\GUI\GraphicalSequence.h" />
+    <ClInclude Include="..\..\..\Src\GUI\GraphicalTrack.h" />
+    <ClInclude Include="..\..\..\Src\GUI\ImageProvider.h" />
+    <ClInclude Include="..\..\..\Src\GUI\MainFrame.h" />
+    <ClInclude Include="..\..\..\Src\GUI\MainPane.h" />
+    <ClInclude Include="..\..\..\Src\GUI\MeasureBar.h" />
+    <ClInclude Include="..\..\..\Src\IO\AriaFileWriter.h" />
+    <ClInclude Include="..\..\..\Src\IO\IOUtils.h" />
+    <ClInclude Include="..\..\..\Src\IO\MidiFileReader.h" />
+    <ClInclude Include="..\..\..\Src\IO\MidiToMemoryStream.h" />
+    <ClInclude Include="..\..\..\Src\languages.h" />
+    <ClInclude Include="..\..\..\Src\LeakCheck.h" />
+    <ClInclude Include="..\..\..\Src\main.h" />
+    <ClInclude Include="..\..\..\Src\Midi\CommonMidiUtils.h" />
+    <ClInclude Include="..\..\..\Src\Midi\ControllerEvent.h" />
+    <ClInclude Include="..\..\..\Src\Midi\DrumChoice.h" />
+    <ClInclude Include="..\..\..\Src\Midi\GuitarTuning.h" />
+    <ClInclude Include="..\..\..\Src\Midi\InstrumentChoice.h" />
+    <ClInclude Include="..\..\..\Src\Midi\KeyPresets.h" />
+    <ClInclude Include="..\..\..\Src\Midi\MagneticGrid.h" />
+    <ClInclude Include="..\..\..\Src\Midi\MeasureData.h" />
+    <ClInclude Include="..\..\..\Src\Midi\Note.h" />
+    <ClInclude Include="..\..\..\Src\Midi\Players\Alsa\AlsaNotePlayer.h" />
+    <ClInclude Include="..\..\..\Src\Midi\Players\Alsa\AlsaPort.h" />
+    <ClInclude Include="..\..\..\Src\Midi\Players\Mac\QTKitPlayer.h" />
+    <ClInclude Include="..\..\..\Src\Midi\Players\PlatformMidiManager.h" />
+    <ClInclude Include="..\..\..\Src\Midi\Players\Sequencer.h" />
+    <ClInclude Include="..\..\..\Src\Midi\Sequence.h" />
+    <ClInclude Include="..\..\..\Src\Midi\TimeSigChange.h" />
+    <ClInclude Include="..\..\..\Src\Midi\Track.h" />
+    <ClInclude Include="..\..\..\Src\OpenGL.h" />
+    <ClInclude Include="..\..\..\Src\Pickers\ControllerChoice.h" />
+    <ClInclude Include="..\..\..\Src\Pickers\DrumPicker.h" />
+    <ClInclude Include="..\..\..\Src\Pickers\InstrumentPicker.h" />
+    <ClInclude Include="..\..\..\Src\Pickers\KeyPicker.h" />
+    <ClInclude Include="..\..\..\Src\Pickers\MagneticGridPicker.h" />
+    <ClInclude Include="..\..\..\Src\Pickers\NotePickerWidget.h" />
+    <ClInclude Include="..\..\..\Src\Pickers\TimeSigPicker.h" />
+    <ClInclude Include="..\..\..\Src\Pickers\TuningPicker.h" />
+    <ClInclude Include="..\..\..\Src\Pickers\VolumeSlider.h" />
+    <ClInclude Include="..\..\..\Src\PreferencesData.h" />
+    <ClInclude Include="..\..\..\Src\PresetManager.h" />
+    <ClInclude Include="..\..\..\Src\Printing\AbstractPrintableSequence.h" />
+    <ClInclude Include="..\..\..\Src\Printing\AriaPrintable.h" />
+    <ClInclude Include="..\..\..\Src\Printing\KeyrollPrintableSequence.h" />
+    <ClInclude Include="..\..\..\Src\Printing\RenderRoutines.h" />
+    <ClInclude Include="..\..\..\Src\Printing\SymbolPrinter\EditorPrintable.h" />
+    <ClInclude Include="..\..\..\Src\Printing\SymbolPrinter\PrintLayout\LayoutElement.h" />
+    <ClInclude Include="..\..\..\Src\Printing\SymbolPrinter\PrintLayout\LayoutPage.h" />
+    <ClInclude Include="..\..\..\Src\Printing\SymbolPrinter\PrintLayout\PrintLayoutAbstract.h" />
+    <ClInclude Include="..\..\..\Src\Printing\SymbolPrinter\PrintLayout\PrintLayoutLine.h" />
+    <ClInclude Include="..\..\..\Src\Printing\SymbolPrinter\PrintLayout\PrintLayoutMeasure.h" />
+    <ClInclude Include="..\..\..\Src\Printing\SymbolPrinter\PrintLayout\PrintLayoutNumeric.h" />
+    <ClInclude Include="..\..\..\Src\Printing\SymbolPrinter\PrintLayout\RelativePlacementManager.h" />
+    <ClInclude Include="..\..\..\Src\Printing\SymbolPrinter\ScorePrint.h" />
+    <ClInclude Include="..\..\..\Src\Printing\SymbolPrinter\SymbolPrintableSequence.h" />
+    <ClInclude Include="..\..\..\Src\Printing\SymbolPrinter\TabPrint.h" />
+    <ClInclude Include="..\..\..\Src\Printing\wxEasyPrintWrapper.h" />
+    <ClInclude Include="..\..\..\Src\ptr_vector.h" />
+    <ClInclude Include="..\..\..\Src\Range.h" />
+    <ClInclude Include="..\..\..\Src\Renderers\AbstractDrawable.h" />
+    <ClInclude Include="..\..\..\Src\Renderers\Drawable.h" />
+    <ClInclude Include="..\..\..\Src\Renderers\GLImage.h" />
+    <ClInclude Include="..\..\..\Src\Renderers\GLPane.h" />
+    <ClInclude Include="..\..\..\Src\Renderers\GLwxString.h" />
+    <ClInclude Include="..\..\..\Src\Renderers\ImageBase.h" />
+    <ClInclude Include="..\..\..\Src\Renderers\RenderAPI.h" />
+    <ClInclude Include="..\..\..\Src\Renderers\wxDCString.h" />
+    <ClInclude Include="..\..\..\Src\Renderers\wxImage.h" />
+    <ClInclude Include="..\..\..\Src\Renderers\wxRenderPane.h" />
+    <ClInclude Include="..\..\..\Src\Singleton.h" />
+    <ClInclude Include="..\..\..\Src\UnitTest.h" />
+    <ClInclude Include="..\..\..\Src\UnitTestUtils.h" />
+    <ClInclude Include="..\..\..\Src\Utils.h" />
+    <ClInclude Include="..\..\vc-opfix.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{24CF0EF7-32EC-48F4-A9DA-59925E41E70F}</ProjectGuid>
+    <RootNamespace>Aria</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <ForcedIncludeFiles>$(ProjectDir)..\..\vc-opfix.h</ForcedIncludeFiles>
+      <UndefinePreprocessorDefinitions>
+      </UndefinePreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(WXWIN)\include;$(ProjectDir)..\..\..\Src;$(ProjectDir)..\..\..;$(ProjectDir)..\..\..\libjdkmidi\include;$(ProjectDir)..\..\..\rtmidi;$(WXWIN)\lib\vc_lib\mswud</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>RENDERER_WXWIDGETS;_CRT_SECURE_NO_WARNINGS;_MBCS;_MORE_DEBUG_CHECKS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_lib;$(ProjectDir)..\..\..\libjdkmidi\build\vc15\Debug</AdditionalLibraryDirectories>
+      <AdditionalDependencies>wxbase30ud.lib;wxbase30ud_net.lib;wxbase30ud_xml.lib;wxmsw30ud_adv.lib;wxmsw30ud_core.lib;wxmsw30ud_gl.lib;wxmsw30ud_html.lib;wxmsw30ud_media.lib;wxmsw30ud_xrc.lib;wxpngd.lib;wxtiffd.lib;wxjpegd.lib;wxzlibd.lib;comctl32.lib;Rpcrt4.lib;jdkmidi.lib;wsock32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <ForcedIncludeFiles>$(ProjectDir)..\..\vc-opfix.h</ForcedIncludeFiles>
+      <UndefinePreprocessorDefinitions>
+      </UndefinePreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(WXWIN)\include;$(ProjectDir)..\..\..\Src;$(ProjectDir)..\..\..;$(ProjectDir)..\..\..\libjdkmidi\include;$(ProjectDir)..\..\..\rtmidi;$(WXWIN)\lib\vc_lib\mswud</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>RENDERER_WXWIDGETS;_CRT_SECURE_NO_WARNINGS;_MBCS;_MORE_DEBUG_CHECKS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_x64_lib;$(ProjectDir)..\..\..\libjdkmidi\build\vc15\Debug</AdditionalLibraryDirectories>
+      <AdditionalDependencies>wxbase30ud.lib;wxbase30ud_net.lib;wxbase30ud_xml.lib;wxmsw30ud_adv.lib;wxmsw30ud_core.lib;wxmsw30ud_gl.lib;wxmsw30ud_html.lib;wxmsw30ud_media.lib;wxmsw30ud_xrc.lib;wxpngd.lib;wxtiffd.lib;wxjpegd.lib;wxzlibd.lib;comctl32.lib;Rpcrt4.lib;jdkmidi.lib;wsock32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <ForcedIncludeFiles>$(ProjectDir)..\..\vc-opfix.h</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>$(WXWIN)\include;$(ProjectDir)..\..\..\Src;$(ProjectDir)..\..\..;$(ProjectDir)..\..\..\libjdkmidi\include;$(ProjectDir)..\..\..\rtmidi;$(WXWIN)\lib\vc_lib\mswud</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>RENDERER_WXWIDGETS;_CRT_SECURE_NO_WARNINGS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>wxbase30u.lib;wxbase30u_net.lib;wxbase30u_xml.lib;wxmsw30u_adv.lib;wxmsw30u_core.lib;wxmsw30u_gl.lib;wxmsw30u_html.lib;wxmsw30u_media.lib;wxmsw30u_xrc.lib;wxpng.lib;wxtiff.lib;wxjpeg.lib;wxzlib.lib;comctl32.lib;Rpcrt4.lib;jdkmidi.lib;wsock32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_lib;$(ProjectDir)..\..\..\libjdkmidi\build\vc15\Release</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <ForcedIncludeFiles>$(ProjectDir)..\..\vc-opfix.h</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>$(WXWIN)\include;$(ProjectDir)..\..\..\Src;$(ProjectDir)..\..\..;$(ProjectDir)..\..\..\libjdkmidi\include;$(ProjectDir)..\..\..\rtmidi;$(WXWIN)\lib\vc_lib\mswud</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>RENDERER_WXWIDGETS;_CRT_SECURE_NO_WARNINGS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>wxbase30u.lib;wxbase30u_net.lib;wxbase30u_xml.lib;wxmsw30u_adv.lib;wxmsw30u_core.lib;wxmsw30u_gl.lib;wxmsw30u_html.lib;wxmsw30u_media.lib;wxmsw30u_xrc.lib;wxpng.lib;wxtiff.lib;wxjpeg.lib;wxzlib.lib;comctl32.lib;Rpcrt4.lib;jdkmidi.lib;wsock32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_x64_lib;$(ProjectDir)..\..\..\libjdkmidi\build\vc15\Release</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,857 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Archivos de recursos">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Src">
+      <UniqueIdentifier>{06e89f3f-a9c4-44bb-8e59-d045f5b9fcce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Actions">
+      <UniqueIdentifier>{a34bf7f7-7bd4-463c-968a-d13524fa1ddd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Printing">
+      <UniqueIdentifier>{76b2c415-1088-4f62-8f8e-5e4ac5ddaf1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Analysers">
+      <UniqueIdentifier>{ba1f6f4a-da78-468c-ab9b-c8830a3721c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Dialogs">
+      <UniqueIdentifier>{23eae622-72d9-431f-aa38-4846ff2d4c1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Editors">
+      <UniqueIdentifier>{87055ec2-e94e-47b6-b2f5-a88119479da2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\GUI">
+      <UniqueIdentifier>{ba875a01-2cbf-464e-a638-ab4adace91b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\IO">
+      <UniqueIdentifier>{2ddceb43-a8d6-4406-ba2d-f2099d24cc7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Midi">
+      <UniqueIdentifier>{36c82522-7abf-4133-9b88-685bf76e4d2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Renderers">
+      <UniqueIdentifier>{32919251-05dd-4dd8-b9c1-d08b7167d4cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Pickers">
+      <UniqueIdentifier>{5414780b-29d8-423b-a0a2-f9a9d6d358b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Midi\Players">
+      <UniqueIdentifier>{95c7febc-7fac-434e-9d70-dcba19d61562}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="irrXML">
+      <UniqueIdentifier>{8a708fc7-2e50-455d-90d3-9bb343b352ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RtMidi">
+      <UniqueIdentifier>{e08aefda-658c-4591-bfb2-6a8515a34090}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Src\Actions\AddControlEvent.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\AddControllerSlide.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\AddNote.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\AddTrack.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\DeleteSelected.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\DeleteTrack.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\EditAction.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\InsertEmptyMeasures.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\MoveNotes.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\NumberPressed.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\Paste.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\RearrangeNotes.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\RemoveMeasures.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\RemoveOverlapping.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\ResizeNotes.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\ScaleSong.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\ScaleTrack.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\SetAccidentalSign.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\SetNoteVolume.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\ShiftBySemiTone.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\ShiftFrets.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\ShiftString.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\SnapNotesToGrid.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\UpdateGuitarTuning.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Analysers\ScoreAnalyser.cpp">
+      <Filter>Src\Analysers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Analysers\SilenceAnalyser.cpp">
+      <Filter>Src\Analysers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Dialogs\AboutDialog.cpp">
+      <Filter>Src\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Dialogs\CustomKeyDialog.cpp">
+      <Filter>Src\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Dialogs\CustomNoteSelectDialog.cpp">
+      <Filter>Src\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Dialogs\Preferences.cpp">
+      <Filter>Src\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Dialogs\PresetEditor.cpp">
+      <Filter>Src\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Dialogs\PrintSetupDialog.cpp">
+      <Filter>Src\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Dialogs\ScaleDialog.cpp">
+      <Filter>Src\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Dialogs\TrackPropertiesDialog.cpp">
+      <Filter>Src\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Dialogs\TuningDialog.cpp">
+      <Filter>Src\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Dialogs\WaitWindow.cpp">
+      <Filter>Src\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Editors\ControllerEditor.cpp">
+      <Filter>Src\Editors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Editors\DrumEditor.cpp">
+      <Filter>Src\Editors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Editors\Editor.cpp">
+      <Filter>Src\Editors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Editors\GuitarEditor.cpp">
+      <Filter>Src\Editors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Editors\KeyboardEditor.cpp">
+      <Filter>Src\Editors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Editors\RelativeXCoord.cpp">
+      <Filter>Src\Editors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Editors\ScoreEditor.cpp">
+      <Filter>Src\Editors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\GUI\GraphicalTrack.cpp">
+      <Filter>Src\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\GUI\ImageProvider.cpp">
+      <Filter>Src\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\GUI\MainFrame.cpp">
+      <Filter>Src\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\GUI\MainFrameMenuBar.cpp">
+      <Filter>Src\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\GUI\MainPane.cpp">
+      <Filter>Src\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\GUI\MeasureBar.cpp">
+      <Filter>Src\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\IO\AriaFileWriter.cpp">
+      <Filter>Src\IO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\IO\IOUtils.cpp">
+      <Filter>Src\IO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\IO\MidiFileReader.cpp">
+      <Filter>Src\IO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\IO\MidiToMemoryStream.cpp">
+      <Filter>Src\IO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Midi\CommonMidiUtils.cpp">
+      <Filter>Src\Midi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Midi\ControllerEvent.cpp">
+      <Filter>Src\Midi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Midi\DrumChoice.cpp">
+      <Filter>Src\Midi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Midi\GuitarTuning.cpp">
+      <Filter>Src\Midi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Midi\InstrumentChoice.cpp">
+      <Filter>Src\Midi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Midi\KeyPresets.cpp">
+      <Filter>Src\Midi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Midi\MeasureData.cpp">
+      <Filter>Src\Midi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Midi\Note.cpp">
+      <Filter>Src\Midi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Midi\Players\Alsa\AlsaNotePlayer.cpp">
+      <Filter>Src\Midi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Midi\Players\Alsa\AlsaPlayer.cpp">
+      <Filter>Src\Midi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Midi\Players\Alsa\AlsaPort.cpp">
+      <Filter>Src\Midi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Midi\Players\Example\ExamplePlayer.cpp">
+      <Filter>Src\Midi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Midi\Players\Jack\JackMidiManager.cpp">
+      <Filter>Src\Midi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Midi\Players\Mac\MacPlayerInterface.cpp">
+      <Filter>Src\Midi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Midi\Players\NullDevice.cpp">
+      <Filter>Src\Midi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Midi\Players\PlatformMidiManager.cpp">
+      <Filter>Src\Midi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Midi\Players\Sequencer.cpp">
+      <Filter>Src\Midi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Midi\Sequence.cpp">
+      <Filter>Src\Midi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Midi\TimeSigChange.cpp">
+      <Filter>Src\Midi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Midi\Track.cpp">
+      <Filter>Src\Midi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Pickers\ControllerChoice.cpp">
+      <Filter>Src\Pickers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Pickers\DrumPicker.cpp">
+      <Filter>Src\Pickers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Pickers\InstrumentPicker.cpp">
+      <Filter>Src\Pickers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Pickers\KeyPicker.cpp">
+      <Filter>Src\Pickers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Pickers\NotePickerWidget.cpp">
+      <Filter>Src\Pickers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Pickers\TimeSigPicker.cpp">
+      <Filter>Src\Pickers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Pickers\TuningPicker.cpp">
+      <Filter>Src\Pickers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Pickers\VolumeSlider.cpp">
+      <Filter>Src\Pickers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Printing\AbstractPrintableSequence.cpp">
+      <Filter>Src\Printing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Printing\AriaPrintable.cpp">
+      <Filter>Src\Printing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Printing\KeyrollPrintableSequence.cpp">
+      <Filter>Src\Printing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Printing\RenderRoutines.cpp">
+      <Filter>Src\Printing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Printing\SymbolPrinter\EditorPrintable.cpp">
+      <Filter>Src\Printing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Printing\SymbolPrinter\PrintLayout\LayoutElement.cpp">
+      <Filter>Src\Printing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Printing\SymbolPrinter\PrintLayout\PrintLayoutAbstract.cpp">
+      <Filter>Src\Printing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Printing\SymbolPrinter\PrintLayout\PrintLayoutLine.cpp">
+      <Filter>Src\Printing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Printing\SymbolPrinter\PrintLayout\PrintLayoutMeasure.cpp">
+      <Filter>Src\Printing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Printing\SymbolPrinter\PrintLayout\PrintLayoutNumeric.cpp">
+      <Filter>Src\Printing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Printing\SymbolPrinter\PrintLayout\RelativePlacementManager.cpp">
+      <Filter>Src\Printing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Printing\SymbolPrinter\ScorePrint.cpp">
+      <Filter>Src\Printing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Printing\SymbolPrinter\SymbolPrintableSequence.cpp">
+      <Filter>Src\Printing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Printing\SymbolPrinter\TabPrint.cpp">
+      <Filter>Src\Printing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Printing\wxEasyPrintWrapper.cpp">
+      <Filter>Src\Printing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Renderers\GLDrawable.cpp">
+      <Filter>Src\Renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Renderers\GLImage.cpp">
+      <Filter>Src\Renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Renderers\GLPane.cpp">
+      <Filter>Src\Renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Renderers\GLRenderImp.cpp">
+      <Filter>Src\Renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Renderers\GLwxString.cpp">
+      <Filter>Src\Renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Renderers\wxDCString.cpp">
+      <Filter>Src\Renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Renderers\wxDrawable.cpp">
+      <Filter>Src\Renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Renderers\wxImage.cpp">
+      <Filter>Src\Renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Renderers\wxRenderImp.cpp">
+      <Filter>Src\Renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Renderers\wxRenderPane.cpp">
+      <Filter>Src\Renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\languages.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\LeakCheck.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\main.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\PreferencesData.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\PresetManager.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Singleton.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\UnitTest.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\UnitTestUtils.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\AriaCore.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Clipboard.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\GUI\GraphicalSequence.cpp">
+      <Filter>Src\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Renderers\AbstractDrawable.cpp">
+      <Filter>Src\Renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Pickers\MagneticGridPicker.cpp">
+      <Filter>Src\Pickers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Midi\MagneticGrid.cpp">
+      <Filter>Src\Midi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Midi\Players\Win\WinPlayer.cpp">
+      <Filter>Src\Midi\Players</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\irrXML\irrXML.cpp">
+      <Filter>irrXML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\rtmidi\RtMidi.cpp">
+      <Filter>RtMidi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\AddTextEvent.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\DeleteControllerEvent.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\Duplicate.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\DuplicateMeasures.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\Record.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\ScrollNotesIntoView.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Actions\SetTrackVolume.cpp">
+      <Filter>Src\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Src\Dialogs\SongPropertiesDialog.cpp">
+      <Filter>Src\Dialogs</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Src\Actions\AddControlEvent.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\AddControllerSlide.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\AddNote.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\AddTrack.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\DeleteSelected.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\DeleteTrack.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\EditAction.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\InsertEmptyMeasures.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\MoveNotes.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\NumberPressed.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\Paste.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\RearrangeNotes.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\RemoveMeasures.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\RemoveOverlapping.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\ResizeNotes.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\ScaleSong.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\ScaleTrack.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\SetAccidentalSign.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\SetNoteVolume.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\ShiftBySemiTone.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\ShiftFrets.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\ShiftString.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\SnapNotesToGrid.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\UpdateGuitarTuning.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Analysers\ScoreAnalyser.h">
+      <Filter>Src\Analysers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Analysers\SilenceAnalyser.h">
+      <Filter>Src\Analysers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Dialogs\AboutDialog.h">
+      <Filter>Src\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Dialogs\CustomKeyDialog.h">
+      <Filter>Src\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Dialogs\CustomNoteSelectDialog.h">
+      <Filter>Src\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Dialogs\Preferences.h">
+      <Filter>Src\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Dialogs\PresetEditor.h">
+      <Filter>Src\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Dialogs\PrintSetupDialog.h">
+      <Filter>Src\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Dialogs\ScaleDialog.h">
+      <Filter>Src\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Dialogs\TrackPropertiesDialog.h">
+      <Filter>Src\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Dialogs\TuningDialog.h">
+      <Filter>Src\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Dialogs\WaitWindow.h">
+      <Filter>Src\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Editors\ControllerEditor.h">
+      <Filter>Src\Editors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Editors\DrumEditor.h">
+      <Filter>Src\Editors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Editors\Editor.h">
+      <Filter>Src\Editors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Editors\GuitarEditor.h">
+      <Filter>Src\Editors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Editors\KeyboardEditor.h">
+      <Filter>Src\Editors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Editors\RelativeXCoord.h">
+      <Filter>Src\Editors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Editors\ScoreEditor.h">
+      <Filter>Src\Editors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\GUI\GraphicalTrack.h">
+      <Filter>Src\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\GUI\ImageProvider.h">
+      <Filter>Src\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\GUI\MainFrame.h">
+      <Filter>Src\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\GUI\MainPane.h">
+      <Filter>Src\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\GUI\MeasureBar.h">
+      <Filter>Src\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\IO\AriaFileWriter.h">
+      <Filter>Src\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\IO\IOUtils.h">
+      <Filter>Src\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\IO\MidiFileReader.h">
+      <Filter>Src\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\IO\MidiToMemoryStream.h">
+      <Filter>Src\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Midi\CommonMidiUtils.h">
+      <Filter>Src\Midi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Midi\ControllerEvent.h">
+      <Filter>Src\Midi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Midi\DrumChoice.h">
+      <Filter>Src\Midi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Midi\GuitarTuning.h">
+      <Filter>Src\Midi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Midi\InstrumentChoice.h">
+      <Filter>Src\Midi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Midi\KeyPresets.h">
+      <Filter>Src\Midi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Midi\MeasureData.h">
+      <Filter>Src\Midi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Midi\Note.h">
+      <Filter>Src\Midi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Midi\Players\Alsa\AlsaNotePlayer.h">
+      <Filter>Src\Midi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Midi\Players\Alsa\AlsaPort.h">
+      <Filter>Src\Midi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Midi\Players\Mac\QTKitPlayer.h">
+      <Filter>Src\Midi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Midi\Players\PlatformMidiManager.h">
+      <Filter>Src\Midi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Midi\Players\Sequencer.h">
+      <Filter>Src\Midi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Midi\Sequence.h">
+      <Filter>Src\Midi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Midi\TimeSigChange.h">
+      <Filter>Src\Midi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Midi\Track.h">
+      <Filter>Src\Midi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Pickers\ControllerChoice.h">
+      <Filter>Src\Pickers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Pickers\DrumPicker.h">
+      <Filter>Src\Pickers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Pickers\InstrumentPicker.h">
+      <Filter>Src\Pickers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Pickers\KeyPicker.h">
+      <Filter>Src\Pickers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Pickers\NotePickerWidget.h">
+      <Filter>Src\Pickers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Pickers\TimeSigPicker.h">
+      <Filter>Src\Pickers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Pickers\TuningPicker.h">
+      <Filter>Src\Pickers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Pickers\VolumeSlider.h">
+      <Filter>Src\Pickers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Printing\AbstractPrintableSequence.h">
+      <Filter>Src\Printing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Printing\AriaPrintable.h">
+      <Filter>Src\Printing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Printing\KeyrollPrintableSequence.h">
+      <Filter>Src\Printing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Printing\RenderRoutines.h">
+      <Filter>Src\Printing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Printing\SymbolPrinter\EditorPrintable.h">
+      <Filter>Src\Printing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Printing\SymbolPrinter\PrintLayout\LayoutElement.h">
+      <Filter>Src\Printing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Printing\SymbolPrinter\PrintLayout\LayoutPage.h">
+      <Filter>Src\Printing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Printing\SymbolPrinter\PrintLayout\PrintLayoutAbstract.h">
+      <Filter>Src\Printing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Printing\SymbolPrinter\PrintLayout\PrintLayoutLine.h">
+      <Filter>Src\Printing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Printing\SymbolPrinter\PrintLayout\PrintLayoutMeasure.h">
+      <Filter>Src\Printing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Printing\SymbolPrinter\PrintLayout\PrintLayoutNumeric.h">
+      <Filter>Src\Printing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Printing\SymbolPrinter\PrintLayout\RelativePlacementManager.h">
+      <Filter>Src\Printing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Printing\SymbolPrinter\ScorePrint.h">
+      <Filter>Src\Printing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Printing\SymbolPrinter\SymbolPrintableSequence.h">
+      <Filter>Src\Printing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Printing\SymbolPrinter\TabPrint.h">
+      <Filter>Src\Printing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Printing\wxEasyPrintWrapper.h">
+      <Filter>Src\Printing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Renderers\Drawable.h">
+      <Filter>Src\Renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Renderers\GLImage.h">
+      <Filter>Src\Renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Renderers\GLPane.h">
+      <Filter>Src\Renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Renderers\GLwxString.h">
+      <Filter>Src\Renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Renderers\ImageBase.h">
+      <Filter>Src\Renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Renderers\RenderAPI.h">
+      <Filter>Src\Renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Renderers\wxDCString.h">
+      <Filter>Src\Renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Renderers\wxImage.h">
+      <Filter>Src\Renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Renderers\wxRenderPane.h">
+      <Filter>Src\Renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Clipboard.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\languages.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\LeakCheck.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\main.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\OpenGL.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\PreferencesData.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\PresetManager.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\ptr_vector.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Range.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Singleton.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\UnitTest.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\UnitTestUtils.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Utils.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\AriaCore.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vc-opfix.h" />
+    <ClInclude Include="..\..\..\Src\GUI\GraphicalSequence.h">
+      <Filter>Src\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Renderers\AbstractDrawable.h">
+      <Filter>Src\Renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Pickers\MagneticGridPicker.h">
+      <Filter>Src\Pickers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Midi\MagneticGrid.h">
+      <Filter>Src\Midi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\irrXML\CXMLReaderImpl.h">
+      <Filter>irrXML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\irrXML\fast_atof.h">
+      <Filter>irrXML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\irrXML\heapsort.h">
+      <Filter>irrXML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\irrXML\irrArray.h">
+      <Filter>irrXML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\irrXML\irrString.h">
+      <Filter>irrXML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\irrXML\irrTypes.h">
+      <Filter>irrXML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\irrXML\irrXML.h">
+      <Filter>irrXML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\rtmidi\RtError.h">
+      <Filter>RtMidi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\rtmidi\RtMidi.h">
+      <Filter>RtMidi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\AddTextEvent.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\DeleteControllerEvent.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\Duplicate.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\DuplicateMeasures.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\Record.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\ScrollNotesIntoView.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Actions\SetTrackVolume.h">
+      <Filter>Src\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Src\Dialogs\SongPropertiesDialog.h">
+      <Filter>Src\Dialogs</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

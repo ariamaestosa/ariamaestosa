@@ -428,7 +428,7 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
                     {
 
                         const int length = event->GetSysEx()->GetLength(); // get name length
-                        char name[length+1];
+                        char *name = new char[length+1];
                         name[length] = 0; // make zero-terminated
 
                         char* buf = (char*) event->GetSysEx()->GetBuf();
@@ -438,19 +438,21 @@ bool AriaMaestosa::loadMidiFile(GraphicalSequence* gseq, wxString filepath, std:
 
                         trackName = fromCString(name);
                         //if (trackName.Length() == 0) trackName = _("Untitled");
+                        delete [] name;
                         continue;
                     }
                     else if ((int)event->GetByte1() == 2) // copyright
                     {
 
                         const int length = event->GetSysEx()->GetLength(); // get copyright length
-                        char copyright[length+1];
+                        char *copyright = new char[length+1];
                         copyright[length] = 0; // make zero-terminated
 
                         char* buf = (char*) event->GetSysEx()->GetBuf();
                         for (int n=0; n<length; n++) copyright[n] = buf[n];
 
                         sequence->setCopyright( fromCString(copyright) );
+                        delete [] copyright;
                         continue;
                     }
                     /*

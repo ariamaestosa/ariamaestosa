@@ -1,6 +1,12 @@
 *.dll
 *.exe
 *.o
+*.obj
+*.pdb
+*.ilk
+*.tlog
+*.nativecodeanalysis.xml
+.vs
 cl/.codelite
 .sconsign.dblite
 scons/scons-local-1.3.0.d20100626

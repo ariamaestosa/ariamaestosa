@@ -290,11 +290,11 @@ void CustomNoteSelectDialog::okClicked(wxCommandEvent& evt)
         if (m_current_track->isNoteSelected(n)) referenceNoteAmount++;
     }
 
-    int referencePitches[referenceNoteAmount];
-    int referenceVolumes[referenceNoteAmount];
-    int referenceStrings[referenceNoteAmount];
-    int referenceFrets[referenceNoteAmount];
-    int referenceDurations[referenceNoteAmount];
+    std::vector<int> referencePitches(referenceNoteAmount, 0);
+    std::vector<int> referenceVolumes(referenceNoteAmount, 0);
+    std::vector<int> referenceStrings(referenceNoteAmount, 0);
+    std::vector<int> referenceFrets(referenceNoteAmount, 0);
+    std::vector<int> referenceDurations(referenceNoteAmount, 0);
 
     int currentID=0;
     for (int n=0; n<noteAmount; n++)
