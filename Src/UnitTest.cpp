@@ -62,7 +62,7 @@ namespace TestCaseList
     Node* getEffectiveRoot()
     {
         TestCaseList::Node* from = TestCaseList::root;
-        while (from->m_children.size() == 1)
+        while (from and from->m_children.size() == 1)
         {
             from = &(from->m_children.begin()->second);
         }
